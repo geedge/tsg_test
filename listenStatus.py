@@ -24,7 +24,7 @@ def get_request_body():
     policy_app_full_name = req_json.get("app_full_name")
     while 1:
         if code == 200:
-            print("Dispatch configure to tsg")
+            print("Dispatch configure to tsg.")
     return jsonify(policy_type, code, policy_src_ip, policy_dst_ip, policy_action, policy_app_name, policy_app_full_name)
 
 if __name__ == '__main__':
