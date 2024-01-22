@@ -5,15 +5,6 @@ app = Flask(__name__)
 @app.route('/v1/airtest', methods=["POST"])
 def get_request_body():
     # 从MS或Jmeter等工具的请求体中获取参数
-    # req_json =  {
-    #     "code": 200,
-    #     "policy_type": "security",
-    #     "source_ip": ["192.168.64.59", "192.168.64.60"],
-    #     "destination_ip": ["1.1.1.1", "1.1.1.2"],
-    #     "action": "deny",
-    #     "app_name": "taobao",
-    #     "app_full_name": "com.taobao.taobao"
-    # }
     req_json = request.get_json()
     code = req_json.get("code")
     policy_type = req_json.get("policy_type")
