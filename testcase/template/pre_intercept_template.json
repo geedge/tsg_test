@@ -1,0 +1,45 @@
+{
+  "type": "pxy_intercept",
+  "return_data": 1,
+  "vsys_id": 1,
+  "rule": {
+    "name": "auto_test_policy",
+    "type": "pxy_intercept",
+    "action": "intercept",
+    "user_tag_ids": "",
+    "do_log": 1,
+    "effective_range": {},
+    "user_region": {
+      "protocol": "SSL",
+      "keyring_for_untrusted": 0,
+      "keyring_for_trusted": 1,
+      "decryption": 1,
+      "tcp_option_profile": 1,
+      "traffic_mirror": {
+        "enable": 0
+      }
+    },
+    "sources": [],
+    "destinations": [],
+    "filters": "",
+    "application": {
+      "not_flag": 0,
+      "objects": [
+        {
+          "object_type": "application",
+          "object_ids": [
+            109,
+            163
+          ]
+        }
+      ],
+      "protocol_field": "ATTR_APP_ID",
+      "show": true
+    },
+    "is_enabled": 1,
+    "description": "test",
+    "vsys_id": 6,
+    "schedule_id": [
+    ]
+  }
+}

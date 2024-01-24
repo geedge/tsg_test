@@ -1,0 +1,21 @@
+{
+    "vsys_id":1,
+    "return_data":1,
+    "id": "",
+    "service_function": {
+        "name":"test",
+        "device_group":{
+            "tag":"device_group",
+            "value":"group-xxg-tsgx"
+        },
+        "admin_status":1,
+        "connectivity":{
+            "method":"vxlan_g",
+            "dest_ip":"2.2.22.22"
+        },
+        "health_check":{
+            "method":"none"
+        },
+        "vsys_id": 1
+    }
+}

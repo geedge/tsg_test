@@ -1,0 +1,20 @@
+{
+    "op_action":"add",
+    "return_data":1,
+    "id":"",
+    "dns_record":{
+        "id":"",
+        "name":"auto_test_profile",
+        "type":"A",
+        "values":[
+            {
+                "value":"1.1.1.1"
+            }
+        ],
+        "is_enabled":1,
+        "is_shared":0,
+        "description":"",
+        "vsys_id":1
+    },
+    "vsys_id":1
+}

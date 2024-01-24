@@ -1,0 +1,21 @@
+{
+  "return_data": 1,
+  "rule": {
+    "name": "auto_test_policy",
+    "type": "tsg_security",
+    "action": "allow",
+    "user_tags": "",
+    "do_log": 1,
+    "effective_range": {},
+    "user_region": {},
+    "sources": [],
+    "destinations": [],
+    "filters": [],
+    "application": {},
+    "is_enabled": 1,
+    "description": "test",
+    "vsys_id": 1,
+    "schedule_id": [
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "vsys_id":1,
+    "return_data":1,
+    "service_function_forwarder": {
+        "name":"test11",
+        "type":"1",
+        "load_balance_method":"hash-int-ip",
+        "load_balance_localization":"nearby",
+        "failure_action":"bypass",
+        "service_func_profiles":[],
+        "is_enabled": 1
+    }
+}
