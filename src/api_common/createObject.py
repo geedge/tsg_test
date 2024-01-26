@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 # coding=utf-8
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
 import json
+import deleteConfig
 from datetime import datetime
-import delConfig
 
 class CreateObject():
     def __init__(self):
@@ -17,7 +20,7 @@ class CreateObject():
         self.account_ids = []
         self.http_signature_ids = []
 
-    def create_condition(self, token, condition, template, api_host, test_pc_ip, vsys_id):
+    def create_object_from_template(self, token, condition, template, api_host, test_pc_ip, vsys_id):
         # 此处的condition为测试用例json中obj_condition_{i}的相关数据
         headers = {"Content-Type": "application/json", "Authorization": token}
         with open(template, 'r', encoding='utf-8') as f:
@@ -26,7 +29,7 @@ class CreateObject():
         dst_list = []
         filter_list = []
         flag_list = []
-        res_time_result = True
+        timeout_result = True
         # 依次创建object
         if len(condition) > 0:
             for key in condition:
@@ -39,7 +42,7 @@ class CreateObject():
                     run_times = key["run_times"]
                     for i in range(run_times):
                         index = i + 1
-                        objects_list, res_time_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, run_times)
+                        objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, run_times)
                         if protocol_field == 'ATTR_SOURCE_ADDR' or protocol_field == 'ATTR_SUBSCRIBER_ID':
                             for obj_dict in objects_list:
                                 source_list.append(obj_dict)
@@ -54,14 +57,15 @@ class CreateObject():
                                 filter_list.append(obj_dict)
                         time.sleep(granularity)
                         print(dst_list)
-                        if index < run_times:
-                            erase = delConfig.Erase()
-                            erase.del_config(token, [], [], self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, [], api_host, vsys_id)
+                        # if index < run_times:
+                        #     erase = deleteConfig.DeleteConfig()
+                        #     erase.delele_cfg(token, parameter, cfg_list)
+                        #     erase.del_config(token, [], [], self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, [], api_host, vsys_id)
                 else:
                     # 将测试用例中的数据传入模板文件后创建object
                     index = 1
                     run_times = 1
-                    objects_list, res_time_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, run_times)
+                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, run_times)
                     if protocol_field == 'ATTR_SOURCE_ADDR' or protocol_field == 'ATTR_SUBSCRIBER_ID':
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
@@ -74,7 +78,7 @@ class CreateObject():
                     else:
                         for obj_dict in objects_list:
                             filter_list.append(obj_dict)
-        return res_time_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids
+        return timeout_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids
     
     # 对多个objects的处理（处理之后要调用create_object）
     def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, vsys_id, token, index, run_times):
@@ -105,9 +109,9 @@ class CreateObject():
             if is_import == 0:
                 member = self.combine_object_data(obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat)
                 obj_template_dict['object']['member'] = member
-                object_ids_temp_list, res_time_result = self.create_object(obj_template_dict, headers, api_host, is_repeat)
+                object_ids_temp_list, timeout_result = self.create_object(obj_template_dict, headers, api_host, is_repeat)
             else:
-                object_ids_temp_list, res_time_result = self.import_object(obj_type, vsys_id, add_item_list, api_host, token, is_repeat)
+                object_ids_temp_list, timeout_result = self.import_object(obj_type, vsys_id, add_item_list, api_host, token, is_repeat)
         if protocol_field != '' and len(object_ids_temp_list) != 0:
             objects_list = self.obj_ids_to_policy_obj_list(object_ids_temp_list, protocol_field, not_flag)
         else:
@@ -117,7 +121,7 @@ class CreateObject():
             object_temp_list.append(objects_list)
         elif len(objects_list) > 0 and is_repeat == 1 and index > run_times-1:
             object_temp_list.append(objects_list)
-        return object_temp_list, res_time_result 
+        return object_temp_list, timeout_result 
     
     # 组织创建通过items进行新增的object的数据
     def combine_object_data(self, obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat):
@@ -207,9 +211,9 @@ class CreateObject():
         seconds_difference = time_difference.total_seconds()
         assert response.status_code == 200
         if seconds_difference > 60:
-            res_time_result = False
+            timeout_result = False
         else:
-            res_time_result = True
+            timeout_result = True
         response_dict = json.loads(response.text)
         object_ids = self.get_object_ids(response_dict)
         # 为了每次清空需要反复创建的object的组合使用，否则会反复删除已经存在的object
@@ -233,7 +237,7 @@ class CreateObject():
             self.account_ids = self.handle_ids(object_ids, self.account_ids)
         elif obj_type == 'http_signature':
             self.http_signature_ids = self.handle_ids(object_ids, self.http_signature_ids)
-        return object_ids, res_time_result
+        return object_ids, timeout_result
     
     # 调用创建object的接口
     def create_object(self, obj_template_dict, headers, api_host, is_repeat):
@@ -246,9 +250,9 @@ class CreateObject():
         time_difference = time2 - time1
         seconds_difference = time_difference.total_seconds()
         if seconds_difference > 60:
-            res_time_result = False
+            timeout_result = False
         else:
-            res_time_result = True
+            timeout_result = True
         # 从返回数据中获取object_type，方便后续判断将id添加到哪个全局变量里边
         if is_repeat == 1:
             print(response_dict)
@@ -275,7 +279,7 @@ class CreateObject():
             self.account_ids = self.handle_ids(object_ids, self.account_ids)
         elif obj_type == 'http_signature':
             self.http_signature_ids = self.handle_ids(object_ids, self.http_signature_ids)
-        return object_ids, res_time_result
+        return object_ids, timeout_result
     
     # 获取返回结果中的objectsid
     def get_object_ids(self, response_dict):
@@ -305,5 +309,4 @@ class CreateObject():
         return target_ids
 
 if __name__ == '__main__':
-    # ipObject = CreateIpObject()
-    time.sleep(3)
+    print("test")

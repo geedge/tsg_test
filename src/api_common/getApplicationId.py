@@ -29,5 +29,4 @@ def get_app_id(app, api_host):
     return app_id_list
 
 if __name__ == '__main__':
-    appid = get_app_id("ssl")
-    time.sleep(3)
+    print("test")

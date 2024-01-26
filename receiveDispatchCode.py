@@ -19,7 +19,7 @@ def ReceiveCaseParameter():
             "username": "zhaokun",
             "password": "zhaokun1",
             "test_pc_ip": "192.168.64.76",
-            "api_host": "http://192.168.44.72",
+            "api_server": "http://192.168.44.72",
             "is_log": 0,
             "env": "tsgx",
             "vsys_id": 6,
@@ -32,11 +32,12 @@ def ReceiveCaseParameter():
         parameter["module_name"] = module_name
         temp_folder_path = f"{project_path}/testcase/" + module_name
         folder_list = os.listdir(temp_folder_path)
-        print("Test cases contain the folder: ", folder_list)
+        print("The test folder contain: ", folder_list)
         # 匹配测试用例
         path = f"{temp_folder_path}/*.py"
         files = glob.glob(path, recursive=True)
         for file in files:
+            print("Begin to match test case.")
             file_name = file.split("\\")[-1]
             if file_name == test_case_name + ".py":
                 parameter["test_case_name"] = test_case_name
@@ -44,6 +45,7 @@ def ReceiveCaseParameter():
                 module = importlib.import_module(new_path)
                 result = module.run(parameter)
                 response_result = {}
+                # module.run()返回的结果是failure reason，如果是空，则表示测试通过。
                 if len(result) == 0:
                     response_result["code"] = 200
                     response_result["msg"] = "Pass"
@@ -61,4 +63,4 @@ def ReceiveCaseParameter():
 
 if __name__ == '__main__':
     app.run(host = "192.168.32.54", port = 8800)
-    # app.run(host = "192.168.64.59", port = 8800)
+    # app.run(host = "192.168.38.49", port = 8800)

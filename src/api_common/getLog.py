@@ -5,7 +5,6 @@ import time
 import requests
 import json
 import ipaddress
-import verify
 
 class GetLog():    
     def get_log_schema(self, token, log_type, api_host):
@@ -442,73 +441,5 @@ class GetLog():
         ip_count = int(end_ip_obj) - int(start_ip_obj) + 1
         return ip_count
 
-# if __name__ == '__main__':
-#     l = GetLog()
-#     sc_info = {"sf_method":"vxlan","type":2}
-#     assert_key = {}
-#     sc_value = {
-#         "sent_bytes": 260,
-#         "received_bytes": 0,
-#         "sent_packets": 5,
-#         "received_packets": 0
-#     }
-#     trex_ip_info = {}
-#     host_api = {}
-#     sc_expected_metric =  {
-#             "total_bytes" : 10,
-#             "total_packets" : 5
-#         }
-#     l.assert_sc_metric(sc_info,sc_value,sc_expected_metric,trex_ip_info,host_api)
-# if __name__ == '__main__':
-#     test = GetLog()
-#     counter = {"hits": 4824, "bytes":1547374}
-#     metric = {"rule_id":251725,"hits":4824,"bytes":1547374}
-#     metric_result = test.verify_metric(counter, metric)
-#     print(metric_result)
-# if __name__ == '__main__':
-#     ipObject = get_log_by_condition()
-#     time.sleep(3)
 if __name__ == '__main__':
-    api_host = "http://192.168.44.3"
-    v = verify.Verify()
-    username = "admin"
-    password = "admin"
-    v.encryptPwd(password, api_host)
-    token = v.login(username, api_host)
-    l = GetLog()
-    sc_info = {
-        'app_name_1': [
-
-        ],
-        'health_check_method': 'none',
-        'rule_id': 311524,
-        'sf_dest_ip': '2.2.2.57',
-        'sf_id': 2096,
-        'sf_method': 'vxlan_g',
-        'sff_id': 2090,
-        'targeted_traffic': 'raw',
-        'type': 1
-    }
-    sc_metric = {
-    'total_packets': 347,
-    'total_packets_sent': 97,
-    'total_packets_received': 250,
-    'total_bytes': 339823,
-    'total_bytes_sent': 5892,
-    'total_bytes_received': 333931,
-    'total_syn_pkt': 1
-}
-    assert_key = {}
-    start_time = "2023-12-11T08:16:46Z"
-    end_time = "2023-12-11T08:20:31Z"
-    l.get_sc_metric(token,start_time,end_time,sc_info,sc_metric,api_host)
-#     test = GetLog()
-#     log_dict = {
-#                 "common_recv_time": "1698299472",
-#                 "common_log_id": "84305355500406784",
-#                 "common_client_ip": "5.183.148.25",
-#                 "ssl_sni": "www.baidu.com"
-#             }
-    
-#     log_query_params = {"query_field_key":"ssl_sni","query_value":"www.baidu.com"}
-#     log_result = test.verify_log_list(log_dict, log_query_params)
+    print("test")

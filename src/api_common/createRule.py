@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 # coding=utf-8
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import json
-import time
 import requests
 import getApplicationId
-import verify
-import createObject
 
 class CreatePolicyRule():       
     # 拼接json数据，拼接完成后请求创建策略接口
-    def create_rule_by_template(self, token, source_list, dst_list, filter_list, flag_list, condition, create_number, path_dict, api_host, vsys_id, create_profile_ids=[]):
+    def create_rule_from_template(self, token, source_list, dst_list, filter_list, flag_list, condition, create_number, path_dict, api_host, vsys_id, create_profile_ids=[]):
         headers = {"Content-Type": "application/json", "Authorization": token}
         template = path_dict["rule_template"]
         with open(template, 'r', encoding='utf-8') as f:
@@ -277,6 +277,4 @@ class CreatePolicyRule():
         return policy_id_list_temp
 
 if __name__ == '__main__':
-    securityRule = CreatePolicyRule()
-    temp = securityRule.create_rule_by_template()
-    time.sleep(1)
+    print("test")
