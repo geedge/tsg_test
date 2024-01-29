@@ -1,12 +1,16 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from src.api_common.verify import *
+from src.api_common.logIn import *
+from src.api_common.createConfig import *
+from src.api_common.trafficVerification import *
+from src.api_common.deleteConfig import *
+from src.api_common.analysisResult import *
 
 def run(parameter):
     print("Begin to run test case: " + parameter["test_case_name"])
     # 测试数据
-    test_case_json = {
+    test_data_json = {
       "isMultiPriority": False,
       "ruleNum": 1,
       "policyType": "tsg_security",
@@ -36,12 +40,35 @@ def run(parameter):
       "log_query_param_1": [],
       "command": "curl -kv http://open.node.com:180"
     }
-    # 测试过程中涉及的template
+    
+    # 添加测试过程中涉及的template
     template_path = {}
     template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-    template_path["obj_template"] = parameter["path"] + "/template/object_template.json"
-    verify_res = Verify()
-    result = verify_res.start_verify(parameter, test_case_json, template_path)
+    template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+    
+    # 获取token
+    log_in = LogIn()
+    pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+    token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+    parameter["token"] = token
+    
+    # 创建Object、Profile、Rule
+    config = CreateConfig()
+    cfg_list = config.create_cfg(parameter, test_data_json, template_path)
+    
+    # 流量验证
+    verify = TrafficVerification()
+    verification_result = verify.traffic_verification(parameter, test_data_json, template_path, cfg_list)
+    
+    # 分析验证结果，并返回给flask
+    analysis = AnalysisResult()
+    result = analysis.analysis_result(test_data_json, cfg_list, verification_result)
+   
+    # 删除配置
+    erase = DeleteConfig()
+    erase.delele_cfg(token, parameter, cfg_list)
+    
+    print("Finish test case: " + parameter["test_case_name"])
     return result
 
 if __name__ == "__main__":
@@ -49,7 +76,7 @@ if __name__ == "__main__":
       "username": "zhaokun",
       "password": "zhaokun1",
       "test_pc_ip": "192.168.64.73",
-      "api_host": "http://192.168.44.72",
+      "api_server": "http://192.168.44.72",
       "is_log": 0,
       "env": "tsgx",
       "vsys_id": 6,

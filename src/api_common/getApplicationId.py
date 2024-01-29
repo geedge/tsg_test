@@ -4,14 +4,14 @@ import time
 import pymysql.cursors
 import ast
 
-def get_app_id(app, api_host):
+def get_group_id(app, api_host):
     mysql_host = api_host[7:]
     # mysql_host = "192.168.40.198"
     db = pymysql.connect(host=mysql_host,
                         user='test',
                         password='test',
                         database='tsg-bifang')
-    app_id_list=[]
+    group_id_list=[]
     # 该方法用于将字符串类型的['ssl', 'http']转换为list类型的['ssl', 'http']（在无法使用list函数直接转换的情况下）
     app = ast.literal_eval(app)
     for app_name in app:
@@ -24,7 +24,37 @@ def get_app_id(app, api_host):
         #获取查询结果
         myresult = mycursor.fetchall()
         #处理查询结果，获取id
-        app_id=myresult[0][0]
+        group_id = myresult[0][0]
+        group_id_list.append(group_id)
+    return group_id_list
+
+def get_app_id(app, api_host):
+    """
+    # 返回app id值
+    :param app:  例如："['http']"
+    :param api_host: "http://192.168.44.72"
+    :return:
+    """
+    mysql_host = api_host[7:]
+    # mysql_host = "192.168.40.198"
+    db = pymysql.connect(host=mysql_host,
+                        user='test',
+                        password='test',
+                        database='tsg-bifang')
+    app_id_list=[]
+    # 该方法用于将字符串类型的['ssl', 'http']转换为list类型的['ssl', 'http']（在无法使用list函数直接转换的情况下）
+    app = ast.literal_eval(app)
+    for app_name in app:
+        sql="select app_id from app_id_dict where app_name= 'appname'"
+        sql=sql.replace("appname", app_name)
+        #连接数据库
+        mycursor = db.cursor()
+        #根据sql查询
+        mycursor.execute(sql)
+        #获取查询结果
+        myresult = mycursor.fetchall()
+        #处理查询结果，获取id
+        app_id = myresult[0][0]
         app_id_list.append(app_id)
     return app_id_list
 

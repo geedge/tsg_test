@@ -72,7 +72,7 @@ def run(parameter):
     config = CreateConfig()
     cfg_list = config.create_cfg(parameter, test_data_json, template_path)
     
-    # 流量验证？？
+    # 流量验证
     verify = TrafficVerification()
     verification_result = verify.traffic_verification(parameter, test_data_json, template_path, cfg_list)
     

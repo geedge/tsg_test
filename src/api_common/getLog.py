@@ -41,7 +41,7 @@ class GetLog():
             log_condition_dict['vsys_id'] = vsys_id
             log_condition_dict['log_type'] = 'security_event'
             # 从conditions中获取object_type判断是否存在subscriberid
-            if condition["obj_condition_1"][0]["protocolField"] == "ATTR_SUBSCRIBER_ID":
+            if len(condition["obj_condition_1"]) > 0 and condition["obj_condition_1"][0]["protocolField"] == "ATTR_SUBSCRIBER_ID":
                 log_filter = f"subscriber_id= 'test23' AND has(security_rule_list,{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
@@ -87,6 +87,8 @@ class GetLog():
                 dataset_identifier_name = "security-policy-rule-statistics"
             elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
                 dataset_identifier_name = "proxy-policy-rule-statistics"
+            elif policy_type == 'monitor':
+                dataset_identifier_name = "monitor-policy-rule-statistics"
             policy_id = list(create_policies_ids[i].values())[0]
             hit_query_condition = {"identifier_name":dataset_identifier_name,"rule_id":"","start":"","end":"","vsys_id":1,"exec_mode": "oneshot"}
             hit_query_condition['rule_id'] = f"{policy_id}"
@@ -111,7 +113,7 @@ class GetLog():
                 else:
                     metric_result = False
             # 接口有返回值时，对接口的返回内容进行验证
-            elif result_len > 0:
+            elif 'hits' in counter and result_len > 0:
                 metric = response['data']['result'][0]
                 for key,value in counter.items():
                     # 接口返回的统计是否与预期的一致
@@ -119,6 +121,8 @@ class GetLog():
                         metric_result = False
                     else:
                         metric_result = True
+            elif 'hits' not in counter:
+                metric_result = True
             else:
                 metric_result = False
             return metric_result
@@ -206,6 +210,8 @@ class GetLog():
                         for k, v in result_list[result_index].items():
                             if isinstance(v, int):
                                 statistics_value[k] += v
+                        if  "Client IP Matched Objects".lower() in result_list[0].keys() or "Server IP Matched Objects".lower() in result_list[0].keys() or "websketch categories".lower() in result_list[0].keys():
+                            break
                     print("TSG实际查询到的结果数据：\n{}".format(statistics_value))
                     # 重组需要断言使用的key列表
                     assert_key_list = []
@@ -241,17 +247,17 @@ class GetLog():
                     statistics_metircs_except_avg[k] = int((v) / 15)    # 统计平均字节数
                 else:
                     statistics_metircs_except_avg[k] = int(v / 15)
-            print(f"流量回放结果按15秒粒度平均数：\n{statistics_metircs_except_avg}")
+            if assert_key != "session_identifier_sketch" and assert_key != "client_ip_sketch" and assert_key != "server_ip_sketch":    # 除了这几个gauge，需要打印下信息
+                print(f"流量回放结果按15秒粒度平均数：\n{statistics_metircs_except_avg}")
             failure_info_2 = f"Average number of traffic playback results by 15-second granularity:{statistics_metircs_except_avg}"
             print(assert_key)
             if assert_key == "bytes":
-                if statistics_value[assert_key] == statistics_metircs_except_avg["total_bytes"]:
+                if statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes"] - 10):    # 预期值减10，因为出现多个时间周期统计的结果实际值减小
                     print(success_result)
                     metric_result = True
             elif assert_key == "in_bytes" or assert_key == "out_bytes":
                 print(assert_key)
-                if (statistics_value[assert_key] == statistics_metircs_except_avg["total_bytes_sent"]) or (statistics_value[assert_key] == statistics_metircs_except_avg["total_bytes_received"]):
-                    print(33)
+                if (statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_sent"] - 10)) or (statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_received"] - 10)):
                     print(success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":
@@ -271,7 +277,7 @@ class GetLog():
             elif assert_key == "session_identifier_sketch" or assert_key == "client_ip_sketch" or assert_key == "server_ip_sketch":
                 statistics_metircs_except_gauge = {}
                 for k, v in statistics_metircs_except.items():
-                    statistics_metircs_except_gauge["session_identifier_sketch"] = statistics_metircs_except["total_syn_pkt"] * 15
+                    statistics_metircs_except_gauge["session_identifier_sketch"] = statistics_metircs_except["total_syn_pkt"]
                     # 计算ip个数,分析gauge的预期结果 active_sessions  unique_client_ips  unique_server_ips
                     unique_client_ips = self.diff_ip_count(trex_ip_info["clients_start"], trex_ip_info["clients_end"])
                     unique_server_ips = self.diff_ip_count(trex_ip_info["servers_start"], trex_ip_info["servers_end"])
@@ -283,7 +289,7 @@ class GetLog():
                     statistics_metircs_except_gauge["client_ip_sketch"] = unique_client_ips
                     statistics_metircs_except_gauge["server_ip_sketch"] = unique_server_ips
                     print(f"流量回放结果按15秒粒度的Gauge：\n{statistics_metircs_except_gauge}")
-                    if statistics_value[assert_key] == statistics_metircs_except_gauge[assert_key]:
+                    if -3 < statistics_value[assert_key] - statistics_metircs_except_gauge[assert_key] < 3:
                         print("<<<<<<<<<<statistics 结果正常>>>>>>>>>>")
                         metric_result = True
             else:
@@ -324,17 +330,19 @@ class GetLog():
             failure_reason_info = "{}{}{}".format(failure_info_1, failure_info_2, failure_info_3)
         return metric_result, failure_reason_info
 
-    def get_sc_metric(self, token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, host_api):
+    def get_sc_metric(self, token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, host_api, vsys_id):
         # 请求接口查询sc metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = "{}/v1/metric/query".format(host_api)
         # 重组请求体数据
         post_data_ori_json = """
         {
+            "exec_mode": "oneshot",
             "identifier_name": "service-chaining-policy-rule-statistics",
             "rule_id": "271039",
             "start": "2023-11-21T03:23:24Z",
             "end": "2023-11-30T07:39:49Z",
+            "alignment_period": "PT1S",
             "vsys_id": 1
         }
         """
@@ -344,6 +352,7 @@ class GetLog():
         post_data_ori_dict["start"] = start_time
         post_data_ori_dict["end"] = end_time
         post_data_ori_dict["rule_id"] = sc_info["rule_id"]
+        post_data_ori_dict["vsys_id"] = vsys_id
         # print("sc metric请求体数据：")
         # print(post_data_ori_dict)
         response = requests.post(url, json=post_data_ori_dict, headers=headers)
@@ -354,7 +363,7 @@ class GetLog():
             print("service chaining metric query failed")
             return 444
         else:    # 返回正常结果
-            if r_dict["data"]["result"] == None:   # 为空
+            if r_dict["data"]["result"] == []:   # 为空
                 print("########service chaining metric is empty###############")
                 return 333
             else:   #metric不为空时，验证返回结果

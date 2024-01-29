@@ -3,6 +3,7 @@ import sys
 import time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import getLog
+import policyVerify
 import subprocess
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -114,16 +115,16 @@ class TrafficVerification():
                 yaml_name = "http_50.yaml"
                 pcap_name = "http_get_347pkts.pcap"
             # 执行trex命令前，策略验证，查看下发策略是否生效
-
             ######## 不要删除
             verify_policy_break_count = 0
             while True:      # 多次策略验证
                 verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
                 print(verify_attribute_dict)
-                hit_policy_list = self.verify_policy(condition, verify_attribute_dict, token, api_server, vsys_id)
+                policy_verif = policyVerify.PolicyVerify()
+                hit_policy_list = policy_verif(condition, verify_attribute_dict, token, api_server, vsys_id)
                 if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
                     break
-                if verify_policy_break_count > 6:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
+                if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
                     # 直接调用清空策略方法
                     print("测试不生效，结束测试：策略id：{}".format(policy_id))
                     return False, False, False
@@ -131,7 +132,6 @@ class TrafficVerification():
                 time.sleep(20)
                 print("间隔{}秒，第{}次策略验证结果：策略验证失败，策略没有生效，{}策略id：{} ...".format(20*verify_policy_break_count, verify_policy_break_count, condition["policyType"], policy_id))
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
-
             # 执行回放命令
             traffic_replay = TrafficReplay(template_path)
             statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)

@@ -106,9 +106,9 @@ class CreatePolicyRule():
                 rule_template_dict["rule"]["user_region"]["traffic_mirror"] = {"enable":0}
         app_name = condition['app_name_'+str(create_number)]
         if len(app_name) > 0:
-            app_id_list = getApplicationId.get_app_id(str(app_name), api_host)
+            app_group_id_list = getApplicationId.get_group_id(str(app_name), api_host)
             objects_list = []
-            object_ids = dict(object_ids=app_id_list)
+            object_ids = dict(object_ids=app_group_id_list)
             objects_list.append(object_ids)
             application_dict = dict(objects=objects_list, protocol_field='ATTR_APP_ID', not_flag=0)
             rule_template_dict['rule']['application'] = application_dict
