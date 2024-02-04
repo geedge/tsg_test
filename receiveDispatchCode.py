@@ -23,14 +23,19 @@ def ReceiveCaseParameter():
             "is_log": 0,
             "env": "tsgx",
             "vsys_id": 6,
+            "root_path": "",
             "path": "",
             "module_name": "",
             "test_case_name": ""
         }
         project_path = "D:/Document/Project-TSG/Code/git/tsg_test"
-        parameter["path"] = f"{project_path}/testcase/"
+        parameter["root_path"] = project_path
+        if tag == "api":
+            parameter["path"] = f"{project_path}/testcase/api"
+        elif tag == "ui":
+            parameter["path"] = f"{project_path}/testcase/ui"
         parameter["module_name"] = module_name
-        temp_folder_path = f"{project_path}/testcase/" + module_name
+        temp_folder_path = parameter["path"] + "/" + module_name
         folder_list = os.listdir(temp_folder_path)
         print("The test folder contain: ", folder_list)
         # 匹配测试用例
@@ -41,7 +46,7 @@ def ReceiveCaseParameter():
             file_name = file.split("\\")[-1]
             if file_name == test_case_name + ".py":
                 parameter["test_case_name"] = test_case_name
-                new_path = "testcase." + module_name + "." + test_case_name
+                new_path = "testcase." + tag + "." + module_name + "." + test_case_name
                 module = importlib.import_module(new_path)
                 result = module.run(parameter)
                 response_result = {}
