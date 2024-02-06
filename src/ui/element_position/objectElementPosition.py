@@ -18,7 +18,7 @@ listPage_objectBottomPage_ip_object_button_allSelect_posXpath = "//div[@class='p
 listPage_objectTable_ip_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
 ip_addressObjectPage_input_name_posXpath = "//*[@class='biFangName']//input" # name输入框Xpath
 ip_addressObjectPage_button_addItem_posId = "temporary_form"  # 添加item_id
-ip_addressObjectPage_button_inputItem_posXpath = '//div[contains(@class, "el-autocomplete ip-input")]//div[@class="el-input el-input--small"]//input'
+ip_addressObjectPage_button_inputItem_posXpath = '//div[@class="ip-input el-input el-input--small"]//input'
 ip_addressObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save check"]'  # 保存item按钮
 ip_addressObjectPage_button_saveYes_posXpath = '//button[@id="OK-_IpDetail_Home_App_anonymousComponent"]/span'  # OK按钮
 ip_addressObjectPage_button_warningSaveYes_posXpath = "//div[@class='el-message-box__wrapper']//button[contains(@class, 'el-button--primary operation-confirm')]/span"
