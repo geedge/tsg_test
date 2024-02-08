@@ -32,7 +32,7 @@ def run(parameter):
         "rulePriority": 6,
         "ruleFairFactor": 2,
         "condition": {
-            "ip": [
+            "sourceIP": [
                 {
                     "name": "security_source_ip",
                     "objectType": "create",
@@ -43,6 +43,19 @@ def run(parameter):
                     ]
                 }
             ],
+            "sourcePort": [],
+            "destinationIP": [],
+            "destinationPort": [],
+            "internalIP": [],
+            "internalPort": [],
+            "externalIP": [],
+            "externalPort": [],
+            "geography": [],
+            "subId": [],
+            "device": [],
+            "tunnel": [],
+            "tunnelLevel": [],
+            "flag": [],
             "application": [],
             "serverFqdn": [],
             "protocolFiled": [],
@@ -112,28 +125,46 @@ def run(parameter):
     template_path["trex_workpath"] = "/opt/trex/v3.03"
     template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
     
+    # 初始化创建失败flag
+    ip_failure_flag = False
+    profile_failure_flag = False
+    rule_failure_flag = False
+    
     # 创建object
-    ip_data = test_data["condition"]["ip"]
+    ip_data = test_data["condition"]["sourceIP"]
     ip_address = IpAddress(driver)
     for i in range(len(ip_data)):
-        ip_result = ip_address._create(ip_data[i])
+        ip_result_code = ip_address._create(ip_data[i])
     
     # 创建profile
     profile_data = test_data["profile"]
     shaping_profile = ShapingProfile(driver)
     for j in range(len(profile_data)):
-        shaping_profile_result = shaping_profile._create(profile_data[j])
+        shaping_profile_result_code = shaping_profile._create(profile_data[j])
     
     # 创建rule
-    if ip_result == 200 and shaping_profile_result == 200:
+    if ip_result_code == 200 and shaping_profile_result_code == 200:
         shaping_rule = PolicyRulePublicFunc(driver)
-        shaping_rule_result = shaping_rule._create(test_data, test_rule_element_position)
+        shaping_rule_result_code = shaping_rule._create(test_data, test_rule_element_position)
+    elif ip_result_code != 200:
+        result = "Fail to create ip object."
+        ip_failure_flag = True
+        rule_failure_flag = True
+    elif shaping_profile_result_code != 200:
+        result = "Fail to create shaping profile."
+        profile_failure_flag = True
+        rule_failure_flag = True
         
     # 触发流量验证
-    if shaping_rule_result == 200:
+    if shaping_rule_result_code == 200:
         verify = TrafficVerification()
         verification_result = verify.traffic_verification(parameter, test_data, template_path, [])
         print("verification result: ", verification_result)
+    else:
+        result = "Fail to create shaping rule."
+        ip_failure_flag = False
+        profile_failure_flag = False
+        rule_failure_flag = True
     
     # 分析验证结果，并返回给flask
     if len(verification_result) != 0:
@@ -142,18 +173,21 @@ def run(parameter):
         print("analysis result: ", result)
     
     # 删除rule
-    shaping_rule._search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
-    shaping_rule._delete(test_rule_element_position, False)
+    if rule_failure_flag == False:
+        shaping_rule._search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
+        shaping_rule._delete(test_rule_element_position, False)
     
     # 删除ip
-    for x in range(len(ip_data)):
-        ip_address._search(ip_data[x]["name"])
-        ip_address._delete()
+    if ip_failure_flag == False:
+        for x in range(len(ip_data)):
+            ip_address._search(ip_data[x]["name"])
+            ip_address._delete()
     
     # 删除profile
-    for y in range(len(profile_data)):
-        shaping_profile._search(profile_data, Name=profile_data[y]["name"])
-        shaping_profile._delete()
+    if profile_failure_flag == False:
+        for y in range(len(profile_data)):
+            shaping_profile._search(profile_data, Name=profile_data[y]["name"])
+            shaping_profile._delete()
     
     # 清理环境
     src.ui.envInitialization.teardown()

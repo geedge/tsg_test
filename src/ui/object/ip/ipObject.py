@@ -24,22 +24,25 @@ class IpAddress:
         self.object_pub_func = ObjectPublicFunc(self.driver)
         
     def _create(self, data):
-        # 页面跳转
-        self._goto_subObjectPage()
-        # 点击create
-        self.object_name = data["name"]
-        self.driver.find_element(By.ID, listPage_object_ip_address_createButton_posId).click()
-        self.driver.find_element(By.ID, listPage_object_ip_address_create_ip_address_Button_posId).click()
-        self.driver.find_element(By.XPATH, ip_addressObjectPage_input_name_posXpath).send_keys(self.object_name)
-        # 添加item
-        for item in data["item"]:
-            self.driver.find_element(By.ID, ip_addressObjectPage_button_addItem_posId).click()
-            self.driver.find_element(By.XPATH, ip_addressObjectPage_button_inputItem_posXpath).send_keys(item)
-            self.driver.find_element(By.XPATH, ip_addressObjectPage_button_saveItem_posXpath).click()
-        # 确认创建
-        self.driver.find_element(By.XPATH, ip_addressObjectPage_button_saveYes_posXpath).click()
-        self.driver.find_element(By.XPATH, ip_addressObjectPage_button_warningSaveYes_posXpath).click()
-        return 200
+        try:
+            # 页面跳转
+            self._goto_subObjectPage()
+            # 点击create
+            self.object_name = data["name"]
+            self.driver.find_element(By.ID, listPage_object_ip_address_createButton_posId).click()
+            self.driver.find_element(By.ID, listPage_object_ip_address_create_ip_address_Button_posId).click()
+            self.driver.find_element(By.XPATH, ip_addressObjectPage_input_name_posXpath).send_keys(self.object_name)
+            # 添加item
+            for item in data["item"]:
+                self.driver.find_element(By.ID, ip_addressObjectPage_button_addItem_posId).click()
+                self.driver.find_element(By.XPATH, ip_addressObjectPage_button_inputItem_posXpath).send_keys(item)
+                self.driver.find_element(By.XPATH, ip_addressObjectPage_button_saveItem_posXpath).click()
+            # 确认创建
+            self.driver.find_element(By.XPATH, ip_addressObjectPage_button_saveYes_posXpath).click()
+            self.driver.find_element(By.XPATH, ip_addressObjectPage_button_warningSaveYes_posXpath).click()
+            return 200
+        except:
+            return 400
     
     def _search(self, name, vsys_name=""):
         # 打开该列表

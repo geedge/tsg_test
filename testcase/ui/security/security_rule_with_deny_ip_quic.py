@@ -29,7 +29,7 @@ def run(parameter):
         "ruleAction": "deny",
         "ruleType": "create",
         "condition": {
-            "ip": [
+            "sourceIP": [
                 {
                     "name": "security_source_ip",
                     "objectType": "create",
@@ -40,6 +40,20 @@ def run(parameter):
                     ]
                 }
             ],
+            "sourcePort": [],
+            "destinationIP": [],
+            "destinationPort": [],
+            "internalIP": [],
+            "internalPort": [],
+            "externalIP": [],
+            "externalPort": [],
+            "sourceGeography": [],
+            "destinationGeography": [],
+            "subId": [],
+            "device": [],
+            "tunnel": [],
+            "tunnelLevel": [],
+            "flag": [],
             "application": [
                 {
                     "name": "http",
@@ -174,23 +188,35 @@ def run(parameter):
     template_path["trex_workpath"] = "/opt/trex/v3.03"
     template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
     
+    # 初始化创建失败flag
+    ip_failure_flag = False
+    rule_failure_flag = False
+    
     # 创建object
-    ip_data = test_data["condition"]["ip"]
+    ip_data = test_data["condition"]["sourceIP"]
     if len(ip_data) != 0:
         ip_address = IpAddress(driver)
         for i in range(len(ip_data)):
-            ip_result = ip_address._create(ip_data[i])
+            ip_result_code = ip_address._create(ip_data[i])
     
     # 创建rule
-    if ip_result == 200:
+    if ip_result_code == 200:
         security_rule = PolicyRulePublicFunc(driver)
-        security_rule_result = security_rule._create(test_data, test_rule_element_position)
+        security_rule_result_code = security_rule._create(test_data, test_rule_element_position)
+    else:
+        result = "Fail to create ip object."
+        ip_failure_flag = True
+        rule_failure_flag = True
         
     # 触发流量验证
-    if security_rule_result == 200:
+    if security_rule_result_code == 200:
         verify = TrafficVerification()
         verification_result = verify.traffic_verification(parameter, test_data, template_path, [])
         print("verification result: ", verification_result)
+    else:
+        result = "Fail to create security rule object."
+        ip_failure_flag = False
+        rule_failure_flag = True
     
     # 分析验证结果，并返回给flask
     if len(verification_result) != 0:
@@ -199,13 +225,15 @@ def run(parameter):
         print("analysis result: ", result)
     
     # 删除rule
-    security_rule._search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
-    security_rule._delete(test_rule_element_position, True)
+    if rule_failure_flag == False:
+        security_rule._search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
+        security_rule._delete(test_rule_element_position, True)
     
     # 删除ip
-    for j in range(len(ip_data)):
-        ip_address._search(ip_data[j]["name"])
-        ip_address._delete()
+    if ip_failure_flag == False:
+        for j in range(len(ip_data)):
+            ip_address._search(ip_data[j]["name"])
+            ip_address._delete()
     
     # 清理环境
     src.ui.envInitialization.teardown()
