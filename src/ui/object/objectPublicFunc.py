@@ -32,17 +32,17 @@ class ObjectPublicFunc():
         """
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
         if vsys_name.lower() == current_vsys_name:
-            print(f"当前系统所在vsys：{current_vsys_name}")
+            print(f"the current vsys: {current_vsys_name}")
             return 0
         else:    # 空为切换默认   剩下为指定切换
             if vsys_name == "":     # 空，切换到默认vsys
                 change_vsys_name = "UIAutoTestVsys"
                 if change_vsys_name.lower() == current_vsys_name:    # 如果默认系统和当前一直，也不用点击
-                    print(f"当前系统所在vsys：{current_vsys_name}")
+                    print(f"the current vsys: {current_vsys_name}")
                     return 0
             else:     # 切换到指定vsys
                 change_vsys_name = vsys_name
-            print(f"当前系统所在vsys：{current_vsys_name}，需要切换到vsys：{change_vsys_name}")
+            print(f"the current vsys: {current_vsys_name}, switch to vsys: {change_vsys_name}")
             self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
             vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
             flag_num = 0
@@ -53,8 +53,8 @@ class ObjectPublicFunc():
                     el_vsys_item.click()
                     break
             if flag_num == 0:
-                print(f"测试用户没有vsys：{change_vsys_name}")
-                raise ValueError(f"测试用户没有vsys：{change_vsys_name}")
+                print(f"no vsys: {change_vsys_name}")
+                raise ValueError(f"no vsys: {change_vsys_name}")
     
     def delete(self, listPage_object_delButton_posId, listPage_dialogTips_delButton_yes_posCss, listPage_dialogTips_delButton_no_posCss):
         """

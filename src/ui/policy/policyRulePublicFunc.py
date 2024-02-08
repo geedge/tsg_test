@@ -27,7 +27,7 @@ class PolicyRulePublicFunc():
         if test_data["policyType"] == "security" or test_data["policyType"] == "intercept" or test_data["policyType"] == "manipulation":
             self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAction_posId"]).click()
         # 添加ip
-        ip_data = test_data["ip"]
+        ip_data = test_data["condition"]["ip"]
         if len(ip_data) != 0:
             # 点source ip address的+
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addSrcIP_posXpath"]).click()
@@ -38,7 +38,7 @@ class PolicyRulePublicFunc():
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectSrcIP_posXpath"]).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeSrcIP_posXpath"]).click()
         # 添加application
-        application_data = test_data["application"]
+        application_data = test_data["condition"]["application"]
         # 增加quic标记位，用于判断是否存在send tcp reset框
         quic_protoco_flag = False
         if len(application_data) != 0:
@@ -53,7 +53,7 @@ class PolicyRulePublicFunc():
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"]).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
         # 添加server fqdn
-        server_fqdn_data = test_data["serverFqdn"]
+        server_fqdn_data = test_data["condition"]["serverFqdn"]
         if len(server_fqdn_data) != 0:
             for t in range(len(server_fqdn_data)):
                 if server_fqdn_data[t]["type"] == "fqdn":
@@ -74,7 +74,7 @@ class PolicyRulePublicFunc():
                 elif server_fqdn_data[x]["type"] == "category":   
                     print("to be added...")       
         # 添加protocol filed
-        protocol_filed_data = test_data["protocolFiled"]
+        protocol_filed_data = test_data["condition"]["protocolFiled"]
         protocol_filed_flag = False
         if len(protocol_filed_data) != 0:
             # protocol_filed_flag为true，表示sub action被激活，不需要点Override Application Deny Action
@@ -98,8 +98,8 @@ class PolicyRulePublicFunc():
                 elif protocol_filed_data[x]["type"] == "request_header":
                     print("to be added...")
         # 添加sub action
-        sub_action_data = test_data["subAction"]
-        if len(sub_action_data) != 0 and test_data["subActionOverride"] == True:
+        sub_action_data = test_data["condition"]["subAction"]
+        if len(sub_action_data) != 0 and test_data["condition"]["subActionOverride"] == True:
             if protocol_filed_flag == False:
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_override_posXpath"]).click()
             if sub_action_data[0]["type"] == "drop":
@@ -109,17 +109,51 @@ class PolicyRulePublicFunc():
                 # quic不支持tcp rst；默认tcp rst是选中，不需要操作，只有当sendTcpRst为false时
                 if quic_protoco_flag == False or sub_action_data["sendTcpRst"] == False:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendTcpRst_posXpath"]).click()
-                    print("quic不支持tcp rst")
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendIcmp_posXpath"]).click()
             elif sub_action_data[0]["type"] == "rate_limit":
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_rateLimit_posXpath"]).click()
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_rateLimit_rate_posXpath"]).send_keys(sub_action_data[0]["rate"])
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_rateLimit_rate_posXpath"]).send_keys(sub_action_data[0]["rateValue"])
             elif sub_action_data[0]["type"] == "tamper":
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_tamper_posXpath"]).click()
             elif sub_action_data[0]["type"] == "block":
-                print("to be added...")
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_posXpath"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_responseCode_posXpath"]).click()
+                dropdown_item_posXpath = create_element_position["policyRulePage_subAction_block_responseCode_change_posXpath"].format(replaceName=sub_action_data[0]["code"])
+                self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_responseContent_posXpath"]).click()
+                dropdown_item_posXpath = create_element_position["policyRulePage_subAction_block_responseContent_change_posXpath"].format(replaceName=sub_action_data[0]["contentType"])
+                self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
+                if sub_action_data[0]["contentType"].lower() == "text":
+                    self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_block_responseContent_text_posId"]).send_keys(sub_action_data[0]["content"])
+                elif sub_action_data[0]["contentType"].lower() == "profile":
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_responseContent_clickProfile_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_responseContent_searchProfile_posXpath"]).send_keys(sub_action_data[0]["content"])
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_responseContent_searchProfile_posXpath"]).send_keys(Keys.ENTER)
+                    self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_block_responseContent_selectProfile_posId"]).click()
             elif sub_action_data[0]["type"] == "redirect":
-                print("to be added...")
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).clear()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).click()
+            elif sub_action_data[0]["type"] == "alert":
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_posXpath"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseCode_posXpath"]).click()
+                dropdown_item_posXpath = create_element_position["policyRulePage_subAction_alert_responseCode_change_posXpath"].format(replaceName=sub_action_data[0]["code"])
+                self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_posXpath"]).click()
+                dropdown_item_posXpath = create_element_position["policyRulePage_subAction_alert_responseContent_change_posXpath"].format(replaceName=sub_action_data[0]["contentType"])
+                self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
+                if sub_action_data[0]["contentType"].lower() == "text":
+                    self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_alert_responseContent_text_posId"]).send_keys(sub_action_data[0]["content"])
+                elif sub_action_data[0]["contentType"].lower() == "profile":
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_clickProfile_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_searchProfile_posXpath"]).send_keys(sub_action_data[0]["content"])
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_searchProfile_posXpath"]).send_keys(Keys.ENTER)
+                    self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_alert_responseContent_selectProfile_posId"]).click()
+        # 添加packet capture
+        packet_capture_data = test_data["condition"]["packetCapture"]
+        if len(packet_capture_data) != 0 and packet_capture_data[0]["enable"] == True:
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_posXpath"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).clear()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).send_keys(packet_capture_data[0]["captureDepth"])
         # 添加shaping的priority和fair factor
         if test_data["policyType"] == "shaping":
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_priority_posId"]).clear()
@@ -144,7 +178,7 @@ class PolicyRulePublicFunc():
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
         return 200
     
-    def _search(self, name, rule_element_position, vsys_name=""):
+    def _search(self, type, name, rule_element_position, vsys_name=""):
         search_element_position = rule_element_position["search"]
         page_jump_element_position = rule_element_position["page_jump"]
         # 打开该列表
@@ -157,12 +191,12 @@ class PolicyRulePublicFunc():
         self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)       # 输入查询值
         self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
         element_tr = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_tableTbody_posXpath"])
-        row = element_tr.find_elements(By.XPATH, "tr") 
-        if len(row) != 0 :
+        row = element_tr.find_elements(By.XPATH, "tr")
+        if len(row) != 0 and type != "security":
             first_row = row[0]
             self.first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
     
-    def _delete(self, rule_element_position, is_del_all=False):
+    def _delete(self, rule_element_position, is_del_all):
         delete_element_position = rule_element_position["delete"]
         if is_del_all == True:
             self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_allSelect_posXpath"]).click()    # 点击all按钮
@@ -181,17 +215,17 @@ class PolicyRulePublicFunc():
     def change_vsys(self, vsys_name=""):
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
         if vsys_name.lower() == current_vsys_name:
-            print(f"当前系统所在vsys：{current_vsys_name}")
+            print(f"the current vsys: {current_vsys_name}")
             return 0
         else:    # 空为切换默认   剩下为指定切换
             if vsys_name == "":     # 空，切换到默认vsys
                 change_vsys_name = "UIAutoTestVsys"
                 if change_vsys_name.lower() == current_vsys_name:    # 如果默认系统和当前一直，也不用点击
-                    print(f"当前系统所在vsys：{current_vsys_name}")
+                    print(f"the current vsys: {current_vsys_name}")
                     return 0
             else:     # 切换到指定vsys
                 change_vsys_name = vsys_name
-            print(f"当前系统所在vsys：{current_vsys_name}，需要切换到vsys：{change_vsys_name}")
+            print(f"the current vsys: {current_vsys_name}, switch to vsys: {change_vsys_name}")
             self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
             vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
             flag_num = 0
@@ -202,8 +236,8 @@ class PolicyRulePublicFunc():
                     el_vsys_item.click()
                     break
             if flag_num == 0:
-                print(f"测试用户没有vsys：{change_vsys_name}")
-                raise ValueError(f"测试用户没有vsys：{change_vsys_name}")
+                print(f"no vsys: {change_vsys_name}")
+                raise ValueError(f"no vsys: {change_vsys_name}")
     
     def delete(self, policyRuleListPage_deleteButton_posId, policyRuleListPage_okButton_warningYes_posXpath, policyRuleListPage_okButton_warningNo_posXpath):
         self.driver.find_element(By.ID, policyRuleListPage_deleteButton_posId).click()  # 点击删除按钮

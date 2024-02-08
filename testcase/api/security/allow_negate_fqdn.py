@@ -51,7 +51,7 @@ def run(parameter):
         }
       ],
       "app_name_1": ["http"],
-      "hope_return": "POST",
+      "expectedReturn": "POST",
       "counters_1": {"hits": 0},
       "log_query_param_1": [],
       "command": "curl -kv http://open.node.com:180"

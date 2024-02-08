@@ -31,21 +31,25 @@ def run(parameter):
         "ruleType": "create",
         "rulePriority": 6,
         "ruleFairFactor": 2,
-        "ip":[
-            {
-                "name": "security_source_ip",
-                "objectType": "create",
-                "negate": False,
-                "item": [
-                    "1.1.1.1",
-                    "1.1.1.1-1.1.1.2"
-                ]
-            }
-        ],
-        "application":[],
-        "serverFqdn":[],
-        "protocolFiled":[],
-        "subAction": [],
+        "condition": {
+            "ip": [
+                {
+                    "name": "security_source_ip",
+                    "objectType": "create",
+                    "negate": False,
+                    "item": [
+                        "1.1.1.1",
+                        "1.1.1.1-1.1.1.2"
+                    ]
+                }
+            ],
+            "application": [],
+            "serverFqdn": [],
+            "protocolFiled": [],
+            "subActionOverride": False,
+            "subAction": [],
+            "packetCapture": [],
+        },
         "profile": [
             {
                 "name": "shaping_generic_profile",
@@ -109,7 +113,7 @@ def run(parameter):
     template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
     
     # 创建object
-    ip_data = test_data["ip"]
+    ip_data = test_data["condition"]["ip"]
     ip_address = IpAddress(driver)
     for i in range(len(ip_data)):
         ip_result = ip_address._create(ip_data[i])
@@ -138,8 +142,8 @@ def run(parameter):
         print("analysis result: ", result)
     
     # 删除rule
-    shaping_rule._search(test_data["ruleName"], test_rule_element_position)
-    shaping_rule._delete(test_rule_element_position)
+    shaping_rule._search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
+    shaping_rule._delete(test_rule_element_position, False)
     
     # 删除ip
     for x in range(len(ip_data)):

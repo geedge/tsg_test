@@ -28,47 +28,70 @@ def run(parameter):
         "ruleName": "security_rule_with_deny_ip_quic",
         "ruleAction": "deny",
         "ruleType": "create",
-        "ip":[
-            {
-                "name": "security_source_ip",
-                "objectType": "create",
-                "negate": False,
-                "item": [
-                    "1.1.1.1",
-                    "1.1.1.1-1.1.1.2"
-                ]
-            }
+        "condition": {
+            "ip": [
+                {
+                    "name": "security_source_ip",
+                    "objectType": "create",
+                    "negate": False,
+                    "item": [
+                        "1.1.1.1",
+                        "1.1.1.1-1.1.1.2"
+                    ]
+                }
+            ],
+            "application": [
+                {
+                    "name": "http",
+                    "negate": False
+                }
+            ],
+            "serverFqdn": [
+                {
+                    "type": "fqdn",
+                    "name": "www.baidu.com"
+                }
+            ],
+            "protocolFiled": [
+                {
+                    "type": "url",
+                    "name": "youtube"
+                }
+            ],
+            "subActionOverride": True,
+            "subAction": [
+                {
+                    "type": "drop",
+                    "dropPacket": 1,
+                    "sendTcpRst": False,
+                    "sendIcmpUnreachable": True
+                }
+                # {
+                #     "type": "rate_limit",
+                #     "rateUnit": "kbps",
+                #     "rateValue": 200
+                # }
+                # {
+                #     "type": "block",
+                #     "code": 404,
+                #     "contentType": "TEXT",
+                #     "content": "block_change_response_profile"
+                # }
+                # {
+                #     "type": "redirect",
+                #     "redirectUrl": "www.google.com"
+                # }
+            ],
+            "packetCapture": [
+                {
+                    "enable": True,
+                    "captureDepth": 3000
+                }
+            ]
+        },
+        "profile": [
         ],
-        "application":[
-            {
-                "name": "http",
-                "negate": False
-            }
-        ],
-        "serverFqdn":[
-            {
-                "type": "fqdn",
-                "name": "www.baidu.com"
-            }
-        ],
-        "protocolFiled":[
-            {
-                "type": "url",
-                "name": "youtube"
-            }
-        ],
-        "subActionOverride": True,
-        "subAction": [
-            {
-                "type": "drop",
-                "dropPacket": 1,
-                "sendTcpRst": False,
-                "sendIcmpUnreachable": True
-            }
-        ],
-        "profile":[
-        ],
-        "hope_return": "POST",
+        "expectedReturn": "POST",
         "counters_1": {"hits": 0},
         "log_query_param_1": [],
         "command": "curl -kv https://www.google.com"
@@ -116,14 +139,25 @@ def run(parameter):
                     "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
                     "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
                     "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+                    "policyRulePage_subAction_block_posXpath": securityRulePage_subAction_block_posXpath,
+                    "policyRulePage_subAction_block_responseCode_posXpath": securityRulePage_subAction_block_responseCode_posXpath,
+                    "policyRulePage_subAction_block_responseCode_change_posXpath": securityRulePage_subAction_block_responseCode_change_posXpath,
+                    "policyRulePage_subAction_block_responseContent_posXpath": securityRulePage_subAction_block_responseContent_posXpath,
+                    "policyRulePage_subAction_block_responseContent_change_posXpath": securityRulePage_subAction_block_responseContent_change_posXpath,
+                    "policyRulePage_subAction_block_responseContent_text_posId": securityRulePage_subAction_block_responseContent_text_posId,
+                    "policyRulePage_subAction_block_responseContent_clickProfile_posXpath": securityRulePage_subAction_block_responseContent_clickProfile_posXpath,
+                    "policyRulePage_subAction_block_responseContent_searchProfile_posXpath": securityRulePage_subAction_block_responseContent_searchProfile_posXpath,
+                    "policyRulePage_subAction_block_responseContent_selectProfile_posId": securityRulePage_subAction_block_responseContent_selectProfile_posId,
+                    "policyRulePage_packetCapture_posXpath": securityRulePage_packetCapture_posXpath,
+                    "policyRulePage_packetCapture_depth_posXpath": securityRulePage_packetCapture_depth_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
             },
             "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-                    "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_searchButton_posId,
+                    "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+                    "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
                     "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
                     "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
             },
@@ -141,7 +175,7 @@ def run(parameter):
     template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
     
     # 创建object
-    ip_data = test_data["ip"]
+    ip_data = test_data["condition"]["ip"]
     if len(ip_data) != 0:
         ip_address = IpAddress(driver)
         for i in range(len(ip_data)):
@@ -165,8 +199,8 @@ def run(parameter):
         print("analysis result: ", result)
     
     # 删除rule
-    security_rule._search(test_data["ruleName"], test_rule_element_position)
-    security_rule._delete(test_rule_element_position)
+    security_rule._search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
+    security_rule._delete(test_rule_element_position, True)
     
     # 删除ip
     for j in range(len(ip_data)):

@@ -14,7 +14,6 @@ from logInOut import LogInOut
 driver = None  # 全局变量用户保存webdirver实例
 
 def my_driver():
-    print("\n用例开始时执行。。。")
     global driver
     # 初始化
     loginout_parse = configparser.ConfigParser()
@@ -42,8 +41,6 @@ def setup():
 def teardown():
     global driver
     if driver:
-        print("\n用例结束时执行。。。")
-        print("\n切换到默认语言:English!")
         driver.quit()
         time.sleep(1)
 

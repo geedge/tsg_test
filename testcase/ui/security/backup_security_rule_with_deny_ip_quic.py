@@ -43,7 +43,7 @@ def run(parameter):
         ],
         "profile":[
         ],
-        "hope_return": "POST",
+        "expectedReturn": "POST",
         "counters_1": {"hits": 0},
         "log_query_param_1": [],
         "command": "curl -kv https://www.google.com"
