@@ -65,5 +65,5 @@ class IpAddress:
         # 菜单操作
         self.driver.find_element(By.CSS_SELECTOR, mainPage_navigationBar_logo_posCss).click()
         self.object_pub_func.change_vsys(vsys_name=vsys_name)
-        self.driver.find_element(By.ID,mainPage_firstLevelMenu_Objects_posId).click()
-        self.driver.find_element(By.ID,mainPage_secondLevelMenu_ipAddress_posId).click()
+        self.driver.find_element(By.ID, mainPage_firstLevelMenu_Objects_posId).click()
+        self.driver.find_element(By.ID, mainPage_secondLevelMenu_ipAddress_posId).click()

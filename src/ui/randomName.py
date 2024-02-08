@@ -42,7 +42,6 @@ class RandomName:
         for i in range(count):
             temp_list.append(random.choice(string.ascii_letters))
         r_letter = "".join(temp_list)
-        # print(r_letter)
         return r_letter
 
     def random_number(self, count=8):
@@ -50,7 +49,6 @@ class RandomName:
         for i in range(count):
             temp_list.append(random.choice(string.digits))
         r_number = "".join(temp_list)
-        # print(r_number)
         return r_number
 
     def random_phone(self, count=8):
@@ -58,7 +56,6 @@ class RandomName:
         for i in range(count):
             temp_list.append(random.choice(string.digits))
         r_number = "".join(temp_list) + "*"
-        # print(r_number)
         return r_number
 
     def random_ipv4(self):

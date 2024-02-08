@@ -33,7 +33,7 @@ class CreateObject():
         # 依次创建object
         if len(condition) > 0:
             for key in condition:
-                protocol_field = key['protocolField']
+                attribute_name = key['attribute_name']
                 is_repeat = 0
                 if 'is_repeat' in key:
                     is_repeat = key['is_repeat']
@@ -43,20 +43,19 @@ class CreateObject():
                     for i in range(run_times):
                         index = i + 1
                         objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, run_times)
-                        if protocol_field == 'ATTR_SOURCE_ADDR' or protocol_field == 'ATTR_SUBSCRIBER_ID':
+                        if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
                             for obj_dict in objects_list:
                                 source_list.append(obj_dict)
-                        elif protocol_field == 'ATTR_DESTINATION_ADDR' or protocol_field == "ATTR_DESTINATION_LOCATION" or protocol_field == "ATTR_SERVER_FQDN":
+                        elif attribute_name == 'ATTR_DESTINATION_ADDR' or attribute_name == "ATTR_DESTINATION_LOCATION" or attribute_name == "ATTR_SERVER_FQDN":
                             for obj_dict in objects_list:
                                 dst_list.append(obj_dict)
-                        elif protocol_field == 'ATTR_FLAG':
+                        elif attribute_name == 'ATTR_FLAG':
                             for obj_dict in objects_list:
                                 flag_list.append(obj_dict)
                         else:
                             for obj_dict in objects_list:
                                 filter_list.append(obj_dict)
                         time.sleep(granularity)
-                        print(dst_list)
                         # if index < run_times:
                         #     erase = deleteConfig.DeleteConfig()
                         #     erase.delele_cfg(token, parameter, cfg_list)
@@ -66,13 +65,13 @@ class CreateObject():
                     index = 1
                     run_times = 1
                     objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, run_times)
-                    if protocol_field == 'ATTR_SOURCE_ADDR' or protocol_field == 'ATTR_SUBSCRIBER_ID':
+                    if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
-                    elif protocol_field == 'ATTR_DESTINATION_ADDR' or protocol_field == "ATTR_DESTINATION_LOCATION" or protocol_field == "ATTR_SERVER_FQDN":
+                    elif attribute_name == 'ATTR_DESTINATION_ADDR' or attribute_name == "ATTR_DESTINATION_LOCATION" or attribute_name == "ATTR_SERVER_FQDN":
                         for obj_dict in objects_list:
                             dst_list.append(obj_dict)
-                    elif protocol_field == 'ATTR_FLAG':
+                    elif attribute_name == 'ATTR_FLAG':
                         for obj_dict in objects_list:
                             flag_list.append(obj_dict)
                     else:
@@ -89,14 +88,14 @@ class CreateObject():
             is_repeat = condition['is_repeat']
         if 'is_import' in condition:
             is_import = condition['is_import']
-        protocol_field = condition['protocolField']
+        attribute_name = condition['attribute_name']
         obj_list = condition['objectList']
         obj_type = condition['objectType']
         obj_sub_type = condition['objectSubType']
-        if 'not_flag' in condition.keys():
-            not_flag = condition['not_flag']
+        if 'is_negate' in condition.keys():
+            is_negate = condition['is_negate']
         else:
-            not_flag = 0
+            is_negate = 0
         obj_template_dict['object']['type'] = obj_type
         obj_template_dict['object']['sub_type'] = obj_sub_type
         obj_template_dict['vsys_id'] = vsys_id
@@ -112,8 +111,8 @@ class CreateObject():
                 object_ids_temp_list, timeout_result = self.create_object(obj_template_dict, headers, api_host, is_repeat)
             else:
                 object_ids_temp_list, timeout_result = self.import_object(obj_type, vsys_id, add_item_list, api_host, token, is_repeat)
-        if protocol_field != '' and len(object_ids_temp_list) != 0:
-            objects_list = self.obj_ids_to_policy_obj_list(object_ids_temp_list, protocol_field, not_flag)
+        if attribute_name != '' and len(object_ids_temp_list) != 0:
+            objects_list = self.obj_ids_to_policy_obj_list(object_ids_temp_list, attribute_name, is_negate)
         else:
             objects_list = []
         object_temp_list = []
@@ -142,8 +141,8 @@ class CreateObject():
                             object_dict['ip_address'] = item['ip_address']
                     if 'port' in item:
                         object_dict['port'] = item['port']
-                    if 'port_range' in item:
-                        object_dict['port_range'] = item['port_range']
+                    # if 'port_range' in item:
+                    #     object_dict['port_range'] = item['port_range']
                     if 'protocol' in item:
                         object_dict['protocol'] = item['protocol']
                     if 'addr_type' in item:
@@ -254,8 +253,8 @@ class CreateObject():
         else:
             timeout_result = True
         # 从返回数据中获取object_type，方便后续判断将id添加到哪个全局变量里边
-        if is_repeat == 1:
-            print(response_dict)
+        # if is_repeat == 1:
+        #     print(response_dict)
         obj_type = response_dict['data']['object']['type']
         object_ids = self.get_object_ids(response_dict)
         # 为了每次清空需要反复创建的object的组合使用，否则会反复删除已经存在的object
@@ -289,7 +288,7 @@ class CreateObject():
         return temp_list
     
     # 组织在策略中使用的source,filter等数据
-    def obj_ids_to_policy_obj_list(self, object_ids, protocol_field, not_flag):
+    def obj_ids_to_policy_obj_list(self, object_ids, attribute_name, is_negate):
         temp_list = []
         for obj in object_ids:
             obj = int(obj)
@@ -297,7 +296,7 @@ class CreateObject():
             object_id_list.append(obj)
             object_dict = dict(object_ids=object_id_list)
             temp_list.append(object_dict)
-            temp_dict = dict(objects=temp_list, protocol_field=protocol_field, not_flag=not_flag)
+            temp_dict = dict(objects=temp_list, attribute_name=attribute_name, is_negate=is_negate)
         return temp_dict
 
     def handle_ids(self, object_ids, target_ids):

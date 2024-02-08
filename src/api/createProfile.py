@@ -310,12 +310,9 @@ class CreateProfile():
         params_dict = {
             "vsys_id": vsys_id
         }
-        #print(params_dict)
         response = requests.get(url, params=params_dict, headers=headers)
         # 打桩数据
         r_dict = response.json()
-        #print(r_dict)
-        #print(json.dumps(r_dict))
         template_info = []
         chart_info = {"template_id":template_id, "chart_id":0, "chart_type":""}
         for chart in r_dict["data"]["statistics_template"]["dataview"]["charts"]:
@@ -324,7 +321,6 @@ class CreateProfile():
             chart_info["version"] = chart["version"]
             chart_info["sql"] = chart["query"]["sql"]
             template_info.append(copy.deepcopy(chart_info))
-        #print(template_info)
         return template_info
 
     #搜索sf并获取返回结果中的sf相关信息

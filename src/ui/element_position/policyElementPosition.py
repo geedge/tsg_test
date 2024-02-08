@@ -1,9 +1,72 @@
 mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
+mainPage_policyFirstLevelMenu_posId = "policy"  # 一级菜单Policies
+mainPage_policySecondLevelMenu_security_posId = "Objects_ProxyInterception"
+mainPage_policySecondLevelMenu_shaping_posId = "policy_trafficShaping"  # 二级菜单Shaping
+
+mainPage_button_menu_posXCss = ".menu-btn span"
+mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
+mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']"    # vsys tree中vsys name定位
+
+# security
+securityRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
+securityRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
+securityRuleListpage_okButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+securityRuleListpage_okButton_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
+securityRuleListPage_searchLable_posId = "select-label"
+securityRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"   #下拉菜单定位
+securityRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceName}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceName替换实际查询值
+securityRuleListPage_searchLable_searchButton_posId = "searchQuery"
+securityRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
+securityRulelistPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
+
+securityRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
+securityRulePage_selectShunt_posId = "shuntshunt"
+securityRulePage_selectAllow_posId = "allowallow"
+securityRulePage_selectDeny_posId = "denydeny"
+securityRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
+securityRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
+securityRulePage_selectSrcIP_posXpath = "//div[@class='reference-box el-popover__reference']//div[@class='row-content-cell']"
+securityRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+securityRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect']//i[@class='iconfont icon-Create1 cursor']"
+securityRulePage_searchApplication_posXpath = "//div[@class='AppList list-box']//input[@id='object_ip_search']"
+securityRulePage_selectApplication_posXpath = "//div[@class='floatleft margin-top20 overflow-y-auto overflow-x-hidden width100']//li[1]//div[@class='reference-box el-popover__reference']"
+securityRulePage_closeApplication_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+securityRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
+securityRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
+securityRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
+securityRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+securityRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//i[@class='iconfont icon-Create1 cursor']"
+securityRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+securityRulePage_selectServerFqdn_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+securityRulePage_closeServerFqdn_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+securityRulePage_addUrl_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
+securityRulePage_searchUrl_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+securityRulePage_selectUrl_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+securityRulePage_closeUrl_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+securityRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
+securityRulePage_okButton_yes_posId = "OK-_SecurityAdd_Home_App_anonymousComponent"
+securityRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+securityRulePage_subAction_override_posXpath = "//label[@zs-label='Override Application Deny Action']//span[@class='el-checkbox__inner']"
+securityRulePage_subAction_drop_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Drop']"
+securityRulePage_subAction_drop_dropPkt_posXpath = "//div[@zs-label='Drop packet after N packet']//input[@class='el-input__inner']"
+securityRulePage_subAction_drop_sendTcpRst_posXpath = "//label[contains(@class, 'checkbox-value-label')]//span[normalize-space(text())='Send TCP reset']"
+securityRulePage_subAction_drop_sendIcmp_posXpath = "//label[contains(@class, 'checkbox-value-label')]//span[normalize-space(text())='Send ICMP unreachable']"
+securityRulePage_subAction_rateLimit_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Rate Limit']"
+securityRulePage_subAction_rateLimit_rate_posXpath = "//div[@class='margin-right5 el-input el-input--small']//input"
+securityRulePage_subAction_tamper_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Tamper']"
+securityRulePage_subAction_block_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Block']"
+securityRulePage_subAction_block_responseCode_posXpath = ""
+securityRulePage_subAction_block_responseType_text_posXpath = ""
+securityRulePage_subAction_block_responseContent_posXpath = ""
+securityRulePage_subAction_block_responseType_profile_posXpath = ""
+securityRulePage_subAction_block_responseType_searchProfile_posXpath = ""
+securityRulePage_subAction_block_responseType_selectProfile_posXpath = ""
+securityRulePage_subAction_redirect_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Redirect']"
+
+securityRulePage_subAction_alert_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Alert']"
+
 
 # shaping
-mainPage_firstLevelMenu_policy_posId = "policy"  # 一级菜单Policies
-mainPage_secondLevelMenu_shaping_posId = "policy_trafficShaping"  # 二级菜单Shaping
-
 shapingRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_trafficShaping_Home_App_anonymousComponent"
 shapingRuleListpage_deleteButton_posId = "appDel-_OperateBtns_ElRow_policy_trafficShaping_Home_App_anonymousComponent"
 shapingRuleListpage_okButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
@@ -19,6 +82,9 @@ shapingRulePage_inputName_posXpath = "//*[@class='biFangName']//input" # name输
 shapingRulePage_addCondition_srcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 shapingRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
 shapingRulePage_selectSrcIP_posXpath = "//div[@class='reference-box el-popover__reference']//div[@class='row-content-cell']"
+shapingRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+shapingRulePage_priority_posId = "//input[@id='userRegionPriority']"
+shapingRulePage_fairFactor_posId = "//input[@id='userRegionfairfactor']"
 shapingRulePage_addProfile_posXpath = "//div[@class='MultipleSelect FlagSelect']//div[contains(@class, 'addobject')]"
 shapingRulePage_searchProfile_posXpath = "//div[@class='SFFList list-box']//div[contains(@class, 'object-item-seach')]//input"
 shapingRulePage_selectProfile_posXpath = "//div[@class='row-content-cell cursorPointer']//div[@class='UaPopover ObjectPopover popover']"

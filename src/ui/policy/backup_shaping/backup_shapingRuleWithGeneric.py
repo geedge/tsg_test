@@ -22,26 +22,31 @@ class ShapingRuleWithGeneric:
         self.driver = driver
         self.rule_pub_func = ShapingRulePublicFunc(self.driver)
         
-    def _create(self, ip_name, profile_name, rule_name):
+    def _create(self, test_data):
         # 页面跳转
         self._goto_subPolicyPage()
         # 点击create
         self.driver.find_element(By.ID, shapingRuleListPage_createButton_posId).click()
         # 输入name
-        self.rule_name = rule_name
-        self.driver.find_element(By.XPATH, shapingRulePage_inputName_posXpath).send_keys(self.rule_name)
+        rule_name = test_data["ruleName"]
+        self.driver.find_element(By.XPATH, shapingRulePage_inputName_posXpath).send_keys(rule_name)
         # 点source ip address的+
         self.driver.find_element(By.XPATH, shapingRulePage_addCondition_srcIP_posXpath).click()
         # 通过ip name搜索并选中
-        self.driver.find_element(By.XPATH, shapingRulePage_searchSrcIP_posXpath).send_keys(ip_name)
-        self.driver.find_element(By.XPATH, shapingRulePage_searchSrcIP_posXpath).send_keys(Keys.ENTER)
-        self.driver.find_element(By.XPATH, shapingRulePage_selectSrcIP_posXpath).click()
+        ip_data = test_data["ip"]
+        for i in range(len(ip_data)):
+            self.driver.find_element(By.XPATH, shapingRulePage_searchSrcIP_posXpath).send_keys(ip_data[i]["name"])
+            self.driver.find_element(By.XPATH, shapingRulePage_searchSrcIP_posXpath).send_keys(Keys.ENTER)
+            self.driver.find_element(By.XPATH, shapingRulePage_selectSrcIP_posXpath).click()
+            self.driver.find_element(By.XPATH, shapingRulePage_closeSrcIP_posXpath).click()
         # 点profile的+
         self.driver.find_element(By.XPATH, shapingRulePage_addProfile_posXpath).click()
         # 通过profile name搜索并选中
-        self.driver.find_element(By.XPATH, shapingRulePage_searchProfile_posXpath).send_keys(profile_name)
-        self.driver.find_element(By.XPATH, shapingRulePage_searchProfile_posXpath).send_keys(Keys.ENTER)
-        self.driver.find_element(By.XPATH, shapingRulePage_selectProfile_posXpath).click()
+        profile_data = test_data["profile"]
+        for j in range(len(profile_data)):
+            self.driver.find_element(By.XPATH, shapingRulePage_searchProfile_posXpath).send_keys(profile_data[j]["name"])
+            self.driver.find_element(By.XPATH, shapingRulePage_searchProfile_posXpath).send_keys(Keys.ENTER)
+            self.driver.find_element(By.XPATH, shapingRulePage_selectProfile_posXpath).click()
         # 点enable
         self.driver.find_element(By.XPATH, shapingRulePage_enable_posXpath).click()
         # 确认创建

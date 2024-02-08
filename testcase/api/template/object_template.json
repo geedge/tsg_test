@@ -6,7 +6,7 @@
     "type": "ip",
     "sub_type": "ip",
     "is_valid": 1,
-    "name": "auto_test_obj",
+    "name": "python_api_auto_test_obj",
     "description": "test",
     "member": "object",
     "iconColor": "#31739C"

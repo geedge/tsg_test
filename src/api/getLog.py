@@ -49,11 +49,9 @@ class GetLog():
                 log_condition_dict['filter'] = log_filter
                 log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
             url = api_host + "/v1/log/query"
-            # print(json.dumps(log_condition_dict))
             response = requests.post(url, headers=headers, json=log_condition_dict)
             assert response.status_code == 200
             log_list = json.loads(response.text)
-            # print(log_list)
             log_list = log_list['data']['list']
             log_index = i + 1
             log_query_params = condition['log_query_param_'+str(log_index)]

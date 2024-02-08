@@ -13,13 +13,13 @@ def run(parameter):
     test_data_json = {
       "isMultiPriority": False,
       "ruleNum": 1,
-      "policyType": "tsg_security",
+      "policyType": "security",
       "rule_action_1": "allow",
       "do_log_1": 2,
       "obj_condition_1": [
         {
-          "not_flag": 1,
-          "protocolField": "ATTR_SOURCE_ADDR",
+          "is_negate": 1,
+          "attribute_name": "ATTR_SOURCE_IP",
           "objectType": "ip",
           "objectSubType": "ip",
           "objectList": [
@@ -59,10 +59,12 @@ def run(parameter):
     # 流量验证
     verify = TrafficVerification()
     verification_result = verify.traffic_verification(parameter, test_data_json, template_path, cfg_list)
+    print("verification result: ", verification_result)
     
     # 分析验证结果，并返回给flask
     analysis = AnalysisResult()
     result = analysis.analysis_result(test_data_json, cfg_list, verification_result)
+    print("analysis result: ", result)
    
     # 删除配置
     erase = DeleteConfig()

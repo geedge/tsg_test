@@ -30,7 +30,7 @@ class TrafficVerification():
         # 判断，如果condition中包含名为command的key，则读取command来执行，否则执行默认的
         policy_type = condition["policyType"]
         log = getLog.GetLog()
-        if policy_type == "tsg_security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
+        if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
             # 获取开始时间
             now = datetime.utcnow()
             start_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -81,16 +81,13 @@ class TrafficVerification():
             return cmd_result, log_result, metric_result
         elif policy_type == "statistics":      # statistics 使用trex流量回放验证
             # 获取开始时间
-            #time.sleep(1)
-            #print(55)
-            #return 1, 1, 1, "调试"
             time.sleep(5)
             now = datetime.utcnow()
             start_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
             print("trex，回放流量方法")
             # 解析trex使用参数， 解析client server ip
             for ip_item in condition["obj_condition_1"]:
-                if "ATTR_SOURCE_ADDR" in ip_item.values():
+                if "ATTR_SOURCE_IP" in ip_item.values():
                     if "-" in ip_item["objectList"][0]["addItemList"][0]["ip_address"]:
                         clients_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[0]
                         clients_end = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[-1]
@@ -121,7 +118,6 @@ class TrafficVerification():
             verify_policy_break_count = 0
             while True:      # 多次策略验证
                 verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
-                print(verify_attribute_dict)
                 policy_verif = policyVerify.PolicyVerify()
                 hit_policy_list = policy_verif(condition, verify_attribute_dict, token, api_server, vsys_id)
                 if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
@@ -159,10 +155,9 @@ class TrafficVerification():
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
                         elif metric_result == False:  # 查询验证失败时，再查询验证一次
-                            if fail_count > 2:
+                            if fail_count > 3:
                                 break
                             fail_count += 1
-                        time.sleep(60)
                         n += 1
                 if  metric_results[0] == 333:     # API 查询失败时变量赋值
                     metric_result = False
@@ -177,7 +172,7 @@ class TrafficVerification():
                 print("trex，回放流量方法")
                 # 解析trex使用参数， 解析client server ip
                 for ip_item in condition["obj_condition_1"]:
-                    if "ATTR_SOURCE_ADDR" in ip_item.values():
+                    if "ATTR_SOURCE_IP" in ip_item.values():
                         if "-" in ip_item["objectList"][0]["addItemList"][0]["ip_address"]:
                             clients_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[0]
                             clients_end = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[-1]

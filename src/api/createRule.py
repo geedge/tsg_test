@@ -15,18 +15,18 @@ class CreatePolicyRule():
         with open(template, 'r', encoding='utf-8') as f:
             rule_template_dict = json.load(f)
         if len(source_list) > 0:
-            rule_template_dict['rule']['sources'] = source_list
+            rule_template_dict['rule']['source'] = source_list
         else:
-            rule_template_dict['rule']['sources'] = []
+            rule_template_dict['rule']['source'] = []
         if len(dst_list) > 0:
-            rule_template_dict['rule']['destinations'] = dst_list
+            rule_template_dict['rule']['destination'] = dst_list
         else:
-            rule_template_dict['rule']['destinations'] = []
+            rule_template_dict['rule']['destination'] = []
         if len(filter_list) > 0:
             filter_list = filter_list
-            rule_template_dict['rule']['filters'] = filter_list
+            rule_template_dict['rule']['filter'] = filter_list
         else:
-            rule_template_dict['rule']['filters'] = []
+            rule_template_dict['rule']['filter'] = []
         if len(flag_list) > 0:
             flag_list = flag_list[0]
             rule_template_dict['rule']['flag'] = flag_list
@@ -43,7 +43,7 @@ class CreatePolicyRule():
              method = condition['method_'+str(create_number)]
         else:
              method = ''
-        if action == 'deny' and policy_type == "tsg_security":
+        if action == 'deny' and policy_type == "security":
             rule_template_dict['rule']['user_region']['method'] = method
             if 'packet_capture_'+str(create_number) in condition:
                 rule_template_dict["rule"]["user_region"]["packet_capture"]["enable"] = condition['packet_capture_'+str(create_number)]["enable"]
@@ -110,7 +110,7 @@ class CreatePolicyRule():
             objects_list = []
             object_ids = dict(object_ids=app_group_id_list)
             objects_list.append(object_ids)
-            application_dict = dict(objects=objects_list, protocol_field='ATTR_APP_ID', not_flag=0)
+            application_dict = dict(objects=objects_list, attribute_name='ATTR_APP_ID', is_negate=0)
             rule_template_dict['rule']['application'] = application_dict
         else:
             rule_template_dict['rule']['application'] = None
@@ -231,14 +231,14 @@ class CreatePolicyRule():
             with open(pre_deny_quic_path, 'r', encoding='utf-8') as f:
                 pre_deny_quic_template_dict = json.load(f)
             if len(source_list) > 0:
-                pre_deny_quic_template_dict['rule']['sources'] = source_list
+                pre_deny_quic_template_dict['rule']['source'] = source_list
             else:
-                pre_deny_quic_template_dict['rule']['sources'] = []
+                pre_deny_quic_template_dict['rule']['source'] = []
             if len(dst_list) > 0:
                 dst_list = dst_list[0]
-                pre_deny_quic_template_dict['rule']['destinations'] = dst_list
+                pre_deny_quic_template_dict['rule']['destination'] = dst_list
             else:
-                pre_deny_quic_template_dict['rule']['destinations'] = []
+                pre_deny_quic_template_dict['rule']['destination'] = []
             pre_deny_quic_policy_id_dict = self.create_rule(pre_deny_quic_template_dict, headers, api_host)
         # 新建intercept策略，只取source_list和dst_list
         with open(pre_intercept_path, 'r', encoding='utf-8') as f:
@@ -246,13 +246,13 @@ class CreatePolicyRule():
             pre_intercept_template_path["vsys_id"] = vsys_id
             pre_intercept_template_path["rule"]["vsys_id"] = vsys_id
         if len(source_list) > 0:
-            pre_intercept_template_path['rule']['sources'] = source_list
+            pre_intercept_template_path['rule']['source'] = source_list
         else:
-            pre_intercept_template_path['rule']['sources'] = []
+            pre_intercept_template_path['rule']['source'] = []
         if len(dst_list) > 0:
-            pre_intercept_template_path['rule']['destinations'] = dst_list
+            pre_intercept_template_path['rule']['destination'] = dst_list
         else:
-            pre_intercept_template_path['rule']['destinations'] = []
+            pre_intercept_template_path['rule']['destination'] = []
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host)
         if condition["policyType"] == "pxy_manipulation":
             pre_policy_id_list = [*pre_deny_quic_policy_id_dict, *pre_intercept_policy_id_dict]
@@ -263,7 +263,6 @@ class CreatePolicyRule():
     #请求创建策略接口，下发策略    
     def create_rule(self, rule_template_dict, headers, api_host):
         url = api_host + "/v1/policy/rule"
-        #print(json.dumps(rule_template_dict))
         response = requests.post(url, headers=headers, json=rule_template_dict)
         assert response.status_code == 200
         return_json_data = json.loads(response.text)
