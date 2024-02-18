@@ -6,7 +6,9 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from src.ui.object.ip.ipObject import IpAddress
 from src.ui.profile.shaping.shapingProfile import ShapingProfile
-from src.ui.policy.policyRulePublicFunc import PolicyRulePublicFunc
+from src.ui.policy.createRule import CreateRule
+from src.ui.policy.searchRule import SearchRule
+from src.ui.policy.deleteRule import DeleteRule
 from src.ui.element_position.policyElementPosition import *
 from src.api.trafficVerification import *
 from src.api.analysisResult import *
@@ -63,9 +65,19 @@ def run(parameter):
             "subAction": [],
             "packetCapture": [],
         },
+        "multiProfile": True,
         "profile": [
             {
                 "name": "shaping_generic_profile",
+                "profileType": "create",
+                "type": "generic",
+                "argument": "",
+                "unit": "Mbps->",
+                "incoming": "10->",
+                "outgoing": "1->"
+            },
+            {
+                "name": "shaping_generic_2_profile",
                 "profileType": "create",
                 "type": "generic",
                 "argument": "",
@@ -101,6 +113,8 @@ def run(parameter):
                     "policyRulePage_addProfile_posXpath": shapingRulePage_addProfile_posXpath,
                     "policyRulePage_searchProfile_posXpath": shapingRulePage_searchProfile_posXpath,
                     "policyRulePage_selectProfile_posXpath": shapingRulePage_selectProfile_posXpath,
+                    "policyRulePage_closeProfile_posXpath": shapingRulePage_closeProfile_posXpath,
+                    "policyRulePage_addProfile_plus_posXpath": shapingRulePage_addProfile_plus_posXpath,
                     "policyRulePage_enable_posXpath": shapingRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": shapingRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": shapingRulePage_okButton_warningYes_posXpath
@@ -134,29 +148,29 @@ def run(parameter):
     ip_data = test_data["condition"]["sourceIP"]
     ip_address = IpAddress(driver)
     for i in range(len(ip_data)):
-        ip_result_code = ip_address._create(ip_data[i])
+        create_ip_code = ip_address._create(ip_data[i])
     
     # 创建profile
     profile_data = test_data["profile"]
     shaping_profile = ShapingProfile(driver)
     for j in range(len(profile_data)):
-        shaping_profile_result_code = shaping_profile._create(profile_data[j])
+        create_profile_code = shaping_profile._create(profile_data[j])
     
     # 创建rule
-    if ip_result_code == 200 and shaping_profile_result_code == 200:
-        shaping_rule = PolicyRulePublicFunc(driver)
-        shaping_rule_result_code = shaping_rule._create(test_data, test_rule_element_position)
-    elif ip_result_code != 200:
+    if create_ip_code == 200 and create_profile_code == 200:
+        create_rule = CreateRule(driver)
+        create_rule_code = create_rule.create(test_data, test_rule_element_position)
+    elif create_ip_code != 200:
         result = "Fail to create ip object."
         ip_failure_flag = True
         rule_failure_flag = True
-    elif shaping_profile_result_code != 200:
+    elif create_profile_code != 200:
         result = "Fail to create shaping profile."
         profile_failure_flag = True
         rule_failure_flag = True
         
     # 触发流量验证
-    if shaping_rule_result_code == 200:
+    if create_rule_code == 200:
         verify = TrafficVerification()
         verification_result = verify.traffic_verification(parameter, test_data, template_path, [])
         print("verification result: ", verification_result)
@@ -174,8 +188,11 @@ def run(parameter):
     
     # 删除rule
     if rule_failure_flag == False:
-        shaping_rule._search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
-        shaping_rule._delete(test_rule_element_position, False)
+        search_rule = SearchRule(driver)
+        search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
+        if search_rule_code == 200:
+            delete_rule = DeleteRule(driver)
+            delete_rule.delete(test_rule_element_position, first_row_checkbox_element, False)
     
     # 删除ip
     if ip_failure_flag == False:

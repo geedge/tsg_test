@@ -1,0 +1,35 @@
+# import os
+# import sys
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+# from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from element_position.policyElementPosition import *
+from src.ui.policy.pageJump import PageJump
+
+class SearchRule():
+    def __init__(self, driver):
+        self.driver = driver
+        
+    def search(self, type, name, rule_element_position, vsys_name=""):
+        search_element_position = rule_element_position["search"]
+        page_jump_element_position = rule_element_position["page_jump"]
+        # 打开该列表
+        page_jump = PageJump(self.driver)
+        page_jump.jump_sub_policy_page(page_jump_element_position)
+        # 点击search查询框
+        self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"]).click()
+        dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceName="Name")
+        self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
+        input_item_posXpath = search_element_position["policyRuleListPage_searchLable_input_itemContent_posXpath"].format(replaceName="Name")
+        self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
+        self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
+        element_tr = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_tableTbody_posXpath"])
+        row = element_tr.find_elements(By.XPATH, "tr")
+        if len(row) != 0 and type != "security":
+            first_row = row[0]
+            first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
+            return 200, first_row_checkBox_element
+        elif len(row) != 0 and type == "security":
+            return 200, ""
+        else:
+            return 400, ""

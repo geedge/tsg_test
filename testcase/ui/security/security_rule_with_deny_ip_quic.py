@@ -5,7 +5,9 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from src.ui.object.ip.ipObject import IpAddress
-from src.ui.policy.policyRulePublicFunc import PolicyRulePublicFunc
+from src.ui.policy.createRule import CreateRule
+from src.ui.policy.searchRule import SearchRule
+from src.ui.policy.deleteRule import DeleteRule
 from src.ui.element_position.policyElementPosition import *
 from src.api.trafficVerification import *
 from src.api.analysisResult import *
@@ -197,19 +199,19 @@ def run(parameter):
     if len(ip_data) != 0:
         ip_address = IpAddress(driver)
         for i in range(len(ip_data)):
-            ip_result_code = ip_address._create(ip_data[i])
+            create_ip_code = ip_address._create(ip_data[i])
     
     # 创建rule
-    if ip_result_code == 200:
-        security_rule = PolicyRulePublicFunc(driver)
-        security_rule_result_code = security_rule._create(test_data, test_rule_element_position)
+    if create_ip_code == 200:
+        create_rule = CreateRule(driver)
+        create_rule_code = create_rule.create(test_data, test_rule_element_position)
     else:
         result = "Fail to create ip object."
         ip_failure_flag = True
         rule_failure_flag = True
         
     # 触发流量验证
-    if security_rule_result_code == 200:
+    if create_rule_code == 200:
         verify = TrafficVerification()
         verification_result = verify.traffic_verification(parameter, test_data, template_path, [])
         print("verification result: ", verification_result)
@@ -226,8 +228,11 @@ def run(parameter):
     
     # 删除rule
     if rule_failure_flag == False:
-        security_rule._search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
-        security_rule._delete(test_rule_element_position, True)
+        search_rule = SearchRule(driver)
+        search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
+        if search_rule_code == 200:
+            delete_rule = DeleteRule(driver)
+            delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
     
     # 删除ip
     if ip_failure_flag == False:

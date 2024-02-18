@@ -133,6 +133,8 @@ shapingRulePage_fairFactor_posId = "//input[@id='userRegionfairfactor']"
 shapingRulePage_addProfile_posXpath = "//div[@class='MultipleSelect FlagSelect']//div[contains(@class, 'addobject')]"
 shapingRulePage_searchProfile_posXpath = "//div[@class='SFFList list-box']//div[contains(@class, 'object-item-seach')]//input"
 shapingRulePage_selectProfile_posXpath = "//div[@class='row-content-cell cursorPointer']//div[@class='UaPopover ObjectPopover popover']"
+shapingRulePage_closeProfile_posXpath = "//div[@class='SFFList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+shapingRulePage_addProfile_plus_posXpath = "//div[@class='MultipleSelect FlagSelect']//i[@class='operate-icon row-edit iconfont icon-Create1']"
 
 shapingRulePage_enable_posXpath = "//span[@class='el-switch__core']"
 shapingRulePage_okButton_yes_posId = "OK-_policy_shaping_write_Home_App_anonymousComponent"
