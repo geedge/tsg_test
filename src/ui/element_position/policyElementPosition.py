@@ -135,7 +135,7 @@ shapingRuleListpage_allButton_posXpath = "//div[@class='checkAction']//span[@cla
 
 shapingRulePage_inputName_posXpath = "//*[@class='biFangName']//input" # name输入框Xpath
 
-shapingRulePage_addCondition_srcIP_posXpath = policyRulePage_addSrcIP_posXpath
+shapingRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 shapingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 shapingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 shapingRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath

@@ -137,8 +137,7 @@ def run(parameter):
             "create": {
                     "policyRuleListPage_createButton_posId": shapingRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": shapingRulePage_inputName_posXpath,
-                    "policyRulePage_selectAction_posId": shapingRulePage_addCondition_srcIP_posXpath,
-                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
+                    "policyRulePage_addSrcIP_posXpath": shapingRulePage_addSrcIP_posXpath,
                     "policyRulePage_searchSrcIP_posXpath": shapingRulePage_searchSrcIP_posXpath,
                     "policyRulePage_selectSrcIP_posXpath": shapingRulePage_selectSrcIP_posXpath,
                     "policyRulePage_closeSrcIP_posXpath": shapingRulePage_closeSrcIP_posXpath,
