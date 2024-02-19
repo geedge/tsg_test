@@ -12,6 +12,11 @@ policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[
 policyRulePage_selectSrcIP_posXpath = "//div[@class='reference-box el-popover__reference']//div[@class='row-content-cell']"
 policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
+policyRulePage_addSrcPort_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchSrcPort_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectSrcPort_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeSrcPort_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
 policyRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchApplication_posXpath = "//div[@class='AppList list-box']//input[@id='object_ip_search']"
 policyRulePage_selectApplication_posXpath = "//div[@class='floatleft margin-top20 overflow-y-auto overflow-x-hidden width100']//li[1]//div[@class='reference-box el-popover__reference']"
@@ -21,6 +26,7 @@ policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionMo
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
 policyRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
 policyRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Port']"
 
 policyRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
@@ -54,6 +60,11 @@ securityRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 securityRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 securityRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
 
+securityRulePage_addSrcPort_posXpath = policyRulePage_addSrcPort_posXpath
+securityRulePage_searchSrcPort_posXpath = policyRulePage_searchSrcPort_posXpath
+securityRulePage_selectSrcPort_posXpath = policyRulePage_selectSrcPort_posXpath
+securityRulePage_closeSrcPort_posXpath = policyRulePage_closeSrcPort_posXpath
+
 securityRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 securityRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 securityRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
@@ -62,6 +73,7 @@ securityRulePage_closeApplication_posXpath = policyRulePage_closeApplication_pos
 securityRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 securityRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
 securityRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
+securityRulePage_addCondition_srcPort_posXpath = policyRulePage_addCondition_srcPort_posXpath
 securityRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 
 securityRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath

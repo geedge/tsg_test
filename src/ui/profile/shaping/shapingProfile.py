@@ -25,9 +25,9 @@ class ShapingProfile:
         self.ep_error_part_path = "ancestor::div[@class='el-form-item__content']//div[@class='el-form-item__error']"   # 创建页面错误提示信息部分定位信息
 
     # @screenshot_on_failure
-    def _create(self, data):
+    def create(self, data):
         # 页面跳转
-        self._goto_subProfilePage()
+        self.jump_sub_profile_page()
         # 点击create
         self.profile_name = data["name"]
         self.driver.find_element(By.ID, listPage_profile_shaping_profile_createButton_posId).click()
@@ -42,8 +42,8 @@ class ShapingProfile:
             pytest_check.is_in(ep_name_error_value_except, ep_name_error_value, msg="所在行数{}".format(inspect.currentframe().f_lineno))
             return 999
         # 判断点击哪种类型
-        self._select_type(data)
-        select_limits_result = self._select_limits(data, model=0)
+        self.select_type(data)
+        select_limits_result = self.select_limits(data, model=0)
         if select_limits_result == 999:
             return 999
         # 点击ok
@@ -52,7 +52,7 @@ class ShapingProfile:
         return 200
     
     # @screenshot_on_failure
-    def _search(self, data, require_assertion=0, vsys_name="", **kwargs):
+    def search(self, data, require_assertion=0, vsys_name="", **kwargs):
         """
         查询函数,根据输入的类型查询
         :param require_assertion: =0默认情况不需要断言，=1为创建后使用的断言预期，=2为编辑修改后使用的断言预期
@@ -60,7 +60,7 @@ class ShapingProfile:
         :return:
         """
         # 打开该列表
-        self._goto_subProfilePage(vsys_name=vsys_name)
+        self.jump_sub_profile_page(vsys_name=vsys_name)
         # first_row查询到的第一行内容。map_header_className为需要使用的到字典，用来提取第一行的结果。
         first_row, map_header_className = \
             self.profile_pub_func.search(listPage_profileSearch_shaping_profile_selectLabel_posId, listPage_profileSearch_shaping_profile_dropDown_item_posXpath,
@@ -121,7 +121,7 @@ class ShapingProfile:
         # return self.first_row_ID_content
     
     # @screenshot_on_failure
-    def _modify(self, data):
+    def modify(self, data):
         """
         修改数据，使用方法
         :param data:
@@ -130,16 +130,16 @@ class ShapingProfile:
         if data["model"].strip().lower() == "create":
             return 0
         # 进入编辑页面
-        self._goto_editPage()
+        self.jump_edit_page()
         # 根据修改数据，重新输入limits
-        self._select_limits(data, model=-1)
+        self.select_limits(data, model=-1)
         # 点击ok
         self.driver.find_element(By.CSS_SELECTOR, shapingProfilePage_button_oK_posCss).click()
         if self.driver.find_element(By.CSS_SELECTOR, shapingProfilePage_button_warningSaveYes_posCss).is_displayed():
             self.driver.find_element(By.CSS_SELECTOR, shapingProfilePage_button_warningSaveYes_posCss).click()
     
     # @screenshot_on_failure
-    def _delete(self, is_del_all=False):
+    def delete(self, is_del_all=False):
         """
         默认删除查询到的第一个结果
         :return:
@@ -150,11 +150,11 @@ class ShapingProfile:
             # 点击勾选第一行选择框
             self.first_row_checkBox_element.click()     # 变量来自查询函数
         # 调用profile的功能删除方法
-        self.profile_pub_func.delete(listPage_profile_shaping_profile_delButton_posId, listPage_dialogTips_shaping_profile_button_yes_posCss,
+        self.profile_pub_func.delete_profile(listPage_profile_shaping_profile_delButton_posId, listPage_dialogTips_shaping_profile_button_yes_posCss,
                                 listPage_dialogTips_shaping_profile_button_no_posCss)
     
     # @screenshot_on_failure
-    def _select_type(self, data):
+    def select_type(self, data):
         """
         选择type类型点击
         :param data:
@@ -183,7 +183,7 @@ class ShapingProfile:
             self.driver.find_element(By.XPATH, element_argument_pos).click()
     
     # @screenshot_on_failure
-    def _goto_subProfilePage(self, vsys_name=""):
+    def jump_sub_profile_page(self, vsys_name=""):
         """
         :param vsys_name:   Mvsys1    Default Vsys  或者为空字符串  空位当前默认vsys
         :return:
@@ -195,7 +195,7 @@ class ShapingProfile:
         self.driver.find_element(By.ID, mainPage_secondLevelMenu_shaping_profile_posId).click()
         
     # @screenshot_on_failure
-    def _select_limits(self, data, model=0):
+    def select_limits(self, data, model=0):
         """
         输入limits
         :param data:
@@ -252,7 +252,7 @@ class ShapingProfile:
                 return 1
 
     # @screenshot_on_failure
-    def _goto_editPage(self):
+    def jump_edit_page(self):
         """
         默认选择第一个数据，并进入编辑页面
         :return:

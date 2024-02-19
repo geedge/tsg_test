@@ -77,7 +77,7 @@ class ProfilePublicFunc:
         first_row = rows[0]
         return [first_row, map_header_className]
 
-    def delete(self, listPage_profile_subProfiles_delButton_posId, listPage_dialogTips_subProfiles_button_yes_posCss,
+    def delete_profile(self, listPage_profile_subProfiles_delButton_posId, listPage_dialogTips_subProfiles_button_yes_posCss,
                listPage_dialogTips_subProfiles_button_no_posCss):
         """
         直接删除函数，

@@ -13,16 +13,20 @@ class DeleteRule():
         
     def delete(self, rule_element_position, first_row_checkbox_element, is_del_all):
         delete_element_position = rule_element_position["delete"]
-        if is_del_all == True:
-            self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_allSelect_posXpath"]).click()
-        else:
-            first_row_checkbox_element.click()
-        self.driver.find_element(By.ID, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
-        random_yes_or_no = random.randint(0, 1)
-        if random_yes_or_no == 0:
-            self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
-        else:
-            # self.driver.find_element(By.CSS_SELECTOR, delete_element_position["policyRuleListPage_okButton_warningNo_posXpath"]).click()
-            # self.driver.find_element(By.ID, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
-            self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
-        time.sleep(0.5)
+        try:
+            if is_del_all == True:
+                self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_allSelect_posXpath"]).click()
+            else:
+                first_row_checkbox_element.click()
+            self.driver.find_element(By.ID, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
+            random_yes_or_no = random.randint(0, 1)
+            if random_yes_or_no == 0:
+                self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
+            else:
+                # self.driver.find_element(By.CSS_SELECTOR, delete_element_position["policyRuleListPage_okButton_warningNo_posXpath"]).click()
+                # self.driver.find_element(By.ID, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
+                self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
+            time.sleep(0.5)
+            return 200
+        except:
+            return 400
