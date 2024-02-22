@@ -9,7 +9,7 @@ mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//a
 
 policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
-policyRulePage_selectSrcIP_posXpath = "//div[@class='reference-box el-popover__reference']//div[@class='row-content-cell']"
+policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 policyRulePage_addSrcPort_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
@@ -22,11 +22,30 @@ policyRulePage_searchApplication_posXpath = "//div[@class='AppList list-box']//i
 policyRulePage_selectApplication_posXpath = "//div[@class='floatleft margin-top20 overflow-y-auto overflow-x-hidden width100']//li[1]//div[@class='reference-box el-popover__reference']"
 policyRulePage_closeApplication_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
+policyRulePage_addInternalIP_posXpath = "//div[@zs-label='Internal']//div[@class='MultipleSelect InternalsSelect']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchInternalIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+policyRulePage_selectInternalIP_posXpath = "//div[@class='InternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeInternalIP_posXpath = "//div[@class='InternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+policyRulePage_addInternalPort_posXpath = "//div[@zs-label='Internal']//div[@class='MultipleSelect InternalsSelect']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchInternalPort_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectInternalPort_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeInternalPort_posXpath = "//div[@class='InternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+policyRulePage_addExternalIP_posXpath = "//div[@zs-label='External']//div[@class='MultipleSelect ExternalsSelect']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchExternalIP_posXpath = "//div[@class='ExternalsList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectExternalIP_posXpath = "//div[@class='ExternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeExternalIP_posXpath = "//div[@class='ExternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
 policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
 policyRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
+policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
 policyRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
-policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='Port']"
 
 policyRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
@@ -38,14 +57,19 @@ policyRulePage_searchUrl_posXpath = "//div[@class='CommonListDetail list-detail-
 policyRulePage_selectUrl_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeUrl_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
+policyRulePage_addRequestHeader_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
+policyRulePage_searchRequestHeader_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectRequestHeader_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeRequestHeader_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
 # security
 securityRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
 securityRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
 securityRuleListpage_okButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 securityRuleListpage_okButton_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
 securityRuleListPage_searchLable_posId = "select-label"
-securityRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"   #下拉菜单定位
-securityRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceName}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceName替换实际查询值
+securityRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
+securityRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
 securityRuleListPage_searchLable_searchButton_posId = "searchQuery"
 securityRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
 securityRulelistPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
@@ -65,6 +89,21 @@ securityRulePage_searchSrcPort_posXpath = policyRulePage_searchSrcPort_posXpath
 securityRulePage_selectSrcPort_posXpath = policyRulePage_selectSrcPort_posXpath
 securityRulePage_closeSrcPort_posXpath = policyRulePage_closeSrcPort_posXpath
 
+securityRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
+securityRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath
+securityRulePage_selectInternalIP_posXpath = policyRulePage_selectInternalIP_posXpath
+securityRulePage_closeInternalIP_posXpath = policyRulePage_closeInternalIP_posXpath
+
+securityRulePage_addInternalPort_posXpath = policyRulePage_addInternalPort_posXpath
+securityRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
+securityRulePage_selectInternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
+securityRulePage_closeInternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
+
+securityRulePage_addExternalIP_posXpath = policyRulePage_addExternalIP_posXpath
+securityRulePage_searchExternalIP_posXpath = policyRulePage_searchExternalIP_posXpath
+securityRulePage_selectExternalIP_posXpath = policyRulePage_selectExternalIP_posXpath
+securityRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
+
 securityRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 securityRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 securityRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
@@ -73,7 +112,11 @@ securityRulePage_closeApplication_posXpath = policyRulePage_closeApplication_pos
 securityRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 securityRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
 securityRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
+securityRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
 securityRulePage_addCondition_srcPort_posXpath = policyRulePage_addCondition_srcPort_posXpath
+securityRulePage_addCondition_internalIP_posXpath = policyRulePage_addCondition_internalIP_posXpath
+securityRulePage_addCondition_externalIP_posXpath = policyRulePage_addCondition_externalIP_posXpath
+securityRulePage_addCondition_internalPort_posXpath = policyRulePage_addCondition_internalPort_posXpath
 securityRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 
 securityRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
@@ -85,6 +128,11 @@ securityRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
 securityRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
 securityRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
 securityRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
+
+securityRulePage_addRequestHeader_posXpath = policyRulePage_addRequestHeader_posXpath
+securityRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
+securityRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
+securityRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
 
 securityRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 securityRulePage_okButton_yes_posId = "OK-_SecurityAdd_Home_App_anonymousComponent"
@@ -100,9 +148,9 @@ securityRulePage_subAction_rateLimit_rate_posXpath = "//div[@class='margin-right
 securityRulePage_subAction_tamper_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Tamper']"
 securityRulePage_subAction_block_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Block']"
 securityRulePage_subAction_block_responseCode_posXpath = "//div[contains(@zs-label, '应答码')]//input[@class='el-input__inner']"
-securityRulePage_subAction_block_responseCode_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"
+securityRulePage_subAction_block_responseCode_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"
 securityRulePage_subAction_block_responseContent_posXpath = "//div[@class='margin-bottom6 box-sizing']//input[@class='el-input__inner']"
-securityRulePage_subAction_block_responseContent_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"
+securityRulePage_subAction_block_responseContent_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"
 securityRulePage_subAction_block_responseContent_text_posId = "myEditor1"
 securityRulePage_subAction_block_responseContent_clickProfile_posXpath = "//div[@class='box-sizing']//input[@class='el-input__inner']"
 securityRulePage_subAction_block_responseContent_searchProfile_posXpath = "//input[@class='width85']"
@@ -110,9 +158,9 @@ securityRulePage_subAction_block_responseContent_selectProfile_posId = "filelist
 securityRulePage_subAction_redirect_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Redirect']"
 securityRulePage_subAction_alert_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Alert']"
 securityRulePage_subAction_alert_responseCode_posXpath = "//div[contains(@zs-label, '应答码')]//input[@class='el-input__inner']"
-securityRulePage_subAction_alert_responseCode_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"
+securityRulePage_subAction_alert_responseCode_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"
 securityRulePage_subAction_alert_responseContent_posXpath = "//div[@class='margin-bottom6 box-sizing']//input[@class='el-input__inner']"
-securityRulePage_subAction_alert_responseContent_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"
+securityRulePage_subAction_alert_responseContent_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"
 securityRulePage_subAction_alert_responseContent_text_posId = "myEditor1"
 securityRulePage_subAction_alert_responseContent_clickProfile_posXpath = "//div[@class='box-sizing']//input[@class='el-input__inner']"
 securityRulePage_subAction_alert_responseContent_searchProfile_posXpath = "//input[@class='width85']"
@@ -127,8 +175,8 @@ shapingRuleListpage_deleteButton_posId = "appDel-_OperateBtns_ElRow_policy_traff
 shapingRuleListpage_okButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 shapingRuleListpage_okButton_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
 shapingRuleListPage_searchLable_posId = "select-label"
-shapingRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"   #下拉菜单定位
-shapingRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceName}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceName替换实际查询值
+shapingRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
+shapingRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
 shapingRuleListPage_searchLable_searchButton_posId = "searchQuery"
 shapingRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
 shapingRuleListpage_allButton_posXpath = "//div[@class='checkAction']//span[@class='el-checkbox__label']"

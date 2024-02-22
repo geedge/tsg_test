@@ -41,8 +41,7 @@ def run(parameter):
             "sourceIP": [
                 {
                     "name": "shaping_source_ip",
-                    "type": "ip",
-                    "objectType": "create",
+                    "objectType": "ip",
                     "negate": False,
                     "item": [
                         "1.1.1.1",
@@ -174,8 +173,8 @@ def run(parameter):
     template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
     
     # 创建object
-    ip_data = test_data["condition"]["sourceIP"]
-    if len(ip_data) != 0:
+    if "sourceIP" in test_data["condition"] and len(ip_data) != 0:
+        ip_data = test_data["condition"]["sourceIP"]
         create_ip = CreateObject(driver)
         for i in range(len(ip_data)):
             create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)

@@ -18,9 +18,9 @@ class SearchRule():
         page_jump.jump_sub_policy_page(page_jump_element_position)
         # 点击search查询框
         self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"]).click()
-        dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceName="Name")
+        dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
         self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
-        input_item_posXpath = search_element_position["policyRuleListPage_searchLable_input_itemContent_posXpath"].format(replaceName="Name")
+        input_item_posXpath = search_element_position["policyRuleListPage_searchLable_input_itemContent_posXpath"].format(replaceValue="Name")
         self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
         self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
         element_tr = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_tableTbody_posXpath"])

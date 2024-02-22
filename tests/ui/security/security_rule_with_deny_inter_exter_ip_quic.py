@@ -35,11 +35,51 @@ def run(parameter):
         "ruleAction": "deny",
         "ruleType": "create",
         "condition": {
-            "sourceIP": [
+            "sourceIPGroup": [
                 {
-                    "name": "security_source_ip",
-                    "type": "ip",
-                    "objectType": "create",
+                    "name": "security_src_ip_group",
+                    "objectType": "ip_group",
+                    "negate": False,
+                    "groupSubordinate": [
+                        {
+                            "name": "security_include_1_src_ip",
+                            "objectType": "ip",
+                            "negate": False,
+                            "item": [
+                                "1.1.1.1",
+                                "1.1.1.1-1.1.1.2"
+                            ]
+                        },
+                        {
+                            "name": "security_include_2_src_ip",
+                            "objectType": "ip",
+                            "negate": False,
+                            "item": [
+                                "2.1.1.1",
+                                "2.1.1.1-2.1.1.2"
+                            ]
+                        }
+                    ],
+                    "groupExclude": [
+                        {
+                            "name": "security_exclude_src_ip",
+                            "objectType": "ip",
+                            "negate": False,
+                            "item": [
+                                "3.1.1.1",
+                                "3.1.1.1-3.1.1.2"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "sourcePort": [],
+            "destinationIP": [],
+            "destinationPort": [],
+            "internalIP": [
+                {
+                    "name": "security_internal_ip",
+                    "objectType": "ip",
                     "negate": False,
                     "item": [
                         "1.1.1.1",
@@ -47,11 +87,11 @@ def run(parameter):
                     ]
                 }
             ],
-            "sourcePort": [
+            "internalIPGroup": [],
+            "internalPort": [
                 {
-                    "name": "security_source_port",
-                    "type": "port",
-                    "objectType": "create",
+                    "name": "security_internal_port",
+                    "objectType": "port",
                     "negate": False,
                     "item": [
                         "1000-1110",
@@ -59,19 +99,54 @@ def run(parameter):
                     ]
                 }
             ],
-            "destinationIP": [],
-            "destinationPort": [],
-            "internalIP": [],
-            "internalPort": [],
-            "externalIP": [],
+            "externalIP": [
+                {
+                    "name": "security_external_ip",
+                    "objectType": "ip",
+                    "negate": False,
+                    "item": [
+                        "11.1.1.1",
+                        "11.1.1.1-11.1.1.2"
+                    ]
+                }
+            ],
             "externalPort": [],
             "sourceGeography": [],
             "destinationGeography": [],
             "subId": [],
-            "device": [],
+            "device": [
+                # {
+                #     "name": "security_mobile_phone_number",
+                #     "objectType": "phone_number",
+                #     "negate": False,
+                #     "plus": True,
+                #     "item": [
+                #         "test",
+                #         "test11"
+                #     ]
+                # }
+            ],
             "tunnel": [],
             "tunnelLevel": [],
-            "flag": [],
+            "flag": [
+                # {
+                #     "name": "security_flag",    
+                #     "objectType": "flag",
+                #     "negate": False,
+                #     "item": [
+                #         {
+                #             "flagType": "asymmetric",
+                #             "flagNum": 1,
+                #             "flagStatus": "True"
+                #         },
+                #         {
+                #             "flagType": "Bidirectional",
+                #             "flagNum": 16,
+                #             "flagStatus": "True"
+                #         },
+                #     ]
+                # }
+            ],
             "application": [
                 {
                     "name": "http",
@@ -80,15 +155,63 @@ def run(parameter):
             ],
             "serverFqdn": [
                 {
-                    "type": "fqdn",
-                    "name": "www.baidu.com"
+                    "name": "www.baidu.com", # 需要新建，不能使用已存在的object，保证自动化的统一性，这里只是示例
+                    "objectType": "fqdn",
+                    "negate": False,
+                    "plus": False,
+                    "item": [
+                        "*google.com"
+                    ]
                 }
             ],
-            "protocolFiled": [
+            "protocolField": [
+                # {
+                #     "name": "security_url", # 需要新建，不能使用已存在的object，保证自动化的统一性，这里只是示例
+                #     "fieldType": "url", # Protocol Field独有字段
+                #     "objectType": "url",
+                #     "negate": False,
+                #     "plus": False,
+                #     "item": [
+                #         "youtube.com", 
+                #         "google.com"
+                #     ]
+                # },
                 {
-                    "type": "url",
-                    "name": "youtube"
-                }
+                    "name": "security_request_header",
+                    "fieldType": "request_header",
+                    "objectType": "http_signature",
+                    "negate": False,
+                    "plus": True,
+                    "item": [
+                        {
+                            "itemKey": "Set-Cookie",
+                            "itemValue": "TEXT",
+                            "value": ["test", "test11"]
+                        },
+                        {
+                            "itemKey": "Content-Type",
+                            "itemValue": "HEX",
+                            "value": ["123"]
+                        }
+                    ]
+                },
+                # {
+                #     "name": "security_keyword",
+                #     "fieldType": "keyword",
+                #     "objectType": "keyword",
+                #     "negate": False,
+                #     "plus": True,
+                #     "item": [
+                #         {
+                #             "itemValue": "TEXT",
+                #             "value": ["test", "test11"]
+                #         },
+                #         {
+                #             "itemValue": "HEX",
+                #             "value": ["123"]
+                #         }
+                #     ]
+                # }
             ],
             "subActionOverride": True,
             "subAction": [
@@ -145,9 +268,6 @@ def run(parameter):
                 "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
                 "objectListPage_dropDown_createIpButton_posId": ipObjectListPage_dropDown_createIpButton_posId,
                 "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
-                
-                
-                
                 "objectPage_addItem_posId": ipObjectPage_addItem_posId,
                 "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
                 "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
@@ -165,6 +285,7 @@ def run(parameter):
                 "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
             }
         }
+        test_ip_group_object_element_position = {}
         test_port_object_element_position = {
             "page_jump":{
                 "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -195,6 +316,40 @@ def run(parameter):
                 "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
             }
         }
+        test_http_signature_object_element_position = {
+            "page_jump":{
+                "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_httpSignature_posId
+            },
+            "create": {
+                "objectListPage_createButton_posId": httpSignatureObjectListPage_createButton_posId,
+                "objectListPage_dropDown_createIpButton_posId": httpSignatureObjectListPage_dropDown_createIpButton_posId,
+                "objectPage_inputName_posXpath": httpSignatureObjectPage_inputName_posXpath,
+                "objectPage_addItem_posId": httpSignatureObjectPage_addItem_posId,
+                "objectPage_item_key_dropDown_posXpath": httpSignatureObjectPage_item_key_dropDown_posXpath,
+                "objectPage_item_key_dropDown_select_posXpath": httpSignatureObjectPage_item_key_dropDown_select_posXpath,
+                "objectPage_item_value_select_posXpath": httpSignatureObjectPage_item_value_select_posXpath,
+                "objectPage_inputItem_posXpath": httpSignatureObjectPage_inputItem_posXpath,
+                "objectPage_item_value_plus_posXpath": httpSignatureObjectPage_item_value_plus_posXpath,
+                "objectPage_button_saveItem_posXpath": httpSignatureObjectPage_button_saveItem_posXpath,
+                "objectPage_okButton_posId": httpSignatureObjectPage_okButton_posId,
+                "objectPage_okButton_warningYes_posXpath": httpSignatureObjectPage_okButton_warningYes_posXpath
+            },
+            "search": {
+                "objectListPage_searchLabel_posId": httpSignatureObjectListPage_searchLabel_posId,
+                "objectListPage_searchLabel_selectName_posXpath": httpSignatureObjectListPage_searchLabel_selectName_posXpath,
+                "objectListPage_tableTbody_posXpath": httpSignatureObjectListPage_tableTbody_posXpath
+            },
+            "delete": {
+                "objectListPage_allSelect_posXpath": httpSignatureObjectListPage_allSelect_posXpath,
+                "objectListPage_deleteButton_posId": httpSignatureObjectListPage_deleteButton_posId,
+                "objectListPage_deleteButton_warningYes_posXpath": httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+            }
+        }
         test_rule_element_position = {
             "page_jump":{
                 "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -208,22 +363,29 @@ def run(parameter):
                 "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                 "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                 "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
-                "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
-                "policyRulePage_selectSrcIP_posXpath" :securityRulePage_selectSrcIP_posXpath,
-                "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
-                "policyRulePage_addCondition_srcPort_posXpath": securityRulePage_addCondition_srcPort_posXpath,
-                "policyRulePage_addSrcPort_posXpath": securityRulePage_addSrcPort_posXpath,
-                "policyRulePage_searchSrcPort_posXpath": securityRulePage_searchSrcPort_posXpath,
-                "policyRulePage_selectSrcPort_posXpath": securityRulePage_selectSrcPort_posXpath,
-                "policyRulePage_closeSrcPort_posXpath": securityRulePage_closeSrcPort_posXpath,
+                "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
+                "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
+                "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
+                "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
+                "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                "policyRulePage_addConditionInternalPort_posXpath": securityRulePage_addCondition_internalPort_posXpath,
+                "policyRulePage_addInternalPort_posXpath": securityRulePage_addInternalPort_posXpath,
+                "policyRulePage_searchInternalPort_posXpath": securityRulePage_searchInternalPort_posXpath,
+                "policyRulePage_selectInternalPort_posXpath": securityRulePage_selectInternalPort_posXpath,
+                "policyRulePage_closeInternalPort_posXpath": securityRulePage_closeInternalPort_posXpath,
+                "policyRulePage_addConditionExternalIP_posXpath": securityRulePage_addCondition_externalIP_posXpath,
+                "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
+                "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
+                "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
+                "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
                 "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                 "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                 "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                 "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
                 "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                "policyRulePage_addCondition_serverFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                "policyRulePage_addCondition_url_posXpath": securityRulePage_addCondition_url_posXpath,
+                "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
+                "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_url_posXpath,
+                "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
                 "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                 "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
                 "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
@@ -234,6 +396,10 @@ def run(parameter):
                 "policyRulePage_searchUrl_posXpath": securityRulePage_searchUrl_posXpath,
                 "policyRulePage_selectUrl_posXpath": securityRulePage_selectUrl_posXpath,
                 "policyRulePage_closeUrl_posXpath": securityRulePage_closeUrl_posXpath,
+                "policyRulePage_addRequestHeader_posXpath": securityRulePage_addRequestHeader_posXpath,
+                "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
+                "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
+                "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
                 "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                 "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
                 "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
@@ -275,25 +441,67 @@ def run(parameter):
     template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
     
     # 创建object
-    ip_data = test_data["condition"]["sourceIP"]
-    if len(ip_data) != 0:
+    if "internalIP" in test_data["condition"] and len(test_data["condition"]["internalIP"]) != 0:
+        internal_ip_data = test_data["condition"]["internalIP"]
         create_ip = CreateObject(driver)
-        for i in range(len(ip_data)):
-            create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
-            if create_ip_code != 200:
-                result = "Fail to create ip object."
+        for i in range(len(internal_ip_data)):
+            create_internal_ip_code = create_ip.create(internal_ip_data[i], test_ip_object_element_position)
+            if create_internal_ip_code != 200:
+                result = "Fail to create internal ip object."
                 break
-    port_data = test_data["condition"]["sourcePort"]
-    if len(port_data) != 0:
+    if "internalIPGroup" in test_data["condition"] and len(test_data["condition"]["internalIPGroup"]) != 0:
+        internal_ip_group_data = test_data["condition"]["internalIPGroup"]
+        for x in range(len(internal_ip_group_data)):
+            include_ip_data = internal_ip_group_data[x]["groupSubordinate"]
+            for y in range(len(include_ip_data)):
+                create_ip = CreateObject(driver)
+                create_include_internal_ip_code = create_ip.create(include_ip_data[y], test_ip_object_element_position)
+                if create_include_internal_ip_code != 200:
+                    result = "Fail to create include internal ip object."
+                    break  
+            exclude_ip_data = internal_ip_group_data[x]["groupExclude"]
+            for z in range(len(exclude_ip_data)):
+                create_ip = CreateObject(driver)
+                create_exclude_internal_ip_code = create_ip.create(exclude_ip_data[z], test_ip_object_element_position)
+                if create_exclude_internal_ip_code != 200:
+                    result = "Fail to create exclude internal ip object."
+                    break
+            if create_include_internal_ip_code == 200 and create_exclude_internal_ip_code == 200:
+                create_ip_group = CreateObject(driver)
+                create_internal_ip_group_code = create_ip_group.create_group(internal_ip_group_data[x], test_ip_object_element_position)
+                if create_internal_ip_group_code != 200:
+                    result = "Fail to create internal ip group object."
+                    break 
+    if "externalIP" in test_data["condition"] and len(test_data["condition"]["externalIP"]) != 0:
+        external_ip_data = test_data["condition"]["externalIP"]
+        create_ip = CreateObject(driver)
+        for t in range(len(external_ip_data)):
+            create_external_ip_code = create_ip.create(external_ip_data[t], test_ip_object_element_position)
+            if create_external_ip_code != 200:
+                result = "Fail to create external ip object."
+                break
+    if "internalPort" in test_data["condition"] and len(test_data["condition"]["internalPort"]) != 0:
+        internal_port_data = test_data["condition"]["internalPort"]
         create_port = CreateObject(driver)
-        for j in range(len(port_data)):
-            create_port_code = create_port.create(port_data[j], test_port_object_element_position)
-            if create_port_code != 200:
-                result = "Fail to create port object."
+        for j in range(len(internal_port_data)):
+            create_internal_port_code = create_port.create(internal_port_data[j], test_port_object_element_position)
+            if create_internal_port_code != 200:
+                result = "Fail to create internal port object."
                 break
+    if "protocolField" in test_data["condition"] and len(test_data["condition"]["protocolField"]) != 0:
+        protocol_filed_data = test_data["condition"]["protocolField"]
+        for n in range(len(protocol_filed_data)):
+            create_protocol_filed = CreateObject(driver)
+            if protocol_filed_data[n]["objectType"] == "http_signature":
+                create_protocol_filed_code = create_protocol_filed.create(protocol_filed_data[n], test_http_signature_object_element_position)
+                if create_protocol_filed_code != 200:
+                    result = "Fail to create http signature object."
+                    break
+            elif protocol_filed_data[n]["objectType"] == "url":
+                print("to be added...")
     
     # 创建rule
-    if create_ip_code == 200 and create_port_code == 200:
+    if create_internal_ip_code == 200 and create_internal_port_code == 200 and create_external_ip_code == 200 and create_protocol_filed_code == 200:
         create_rule = CreateRule(driver)
         create_rule_code = create_rule.create(test_data, test_rule_element_position)
         if create_rule_code != 200:
@@ -325,32 +533,57 @@ def run(parameter):
     
     # 删除object
     if delete_rule_code == 200:
-        # 删除ip
-        for x in range(len(ip_data)):
+        for x in range(len(internal_ip_data)):
             search_ip = SearchObject(driver)
-            search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
+            search_ip_code, first_row_checkbox_element = search_ip.search(internal_ip_data[x]["name"], test_ip_object_element_position)
             if search_ip_code == 200:
                 delete_ip = DeleteObject(driver)
                 delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
                 if delete_ip_code != 200:
-                    result = result + " In addition, fail to delete ip object."
+                    result = result + " In addition, fail to delete internal ip object."
                     break
             else:
-               result = result + " In addition, fail to search ip object."
+               result = result + " In addition, fail to search internal ip object."
                break
-        # 删除port
-        for y in range(len(port_data)):
+        for z in range(len(external_ip_data)):
+            search_ip = SearchObject(driver)
+            search_ip_code, first_row_checkbox_element = search_ip.search(external_ip_data[z]["name"], test_ip_object_element_position)
+            if search_ip_code == 200:
+                delete_ip = DeleteObject(driver)
+                delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
+                if delete_ip_code != 200:
+                    result = result + " In addition, fail to delete external ip object."
+                    break
+            else:
+               result = result + " In addition, fail to search external ip object."
+               break
+        for y in range(len(internal_port_data)):
             search_port = SearchObject(driver)
-            search_port_code, first_row_checkbox_element = search_port.search(port_data[y]["name"], test_port_object_element_position)
+            search_port_code, first_row_checkbox_element = search_port.search(internal_port_data[y]["name"], test_port_object_element_position)
             if search_port_code == 200:
                 delete_port = DeleteObject(driver)
                 delete_port_code = delete_port.delete(test_port_object_element_position, first_row_checkbox_element, True)
                 if delete_port_code != 200:
-                    result = result + " In addition, fail to delete ip object."
+                    result = result + " In addition, fail to delete internal port object."
                     break
             else:
-               result = result + " In addition, fail to search port object."
+               result = result + " In addition, fail to search internal port object."
                break
+        for n in range(len(protocol_filed_data)):
+            if protocol_filed_data[n]["objectType"] == "http_signature":
+                search_protocol_filed = SearchObject(driver)
+                search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_filed_data[n]["name"], test_http_signature_object_element_position)
+                if search_protocol_filed_code == 200:
+                    delete_protocol_filed = DeleteObject(driver)
+                    delete_protocol_filed_code = delete_protocol_filed.delete(test_http_signature_object_element_position, first_row_checkbox_element, True)
+                    if delete_protocol_filed_code != 200:
+                        result = result + " In addition, fail to delete http signature object."
+                        break
+                else:
+                    result = result + " In addition, fail to search http signature object."
+                    break
+            elif protocol_filed_data[n]["objectType"] == "url":
+                print("to be added...")
     
     # 清理环境
     support.ui_utils.envInitialization.teardown()
