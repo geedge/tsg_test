@@ -42,6 +42,7 @@ def run(parameter):
                 {
                     "name": "shaping_source_ip",
                     "objectType": "ip",
+                    "selectType": False,
                     "negate": False,
                     "item": [
                         "1.1.1.1",
@@ -106,7 +107,7 @@ def run(parameter):
             },
             "create": {
                 "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
-                "objectListPage_dropDown_createIpButton_posId": ipObjectListPage_dropDown_createIpButton_posId,
+                "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
                 "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
                 "objectPage_addItem_posId": ipObjectPage_addItem_posId,
                 "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,

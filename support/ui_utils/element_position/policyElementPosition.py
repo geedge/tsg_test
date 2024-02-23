@@ -21,6 +21,8 @@ policyRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect
 policyRulePage_searchApplication_posXpath = "//div[@class='AppList list-box']//input[@id='object_ip_search']"
 policyRulePage_selectApplication_posXpath = "//div[@class='floatleft margin-top20 overflow-y-auto overflow-x-hidden width100']//li[1]//div[@class='reference-box el-popover__reference']"
 policyRulePage_closeApplication_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_selectApplicationLabel_posXpath = "//div[@class='el-tabs__nav is-top']//div[normalize-space(text())='Application']"
+policyRulePage_selectApplicationGroupLabel_posXpath = "//div[normalize-space(text())='Group']"
 
 policyRulePage_addInternalIP_posXpath = "//div[@zs-label='Internal']//div[@class='MultipleSelect InternalsSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchInternalIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
@@ -108,6 +110,8 @@ securityRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpat
 securityRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 securityRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
 securityRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
+securityRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
+securityRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
 
 securityRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 securityRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath

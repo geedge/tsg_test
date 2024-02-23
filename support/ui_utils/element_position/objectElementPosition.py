@@ -14,7 +14,8 @@ mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//a
 
 # ip object
 ipObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent"  # create按钮id
-ipObjectListPage_dropDown_createIpButton_posId = 'object0-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent'  # 从下拉菜单中选择Address
+ipObjectListPage_dropDown_createButton_posId = 'object0-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent'  # 从下拉菜单中选择Address
+ipObjectListPage_dropDown_createGroupButton_posId = "object1-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent"
 ipObjectListPage_searchLabel_posId = "select-label"  # 查询框id
 ipObjectListPage_searchLabel_selectName_posXpath = '//li[@id="2-_FilteredSearch_ElRow_Objects_ip_Home_App_anonymousComponent"]'  # 查询Name
 ipObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent"
@@ -23,21 +24,35 @@ ipObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delC
 ipObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
 ipObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
 ipObjectPage_inputName_posXpath = "//*[@class='biFangName']//input" # name输入框Xpath
+ipObjectPage_ipType_posId = "IPip"
 ipObjectPage_geographyType_posId = "Geographygeo_location"
-ipObjectPage_ipLearningType_posId = "Geographygeo_location"
+ipObjectPage_ipLearningType_posId = "IP Learningip_learning"
 ipObjectPage_addItem_posId = "temporary_form"  # 添加item_id
 ipObjectPage_inputItem_posXpath = '//div[@class="ip-input el-input el-input--small"]//input'
 ipObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save check"]'  # 保存item按钮
 # ipObjectPage_okButton_posXpath = '//button[@id="OK-_IpDetail_Home_App_anonymousComponent"]/span'  # OK按钮
 ipObjectPage_okButton_posId = "OK-_IpDetail_Home_App_anonymousComponent"  # OK按钮
-ipObjectPage_okButton_warningYes_posXpath = "//div[@class='el-message-box__wrapper']//button[contains(@class, 'el-button--primary operation-confirm')]/span"
+ipObjectPage_okButton_warningYes_posXpath = "//div[@class='el-message-box__wrapper']//button[contains(@class, 'el-button--primary operation-confirm')]//span"
+ipGroupObjectPage_selectTypeIP_posId = "IPip"
+ipGroupObjectPage_selectTypeGeography_posId = "Geographygeo_location"
+ipGroupObjectPage_addSubordinate_posXpath = "//div[@data-desc='subObject']//div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"
+ipGroupObjectPage_searchSubordinateIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+ipGroupObjectPage_selectSubordinateIP_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
+ipGroupObjectPage_closeSubordinateIP_posXpath = "//div[@class='KeywordsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+ipGroupObjectPage_addSubordinateObject_posId = "temporary_form"
+ipGroupObjectPage_enableExclude_posXpath = "//span[@class='el-switch__core']"
+ipGroupObjectPage_addExclude_posXpath = "//div[@data-desc='exclude subObject']//div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"
+ipGroupObjectPage_searchExcludeIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+ipGroupObjectPage_selectExcludeIP_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
+ipGroupObjectPage_closeExcludeIP_posXpath = "//div[@class='KeywordsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+ipGroupObjectPage_addExcludeObject_posId = "temporary_form"
 
 # port
 portObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
 portObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
 portObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 portObjectListPage_deleteButton_warningNo_posCss = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
-portObjectListPage_dropDown_createIpButton_posId = "object0-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
+portObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
 portObjectListPage_searchLabel_posId = "select-label"
 portObjectListPage_searchLabel_selectName_posXpath = "//li[@id='2-_FilteredSearch_ElRow_Objects_port_Home_App_anonymousComponent']"
 portObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
@@ -54,7 +69,7 @@ httpSignatureObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRo
 httpSignatureObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_http_signature_Home_App_anonymousComponent"
 httpSignatureObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 # httpSignatureObjectListPage_deleteButton_warningNo_posCss
-httpSignatureObjectListPage_dropDown_createIpButton_posId = "object0-_OperateBtns_ElRow_Objects_http_signature_Home_App_anonymousComponent"
+httpSignatureObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_http_signature_Home_App_anonymousComponent"
 httpSignatureObjectListPage_searchLabel_posId = "select-label"
 httpSignatureObjectListPage_searchLabel_selectName_posXpath = "//li[@id='2-_FilteredSearch_ElRow_Objects_http_signature_Home_App_anonymousComponent']"
 httpSignatureObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"

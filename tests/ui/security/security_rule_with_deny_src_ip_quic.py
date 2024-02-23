@@ -39,6 +39,7 @@ def run(parameter):
                 {
                     "name": "security_source_ip",
                     "objectType": "ip",
+                    "selectType": False,
                     "negate": False,
                     "item": [
                         "1.1.1.1",
@@ -50,6 +51,7 @@ def run(parameter):
                 {
                     "name": "security_source_port",
                     "objectType": "port",
+                    "selectType": False,
                     "negate": False,
                     "item": [
                         "1000-1110",
@@ -80,6 +82,7 @@ def run(parameter):
                 {
                     "name": "www.baidu.com", # 需要新建，不能使用已存在的object，保证自动化的统一性，这里只是示例
                     "objectType": "fqdn",
+                    "selectType": False,
                     "negate": False,
                     "plus": False,
                     "item": [
@@ -92,6 +95,7 @@ def run(parameter):
                     "name": "youtube", # 需要新建，不能使用已存在的object，保证自动化的统一性，这里只是示例
                     "fieldType": "url",
                     "objectType": "url",
+                    "selectType": False,
                     "negate": False,
                     "plus": False,
                     "item": [
@@ -153,7 +157,7 @@ def run(parameter):
             },
             "create": {
                 "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
-                "objectListPage_dropDown_createIpButton_posId": ipObjectListPage_dropDown_createIpButton_posId,
+                "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
                 "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
                 "objectPage_addItem_posId": ipObjectPage_addItem_posId,
                 "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
@@ -183,7 +187,7 @@ def run(parameter):
             },
             "create": {
                 "objectListPage_createButton_posId": portObjectListPage_createButton_posId,
-                "objectListPage_dropDown_createIpButton_posId": portObjectListPage_dropDown_createIpButton_posId,
+                "objectListPage_dropDown_createPortButton_posId": portObjectListPage_dropDown_createButton_posId,
                 "objectPage_inputName_posXpath": portObjectPage_inputName_posXpath,
                 "objectPage_addItem_posId": portObjectPage_addItem_posId,
                 "objectPage_inputItem_posXpath": portObjectPage_inputItem_posXpath,

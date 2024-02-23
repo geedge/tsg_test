@@ -33,46 +33,74 @@ class CreateRule():
             if "sourceIP" in test_data["condition"] and len(test_data["condition"]["sourceIP"]) != 0:
                 src_ip_data = test_data["condition"]["sourceIP"]
                 self.add_ip(src_ip_data, "SrcIP", create_element_position)
+            if "sourceIPGroup" in test_data["condition"] and len(test_data["condition"]["sourceIPGroup"]) != 0:
+                src_ip_group_data = test_data["condition"]["sourceIPGroup"]
+                self.add_ip(src_ip_group_data, "SrcIP", create_element_position)
             if "destinationIP" in test_data["condition"] and len(test_data["condition"]["destinationIP"]) != 0:
-                dst_ip_data = test_data["condition"]["destinationIP"]    
+                dst_ip_data = test_data["condition"]["destinationIP"]
                 self.add_ip(dst_ip_data, "DstIP", create_element_position)
+            if "destinationIPGroup" in test_data["condition"] and len(test_data["condition"]["destinationIPGroup"]) != 0:
+                dst_ip_group_data = test_data["condition"]["destinationIPGroup"]
+                self.add_ip(dst_ip_group_data, "DstIP", create_element_position)
             if "internalIP" in test_data["condition"] and len(test_data["condition"]["internalIP"]) != 0:
                 internal_ip_data = test_data["condition"]["internalIP"]
                 self.add_ip(internal_ip_data, "InternalIP", create_element_position)
+            if "internalIPGroup" in test_data["condition"] and len(test_data["condition"]["internalIPGroup"]) != 0:
+                internal_ip_group_data = test_data["condition"]["internalIPGroup"]
+                self.add_ip(internal_ip_group_data, "InternalIP", create_element_position)
             if "externalIP" in test_data["condition"] and len(test_data["condition"]["externalIP"]) != 0:
                 external_ip_data = test_data["condition"]["externalIP"]
                 self.add_ip(external_ip_data, "ExternalIP", create_element_position)
+            if "externalIPGroup" in test_data["condition"] and len(test_data["condition"]["externalIPGroup"]) != 0:
+                external_ip_group_data = test_data["condition"]["externalIPGroup"]
+                self.add_ip(external_ip_group_data, "ExternalIP", create_element_position)
                 
             # 添加port
-            if "sourcePort" in test_data["condition"] and len(test_data["condition"]["sourcePort"]):
+            if "sourcePort" in test_data["condition"] and len(test_data["condition"]["sourcePort"]) != 0:
                 src_port_data = test_data["condition"]["sourcePort"]
                 self.add_port(src_port_data, "SrcPort", create_element_position)
-            if "destinationPort" in test_data["condition"] and len(test_data["condition"]["destinationPort"]):
+            if "sourcePortGroup" in test_data["condition"] and len(test_data["condition"]["sourcePortGroup"]) != 0:
+                src_port_group_data = test_data["condition"]["sourcePortGroup"]
+                self.add_port(src_port_group_data, "SrcPort", create_element_position)
+            if "destinationPort" in test_data["condition"] and len(test_data["condition"]["destinationPort"]) != 0:
                 dst_port_data = test_data["condition"]["destinationPort"]    
                 self.add_port(dst_port_data, "DstPort", create_element_position)
-            if "internalPort" in test_data["condition"] and len(test_data["condition"]["internalPort"]):
+            if "destinationPortGroup" in test_data["condition"] and len(test_data["condition"]["destinationPortGroup"]) != 0:
+                dst_port_group_data = test_data["condition"]["destinationPortGroup"]
+                self.add_port(dst_port_group_data, "DstPort", create_element_position)
+            if "internalPort" in test_data["condition"] and len(test_data["condition"]["internalPort"]) != 0:
                 internal_port_data = test_data["condition"]["internalPort"]
                 self.add_port(internal_port_data, "InternalPort", create_element_position)
-            if "externalPort" in test_data["condition"] and len(test_data["condition"]["externalPort"]):
+            if "internalPortGroup" in test_data["condition"] and len(test_data["condition"]["internalPortGroup"]) != 0:
+                internal_port_group_data = test_data["condition"]["internalPortGroup"]
+                self.add_port(internal_port_group_data, "InternalPort", create_element_position)
+            if "externalPort" in test_data["condition"] and len(test_data["condition"]["externalPort"]) != 0:
                 external_port_data = test_data["condition"]["externalPort"]
                 self.add_port(external_port_data, "ExternalPort", create_element_position)
+            if "externalPortGroup" in test_data["condition"] and len(test_data["condition"]["externalPortGroup"]) != 0:
+                external_port_group_data = test_data["condition"]["externalPortGroup"]
+                self.add_port(external_port_group_data, "ExternalPort", create_element_position)
             
             # 增加quic标记位，用于判断是否存在send tcp reset勾选框
             quic_protocol_flag = False
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
-                application_data = test_data["condition"]["application"]
                 # 点application的+
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addApplication_posXpath"]).click()
+                application_data = test_data["condition"]["application"]
                 # 通过application name搜索并选中
                 for j in range(len(application_data)):
                     if application_data[j]["name"] == "quic" and len(application_data) == 1:
                         quic_protocol_flag = True
+                    if application_data[j]["objectType"] == "application":
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationLabel_posXpath"]).click()
+                    elif application_data[j]["objectType"] == "application_group":
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationGroupLabel_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"]).send_keys(application_data[j]["name"])
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"]).send_keys(Keys.ENTER)
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
-            
+                
             # 添加server fqdn
             if "serverFqdn" in test_data["condition"] and len(test_data["condition"]["serverFqdn"]) != 0:
                 server_fqdn_data = test_data["condition"]["serverFqdn"]
@@ -93,7 +121,7 @@ class CreateRule():
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                     elif server_fqdn_data[x]["objectType"] == "category":
-                        print("to be added...")       
+                        print("to be added...")
             
             # 添加protocol field
             protocol_field_flag = False
