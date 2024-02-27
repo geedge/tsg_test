@@ -44,11 +44,11 @@ class TrafficVerification():
             # cmd_return = output.decode(errors='ignore')
             cmd_return = output
             print(output)
-            hope_return = condition['expectedReturn']
+            expected_return = condition['expectedReturn']
             # 获取结束时间
             now = datetime.utcnow()
             end_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
-            cmd_result = self.is_in(cmd_return, hope_return)
+            cmd_result = self.is_in(cmd_return, expected_return)
             loop_num = condition['ruleNum']
             is_counters, is_log_query = self.is_verify(condition, loop_num, 'counters', 'log_query_param')
             if is_log == 1:
@@ -136,7 +136,7 @@ class TrafficVerification():
             time.sleep(50)
             now = datetime.utcnow()
             end_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
-            cmd_return = hope_return = condition['expectedReturn']
+            cmd_return = expected_return = condition['expectedReturn']
             # 断言判断
             trex_ip_info = {}
             trex_ip_info["clients_start"] = clients_start
@@ -204,7 +204,7 @@ class TrafficVerification():
                 time.sleep(20)
                 now = datetime.utcnow()
                 end_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
-                cmd_return = hope_return = condition["expectedReturn"]
+                cmd_return = expected_return = condition["expectedReturn"]
                 # 断言判断
                 if len(statistics_sc_info_list) > 0:   # 非空
                     for statistics_info in statistics_sc_info_list:
@@ -241,11 +241,11 @@ class TrafficVerification():
                 p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 output, _ = p.communicate()
                 cmd_return = output.decode()
-                hope_return = condition['expectedReturn']
+                expected_return = condition['expectedReturn']
                 # 获取结束时间
                 now = datetime.utcnow()
                 end_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
-                cmd_result = self.is_in(cmd_return, hope_return)
+                cmd_result = self.is_in(cmd_return, expected_return)
                 if len(statistics_sc_info_list) > 0:  # 非空
                     for statistics_info in statistics_sc_info_list:
                         n = 0  # 自增变量

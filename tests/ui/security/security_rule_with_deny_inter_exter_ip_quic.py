@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
 import time
-import pytest
+import platform
+import requests
+import psutil
+import subprocess
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -23,6 +26,7 @@ def run(parameter):
     start_time = time.time()
     
     # 环境初始化
+    support.ui_utils.envInitialization.run_selenium_server()
     driver = support.ui_utils.envInitialization.my_driver()
     support.ui_utils.envInitialization.setup()
     
@@ -282,6 +286,7 @@ def run(parameter):
                 "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
                 "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
                 "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
+                "objectPage_ipType_posId": ipObjectPage_ipType_posId,
                 "objectPage_addItem_posId": ipObjectPage_addItem_posId,
                 "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
                 "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
@@ -682,6 +687,7 @@ def run(parameter):
     
     # 清理环境
     support.ui_utils.envInitialization.teardown()
+    support.ui_utils.envInitialization.kill_jar_process()
     
     # 脚本结束时间和耗时
     end_time = time.time()

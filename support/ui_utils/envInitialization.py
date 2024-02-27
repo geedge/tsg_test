@@ -6,6 +6,10 @@ import sys
 import os
 import signal
 import configparser
+import platform
+import requests
+import psutil
+import subprocess
 from workpath import workdir
 from selenium import webdriver
 from myWebDriver import MyWebDriver
@@ -16,10 +20,11 @@ driver = None  # 全局变量用户保存webdirver实例
 def my_driver():
     global driver
     # 初始化
-    loginout_parse = configparser.ConfigParser()
-    loginout_parse_dir = os.path.join(workdir, "ui_utils", "loginout.ini")
-    loginout_parse.read(loginout_parse_dir, encoding="utf-8")
-    remote_url = loginout_parse.get("remote_url", "url")
+    # loginout_parse = configparser.ConfigParser()
+    # loginout_parse_dir = os.path.join(workdir, "ui_utils", "loginout.ini")
+    # loginout_parse.read(loginout_parse_dir, encoding="utf-8")
+    # remote_url = loginout_parse.get("remote_url", "url")
+    remote_url = read_config()
     chrome_option = webdriver.ChromeOptions()
     # 添加启用无痕模式的选项
     chrome_option.add_argument("--incognito")
@@ -32,6 +37,13 @@ def my_driver():
     driver.maximize_window()
     return driver
 
+def read_config():
+    loginout_parse = configparser.ConfigParser()
+    loginout_parse_dir = os.path.join(workdir, "ui_utils", "loginout.ini")
+    loginout_parse.read(loginout_parse_dir, encoding="utf-8")
+    remote_url = loginout_parse.get("remote_url", "url")
+    return remote_url
+
 def setup():
     # global driver
     # driver = my_driver()
@@ -43,6 +55,43 @@ def teardown():
     if driver:
         driver.quit()
         time.sleep(1)
+        
+def run_selenium_server():
+    is_run = False
+    while True:
+        try:
+            is_run = False
+            remote_url = read_config()
+            response = requests.get(remote_url)
+            print(response.text)
+            if len(response.text) != 0:
+                is_run = True
+                break
+        except:
+            print("Fail to start selenium server, begin to start it.")
+        finally:
+            if is_run == False:
+                run_jar()
+
+def run_jar():
+    jar_path = "D:/java_selenium/selenium-server-4.8.1.jar"
+    command = ["java", "-jar", jar_path, "standalone"]
+    result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print(f"Standard Output: {result.stdout}")
+
+def kill_jar_process():
+    os_name = platform.system()
+    if os_name == "Windows":
+        for proc in psutil.process_iter(['name']):
+            try:
+                # print(proc.info['name'])
+                if proc.info['name'] == "java.exe":
+                    proc.kill()
+                    print(f"进程{proc.info['name']}已终止")
+            except:
+                pass
+    elif os_name == "Linux":
+        print("to be added...")
 
 # @pytest.fixture()
 # def demo_fixture():
