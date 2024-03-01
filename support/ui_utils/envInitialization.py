@@ -61,12 +61,12 @@ def run_selenium_server():
     while True:
         try:
             is_run = False
-            remote_url = read_config()
-            response = requests.get(remote_url)
-            print(response.text)
-            if len(response.text) != 0:
-                is_run = True
-                break
+            # remote_url = read_config()
+            # response = requests.get(remote_url)
+            # print(response.text)
+            # if len(response.text) != 0:
+            #     is_run = True
+            #     break
         except:
             print("Fail to start selenium server, begin to start it.")
         finally:
@@ -87,7 +87,7 @@ def kill_jar_process():
                 # print(proc.info['name'])
                 if proc.info['name'] == "java.exe":
                     proc.kill()
-                    print(f"进程{proc.info['name']}已终止")
+                    print(f"The process {proc.info['name']} is killed.")
             except:
                 pass
     elif os_name == "Linux":

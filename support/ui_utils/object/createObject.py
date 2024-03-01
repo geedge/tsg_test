@@ -56,7 +56,8 @@ class CreateObject():
                 print("to be added...")
             else:
                 for x in data["item"]:
-                    self.driver.find_element(By.ID, create_element_position["objectPage_ipType_posId"]).click()
+                    if data["objectType"] == "ip":
+                        self.driver.find_element(By.ID, create_element_position["objectPage_ipType_posId"]).click()
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(x)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
