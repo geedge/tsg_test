@@ -44,8 +44,7 @@ class MyWebDriver(webdriver.Remote):
             raise
         return self.element
 
-    def find_elements(self, by=By.ID, value: Optional[str] = None,
-                     find_before_wait_time=0.3, find_after_wait_time=0.3, wait_timeout=10):
+    def find_elements(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.3, find_after_wait_time=0.3, wait_timeout=10):
         if wait_timeout > 60:
             wait_timeout = 60
         while wait_timeout > 0:
@@ -88,20 +87,4 @@ class MyWebDriver(webdriver.Remote):
         return isExist
 
 if __name__ == '__main__':
-    chrome_option = webdriver.ChromeOptions()
-    driver = MyWebDriver(
-        command_executor="http://192.168.64.34:4444",
-        options=chrome_option
-    )
-    driver.implicitly_wait(5)
-    driver.get("http://192.168.44.72")
-    driver.find_element(By.NAME, "username1").send_keys("zcw3")
-    driver.find_element(By.NAME, "username").send_keys("zcw3")
-    driver.find_element(By.NAME, "username").send_keys("zcw3")
-    driver.find_element(By.NAME, "username").send_keys("zcw3")
-    driver.find_element(By.NAME, "password").send_keys("111111")
-    driver.find_element(By.NAME, "password").send_keys("111111")
-    driver.find_element(By.NAME, "password").send_keys("111111")
-    driver.find_element(By.NAME, "password").send_keys("111111")
-
-    driver.quit()
+    print("test")

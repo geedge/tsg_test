@@ -20,15 +20,11 @@ driver = None  # 全局变量用户保存webdirver实例
 def my_driver():
     global driver
     # 初始化
-    # loginout_parse = configparser.ConfigParser()
-    # loginout_parse_dir = os.path.join(workdir, "ui_utils", "loginout.ini")
-    # loginout_parse.read(loginout_parse_dir, encoding="utf-8")
-    # remote_url = loginout_parse.get("remote_url", "url")
     remote_url = read_config()
     chrome_option = webdriver.ChromeOptions()
     # 添加启用无痕模式的选项
     chrome_option.add_argument("--incognito")
-    # chrome_option.add_argument('--headless')  # 启用Headless模式
+    # 打开chrome浏览器
     driver = MyWebDriver(
         command_executor=remote_url,
         options=chrome_option
@@ -58,20 +54,25 @@ def teardown():
         
 def run_selenium_server():
     is_run = False
+    loop_count = 0
     while True:
         try:
             is_run = False
-            # remote_url = read_config()
-            # response = requests.get(remote_url)
-            # print(response.text)
-            # if len(response.text) != 0:
-            #     is_run = True
-            #     break
+            remote_url = read_config()
+            response = requests.get(remote_url)
+            print(response.text)
+            if len(response.text) != 0:
+                is_run = True
+                break
         except:
             print("Fail to start selenium server, begin to start it.")
         finally:
-            if is_run == False:
+            loop_count += 1
+            if is_run == False or loop_count < 5:
                 run_jar()
+            else:
+                kill_jar_process()
+                break
 
 def run_jar():
     jar_path = "D:/java_selenium/selenium-server-4.8.1.jar"

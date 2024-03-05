@@ -22,7 +22,9 @@ def search_package(command):
 def install_package():
     try:
         os_name = platform.system()
-        if os_name == "Linux":
+        release_result = subprocess.check_output("cat /etc/centos-release", shell=True)
+        release_output = release_result.decode("utf-8")
+        if os_name == "Linux" and release_output == "CentOS Linux release 7.9.2009":
             cli = "python3"
             command = "rpm -qa | grep '{}'".format(cli.replace("'", "'\\''"))
             _, flag = search_package(command)
