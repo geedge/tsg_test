@@ -12,8 +12,8 @@ import psutil
 import subprocess
 from workpath import workdir
 from selenium import webdriver
-from myWebDriver import MyWebDriver
-from logInOut import LogInOut
+from support.ui_utils.my_web_driver import MyWebDriver
+from support.ui_utils.login_logout import LogInOut
 
 driver = None  # 全局变量用户保存webdirver实例
 
@@ -35,7 +35,7 @@ def my_driver():
 
 def read_config():
     loginout_parse = configparser.ConfigParser()
-    loginout_parse_dir = os.path.join(workdir, "ui_utils", "loginout.ini")
+    loginout_parse_dir = os.path.join(workdir, "ui_utils", "login_logout.ini")
     loginout_parse.read(loginout_parse_dir, encoding="utf-8")
     remote_url = loginout_parse.get("remote_url", "url")
     return remote_url

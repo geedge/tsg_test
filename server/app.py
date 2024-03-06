@@ -11,8 +11,8 @@ app = Flask(__name__)
 def ReceiveCaseParameter():
     try:
         # 安装python3和相关包
-        command = "python installPython3.py"
-        # subprocess.check_call(["python2", "installPython3.py"])
+        command = "python install_package.py"
+        # subprocess.check_call(["python2", "install_package.py"])
         subprocess.check_output(command, shell=True)
         print("The command is executed successfully.")
         

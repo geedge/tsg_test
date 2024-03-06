@@ -3,7 +3,7 @@
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from element_position.policyElementPosition import *
+from support.ui_utils.element_position.policy_element_position import *
 import random
 import time
 

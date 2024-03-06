@@ -2,9 +2,9 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import random
-import createObject
-import createRule
-import createProfile
+from support.api_utils.create_object import CreateObject
+from support.api_utils.create_rule import CreatePolicyRule
+from support.api_utils.create_profile import CreateProfile
 
 class CreateConfig():
     def create_cfg(self, parameter, condition, template_path):
@@ -31,7 +31,7 @@ class CreateConfig():
             object_condition_key = "obj_condition_{}".format(create_number)
             object_condition_value = condition[object_condition_key]
             # 创建object
-            create_object = createObject.CreateObject()
+            create_object = CreateObject()
             object_template = template_path["object_template"]
             timeout_result, src_list, dst_list, filter_list, flag_list, ip_ids, subid_ids, fqdn_ids, url_ids, flag_ids, keywords_ids, account_ids, http_signature_ids = create_object.create_object_from_template(token, object_condition_value, object_template, api_server, test_pc_ip, vsys_id)
             if len(ip_ids) > 0:
@@ -53,7 +53,7 @@ class CreateConfig():
             # 创建profile
             profile_condition_key = "profile_condition_{}".format(create_number)
             if (profile_condition_key in condition.keys()) and len(condition[profile_condition_key]) > 0:    # 含有profile_condition_ key 并且非空
-                create_profile = createProfile.CreateProfile()
+                create_profile = CreateProfile()
                 profile_condition_value = condition[profile_condition_key]
                 for profile_data in profile_condition_value:
                     create_profile_ids_dict = create_profile.create_profile_from_template(template_path, profile_data, token, api_server, vsys_id)
@@ -61,7 +61,7 @@ class CreateConfig():
                     if condition["policyType"] == "statistics" or condition["policyType"] == "service_chaining":
                         temp_profile_list.append(create_profile_ids_dict)
             # 创建rule
-            create_rule = createRule.CreatePolicyRule()
+            create_rule = CreatePolicyRule()
             policy_id_list = create_rule.create_rule_from_template(token, src_list, dst_list, filter_list, flag_list, condition, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
             policy_id = list(policy_id_list[0].values())[0]
             if len(create_profile_ids) > i:

@@ -1,11 +1,11 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from support.api_utils.logIn import *
-from support.api_utils.createConfig import *
-from support.api_utils.trafficVerification import *
-from support.api_utils.deleteConfig import *
-from support.api_utils.analysisResult import *
+from support.api_utils.log_in import *
+from support.api_utils.create_config import *
+from support.traffic_replay.traffic_verification import *
+from support.api_utils.delete_config import *
+from support.api_utils.analysis_result import *
 
 def run(parameter):
     print("Begin to run test case: " + parameter["test_case_name"])
@@ -99,7 +99,7 @@ if __name__ == "__main__":
       "env": "tsgx",
       "vsys_id": 6,
       "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-      "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/api",
+      "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
       "module_name": "security",
       "test_case_name": "allow_negate_fqdn"
     }

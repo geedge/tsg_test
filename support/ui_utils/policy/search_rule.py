@@ -3,8 +3,8 @@
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from element_position.policyElementPosition import *
-from support.ui_utils.policy.pageJump import PageJump
+from support.ui_utils.element_position.policy_element_position import *
+from support.ui_utils.policy.page_jump import PageJump
 
 class SearchRule():
     def __init__(self, driver):

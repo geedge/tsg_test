@@ -2,12 +2,12 @@ import os
 import sys
 import time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-import getLog
-import policyVerify
+import support.api_utils.get_log
+import support.api_utils.policy_verify
 import subprocess
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from traffic_replay.traffic_replay import TrafficReplay
+from support.traffic_replay.traffic_replay import TrafficReplay
 
 class TrafficVerification():
     def traffic_verification(self, parameter, condition, template_path, cfg_list):
@@ -29,7 +29,7 @@ class TrafficVerification():
             policy_id = list(create_policies_ids[0].values())[0]
         # 判断，如果condition中包含名为command的key，则读取command来执行，否则执行默认的
         policy_type = condition["policyType"]
-        log = getLog.GetLog()
+        log = support.api_utils.get_log.GetLog()
         if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
             # 获取开始时间
             now = datetime.utcnow()
@@ -118,7 +118,7 @@ class TrafficVerification():
             verify_policy_break_count = 0
             while True:      # 多次策略验证
                 verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
-                policy_verif = policyVerify.PolicyVerify()
+                policy_verif = support.api_utils.policy_verify.PolicyVerify()
                 hit_policy_list = policy_verif(condition, verify_attribute_dict, token, api_server, vsys_id)
                 if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
                     break

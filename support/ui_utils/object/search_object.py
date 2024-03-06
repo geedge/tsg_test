@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
-from element_position.objectElementPosition import *
-from support.ui_utils.object.pageJump import PageJump
+from support.ui_utils.element_position.object_element_position import *
+from support.ui_utils.object.page_jump import PageJump
 
 class SearchObject():
     def __init__(self, driver):

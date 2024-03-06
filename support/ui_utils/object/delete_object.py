@@ -1,7 +1,7 @@
 import random
 import time
 from selenium.webdriver.common.by import By
-from element_position.objectElementPosition import *
+from support.ui_utils.element_position.object_element_position import *
 
 class DeleteObject():
     def __init__(self, driver):

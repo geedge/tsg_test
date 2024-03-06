@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import json
 import requests
-import getApplicationId
+import support.api_utils.get_application_id as get_application_id
 
 class CreatePolicyRule():       
     # 拼接json数据，拼接完成后请求创建策略接口
@@ -106,7 +106,7 @@ class CreatePolicyRule():
                 rule_template_dict["rule"]["user_region"]["traffic_mirror"] = {"enable":0}
         app_name = condition['app_name_'+str(create_number)]
         if len(app_name) > 0:
-            app_group_id_list = getApplicationId.get_group_id(str(app_name), api_host)
+            app_group_id_list = get_application_id.get_group_id(str(app_name), api_host)
             objects_list = []
             object_ids = dict(object_ids=app_group_id_list)
             objects_list.append(object_ids)

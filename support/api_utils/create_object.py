@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
 import json
-import deleteConfig
+from support.api_utils.delete_config import DeleteConfig
 from datetime import datetime
 
 class CreateObject():

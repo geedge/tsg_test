@@ -6,14 +6,14 @@ import pytest_check
 import random
 import ipaddress
 from selenium import webdriver
-from myWebDriver import MyWebDriver
+from support.ui_utils.my_web_driver import MyWebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from randomName import RandomName
-from readData import ReadData
+from support.ui_utils.random_name import RandomName
+from support.ui_utils.read_data import ReadData
 from workpath import workdir
-from element_position.objectElementPosition import *
-from element_position.profileElementPosition import *
+from support.ui_utils.element_position.object_element_position import *
+from support.ui_utils.element_position.profile_element_position import *
 
 
 class ProfilePublicFunc:
@@ -616,7 +616,7 @@ class ProfilePublicFunc:
         prefs = {'download.default_directory': my_file._profiles_files_dowload_path(), 'safebrowsing.enabled': True}
         webdriver.ChromeOptions()
         loginout_parse = configparser.ConfigParser()
-        loginout_parse_dir = os.path.join(workdir, "config", "loginout.ini")
+        loginout_parse_dir = os.path.join(workdir, "config", "login_logout.ini")
         loginout_parse.read(loginout_parse_dir, encoding="utf-8")
         remote_url = loginout_parse.get("remote_url", "url")
         options.add_experimental_option('prefs', prefs)
@@ -640,7 +640,7 @@ class ProfilePublicFunc:
         prefs = {'download.default_directory': my_file._profiles_files_dowload_path(), 'safebrowsing.enabled': True}
         webdriver.ChromeOptions()
         loginout_parse = configparser.ConfigParser()
-        loginout_parse_dir = os.path.join(workdir, "config", "loginout.ini")
+        loginout_parse_dir = os.path.join(workdir, "config", "login_logout.ini")
         loginout_parse.read(loginout_parse_dir, encoding="utf-8")
         remote_url = loginout_parse.get("remote_url", "url")
         options.add_experimental_option('prefs', prefs)

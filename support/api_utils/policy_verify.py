@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import copy
 import requests
-import getApplicationId
+import support.api_utils.get_application_id as get_application_id
 
 class PolicyVerify():
     def policy_verify(self, condition, verify_attribute_dict, token, host_api, vsys_id):
@@ -52,7 +52,7 @@ class PolicyVerify():
             verify_list_dict["verify_list"][0]["verify_session"]["attributes"].append(verify_dst_ip)
         # 重组查询 application
         if condition["app_name_1"] != []:
-            app_list = getApplicationId.get_app_id(str(condition["app_name_1"]), host_api)
+            app_list = get_application_id.get_app_id(str(condition["app_name_1"]), host_api)
             verify_app["attribute_value"]["numeric"] = app_list[0]
             appId = app_list[0]
             appName = str(condition["app_name_1"][0])

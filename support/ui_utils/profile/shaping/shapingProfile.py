@@ -3,15 +3,15 @@ import os
 import sys
 import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from myWebDriver import MyWebDriver
+from support.ui_utils.my_web_driver import MyWebDriver
 from selenium.webdriver.common.by import By
 from workpath import workdir
-from element_position.profileElementPosition import *
+from support.ui_utils.element_position.profile_element_position import *
 from screenshot import screenshot_on_failure
 # from randomName import RandomName
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from profilePublicFunc import ProfilePublicFunc
-from logInOut import LogInOut
+from support.ui_utils.login_logout import LogInOut
 import pytest_check
 import inspect
 

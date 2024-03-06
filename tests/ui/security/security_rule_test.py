@@ -8,17 +8,17 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 # from src.ui.object.ip.ipObject import IpAddress
-from support.ui_utils.object.createObject import CreateObject
-from support.ui_utils.object.searchObject import SearchObject
-from support.ui_utils.object.deleteObject import DeleteObject
-from support.ui_utils.policy.createRule import CreateRule
-from support.ui_utils.policy.searchRule import SearchRule
-from support.ui_utils.policy.deleteRule import DeleteRule
-from support.ui_utils.element_position.policyElementPosition import *
-from support.ui_utils.element_position.objectElementPosition import *
-from support.api_utils.trafficVerification import *
-from support.api_utils.analysisResult import *
-import support.ui_utils.envInitialization
+from support.ui_utils.object.create_object import CreateObject
+from support.ui_utils.object.search_object import SearchObject
+from support.ui_utils.object.delete_object import DeleteObject
+from support.ui_utils.policy.create_rule import CreateRule
+from support.ui_utils.policy.search_rule import SearchRule
+from support.ui_utils.policy.delete_rule import DeleteRule
+from support.ui_utils.element_position.policy_element_position import *
+from support.ui_utils.element_position.object_element_position import *
+from support.traffic_replay.traffic_verification import *
+from support.api_utils.analysis_result import *
+import support.ui_utils.env_initialization
 
 def run(parameter):
     print("Begin to run test case: " + parameter["test_case_name"])
@@ -26,9 +26,9 @@ def run(parameter):
     start_time = time.time()
     
     # 环境初始化
-    support.ui_utils.envInitialization.run_selenium_server()
-    driver = support.ui_utils.envInitialization.my_driver()
-    support.ui_utils.envInitialization.setup()
+    support.ui_utils.env_initialization.run_selenium_server()
+    driver = support.ui_utils.env_initialization.my_driver()
+    support.ui_utils.env_initialization.setup()
     
     # 测试数据
     test_data = {
@@ -686,8 +686,8 @@ def run(parameter):
                 print("to be added...")
     
     # 清理环境
-    support.ui_utils.envInitialization.teardown()
-    support.ui_utils.envInitialization.kill_jar_process()
+    support.ui_utils.env_initialization.teardown()
+    support.ui_utils.env_initialization.kill_jar_process()
     
     # 脚本结束时间和耗时
     end_time = time.time()

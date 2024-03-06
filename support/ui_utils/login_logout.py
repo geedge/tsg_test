@@ -1,9 +1,9 @@
 import time
 import configparser
-from myWebDriver import MyWebDriver
+from support.ui_utils.my_web_driver import MyWebDriver
 from selenium.webdriver.common.by import By
 from workpath import *
-from element_position.profileElementPosition import *
+from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
@@ -15,7 +15,7 @@ class LogInOut:
     def __init__(self, driver: MyWebDriver):
         self.driver = driver
         self.loginout_parse = configparser.ConfigParser()
-        loginout_parse_dir = os.path.join(workdir, "ui_utils", "loginout.ini")
+        loginout_parse_dir = os.path.join(workdir, "ui_utils", "login_logout.ini")
         self.loginout_parse.read(loginout_parse_dir, encoding="utf-8")
         self.tsglogin_url = self.loginout_parse.get("tsg_url", "login_url")
 
