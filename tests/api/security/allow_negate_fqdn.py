@@ -11,19 +11,19 @@ def run(parameter):
     print("Begin to run test case: " + parameter["test_case_name"])
     # 测试数据
     test_data_json = {
-      "isMultiPriority": False,
-      "ruleNum": 1,
-      "policyType": "security",
+      "is_multi_priority": False,
+      "rule_num": 1,
+      "policy_type": "security",
       "rule_action_1": "allow",
       "do_log_1": 2,
       "obj_condition_1": [
         {
           "attribute_name": "ATTR_SOURCE_IP",
-          "objectType": "ip",
-          "objectSubType": "ip",
-          "objectList": [
+          "object_type": "ip",
+          "object_sub_type": "ip",
+          "object_list": [
             {
-              "addItemList": [
+              "add_item_list": [
                 {
                   "ip_address": "default",
                   "port_range": "0-65535"
@@ -35,13 +35,13 @@ def run(parameter):
         {
           "is_negate": 1,
           "attribute_name": "ATTR_SERVER_FQDN",
-          "objectType": "fqdn",
-          "objectSubType": "fqdn",
-          "objectList": [
+          "object_type": "fqdn",
+          "object_sub_type": "fqdn",
+          "object_list": [
             {
-              "addItemList": [
+              "add_item_list": [
                 {
-                  "keywordArray": [
+                  "keyword_array": [
                     "open.node.com"
                   ]
                 }
@@ -51,7 +51,7 @@ def run(parameter):
         }
       ],
       "app_name_1": ["http"],
-      "expectedReturn": "POST",
+      "expected_return": "POST",
       "counters_1": {"hits": 0},
       "log_query_param_1": [],
       "command": "curl -kv http://open.node.com:180"

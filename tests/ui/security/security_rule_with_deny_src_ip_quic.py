@@ -4,7 +4,6 @@ import pytest
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-# from src.ui.object.ip.ipObject import IpAddress
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
@@ -28,18 +27,18 @@ def run(parameter):
     
     # 测试数据
     test_data = {
-        "isMultiPriority": False,
-        "ruleNum": 1,
-        "policyType": "security",
-        "ruleName": "security_rule_with_deny_ip_quic",
-        "ruleAction": "deny",
-        "ruleType": "create",
+        "is_multi_priority": False,
+        "rule_num": 1,
+        "policy_type": "security",
+        "rule_name": "security_rule_with_deny_ip_quic",
+        "rule_action": "deny",
+        "rule_type": "create",
         "condition": {
             "sourceIP": [
                 {
                     "name": "security_source_ip",
-                    "objectType": "ip",
-                    "selectType": False,
+                    "object_type": "ip",
+                    "select_type": False,
                     "negate": False,
                     "item": [
                         "1.1.1.1",
@@ -47,11 +46,11 @@ def run(parameter):
                     ]
                 }
             ],
-            "sourcePort": [
+            "source_port": [
                 {
                     "name": "security_source_port",
-                    "objectType": "port",
-                    "selectType": False,
+                    "object_type": "port",
+                    "select_type": False,
                     "negate": False,
                     "item": [
                         "1000-1110",
@@ -59,18 +58,18 @@ def run(parameter):
                     ]
                 }
             ],
-            "destinationIP": [],
-            "destinationPort": [],
-            "internalIP": [],
-            "internalPort": [],
-            "externalIP": [],
-            "externalPort": [],
-            "sourceGeography": [],
-            "destinationGeography": [],
-            "subId": [],
+            "destination_ip": [],
+            "destination_port": [],
+            "internal_ip": [],
+            "internal_port": [],
+            "external_ip": [],
+            "external_port": [],
+            "source_geography": [],
+            "destination_geography": [],
+            "sub_id": [],
             "device": [],
             "tunnel": [],
-            "tunnelLevel": [],
+            "tunnel_level": [],
             "flag": [],
             "application": [
                 {
@@ -78,11 +77,11 @@ def run(parameter):
                     "negate": False
                 }
             ],
-            "serverFqdn": [
+            "server_fqdn": [
                 {
                     "name": "www.baidu.com", # 需要新建，不能使用已存在的object，保证自动化的统一性，这里只是示例
-                    "objectType": "fqdn",
-                    "selectType": False,
+                    "object_type": "fqdn",
+                    "select_type": False,
                     "negate": False,
                     "plus": False,
                     "item": [
@@ -90,12 +89,12 @@ def run(parameter):
                     ]
                 }
             ],
-            "protocolFiled": [
+            "protocol_filed": [
                 {
                     "name": "youtube", # 需要新建，不能使用已存在的object，保证自动化的统一性，这里只是示例
-                    "fieldType": "url",
-                    "objectType": "url",
-                    "selectType": False,
+                    "field_type": "url",
+                    "object_type": "url",
+                    "select_type": False,
                     "negate": False,
                     "plus": False,
                     "item": [
@@ -104,40 +103,40 @@ def run(parameter):
                     ]
                 }
             ],
-            "subActionOverride": True,
-            "subAction": [
+            "sub_action_override": True,
+            "sub_action": [
                 {
                     "type": "drop",
-                    "dropPacket": 1,
-                    "sendTcpRst": False,
-                    "sendIcmpUnreachable": True
+                    "drop_packet": 1,
+                    "send_tcp_rst": False,
+                    "send_icmp_unreachable": True
                 }
                 # {
                 #     "type": "rate_limit",
-                #     "rateUnit": "kbps",
-                #     "rateValue": 200
+                #     "rate_unit": "kbps",
+                #     "rate_value": 200
                 # }
                 # {
                 #     "type": "block",
                 #     "code": 404,
-                #     "contentType": "TEXT",
+                #     "content_type": "TEXT",
                 #     "content": "block_change_response_profile"
                 # }
                 # {
                 #     "type": "redirect",
-                #     "redirectUrl": "www.google.com"
+                #     "redirect_url": "www.google.com"
                 # }
             ],
-            "packetCapture": [
+            "packet_capture": [
                 {
                     "enable": True,
-                    "captureDepth": 3000
+                    "capture_depth": 3000
                 }
             ]
         },
         "profile": [
         ],
-        "expectedReturn": "POST",
+        "expected_return": "POST",
         "counters_1": {"hits": 0},
         "log_query_param_1": [],
         "command": "curl -kv https://www.google.com"
@@ -145,7 +144,7 @@ def run(parameter):
     
     # 添加定位库集合
     test_rule_element_position = {}
-    if test_data["policyType"] == "security":
+    if test_data["policy_type"] == "security":
         test_ip_object_element_position = {
             "page_jump":{
                 "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -294,8 +293,8 @@ def run(parameter):
             if create_ip_code != 200:
                 result = "Fail to create ip object."
                 break
-    if "sourcePort" in test_data["condition"] and len(test_data["condition"]["sourcePort"]) != 0:
-        port_data = test_data["condition"]["sourcePort"]
+    if "source_port" in test_data["condition"] and len(test_data["condition"]["source_port"]) != 0:
+        port_data = test_data["condition"]["source_port"]
         create_port = CreateObject(driver)
         for j in range(len(port_data)):
             create_port_code = create_port.create(port_data[j], test_port_object_element_position)
@@ -325,7 +324,7 @@ def run(parameter):
     # 删除rule
     if create_rule_code == 200:
         search_rule = SearchRule(driver)
-        search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
+        search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
         if search_rule_code == 200:
             delete_rule = DeleteRule(driver)
             delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)

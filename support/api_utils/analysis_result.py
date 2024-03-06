@@ -10,12 +10,12 @@ class AnalysisResult():
         if len(verification_result) == 4:
             statistics_failure_reason = verification_result[3]
         failure_reason = ""
-        if condition["policyType"] == "statistics":
+        if condition["policy_type"] == "statistics":
             failure_reason = statistics_failure_reason
-        elif condition["policyType"] == "service_chaining":
+        elif condition["policy_type"] == "service_chaining":
             if cmd_result == False or log_result == False or metric_result == False:
                 failure_reason = failure_reason + "The verification result of metrics is failed, the failure reason is: the metrics do not match the expectation value."
-        elif condition["policyType"] == "security":
+        elif condition["policy_type"] == "security":
             if cmd_result == False and log_result == True and metric_result == True and timeout_result == True:
                 failure_reason = failure_reason + "The verification result of policy effect is failed, the failure reason is: the contents returned by the command do not contain the expected value."
             elif cmd_result == False and log_result == True and metric_result == True and timeout_result == False:

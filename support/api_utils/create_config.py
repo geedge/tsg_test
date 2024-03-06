@@ -17,12 +17,12 @@ class CreateConfig():
         create_ip_ids, create_subid_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids = [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
         # statistics和sc需要随机ip
-        if condition["policyType"] == "statistics" or (condition["policyType"] == "service_chaining" and condition["targeted_traffic"] == "raw"):
+        if condition["policy_type"] == "statistics" or (condition["policy_type"] == "service_chaining" and condition["targeted_traffic"] == "raw"):
             condition = self.generate_random_ip(condition, run_env)
         # 指定循环次数
-        isMultiPriority = condition['isMultiPriority']
+        isMultiPriority = condition["is_multi_priority"]
         if isMultiPriority:
-            rule_num = condition['ruleNum']
+            rule_num = condition["rule_num"]
         else:
             rule_num = 1
         for i in range(rule_num):
@@ -58,14 +58,14 @@ class CreateConfig():
                 for profile_data in profile_condition_value:
                     create_profile_ids_dict = create_profile.create_profile_from_template(template_path, profile_data, token, api_server, vsys_id)
                     create_profile_ids.append(create_profile_ids_dict)
-                    if condition["policyType"] == "statistics" or condition["policyType"] == "service_chaining":
+                    if condition["policy_type"] == "statistics" or condition["policy_type"] == "service_chaining":
                         temp_profile_list.append(create_profile_ids_dict)
             # 创建rule
             create_rule = CreatePolicyRule()
             policy_id_list = create_rule.create_rule_from_template(token, src_list, dst_list, filter_list, flag_list, condition, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
             policy_id = list(policy_id_list[0].values())[0]
             if len(create_profile_ids) > i:
-                if condition["policyType"] == "statistics":
+                if condition["policy_type"] == "statistics":
                     temp_info = {}
                     temp_info["policy_id"] = list(policy_id_list[i].values())[i]
                     temp_info["profile_info"] = temp_profile_list
@@ -80,7 +80,7 @@ class CreateConfig():
                             statistics_info["version"] = chart["version"]
                             statistics_info["sql"] = chart["sql"]
                             statistics_sc_info_list.append(statistics_info)
-                elif condition["policyType"] == "service_chaining":
+                elif condition["policy_type"] == "service_chaining":
                     sc_sff_sf_info = {}
                     sc_sff_sf_info["policy_id"] = list(policy_id_list[i].values())[i]
                     sc_sff_sf_info["sff_info"] = temp_profile_list
@@ -123,8 +123,8 @@ class CreateConfig():
         # statistics中将ip改为随机
         if "obj_condition_1" in config.keys():
             for obj in config["obj_condition_1"]:
-                if obj["protocolField"] == "ATTR_SOURCE_IP" or obj["protocolField"] == "ATTR_DESTINATION_ADDR":
-                    src_ip = obj["objectList"][0]["addItemList"][0]["ip_address"]
+                if obj["protocol_field"] == "ATTR_SOURCE_IP" or obj["protocol_field"] == "ATTR_DESTINATION_ADDR":
+                    src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
                         src_ip_list[2] = str(random.randint(200, 250))
@@ -136,7 +136,7 @@ class CreateConfig():
                             src_ip_list[0] = "10"
                             src_ip_list[1] = "64"
                         new_src_ip = ".".join(src_ip_list)
-                        obj["objectList"][0]["addItemList"][0]["ip_address"] = new_src_ip
+                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
                     elif "-" in src_ip and "/" not in src_ip:
                         two_ip_list = src_ip.split("-")
                         ip_list_1 = two_ip_list[0].split(".")
@@ -161,7 +161,7 @@ class CreateConfig():
                         new_two_ip_list.append(new_ip_1)
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
-                        obj["objectList"][0]["addItemList"][0]["ip_address"] = new_two_ip
+                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
         return config
 
 if __name__ == "__main__":

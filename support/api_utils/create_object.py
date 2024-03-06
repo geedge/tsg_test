@@ -89,9 +89,9 @@ class CreateObject():
         if 'is_import' in condition:
             is_import = condition['is_import']
         attribute_name = condition['attribute_name']
-        obj_list = condition['objectList']
-        obj_type = condition['objectType']
-        obj_sub_type = condition['objectSubType']
+        obj_list = condition["object_list"]
+        obj_type = condition["object_type"]
+        obj_sub_type = condition['object_sub_type']
         if 'is_negate' in condition.keys():
             is_negate = condition['is_negate']
         else:
@@ -100,9 +100,9 @@ class CreateObject():
         obj_template_dict['object']['sub_type'] = obj_sub_type
         obj_template_dict['vsys_id'] = vsys_id
         for obj in obj_list:
-            add_item_list = obj['addItemList']
-            if "contextName" in obj.keys():
-                context_name = obj['contextName']
+            add_item_list = obj["add_item_list"]
+            if "context_name" in obj.keys():
+                context_name = obj['context_name']
             else:
                 context_name = ''
             if is_import == 0:
@@ -161,17 +161,17 @@ class CreateObject():
             elif obj_type == "http_signature":
                 for item in add_item_list:
                     patterns = []
-                    keywords = item['keywordArray'][0]
+                    keywords = item["keyword_array"][0]
                     object_dict = dict(keywords=keywords)
                     patterns.append(object_dict)
                     patterns = dict(patterns=patterns)
                     string = dict(contextual_string=patterns, op='add')
-                    string['contextual_string']['contextName'] = context_name
+                    string['contextual_string']['context_name'] = context_name
                     items.append(string)
             else:
                 for item in add_item_list:
                     patterns = []
-                    keywords = item['keywordArray'][0]
+                    keywords = item["keyword_array"][0]
                     object_dict = dict(keywords=keywords)
                     patterns.append(object_dict)
                     patterns = dict(patterns=patterns)
@@ -180,7 +180,7 @@ class CreateObject():
         elif is_repeat == 1:
             for item in add_item_list:
                     patterns = []
-                    object_file = item['keywordArray'][0]
+                    object_file = item["keyword_array"][0]
                     with open(object_file, 'r', encoding="utf-8-sig") as file:
                         lines = file.readlines()
                         for line in lines:
@@ -199,7 +199,7 @@ class CreateObject():
         headers = {"Authorization": token}
         data = {'type': obj_type, 'vsys_id': vsys_id}
         for item in add_item_list:
-            object_file = item['keywordArray'][0]
+            object_file = item["keyword_array"][0]
             file_name = object_file.split("/")[-1]
             files = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
         url = api_host + "/v1/policy/object/import"

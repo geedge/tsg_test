@@ -18,9 +18,9 @@ class TrafficVerification():
         vsys_id = parameter["vsys_id"]
         if "api" in parameter["path"]:
             token = parameter["token"]
-        isMultiPriority = condition['isMultiPriority']
+        isMultiPriority = condition["is_multi_priority"]
         if isMultiPriority:
-            rule_num = condition['ruleNum']
+            rule_num = condition["rule_num"]
         else:
             rule_num = 1
         if len(cfg_list) != 0 :
@@ -28,7 +28,7 @@ class TrafficVerification():
             statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
             policy_id = list(create_policies_ids[0].values())[0]
         # 判断，如果condition中包含名为command的key，则读取command来执行，否则执行默认的
-        policy_type = condition["policyType"]
+        policy_type = condition["policy_type"]
         log = support.api_utils.get_log.GetLog()
         if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
             # 获取开始时间
@@ -44,12 +44,12 @@ class TrafficVerification():
             # cmd_return = output.decode(errors='ignore')
             cmd_return = output
             print(output)
-            expected_return = condition['expectedReturn']
+            expected_return = condition["expected_return"]
             # 获取结束时间
             now = datetime.utcnow()
             end_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
             cmd_result = self.is_in(cmd_return, expected_return)
-            loop_num = condition['ruleNum']
+            loop_num = condition["rule_num"]
             is_counters, is_log_query = self.is_verify(condition, loop_num, 'counters', 'log_query_param')
             if is_log == 1:
                 if is_log_query == 1:
@@ -88,18 +88,18 @@ class TrafficVerification():
             # 解析trex使用参数， 解析client server ip
             for ip_item in condition["obj_condition_1"]:
                 if "ATTR_SOURCE_IP" in ip_item.values():
-                    if "-" in ip_item["objectList"][0]["addItemList"][0]["ip_address"]:
-                        clients_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[0]
-                        clients_end = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[-1]
+                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                        clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                        clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
                     else:
-                        clients_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"]
+                        clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                         clients_end = clients_start
                 if "ATTR_DESTINATION_ADDR" in ip_item.values():
-                    if "-" in ip_item["objectList"][0]["addItemList"][0]["ip_address"]:
-                        servers_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[0]
-                        servers_end = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[-1]
+                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                        servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                        servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
                     else:
-                        servers_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"]
+                        servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                         servers_end = servers_start
             # 解析trex 命令行参数，-m -d
             if "trex" in condition.keys():
@@ -128,7 +128,7 @@ class TrafficVerification():
                     return False, False, False
                 verify_policy_break_count += 1
                 time.sleep(20)
-                print("间隔{}秒，第{}次策略验证结果：策略验证失败，策略没有生效，{}策略id：{} ...".format(20*verify_policy_break_count, verify_policy_break_count, condition["policyType"], policy_id))
+                print("间隔{}秒，第{}次策略验证结果：策略验证失败，策略没有生效，{}策略id：{} ...".format(20*verify_policy_break_count, verify_policy_break_count, condition["policy_type"], policy_id))
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             traffic_replay = TrafficReplay(template_path)
@@ -136,7 +136,7 @@ class TrafficVerification():
             time.sleep(50)
             now = datetime.utcnow()
             end_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
-            cmd_return = expected_return = condition['expectedReturn']
+            cmd_return = expected_return = condition["expected_return"]
             # 断言判断
             trex_ip_info = {}
             trex_ip_info["clients_start"] = clients_start
@@ -173,18 +173,18 @@ class TrafficVerification():
                 # 解析trex使用参数， 解析client server ip
                 for ip_item in condition["obj_condition_1"]:
                     if "ATTR_SOURCE_IP" in ip_item.values():
-                        if "-" in ip_item["objectList"][0]["addItemList"][0]["ip_address"]:
-                            clients_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[0]
-                            clients_end = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[-1]
+                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                            clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
                         else:
-                            clients_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"]
+                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                             clients_end = clients_start
                     if "ATTR_DESTINATION_ADDR" in ip_item.values():
-                        if "-" in ip_item["objectList"][0]["addItemList"][0]["ip_address"]:
-                            servers_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[0]
-                            servers_end = ip_item["objectList"][0]["addItemList"][0]["ip_address"].split("-")[-1]
+                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                            servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
                         else:
-                            servers_start = ip_item["objectList"][0]["addItemList"][0]["ip_address"]
+                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                             servers_end = servers_start
                 # 解析trex 命令行参数，-m -d
                 if "trex" in condition.keys():
@@ -204,7 +204,7 @@ class TrafficVerification():
                 time.sleep(20)
                 now = datetime.utcnow()
                 end_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')
-                cmd_return = expected_return = condition["expectedReturn"]
+                cmd_return = expected_return = condition["expected_return"]
                 # 断言判断
                 if len(statistics_sc_info_list) > 0:   # 非空
                     for statistics_info in statistics_sc_info_list:
@@ -241,7 +241,7 @@ class TrafficVerification():
                 p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 output, _ = p.communicate()
                 cmd_return = output.decode()
-                expected_return = condition['expectedReturn']
+                expected_return = condition["expected_return"]
                 # 获取结束时间
                 now = datetime.utcnow()
                 end_time = now.strftime('%Y-%m-%dT%H:%M:%SZ')

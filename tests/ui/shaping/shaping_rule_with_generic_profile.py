@@ -4,7 +4,6 @@ import pytest
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-# from src.ui.object.ip.ipObject import IpAddress
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
@@ -29,20 +28,20 @@ def run(parameter):
     
     # 测试数据
     test_data = {
-        "isMultiPriority": False,
-        "ruleNum": 1,
-        "policyType": "shaping",
-        "ruleName": "shaping_rule_with_generic_profile",
-        "ruleAction": "shaping",
-        "ruleType": "create",
+        "is_multi_priority": False,
+        "rule_num": 1,
+        "policy_type": "shaping",
+        "rule_name": "shaping_rule_with_generic_profile",
+        "rule_action": "shaping",
+        "rule_type": "create",
         "rulePriority": 6,
         "ruleFairFactor": 2,
         "condition": {
             "sourceIP": [
                 {
                     "name": "shaping_source_ip",
-                    "objectType": "ip",
-                    "selectType": False,
+                    "object_type": "ip",
+                    "select_type": False,
                     "negate": False,
                     "item": [
                         "1.1.1.1",
@@ -50,31 +49,31 @@ def run(parameter):
                     ]
                 }
             ],
-            "sourcePort": [],
-            "destinationIP": [],
-            "destinationPort": [],
-            "internalIP": [],
-            "internalPort": [],
-            "externalIP": [],
-            "externalPort": [],
+            "source_port": [],
+            "destination_ip": [],
+            "destination_port": [],
+            "internal_ip": [],
+            "internal_port": [],
+            "external_ip": [],
+            "external_port": [],
             "geography": [],
-            "subId": [],
+            "sub_id": [],
             "device": [],
             "tunnel": [],
-            "tunnelLevel": [],
+            "tunnel_level": [],
             "flag": [],
             "application": [],
-            "serverFqdn": [],
-            "protocolFiled": [],
-            "subActionOverride": False,
-            "subAction": [],
-            "packetCapture": [],
+            "server_fqdn": [],
+            "protocol_filed": [],
+            "sub_action_override": False,
+            "sub_action": [],
+            "packet_capture": [],
         },
         "multiProfile": True,
         "profile": [
             {
                 "name": "shaping_generic_profile",
-                "profileType": "create",
+                "profile_type": "create",
                 "type": "generic",
                 "argument": "",
                 "unit": "Mbps->",
@@ -83,7 +82,7 @@ def run(parameter):
             },
             {
                 "name": "shaping_generic_2_profile",
-                "profileType": "create",
+                "profile_type": "create",
                 "type": "generic",
                 "argument": "",
                 "unit": "bps->",
@@ -95,7 +94,7 @@ def run(parameter):
     
     # 添加定位库集合
     test_rule_element_position = {}
-    if test_data["policyType"] == "shaping":
+    if test_data["policy_type"] == "shaping":
         test_ip_object_element_position = {
             "page_jump":{
                 "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -214,7 +213,7 @@ def run(parameter):
     # 删除rule
     if create_rule_code == 200:
         search_rule = SearchRule(driver)
-        search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policyType"], test_data["ruleName"], test_rule_element_position)
+        search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
         if search_rule_code == 200:
             delete_rule = DeleteRule(driver)
             delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, False)

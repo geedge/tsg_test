@@ -36,7 +36,7 @@ class PolicyVerify():
         appId = 67
         appName = "http"
         # 重组type
-        verify_list_dict["verify_list"][0]["type"] = condition["policyType"]
+        verify_list_dict["verify_list"][0]["type"] = condition["policy_type"]
         # 重组 vsys_id
         verify_list_dict["verify_list"][0]["vsys_id"] = vsys_id
         verify_list_dict["vsys_id"] = vsys_id
@@ -59,26 +59,26 @@ class PolicyVerify():
         verify_list_dict["verify_list"][0]["verify_session"]["attributes"].append(verify_app)
         # 重组 filter
         for obj_cond in condition["obj_condition_1"]:    # 遍历添加filter条件
-            protocolField = obj_cond["protocolField"]
+            protocolField = obj_cond["protocol_field"]
             if protocolField == "ATTR_SERVER_FQDN":     # fqdn
                 verify_fqdn_dict_0 = copy.deepcopy(verify_fqdn_dict)
-                verify_fqdn_dict_0["attribute_value"]["string"] = obj_cond["objectList"][0]["addItemList"][0]["keywordArray"][0]
+                verify_fqdn_dict_0["attribute_value"]["string"] = obj_cond["object_list"][0]["add_item_list"][0]["keyword_array"][0]
                 verify_list_dict["verify_list"][0]["verify_session"]["attributes"].append(verify_fqdn_dict_0)
             elif protocolField == "ATTR_HTTP_REQ_HDR":     # url
                 verify_http_req_hdr_dict_0 = copy.deepcopy(verify_http_req_hdr_dict)
-                verify_http_req_hdr_dict_0["attribute_value"]["string"] = obj_cond["objectList"][0]["addItemList"][0]["keywordArray"][0]
+                verify_http_req_hdr_dict_0["attribute_value"]["string"] = obj_cond["object_list"][0]["add_item_list"][0]["keyword_array"][0]
                 verify_http_req_hdr_dict_0["appId"] = appId
                 verify_http_req_hdr_dict_0["appName"] = appName
                 verify_list_dict["verify_list"][0]["verify_session"]["attributes"].append(verify_http_req_hdr_dict_0)
             elif protocolField == "ATTR_HTTP_RES_HDR":  # url
                 verify_http_res_hdr_dict_0 = copy.deepcopy(verify_http_res_hdr_dict)
-                verify_http_res_hdr_dict_0["attribute_value"]["string"] = obj_cond["objectList"][0]["addItemList"][0]["keywordArray"][0]
+                verify_http_res_hdr_dict_0["attribute_value"]["string"] = obj_cond["object_list"][0]["add_item_list"][0]["keyword_array"][0]
                 verify_http_res_hdr_dict_0["appId"] = appId
                 verify_http_res_hdr_dict_0["appName"] = appName
                 verify_list_dict["verify_list"][0]["verify_session"]["attributes"].append(verify_http_res_hdr_dict_0)
             elif protocolField in filter_attribute_name_dict.keys():     #通用的构造
                 verify_obj_comm_dict_0 = copy.deepcopy(verify_obj_comm_dict)
-                verify_obj_comm_dict_0["attribute_value"]["string"] = obj_cond["objectList"][0]["addItemList"][0]["keywordArray"][0]
+                verify_obj_comm_dict_0["attribute_value"]["string"] = obj_cond["object_list"][0]["add_item_list"][0]["keyword_array"][0]
                 verify_obj_comm_dict_0["attribute_name"] = filter_attribute_name_dict[protocolField]
                 verify_obj_comm_dict_0["appId"] = appId
                 verify_obj_comm_dict_0["appName"] = appName

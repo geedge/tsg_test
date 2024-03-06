@@ -41,7 +41,7 @@ class GetLog():
             log_condition_dict['vsys_id'] = vsys_id
             log_condition_dict['log_type'] = 'security_event'
             # 从conditions中获取object_type判断是否存在subscriberid
-            if len(condition["obj_condition_1"]) > 0 and condition["obj_condition_1"][0]["protocolField"] == "ATTR_SUBSCRIBER_ID":
+            if len(condition["obj_condition_1"]) > 0 and condition["obj_condition_1"][0]["protocol_field"] == "ATTR_SUBSCRIBER_ID":
                 log_filter = f"subscriber_id= 'test23' AND has(security_rule_list,{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
@@ -80,7 +80,7 @@ class GetLog():
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = api_host + "/v1/metric/query"
         for i in range(ruleNum):
-            policy_type = condition['policyType']
+            policy_type = condition["policy_type"]
             if policy_type == 'tsg_security':
                 dataset_identifier_name = "security-policy-rule-statistics"
             elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
