@@ -20,9 +20,12 @@ driver = None  # 全局变量用户保存webdirver实例
 def my_driver():
     global driver
     # 初始化
-    remote_url = read_config()
+    remote_url = read_config("remote_url", "url")
     chrome_option = webdriver.ChromeOptions()
     # 添加启用无痕模式的选项
+    os_name = platform.system()
+    if os_name == "Linux":
+        chrome_option.add_argument('--no-sandbox')
     chrome_option.add_argument("--incognito")
     # 打开chrome浏览器
     driver = MyWebDriver(
@@ -33,11 +36,11 @@ def my_driver():
     driver.maximize_window()
     return driver
 
-def read_config():
+def read_config(url, value):
     loginout_parse = configparser.ConfigParser()
     loginout_parse_dir = os.path.join(workdir, "ui_utils", "login_logout.ini")
     loginout_parse.read(loginout_parse_dir, encoding="utf-8")
-    remote_url = loginout_parse.get("remote_url", "url")
+    remote_url = loginout_parse.get(url, value)
     return remote_url
 
 def setup():
@@ -53,31 +56,30 @@ def teardown():
         time.sleep(1)
         
 def run_selenium_server():
-    is_run = False
-    loop_count = 0
-    while True:
+    for i in range(5):
         try:
-            is_run = False
-            remote_url = read_config()
+            print("Run selenium server for the {} time.".format(i+1))
+            remote_url = read_config("remote_url", "url")
             response = requests.get(remote_url)
             print(response.text)
             if len(response.text) != 0:
-                is_run = True
                 break
-        except:
-            print("Fail to start selenium server, begin to start it.")
-        finally:
-            loop_count += 1
-            if is_run == False or loop_count < 5:
-                run_jar()
             else:
-                kill_jar_process()
-                break
+                run_jar()
+        except:
+            print("Fail to start selenium server.")
 
 def run_jar():
-    jar_path = "D:/java_selenium/selenium-server-4.8.1.jar"
-    command = ["java", "-jar", jar_path, "standalone"]
+    os_name = platform.system()
+    if os_name == "Windows":
+        jar_path = "D:/java_selenium/selenium-server-4.8.1.jar"
+        command = ["java", "-jar", jar_path, "standalone"]
+    elif os_name == "Linux":
+        jar_path = "/opt/tsg_test/package/java_selenium/selenium-server-4.8.1.jar"
+        host_ip = read_config("linux_host", "host")
+        command = ["java", "-jar", jar_path, "standalone", "--host", host_ip]
     result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    time.sleep(5)
     print(f"Standard Output: {result.stdout}")
 
 def kill_jar_process():

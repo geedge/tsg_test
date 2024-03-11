@@ -8,6 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
 import sys
+import subprocess
+import platform
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from ui_utils.profile.profilePublicFunc import ProfilePublicFunc
 
@@ -31,6 +33,11 @@ class LogInOut:
         # self._check_ui_vsys()
         # 默认更改为英语
         self._default_language()
+        # 如果是centos虚拟机，要调整分辨率，不然会导致元素定位失败
+        # os_name = platform.system()
+        # if os_name == "Linux":
+        #     command = f"xrandr --output eDP-1 --mode {1920}x{1200}"
+        #     subprocess.check_call(command, shell=True)
 
     def _default_language(self):
         # 获取当前默认语言，并设置为英语

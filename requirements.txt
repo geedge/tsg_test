@@ -1,0 +1,9 @@
+requests
+Flask
+psutil
+selenium
+pymysql
+scapy
+PyYAML
+pytest
+pytest_check

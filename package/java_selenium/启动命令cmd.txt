@@ -1,1 +1,0 @@
-java -jar D:\java_selenium\selenium-server-4.8.1.jar standalone
