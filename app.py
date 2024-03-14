@@ -3,6 +3,10 @@ import os
 import glob
 import importlib
 import subprocess
+import platform
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -10,12 +14,6 @@ app = Flask(__name__)
 @app.route('/v1/tsg', methods=["POST"])
 def ReceiveCaseParameter():
     try:
-        # 安装python3和相关包
-        command = "python install_package.py"
-        # subprocess.check_call(["python2", "install_package.py"])
-        subprocess.check_output(command, shell=True)
-        print("The command is executed successfully.")
-        
         # 从MS或Jmeter等工具的请求体中获取参数
         req_json = request.get_json()
         run_status = req_json.get("run_status")
@@ -37,12 +35,17 @@ def ReceiveCaseParameter():
                 "module_name": "",
                 "test_case_name": ""
             }
-            project_path = "D:/Document/Project-TSG/Code/git/tsg_test"
+            os_name = platform.system()
+            if os_name == "Linux":
+                # project_path = "/opt/tsg_test"
+                project_path = "/app"
+            elif os_name == "Windows":
+                project_path = "D:/Document/Project-TSG/Code/git/tsg_test"
             parameter["root_path"] = project_path
             if tag == "api":
-                parameter["path"] = f"{project_path}/testcase/api"
+                parameter["path"] = f"{project_path}/tests/api"
             elif tag == "ui":
-                parameter["path"] = f"{project_path}/testcase/ui"
+                parameter["path"] = f"{project_path}/tests/ui"
             parameter["module_name"] = module_name
             temp_folder_path = parameter["path"] + "/" + module_name
             folder_list = os.listdir(temp_folder_path)
@@ -52,10 +55,13 @@ def ReceiveCaseParameter():
             files = glob.glob(path, recursive=True)
             for file in files:
                 print("Begin to match test case.")
-                file_name = file.split("\\")[-1]
+                if os_name == "Linux":
+                    file_name = file.split("/")[-1]
+                elif os_name == "Windows":
+                    file_name = file.split("\\")[-1]
                 if file_name == test_case_name + ".py":
                     parameter["test_case_name"] = test_case_name
-                    new_path = "testcase." + tag + "." + module_name + "." + test_case_name
+                    new_path = "tests." + tag + "." + module_name + "." + test_case_name
                     module = importlib.import_module(new_path)
                     result = module.run(parameter)
                     response_result = {}
@@ -86,5 +92,4 @@ def ReceiveCaseParameter():
         return response
 
 if __name__ == '__main__':
-    app.run(host = "192.168.32.54", port = 8800)
-    # app.run(host = "192.168.38.49", port = 8800)
+    app.run(host = "0.0.0.0", port = 8800)

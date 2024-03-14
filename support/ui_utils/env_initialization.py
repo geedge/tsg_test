@@ -27,6 +27,7 @@ def my_driver():
     if os_name == "Linux":
         chrome_option.add_argument('--no-sandbox')
     chrome_option.add_argument("--incognito")
+    # chrome_option.add_argument("--headless")
     # 打开chrome浏览器
     driver = MyWebDriver(
         command_executor=remote_url,
@@ -59,13 +60,12 @@ def run_selenium_server():
     for i in range(5):
         try:
             print("Run selenium server for the {} time.".format(i+1))
+            run_jar()
             remote_url = read_config("remote_url", "url")
             response = requests.get(remote_url)
             print(response.text)
             if len(response.text) != 0:
                 break
-            else:
-                run_jar()
         except:
             print("Fail to start selenium server.")
 
@@ -75,7 +75,8 @@ def run_jar():
         jar_path = "D:/java_selenium/selenium-server-4.8.1.jar"
         command = ["java", "-jar", jar_path, "standalone"]
     elif os_name == "Linux":
-        jar_path = "/opt/tsg_test/package/java_selenium/selenium-server-4.8.1.jar"
+        # jar_path = "/opt/tsg_test/package/selenium-server-4.8.1.jar"
+        jar_path = "/app/tsg_test/package/selenium-server-4.8.1.jar"
         host_ip = read_config("linux_host", "host")
         command = ["java", "-jar", jar_path, "standalone", "--host", host_ip]
     result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
