@@ -682,7 +682,7 @@ def run(parameter):
     
     # 清理环境
     support.ui_utils.env_initialization.teardown()
-    support.ui_utils.env_initialization.kill_jar_process()
+    # support.ui_utils.env_initialization.kill_jar_process()
     
     # 脚本结束时间和耗时
     end_time = time.time()

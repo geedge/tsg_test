@@ -13,4 +13,5 @@ RUN chmod 777 ./*.py
 EXPOSE 8800
 
 # 当容器启动时运行python脚本
-CMD ["gunicorn", "-c", "gunicorn.conf.py", "app:app"]
+CMD ["/usr/local/bin/supervisord", "-c", "/app/supervisor.conf"]
+# CMD ["tail", "-f", "/dev/null"]

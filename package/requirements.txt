@@ -8,3 +8,4 @@ PyYAML
 pytest
 pytest_check
 gunicorn
+supervisor
