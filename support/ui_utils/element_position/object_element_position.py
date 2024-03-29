@@ -28,7 +28,7 @@ ipObjectPage_ipType_posId = "IPip"
 ipObjectPage_geographyType_posId = "Geographygeo_location"
 ipObjectPage_ipLearningType_posId = "IP Learningip_learning"
 ipObjectPage_addItem_posId = "temporary_form"  # 添加item_id
-ipObjectPage_inputItem_posXpath = '//div[@class="ip-input el-input el-input--small"]//input'
+ipObjectPage_inputItem_posXpath = '//div[@class="el-input el-input--small"]//input'
 ipObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save check"]'  # 保存item按钮
 # ipObjectPage_okButton_posXpath = '//button[@id="OK-_IpDetail_Home_App_anonymousComponent"]/span'  # OK按钮
 ipObjectPage_okButton_posId = "OK-_IpDetail_Home_App_anonymousComponent"  # OK按钮

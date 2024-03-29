@@ -8,8 +8,8 @@ WORKDIR /package_base
 COPY . /package_base
 
 # 安装基础包
-RUN yum clean all && yum makecache 
-RUN yum -y update 
+RUN yum clean all && yum makecache
+RUN yum -y update
 RUN yum install -y net-tools wget unzip
 RUN yum install -y epel-release zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gcc make
 RUN yum install -y python3-devel java-1.8.0-openjdk

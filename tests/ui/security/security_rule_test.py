@@ -21,7 +21,7 @@ def run(parameter):
     start_time = time.time()
     
     # 环境初始化
-    support.ui_utils.env_initialization.run_selenium_server()
+    support.ui_utils.env_initialization.initiate_selenium_request()
     driver = support.ui_utils.env_initialization.my_driver()
     support.ui_utils.env_initialization.setup()
     
@@ -682,7 +682,7 @@ def run(parameter):
     
     # 清理环境
     support.ui_utils.env_initialization.teardown()
-    # support.ui_utils.env_initialization.kill_jar_process()
+    # support.ui_utils.env_initialization.kill_selenium()
     
     # 脚本结束时间和耗时
     end_time = time.time()

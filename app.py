@@ -15,13 +15,14 @@ app = Flask(__name__)
 def ReceiveCaseParameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
+        sys.stdout.write("test\n")
         req_json = request.get_json()
         run_status = req_json.get("run_status")
         module_name = req_json.get("module_name")
         test_case_name = req_json.get("test_case_name")
         tag = req_json.get("tag")
         if run_status == 1:
-            print("Begin to build test parameter.")
+            sys.stdout.write("Begin to build test parameter.\n")
             parameter = {
                 "username": "zhaokun",
                 "password": "zhaokun1",
@@ -49,12 +50,12 @@ def ReceiveCaseParameter():
             parameter["module_name"] = module_name
             temp_folder_path = parameter["path"] + "/" + module_name
             folder_list = os.listdir(temp_folder_path)
-            print("The test folder contain: ", folder_list)
+            sys.stdout.write("The test folder contain: {}\n".format(folder_list))
             # 匹配测试用例
             path = f"{temp_folder_path}/*.py"
             files = glob.glob(path, recursive=True)
             for file in files:
-                print("Begin to match test case.")
+                sys.stdout.write("Begin to match test case.")
                 if os_name == "Linux":
                     file_name = file.split("/")[-1]
                 elif os_name == "Windows":
@@ -81,9 +82,9 @@ def ReceiveCaseParameter():
             response.status_code = response_result["code"]
         return response
     except subprocess.CalledProcessError as e:  
-        print("Fail to execute the command. The return code: {}".format(e.returncode))
+        sys.stderr.write("Fail to execute the command. The return code: {}\n".format(e.returncode))
         response_result = {}
-        response_result["code"] = 417
+        response_result["code"] = 418
         response_result["msg"] = ""
         response_result["data"] = None
         response_result["success"] = False
