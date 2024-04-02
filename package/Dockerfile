@@ -14,6 +14,7 @@ RUN yum install -y net-tools wget unzip
 RUN yum install -y epel-release zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gcc make
 RUN yum install -y python3-devel java-1.8.0-openjdk
 RUN yum install -y python3 python3-pip
+RUN yum install -y tcpdump
 
 # 通过pip3安装需要的包
 RUN pip3 install --no-cache-dir -r requirements.txt

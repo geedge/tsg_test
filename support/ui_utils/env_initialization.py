@@ -32,9 +32,11 @@ def my_driver():
                     docker_ip = addr.address
                     remote_url = "http://" + docker_ip + ":4444"
         # 启用无窗口模式
-        chrome_option.add_argument('--no-sandbox')
+        chrome_option.add_argument("--no-sandbox")
         chrome_option.add_argument("--headless")
-        chrome_option.add_argument('--window-size=1920, 1200')
+        chrome_option.add_argument("--disable-gpu")
+        chrome_option.add_argument("--disable-dev-shm-usage")
+        chrome_option.add_argument("--window-size=1920, 1200")
     elif os_name == "Windows":
         remote_url = read_config("remote_url", "url")
         # 启用无痕模式
