@@ -44,6 +44,8 @@ class CreateObject():
                 print("to be added...")
             elif data["object_type"] == "url" or data["object_type"] == "account" or data["object_type"] == "phone_number":
                 print("to be added...")
+            elif data["object_type"] == "fqdn":
+                print("to be added..")
             elif data["object_type"] == "tunnel":
                 print("to be added...")
             elif data["object_type"] == "flag":

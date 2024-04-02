@@ -2,7 +2,7 @@ import time
 import configparser
 from support.ui_utils.my_web_driver import MyWebDriver
 from selenium.webdriver.common.by import By
-from workpath import *
+from support.ui_utils.workpath import *
 from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
