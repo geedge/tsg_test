@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from support.ui_utils.random_name import RandomName
 from support.ui_utils.read_data import ReadData
-from workpath import workdir
+from support.ui_utils.workpath import workdir
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.element_position.profile_element_position import *
 

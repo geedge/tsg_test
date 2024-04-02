@@ -1,6 +1,6 @@
 import json
 import os
-from workpath import workdir
+from support.ui_utils.workpath import workdir
 
 class ReadData:
     def __init__(self):
