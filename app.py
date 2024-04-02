@@ -12,7 +12,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 @app.route('/v1/tsg', methods=["POST"])
-def ReceiveCaseParameter():
+def ReceiveParameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
         sys.stdout.write("test\n")
@@ -34,7 +34,9 @@ def ReceiveCaseParameter():
                 "root_path": "",
                 "path": "",
                 "module_name": "",
-                "test_case_name": ""
+                "test_case_name": "",
+                "app_name": "",
+                "app_full_name": ""
             }
             os_name = platform.system()
             if os_name == "Linux":
@@ -47,6 +49,10 @@ def ReceiveCaseParameter():
                 parameter["path"] = f"{project_path}/tests/api"
             elif tag == "ui":
                 parameter["path"] = f"{project_path}/tests/ui"
+            elif tag == "app":
+                parameter["path"] = f"{project_path}/tests/app"
+                parameter["app_name"] = req_json.get("app_name")
+                parameter["app_full_name"] = req_json.get("app_full_name")
             parameter["module_name"] = module_name
             temp_folder_path = parameter["path"] + "/" + module_name
             folder_list = os.listdir(temp_folder_path)
