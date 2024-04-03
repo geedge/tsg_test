@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.object.page_jump import PageJump
@@ -15,6 +16,7 @@ class SearchObject():
         self.driver.find_element(By.ID, search_element_position["objectListPage_searchLabel_posId"]).send_keys(name)
         self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_selectName_posXpath"]).click()
         self.driver.find_element(By.ID, mainPage_objectSearch_buttonSearch_posId).click()
+        time.sleep(10)
         element_tr = self.driver.find_element(By.XPATH, search_element_position["objectListPage_tableTbody_posXpath"])
         row = element_tr.find_elements(By.XPATH, "tr") 
         if len(row) != 0 :

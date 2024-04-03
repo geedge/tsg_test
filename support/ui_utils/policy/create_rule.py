@@ -232,7 +232,8 @@ class CreateRule():
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
             
             return 200
-        except:
+        except Exception as e:
+            print(e)
             return 400  
         
     def add_ip(self, ip_data, ip_condition_type, create_element_position):

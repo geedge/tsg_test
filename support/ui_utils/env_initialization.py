@@ -41,6 +41,8 @@ def my_driver():
         remote_url = read_config("remote_url", "url")
         # 启用无痕模式
         # chrome_option.add_argument("--headless")
+        # chrome_option.add_argument("--disable-gpu")
+        # chrome_option.add_argument("--window-size=1920, 1200")
         chrome_option.add_argument("--incognito")
     # 打开chrome浏览器
     driver = MyWebDriver(

@@ -1,5 +1,6 @@
 # import os
-# import sys
+import sys
+import time
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.object.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
@@ -67,7 +68,8 @@ class CreateObject():
             self.driver.find_element(By.ID, create_element_position["objectPage_okButton_posId"]).click()
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
-        except:
+        except Exception as e:
+            print(e)
             return 400
     
     def create_group(self, data, object_type, object_element_position):
@@ -92,6 +94,7 @@ class CreateObject():
             group_subordinate_data = data["group_subordinate"]
             if len(group_subordinate_data) != 0:
                 for x in range(len(group_subordinate_data)):
+                    time.sleep(10)
                     self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_searchSubordinate{}_posXpath".format(object_type)]).send_keys(group_subordinate_data[x]["name"])
                     self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_searchSubordinate{}_posXpath".format(object_type)]).send_keys(Keys.ENTER)
                     temp_element_position = create_element_position["groupObjectPage_selectSubordinate{}_posXpath".format(object_type)].format(replaceValue=group_subordinate_data[x]["name"])
@@ -109,6 +112,7 @@ class CreateObject():
                 # 添加exclude
                 group_exclude_data = data["group_exclude"]
                 for y in range(len(group_exclude_data)):
+                    time.sleep(10)
                     self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_searchExclude{}_posXpath".format(object_type)]).send_keys(group_exclude_data[y]["name"])
                     self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_searchExclude{}_posXpath".format(object_type)]).send_keys(Keys.ENTER)
                     temp_element_position = create_element_position["groupObjectPage_selectExclude{}_posXpath".format(object_type)].format(replaceValue=group_exclude_data[y]["name"])
@@ -120,6 +124,7 @@ class CreateObject():
             self.driver.find_element(By.ID, create_element_position["objectPage_okButton_posId"]).click()
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
-        except:
+        except Exception as e:
+            print(f"捕获到异常: {e}", file=sys.stderr)
             return 400
         

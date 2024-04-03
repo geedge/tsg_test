@@ -24,5 +24,6 @@ class DeleteObject():
                 self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(0.5)
             return 200
-        except:
+        except Exception as e:
+            print(e)
             return 400
