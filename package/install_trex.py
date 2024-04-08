@@ -11,6 +11,7 @@ def install_trex():
         subprocess.check_call(["cp", "/opt/trex/v3.04/cfg/simple_cfg.yaml", "/etc/trex_cfg.yaml"])
         os.chdir("/opt/trex/v3.04")
         output = subprocess.check_output("./dpdk_setup_ports.py -s", shell=True).decode('utf-8')
+        # 注意：eth1和eth2是网卡名称，根据实际情况修改
         intf_list = search(output, ["eth1", "eth2"])
         file_path = "/etc/trex_cfg.yaml"
         file_overwrite(file_path, intf_list)
@@ -42,7 +43,7 @@ def file_overwrite(file_path, replacement_value):
         fourth_line_parts = lines[3].split(": ")
         if target_value == fourth_line_parts[0].strip():
             temp = "[" + ','.join(f"'{item}'" for item in replacement_value) + "]"
-            lines[3] = target_value + ": " + temp + "\n"
+            lines[3] = "  " + target_value + ": " + temp + "\n"
         with open(file_path, 'w') as file:  
             file.writelines(lines) 
         print("Overwrite successfully.")
