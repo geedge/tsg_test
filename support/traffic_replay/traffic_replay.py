@@ -9,7 +9,8 @@ import time
 import re
 import yaml
 import select
-
+from support.traffic_replay.overwrite_yaml import OverwriteYaml
+from support.traffic_replay.read_pcap import ReadPcap
 
 # trex_workpath = "/opt/trex/v3.03"        # trex安装目录
 # traffic_playback_workpath = "/opt/tsg_policy_api/traffic_replay"
@@ -25,8 +26,7 @@ class TrafficReplay():
         self.traffic_playback_workpath = path_dict["traffic_playback_workpath"]
         self.pcap_yaml_path = os.path.join(self.traffic_playback_workpath, "traffic_pcap")
 
-    def trex_playback(self, yaml_name, pcap_name, m=1, d=1,
-                      clients_start="10.50.36.1", clients_end="10.50.36.1", servers_start="10.50.66.1", servers_end="10.50.66.1"):
+    def trex_playback(self, yaml_name, pcap_name, m=1, d=1, clients_start="10.50.36.1", clients_end="10.50.36.1", servers_start="10.50.66.1", servers_end="10.50.66.1"):
         """
         :param yaml_name:  yaml文件名称
         :param pcap_name:  数据包文件名称
@@ -38,8 +38,8 @@ class TrafficReplay():
         rd_http = ReadPcap(self.path_dict)
         pcap_info_dict = rd_http.get_info(pcap_name)
         # 更具传入的pcap_name，修改yanl文件内容
-        rwya = RWyaml(self.path_dict)
-        rwya.replace_from_yaml(yaml_name, pcap_name, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
+        overwrite_yaml = OverwriteYaml(self.path_dict)
+        overwrite_yaml.replace_from_yaml(yaml_name, pcap_name, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
         # cd /opt/trex/v3.03/ && /opt/trex/v3.03/t-rex-64 -f /opt/trex/v3.03/cap2_my/http_50.yaml -m 1 -d 100
         # 重组trex执行命令
         template_trex_command = "cd {trex_workpath} && {trex_workpath}/t-rex-64 -f {yaml_abs_path} -m {m} -d {d}"
@@ -80,75 +80,6 @@ class TrafficReplay():
         metric_info_dict = {key:(value*open_flows) for key, value in pcap_info_dict.items()}
         print(metric_info_dict)
         return metric_info_dict
-
-class ReadPcap():
-    def __init__(self, path_dict):
-        self.traffic_playback_workpath = path_dict["traffic_playback_workpath"]
-        self.pcap_path = os.path.join(self.traffic_playback_workpath, "traffic_pcap")
-
-    def get_info(self, file_name):
-        """
-        获取数据包 包数、字节数统计信息
-        :param file_name:
-        :return:
-        """
-        # 字节和包数统计变量
-        pcap_info_dict = {
-            "total_packets" : 0,
-            "total_packets_sent": 0,
-            "total_packets_received": 0,
-            "total_bytes": 0,
-            "total_bytes_sent": 0,
-            "total_bytes_received": 0,
-            "total_syn_pkt": 1
-        }
-        file_abspath = os.path.join(self.pcap_path, file_name)
-        packets = rdpcap(file_abspath)
-        # 定义第一个包方向
-        src_ip = packets[0]["IP"].src
-        dst_ip = packets[0]["IP"].dst
-        # 计算包数和字节数
-        for pkt in packets:
-            ip_layer: IP = pkt["IP"]
-            pkt_length = len(pkt)
-            if pkt_length < 60:  # 数据包长度小于60，按60计算
-                pkt_length = 60
-            # 根据方向判断字节数和包数
-            if ip_layer.src == src_ip:
-                pcap_info_dict["total_packets"] += 1
-                pcap_info_dict["total_packets_sent"] += 1
-                pcap_info_dict["total_bytes"] += pkt_length
-                pcap_info_dict["total_bytes_sent"] += pkt_length
-            else:
-                pcap_info_dict["total_packets"] += 1
-                pcap_info_dict["total_packets_received"] += 1
-                pcap_info_dict["total_bytes"] += pkt_length
-                pcap_info_dict["total_bytes_received"] += pkt_length
-        print(pcap_info_dict)
-        return pcap_info_dict
-
-class RWyaml():
-    def __init__(self, path_dict):
-        self.traffic_playback_workpath = path_dict["traffic_playback_workpath"]
-        self.data_path = os.path.join(self.traffic_playback_workpath, "traffic_pcap")
-
-    def replace_from_yaml(self, yaml_name, pcap_name, clients_start="10.50.36.1", clients_end="10.50.36.1", servers_start="10.50.66.1", servers_end="10.50.66.1"):
-        # 组织yaml路径、pcap路径
-        yaml_abs_path = os.path.join(self.data_path, yaml_name)
-        pcap_abs_path = os.path.join(self.data_path, pcap_name)
-        #print(yaml_abs_path, pcap_abs_path)
-        with open(yaml_abs_path, "r", encoding="utf-8") as f:
-            result = yaml.load(f.read(), Loader=yaml.FullLoader)
-        # 修改pcap文件路径
-        result[0]["cap_info"][0]["name"] = pcap_abs_path
-        result[0]["generator"]["clients_start"] = clients_start
-        result[0]["generator"]["clients_end"] = clients_end
-        result[0]["generator"]["servers_start"] = servers_start
-        result[0]["generator"]["servers_end"] = servers_end
-        # 修改后重写数据
-        with open(yaml_abs_path, "w", encoding="utf-8") as f:
-            yaml.dump(result, f)
-        print(result)
 
 if __name__ == '__main__':
     clients_start = "10.64.7.16"
