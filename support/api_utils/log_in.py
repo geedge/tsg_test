@@ -6,7 +6,7 @@ class LogIn():
         url = api_server + "/v1/user/encryptpwd"
         pwJson = {"password": ""}
         pwJson["password"] = password
-        response = requests.get(url, params=pwJson)
+        response = requests.get(url, params=pwJson, verify=False)
         data = json.loads(response.text)
         pwd = data["data"]["encryptpwd"]
         return pwd
@@ -16,7 +16,7 @@ class LogIn():
         loginJson = {"username": "", "password": ""}
         loginJson["username"] = user
         loginJson["password"] = pwd
-        response = requests.post(url, json=loginJson)
+        response = requests.post(url, json=loginJson, verify=False)
         jsonData = json.loads(response.text)
         token = jsonData["data"]["token"]
         return token

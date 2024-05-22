@@ -46,7 +46,7 @@ class CreateObject():
                         if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
                             for obj_dict in objects_list:
                                 source_list.append(obj_dict)
-                        elif attribute_name == 'ATTR_DESTINATION_ADDR' or attribute_name == "ATTR_DESTINATION_LOCATION" or attribute_name == "ATTR_SERVER_FQDN":
+                        elif attribute_name == 'ATTR_DESTINATION_IP' or attribute_name == "ATTR_DESTINATION_LOCATION" or attribute_name == "ATTR_SERVER_FQDN":
                             for obj_dict in objects_list:
                                 dst_list.append(obj_dict)
                         elif attribute_name == 'ATTR_FLAG':
@@ -68,7 +68,7 @@ class CreateObject():
                     if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
-                    elif attribute_name == 'ATTR_DESTINATION_ADDR' or attribute_name == "ATTR_DESTINATION_LOCATION" or attribute_name == "ATTR_SERVER_FQDN":
+                    elif attribute_name == 'ATTR_DESTINATION_IP' or attribute_name == "ATTR_DESTINATION_LOCATION" or attribute_name == "ATTR_SERVER_FQDN":
                         for obj_dict in objects_list:
                             dst_list.append(obj_dict)
                     elif attribute_name == 'ATTR_FLAG':
@@ -177,7 +177,7 @@ class CreateObject():
                     patterns = dict(patterns=patterns)
                     string = dict(string=patterns, op='add')
                     items.append(string)                 
-        elif is_repeat == 1:
+        elif is_repeat == 1 and obj_type != 'ip':
             for item in add_item_list:
                     patterns = []
                     object_file = item["keyword_array"][0]
@@ -191,6 +191,18 @@ class CreateObject():
                             patterns = dict(patterns=patterns)
                             string = dict(string=patterns, op='add')
                             items.append(string)
+        elif is_repeat == 1 and obj_type == 'ip':
+            for item in add_item_list:
+                    # patterns = []
+                    object_file = item["keyword_array"][0]
+                    with open(object_file, 'r', encoding="utf-8-sig") as file:
+                        lines = file.readlines()
+                        for line in lines:
+                            ip = line.strip()
+                            # patterns = []
+                            object_dict['ip_address'] = ip
+                            object_dict = dict(ip=object_dict, op='add')
+                            items.append(object_dict)
         
         member = dict(items=items, type=1)
         return member
@@ -203,22 +215,25 @@ class CreateObject():
             file_name = object_file.split("/")[-1]
             files = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
         url = api_host + "/v1/policy/object/import"
-        time1 = datetime.utcnow()
-        response = requests.post(url, data=data, headers=headers, files= files)
-        time2 = datetime.utcnow()
+        time1 = datetime.now()
+        response = requests.post(url, data=data, headers=headers, files= files, verify=False)
+        time.sleep(20)
+        time2 = datetime.now()
         time_difference = time2 - time1
         seconds_difference = time_difference.total_seconds()
         assert response.status_code == 200
-        if seconds_difference > 60:
+        if seconds_difference > 180:
             timeout_result = False
         else:
             timeout_result = True
         response_dict = json.loads(response.text)
         object_ids = self.get_object_ids(response_dict)
         # 为了每次清空需要反复创建的object的组合使用，否则会反复删除已经存在的object
-        if is_repeat == 1:
+        if is_repeat == 1 and obj_type != 'ip':
             self.fqdn_ids = []
             self.url_ids = []
+        elif is_repeat == 1 and obj_type == 'ip':
+            self.ip_ids = []
         # 这里把if和elif后面的语句都写成一个函数，然后再判断，否则if_elif占用了36行
         if obj_type == 'ip':
             self.ip_ids = self.handle_ids(object_ids, self.ip_ids)
@@ -241,11 +256,11 @@ class CreateObject():
     # 调用创建object的接口
     def create_object(self, obj_template_dict, headers, api_host, is_repeat):
         url = api_host + "/v1/policy/object"
-        response = requests.post(url, headers=headers, json=obj_template_dict)
+        response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
         assert response.status_code == 200
-        time1 = datetime.utcnow()
+        time1 = datetime.now()
         response_dict = json.loads(response.text)
-        time2 = datetime.utcnow()
+        time2 = datetime.now()
         time_difference = time2 - time1
         seconds_difference = time_difference.total_seconds()
         if seconds_difference > 60:
@@ -253,14 +268,17 @@ class CreateObject():
         else:
             timeout_result = True
         # 从返回数据中获取object_type，方便后续判断将id添加到哪个全局变量里边
-        # if is_repeat == 1:
-        #     print(response_dict)
+        if is_repeat == 1:
+            time.sleep(20)
         obj_type = response_dict['data']['object']['type']
         object_ids = self.get_object_ids(response_dict)
         # 为了每次清空需要反复创建的object的组合使用，否则会反复删除已经存在的object
-        if is_repeat == 1:
+        obj_template_dict['object']['type'] = obj_type
+        if is_repeat  == 1 and obj_type != 'ip':
             self.fqdn_ids = []
             self.url_ids = []
+        elif is_repeat  == 1 and obj_type == 'ip':
+            self.ip_ids = []
         # 这里把if和elif后面的语句都写成一个函数，然后再判断，否则if_elif占用了36行
         if obj_type == 'ip':
             self.ip_ids = self.handle_ids(object_ids, self.ip_ids)

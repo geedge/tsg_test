@@ -46,6 +46,7 @@ class CreateProfile():
                 metrics_dict["source_columns"][0] = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["source_columns"]
                 metrics_dict["function"]["name"] = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["function"]
                 metrics_dict["alias"] = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["source_columns"].title()
+                metrics_dict["alias"] = " ".join(metrics_dict["alias"].split("_"))    # 将_连接改为空格连接
                 # 根据metric和function判断unit是什么
                 metrics = metrics_dict["source_columns"][0]
                 fun_name = metrics_dict["function"]["name"]
@@ -90,14 +91,21 @@ class CreateProfile():
             for dimension_index in range(len(post_statistics_data["chart_list"][chart_idex]["dimensions"])):
                 dimensions_dict["source_columns"][0] = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["source_columns"][0]
                 dimensions_dict["is_drilldown"] = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["is_drilldown"]
-                dimensions_dict["alias"] = dimensions_dict["source_columns"][0] + "_api"
+                if "__time" in dimensions_dict["source_columns"][0]:
+                    dimensions_dict["alias"] = "Time"
+                else:
+                    dimensions_dict["alias"] = dimensions_dict["source_columns"][0].lower()
+                    dimensions_dict["alias"] = " ".join(dimensions_dict["alias"].split("_"))  # 将_连接改为空格连接
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["dimensions"].append(copy.deepcopy(dimensions_dict))
                 chart_after_name = dimensions_dict["source_columns"][0] + " "
             # 重组order by
             post_order_by = post_statistics_data["chart_list"][chart_idex]["order_by"]
             function_name = ""
             if post_order_by == None:
-                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = ""
+                if chart_type == "table" or chart_type == "bar":
+                    f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["metrics"][0]["alias"]
+                else:
+                    f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = ""
             else:
                 for _ in range(len(post_statistics_data["chart_list"][chart_idex]["metrics"])):
                     if post_statistics_data["chart_list"][chart_idex]["metrics"][_]["source_columns"].lower().strip() == post_order_by.lower().strip():
@@ -106,10 +114,10 @@ class CreateProfile():
                     print("order_by参数错误：{}".format(post_order_by))
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
             # 重组 limit、 drilldown_limit
-            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = post_statistics_data["chart_list"][chart_idex]["limit"]
+            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = str(post_statistics_data["chart_list"][chart_idex]["limit"])
             # 重组threshold
-            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["threshold"]["in_bytes"] =  post_statistics_data["chart_list"][chart_idex]["threshold"]["in_bytes"]
-            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["threshold"]["out_bytes"] =  post_statistics_data["chart_list"][chart_idex]["threshold"]["out_bytes"]
+            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["threshold"]["in_bytes"] =  int(post_statistics_data["chart_list"][chart_idex]["threshold"]["in_bytes"])
+            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["threshold"]["out_bytes"] =  int(post_statistics_data["chart_list"][chart_idex]["threshold"]["out_bytes"])
             # 重组 chart name
             if chart_after_name == "":
                 chart_name = "{}".format(chart_pre_name)
@@ -165,7 +173,7 @@ class CreateProfile():
         if profile_type == "service_function":
             process_post_data = self.process_sf_post_data(sf_tempalte_path, sf_post_data,vsys_id)
             url = "{}/v1/policy/profile/service_function".format(api_host)
-            response = requests.post(url, headers=headers, json=process_post_data)
+            response = requests.post(url, headers=headers, json=process_post_data, verify=False)
             response_dict = response.json()
             sf_profile_id = response_dict["data"]["service_function"]["id"]
         return sf_profile_id
@@ -215,10 +223,10 @@ class CreateProfile():
             process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
             url = "{}/v1/policy/profile/statistics_template".format(api_host)
             headers["Content-Type"] = "application/json"
-            response = requests.post(url, headers=headers, json=process_post_data)
+            response = requests.post(url, headers=headers, json=process_post_data, verify=False)
             response_dict = response.json()
             # 处理返回数据，提取id
-            profile_id = response_dict["data"]["id"]
+            profile_id = response_dict["data"]["statistics_template"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
             create_profile_id_dict["id"] = profile_id
             path_profile_type = "statistics_template"
@@ -236,7 +244,7 @@ class CreateProfile():
             process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data,vsys_id)
             url = "{}/v1/policy/profile/service_function_forwarder".format(api_host)
             headers["Content-Type"] = "application/json"
-            response = requests.post(url, headers=headers, json= process_post_data)
+            response = requests.post(url, headers=headers, json= process_post_data, verify=False)
             response_dict = response.json()
             sff_id = response_dict["data"]["service_function_forwarder"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -250,7 +258,7 @@ class CreateProfile():
             # 添加vsys id
             profile_data["vsys_id"] = vsys_id
             url = "{}/v1/policy/profile/response_page".format(api_host)
-            response = requests.post(url=url, data=profile_data, headers=headers, files=files)
+            response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
             response_dict = response.json()
             profile_id = response_dict["data"]["response_page"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -262,7 +270,7 @@ class CreateProfile():
             # 添加vsys id
             profile_data["vsys_id"] = vsys_id
             url = "{}/v1/policy/profile/hijack_file".format(api_host)
-            response = requests.post(url=url, data=profile_data, headers=headers, files=files)
+            response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
             response_dict = response.json()
             profile_id = response_dict["data"]["hijack_file"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -274,7 +282,7 @@ class CreateProfile():
             # 添加vsys id
             profile_data["vsys_id"] = vsys_id
             url = "{}/v1/policy/profile/insert_script".format(api_host)
-            response = requests.post(url=url, data=profile_data, headers=headers, files=files)
+            response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
             response_dict = response.json()
             profile_id = response_dict["data"]["insert_script"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -286,7 +294,7 @@ class CreateProfile():
             # 添加vsys id
             profile_data["vsys_id"] = vsys_id
             url = "{}/v1/policy/profile/run_script".format(api_host)
-            response = requests.post(url=url, data=profile_data, headers=headers, files=files)
+            response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
             response_dict = response.json()
             profile_id = response_dict["data"]["run_script"]["id"]
             create_profile_id_dict["profile_type"] = profile_type

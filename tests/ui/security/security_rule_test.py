@@ -704,7 +704,7 @@ if __name__ == '__main__':
       "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
       "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
       "module_name": "security",
-      "test_case_name": "security_rule_with_deny_ip_quic"
+      "test_case_name": "security_rule_test"
     }
     run(parameter)
     """

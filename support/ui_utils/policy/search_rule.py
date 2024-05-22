@@ -33,3 +33,7 @@ class SearchRule():
             return 200, ""
         else:
             return 400, ""
+        
+    def get_rule_id(self):
+        rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+        return rule_id

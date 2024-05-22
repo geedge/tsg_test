@@ -23,7 +23,8 @@ class PageJump():
             return 0
         else:
             if vsys_name == "":
-                change_vsys_name = "UIAutoTestVsys"
+                # change_vsys_name = "UIAutoTestVsys"
+                change_vsys_name = "ApiAutoTestVsys"
                 if change_vsys_name.lower() == current_vsys_name:
                     print(f"the current vsys: {current_vsys_name}")
                     return 0

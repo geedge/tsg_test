@@ -10,10 +10,12 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
+from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.analysis_result import *
+from support.api_utils.log_in import *
 import support.ui_utils.env_initialization
 
 def run(parameter):
@@ -22,6 +24,7 @@ def run(parameter):
     start_time = time.time()
     
     # 环境初始化
+    support.ui_utils.env_initialization.initiate_selenium_request()
     driver = support.ui_utils.env_initialization.my_driver()
     support.ui_utils.env_initialization.setup()
     
@@ -30,34 +33,22 @@ def run(parameter):
         "is_multi_priority": False,
         "rule_num": 1,
         "policy_type": "security",
-        "rule_name": "security_rule_with_deny_ip_quic",
+        "rule_name": "security_rule_deny_ip",
         "rule_action": "deny",
         "rule_type": "create",
         "condition": {
-            "sourceIP": [
+            "source_ip": [
                 {
                     "name": "security_source_ip",
                     "object_type": "ip",
                     "select_type": False,
                     "negate": False,
                     "item": [
-                        "1.1.1.1",
-                        "1.1.1.1-1.1.1.2"
+                        "192.168.64.86"
                     ]
                 }
             ],
-            "source_port": [
-                {
-                    "name": "security_source_port",
-                    "object_type": "port",
-                    "select_type": False,
-                    "negate": False,
-                    "item": [
-                        "1000-1110",
-                        "2222"
-                    ]
-                }
-            ],
+            "source_port": [],
             "destination_ip": [],
             "destination_port": [],
             "internal_ip": [],
@@ -73,74 +64,65 @@ def run(parameter):
             "flag": [],
             "application": [
                 {
-                    "name": "http",
+                    "name": "ssl",
+                    "object_type": "application",
                     "negate": False
                 }
             ],
             "server_fqdn": [
                 {
-                    "name": "www.baidu.com", # 需要新建，不能使用已存在的object，保证自动化的统一性，这里只是示例
+                    "name": "www.baidu.com",
                     "object_type": "fqdn",
                     "select_type": False,
                     "negate": False,
                     "plus": False,
                     "item": [
-                        "*google.com"
+                        "*baidu.com"
                     ]
                 }
             ],
-            "protocol_filed": [
-                {
-                    "name": "youtube", # 需要新建，不能使用已存在的object，保证自动化的统一性，这里只是示例
-                    "field_type": "url",
-                    "object_type": "url",
-                    "select_type": False,
-                    "negate": False,
-                    "plus": False,
-                    "item": [
-                        "youtube.com", 
-                        "google.com"
-                    ]
-                }
-            ],
+            "protocol_filed": [],
             "sub_action_override": True,
             "sub_action": [
                 {
                     "type": "drop",
                     "drop_packet": 1,
-                    "send_tcp_rst": False,
+                    "send_tcp_rst": True,
                     "send_icmp_unreachable": True
                 }
-                # {
-                #     "type": "rate_limit",
-                #     "rate_unit": "kbps",
-                #     "rate_value": 200
-                # }
-                # {
-                #     "type": "block",
-                #     "code": 404,
-                #     "content_type": "TEXT",
-                #     "content": "block_change_response_profile"
-                # }
-                # {
-                #     "type": "redirect",
-                #     "redirect_url": "www.google.com"
-                # }
             ],
-            "packet_capture": [
-                {
-                    "enable": True,
-                    "capture_depth": 3000
-                }
-            ]
+            "packet_capture": []
         },
-        "profile": [
-        ],
-        "expected_return": "POST",
-        "counters_1": {"hits": 0},
-        "log_query_param_1": [],
-        "command": "curl -kv https://www.google.com"
+        "profile": [],
+        "test_pc_ip": "192.168.64.86",
+        "is_log": 1,
+        "env": "tsgx",
+        "vsys_id": 6,
+        "expected_return": "reset",
+        "counters_1": {"hits": 1},
+        "log_query_param_1": [{"query_field_key":"ssl_sni", "query_value":"www.baidu.com"}],
+        "traffic": {
+            "type": "curl",
+            "command": "curl -kv https://www.baidu.com"
+        },
+        # "traffic": {
+        #     "type": "trex",
+        #     "clients_start_ip": "192.168.64.86",
+        #     "clients_end_ip": "192.168.64.86",
+        #     "servers_start_ip": "2.1.1.1",
+        #     "servers_end_ip": "2.1.1.2",
+        #     "m": 1,
+        #     "d": 1,
+        #     "yaml_name": "test_https",
+        #     "pcap_name": "test_https"
+        # },
+        "token": ""
     }
+    log_in = LogIn()
+    pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+    token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+    test_data["token"] = token
+    print("token: ", token)
     
     # 添加定位库集合
     test_rule_element_position = {}
@@ -158,6 +140,7 @@ def run(parameter):
                 "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
                 "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
                 "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
+                "objectPage_ipType_posId": ipObjectPage_ipType_posId,
                 "objectPage_addItem_posId": ipObjectPage_addItem_posId,
                 "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
                 "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
@@ -173,36 +156,6 @@ def run(parameter):
                 "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
                 "objectListPage_deleteButton_posId": ipObjectListPage_deleteButton_posId,
                 "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
-            }
-        }
-        test_port_object_element_position = {
-            "page_jump":{
-                "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_port_posId
-            },
-            "create": {
-                "objectListPage_createButton_posId": portObjectListPage_createButton_posId,
-                "objectListPage_dropDown_createPortButton_posId": portObjectListPage_dropDown_createButton_posId,
-                "objectPage_inputName_posXpath": portObjectPage_inputName_posXpath,
-                "objectPage_addItem_posId": portObjectPage_addItem_posId,
-                "objectPage_inputItem_posXpath": portObjectPage_inputItem_posXpath,
-                "objectPage_button_saveItem_posXpath": portObjectPage_button_saveItem_posXpath,
-                "objectPage_okButton_posId": portObjectPage_okButton_posId,
-                "objectPage_okButton_warningYes_posXpath": portObjectPage_okButton_warningYes_posXpath
-            },
-            "search": {
-                "objectListPage_searchLabel_posId": portObjectListPage_searchLabel_posId,
-                "objectListPage_searchLabel_selectName_posXpath": portObjectListPage_searchLabel_selectName_posXpath,
-                "objectListPage_tableTbody_posXpath": portObjectListPage_tableTbody_posXpath
-            },
-            "delete": {
-                "objectListPage_allSelect_posXpath": portObjectListPage_allSelect_posXpath,
-                "objectListPage_deleteButton_posId": portObjectListPage_deleteButton_posId,
-                "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
             }
         }
         test_rule_element_position = {
@@ -222,44 +175,24 @@ def run(parameter):
                 "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
                 "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
                 "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
-                "policyRulePage_addConditionSrcPort_posXpath": securityRulePage_addCondition_srcPort_posXpath,
-                "policyRulePage_addSrcPort_posXpath": securityRulePage_addSrcPort_posXpath,
-                "policyRulePage_searchSrcPort_posXpath": securityRulePage_searchSrcPort_posXpath,
-                "policyRulePage_selectSrcPort_posXpath": securityRulePage_selectSrcPort_posXpath,
-                "policyRulePage_closeSrcPort_posXpath": securityRulePage_closeSrcPort_posXpath,
                 "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                 "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                 "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                 "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
+                "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                 "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
                 "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_url_posXpath,
                 "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                 "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
                 "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
                 "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
                 "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                 "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                "policyRulePage_addUrl_posXpath": securityRulePage_addUrl_posXpath,
-                "policyRulePage_searchUrl_posXpath": securityRulePage_searchUrl_posXpath,
-                "policyRulePage_selectUrl_posXpath": securityRulePage_selectUrl_posXpath,
-                "policyRulePage_closeUrl_posXpath": securityRulePage_closeUrl_posXpath,
                 "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                 "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
                 "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
                 "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
                 "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
-                "policyRulePage_subAction_block_posXpath": securityRulePage_subAction_block_posXpath,
-                "policyRulePage_subAction_block_responseCode_posXpath": securityRulePage_subAction_block_responseCode_posXpath,
-                "policyRulePage_subAction_block_responseCode_change_posXpath": securityRulePage_subAction_block_responseCode_change_posXpath,
-                "policyRulePage_subAction_block_responseContent_posXpath": securityRulePage_subAction_block_responseContent_posXpath,
-                "policyRulePage_subAction_block_responseContent_change_posXpath": securityRulePage_subAction_block_responseContent_change_posXpath,
-                "policyRulePage_subAction_block_responseContent_text_posId": securityRulePage_subAction_block_responseContent_text_posId,
-                "policyRulePage_subAction_block_responseContent_clickProfile_posXpath": securityRulePage_subAction_block_responseContent_clickProfile_posXpath,
-                "policyRulePage_subAction_block_responseContent_searchProfile_posXpath": securityRulePage_subAction_block_responseContent_searchProfile_posXpath,
-                "policyRulePage_subAction_block_responseContent_selectProfile_posId": securityRulePage_subAction_block_responseContent_selectProfile_posId,
-                "policyRulePage_packetCapture_posXpath": securityRulePage_packetCapture_posXpath,
-                "policyRulePage_packetCapture_depth_posXpath": securityRulePage_packetCapture_depth_posXpath,
                 "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                 "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                 "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -281,29 +214,21 @@ def run(parameter):
     
     # 添加测试过程中涉及的template
     template_path = {}
-    template_path["trex_workpath"] = "/opt/trex/v3.03"
-    template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
+    # template_path["trex_workpath"] = "/opt/trex/v3.03"
+    # template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
     
     # 创建object
-    if "sourceIP" in test_data["condition"] and len(test_data["condition"]["sourceIP"]) != 0:
-        ip_data = test_data["condition"]["sourceIP"]
+    if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+        ip_data = test_data["condition"]["source_ip"]
         create_ip = CreateObject(driver)
         for i in range(len(ip_data)):
             create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
             if create_ip_code != 200:
                 result = "Fail to create ip object."
                 break
-    if "source_port" in test_data["condition"] and len(test_data["condition"]["source_port"]) != 0:
-        port_data = test_data["condition"]["source_port"]
-        create_port = CreateObject(driver)
-        for j in range(len(port_data)):
-            create_port_code = create_port.create(port_data[j], test_port_object_element_position)
-            if create_port_code != 200:
-                result = "Fail to create port object."
-                break
     
     # 创建rule
-    if create_ip_code == 200 and create_port_code == 200:
+    if create_ip_code == 200:
         create_rule = CreateRule(driver)
         create_rule_code = create_rule.create(test_data, test_rule_element_position)
         if create_rule_code != 200:
@@ -311,9 +236,15 @@ def run(parameter):
         
     # 触发流量验证
     if create_rule_code == 200:
-        verify = TrafficVerification()
-        verification_result = verify.traffic_verification(parameter, test_data, template_path, [])
-        print("verification result: ", verification_result)
+        edit_rule = EditRule(driver)
+        edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+        print("rule_id: ", rule_id)
+        if edit_rule_code == 200:
+            # rule_id = search_rule.get_rule_id()
+            test_data["rule_id"] = rule_id
+            verify = TrafficVerification()
+            verification_result = verify.traffic_verification(parameter, test_data, template_path, [])
+            print("verification result: ", verification_result)
     
     # 分析验证结果，并返回给flask
     if len(verification_result) != 0:
@@ -348,19 +279,6 @@ def run(parameter):
             else:
                result = result + " In addition, fail to search ip object."
                break
-        # 删除port
-        for y in range(len(port_data)):
-            search_port = SearchObject(driver)
-            search_port_code, first_row_checkbox_element = search_port.search(port_data[y]["name"], test_port_object_element_position)
-            if search_port_code == 200:
-                delete_port = DeleteObject(driver)
-                delete_port_code = delete_port.delete(test_port_object_element_position, first_row_checkbox_element, True)
-                if delete_port_code != 200:
-                    result = result + " In addition, fail to delete port object."
-                    break
-            else:
-               result = result + " In addition, fail to search port object."
-               break
     
     # 清理环境
     support.ui_utils.env_initialization.teardown()
@@ -377,15 +295,12 @@ if __name__ == '__main__':
     parameter = {
       "username": "zhaokun",
       "password": "zhaokun1",
-      "test_pc_ip": "192.168.64.73",
       "api_server": "http://192.168.44.72",
-      "is_log": 0,
-      "env": "tsgx",
-      "vsys_id": 6,
+      "script_type": "ui",
       "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
       "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
       "module_name": "security",
-      "test_case_name": "security_rule_with_deny_ip_quic"
+      "test_case_name": "security_rule_deny_ip"
     }
     run(parameter)
     """

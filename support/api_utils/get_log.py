@@ -7,24 +7,24 @@ import json
 import ipaddress
 
 class GetLog():    
-    def get_log_schema(self, token, log_type, api_host):
+    def get_log_schema(self, token, log_type, api_host, vsys_id):
         # 修改完成后删除注释：将下方的security_event替换成变量
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/log/schema/" + log_type
-        response = requests.get(url, headers=headers)
+        url = api_host + "/v1/log/schema/" + log_type + "?vsys_id=" + str(vsys_id)
+        response = requests.get(url, headers=headers, verify=False)
         assert response.status_code == 200
         log_schema = json.loads(response.text)
         log_schema = log_schema['data']['fields']
         log_schema = ",".join([field['name'] for field in log_schema])
         return log_schema
     
-    def get_log_by_condition(self, token, ruleNum, start_time, end_time, test_pc_ip, create_policies_ids, condition, api_host, vsys_id):
+    def get_log_by_condition(self, token, rule_num, start_time, end_time, test_pc_ip, create_policies_ids, test_data, api_host, vsys_id, script_type):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         log_condition = {
             "page_no": 1,
             "page_size": 20,
             "source": "security_event",
-            "fields": None,
+            "columns": None,
             "start_time": "",
             "end_time": "",
             "filter": "",
@@ -32,16 +32,19 @@ class GetLog():
         }
         log_condition_dict = json.loads(json.dumps(log_condition))
         # 多次循环
-        for i in range(ruleNum):
+        for i in range(rule_num):
             policy_id = list(create_policies_ids[i].values())[0]
-            fields = self.get_log_schema(token, "security_event", api_host)
-            log_condition_dict['fields'] = fields
+            fields = self.get_log_schema(token, "security_event", api_host, vsys_id)
+            log_condition_dict['columns'] = fields
             log_condition_dict['start_time'] = start_time
             log_condition_dict['end_time'] = end_time
             log_condition_dict['vsys_id'] = vsys_id
             log_condition_dict['log_type'] = 'security_event'
+            log_condition_dict['identifier_name'] = 'security-event-list'
+            log_condition_dict['execution_mode'] = 'oneshot'
             # 从conditions中获取object_type判断是否存在subscriberid
-            if len(condition["obj_condition_1"]) > 0 and condition["obj_condition_1"][0]["protocol_field"] == "ATTR_SUBSCRIBER_ID":
+            # 加script_type判断条件的原因是：ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
+            if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
                 log_filter = f"subscriber_id= 'test23' AND has(security_rule_list,{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
@@ -49,16 +52,15 @@ class GetLog():
                 log_condition_dict['filter'] = log_filter
                 log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
             url = api_host + "/v1/log/query"
-            response = requests.post(url, headers=headers, json=log_condition_dict)
+            response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200
             log_list = json.loads(response.text)
-            log_list = log_list['data']['list']
+            log_list = log_list['data']['result']
             log_index = i + 1
-            log_query_params = condition['log_query_param_'+str(log_index)]
+            log_query_params = test_data['log_query_param_'+str(log_index)]
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
                     for log_query_param in log_query_params:
-                        print(log)
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         if query_field_key in log and log[query_field_key] == query_value:
@@ -75,30 +77,29 @@ class GetLog():
                 break
         return log_reult
 
-    def get_metric(self, token, ruleNum, start_time, end_time, create_policies_ids, condition, api_host, vsys_id):
+    def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id):
         #请求接口查询metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/metric/query"
-        for i in range(ruleNum):
-            policy_type = condition["policy_type"]
-            if policy_type == 'tsg_security':
+        url = api_host + "/v1/log/query"
+        for i in range(rule_num):
+            policy_type = test_data["policy_type"]
+            if policy_type == 'security':
                 dataset_identifier_name = "security-policy-rule-statistics"
             elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
                 dataset_identifier_name = "proxy-policy-rule-statistics"
             elif policy_type == 'monitor':
                 dataset_identifier_name = "monitor-policy-rule-statistics"
             policy_id = list(create_policies_ids[i].values())[0]
-            hit_query_condition = {"identifier_name":dataset_identifier_name,"rule_id":"","start":"","end":"","vsys_id":1,"exec_mode": "oneshot"}
-            hit_query_condition['rule_id'] = f"{policy_id}"
-            hit_query_condition['start'] = start_time
-            hit_query_condition['end'] = end_time
+            hit_query_condition = {"identifier_name":dataset_identifier_name,"rule_id":"","start_time":"","end_time":"","vsys_id":1,"execution_mode": "oneshot","output_mode":"json", "interval":1}
+            hit_query_condition['rule_id'] = policy_id
+            hit_query_condition['start_time'] = start_time
+            hit_query_condition['end_time'] = end_time
             hit_query_condition['vsys_id'] = vsys_id
-            print(json.dumps(hit_query_condition))
-            response = requests.post(url, headers=headers, json=hit_query_condition)
+            response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
             index = i + 1
-            counter = condition['counters_'+str(index)]
+            counter = test_data['counters_'+str(index)]
             result_len = len(response['data']['result'])
             # 需要hits == 0时，则验证，验证通过metric置为true
             if 'hits' in counter and counter['hits'] == 0 and result_len == 0:
@@ -125,56 +126,51 @@ class GetLog():
                 metric_result = False
             return metric_result
 
-    def get_livechart_statistics(self, token, start_time, end_time, statistics_info, statistics_metircs_except, trex_ip_info, host_api, vsys_id, time_granularity="PT15S", alignment_period="PT15S"):
+    def get_livechart_statistics(self, token, start_time, end_time, statistics_info, statistics_metircs_except, trex_ip_info, test_data, host_api, vsys_id, alignment_period="PT1S"):
         """
         :param token:
         :param start_time:
         :param end_time:
         :param statistics_info:
-        :param condition:
+        :param test_data:
         :return:
         """
         # 请求接口查询statistics metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/metric/query".format(host_api)
+        url = "{}/v1/log/query".format(host_api)
         # 重组请求体数据
         post_data_ori_json = """
         {
-            "exec_mode":"oneshot",
+            "execution_mode":"oneshot",
             "query_type":"real_time",
-            "start":"2023-11-24T02:55:40Z",
-            "end":"2023-11-24T03:00:40Z",
+            "start_time":"2023-11-24T02:55:40Z",
+            "end_time":"2023-11-24T03:00:40Z",
             "alignment_period":"PT15S",
             "sql":"",
-            "filter":"1=1",
+            "filter":"",
             "template_id":1051,
             "version":1,
             "chart_id":2705,
             "vsys_id":1,
-            "rule_id":274147
+            "rule_id":274147,
+            "duration":1,
+            "interval":1,
+            "limit":10000,
+            "output_mode":"json"
         }
         """
         post_data_ori_dict = json.loads(post_data_ori_json)
-        if statistics_info["chart_type"] == "table" or statistics_info["chart_type"]  == "bar":
-            dataset_identifier_name = "statistics-rule-table-or-bar-chart-template"
-        elif statistics_info["chart_type"]  == "line":
-            dataset_identifier_name = "statistics-rule-line-chart-template"
-        else:            #  = histogram
-            dataset_identifier_name = "statistics-rule-histogram-chart-template"
-        post_data_ori_dict["dataset_identifier_name"] = dataset_identifier_name
-        post_data_ori_dict["start"] = start_time
-        post_data_ori_dict["end"] = end_time
+        post_data_ori_dict["start_time"] = start_time
+        post_data_ori_dict["end_time"] = end_time
         post_data_ori_dict["rule_id"] = statistics_info["rule_id"]
         post_data_ori_dict["template_id"] = statistics_info["template_id"]
         post_data_ori_dict["chart_id"] = statistics_info["chart_id"]
         post_data_ori_dict["version"] = statistics_info["version"]
-        #post_data_ori_dict["time_granularity"] = time_granularity
         post_data_ori_dict["alignment_period"] = alignment_period
         post_data_ori_dict["vsys_id"] = vsys_id
         post_data_ori_dict["sql"] =statistics_info["sql"]
         # print("statistics metric请求体数据：")
-        # print(post_data_ori_dict)
-        response = requests.post(url, json=post_data_ori_dict, headers=headers)
+        response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         #assert response.status_code == 200
         r_dict = response.json()
         print("statistics metric结果数据：")
@@ -185,36 +181,64 @@ class GetLog():
         else:    # 返回正常结果
             if r_dict["data"]["result"] == []:   # 为空
                 print("########statistics metric 没有查询到结果###############")
+                # 对应session方式和fqdn category需要另行处理
+                metrics_columns = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
+                try:
+                    dimension_columns = test_data["profile_condition_1"][0]["chart_list"][0]["dimensions"][0]["source_columns"][0].lower()
+                except:
+                    dimension_columns = "no_dimensions"
+                if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
+                    return [333, "passthrough"]
                 return [333, "statistics metric No result was found"]
             else:     # 提取结果，并断言
                 metric_result = False  # 默认
                 result_list_source = r_dict["data"]["result"]
                 #print(result_list_source)
                 result_list = []
-                for _ in copy.deepcopy(result_list_source):    # 将key转成小写
-                    result_list.append({k.lower():v for k, v in _.items()})
+                for _ in copy.deepcopy(result_list_source):    # 将key转成小写，  ***且将key中空格替换为下划线****
+                    #result_list.append({k.lower():v for k, v in _.items()})
+                    tmp_dict = {}
+                    for k, v in _.items():
+                        k_0 = "_".join(k.lower().split())    # 将key变为小写且使用下划线连接
+                        tmp_dict[k_0] = v
+                    result_list.append(tmp_dict)
                 #print(result_list)
                 statistics_value = 0
                 if statistics_info["chart_type"] == "line" or statistics_info["chart_type"] == "table" or statistics_info["chart_type"] == "bar":
-                    print(f'{statistics_info["chart_type"]}断言对比...')
+                    print(f'{statistics_info["chart_type"]}>>断言对比...')
                     print(statistics_info)
                     statistics_value = copy.deepcopy(result_list[0])
                     # 将列表中metric值设置为0
                     for k, v in statistics_value.items():
                         if isinstance(v, int):
                             statistics_value[k] = 0
-                    # 遍历result结果，将metric值累加并存储到statistics_value
+                    # 遍历result结果，将metric值累加并存储到statistics_value;因为流量单一，只能统计第一个计算值
+                    tmp_list_1 = []   # 下面for..提取值使用
                     for result_index in range(len(result_list)):
-                        for k, v in result_list[result_index].items():
+                        if "session_identifier_sketch" in result_list[0].keys():     # session_identifier_sketch 需要单独处理
+                            for k, v in result_list[result_index].items():
+                                if isinstance(v, int):
+                                    if v != 0:
+                                        tmp_list_1.append(v)   # 将不等于0的数值添加到列表中，为了计算平均数
+                        else:     # 其它的取值方式
+                            for k, v in result_list[result_index].items():
+                                if isinstance(v, int):
+                                    statistics_value[k] += v
+                            if  "client_ip_matched_objects".lower() in result_list[0].keys() or "server_ip_matched_objects".lower() in result_list[0].keys() or "websketch_categories".lower() in result_list[0].keys():
+                                break
+                    if "session_identifier_sketch" in result_list[0].keys() or "client_ip_sketch" in result_list[0].keys() or "server_ip_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理
+                        sum_1 = 0
+                        for i in range(1, len(tmp_list_1) - 1):  # 去掉首位两个数计算平均数
+                            sum_1 += tmp_list_1[i]
+                        avg_1 = sum_1 / (len(tmp_list_1) - 2)
+                        for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
                             if isinstance(v, int):
-                                statistics_value[k] += v
-                        if  "Client IP Matched Objects".lower() in result_list[0].keys() or "Server IP Matched Objects".lower() in result_list[0].keys() or "websketch categories".lower() in result_list[0].keys():
-                            break
+                                statistics_value[k] = avg_1
                     print("TSG实际查询到的结果数据：\n{}".format(statistics_value))
                     # 重组需要断言使用的key列表
                     assert_key_list = []
                     for k, v in statistics_value.items():
-                        if isinstance(v, int):
+                        if isinstance(v, int) or isinstance(v, float):
                             assert_key_list.append(k)
                     # 开始判断key的正确性
                     for i in range(len(assert_key_list)):
@@ -225,7 +249,7 @@ class GetLog():
                             break
                 elif statistics_info["chart_type"] == "histogram":
                     print("histogram图表暂不统计结果")
-                    pass
+                    metric_results = [True, ""]
                 return metric_results
 
     def assert_livechart_statistics(self, chart_type, assert_key, statistics_value, statistics_metircs_except, trex_ip_info):
@@ -239,15 +263,15 @@ class GetLog():
         if chart_type == "line":
             print(f"流量回放预期结果总数：\n{statistics_metircs_except}")
             failure_info_1 = f"Total expected results for traffic playback:{statistics_metircs_except}"
-            statistics_metircs_except_avg = {}     # 重组预期15秒粒度结果
+            statistics_metircs_except_avg = {}     # 重组预期1秒粒度结果
             for k, v in statistics_metircs_except.items():
                 if "bytes" in k:
-                    statistics_metircs_except_avg[k] = int((v) / 15)    # 统计平均字节数
+                    statistics_metircs_except_avg[k] = int((v) / 1)    # 统计平均字节数
                 else:
-                    statistics_metircs_except_avg[k] = int(v / 15)
+                    statistics_metircs_except_avg[k] = int(v / 1)
             if assert_key != "session_identifier_sketch" and assert_key != "client_ip_sketch" and assert_key != "server_ip_sketch":    # 除了这几个gauge，需要打印下信息
-                print(f"流量回放结果按15秒粒度平均数：\n{statistics_metircs_except_avg}")
-            failure_info_2 = f"Average number of traffic playback results by 15-second granularity:{statistics_metircs_except_avg}"
+                print(f"流量回放结果按1秒粒度平均数：\n{statistics_metircs_except_avg}")
+            failure_info_2 = f"Average number of traffic playback results by 1-second granularity:{statistics_metircs_except_avg}"
             print(assert_key)
             if assert_key == "bytes":
                 if statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes"] - 10):    # 预期值减10，因为出现多个时间周期统计的结果实际值减小
@@ -286,7 +310,7 @@ class GetLog():
                         unique_server_ips = sessions_count
                     statistics_metircs_except_gauge["client_ip_sketch"] = unique_client_ips
                     statistics_metircs_except_gauge["server_ip_sketch"] = unique_server_ips
-                    print(f"流量回放结果按15秒粒度的Gauge：\n{statistics_metircs_except_gauge}")
+                    print(f"流量回放结果按1秒粒度的Gauge：\n{statistics_metircs_except_gauge}")
                     if -3 < statistics_value[assert_key] - statistics_metircs_except_gauge[assert_key] < 3:
                         print("<<<<<<<<<<statistics 结果正常>>>>>>>>>>")
                         metric_result = True
@@ -294,7 +318,7 @@ class GetLog():
                 print(f"遗漏断言的key：{assert_key}")
                 metric_result = False
         elif chart_type == "histogram":
-            pass
+            metric_result = True
         else:    # table bar等二维图表
             print(f"流量回放结果总数：\n{statistics_metircs_except}")
             failure_info_1 = f"Total expected results for traffic playback:{statistics_metircs_except}"
@@ -325,35 +349,38 @@ class GetLog():
                 metric_result = False
         if metric_result == False:
             print(failure_reason)
-            failure_reason_info = "{}{}{}".format(failure_info_1, failure_info_2, failure_info_3)
+            actual_result = "Total actual results:{statistics_value}"
+            failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
         return metric_result, failure_reason_info
 
     def get_sc_metric(self, token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, host_api, vsys_id):
         # 请求接口查询sc metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/metric/query".format(host_api)
+        url = "{}/v1/log/query".format(host_api)
         # 重组请求体数据
         post_data_ori_json = """
         {
-            "exec_mode": "oneshot",
+            "execution_mode": "oneshot",
             "identifier_name": "service-chaining-policy-rule-statistics",
             "rule_id": "271039",
-            "start": "2023-11-21T03:23:24Z",
-            "end": "2023-11-30T07:39:49Z",
-            "alignment_period": "PT1S",
-            "vsys_id": 1
+            "start_time": "2023-11-21T03:23:24Z",
+            "end_time": "2023-11-30T07:39:49Z",
+            "vsys_id": 1,
+            "interval": 1,
+            "limit": 10000,
+            "output_mode": "json"
         }
         """
         # 重组请求体数据
         post_data_ori_dict = json.loads(post_data_ori_json)
         post_data_ori_dict["identifier_name"] = "service-chaining-policy-rule-statistics"
-        post_data_ori_dict["start"] = start_time
-        post_data_ori_dict["end"] = end_time
-        post_data_ori_dict["rule_id"] = sc_info["rule_id"]
+        post_data_ori_dict["start_time"] = start_time
+        post_data_ori_dict["end_time"] = end_time
+        post_data_ori_dict["rule_id"] = int(sc_info["rule_id"])
         post_data_ori_dict["vsys_id"] = vsys_id
         # print("sc metric请求体数据：")
         # print(post_data_ori_dict)
-        response = requests.post(url, json=post_data_ori_dict, headers=headers)
+        response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         print("sc metric结果数据：")
         # print(r_dict)

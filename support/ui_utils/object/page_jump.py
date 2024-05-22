@@ -22,7 +22,8 @@ class PageJump():
             return 0
         else:    # 空为切换默认   剩下为指定切换
             if vsys_name == "":     # 空，切换到默认vsys
-                change_vsys_name = "UIAutoTestVsys"
+                # change_vsys_name = "UIAutoTestVsys"
+                change_vsys_name = "ApiAutoTestVsys"
                 if change_vsys_name.lower() == current_vsys_name:    # 如果默认系统和当前一直，也不用点击
                     print(f"the current vsys: {current_vsys_name}")
                     return 0

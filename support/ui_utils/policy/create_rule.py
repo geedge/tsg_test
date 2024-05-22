@@ -80,18 +80,16 @@ class CreateRule():
             if "external_port_group" in test_data["condition"] and len(test_data["condition"]["external_port_group"]) != 0:
                 external_port_group_data = test_data["condition"]["external_port_group"]
                 self.add_port(external_port_group_data, "ExternalPort", create_element_position)
-            
-            # 增加quic标记位，用于判断是否存在send tcp reset勾选框
-            quic_protocol_flag = False
+
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
                 # 点application的+
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addApplication_posXpath"]).click()
                 application_data = test_data["condition"]["application"]
                 # 通过application name搜索并选中
+                if len(application_data) == 1:
+                    override_flag = True
                 for j in range(len(application_data)):
-                    if application_data[j]["name"] == "quic" and len(application_data) == 1:
-                        quic_protocol_flag = True
                     if application_data[j]["object_type"] == "application":
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationLabel_posXpath"]).click()
                     elif application_data[j]["object_type"] == "application_group":
@@ -124,11 +122,8 @@ class CreateRule():
                         print("to be added...")
             
             # 添加protocol field
-            protocol_field_flag = False
             if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
                 protocol_field_data = test_data["condition"]["protocol_filed"]
-                # protocol_field_flag为true，表示sub action被激活，不需要点Override Application Deny Action
-                protocol_field_flag = True
                 for x in range(len(protocol_field_data)):
                     temp = x + 1
                     if protocol_field_data[x]["field_type"] == "url":
@@ -138,17 +133,22 @@ class CreateRule():
                     elif protocol_field_data[x]["field_type"] == "response_header":    
                         print("to be added...")
             
+            if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0 and "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) == 0:
+                override_flag = True
+            else:
+                override_flag = False
+            
             # 添加sub action
             if "sub_action" in test_data["condition"] and len(test_data["condition"]["sub_action"]) != 0 and test_data["condition"]["sub_action_override"] == True:
                 sub_action_data = test_data["condition"]["sub_action"]
-                if protocol_field_flag == False:
+                if override_flag == True:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_override_posXpath"]).click()
                 if sub_action_data[0]["type"] == "drop":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_dropPkt_posXpath"]).clear()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_dropPkt_posXpath"]).send_keys(sub_action_data[0]["drop_packet"])
                     # quic不支持tcp rst；默认tcp rst是选中，不需要操作，只有当sendTcpRst为false时
-                    if quic_protocol_flag == False or sub_action_data["send_tcp_rst"] == False:
+                    if override_flag == False or sub_action_data[0]["send_tcp_rst"] == False:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendTcpRst_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendIcmp_posXpath"]).click()
                 elif sub_action_data[0]["type"] == "rate_limit":
@@ -234,7 +234,7 @@ class CreateRule():
             return 200
         except Exception as e:
             print(e)
-            return 400  
+            return 400, None
         
     def add_ip(self, ip_data, ip_condition_type, create_element_position):
         if ip_condition_type != "SrcIP":

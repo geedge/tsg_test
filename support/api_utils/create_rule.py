@@ -263,7 +263,7 @@ class CreatePolicyRule():
     #请求创建策略接口，下发策略    
     def create_rule(self, rule_template_dict, headers, api_host):
         url = api_host + "/v1/policy/rule"
-        response = requests.post(url, headers=headers, json=rule_template_dict)
+        response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
         assert response.status_code == 200
         return_json_data = json.loads(response.text)
         #print(json.dumps(response.json()))

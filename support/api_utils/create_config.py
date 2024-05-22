@@ -123,7 +123,7 @@ class CreateConfig():
         # statistics中将ip改为随机
         if "obj_condition_1" in config.keys():
             for obj in config["obj_condition_1"]:
-                if obj["protocol_field"] == "ATTR_SOURCE_IP" or obj["protocol_field"] == "ATTR_DESTINATION_ADDR":
+                if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
                     src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")

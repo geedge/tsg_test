@@ -12,10 +12,9 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 @app.route('/v1/tsg', methods=["POST"])
-def ReceiveParameter():
+def receive_parameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
-        sys.stdout.write("test\n")
         req_json = request.get_json()
         run_status = req_json.get("run_status")
         module_name = req_json.get("module_name")
@@ -26,11 +25,8 @@ def ReceiveParameter():
             parameter = {
                 "username": "zhaokun",
                 "password": "zhaokun1",
-                "test_pc_ip": "192.168.64.76",
                 "api_server": "http://192.168.44.72",
-                "is_log": 0,
-                "env": "tsgx",
-                "vsys_id": 6,
+                "script_type": "",
                 "root_path": "",
                 "path": "",
                 "module_name": "",
@@ -53,6 +49,7 @@ def ReceiveParameter():
                 parameter["path"] = f"{project_path}/tests/app"
                 parameter["app_name"] = req_json.get("app_name")
                 parameter["app_full_name"] = req_json.get("app_full_name")
+            parameter["script_type"] = tag
             parameter["module_name"] = module_name
             temp_folder_path = parameter["path"] + "/" + module_name
             folder_list = os.listdir(temp_folder_path)
@@ -87,7 +84,7 @@ def ReceiveParameter():
             response = jsonify(response_result)
             response.status_code = response_result["code"]
         return response
-    except subprocess.CalledProcessError as e:  
+    except subprocess.CalledProcessError as e:
         sys.stderr.write("Fail to execute the command. The return code: {}\n".format(e.returncode))
         response_result = {}
         response_result["code"] = 418
