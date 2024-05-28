@@ -17,16 +17,17 @@ class LogInOut:
     def __init__(self, driver: MyWebDriver):
         self.driver = driver
         self.loginout_parse = configparser.ConfigParser()
-        loginout_parse_dir = os.path.join(workdir, "ui_utils", "login_logout.ini")
+        loginout_parse_dir = os.path.join(workdir, "configuration_file.ini")
         self.loginout_parse.read(loginout_parse_dir, encoding="utf-8")
         self.tsglogin_url = self.loginout_parse.get("tsg_url", "login_url")
 
     def login(self):
         self.driver.get(self.tsglogin_url)
         # 输入账户和密码
-        self.driver.find_element(By.NAME, loginPage_userName_posName).send_keys(self.loginout_parse.get("ui_account_1", "username"))
-        self.driver.find_element(By.NAME, loginPage_passwd_posName).send_keys(self.loginout_parse.get("ui_account_1", "passwd"))
+        self.driver.find_element(By.NAME, loginPage_userName_posName).send_keys(self.loginout_parse.get("account", "username"))
+        self.driver.find_element(By.NAME, loginPage_passwd_posName).send_keys(self.loginout_parse.get("account", "password"))
         self.driver.find_element(By.ID, loginPage_signIn_posId).click()
+        print("Login successfully.")
         # 消除右上角弹框
         self.dismiss_rightTopTips()
         # 切换至默认ui_vsys
@@ -45,6 +46,7 @@ class LogInOut:
         if "english" != current_language.lower():
             self.driver.find_element(By.XPATH, mainPage_language_change_posXpath).click()
             self.driver.find_element(By.XPATH, mainPage_language_english_posXpath).click()
+            print("Change language to English successfully.")
 
     def _check_ui_vsys(self):
         # 切换UI自动化使用vsys

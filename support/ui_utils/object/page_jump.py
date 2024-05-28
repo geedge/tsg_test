@@ -29,7 +29,7 @@ class PageJump():
                     return 0
             else:     # 切换到指定vsys
                 change_vsys_name = vsys_name
-            print(f"the current vsys: {current_vsys_name}, switch to vsys: {change_vsys_name}")
+            # print(f"the current vsys: {current_vsys_name}, switch to vsys: {change_vsys_name}")
             self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
             vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
             flag_num = 0

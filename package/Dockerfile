@@ -20,5 +20,6 @@ RUN yum install -y tcpdump
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # 安装chrome和chromedriver
-RUN chmod 777 ./*.py
+# RUN chmod 777 ./*.py
+RUN find . -type f -name "*.py" -exec chmod 777 {} \;
 RUN python3 install_chrome.py

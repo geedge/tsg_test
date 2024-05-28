@@ -7,7 +7,8 @@ WORKDIR /app
 COPY . /app
 
 # 赋权限
-RUN chmod 777 ./*.py
+# RUN chmod 777 ./*.py
+RUN find . -type f -name "*.py" -exec chmod 777 {} \;
 
 # 创建supervisord.log文件
 RUN touch /var/log/supervisord.log

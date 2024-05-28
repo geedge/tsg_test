@@ -25,12 +25,7 @@ def my_driver():
     if os_name == "Linux":
         # result = subprocess.check_output("docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' automation", shell=True)
         # output = result.decode("utf-8")
-        interfaces = psutil.net_if_addrs()
-        if "eth0" in interfaces:
-            for addr in interfaces["eth0"]:
-                if addr.family == 2:
-                    docker_ip = addr.address
-                    remote_url = "http://" + docker_ip + ":4444"
+        remote_url = get_docker_ip()
         # 启用无窗口模式
         chrome_option.add_argument("--no-sandbox")
         chrome_option.add_argument("--headless")
@@ -38,7 +33,7 @@ def my_driver():
         chrome_option.add_argument("--disable-dev-shm-usage")
         chrome_option.add_argument("--window-size=1920, 1200")
     elif os_name == "Windows":
-        remote_url = read_config("remote_url", "url")
+        remote_url = read_config("selenium_server", "url")
         # 启用无痕模式
         # chrome_option.add_argument("--headless")
         # chrome_option.add_argument("--disable-gpu")
@@ -51,11 +46,12 @@ def my_driver():
     )
     # driver.implicitly_wait(2)
     driver.maximize_window()
+    print("Web Driver has been initialized successfully.")
     return driver
 
 def read_config(url, value):
     loginout_parse = configparser.ConfigParser()
-    loginout_parse_dir = os.path.join(workdir, "ui_utils", "login_logout.ini")
+    loginout_parse_dir = os.path.join(workdir, "configuration_file.ini")
     loginout_parse.read(loginout_parse_dir, encoding="utf-8")
     remote_url = loginout_parse.get(url, value)
     return remote_url
@@ -70,48 +66,33 @@ def teardown():
     global driver
     if driver:
         driver.quit()
+        print("Web Driver has been closed successfully.")
         time.sleep(1)
         
 def initiate_selenium_request():
     for i in range(5):
         try:
             print("Run selenium server for the {} time.".format(i+1))
-            # run_selenium()
-            remote_url = read_config("remote_url", "url")
+            os_name = platform.system()
+            if os_name == "Linux":
+                remote_url = get_docker_ip()
+            elif os_name == "Windows":
+                remote_url = read_config("selenium_server", "url")
             response = requests.get(remote_url)
-            print(response.text)
             if len(response.text) != 0:
                 break
         except:
             print("Fail to start selenium server.")
 
-def run_selenium():
-    os_name = platform.system()
-    if os_name == "Windows":
-        jar_path = "D:/java_selenium/selenium-server-4.8.1.jar"
-        command = ["java", "-jar", jar_path, "standalone"]
-    elif os_name == "Linux":
-        # jar_path = "/opt/tsg_test/package/selenium-server-4.8.1.jar"
-        jar_path = "/app/package/selenium-server-4.8.1.jar"
-        command = ["java", "-jar", jar_path, "standalone"]
-    result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    time.sleep(5)
-    print(f"Standard Output: {result.stdout}")
-
-def kill_selenium():
-    os_name = platform.system()
-    if os_name == "Windows":
-        for proc in psutil.process_iter(['name']):
-            try:
-                # print(proc.info['name'])
-                if proc.info['name'] == "java.exe":
-                    proc.kill()
-                    print(f"The process {proc.info['name']} is killed.")
-            except:
-                pass
-    elif os_name == "Linux":
-        print("to be added...")
-
+def get_docker_ip():
+    interfaces = psutil.net_if_addrs()
+    if "eth0" in interfaces:
+        for addr in interfaces["eth0"]:
+            if addr.family == 2:
+                docker_ip = addr.address
+                remote_url = "http://" + docker_ip + ":4444"
+                return remote_url
+            
 # @pytest.fixture()
 # def demo_fixture():
 #     global driver

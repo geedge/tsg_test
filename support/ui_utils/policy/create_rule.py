@@ -1,6 +1,7 @@
 # import os
 # import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import time
 from support.ui_utils.policy.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -19,6 +20,7 @@ class CreateRule():
             page_jump.jump_sub_policy_page(page_jump_element_position)
             
             # 点击create
+            time.sleep(5)
             self.driver.find_element(By.ID, create_element_position["policyRuleListPage_createButton_posId"]).click()
             
             # 输入name
@@ -116,6 +118,7 @@ class CreateRule():
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"]).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"]).send_keys(Keys.ENTER)
+                        time.sleep(5)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                     elif server_fqdn_data[x]["object_type"] == "category":

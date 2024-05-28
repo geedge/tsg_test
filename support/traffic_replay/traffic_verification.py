@@ -10,12 +10,13 @@ import configparser
 import json
 import platform
 import pytz
+from support.traffic_replay.workpath import workdir
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # from support.traffic_replay.traffic_replay import TrafficReplay
 
 class TrafficVerification():
-    def traffic_verification(self, parameter, test_data, template_path, cfg_list):
+    def traffic_verification(self, parameter, test_data, cfg_list):
     # def traffic_verification(self, condition, test_pc_ip, is_log, statistics_sc_info_list, api_server, vsys_id, path_dict):
         api_server = parameter["api_server"]
         script_type = parameter["script_type"]
@@ -59,7 +60,7 @@ class TrafficVerification():
                 output = output + error
             # cmd_return = output.decode(errors='ignore')
             cmd_return = output
-            print(output)
+            # print(output)
             expected_return = test_data["expected_return"]
             # 获取结束时间
             cmd_result = self.is_in(cmd_return, expected_return)
@@ -336,13 +337,16 @@ class TrafficVerification():
     
     def call_rest_api(self, data):
         parse = configparser.ConfigParser()
-        os_name = platform.system()
-        if os_name == "Windows":
-            parse.read("D:/Document/Project-TSG/Code/git/tsg_test/support/traffic_replay/traffic_api.ini", encoding="utf-8")
-        elif os_name == "Linux":
-            parse.read("/opt/tsg_test/support/traffic_replay/traffic_api.ini", encoding="utf-8")
-        api_server = parse.get("api_server", "server_url")
-        port = parse.get("port", "server_port")
+        # os_name = platform.system()
+        # if os_name == "Windows":
+        #     parse.read("D:/Document/Project-TSG/Code/git/tsg_test/configuration_file.ini", encoding="utf-8")
+        # elif os_name == "Linux":
+        #     # parse.read("/opt/configuration_file.ini", encoding="utf-8")
+        #     parse.read("/app/configuration_file.ini", encoding="utf-8")
+        parse_dir = os.path.join(workdir, "configuration_file.ini")
+        parse.read(parse_dir, encoding="utf-8")
+        api_server = parse.get("traffic_server", "server_url")
+        port = parse.get("traffic_port", "server_port")
         url = api_server + ":" + port + "/v1/traffic"
         headers = {"Content-Type": "application/json"}
         response = requests.post(url, data=data, headers=headers)

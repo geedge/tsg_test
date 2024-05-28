@@ -135,7 +135,7 @@ class ProfilePublicFunc:
                     return 0
             else:     # 切换到指定vsys
                 change_vsys_name = vsys_name
-            print(f"the current vsys: {current_vsys_name}, switch to vsys: {change_vsys_name}")
+            # print(f"the current vsys: {current_vsys_name}, switch to vsys: {change_vsys_name}")
             self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
             vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
             flag_num = 0
@@ -628,7 +628,7 @@ class ProfilePublicFunc:
         driver.get("http://192.168.44.72")
         driver.maximize_window()
         aut_username = loginout_parse.get("ui_account_1", "username")
-        aut_pwd = loginout_parse.get("ui_account_1", "passwd")
+        aut_pwd = loginout_parse.get("ui_account_1", "password")
         driver.find_element(By.NAME, loginPage_userName_posName).send_keys(aut_username)
         driver.find_element(By.NAME, loginPage_passwd_posName).send_keys(aut_pwd)
         driver.find_element(By.ID, "login").click()
@@ -652,7 +652,7 @@ class ProfilePublicFunc:
         driver.get("http://192.168.44.72")
         driver.maximize_window()
         aut_username = loginout_parse.get("ui_account_1_cached", "username")
-        aut_pwd = loginout_parse.get("ui_account_1_cached", "passwd")
+        aut_pwd = loginout_parse.get("ui_account_1_cached", "password")
         driver.find_element(By.NAME, loginPage_userName_posName).send_keys(aut_username)
         driver.find_element(By.NAME, loginPage_passwd_posName).send_keys(aut_pwd)
         driver.find_element(By.ID, "login").click()

@@ -1,11 +1,7 @@
 #!/bin/sh
 
-chmod 777 /opt/tsg_test/app.py
-chmod 777 /opt/tsg_test/gunicorn.conf.py
+find . -type f -name "*.py" -exec chmod 777 {} \;
 chmod 777 /opt/tsg_test/supervisor.conf
-chmod 777 /opt/tsg_test/package/install_docker.py
-chmod 777 /opt/tsg_test/package/install_chrome.py
-# chmod 777 /opt/tsg_test/package/install_trex.py
 chmod 777 /opt/tsg_test/package/requirements.txt
 
 python /opt/tsg_test/package/install_docker.py
