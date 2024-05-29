@@ -27,7 +27,7 @@ class LogInOut:
         self.driver.find_element(By.NAME, loginPage_userName_posName).send_keys(self.loginout_parse.get("account", "username"))
         self.driver.find_element(By.NAME, loginPage_passwd_posName).send_keys(self.loginout_parse.get("account", "password"))
         self.driver.find_element(By.ID, loginPage_signIn_posId).click()
-        print("Login successfully.")
+        print("Login to TSG successfully.")
         # 消除右上角弹框
         self.dismiss_rightTopTips()
         # 切换至默认ui_vsys

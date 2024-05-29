@@ -72,7 +72,7 @@ def teardown():
 def initiate_selenium_request():
     for i in range(5):
         try:
-            print("Run selenium server for the {} time.".format(i+1))
+            print("Run Selenium Server for the {} time.".format(i+1))
             os_name = platform.system()
             if os_name == "Linux":
                 remote_url = get_docker_ip()
