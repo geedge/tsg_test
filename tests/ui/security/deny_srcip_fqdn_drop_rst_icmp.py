@@ -242,13 +242,16 @@ def run(parameter):
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data, [])
-                print("verification result: ", verification_result)
+                # print("verification result: ", verification_result)
         
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
-            print("analysis result: ", result)
+            if len(result) == 0:
+                print("The test case is passed.")
+            elif len(result) != 0:
+                print("The test case is failed. The failure reason is: ", result)
         
         # 删除rule
         if create_rule_code == 200:

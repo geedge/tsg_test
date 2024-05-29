@@ -59,10 +59,10 @@ class TrafficVerification():
                 output, error = p.communicate()
                 output = output + error
             # cmd_return = output.decode(errors='ignore')
+            print("Start to verify the effect of the policy rule.")
             cmd_return = output
             # print(output)
             expected_return = test_data["expected_return"]
-            # 获取结束时间
             cmd_result = self.is_in(cmd_return, expected_return)
             loop_num = test_data["rule_num"]
             is_counters, is_log_query = self.is_verify(test_data, loop_num, 'counters', 'log_query_param')
@@ -95,6 +95,14 @@ class TrafficVerification():
             else:
                 metric_result = True
                 log_result = True
+            if metric_result == True:
+                print('The boolean of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(cmd_result))
+            elif metric_result == False:
+                print('The boolean of "metric_result" is {}. The mean is: do not get metrics or the metrics do not match the expected value from test data.'.format(cmd_result))
+            if log_result == True:
+                print('The boolean of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(cmd_result))
+            elif log_result == False:
+                print('The boolean of "log_result" is {}. The mean is: do not get logs or the logs result do not match the expected value from test data.'.format(cmd_result))
             return cmd_result, log_result, metric_result
         elif policy_type == "statistics":      # statistics 使用trex流量回放验证
             # 获取开始时间
@@ -315,6 +323,10 @@ class TrafficVerification():
         sub_str = sub_str.split(',')
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
         cmd_result = all(word in temp for word in sub_str)
+        if cmd_result == True:
+            print('The boolean of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result))
+        elif cmd_result == False:
+            print('The boolean of "cmd_result" is {}. The mean is: the expected value is not in the returned value from test data.'.format(cmd_result))
         return cmd_result # 返回：True or False
 
     def is_verify(self, test_data, loop_num, counters, log_query_param):
@@ -349,6 +361,7 @@ class TrafficVerification():
         port = parse.get("traffic_port", "server_port")
         url = api_server + ":" + port + "/v1/traffic"
         headers = {"Content-Type": "application/json"}
+        print("Begin to send traffic for effect verification.")
         response = requests.post(url, data=data, headers=headers)
         if response.status_code == 200: 
             jsonData = json.loads(response.text)
