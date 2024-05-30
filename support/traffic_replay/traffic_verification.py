@@ -20,10 +20,10 @@ class TrafficVerification():
     # def traffic_verification(self, condition, test_pc_ip, is_log, statistics_sc_info_list, api_server, vsys_id, path_dict):
         api_server = parameter["api_server"]
         script_type = parameter["script_type"]
-        is_log = test_data["is_log"]
-        test_pc_ip = test_data["test_pc_ip"]
-        vsys_id = test_data["vsys_id"]
-        token = test_data["token"]
+        is_log = parameter["is_log"]
+        test_pc_ip = parameter["test_pc_ip"]
+        vsys_id = parameter["vsys_id"]
+        token = parameter["token"]
         policy_type = test_data["policy_type"]
         isMultiPriority = test_data["is_multi_priority"]
         if isMultiPriority:
@@ -319,10 +319,11 @@ class TrafficVerification():
             return True, True, True
 
     def is_in(self, full_str, sub_str):
-        temp = full_str["result"]
+        # temp = full_str["result"]
+        print(type(full_str))
         sub_str = sub_str.split(',')
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
-        cmd_result = all(word in temp for word in sub_str)
+        cmd_result = all(word in full_str for word in sub_str)
         if cmd_result == True:
             print('The boolean of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result))
         elif cmd_result == False:
