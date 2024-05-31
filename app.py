@@ -42,6 +42,7 @@ def receive_parameter():
                 "username": "",
                 "password": "",
                 "api_server": "",
+                "test_pc_ip": "",
                 "script_type": "",
                 "root_path": "",
                 "path": "",
@@ -63,6 +64,8 @@ def receive_parameter():
             parameter["password"] = parse.get("account", "password")
             
             parameter["api_server"] = parse.get("tsg_url", "login_url")
+            
+            parameter["test_pc_ip"] = parse.get("test_pc", "ip")
             
             project_path = parse.get("root_path", "path")
             

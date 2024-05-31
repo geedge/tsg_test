@@ -78,7 +78,7 @@ def run(parameter):
         
         # 流量验证
         verify = TrafficVerification()
-        verification_result = verify.traffic_verification(parameter, test_data_json, template_path, cfg_list)
+        verification_result = verify.traffic_verification(parameter, test_data_json, cfg_list)
         
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     parameter = {
       "username": "zhaokun",
       "password": "zhaokun1",
-      "test_pc_ip": "192.168.64.73",
+      "test_pc_ip": "192.168.64.86",
       "api_server": "http://192.168.44.72",
       "script_type": "api",
       "env": "tsgx",

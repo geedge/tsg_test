@@ -95,7 +95,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "test_pc_ip": "192.168.64.86",
+            # "test_pc_ip": "192.168.64.86",
             # "is_log": 1,
             # "env": "tsgx",
             # "vsys_id": 6,
@@ -304,6 +304,7 @@ if __name__ == '__main__':
       "username": "zhaokun",
       "password": "zhaokun1",
       "api_server": "http://192.168.44.72",
+      "test_pc_ip": "192.168.64.86",
       "script_type": "ui",
       "env": "tsgx",
       "vsys_id": 6,

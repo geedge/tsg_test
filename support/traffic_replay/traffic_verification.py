@@ -23,7 +23,7 @@ class TrafficVerification():
         is_log = parameter["is_log"]
         test_pc_ip = parameter["test_pc_ip"]
         vsys_id = parameter["vsys_id"]
-        token = parameter["token"]
+        token = test_data["token"]
         policy_type = test_data["policy_type"]
         isMultiPriority = test_data["is_multi_priority"]
         
