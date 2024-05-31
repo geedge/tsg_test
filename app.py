@@ -73,6 +73,10 @@ def receive_parameter():
                 parameter["is_log"] = 0
             elif tag == "ui":
                 parameter["path"] = f"{project_path}/tests/ui"
+                parameter["vsys_id"] = 6
+                parameter["is_log"] = 1
+            elif tag == "condition_ui":
+                print("to be added.")
             elif tag == "app":
                 parameter["path"] = f"{project_path}/tests/app"
                 parameter["app_name"] = req_json.get("app_name")

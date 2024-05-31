@@ -26,10 +26,12 @@ class TrafficVerification():
         token = parameter["token"]
         policy_type = test_data["policy_type"]
         isMultiPriority = test_data["is_multi_priority"]
+        
         if isMultiPriority:
             rule_num = test_data["rule_num"]
         else:
             rule_num = 1
+        
         if script_type == "ui":
             temp_list = {}
             temp_list[policy_type] = test_data["rule_id"]
@@ -41,14 +43,18 @@ class TrafficVerification():
                 statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
         policy_id = list(create_policies_ids[0].values())[0]
         # 判断，如果condition中包含名为command的key，则读取command来执行，否则执行默认的
+        
         log = support.api_utils.get_log.GetLog()
+        
         if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
             # 获取开始时间
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            
             # 等待时间，等待策略生效
             time.sleep(10)
+            
             # 触发流量
             if script_type == "ui":
                 temp_data = json.dumps(test_data["traffic"])
@@ -62,10 +68,13 @@ class TrafficVerification():
             print("Start to verify the effect of the policy rule.")
             cmd_return = output
             # print(output)
+            
             expected_return = test_data["expected_return"]
             cmd_result = self.is_in(cmd_return, expected_return, script_type)
+            
             loop_num = test_data["rule_num"]
             is_counters, is_log_query = self.is_verify(test_data, loop_num, 'counters', 'log_query_param')
+            
             if is_log == 1:
                 if is_log_query == 1:
                     # 考虑到有5分钟后才出日志的情况，循环5次
@@ -81,6 +90,7 @@ class TrafficVerification():
                 elif is_log_query == 0:
                     # 此时代表不需要进行logs模块的校验，可能为security shunt动作或statistics，sc策略等
                     log_result = True
+                
                 if is_counters == 1:
                     for _ in range(15):
                         utc_tz = pytz.timezone('UTC')
@@ -95,14 +105,17 @@ class TrafficVerification():
             else:
                 metric_result = True
                 log_result = True
+            
             if metric_result == True:
                 print('The boolean of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(cmd_result))
             elif metric_result == False:
                 print('The boolean of "metric_result" is {}. The mean is: do not get metrics or the metrics do not match the expected value from test data.'.format(cmd_result))
+            
             if log_result == True:
                 print('The boolean of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(cmd_result))
             elif log_result == False:
                 print('The boolean of "log_result" is {}. The mean is: do not get logs or the logs result do not match the expected value from test data.'.format(cmd_result))
+            
             return cmd_result, log_result, metric_result
         elif policy_type == "statistics":      # statistics 使用trex流量回放验证
             # 获取开始时间
