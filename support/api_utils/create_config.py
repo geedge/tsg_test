@@ -16,20 +16,24 @@ class CreateConfig():
         token = parameter["token"]
         create_ip_ids, create_subid_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids = [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
+        
         # statistics和sc需要随机ip
         if condition["policy_type"] == "statistics" or (condition["policy_type"] == "service_chaining" and condition["targeted_traffic"] == "raw"):
             condition = self.generate_random_ip(condition, run_env)
+        
         # 指定循环次数
         isMultiPriority = condition["is_multi_priority"]
         if isMultiPriority:
             rule_num = condition["rule_num"]
         else:
             rule_num = 1
+            
         for i in range(rule_num):
             # 第i次循环，创建第i组object、profile和rule
             create_number = i + 1
             object_condition_key = "obj_condition_{}".format(create_number)
             object_condition_value = condition[object_condition_key]
+            
             # 创建object
             create_object = CreateObject()
             object_template = template_path["object_template"]
@@ -50,6 +54,7 @@ class CreateConfig():
                 create_account_ids.extend(account_ids)
             if len(http_signature_ids) > 0:
                 create_http_signature_ids.extend(http_signature_ids)
+           
             # 创建profile
             profile_condition_key = "profile_condition_{}".format(create_number)
             if (profile_condition_key in condition.keys()) and len(condition[profile_condition_key]) > 0:    # 含有profile_condition_ key 并且非空
@@ -60,6 +65,7 @@ class CreateConfig():
                     create_profile_ids.append(create_profile_ids_dict)
                     if condition["policy_type"] == "statistics" or condition["policy_type"] == "service_chaining":
                         temp_profile_list.append(create_profile_ids_dict)
+            
             # 创建rule
             create_rule = CreatePolicyRule()
             policy_id_list = create_rule.create_rule_from_template(token, src_list, dst_list, filter_list, flag_list, condition, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
@@ -104,6 +110,7 @@ class CreateConfig():
                             statistics_sc_info_list.append(sc_info)
             if len(policy_id_list) > 0:
                 create_policies_ids.extend(policy_id_list)
+        
         cfg_list = {}
         cfg_list["create_ip_ids"] = create_ip_ids
         cfg_list["create_subid_ids"] = create_subid_ids

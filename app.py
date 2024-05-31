@@ -12,7 +12,20 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/v1/tsg', methods=["POST"])
+@app.route('/v1/security_ui', methods=["POST"])
+@app.route('/v1/intercept_ui', methods=["POST"])
+@app.route('/v1/manipulation_ui', methods=["POST"])
+@app.route('/v1/monitor_ui', methods=["POST"])
+@app.route('/v1/statistics_ui', methods=["POST"])
+@app.route('/v1/service_chaining_ui', methods=["POST"])
+@app.route('/v1/shaping_ui', methods=["POST"])
+@app.route('/v1/security_api', methods=["POST"])
+@app.route('/v1/intercept_api', methods=["POST"])
+@app.route('/v1/manipulation_api', methods=["POST"])
+@app.route('/v1/monitor_api', methods=["POST"])
+@app.route('/v1/statistics_api', methods=["POST"])
+@app.route('/v1/service_chaining_api', methods=["POST"])
+@app.route('/v1/shaping_api', methods=["POST"])
 def receive_parameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
@@ -35,7 +48,10 @@ def receive_parameter():
                 "module_name": "",
                 "test_case_name": "",
                 "app_name": "",
-                "app_full_name": ""
+                "app_full_name": "",
+                "env": "",
+                "vsys_id": 0,
+                "is_log": 0
             }
             
             parse = configparser.ConfigParser()
@@ -52,6 +68,9 @@ def receive_parameter():
             
             if tag == "api":
                 parameter["path"] = f"{project_path}/tests/api"
+                parameter["env"] = "tsgx"
+                parameter["vsys_id"] = 6
+                parameter["is_log"] = 0
             elif tag == "ui":
                 parameter["path"] = f"{project_path}/tests/ui"
             elif tag == "app":
@@ -95,7 +114,15 @@ def receive_parameter():
                         response_result["data"] = None
                         response_result["success"] = False
                     break
-            
+        
+            response = jsonify(response_result)
+            response.status_code = response_result["code"]
+        else:
+            response_result = {}
+            response_result["code"] = 418
+            response_result["msg"] = "The run status code is False, do not run test case."
+            response_result["data"] = None
+            response_result["success"] = False    
             response = jsonify(response_result)
             response.status_code = response_result["code"]
         
@@ -104,8 +131,8 @@ def receive_parameter():
     except subprocess.CalledProcessError as e:
         sys.stderr.write("Fail to execute the command. The return code: {}\n".format(e.returncode))
         response_result = {}
-        response_result["code"] = 418
-        response_result["msg"] = ""
+        response_result["code"] = 419
+        response_result["msg"] = "Fail to parse or build parameter."
         response_result["data"] = None
         response_result["success"] = False
         response = jsonify(response_result)

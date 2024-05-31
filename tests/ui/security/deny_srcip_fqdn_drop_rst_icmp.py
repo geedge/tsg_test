@@ -242,7 +242,6 @@ def run(parameter):
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data, [])
-                # print("verification result: ", verification_result)
         
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -291,7 +290,7 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("duration: ", duration)
+        print("Duration of running the test case: ", duration)
         
         print("Finish test case: " + parameter["test_case_name"])
         return result
