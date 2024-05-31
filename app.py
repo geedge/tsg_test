@@ -78,7 +78,7 @@ def receive_parameter():
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["vsys_id"] = 6
                 parameter["is_log"] = 1
-            elif tag == "condition_ui":
+            elif tag == "general_ui":
                 print("to be added.")
             elif tag == "app":
                 parameter["path"] = f"{project_path}/tests/app"
