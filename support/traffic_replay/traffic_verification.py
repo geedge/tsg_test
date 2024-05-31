@@ -20,10 +20,10 @@ class TrafficVerification():
     # def traffic_verification(self, condition, test_pc_ip, is_log, statistics_sc_info_list, api_server, vsys_id, path_dict):
         api_server = parameter["api_server"]
         script_type = parameter["script_type"]
-        is_log = test_data["is_log"]
-        test_pc_ip = test_data["test_pc_ip"]
-        vsys_id = test_data["vsys_id"]
-        token = test_data["token"]
+        is_log = parameter["is_log"]
+        test_pc_ip = parameter["test_pc_ip"]
+        vsys_id = parameter["vsys_id"]
+        token = parameter["token"]
         policy_type = test_data["policy_type"]
         isMultiPriority = test_data["is_multi_priority"]
         if isMultiPriority:
@@ -63,7 +63,7 @@ class TrafficVerification():
             cmd_return = output
             # print(output)
             expected_return = test_data["expected_return"]
-            cmd_result = self.is_in(cmd_return, expected_return)
+            cmd_result = self.is_in(cmd_return, expected_return, script_type)
             loop_num = test_data["rule_num"]
             is_counters, is_log_query = self.is_verify(test_data, loop_num, 'counters', 'log_query_param')
             if is_log == 1:
@@ -288,7 +288,7 @@ class TrafficVerification():
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                cmd_result = self.is_in(cmd_return, expected_return)
+                cmd_result = self.is_in(cmd_return, expected_return, script_type)
                 if len(statistics_sc_info_list) > 0:  # 非空
                     for statistics_info in statistics_sc_info_list:
                         n = 0  # 自增变量
@@ -318,8 +318,11 @@ class TrafficVerification():
             # 假数据
             return True, True, True
 
-    def is_in(self, full_str, sub_str):
-        temp = full_str["result"]
+    def is_in(self, full_str, sub_str, script_type):
+        if script_type == 'ui':
+            temp = full_str["result"]
+        elif script_type == 'api':
+            temp = full_str
         sub_str = sub_str.split(',')
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
         cmd_result = all(word in temp for word in sub_str)
