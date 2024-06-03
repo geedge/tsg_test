@@ -10,5 +10,7 @@
     "description": "test",
     "member": "object",
     "iconColor": "#31739C"
-  }
+  },
+  "data": {},
+  "file": {}
 }

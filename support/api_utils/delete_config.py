@@ -18,8 +18,8 @@ class DeleteConfig():
         create_http_signature_ids = cfg_list["create_http_signature_ids"]
         create_profile_ids = cfg_list["create_profile_ids"]
         create_policies_ids = cfg_list["create_policies_ids"]
-        delete_object_template = {"type":"ip", "ids":[], "vsys_id":1}
-        delete_rule_template = {"ids":[], "type":"tsg_security", "vsys_id":1}
+        delete_object_template = {"type": "ip", "ids": [], "vsys_id": 1}
+        delete_rule_template = {"ids": [], "type": "tsg_security", "vsys_id": 1}
         # 多条id删除的时候需要区分policy_type
         if len(create_policies_ids) > 0:
             for i in range(len(create_policies_ids)):
@@ -29,6 +29,10 @@ class DeleteConfig():
                 url = api_server + "/v1/policy/rule"
                 response = requests.delete(url, headers=headers, params=delete_rule_template, verify=False)
                 assert response.status_code == 200
+                if response.status_code == 200:
+                    print("Delete rule successfully.")
+                else:
+                    print("Delete rule failed.")
         if len(create_ip_ids) > 0:
             delete_object_template['type'] = "ip"
             delete_object_template['ids'] = create_ip_ids
@@ -36,6 +40,10 @@ class DeleteConfig():
             url = api_server + "/v1/policy/object"
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete ip successfully.")
+            else:
+                print("Delete ip failed.")
         if len(create_subid_ids) > 0:
             delete_object_template['type'] = "subscriberid"
             delete_object_template['ids'] = create_subid_ids
@@ -43,6 +51,10 @@ class DeleteConfig():
             url = api_server + "/v1/policy/object"
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete sub id successfully.")
+            else:
+                print("Delete sub id failed.")
         if len(create_fqdn_ids) > 0:
             delete_object_template['type'] = "fqdn"
             delete_object_template['ids'] = create_fqdn_ids
@@ -50,6 +62,10 @@ class DeleteConfig():
             url = api_server + "/v1/policy/object"
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete fqdn successfully.")
+            else:
+                print("Delete fqdn failed.")
         if len(create_url_ids) > 0:
             delete_object_template['type'] = "url"
             delete_object_template['ids'] = create_url_ids
@@ -57,6 +73,10 @@ class DeleteConfig():
             url = api_server + "/v1/policy/object"
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete url successfully.")
+            else:
+                print("Delete url failed.")
         if len(create_flag_ids) > 0:
             delete_object_template['type'] = "flag"
             delete_object_template['ids'] = create_flag_ids
@@ -64,6 +84,10 @@ class DeleteConfig():
             url = api_server + "/v1/policy/object"
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete flag successfully.")
+            else:
+                print("Delete flag failed.")
         if len(create_keywords_ids) > 0:
             delete_object_template['type'] = "keywords"
             delete_object_template['ids'] = create_keywords_ids
@@ -71,6 +95,10 @@ class DeleteConfig():
             url = api_server + "/v1/policy/object"
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete keyword successfully.")
+            else:
+                print("Delete keyword failed.")
         if len(create_account_ids) > 0:
             delete_object_template['type'] = "account"
             delete_object_template['ids'] = create_account_ids
@@ -78,6 +106,10 @@ class DeleteConfig():
             url = api_server + "/v1/policy/object"
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete account successfully.")
+            else:
+                print("Delete account failed.")
         if len(create_http_signature_ids) > 0:
             delete_object_template['type'] = "http_signature"
             delete_object_template['ids'] = create_http_signature_ids
@@ -85,6 +117,10 @@ class DeleteConfig():
             url = api_server + "/v1/policy/object"
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete http signature successfully.")
+            else:
+                print("Delete http signature failed.")
         if len(create_profile_ids) > 0:
             for del_porfile_index in range(len(create_profile_ids)):
                 if create_profile_ids[del_porfile_index]["profile_type"] == "Statistics_Templates":    # 删除逻辑
@@ -93,47 +129,79 @@ class DeleteConfig():
                     url = "{}/v1/policy/profile/statistics_template".format(api_server)
                     response = requests.delete(url, headers=headers, params=del_profile_template, verify=False)
                     assert response.status_code == 200
+                    if response.status_code == 200:
+                        print("Delete statistics template successfully.")
+                    else:
+                        print("Delete statistics template failed.")
                 elif create_profile_ids[del_porfile_index]["profile_type"] == "service_function_forwarder":    # 删除SFF和SF
                     profile_id = create_profile_ids[del_porfile_index]["id"]
                     del_profile_sff = {"ids": str(profile_id),"vsys_id":vsys_id}
                     url = "{}/v1/policy/profile/service_function_forwarder".format(api_server)
                     response = requests.delete(url, headers=headers, params=del_profile_sff, verify=False)
+                    assert response.status_code == 200
                     if response.status_code == 200:
+                        print("Delete service function forwarder successfully.")
                         profile_id = create_profile_ids[del_porfile_index]["sff_info"]["sf_info"][0]["id"]
                         del_profile_sf = {"ids": str(profile_id),"vsys_id":vsys_id}
                         url = "{}/v1/policy/profile/service_function".format(api_server)
                         response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
-                    assert response.status_code == 200
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print("Delete service function successfully.")
+                        else:
+                            print("Delete service function failed.")
+                    else:
+                        print("Delete service function forwarder failed.")
                 elif create_profile_ids[del_porfile_index]["profile_type"] == "response_page": # 删除response_page
                     profile_id = create_profile_ids[del_porfile_index]["id"]
                     url = "{}/v1/policy/profile/response_page".format(api_server)
                     del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
                     response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                     assert response.status_code == 200
+                    if response.status_code == 200:
+                        print("Delete response page successfully.")
+                    else:
+                        print("Delete response page failed.")
                 elif create_profile_ids[del_porfile_index]["profile_type"] == "hijack_files": # 删除hijack_files
                     profile_id = create_profile_ids[del_porfile_index]["id"]
                     url = "{}/v1/policy/profile/hijack_file".format(api_server)
                     del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
                     response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                     assert response.status_code == 200
+                    if response.status_code == 200:
+                        print("Delete hijack files successfully.")
+                    else:
+                        print("Delete hijack files failed.")
                 elif create_profile_ids[del_porfile_index]["profile_type"] == "insert_profile": # 删除insert
                     profile_id = create_profile_ids[del_porfile_index]["id"]
                     url = "{}/v1/policy/profile/insert_script".format(api_server)
                     del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
                     response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                     assert response.status_code == 200
+                    if response.status_code == 200:
+                        print("Delete insert profile successfully.")
+                    else:
+                        print("Delete insert profile failed.")
                 elif create_profile_ids[del_porfile_index]["profile_type"] == "run_script": # 删除run_script
                     profile_id = create_profile_ids[del_porfile_index]["id"]
                     url = "{}/v1/policy/profile/run_script".format(api_server)
                     del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
                     response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                     assert response.status_code == 200
+                    if response.status_code == 200:
+                        print("Delete run script successfully.")
+                    else:
+                        print("Delete run script failed.")
                 elif create_profile_ids[del_porfile_index]["profile_type"] == "dns_record": # 删除dns_record
                     profile_id = create_profile_ids[del_porfile_index]["id"]
                     url = "{}/v1/policy/profile/run_script".format(api_server)
                     del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
                     response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                     assert response.status_code == 200
+                    if response.status_code == 200:
+                        print("Delete dns record successfully.")
+                    else:
+                        print("Delete dns record failed.")
 
 if __name__ == '__main__':
     print("test")

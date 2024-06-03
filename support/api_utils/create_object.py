@@ -19,8 +19,10 @@ class CreateObject():
         self.keywords_ids = []
         self.account_ids = []
         self.http_signature_ids = []
+        self.geo_ids = []
+        self.geo_name_ids = []
 
-    def create_object_from_template(self, token, condition, template, api_host, test_pc_ip, vsys_id):
+    def create_object_from_template(self, token, parameter, condition, template, api_host, test_pc_ip, vsys_id):
         # 此处的condition为测试用例json中obj_condition_{i}的相关数据
         headers = {"Content-Type": "application/json", "Authorization": token}
         with open(template, 'r', encoding='utf-8') as f:
@@ -30,41 +32,15 @@ class CreateObject():
         filter_list = []
         flag_list = []
         timeout_result = True
+        
         # 依次创建object
         if len(condition) > 0:
             for key in condition:
                 attribute_name = key['attribute_name']
-                is_repeat = 0
-                if 'is_repeat' in key:
-                    is_repeat = key['is_repeat']
-                if is_repeat == 1:
-                    granularity = key["granularity"]
-                    run_times = key["run_times"]
-                    for i in range(run_times):
-                        index = i + 1
-                        objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, run_times)
-                        if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
-                            for obj_dict in objects_list:
-                                source_list.append(obj_dict)
-                        elif attribute_name == 'ATTR_DESTINATION_IP' or attribute_name == "ATTR_DESTINATION_LOCATION" or attribute_name == "ATTR_SERVER_FQDN":
-                            for obj_dict in objects_list:
-                                dst_list.append(obj_dict)
-                        elif attribute_name == 'ATTR_FLAG':
-                            for obj_dict in objects_list:
-                                flag_list.append(obj_dict)
-                        else:
-                            for obj_dict in objects_list:
-                                filter_list.append(obj_dict)
-                        time.sleep(granularity)
-                        # if index < run_times:
-                        #     erase = deleteConfig.DeleteConfig()
-                        #     erase.delele_cfg(token, parameter, cfg_list)
-                        #     erase.del_config(token, [], [], self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, [], api_host, vsys_id)
-                else:
-                    # 将测试用例中的数据传入模板文件后创建object
-                    index = 1
-                    run_times = 1
-                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, run_times)
+                repeat_time = key["repeat_time"]
+                for i in range(repeat_time):
+                    index = i + 1
+                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, repeat_time)
                     if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
@@ -77,28 +53,65 @@ class CreateObject():
                     else:
                         for obj_dict in objects_list:
                             filter_list.append(obj_dict)
-        return timeout_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids
+                    
+                    # 删除创建的object，且删除次数等于repeat_time-1，保留最后一次的object用于验证功能
+                    if repeat_time > 1:
+                        time.sleep(60)
+                        if index < repeat_time:
+                            create_ip_ids, create_fqdn_ids, create_url_ids = [], [], []
+                            cfg_list = {
+                                "create_ip_ids": [],
+                                "create_fqdn_ids": [],
+                                "create_url_ids": [],
+                                "create_subid_ids": [],
+                                "create_flag_ids": [],
+                                "create_keywords_ids": [],
+                                "create_account_ids": [],
+                                "create_http_signature_ids": [],
+                                "create_profile_ids": [],
+                                "create_policies_ids": [],
+                                "statistics_sc_info_list": []
+                            }
+                            if obj_template_dict["object"]["type"] == "ip" and len(self.ip_ids) > 0:
+                                create_ip_ids.extend(self.ip_ids)
+                                cfg_list["create_ip_ids"] = create_ip_ids
+                            if obj_template_dict["object"]["type"] == "fqdn" and len(self.fqdn_ids) > 0:
+                                create_fqdn_ids.extend(self.fqdn_ids)
+                                cfg_list["create_fqdn_ids"] = create_fqdn_ids
+                            if obj_template_dict["object"]["type"] == "url" and len(self.url_ids) > 0:
+                                create_url_ids.extend(self.url_ids)
+                                cfg_list["create_url_ids"] = create_url_ids
+                            erase = DeleteConfig()
+                            erase.delele_cfg(token, parameter, cfg_list)
+        
+        return timeout_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, self.geo_name_ids
     
     # 对多个objects的处理（处理之后要调用create_object）
-    def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, vsys_id, token, index, run_times):
+    def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, vsys_id, token, index, repeat_time):
         # object中的is_repeat，用于判定是否需要将数据组建为按照文件读取为多个items的形式
         is_repeat = 0
         is_import = 0
-        if 'is_repeat' in condition:
-            is_repeat = condition['is_repeat']
-        if 'is_import' in condition:
-            is_import = condition['is_import']
+        if condition["repeat_time"] > 1:
+            is_repeat = 1
+            is_import = 1
+        
         attribute_name = condition['attribute_name']
-        obj_list = condition["object_list"]
+        
         obj_type = condition["object_type"]
+        obj_template_dict['object']['type'] = obj_type
+        
         obj_sub_type = condition['object_sub_type']
+        obj_template_dict['object']['sub_type'] = obj_sub_type
+        obj_template_dict['object']['statistics_option'] = 'none'
+        
         if 'is_negate' in condition.keys():
             is_negate = condition['is_negate']
         else:
             is_negate = 0
-        obj_template_dict['object']['type'] = obj_type
-        obj_template_dict['object']['sub_type'] = obj_sub_type
+
         obj_template_dict['vsys_id'] = vsys_id
+        
+        obj_list = condition["object_list"]
         for obj in obj_list:
             add_item_list = obj["add_item_list"]
             if "context_name" in obj.keys():
@@ -106,20 +119,30 @@ class CreateObject():
             else:
                 context_name = ''
             if is_import == 0:
+                type = "create"
                 member = self.combine_object_data(obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat)
                 obj_template_dict['object']['member'] = member
-                object_ids_temp_list, timeout_result = self.create_object(obj_template_dict, headers, api_host, is_repeat)
             else:
-                object_ids_temp_list, timeout_result = self.import_object(obj_type, vsys_id, add_item_list, api_host, token, is_repeat)
+                type = "import"
+                obj_template_dict["data"] = {'type': obj_type, 'vsys_id': vsys_id, 'statistics_option': 'none'}
+                obj_template_dict["dry_data"] = {'type': obj_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'none'}
+                for item in add_item_list:
+                    object_file = item["keyword_array"][0]
+                    file_name = object_file.split("/")[-1]
+                    obj_template_dict["file"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
+            object_ids_temp_list, timeout_result = self.create_or_import_object(type, obj_template_dict, headers, api_host, is_repeat)
+        
         if attribute_name != '' and len(object_ids_temp_list) != 0:
             objects_list = self.obj_ids_to_policy_obj_list(object_ids_temp_list, attribute_name, is_negate)
         else:
             objects_list = []
+        
         object_temp_list = []
         if len(objects_list) > 0 and is_repeat == 0:
             object_temp_list.append(objects_list)
-        elif len(objects_list) > 0 and is_repeat == 1 and index > run_times-1:
+        elif len(objects_list) > 0 and is_repeat == 1 and index > repeat_time-1:
             object_temp_list.append(objects_list)
+        
         return object_temp_list, timeout_result 
     
     # 组织创建通过items进行新增的object的数据
@@ -207,34 +230,61 @@ class CreateObject():
         member = dict(items=items, type=1)
         return member
            
-    def import_object(self, obj_type, vsys_id, add_item_list, api_host, token, is_repeat):
-        headers = {"Authorization": token}
-        data = {'type': obj_type, 'vsys_id': vsys_id}
-        for item in add_item_list:
-            object_file = item["keyword_array"][0]
-            file_name = object_file.split("/")[-1]
-            files = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
-        url = api_host + "/v1/policy/object/import"
-        time1 = datetime.now()
-        response = requests.post(url, data=data, headers=headers, files= files, verify=False)
-        time.sleep(20)
-        time2 = datetime.now()
-        time_difference = time2 - time1
-        seconds_difference = time_difference.total_seconds()
-        assert response.status_code == 200
-        if seconds_difference > 180:
-            timeout_result = False
-        else:
-            timeout_result = True
+    def create_or_import_object(self, type, obj_template_dict, headers, api_host, is_repeat):
+        if type == "create":
+            time1 = datetime.now()
+            url = api_host + "/v1/policy/object"
+            response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
+            assert response.status_code == 200
+            if response.status_code == 200:
+                print("Create {} object successfully.".format(obj_template_dict['object']['type']))
+            else:
+                print("Create {} object failed.".format(obj_template_dict['object']['type']))
+            time2 = datetime.now()
+            time_difference = time2 - time1
+            time_difference = time_difference.total_seconds()
+            if time_difference > 60:
+                timeout_result = False
+                print("Creating {} object takes too long.".format(obj_template_dict['object']['type']))
+            else:
+                timeout_result = True
+        elif type == "import":
+            response = requests.post(url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file"], verify=False)
+            assert response.status_code == 200
+            if response.status_code == 200:
+                print("Verify the imported {} object successfully.".format(obj_template_dict['object']['type']))
+            else:
+                print("Verify the imported {} object failed.".format(obj_template_dict['object']['type']))
+            time1 = datetime.now()
+            url = api_host + "/v1/policy/object/import"
+            response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file"], verify=False)
+            time.sleep(20)
+            time2 = datetime.now()
+            time_difference = time2 - time1
+            time_difference = time_difference.total_seconds()
+            assert response.status_code == 200
+            if response.status_code == 200:
+                print("Import {} object successfully.".format(obj_template_dict['object']['type']))
+            else:
+                print("Import {} object failed.".format(obj_template_dict['object']['type']))
+            if time_difference > 180:
+                timeout_result = False
+                print("Importing {} object takes too long.".format(obj_template_dict['object']['type']))
+            else:
+                timeout_result = True
+        
+        obj_type = obj_template_dict['object']['type']
         response_dict = json.loads(response.text)
-        object_ids = self.get_object_ids(response_dict)
-        # 为了每次清空需要反复创建的object的组合使用，否则会反复删除已经存在的object
+        object_ids, geo_name_id_list = self.get_object_ids(response_dict, obj_type)
+        
+        # 是否可取消，待验证？？
         if is_repeat == 1 and obj_type != 'ip':
             self.fqdn_ids = []
             self.url_ids = []
         elif is_repeat == 1 and obj_type == 'ip':
             self.ip_ids = []
-        # 这里把if和elif后面的语句都写成一个函数，然后再判断，否则if_elif占用了36行
+            
+        obj_type = obj_template_dict['object']['type'] 
         if obj_type == 'ip':
             self.ip_ids = self.handle_ids(object_ids, self.ip_ids)
         elif obj_type == 'subscriberid':
@@ -251,59 +301,24 @@ class CreateObject():
             self.account_ids = self.handle_ids(object_ids, self.account_ids)
         elif obj_type == 'http_signature':
             self.http_signature_ids = self.handle_ids(object_ids, self.http_signature_ids)
-        return object_ids, timeout_result
-    
-    # 调用创建object的接口
-    def create_object(self, obj_template_dict, headers, api_host, is_repeat):
-        url = api_host + "/v1/policy/object"
-        response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
-        assert response.status_code == 200
-        time1 = datetime.now()
-        response_dict = json.loads(response.text)
-        time2 = datetime.now()
-        time_difference = time2 - time1
-        seconds_difference = time_difference.total_seconds()
-        if seconds_difference > 60:
-            timeout_result = False
-        else:
-            timeout_result = True
-        # 从返回数据中获取object_type，方便后续判断将id添加到哪个全局变量里边
-        if is_repeat == 1:
-            time.sleep(20)
-        obj_type = response_dict['data']['object']['type']
-        object_ids = self.get_object_ids(response_dict)
-        # 为了每次清空需要反复创建的object的组合使用，否则会反复删除已经存在的object
-        obj_template_dict['object']['type'] = obj_type
-        if is_repeat  == 1 and obj_type != 'ip':
-            self.fqdn_ids = []
-            self.url_ids = []
-        elif is_repeat  == 1 and obj_type == 'ip':
-            self.ip_ids = []
-        # 这里把if和elif后面的语句都写成一个函数，然后再判断，否则if_elif占用了36行
-        if obj_type == 'ip':
-            self.ip_ids = self.handle_ids(object_ids, self.ip_ids)
-        elif obj_type == 'subscriberid':
-            self.subid_ids = self.handle_ids(object_ids, self.subid_ids)
-        elif obj_type == 'fqdn':
-            self.fqdn_ids = self.handle_ids(object_ids, self.fqdn_ids)
-        elif obj_type == 'flag':
-            self.flag_ids = self.handle_ids(object_ids, self.flag_ids)
-        elif obj_type == 'url':
-            self.url_ids = self.handle_ids(object_ids, self.url_ids)
-        elif obj_type == 'keywords':
-            self.keywords_ids = self.handle_ids(object_ids, self.keywords_ids)
-        elif obj_type == 'account':
-            self.account_ids = self.handle_ids(object_ids, self.account_ids)
-        elif obj_type == 'http_signature':
-            self.http_signature_ids = self.handle_ids(object_ids, self.http_signature_ids)
+        elif obj_type == 'geolocation':
+            self.geo_ids = self.handle_ids(object_ids, self.geo_ids)
+            self.geo_name_ids = self.handle_ids(geo_name_id_list, self.geo_name_ids)
+            
         return object_ids, timeout_result
     
     # 获取返回结果中的objectsid
-    def get_object_ids(self, response_dict):
+    def get_object_ids(self, response_dict, obj_type):
         temp_list = []
-        object_id = response_dict['data']['object']['id']
+        temp_geo_name_id_list = []
+        if obj_type == 'geolocation':
+            object_id = response_dict['data']['object']['member']['geolocation']['country_object_id']
+            geoname_id = response_dict['data']['object']['member']['geolocation']['geoname_id']
+            temp_geo_name_id_list.append(geoname_id)
+        else:
+            object_id = response_dict['data']['object']['id']      
         temp_list.append(object_id)
-        return temp_list
+        return temp_list, temp_geo_name_id_list
     
     # 组织在策略中使用的source,filter等数据
     def obj_ids_to_policy_obj_list(self, object_ids, attribute_name, is_negate):

@@ -296,23 +296,22 @@ def run(parameter):
         return result
     except Exception as e:
         print("Error: ", e)
-        result = str(e)
-        return result
+        return "Error: " + str(e)
 
 if __name__ == '__main__':
     parameter = {
-      "username": "zhaokun",
-      "password": "zhaokun1",
-      "api_server": "http://192.168.44.72",
-      "test_pc_ip": "192.168.64.86",
-      "script_type": "ui",
-      "env": "tsgx",
-      "vsys_id": 6,
-      "is_log": 1,
-      "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-      "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
-      "module_name": "security",
-      "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+        "username": "zhaokun",
+        "password": "zhaokun1",
+        "test_pc_ip": "192.168.64.86",
+        "api_server": "http://192.168.44.72",
+        "script_type": "api",
+        "env": "tsgx",
+        "vsys_id": 6,
+        "is_log": 0,
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "module_name": "security",
+        "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
     }
     run(parameter)
     """
