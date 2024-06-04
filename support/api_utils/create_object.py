@@ -94,7 +94,7 @@ class CreateObject():
         # object中的is_repeat，用于判定是否需要将数据组建为按照文件读取为多个items的形式
         is_repeat = 0
         is_import = 0
-        if condition["repeat_time"] > 1:
+        if repeat_time > 1:
             is_repeat = 1
             is_import = 1
         
