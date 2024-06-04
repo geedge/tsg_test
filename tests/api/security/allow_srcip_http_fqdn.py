@@ -44,7 +44,7 @@ def run(parameter):
                             "add_item_list": [
                                 {
                                     "keyword_array": [
-                                        "open.node.com"
+                                        "www.baidu.com"
                                     ]
                                 }
                             ]
@@ -52,13 +52,13 @@ def run(parameter):
                     ]
                 }
             ],
-            "app_name_1": ["http"],
-            "expected_return": "POST",
+            "app_name_1": ["https"],
+            "expected_return": "百度一下",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.baidu.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv http://open.node.com:180"
+                "command": "curl -kv https://www.baidu.com"
             },
             "token": ""
         }
@@ -110,7 +110,7 @@ if __name__ == "__main__":
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 0,
+        "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
         "module_name": "security",

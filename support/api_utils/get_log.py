@@ -52,12 +52,14 @@ class GetLog():
                 log_condition_dict['filter'] = log_filter
                 log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
             url = api_host + "/v1/log/query"
+            print("Begin to query log by condition.")
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200
             log_list = json.loads(response.text)
             log_list = log_list['data']['result']
             log_index = i + 1
             log_query_params = test_data['log_query_param_'+str(log_index)]
+            print("Compare log with test data.")
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
                     for log_query_param in log_query_params:
@@ -67,14 +69,8 @@ class GetLog():
                             log_reult = True
                         else:
                             log_reult = False
-            elif len(log_list) == 0 and len(log_query_params) > 0:
-                log_reult = False
-            elif len(log_list) == 0 and len(log_query_params) == 0:
-                # 此时代表不需要进行logs模块的校验，可能为security shunt动作或statistics，sc策略等
-                log_reult = True
-            # 当日志中出现false时，就跳出此循环，多次true才可以将result置为true
-            if log_reult == False:
-                break
+            elif len(log_list) == 0:
+                log_reult = None
         return log_reult
 
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id):
@@ -95,35 +91,35 @@ class GetLog():
             hit_query_condition['start_time'] = start_time
             hit_query_condition['end_time'] = end_time
             hit_query_condition['vsys_id'] = vsys_id
+            print("Begin to query metric by condition.")
             response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
             index = i + 1
             counter = test_data['counters_'+str(index)]
             result_len = len(response['data']['result'])
+            print("Compare metric with test data.")
             # 需要hits == 0时，则验证，验证通过metric置为true
             if 'hits' in counter and counter['hits'] == 0 and result_len == 0:
                 metric_result = True
-            elif 'hits' in counter and counter['hits'] == 'many' and result_len > 0:
-                metric = response['data']['result'][0]
-                hits = metric['hits']
-                if hits > 0:
-                    metric_result = True
-                else:
-                    metric_result = False
-            # 接口有返回值时，对接口的返回内容进行验证
             elif 'hits' in counter and result_len > 0:
                 metric = response['data']['result'][0]
-                for key,value in counter.items():
-                    # 接口返回的统计是否与预期的一致
-                    if key not in metric or metric[key] != value:
-                        metric_result = False
-                    else:
-                        metric_result = True
-            elif 'hits' not in counter:
-                metric_result = True
+                if counter['hits'] == 1:
+                    for key, value in counter.items():
+                        # 接口返回的统计是否与预期的一致
+                        if key not in metric or metric[key] != value:
+                            metric_result = False
+                        else:
+                            metric_result = True
+                elif counter['hits'] == 'many':
+                    for key, value in counter.items():
+                        # 接口返回的统计是否与预期的一致
+                        if key not in metric or metric[key] < 1:
+                            metric_result = False
+                        else:
+                            metric_result = True
             else:
-                metric_result = False
+                metric_result = None
             return metric_result
 
     def get_livechart_statistics(self, token, start_time, end_time, statistics_info, statistics_metircs_except, trex_ip_info, test_data, host_api, vsys_id, alignment_period="PT1S"):

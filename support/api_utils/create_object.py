@@ -37,7 +37,10 @@ class CreateObject():
         if len(condition) > 0:
             for key in condition:
                 attribute_name = key['attribute_name']
-                repeat_time = key["repeat_time"]
+                if "repeat_time" not in key.keys():
+                    repeat_time = 1
+                else:
+                    repeat_time = key["repeat_time"]
                 for i in range(repeat_time):
                     index = i + 1
                     objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, repeat_time)
