@@ -13,7 +13,7 @@ import pytz
 from support.traffic_replay.workpath import workdir
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from support.traffic_replay.traffic_replay import TrafficReplay
+#from support.traffic_replay.traffic_replay import TrafficReplay
 
 class TrafficVerification():
     def traffic_verification(self, parameter, test_data, cfg_list):
@@ -151,7 +151,7 @@ class TrafficVerification():
             while True:      # 多次策略验证
                 verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
                 policy_verify = support.api_utils.policy_verify.PolicyVerify()
-                hit_policy_list = policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
+                hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
                 if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
                     break
                 if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
@@ -163,10 +163,12 @@ class TrafficVerification():
                 print("间隔{}秒，第{}次策略验证结果：策略验证失败，策略没有生效，{}策略id：{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id))
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
+            print(test_data)
             temp_data = json.dumps(test_data["traffic"])
+            print(temp_data)
             statistics_metircs = self.call_rest_api(temp_data)
-            # traffic_replay = TrafficReplay(template_path)
-            # statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
+            traffic_replay = TrafficReplay(template_path)
+            statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
             time.sleep(50)
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)

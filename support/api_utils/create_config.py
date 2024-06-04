@@ -56,7 +56,7 @@ class CreateConfig():
                 create_http_signature_ids.extend(http_signature_ids)
             if len(geo_name_ids) > 0:
                 create_geo_name_ids.extend(geo_name_ids)
-           
+
             # 创建profile
             profile_condition_key = "profile_condition_{}".format(create_number)
             if (profile_condition_key in test_data.keys()) and len(test_data[profile_condition_key]) > 0:    # 含有profile_condition_ key 并且非空
@@ -135,6 +135,8 @@ class CreateConfig():
             for obj in config["obj_condition_1"]:
                 if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
                     src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
+                    if "default" in src_ip:
+                        src_ip = "10.64.77.11"
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
                         src_ip_list[2] = str(random.randint(200, 250))

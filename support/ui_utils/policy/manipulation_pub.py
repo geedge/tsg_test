@@ -9,6 +9,7 @@ from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
+from support.ui_utils.random_name import RandomName
 import traceback
 
 
@@ -18,6 +19,7 @@ class ManipulationPub():
     """
     def __init__(self, test_data):
         self.test_data = test_data
+        self.rn = RandomName()
         self.generate_location_library()
 
     def initiate_selenium_setup(self):
@@ -176,7 +178,7 @@ class ManipulationPub():
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                     "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_security_posId
+                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_manipulation_posId
                 },
                 "create": {
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
@@ -259,6 +261,7 @@ class ManipulationPub():
             self.element_map["ip_group"] = test_ip_group_object_element_position
             self.element_map["port"] = test_port_object_element_position
             self.element_map["http_signature"] = test_http_signature_object_element_position
+            self.element_map["manipulation"] = test_rule_element_position
 
     def create_condition(self):
         #创建condition
@@ -284,6 +287,7 @@ class ManipulationPub():
                     if "group" in object_type:   # 包含子对象、排除对象的创建方式
                         if "group_subordinate" in condi_data[i].keys() and len(condi_data[i]) != 0:   # group_subordinate存在且有值
                             for x in range(len(condi_data[i]["group_subordinate"])):
+                                condi_data[i]["group_subordinate"][x]["name"] = "{}_{}".format(condi_data[i]["group_subordinate"][x]["name"], self.rn.random_number(count=16))
                                 condi_element_map = self.element_map[condi_data[i]["group_subordinate"][x]["object_type"]]  # 最里层object_type
                                 create_obj_code = create_obj.create(condi_data[i]["group_subordinate"][x], condi_element_map)  # 创建object
                                 if create_obj_code != 200:  # obj操作失败，直接返回了。
@@ -292,6 +296,7 @@ class ManipulationPub():
                                     return 400
                         if "group_exclude"  in condi_data[i].keys() and len(condi_data[i]) != 0:   # group_exclude存在且有值
                             for y in range(len(condi_data[i]["group_exclude"])):
+                                condi_data[i]["group_exclude"][y]["name"] = "{}_{}".format(condi_data[i]["group_exclude"][y]["name"], self.rn.random_number(count=16))
                                 condi_element_map = self.element_map[condi_data[i]["group_exclude"][y]["object_type"]]  # 最里层object_type
                                 create_obj_code = create_obj.create(condi_data[i]["group_exclude"][y], condi_element_map)  # 创建object
                                 if create_obj_code != 200:  # obj操作失败，直接返回了。
@@ -299,8 +304,10 @@ class ManipulationPub():
                                     print(result)
                                     return 400
                         condi_element_map = self.element_map[object_type]   # group_type的
+                        condi_data[i]["name"] = "{}_{}".format(condi_data[i]["name"], self.rn.random_number(count=16))
                         create_obj_code = create_obj.create_group(condi_data[i], group_object_type[object_type], condi_element_map)  # 创建object group
                     else:
+                        condi_data[i]["name"] = "{}_{}".format(condi_data[i]["name"], self.rn.random_number(count=16))
                         create_obj_code = create_obj.create(condi_data[i], condi_element_map)   #创建object
                     if create_obj_code != 200:   # obj操作失败，直接返回了。
                         result = "Fail to create {} object.".format(object_type.replace("_", " "))
@@ -314,7 +321,9 @@ class ManipulationPub():
 
     def create_rule(self):
         create_rule = CreateRule(self.driver)
-        create_rule_code = create_rule.create(self.test_data, self.test_rule_element_position)
+        self.test_data["rule_name"] = "{}_{}".format(self.test_data["rule_name"], self.rn.random_number(count=16))
+        rule_element_map = self.element_map[self.test_data["policy_type"]]
+        create_rule_code = create_rule.create(self.test_data, rule_element_map)
         if create_rule_code != 200:
             result = "Fail to create security rule."
 

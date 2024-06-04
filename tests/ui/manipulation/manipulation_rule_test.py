@@ -234,7 +234,7 @@ def run(parameter):
         # 环境初始化
         driver = mp.initiate_selenium_setup()
         # 创建object
-        condition_code = mp.create_condition()
+        #condition_code = mp.create_condition()
         # 创建rule
         create_rule_code = mp.create_rule()
         # 触发流量和验证

@@ -1,67 +1,69 @@
 {
-    "statistics_template":{
-        "name":"test_template_1",
-        "id":"",
-        "dataview":{
-            "charts":[
+    "statistics_template": {
+        "name": "test",
+        "id": "",
+        "dataview": {
+            "charts": [
                 {
-                    "name":"test_chart",
-                    "id":"",
-                    "op":"add",
-                    "display":{
-                        "page_x":"",
-                        "page_y":"",
-                        "height":"",
-                        "width":"",
-                        "type":"table",
-                        "table_type":"regular"
+                    "name": "Bytes Distributed by Client IP",
+                    "id": "",
+                    "op": "add",
+                    "display": {
+                        "page_x": "",
+                        "page_y": "",
+                        "height": "",
+                        "width": "",
+                        "type": "table",
+                        "table_type": "regular"
                     },
-                    "query":{
-                        "sql":"",
-                        "source":"statistics_rule",
-                        "metrics":[
+                    "query": {
+                        "sql": "",
+                        "source": "statistics_rule",
+                        "metrics": [
                             {
-                                "source_columns":[
+                                "source_columns": [
                                     "bytes"
                                 ],
-                                "function":{
+                                "function": {
                                     "name": "SUM",
-                                    "expression":"",
-                                    "variables":[
+                                    "expression": "",
+                                    "variables": [
 
                                     ]
                                 },
-                                "alias":"Bytes",
-                                "unit":"Bps"
+                                "alias": "Bytes",
+                                "unit": "bytes"
                             }
                         ],
-                        "dimensions":[
+                        "dimensions": [
                             {
-                                "source_columns":[
+                                "source_columns": [
                                     "client_ip"
                                 ],
-                                "function":{
+                                "function": {
                                     "name": "",
-                                    "expression":"",
-                                    "variables":[
+                                    "expression": "",
+                                    "variables": [
 
                                     ]
                                 },
-                                "alias":"",
-                                "is_drilldown":0
+                                "alias": "Client IP",
+                                "is_drilldown": 0
                             }
                         ],
-                        "order_by":"",
-                        "limit":"1024"
+                        "order_by": "Bytes",
+                        "limit": "100",
+                        "series_limit": ""
                     },
-                    "threshold":{
-                        "in_bytes": "0",
-                        "out_bytes": "0"
+                    "threshold": {
+                        "in_bytes": 10,
+                        "out_bytes": 10
                     }
                 }
             ]
         },
-        "vsys_id":1
+        "vsys_id": 6
     },
-    "vsys_id":1
+    "return_data": 1,
+    "vsys_id": 6
 }

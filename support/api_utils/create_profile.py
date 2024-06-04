@@ -223,9 +223,11 @@ class CreateProfile():
             process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
             url = "{}/v1/policy/profile/statistics_template".format(api_host)
             headers["Content-Type"] = "application/json"
+            #print(process_post_data)
             response = requests.post(url, headers=headers, json=process_post_data, verify=False)
             response_dict = response.json()
             # 处理返回数据，提取id
+            #print(response_dict)
             profile_id = response_dict["data"]["statistics_template"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
             create_profile_id_dict["id"] = profile_id
