@@ -68,46 +68,37 @@ class TrafficVerification():
             loop_num = test_data["rule_num"]
             is_counters, is_log_query = self.is_verify(test_data, loop_num, 'counters', 'log_query_param')
             
+            log_result, metric_result = None, None
             if is_log == 1:
-                if is_log_query == 1:
-                    # 考虑到有5分钟后才出日志的情况，循环5次
-                    for _ in range(15):
+                if is_log_query == 1 or is_counters == 1:
+                    for _ in range(40):
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                        # 等待产生日志
-                        time.sleep(10)
-                        log_result = log.get_log_by_condition(token, rule_num, start_time, end_time, test_pc_ip, create_policies_ids, test_data, api_server, vsys_id, script_type)
-                        if log_result == True:
+                        time.sleep(7)
+                        if is_log_query == 1 and log_result == None:
+                            log_result = log.get_log_by_condition(token, rule_num, start_time, end_time, test_pc_ip, create_policies_ids, test_data, api_server, vsys_id, script_type)
+                        if is_counters == 1 and metric_result == None:
+                            metric_result = log.get_metric(token, rule_num, start_time, end_time, create_policies_ids, test_data, api_server, vsys_id)
+                        if log_result != None and metric_result != None:
                             break
-                elif is_log_query == 0:
-                    # 此时代表不需要进行logs模块的校验，可能为security shunt动作或statistics，sc策略等
-                    log_result = True
-                
-                if is_counters == 1:
-                    for _ in range(15):
-                        utc_tz = pytz.timezone('UTC')
-                        current_utc_time = datetime.now(utc_tz)
-                        end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                        time.sleep(10)
-                        metric_result = log.get_metric(token, rule_num, start_time, end_time, create_policies_ids, test_data, api_server, vsys_id)
-                        if metric_result == True:
-                            break
-                elif is_counters == 0:
-                    metric_result = True
             else:
                 metric_result = True
                 log_result = True
             
             if metric_result == True:
-                print('The boolean of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(cmd_result))
+                print('The boolean of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result))
             elif metric_result == False:
-                print('The boolean of "metric_result" is {}. The mean is: do not get metrics or the metrics do not match the expected value from test data.'.format(cmd_result))
+                print('The boolean of "metric_result" is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result))
+            elif metric_result == None:
+                print('The boolean of "metric_result" is none. The mean is: do not get metrics.')
             
             if log_result == True:
-                print('The boolean of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(cmd_result))
+                print('The boolean of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(log_result))
             elif log_result == False:
-                print('The boolean of "log_result" is {}. The mean is: do not get logs or the logs result do not match the expected value from test data.'.format(cmd_result))
+                print('The boolean of "log_result" is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result))
+            elif log_result == None:
+                print('The boolean of "log_result" is none. The mean is: do not get logs.')
             
             return cmd_result, log_result, metric_result
         elif policy_type == "statistics":      # statistics 使用trex流量回放验证
@@ -325,10 +316,7 @@ class TrafficVerification():
             return True, True, True
 
     def is_in(self, full_str, sub_str, script_type):
-        if script_type == 'ui':
-            temp = full_str["result"]
-        elif script_type == 'api':
-            temp = full_str
+        temp = full_str["result"]
         sub_str = sub_str.split(',')
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
         cmd_result = all(word in temp for word in sub_str)
@@ -358,12 +346,6 @@ class TrafficVerification():
     
     def call_rest_api(self, data):
         parse = configparser.ConfigParser()
-        # os_name = platform.system()
-        # if os_name == "Windows":
-        #     parse.read("D:/Document/Project-TSG/Code/git/tsg_test/configuration_file.ini", encoding="utf-8")
-        # elif os_name == "Linux":
-        #     # parse.read("/opt/configuration_file.ini", encoding="utf-8")
-        #     parse.read("/app/configuration_file.ini", encoding="utf-8")
         parse_dir = os.path.join(workdir, "configuration_file.ini")
         parse.read(parse_dir, encoding="utf-8")
         api_server = parse.get("traffic_server", "server_url")
