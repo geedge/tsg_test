@@ -60,7 +60,11 @@ def run(parameter):
             "expected_return": "POST",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
-            "command": "curl -kv http://open.node.com:180"
+            "traffic": {
+                "type": "curl",
+                "command": "curl -kv http://open.node.com:180"
+            },
+            "token": ""
         }
         
         # 添加测试过程中涉及的template

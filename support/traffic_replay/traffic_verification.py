@@ -56,15 +56,8 @@ class TrafficVerification():
             time.sleep(10)
             
             # 触发流量
-            if script_type == "ui":
-                temp_data = json.dumps(test_data["traffic"])
-                output = self.call_rest_api(temp_data)
-            elif script_type == "api":
-                command = test_data['command']
-                p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-                output, error = p.communicate()
-                output = output + error
-            # cmd_return = output.decode(errors='ignore')
+            temp_data = json.dumps(test_data["traffic"])
+            output = self.call_rest_api(temp_data)
             print("Start to verify the effect of the policy rule.")
             cmd_return = output
             # print(output)

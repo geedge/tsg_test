@@ -95,10 +95,6 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            # "test_pc_ip": "192.168.64.86",
-            # "is_log": 1,
-            # "env": "tsgx",
-            # "vsys_id": 6,
             "expected_return": "reset",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni", "query_value":"www.baidu.com"}],
@@ -116,6 +112,14 @@ def run(parameter):
             #     "d": 1,
             #     "yaml_name": "test_https",
             #     "pcap_name": "test_https"
+            # },
+            # "traffic": {
+            #     "type": "nslookup",
+            #     "command": "nslookup www.facebook.com"
+            # },
+            # "traffic": {
+            #     "type": "wget",
+            #     "command": "wget -q -O- http://open.node.com:180"
             # },
             "token": ""
         }
@@ -304,7 +308,7 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
