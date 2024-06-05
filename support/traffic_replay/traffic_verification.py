@@ -107,7 +107,7 @@ class TrafficVerification():
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-            print("trex，回放流量方法")
+            print("trex, playback traffic method")
             # 解析trex使用参数， 解析client server ip
             for ip_item in test_data["obj_condition_1"]:
                 if "ATTR_SOURCE_IP" in ip_item.values():
@@ -131,12 +131,13 @@ class TrafficVerification():
                 yaml_name = test_data["trex"]["yaml_name"].strip()
                 pcap_name = test_data["trex"]["pcap_name"].strip()
             else:
-                print("trex参数使用默认值：")
+                print("Use the default value for the trex parameter:")
                 m = 1
                 d = 1
                 yaml_name = "http_50.yaml"
                 pcap_name = "http_get_347pkts.pcap"
             # 执行trex命令前，策略验证，查看下发策略是否生效
+            ######## 不要删除
             ######## 不要删除
             verify_policy_break_count = 0
             while True:      # 多次策略验证
@@ -154,12 +155,18 @@ class TrafficVerification():
                 print("间隔{}秒，第{}次策略验证结果：策略验证失败，策略没有生效，{}策略id：{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id))
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
-            print(test_data)
+            # 将原数据中使用的ip替换为随机生成ip
+            test_data["traffic"]["clients_start_ip"] = clients_start
+            test_data["traffic"]["clients_end_ip"] = clients_end
+            test_data["traffic"]["servers_start_ip"] = servers_start
+            test_data["traffic"]["servers_end_ip"] = servers_end
             temp_data = json.dumps(test_data["traffic"])
-            print(temp_data)
-            statistics_metircs = self.call_rest_api(temp_data)
-            traffic_replay = TrafficReplay(template_path)
-            statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
+            statistics_result = self.call_rest_api(temp_data)
+            #print(type(statistics_result))
+            statistics_metircs = statistics_result["result"]
+            #print(statistics_metircs)
+            #traffic_replay = TrafficReplay(template_path)
+            #statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
             time.sleep(50)
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
@@ -171,11 +178,12 @@ class TrafficVerification():
             trex_ip_info["clients_end"] = clients_end
             trex_ip_info["servers_start"] = servers_start
             trex_ip_info["servers_end"] = servers_end
+            #print(trex_ip_info)
             if len(statistics_sc_info_list) > 0:  # 非空
                 for statistics_info in statistics_sc_info_list:
                     n = 1    #自增变量
                     fail_count = 1   #失败重试变量
-                    while n < 4:
+                    while n < 6:
                         time.sleep(70)
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
@@ -205,7 +213,7 @@ class TrafficVerification():
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                print("trex，回放流量方法")
+                print("trex, playback traffic method")
                 # 解析trex使用参数， 解析client server ip
                 for ip_item in test_data["obj_condition_1"]:
                     if "ATTR_SOURCE_IP" in ip_item.values():
@@ -229,7 +237,7 @@ class TrafficVerification():
                     yaml_name = test_data["trex"]["yaml_name"].strip()
                     pcap_name = test_data["trex"]["pcap_name"].strip()
                 else:
-                    print("trex参数使用默认值：")
+                    print("Use the default value for the trex parameter:")
                     m = 1
                     d = 1
                     yaml_name = "http_50.yaml"

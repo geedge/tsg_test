@@ -169,14 +169,14 @@ class GetLog():
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         #assert response.status_code == 200
         r_dict = response.json()
-        print("statistics metric结果数据：")
+        print("statistics metric result data：")
         print(r_dict)
         if r_dict["code"] != 200:
-            print("statistics metric 查询失败")
+            print("statistics metric query failure")
             return [333, "The statistics metric API query failed. Procedure"]
         else:    # 返回正常结果
             if r_dict["data"]["result"] == []:   # 为空
-                print("########statistics metric 没有查询到结果###############")
+                print("########statistics metric no result was found###############")
                 # 对应session方式和fqdn category需要另行处理
                 metrics_columns = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
                 try:
@@ -201,7 +201,7 @@ class GetLog():
                 #print(result_list)
                 statistics_value = 0
                 if statistics_info["chart_type"] == "line" or statistics_info["chart_type"] == "table" or statistics_info["chart_type"] == "bar":
-                    print(f'{statistics_info["chart_type"]}>>断言对比...')
+                    print(f'{statistics_info["chart_type"]}>>Assertion contrast...')
                     print(statistics_info)
                     statistics_value = copy.deepcopy(result_list[0])
                     # 将列表中metric值设置为0
@@ -230,7 +230,8 @@ class GetLog():
                         for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
                             if isinstance(v, int):
                                 statistics_value[k] = avg_1
-                    print("TSG实际查询到的结果数据：\n{}".format(statistics_value))
+                    #print("TSG实际查询到的结果数据：\n{}".format(statistics_value))
+                    print("TSG Indicates the query result：\n{}".format(statistics_value))
                     # 重组需要断言使用的key列表
                     assert_key_list = []
                     for k, v in statistics_value.items():
@@ -241,23 +242,25 @@ class GetLog():
                         metric_results = self.assert_livechart_statistics(statistics_info["chart_type"], assert_key_list[i], statistics_value, statistics_metircs_except, trex_ip_info)  # 判断正确调用函数
                         metric_result = metric_results[0]
                         if metric_result == False:
-                            print("断言时失败：断言内容为：{}".format(assert_key_list[i]))
+                            print("Failure on assertion: The assertion content is：{}".format(assert_key_list[i]))
                             break
                 elif statistics_info["chart_type"] == "histogram":
-                    print("histogram图表暂不统计结果")
+                    print("Histogram the chart does not include the results")
                     metric_results = [True, ""]
                 return metric_results
 
     def assert_livechart_statistics(self, chart_type, assert_key, statistics_value, statistics_metircs_except, trex_ip_info):
         metric_result = False
-        failure_reason = "<<<<<<<<<< 结果失败 >>>>>>>>>>"
-        success_result = "<<<<<<<<<< 结果通过 >>>>>>>>>>"
+        #failure_reason = "<<<<<<<<<< 结果失败 >>>>>>>>>>"
+        failure_reason = "<<<<<<<<<< Result failure >>>>>>>>>>"
+        #success_result = "<<<<<<<<<< 结果通过 >>>>>>>>>>"
+        success_result = "<<<<<<<<<< Result pass >>>>>>>>>>"
         failure_reason_info = ""
         failure_info_1 = ""
         failure_info_2= ""
         failure_info_3 = ""
         if chart_type == "line":
-            print(f"流量回放预期结果总数：\n{statistics_metircs_except}")
+            print(f"Total number of expected results for traffic playback：\n{statistics_metircs_except}")
             failure_info_1 = f"Total expected results for traffic playback:{statistics_metircs_except}"
             statistics_metircs_except_avg = {}     # 重组预期1秒粒度结果
             for k, v in statistics_metircs_except.items():
@@ -266,7 +269,7 @@ class GetLog():
                 else:
                     statistics_metircs_except_avg[k] = int(v / 1)
             if assert_key != "session_identifier_sketch" and assert_key != "client_ip_sketch" and assert_key != "server_ip_sketch":    # 除了这几个gauge，需要打印下信息
-                print(f"流量回放结果按1秒粒度平均数：\n{statistics_metircs_except_avg}")
+                print(f"Average number of traffic playback results in 1-second granularity：\n{statistics_metircs_except_avg}")
             failure_info_2 = f"Average number of traffic playback results by 1-second granularity:{statistics_metircs_except_avg}"
             print(assert_key)
             if assert_key == "bytes":
@@ -306,17 +309,18 @@ class GetLog():
                         unique_server_ips = sessions_count
                     statistics_metircs_except_gauge["client_ip_sketch"] = unique_client_ips
                     statistics_metircs_except_gauge["server_ip_sketch"] = unique_server_ips
-                    print(f"流量回放结果按1秒粒度的Gauge：\n{statistics_metircs_except_gauge}")
+                    print(f"Gauge of traffic playback results varies according to the one-second granularity：\n{statistics_metircs_except_gauge}")
                     if -3 < statistics_value[assert_key] - statistics_metircs_except_gauge[assert_key] < 3:
-                        print("<<<<<<<<<<statistics 结果正常>>>>>>>>>>")
+                        #print("<<<<<<<<<<statistics 结果正常>>>>>>>>>>")
+                        print("<<<<<<<<<<statistics Normal result>>>>>>>>>>")
                         metric_result = True
             else:
-                print(f"遗漏断言的key：{assert_key}")
+                print(f"Omit the key of the assertion：{assert_key}")
                 metric_result = False
         elif chart_type == "histogram":
             metric_result = True
         else:    # table bar等二维图表
-            print(f"流量回放结果总数：\n{statistics_metircs_except}")
+            print(f"Total number of traffic playback results：\n{statistics_metircs_except}")
             failure_info_1 = f"Total expected results for traffic playback:{statistics_metircs_except}"
             if assert_key == "bytes":
                 if statistics_value[assert_key] == statistics_metircs_except["total_bytes"]:
@@ -340,7 +344,7 @@ class GetLog():
                         print(success_result)
                         metric_result = True
             else:
-                print(f"遗漏断言的key：{assert_key}")
+                print(f"Omit the key of the assertion：{assert_key}")
                 failure_info_3 = f"key for missing assertions:{assert_key}"
                 metric_result = False
         if metric_result == False:

@@ -18,12 +18,6 @@ def run(parameter):
             "policy_type": "statistics",
             "rule_action_1": "statistics",
             "do_log_1": 2,
-            "trex": {
-                "m": 60,
-                "d": 1,
-                "yaml_name": "http_50.yaml",
-                "pcap_name": "http_get_347pkts.pcap"
-            },
             "obj_condition_1": [
                 {
                     "attribute_name": "ATTR_SOURCE_IP",
@@ -94,6 +88,17 @@ def run(parameter):
             "expected_return": "POST",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
+            "traffic": {
+                "type": "trex",
+                "clients_start_ip": "192.168.64.86",
+                "clients_end_ip": "192.168.64.86",
+                "servers_start_ip": "2.1.1.1",
+                "servers_end_ip": "2.1.1.2",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "test_https"
+            },
             "token": ""
         }
 
@@ -149,7 +154,7 @@ if __name__ == "__main__":
         "is_log": 0,
         "root_path": "C:/zcw/tsg_test",
         "path": "C:/zcw/tsg_test/tests/api",
-        "module_name": "security",
+        "module_name": "statistics",
         "test_case_name": "active_sessions"
     }
     run(parameter)
