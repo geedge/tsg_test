@@ -6,7 +6,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 print(__file__)
 print(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from support.ui_utils.policy.manipulation_pub import ManipulationPub
+from support.ui_utils.policy.temp_manipulation_pub import ManipulationPub
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.analysis_result import *
 import support.ui_utils.env_initialization
