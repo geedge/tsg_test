@@ -197,33 +197,20 @@ class TrafficVerification():
                 for ip_item in test_data["obj_condition_1"]:
                     if "ATTR_SOURCE_IP" in ip_item.values():
                         if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                            clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                            test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                            test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
                         else:
-                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                            clients_end = clients_start
+                            test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                     if "ATTR_DESTINATION_IP" in ip_item.values():
                         if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                            servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                            test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                            test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
                         else:
-                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                            servers_end = servers_start
-                # 解析trex 命令行参数，-m -d
-                if "trex" in test_data.keys():
-                    m = test_data["trex"]["m"]
-                    d = test_data["trex"]["d"]
-                    yaml_name = test_data["trex"]["yaml_name"].strip()
-                    pcap_name = test_data["trex"]["pcap_name"].strip()
-                else:
-                    print("Use the default value for the trex parameter:")
-                    m = 1
-                    d = 1
-                    yaml_name = "http_50.yaml"
-                    pcap_name = "http_get_347pkts.pcap"
+                             test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                 # 执行回放命令
                 temp_data = json.dumps(test_data["traffic"])
-                sc_metircs = self.call_rest_api(temp_data)
+                sc_result = self.call_rest_api(temp_data)
+                sc_metircs = sc_result["metric_info"]
                 # traffic_replay = TrafficReplay(template_path)
                 # sc_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
                 time.sleep(20)
@@ -263,12 +250,12 @@ class TrafficVerification():
                 current_utc_time = datetime.now(utc_tz)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 等待时间，等待策略生效
-                time.sleep(30)
+                time.sleep(20)
                 # 触发流量
-                command = test_data['command']
-                p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                output, _ = p.communicate()
-                cmd_return = output.decode()
+                temp_data = json.dumps(test_data["traffic"])
+                output = self.call_rest_api(temp_data)
+                print("Start to verify the effect of the policy rule.")
+                cmd_return = output
                 expected_return = test_data["expected_return"]
                 # 获取结束时间
                 utc_tz = pytz.timezone('UTC')
