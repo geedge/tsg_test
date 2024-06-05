@@ -128,6 +128,7 @@ def run(parameter):
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
         template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+        template_path["pre_intercept_template_path"] = parameter["path"] + "/template/pre_intercept_template.json"
 
         # 添加测试过程中涉及的response pages
         template_path["profiles_deny_path"] = parameter["path"] + "/profiles/Response-Pages_1.html"

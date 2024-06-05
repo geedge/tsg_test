@@ -69,6 +69,7 @@ def run(parameter):
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
         template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+        template_path["pre_intercept_template_path"] = parameter["path"] + "/template/pre_intercept_template.json"
         
         # 获取token
         log_in = LogIn()
