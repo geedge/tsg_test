@@ -22,11 +22,14 @@ class CreateProfile():
         # 读取profile_statistics_template模板文件
         with open(profile_statistics_template, "r", encoding="utf-8") as f_template:
             f_template_dict = json.load(f_template)
+        
         # 处理请求数据，并合并到模板数据中
         chart_template_dict = copy.deepcopy(f_template_dict["statistics_template"]["dataview"]["charts"][0])     # 单个chart模板
         f_template_dict["statistics_template"]["dataview"]["charts"].clear()
+        
         for _ in range(len(post_statistics_data["chart_list"])):
             f_template_dict["statistics_template"]["dataview"]["charts"].append(copy.deepcopy(chart_template_dict))
+        
         for chart_idex in range(len(post_statistics_data["chart_list"])):     # 将数据值复制到post模板中
             chart_type = post_statistics_data["chart_list"][chart_idex]["type"]
             # 重组 type
@@ -125,6 +128,7 @@ class CreateProfile():
                 chart_name = "{}Distributed by{}".format(chart_pre_name, chart_after_name)
             chart_name = chart_name.strip()
             f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["name"] = chart_name
+        
         # 重组statistics template name
         if post_statistics_data["name"] == "random_name":
             temp_list = []
@@ -135,10 +139,11 @@ class CreateProfile():
             f_template_dict["statistics_template"]["name"] = "test_statistics_api_no{}_{}".format(r_letter, formatted_time)
         else:
             f_template_dict["statistics_template"]["name"] = post_statistics_data["name"]
+        
         # 重组vsys id
         f_template_dict["vsys_id"] = vsys_id
         f_template_dict["statistics_template"]["vsys_id"] = vsys_id
-        #f_template_dict["statistics_template"]["id"] = vsys_id
+        
         return f_template_dict
 
     # 生成随机的vlan_id
@@ -147,7 +152,7 @@ class CreateProfile():
         return random_num
     
     # 用传入的sf数据替换模板中的数据
-    def process_sf_post_data(self, sf_template_path, sf_post_data,vsys_id):
+    def process_sf_post_data(self, sf_template_path, sf_post_data, vsys_id):
         with open(sf_template_path, "r") as f:
             sf_template_dict = json.load(f)
         sf_template_dict["vsys_id"] = vsys_id
@@ -167,19 +172,24 @@ class CreateProfile():
         return sf_template_dict
     
     # 获取sf profile id
-    def get_sf_id(self, headers, sf_tempalte_path, sf_post_data, api_host,vsys_id):
-        # create_profile_id_dict = {"profile_type": "", "id": ""}
+    def get_sf_id(self, headers, sf_tempalte_path, sf_post_data, api_host, vsys_id):
         profile_type = sf_post_data['profile_type']
         if profile_type == "service_function":
             process_post_data = self.process_sf_post_data(sf_tempalte_path, sf_post_data,vsys_id)
             url = "{}/v1/policy/profile/service_function".format(api_host)
             response = requests.post(url, headers=headers, json=process_post_data, verify=False)
+            assert response.status_code == 200
+            temp_profile_type = profile_type.replace("_", " ")
+            if response.status_code == 200:
+                print("Create {} profile successfully.".format(temp_profile_type))
+            else:
+                print("Create {} profile failed.".format(temp_profile_type))
             response_dict = response.json()
             sf_profile_id = response_dict["data"]["service_function"]["id"]
         return sf_profile_id
 
     # 用传入的sff数据替换模板中的数据
-    def process_sff_post_data(self, sf_profile_id, sff_template_path, sff_post_data,vsys_id):
+    def process_sff_post_data(self, sf_profile_id, sff_template_path, sff_post_data, vsys_id):
         with open(sff_template_path,"r") as f:
             sff_template_dict = json.load(f)
         sff_template_dict["vsys_id"] = vsys_id
@@ -225,6 +235,12 @@ class CreateProfile():
             headers["Content-Type"] = "application/json"
             #print(process_post_data)
             response = requests.post(url, headers=headers, json=process_post_data, verify=False)
+            assert response.status_code == 200
+            temp_profile_type = profile_type.replace("_", " ")
+            if response.status_code == 200:
+                print("Create {} profile successfully.".format(temp_profile_type))
+            else:
+                print("Create {} profile failed.".format(temp_profile_type))
             response_dict = response.json()
             # 处理返回数据，提取id
             #print(response_dict)
@@ -247,6 +263,12 @@ class CreateProfile():
             url = "{}/v1/policy/profile/service_function_forwarder".format(api_host)
             headers["Content-Type"] = "application/json"
             response = requests.post(url, headers=headers, json= process_post_data, verify=False)
+            assert response.status_code == 200
+            temp_profile_type = profile_type.replace("_", " ")
+            if response.status_code == 200:
+                print("Create {} profile successfully.".format(temp_profile_type))
+            else:
+                print("Create {} profile failed.".format(temp_profile_type))
             response_dict = response.json()
             sff_id = response_dict["data"]["service_function_forwarder"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -261,6 +283,12 @@ class CreateProfile():
             profile_data["vsys_id"] = vsys_id
             url = "{}/v1/policy/profile/response_page".format(api_host)
             response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+            assert response.status_code == 200
+            temp_profile_type = profile_type.replace("_", " ")
+            if response.status_code == 200:
+                print("Create {} profile successfully.".format(temp_profile_type))
+            else:
+                print("Create {} profile failed.".format(temp_profile_type))
             response_dict = response.json()
             profile_id = response_dict["data"]["response_page"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -273,6 +301,12 @@ class CreateProfile():
             profile_data["vsys_id"] = vsys_id
             url = "{}/v1/policy/profile/hijack_file".format(api_host)
             response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+            assert response.status_code == 200
+            temp_profile_type = profile_type.replace("_", " ")
+            if response.status_code == 200:
+                print("Create {} profile successfully.".format(temp_profile_type))
+            else:
+                print("Create {} profile failed.".format(temp_profile_type))
             response_dict = response.json()
             profile_id = response_dict["data"]["hijack_file"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -285,6 +319,12 @@ class CreateProfile():
             profile_data["vsys_id"] = vsys_id
             url = "{}/v1/policy/profile/insert_script".format(api_host)
             response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+            assert response.status_code == 200
+            temp_profile_type = profile_type.replace("_", " ")
+            if response.status_code == 200:
+                print("Create {} profile successfully.".format(temp_profile_type))
+            else:
+                print("Create {} profile failed.".format(temp_profile_type))
             response_dict = response.json()
             profile_id = response_dict["data"]["insert_script"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -297,6 +337,12 @@ class CreateProfile():
             profile_data["vsys_id"] = vsys_id
             url = "{}/v1/policy/profile/run_script".format(api_host)
             response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+            assert response.status_code == 200
+            temp_profile_type = profile_type.replace("_", " ")
+            if response.status_code == 200:
+                print("Create {} profile successfully.".format(temp_profile_type))
+            else:
+                print("Create {} profile failed.".format(temp_profile_type))
             response_dict = response.json()
             profile_id = response_dict["data"]["run_script"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
@@ -307,13 +353,19 @@ class CreateProfile():
             process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
             url = "{}/v1/policy/profile/dns_record".format(api_host)
             response = requests.post(url, headers=headers, json=process_post_data)
+            assert response.status_code == 200
+            temp_profile_type = profile_type.replace("_", " ")
+            if response.status_code == 200:
+                print("Create {} profile successfully.".format(temp_profile_type))
+            else:
+                print("Create {} profile failed.".format(temp_profile_type))
             response_dict = response.json()
             profile_id = response_dict["data"]["dns_record"]["id"]
             create_profile_id_dict["profile_type"] = profile_type
             create_profile_id_dict["id"] = profile_id
             return create_profile_id_dict
         else:
-            print("需要补充其它profile对象请求体数据处理函数")
+            print("to be added the other profile.")
     
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
         url = "{}/v1/policy/profile/{type}/{id}".format(api_host, type=profile_type, id=template_id)
@@ -324,7 +376,7 @@ class CreateProfile():
         # 打桩数据
         r_dict = response.json()
         template_info = []
-        chart_info = {"template_id":template_id, "chart_id":0, "chart_type":""}
+        chart_info = {"template_id": template_id, "chart_id": 0, "chart_type": ""}
         for chart in r_dict["data"]["statistics_template"]["dataview"]["charts"]:
             chart_info["chart_type"] = chart["display"]["type"]
             chart_info["chart_id"] = chart["id"]
@@ -341,7 +393,7 @@ class CreateProfile():
         }
         response = requests.get(url=url, params=params_dict, headers=headers)
         r_dict = response.json()
-        sff_info = {"id": sff_id, "type":"","sf_info":[]}
+        sff_info = {"id": sff_id, "type": "","sf_info": []}
         if(len(r_dict["data"]["service_function_forwarder"]["service_func_profiles"])>0):
             sf_profile_id_list = r_dict["data"]["service_function_forwarder"]["service_func_profiles"]
             for i in sf_profile_id_list:
@@ -352,14 +404,14 @@ class CreateProfile():
         return sff_info
 
     #搜索sff并获取返回结果中的相关信息
-    def search_sc_sf(self, sf_id, headers, api_host,vsys_id):
+    def search_sc_sf(self, sf_id, headers, api_host, vsys_id):
         url = "{}/v1/policy/profile/{type}/{id}".format(api_host, type="service_function", id=sf_id)
         params_dict = {
             "vsys_id": vsys_id
         }
         response = requests.get(url, params=params_dict, headers=headers)
         r_dict = response.json()
-        sf_info = {"id": sf_id, "connectivity": {"method": ""}, "health_check":{"method": ""}}
+        sf_info = {"id": sf_id, "connectivity": {"method": ""}, "health_check": {"method": ""}}
         if r_dict["data"]["service_function"]["connectivity"]["method"] == "vxlan_g":
             sf_info["connectivity"]["method"] = r_dict["data"]["service_function"]["connectivity"]["method"]
             sf_info["connectivity"]["dest_ip"] = r_dict["data"]["service_function"]["connectivity"]["dest_ip"]

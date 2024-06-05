@@ -126,11 +126,11 @@ class CreatePolicyRule():
             
         rule_template_dict['rule']['do_log'] = condition['do_log_' + str(create_number)]
         
-        #添加sc逻辑
+        # 添加sc逻辑
         if condition["policy_type"] == "service_chaining":
-            #如果sc为Decrypted Traffic,先创建一条intercept策略
+            # 如果sc为Decrypted Traffic, 先创建一条intercept策略
             if condition["targeted_traffic"] == "decrypted":
-                pre_policy_id_list = self.create_associated_rule(condition, headers, api_host, source_list, dst_list, path_dict,vsys_id)
+                pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, dst_list, path_dict,vsys_id)
             user_region = {"targeted_traffic": "", "sff_profiles": []}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             rule_template_dict["rule"]["action"] = condition["rule_action_1"]
@@ -152,7 +152,7 @@ class CreatePolicyRule():
                 user_region["protocol"] = condition["app_name_1"][0]
             user_region["template_id"] = create_profile_ids[0]["id"]
             rule_template_dict["rule"]["user_region"] = user_region
-        # 添加intercept逻辑,填写和Intercept相关的user_region
+        # 添加intercept逻辑, 填写和Intercept相关的user_region
         elif condition["policy_type"] == "pxy_intercept":
             user_region = {"protocol": "", "tcp_option_profile": 1}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
@@ -160,17 +160,17 @@ class CreatePolicyRule():
                 user_region["protocol"] = ""
             else:
                 user_region["protocol"] = condition["app_name_1"][0]
-            # 当且仅当application=ssl且action=intercept时,user_region包含解密profiles和解密kering
+            # 当且仅当application=ssl且action=intercept时, user_region包含解密profiles和解密kering
             if "ssl" in condition["app_name_1"][0] and action == "intercept":
                 user_region["keyring_for_untrusted"] = 0
                 user_region["keyring_for_trusted"] = 1
-                user_region["decryption"] = 1
+                user_region["decryption_profile"] = 1
                 user_region["traffic_mirror"] = {"enable": 0}
             rule_template_dict["rule"]["user_region"] = user_region
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":
             # 创建manipulation策略前先下发一条deny_quic策略和一条intercept策略
-            pre_policy_id_list = self.create_associated_rule(condition, headers, api_host, source_list, dst_list, path_dict)
+            pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, dst_list, path_dict, vsys_id)
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             # 填写不同动作的user_region
@@ -236,24 +236,8 @@ class CreatePolicyRule():
         
         return policy_id_list_temp
 
-    def create_associated_rule(self, condition, headers, api_host, source_list, dst_list, path_dict,vsys_id):
-        pre_deny_quic_path = path_dict["pre_deny_quic_template_path"]
+    def create_associated_rule(self, headers, api_host, source_list, dst_list, path_dict, vsys_id):
         pre_intercept_path = path_dict["pre_intercept_template_path"]
-        
-        # 新建security_deny_quic策略,只取source_list和dst_list
-        if condition["policy_type"] == "pxy_manipulation":
-            with open(pre_deny_quic_path, 'r', encoding='utf-8') as f:
-                pre_deny_quic_template_dict = json.load(f)
-            if len(source_list) > 0:
-                pre_deny_quic_template_dict['rule']['source'] = source_list
-            else:
-                pre_deny_quic_template_dict['rule']['source'] = []
-            if len(dst_list) > 0:
-                dst_list = dst_list[0]
-                pre_deny_quic_template_dict['rule']['destination'] = dst_list
-            else:
-                pre_deny_quic_template_dict['rule']['destination'] = []
-            pre_deny_quic_policy_id_dict = self.create_rule(pre_deny_quic_template_dict, headers, api_host)
         
         # 新建intercept策略，只取source_list和dst_list
         with open(pre_intercept_path, 'r', encoding='utf-8') as f:
@@ -272,10 +256,7 @@ class CreatePolicyRule():
             pre_intercept_template_path['rule']['destination'] = []
         
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host)
-        if condition["policy_type"] == "pxy_manipulation":
-            pre_policy_id_list = [*pre_deny_quic_policy_id_dict, *pre_intercept_policy_id_dict]
-        else:
-            pre_policy_id_list = pre_intercept_policy_id_dict
+        pre_policy_id_list = pre_intercept_policy_id_dict
         
         return pre_policy_id_list
 

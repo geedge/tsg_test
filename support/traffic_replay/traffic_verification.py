@@ -13,11 +13,10 @@ import pytz
 from support.traffic_replay.workpath import workdir
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-#from support.traffic_replay.traffic_replay import TrafficReplay
+# from support.traffic_replay.traffic_replay import TrafficReplay
 
 class TrafficVerification():
     def traffic_verification(self, parameter, test_data, cfg_list):
-    # def traffic_verification(self, condition, test_pc_ip, is_log, statistics_sc_info_list, api_server, vsys_id, path_dict):
         api_server = parameter["api_server"]
         script_type = parameter["script_type"]
         is_log = parameter["is_log"]
@@ -63,7 +62,7 @@ class TrafficVerification():
             # print(output)
             
             expected_return = test_data["expected_return"]
-            cmd_result = self.is_in(cmd_return, expected_return, script_type)
+            cmd_result = self.is_in(cmd_return, expected_return)
             
             loop_num = test_data["rule_num"]
             is_counters, is_log_query = self.is_verify(test_data, loop_num, 'counters', 'log_query_param')
@@ -107,7 +106,6 @@ class TrafficVerification():
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-            print("trex, playback traffic method")
             # 解析trex使用参数， 解析client server ip
             for ip_item in test_data["obj_condition_1"]:
                 if "ATTR_SOURCE_IP" in ip_item.values():
@@ -138,7 +136,6 @@ class TrafficVerification():
                 pcap_name = "http_get_347pkts.pcap"
             # 执行trex命令前，策略验证，查看下发策略是否生效
             ######## 不要删除
-            ######## 不要删除
             verify_policy_break_count = 0
             while True:      # 多次策略验证
                 verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
@@ -148,11 +145,11 @@ class TrafficVerification():
                     break
                 if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
                     # 直接调用清空策略方法
-                    print("测试不生效，结束测试：策略id：{}".format(policy_id))
-                    return False, False, False, "策略验证不通过"
+                    print("Invalid test, end test. Policy id: {}".format(policy_id))
+                    return False, False, False, "The policy verification fail."
                 verify_policy_break_count += 1
                 time.sleep(20)
-                print("间隔{}秒，第{}次策略验证结果：策略验证失败，策略没有生效，{}策略id：{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id))
+                print("Interval {} second, result of the {} policy verification: Policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id))
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             # 将原数据中使用的ip替换为随机生成ip
@@ -162,9 +159,7 @@ class TrafficVerification():
             test_data["traffic"]["servers_end_ip"] = servers_end
             temp_data = json.dumps(test_data["traffic"])
             statistics_result = self.call_rest_api(temp_data)
-            #print(type(statistics_result))
             statistics_metircs = statistics_result["result"]
-            #print(statistics_metircs)
             #traffic_replay = TrafficReplay(template_path)
             #statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
             time.sleep(50)
@@ -178,7 +173,6 @@ class TrafficVerification():
             trex_ip_info["clients_end"] = clients_end
             trex_ip_info["servers_start"] = servers_start
             trex_ip_info["servers_end"] = servers_end
-            #print(trex_ip_info)
             if len(statistics_sc_info_list) > 0:  # 非空
                 for statistics_info in statistics_sc_info_list:
                     n = 1    #自增变量
@@ -202,7 +196,7 @@ class TrafficVerification():
                 if  metric_results[0] == 333:     # API 查询失败时变量赋值
                     metric_result = False
                     if metric_results[1] == "passthrough":     # incoming或者outgoing的session方向
-                        print("incoming或者outgoing的session的方向与实际流量方向不同;或者fqdn_category为维度时，数据为空")
+                        print("The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
                         metric_result = True
             return metric_result, metric_result, metric_result, metric_results[1]    # 匹配其它策略模式
         elif policy_type == "service_chaining":
@@ -213,7 +207,6 @@ class TrafficVerification():
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                print("trex, playback traffic method")
                 # 解析trex使用参数， 解析client server ip
                 for ip_item in test_data["obj_condition_1"]:
                     if "ATTR_SOURCE_IP" in ip_item.values():
@@ -295,7 +288,7 @@ class TrafficVerification():
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                cmd_result = self.is_in(cmd_return, expected_return, script_type)
+                cmd_result = self.is_in(cmd_return, expected_return)
                 if len(statistics_sc_info_list) > 0:  # 非空
                     for statistics_info in statistics_sc_info_list:
                         n = 0  # 自增变量
@@ -322,10 +315,10 @@ class TrafficVerification():
                         metric_result = False
             return cmd_result, metric_result, metric_result
         elif policy_type == "shaping":
-            # 假数据
+            print("to be added.")
             return True, True, True
 
-    def is_in(self, full_str, sub_str, script_type):
+    def is_in(self, full_str, sub_str):
         temp = full_str["result"]
         sub_str = sub_str.split(',')
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
