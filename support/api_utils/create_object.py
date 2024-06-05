@@ -43,7 +43,7 @@ class CreateObject():
                     repeat_time = key["repeat_time"]
                 for i in range(repeat_time):
                     index = i + 1
-                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, token, index, repeat_time)
+                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, index, repeat_time)
                     if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
@@ -90,7 +90,7 @@ class CreateObject():
         return timeout_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, self.geo_name_ids
     
     # 对多个objects的处理（处理之后要调用create_object）
-    def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, vsys_id, token, index, repeat_time):
+    def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, vsys_id, index, repeat_time):
         # object中的is_repeat，用于判定是否需要将数据组建为按照文件读取为多个items的形式
         is_repeat = 0
         is_import = 0
@@ -135,12 +135,10 @@ class CreateObject():
                     obj_template_dict["file"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
             object_ids_temp_list, timeout_result = self.create_or_import_object(type, obj_template_dict, headers, api_host, is_repeat)
         
+        objects_list = []
+        object_temp_list = []
         if attribute_name != '' and len(object_ids_temp_list) != 0:
             objects_list = self.obj_ids_to_policy_obj_list(object_ids_temp_list, attribute_name, is_negate)
-        else:
-            objects_list = []
-        
-        object_temp_list = []
         if len(objects_list) > 0 and is_repeat == 0:
             object_temp_list.append(objects_list)
         elif len(objects_list) > 0 and is_repeat == 1 and index > repeat_time-1:
@@ -152,6 +150,7 @@ class CreateObject():
     def combine_object_data(self, obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat):
         items = []
         object_dict = {}
+        
         if is_repeat == 0:
             if obj_type == "ip" and obj_sub_type != "geo_location":
                 for item in add_item_list:

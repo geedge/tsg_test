@@ -17,7 +17,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 class TrafficVerification():
     def traffic_verification(self, parameter, test_data, cfg_list):
-    # def traffic_verification(self, condition, test_pc_ip, is_log, statistics_sc_info_list, api_server, vsys_id, path_dict):
         api_server = parameter["api_server"]
         script_type = parameter["script_type"]
         is_log = parameter["is_log"]
