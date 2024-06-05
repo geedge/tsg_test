@@ -295,7 +295,7 @@ class CreateProfile():
             create_profile_id_dict["id"] = profile_id
             return create_profile_id_dict
         elif profile_type == "hijack_files":
-            files = {"file":("Create-hijack-Files-test-5.png", open(path_dict["profiles_hijack_file_path"], 'rb'), "text/plain")}
+            files = {"file":("Create-Hijack-Files-test-3.html", open(path_dict["profiles_hijack_file_path"], 'rb'), "text/plain")}
             del profile_data["profile_type"]
             # 添加vsys id
             profile_data["vsys_id"] = vsys_id

@@ -122,6 +122,7 @@ class CreateConfig():
         cfg_list["create_keywords_ids"] = create_keywords_ids
         cfg_list["create_account_ids"] = create_account_ids
         cfg_list["create_http_signature_ids"] = create_http_signature_ids
+        cfg_list["create_geo_name_ids"] = create_geo_name_ids
         cfg_list["create_profile_ids"] = create_profile_ids
         cfg_list["create_policies_ids"] = create_policies_ids
         cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
