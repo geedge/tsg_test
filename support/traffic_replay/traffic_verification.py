@@ -106,7 +106,6 @@ class TrafficVerification():
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-            print("trex，回放流量方法")
             # 解析trex使用参数， 解析client server ip
             for ip_item in test_data["obj_condition_1"]:
                 if "ATTR_SOURCE_IP" in ip_item.values():
@@ -146,11 +145,11 @@ class TrafficVerification():
                     break
                 if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
                     # 直接调用清空策略方法
-                    print("测试不生效，结束测试：策略id：{}".format(policy_id))
-                    return False, False, False, "策略验证不通过"
+                    print("Invalid test, end test. Policy id: {}".format(policy_id))
+                    return False, False, False, "The policy verification fail."
                 verify_policy_break_count += 1
                 time.sleep(20)
-                print("间隔{}秒，第{}次策略验证结果：策略验证失败，策略没有生效，{}策略id：{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id))
+                print("Interval {} second, result of the {} policy verification: Policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id))
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             temp_data = json.dumps(test_data["traffic"])
@@ -191,7 +190,7 @@ class TrafficVerification():
                 if  metric_results[0] == 333:     # API 查询失败时变量赋值
                     metric_result = False
                     if metric_results[1] == "passthrough":     # incoming或者outgoing的session方向
-                        print("incoming或者outgoing的session的方向与实际流量方向不同;或者fqdn_category为维度时，数据为空")
+                        print("The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
                         metric_result = True
             return metric_result, metric_result, metric_result, metric_results[1]    # 匹配其它策略模式
         elif policy_type == "service_chaining":
@@ -202,7 +201,6 @@ class TrafficVerification():
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                print("trex，回放流量方法")
                 # 解析trex使用参数， 解析client server ip
                 for ip_item in test_data["obj_condition_1"]:
                     if "ATTR_SOURCE_IP" in ip_item.values():
@@ -311,7 +309,7 @@ class TrafficVerification():
                         metric_result = False
             return cmd_result, metric_result, metric_result
         elif policy_type == "shaping":
-            # 假数据
+            print("to be added.")
             return True, True, True
 
     def is_in(self, full_str, sub_str, script_type):
