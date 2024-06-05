@@ -122,20 +122,6 @@ class TrafficVerification():
                     else:
                         servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                         servers_end = servers_start
-            # 解析trex 命令行参数，-m -d
-            if "trex" in test_data.keys():
-                m = test_data["trex"]["m"]
-                d = test_data["trex"]["d"]
-                yaml_name = test_data["trex"]["yaml_name"].strip()
-                pcap_name = test_data["trex"]["pcap_name"].strip()
-            else:
-                print("Use the default value for the trex parameter:")
-                m = 1
-                d = 1
-                yaml_name = "http_50.yaml"
-                pcap_name = "http_get_347pkts.pcap"
-            # 执行trex命令前，策略验证，查看下发策略是否生效
-            ######## 不要删除
             verify_policy_break_count = 0
             while True:      # 多次策略验证
                 verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}

@@ -61,14 +61,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "bytes",
+                                    "source_columns": "new_out_sessions",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "client_ip"
+                                        "client_ip_object"
                                     ],
                                     "is_drilldown": 0
                                 }
@@ -84,7 +84,7 @@ def run(parameter):
                     ]
                 }
             ],
-            "app_name_1": ["openvpn"],
+            "app_name_1": [],
             "expected_return": "POST",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
@@ -155,6 +155,6 @@ if __name__ == "__main__":
         "root_path": "C:/zcw/tsg_test",
         "path": "C:/zcw/tsg_test/tests/api",
         "module_name": "statistics",
-        "test_case_name": "bytes_distributedby_clientip_openvpn"
+        "test_case_name": "newOutgoingSessions_distributedby_clientIPMatchedObjects"
     }
     run(parameter)
