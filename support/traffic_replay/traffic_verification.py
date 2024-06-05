@@ -62,7 +62,7 @@ class TrafficVerification():
             # print(output)
             
             expected_return = test_data["expected_return"]
-            cmd_result = self.is_in(cmd_return, expected_return, script_type)
+            cmd_result = self.is_in(cmd_return, expected_return)
             
             loop_num = test_data["rule_num"]
             is_counters, is_log_query = self.is_verify(test_data, loop_num, 'counters', 'log_query_param')
@@ -282,7 +282,7 @@ class TrafficVerification():
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                cmd_result = self.is_in(cmd_return, expected_return, script_type)
+                cmd_result = self.is_in(cmd_return, expected_return)
                 if len(statistics_sc_info_list) > 0:  # 非空
                     for statistics_info in statistics_sc_info_list:
                         n = 0  # 自增变量
@@ -312,7 +312,7 @@ class TrafficVerification():
             print("to be added.")
             return True, True, True
 
-    def is_in(self, full_str, sub_str, script_type):
+    def is_in(self, full_str, sub_str):
         temp = full_str["result"]
         sub_str = sub_str.split(',')
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
