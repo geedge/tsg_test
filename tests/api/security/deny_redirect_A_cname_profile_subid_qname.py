@@ -90,7 +90,7 @@ def run(parameter):
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
         template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-        template_path["profile_dns_record_template"] = parameter["path"] + "/profiles/profile_dns_record_template.json"
+        template_path["profile_dns_record_template"] = parameter["path"] + "/profile_used_to_create_rule/profile_dns_record_template.json"
         
         # 获取token
         log_in = LogIn()
