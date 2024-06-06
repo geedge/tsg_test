@@ -1,5 +1,9 @@
 #!/bin/sh
 
+cd /opt
+git clone git@git.mesalab.cn:chongming/tsg_test.git
+cd /opt/tsg_test
+git checkout develop
 find . -type f -name "*.py" -exec chmod 777 {} \;
 chmod 777 /opt/tsg_test/supervisor.conf
 chmod 777 /opt/tsg_test/package/requirements.txt
