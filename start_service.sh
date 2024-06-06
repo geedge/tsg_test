@@ -8,6 +8,9 @@
 # chmod 777 /opt/tsg_test/supervisor.conf
 # chmod 777 /opt/tsg_test/package/requirements.txt
 
+# cd /opt/tsg_test
+# git pull
+
 python /opt/tsg_test/package/install_docker.py
 
 if [[ "$(docker images -q)" == "" ]] || [[ "$(docker images --format "{{.Repository}}:{{.Tag}}" | grep 'package')" != "package:base" ]]; then
