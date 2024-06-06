@@ -130,7 +130,6 @@ class DeleteConfig():
             delete_object_template["geoname_ids"] = create_geo_name_id
             delete_object_template["vsys_id"] = vsys_id
             url = api_server + "/v1/policy/library/geolocation"
-            print(delete_object_template)
             response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
             assert response.status_code == 200
             if response.status_code == 200:

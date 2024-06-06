@@ -31,24 +31,42 @@ class GetLog():
             "vsys_id": 1
         }
         log_condition_dict = json.loads(json.dumps(log_condition))
+        policy_type = test_data["policy_type"]
         # 多次循环
         for i in range(rule_num):
+            if policy_type == 'security':
+                schema_type = 'security_event'
+            elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
+                schema_type = 'proxy_event'
             policy_id = list(create_policies_ids[i].values())[0]
-            fields = self.get_log_schema(token, "security_event", api_host, vsys_id)
+            fields = self.get_log_schema(token, schema_type, api_host, vsys_id)
+            if policy_type == 'security':
+                log_source = 'security_event'
+                identifier_name = 'security-event-list'
+                log_query_rule_type = 'security_rule_list'
+            elif policy_type == 'pxy_intercept':
+                log_source = 'session_record'
+                identifier_name = 'session-record-list'
+                log_query_rule_type = 'proxy_rule_list'
+            elif policy_type == 'pxy_manipulation':
+                log_source = 'proxy_event'
+                identifier_name = 'proxy-event-manipulation-list'
+                log_query_rule_type = 'proxy_rule_list'
             log_condition_dict['columns'] = fields
             log_condition_dict['start_time'] = start_time
             log_condition_dict['end_time'] = end_time
             log_condition_dict['vsys_id'] = vsys_id
-            log_condition_dict['log_type'] = 'security_event'
-            log_condition_dict['identifier_name'] = 'security-event-list'
+            log_condition_dict['source'] = log_source
+            log_condition_dict['identifier_name'] = identifier_name
             log_condition_dict['execution_mode'] = 'oneshot'
+            
             # 从conditions中获取object_type判断是否存在subscriberid
             # 加script_type判断条件的原因是：ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
-                log_filter = f"subscriber_id= 'test23' AND has(security_rule_list,{policy_id})"
+                log_filter = f"subscriber_id= 'test23' AND has({log_query_rule_type},{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
-                log_filter = f"client_ip={test_pc_ip} AND has(security_rule_list,{policy_id})"
+                log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type},{policy_id})"
                 log_condition_dict['filter'] = log_filter
                 log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
             url = api_host + "/v1/log/query"

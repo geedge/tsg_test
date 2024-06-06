@@ -56,8 +56,8 @@ def run(parameter):
             ],
             "app_name_1": ["http"],
             "expected_return": "唯品会",
-            "counters_1": {},
-            "log_query_param_1": [],
+            "counters_1": {"hits": 1},
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.vip.com"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.vip.com"
