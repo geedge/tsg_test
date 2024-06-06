@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>404 Page Not Found</title>
+   <style>
+   @import url("https://fonts.googleapis.com/css?family=Abril+Fatface");
+	body {
+	  font-family: 'Abril Fatface', cursive;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+	  min-height: 100vh;
+	  margin: 0;
+	  padding: 1em;
+	  box-sizing: border-box;
+	  white-space: nowrap;
+	}
+
+	.cat-404::before, .cat-404::after {
+	  content: "4";
+	  font-size: 200px;
+	  line-height: 1;
+	}
+	.cat-404 svg {
+	  vertical-align: top;
+	  margin: 0 -20px;
+	}
+	.cat-404 svg .eyes {
+	  -webkit-animation: move 2s forwards infinite;
+	          animation: move 2s forwards infinite;
+	}
+	@-webkit-keyframes move {
+	  0% {
+	    -webkit-transform: translateX(0%);
+	            transform: translateX(0%);
+	  }
+	  20% {
+	    -webkit-transform: translate(4px, -4px);
+	            transform: translate(4px, -4px);
+	  }
+	  40% {
+	    -webkit-transform: translate(6px, -4px);
+	            transform: translate(6px, -4px);
+	  }
+	  60% {
+	    -webkit-transform: translate(12px, 0px);
+	            transform: translate(12px, 0px);
+	  }
+	  80% {
+	    -webkit-transform: translate(6px, 6px);
+	            transform: translate(6px, 6px);
+	  }
+	  100% {
+	    -webkit-transform: none;
+	            transform: none;
+	  }
+	}
+	@keyframes move {
+	  0% {
+	    -webkit-transform: translateX(0%);
+	            transform: translateX(0%);
+	  }
+	  20% {
+	    -webkit-transform: translate(4px, -4px);
+	            transform: translate(4px, -4px);
+	  }
+	  40% {
+	    -webkit-transform: translate(6px, -4px);
+	            transform: translate(6px, -4px);
+	  }
+	  60% {
+	    -webkit-transform: translate(12px, 0px);
+	            transform: translate(12px, 0px);
+	  }
+	  80% {
+	    -webkit-transform: translate(6px, 6px);
+	            transform: translate(6px, 6px);
+	  }
+	  100% {
+	    -webkit-transform: none;
+	            transform: none;
+	  }
+	}
+	p {
+	  text-align: center;
+	  margin: 0;
+	  font-size: 55px;
+	}
+	p a {
+	  text-decoration: none;
+	  color: #6495ED;
+	}
+	p a:hover {
+	  padding: 20px;
+	  padding-top: 10px;
+	  margin: -20px;
+	  background: limegreen;
+	  color: black;
+	  border-radius: 50%;
+	  box-shadow: 10px 10px 5px #888888;
+	}
+   </style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="cat-404">
+  <svg width="230" height="220" viewBox="-5 10 230 220"
+       xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path transform="scale(2.15,2.15) translate(-42,10)"
+          d="M73,62c-22-7-24-22-18-35 6-11,9-23,15-26 4-1,23,6,12,25-9,16-33,15-28,2 3-10,16-23,39-22 22,1,41,17,31,31-9,13-49,5-41-15 8-21,28-11,28-11s28-15,33-10c3,5-10,27-14,30 2,18-3,29-13,31 5,6-6,29-14,28-4,0-1-14-1-14-5-1-13-3-17-3-2,4-1,12-8,12-8-1-4-22-4-23z"
+          fill="orangered" fill-rule="evenodd"/>
+    <g class="eyes" fill="#6495ED" >
+      <ellipse cx="66" cy="60" rx="10" ry="11" />
+      <ellipse cx="120" cy="67" rx="10" ry="11" />
+    </g>
+  </svg>
+</div>
+<p>ARE YOU LOST?</p>
+<p>Do you want to go<br><a href=#">home</a>?</p>
+<!-- partial -->
+
+</body>
+</html>

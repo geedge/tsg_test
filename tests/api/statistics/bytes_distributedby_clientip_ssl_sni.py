@@ -58,7 +58,7 @@ def run(parameter):
                     "repeat_time": 1,
                     "object_list": [
                         {
-                            "add_itemlist": [
+                            "add_item_list": [
                                 {
                                     "keyword_array": [
                                         "www.bbc.com"
@@ -114,7 +114,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "test_https"
+                "pcap_name": "ssl_tls13"
             },
             "token": ""
         }

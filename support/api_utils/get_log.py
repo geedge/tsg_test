@@ -168,8 +168,8 @@ class GetLog():
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         # assert response.status_code == 200
         r_dict = response.json()
-        print("statistics metric result data：")
-        print(r_dict)
+        #print("statistics metric result data：")
+        #print(r_dict)
         if r_dict["code"] != 200:
             print("statistics metric query failed.")
             return [333, "The statistics metric API query failed. Procedure"]

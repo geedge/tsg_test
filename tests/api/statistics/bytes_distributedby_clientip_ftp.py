@@ -84,7 +84,7 @@ def run(parameter):
                     ]
                 }
             ],
-            "app_name_1": ["dtls"],
+            "app_name_1": ["ftp"],
             "expected_return": "POST",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
@@ -97,7 +97,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "test_https"
+                "pcap_name": "ftp_login_ftpuser"
             },
             "token": ""
         }

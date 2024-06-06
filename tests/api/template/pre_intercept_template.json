@@ -13,7 +13,7 @@
       "protocol": "SSL",
       "keyring_for_untrusted": 0,
       "keyring_for_trusted": 1,
-      "decryption": 1,
+      "decryption_profile": 1,
       "tcp_option_profile": 1,
       "traffic_mirror": {
         "enable": 0
@@ -33,7 +33,7 @@
           ]
         }
       ],
-      "protocol_field": "ATTR_APP_ID",
+      "attribute_name": "ATTR_APP_ID",
       "show": true
     },
     "is_enabled": 1,

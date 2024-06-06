@@ -47,7 +47,7 @@ class CreateObject():
                     if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
-                    elif attribute_name == 'ATTR_DESTINATION_IP' or attribute_name == "ATTR_DESTINATION_LOCATION" or attribute_name == "ATTR_SERVER_FQDN":
+                    elif attribute_name == 'ATTR_DESTINATION_IP' or attribute_name == "ATTR_DESTINATION_GEO_COUNTRY" or attribute_name == "ATTR_SERVER_FQDN":
                         for obj_dict in objects_list:
                             dst_list.append(obj_dict)
                     elif attribute_name == 'ATTR_FLAG':
@@ -150,7 +150,7 @@ class CreateObject():
     def combine_object_data(self, obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat):
         items = []
         object_dict = {}
-        
+        geolocation = {}
         if is_repeat == 0:
             if obj_type == "ip" and obj_sub_type != "geo_location":
                 for item in add_item_list:
@@ -193,6 +193,35 @@ class CreateObject():
                     string = dict(contextual_string=patterns, op='add')
                     string['contextual_string']['context_name'] = context_name
                     items.append(string)
+            elif obj_type == "geolocation":
+                geo_ip_address = []
+                # geo_ip_address_dict = {}
+                for item in add_item_list:
+                    if 'continent' in item:
+                        geolocation['continent'] = item['continent']
+                    if 'geoname_id' in item:
+                        geolocation['geoname_id'] = item['geoname_id']
+                    if 'super_administrative_area' in item:
+                        geolocation['super_administrative_area'] = item['super_administrative_area']
+                    if 'administrative_area' in item:
+                        geolocation['administrative_area'] = item['administrative_area']
+                    if 'country_abbr' in item:
+                        geolocation['country_abbr'] = item['country_abbr']
+                    if 'country' in item:
+                        geolocation['country'] = item['country']
+                    if 'location_type' in item:
+                        geolocation['location_type'] = item['location_type']
+                    if 'latitude' in item:
+                        geolocation['latitude'] = item['latitude']
+                    if 'longitude' in item:
+                        geolocation['longitude'] = item['longitude']
+                    if 'addr_type' in item:
+                        addr_type = item['addr_type']
+                    if 'ip_address' in item:
+                        ip_address = item['ip_address']
+                    geo_ip_address_dict = dict(addr_type = addr_type, ip_address = ip_address, op = 'add')    
+                    geo_ip_address.append(geo_ip_address_dict)
+                    geolocation['ip_addresses'] = geo_ip_address
             else:
                 for item in add_item_list:
                     patterns = []
@@ -228,8 +257,10 @@ class CreateObject():
                             object_dict['ip_address'] = ip
                             object_dict = dict(ip=object_dict, op='add')
                             items.append(object_dict)
-        
-        member = dict(items=items, type=1)
+        if obj_type == 'geolocation':
+            member = dict(geolocation = geolocation, type = 'library')
+        else:
+            member = dict(items=items, type=1)
         return member
            
     def create_or_import_object(self, type, obj_template_dict, headers, api_host, is_repeat):

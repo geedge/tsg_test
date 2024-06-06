@@ -18,6 +18,8 @@ class DeleteConfig():
         create_http_signature_ids = cfg_list["create_http_signature_ids"]
         create_profile_ids = cfg_list["create_profile_ids"]
         create_policies_ids = cfg_list["create_policies_ids"]
+        create_geo_name_ids = cfg_list["create_geo_name_ids"]
+
         delete_object_template = {"type": "ip", "ids": [], "vsys_id": 1}
         delete_rule_template = {"ids": [], "type": "tsg_security", "vsys_id": 1}
         # 多条id删除的时候需要区分policy_type
@@ -121,6 +123,21 @@ class DeleteConfig():
                 print("Delete http signature successfully.")
             else:
                 print("Delete http signature failed.")
+        if len(create_geo_name_ids) > 0:
+            del delete_object_template["type"]
+            del delete_object_template["ids"]
+            create_geo_name_id = create_geo_name_ids[0]
+            delete_object_template["geoname_ids"] = create_geo_name_id
+            delete_object_template["vsys_id"] = vsys_id
+            url = api_server + "/v1/policy/library/geolocation"
+            print(delete_object_template)
+            response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+            assert response.status_code == 200
+            if response.status_code == 200:
+                print("Delete geolocation successfully.")
+            else:
+                print("Delete geolocation failed.")
+
         if len(create_profile_ids) > 0:
             for del_porfile_index in range(len(create_profile_ids)):
                 if create_profile_ids[del_porfile_index]["profile_type"] == "Statistics_Templates":    # 删除逻辑
