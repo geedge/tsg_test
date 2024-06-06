@@ -61,7 +61,7 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["mail"],
-            "expected_return": "POST",
+            "expected_return": "Ok",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"mail_subject","query_value":"Bestman"}],
             "traffic": {
