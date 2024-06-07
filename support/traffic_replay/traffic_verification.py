@@ -210,7 +210,7 @@ class TrafficVerification():
                 # 执行回放命令
                 temp_data = json.dumps(test_data["traffic"])
                 sc_result = self.call_rest_api(temp_data)
-                sc_metircs = sc_result["metric_info"]
+                sc_metircs = sc_result["result"]
                 # traffic_replay = TrafficReplay(template_path)
                 # sc_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
                 time.sleep(20)
