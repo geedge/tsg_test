@@ -91,8 +91,8 @@ def receive_parameter():
             
             temp_folder_path = parameter["path"] + "/" + module_name
             
-            folder_list = os.listdir(temp_folder_path)
-            sys.stdout.write("The test folder contain: {}\n".format(folder_list))
+            # folder_list = os.listdir(temp_folder_path)
+            # sys.stdout.write("The test folder contain: {}\n".format(folder_list))
             # 匹配测试用例
             path = f"{temp_folder_path}/*.py"
             files = glob.glob(path, recursive=True)
