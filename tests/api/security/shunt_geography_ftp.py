@@ -16,7 +16,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "security",
             "rule_action_1": "shunt",
-            "do_log_1": 2,
+            "do_log_1": 0,
             "obj_condition_1": [
                 {
                 "attribute_name": "ATTR_DESTINATION_GEO_COUNTRY",

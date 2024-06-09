@@ -140,8 +140,8 @@ if __name__ == "__main__":
       "is_log": 1,
       "env": "tsgx",
       "vsys_id": 6,
-      "root_path": "D:/python_script/tsg_test",
-      "path": "D:/python_script/tsg_test/tests/api",
+      "root_path": "D:/python_engine/tsg_test",
+      "path": "D:/python_engine/tsg_test/tests/api",
       "module_name": "security",
       "test_case_name": "allow_negate_fqdn"
     }

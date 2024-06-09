@@ -90,6 +90,7 @@ def run(parameter):
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
         template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+        template_path["profile_dns_record_template"] = parameter["path"] + "/template/profile_dns_record_template.json"
         
         # 获取token
         log_in = LogIn()
