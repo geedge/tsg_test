@@ -43,7 +43,7 @@ def receive_parameter():
                 "password": "",
                 "api_server": "",
                 "test_pc_ip": "",
-                "test_subcriber_id": ""
+                "test_subcriber_id": "",
                 "script_type": "",
                 "root_path": "",
                 "path": "",
@@ -68,9 +68,7 @@ def receive_parameter():
             
             parameter["test_pc_ip"] = parse.get("test_pc", "ip")
 
-            parameter['test_subcriber_id'] = parase.get("test_pc", "subcriber_id")
-
-
+            parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id")
             
             project_path = parse.get("root_path", "path")
             

@@ -232,7 +232,6 @@ class CreateObject():
                     keywords = item["keyword_array"][0]
                     if obj_type == "subscriberid" and keywords == "default":
                         keywords = '$' + test_subcriber_id
-                    print(keywords)
                     object_dict = dict(keywords=keywords)
                     patterns.append(object_dict)
                     patterns = dict(patterns=patterns)
