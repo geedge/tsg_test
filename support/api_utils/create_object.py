@@ -43,7 +43,11 @@ class CreateObject():
                     repeat_time = key["repeat_time"]
                 for i in range(repeat_time):
                     index = i + 1
-                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, index, repeat_time)
+                    if 'test_subcriber_id' in parameter:
+                        test_subcriber_id = parameter['test_subcriber_id']
+                    else:
+                        test_subcriber_id = ''
+                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, vsys_id, index, repeat_time, test_subcriber_id)
                     if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
@@ -90,7 +94,7 @@ class CreateObject():
         return timeout_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, self.geo_name_ids
     
     # 对多个objects的处理（处理之后要调用create_object）
-    def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, vsys_id, index, repeat_time):
+    def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, vsys_id, index, repeat_time, test_subcriber_id):
         # object中的is_repeat，用于判定是否需要将数据组建为按照文件读取为多个items的形式
         is_repeat = 0
         is_import = 0
@@ -123,7 +127,7 @@ class CreateObject():
                 context_name = ''
             if is_import == 0:
                 type = "create"
-                member = self.combine_object_data(obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat)
+                member = self.combine_object_data(obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat, test_subcriber_id)
                 obj_template_dict['object']['member'] = member
             else:
                 type = "import"
@@ -147,7 +151,7 @@ class CreateObject():
         return object_temp_list, timeout_result 
     
     # 组织创建通过items进行新增的object的数据
-    def combine_object_data(self, obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat):
+    def combine_object_data(self, obj_type, obj_sub_type, add_item_list, test_pc_ip, context_name, is_repeat, test_subcriber_id):
         items = []
         object_dict = {}
         geolocation = {}
@@ -226,6 +230,9 @@ class CreateObject():
                 for item in add_item_list:
                     patterns = []
                     keywords = item["keyword_array"][0]
+                    if obj_type == "subscriberid" and keywords == "default":
+                        keywords = '$' + test_subcriber_id
+                    print(keywords)
                     object_dict = dict(keywords=keywords)
                     patterns.append(object_dict)
                     patterns = dict(patterns=patterns)

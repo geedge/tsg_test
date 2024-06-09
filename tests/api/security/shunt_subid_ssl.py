@@ -27,7 +27,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "$test6473"
+                            "default"
                         ]
                         }
                     ]

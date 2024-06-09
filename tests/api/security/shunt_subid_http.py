@@ -27,7 +27,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "$test6473"
+                            "default"
                         ]
                         }
                     ]
@@ -89,13 +89,14 @@ if __name__ == "__main__":
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
+        "test_subcriber_id": "testhello",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }
