@@ -9,7 +9,6 @@ from support.api_utils.create_profile import CreateProfile
 class CreateConfig():
     def create_cfg(self, parameter, test_data, template_path):
         # 变量初始化
-        test_pc_ip = parameter["test_pc_ip"]
         api_server = parameter["api_server"]
         run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
@@ -37,7 +36,7 @@ class CreateConfig():
             # 创建object
             create_object = CreateObject()
             object_template = template_path["object_template"]
-            timeout_result, src_list, dst_list, filter_list, flag_list, ip_ids, subid_ids, fqdn_ids, url_ids, flag_ids, keywords_ids, account_ids, http_signature_ids, geo_name_ids = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, test_pc_ip, vsys_id)
+            timeout_result, src_list, dst_list, filter_list, flag_list, ip_ids, subid_ids, fqdn_ids, url_ids, flag_ids, keywords_ids, account_ids, http_signature_ids, geo_name_ids = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, vsys_id)
             if len(ip_ids) > 0:
                 create_ip_ids.extend(ip_ids)
             if len(subid_ids) > 0:
