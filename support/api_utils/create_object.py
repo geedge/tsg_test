@@ -155,7 +155,7 @@ class CreateObject():
         object_dict = {}
         geolocation = {}
         if is_repeat == 0:
-            if obj_type == "ip" and obj_sub_type != "geo_location":
+            if obj_type == "ip":
                 for item in add_item_list:
                     if 'ip_cidr' in item:
                         object_dict['ip_cidr'] = item['ip_cidr']
