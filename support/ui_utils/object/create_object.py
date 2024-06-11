@@ -61,9 +61,10 @@ class CreateObject():
                 for x in data["item"]:
                     if data["object_type"] == "ip":
                         self.driver.find_element(By.ID, create_element_position["objectPage_ipType_posId"]).click()
-                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
-                    self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(x)
-                    self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
+                    if x["item_operation"] == "add":
+                        self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(x["item_value"])
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             # 确认创建
             self.driver.find_element(By.ID, create_element_position["objectPage_okButton_posId"]).click()
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()

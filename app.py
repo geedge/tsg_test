@@ -33,6 +33,7 @@ def receive_parameter():
         req_json = request.get_json()
         run_status = req_json.get("run_status")
         module_name = req_json.get("module_name")
+        sub_module_name = req_json.get("sub_module_name")
         test_case_name = req_json.get("test_case_name")
         tag = req_json.get("tag")
         
@@ -47,6 +48,7 @@ def receive_parameter():
                 "root_path": "",
                 "path": "",
                 "module_name": "",
+                "sub_module_name": "",
                 "test_case_name": "",
                 "app_name": "",
                 "app_full_name": "",
@@ -79,6 +81,8 @@ def receive_parameter():
                 parameter["vsys_id"] = 6
                 parameter["is_log"] = 1
             elif tag == "general_ui":
+                parameter["path"] = f"{project_path}/tests/ui"
+                parameter["sub_module_name"] = sub_module_name
                 print("to be added.")
             elif tag == "app":
                 parameter["path"] = f"{project_path}/tests/app"

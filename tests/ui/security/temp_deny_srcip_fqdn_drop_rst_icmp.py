@@ -45,7 +45,11 @@ def run(parameter):
                         "select_type": False,
                         "negate": False,
                         "item": [
-                            "192.168.64.86"
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.64.86",
+                            },
                         ]
                     }
                 ],
@@ -65,7 +69,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "ssl",
+                        "name": "ssl", #
                         "object_type": "application",
                         "negate": False
                     }

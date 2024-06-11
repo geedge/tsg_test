@@ -95,7 +95,7 @@ def run(parameter):
             "expected_return":"vip",
             "traffic":{
                 "type": "curl",
-                "command": "curl -kv https://www.vip.com"
+                "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.vip.com"
             },
         }
         
