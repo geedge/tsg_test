@@ -29,7 +29,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "$test6473"
+                            "default"
                         ]
                         }
                     ]
@@ -59,7 +59,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 --url \"smtp://192.168.40.206\" --mail-from \"hbn@163.com\" --mail-rcpt \"autotest@163.com\" -H @/opt/traffic_replay/mail_file/subjectEnglish.txt --user \"hbn@163.com:111111\" -F '=(;type=multipart/mixed' -F '=(;type=multipart/mixed' -F \"=\"Bestman\";type=text/plain\" -F \"file=@/opt/traffic_replay/mail_file/mail_test_english.txt;type=`file --mime-type \"/opt/traffic_replay/mail_file/mail_test_english.txt\"|sed 's/.*: //'`;encoder=base64\" -F '=)'"
+                "command": "curl --connect-timeout 5 -m 5 https://www.baidu.com"
             },
             "token": ""
         }
