@@ -20,7 +20,23 @@ def run(parameter):
       "method_2": "drop",
       "do_log_1": 2,
       "do_log_2": 2,
-      "obj_condition_1": [],
+      "obj_condition_1": [
+        {
+          "attribute_name": "ATTR_FLAG",
+          "object_type": "flag",
+          "object_sub_type": "flag",
+          "object_list": [
+            {
+              "add_item_list": [
+                {
+                  "flag": 8,
+                  "mask": 8
+                }
+              ]
+            }
+          ]
+        }
+      ],
       "obj_condition_2": [
         {
           "attribute_name": "ATTR_FLAG",
@@ -97,6 +113,6 @@ if __name__ == "__main__":
       "root_path": "D:/python_script/tsg_test",
       "path": "D:/python_script/tsg_test/tests/api",
       "module_name": "security",
-      "test_case_name": "allow_negate_fqdn"
+      "test_case_name": "deny1_flag-deny2_flag"
     }
     run(parameter)
