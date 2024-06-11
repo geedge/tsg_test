@@ -16,7 +16,7 @@ def run(parameter):
       "policy_type": "security",
       "rule_action_1": "shunt",
       "rule_action_1": "allow",
-      "do_log_1": 2,
+      "do_log_1": 0,
       "do_log_2": 2,
       "obj_condition_1": [
         {

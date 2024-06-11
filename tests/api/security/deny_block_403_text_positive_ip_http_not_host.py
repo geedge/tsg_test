@@ -58,7 +58,7 @@ def run(parameter):
             }
             ],
             "app_name_1": ["http"],
-            "expected_return": "POST",
+            "expected_return": "403",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
