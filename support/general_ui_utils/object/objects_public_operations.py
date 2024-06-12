@@ -10,14 +10,13 @@ from support.general_ui_utils.login_logout import loginout
 from support.ui_utils.my_web_driver import MyWebDriver
 from support.general_ui_utils.read_data import ReadData
 from support.general_ui_utils.profile.profiles_public_operations import ProfilesPublicOperations
-from workpath import workdir
-from element_position.objects_element_position import *
-from element_position import objects_element_position
+from support.general_ui_utils.workpath import workdir
+from support.general_ui_utils.element_position.objects_element_position import *
+from support.general_ui_utils.element_position.ln_objects_element_positionMERGELAST import *
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from element_position.ln_objects_element_positionMERGELAST import *
 import shutil
 from support.general_ui_utils.login_logout.loginout import LogInOut
 
@@ -1183,7 +1182,6 @@ class ObjectsPublicOperations:
         random_object_statistic = random.choice(["Elaborate", "Brief", "None"])
         print(random_object_statistic)
         return random_object_statistic
-
 
 # path = my_files._obj_files_dowload_path()  # 替换为你的路径
 # txt_filenames = get_txt_filenames(path)

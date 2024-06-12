@@ -11,9 +11,9 @@ from selenium.webdriver.common.keys import Keys
 import random
 from support.general_ui_utils.random_name import RandomName
 from support.general_ui_utils.read_data import ReadData
-from workpath import workdir
-from element_position.objects_element_position import *
-from element_position.profiles_element_position import *
+from support.general_ui_utils.workpath import workdir
+from support.general_ui_utils.element_position.objects_element_position import *
+from support.general_ui_utils.element_position.profiles_element_position import *
 import ipaddress
 
 class ProfilesPublicOperations:

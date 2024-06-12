@@ -2,11 +2,12 @@ import time
 from support.ui_utils.my_web_driver import MyWebDriver
 from selenium.webdriver.common.by import By
 import configparser
-from workpath import *
-from element_position.profiles_element_position import *
+from support.general_ui_utils.workpath import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from support.general_ui_utils.profile.profiles_public_operations import ProfilesPublicOperations
+from support.general_ui_utils.element_position.profiles_element_position import *
+
 
 class LogInOut:
     def __init__(self, driver: MyWebDriver):
