@@ -1,11 +1,11 @@
 # -*- coding: UTF-8 -*-
 import time
-import pytest
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 from support.general_ui_utils.object.ip_address import IpAddress
 from support.ui_utils.element_position.object_element_position import *
+from support.ui_utils.object.page_jump import PageJump
 import support.ui_utils.env_initialization
 
 def run(parameter):
@@ -18,6 +18,18 @@ def run(parameter):
         support.ui_utils.env_initialization.initiate_selenium_request()
         driver = support.ui_utils.env_initialization.my_driver()
         support.ui_utils.env_initialization.setup()
+        
+        # vsys页面跳转
+        page_jump_element_position = {
+            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+            "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+            "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+            # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
+        }
+        page_jump = PageJump(driver)
+        page_jump.jump_sub_object_page(page_jump_element_position, "UIAutoTestVsys")
         
         # 测试数据
         test_data = {
@@ -46,9 +58,6 @@ def run(parameter):
         ipaddress.ip_address_case(test_data)
         result = ""
         
-        # 清理环境
-        support.ui_utils.env_initialization.teardown()
-        
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -59,12 +68,16 @@ def run(parameter):
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
 
 if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
