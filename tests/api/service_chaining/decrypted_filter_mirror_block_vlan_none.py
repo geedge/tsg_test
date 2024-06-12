@@ -55,7 +55,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "mirror_block_vlan_none",
+                    "name": "test_sc_api_mirror_block_vlan_none",
                     "type": "2",
                     "load_balance_method": "hash-int-ip",
                     "load_balance_localization": "nearby",
@@ -65,7 +65,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vlan_none",
+                            "name": "test_sc_api_vlan_none",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",
@@ -88,7 +88,7 @@ def run(parameter):
             "expected_return":"vip",
             "traffic":{
                 "type": "curl",
-                "command": "curl -kv https://www.vip.com"
+                "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.vip.com"
             },
         }
         
@@ -138,13 +138,14 @@ if __name__ == "__main__":
         "username": "lytest",
         "password": "123456ly",
         "test_pc_ip": "192.168.64.86",
+        "test_subcriber_id":"",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "C:/Users/17310/Desktop/tsg_test",
-        "path": "C:/Users/17310/Desktop/tsg_test/tests/api",
+        "root_path": "C:/automation_project/tsg_test",
+        "path": "C:/automation_project/tsg_test/tests/api",
         "module_name": "service_chaining",
         "test_case_name": "decrypted_filter_mirror_block_vlan_none"
     }

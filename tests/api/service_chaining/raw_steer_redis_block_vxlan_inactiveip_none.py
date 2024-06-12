@@ -55,7 +55,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "steer_redis_block_vxlan_inactiveip_none",
+                    "name": "test_sc_api_steer_redis_block_vxlan_inactiveip_none",
                     "type": "1",
                     "load_balance_method": "hash-innermost-int-ip",
                     "load_balance_localization": "nearby",
@@ -69,7 +69,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vxlan_inactiveip_none",
+                            "name": "test_sc_api_vxlan_inactiveip_none",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",
