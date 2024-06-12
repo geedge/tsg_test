@@ -120,7 +120,7 @@ if __name__ == "__main__":
         "vsys_id": 6,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/temp",
         "module_name": "security",
         "test_case_name": "allow_negate_fqdn"
     }
