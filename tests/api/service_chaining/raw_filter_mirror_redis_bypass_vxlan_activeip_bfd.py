@@ -72,7 +72,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "mirror_redis_bypass_vxlan_activeip_bfd",
+                    "name": "test_sc_api_mirror_redis_bypass_vxlan_activeip_bfd",
                     "type": "2",
                     "load_balance_method": "hash-int-ip",
                     "load_balance_localization": "nearby",
@@ -86,7 +86,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vxlan_activeip_bfd",
+                            "name": "test_sc_api_vxlan_activeip_bfd",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",
@@ -164,8 +164,8 @@ def run(parameter):
   
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "lytest",
+        "password": "123456ly",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
         "script_type": "api",

@@ -55,7 +55,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "steer_bypass_vxlan_notip_bfd",
+                    "name": "test_sc_api_steer_bypass_vxlan_notip_bfd",
                     "type": "1",
                     "load_balance_method": "hash-innermost-int-ip",
                     "load_balance_localization": "nearby",
@@ -65,7 +65,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vxlan_notip_bfd",
+                            "name": "test_sc_api_vxlan_notip_bfd",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",

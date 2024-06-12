@@ -72,7 +72,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "raw_filter_mirror_block_vlan_none",
+                    "name": "test_sc_api_raw_filter_mirror_block_vlan_none",
                     "type": "2",
                     "load_balance_method": "hash-ext-ip",
                     "load_balance_localization": "nearby",
@@ -82,7 +82,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vlan_none",
+                            "name": "test_sc_api_vlan_none",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",
