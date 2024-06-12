@@ -1,6 +1,7 @@
 # 标准库导入
 import configparser
 import os
+import random
 import time
 import re
 
@@ -43,7 +44,7 @@ class Tunnel:
         #     pass
 
 #screenshot_on_failure是一个装饰器，可以在方法执行失败时自动截图
-    def tunnel_case(self, data: {}):#接受一个data的参数，类型为字典
+    def tunnel_case(self, data):#接受一个data的参数，类型为字典
         self.driver.implicitly_wait(10)
         self._create(data)
         self._modify(data)
@@ -55,10 +56,10 @@ class Tunnel:
         self.objects_po.Column_ele_ex(Column_text=self.objects_po.Column_text)
         assert self.objects_po.result
 
-    def  name_length_limit(self,data:{}):
+    def  name_length_limit(self,data):
         self._create(data)
 
-    def input_verify(self,data:{}):
+    def input_verify(self,data):
         # 调用消除右上提示弹窗
        # self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
         # 跳转到Tunnel列表页
@@ -133,7 +134,7 @@ class Tunnel:
         self.file_name = get_txt_filenames(path=self.my_files._obj_files_dowload_path())
         self.file_path = self.my_files._obj_files_dowload_path() + "\\" + self.file_name
         self.content = open(self.file_path,"rb").read()
-        print("self.content :{}|||self.random_item:{}".format(self.content, self.random_item))
+        print("self.content |||self.random_item".format(self.content, self.random_item))
         try:
             # assert str(data['Items'][0]) in str(self.content), "断言导出内容是否在txt文件中"
             assert str(self.random_item) in str(self.content), "断言导出内容是否在txt文件中"
@@ -175,7 +176,7 @@ class Tunnel:
         self._delete(data)
 
 
-    def _verify_audit_logs(self,data:{}):
+    def _verify_audit_logs(self,data):
         self._create(data) #新建后已经查询了
         self.select_first_row_data_and_edit(data)
         #Audit Logs校验
@@ -217,14 +218,14 @@ class Tunnel:
         #删除该元素
         self._delete(data)
 
-    def select_first_row_data_and_edit(self,data:{}):
+    def select_first_row_data_and_edit(self,data):
         # self._goto_subObjectPage()
         # self._search(data)
         #查询后编辑
         self.driver.find_element(By.XPATH, listPage_object_Tunnels_select_First_object_posXpath).click()
         self.driver.find_element(By.ID, listPage_object_Tunnels_editButton_posId).click()  # edit按钮
 
-    def _verify_not_checkbox_export(self,data:{}):
+    def _verify_not_checkbox_export(self,data):
         # 调用消除右上提示弹窗
        #self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
         self._goto_subObjectPage()
@@ -268,7 +269,7 @@ class Tunnel:
         os.remove(self.file_path)
         print("文件删除成功")
 
-    def _delete_quoted_object(self,data:{}):
+    def _delete_quoted_object(self,data):
         self.create_tunnel(data)
         self.new_security_policy_tunnel(data)
         # 调用消除右上提示弹窗
@@ -277,7 +278,7 @@ class Tunnel:
         self.driver.find_element(By.XPATH,listPage_object_Tunnels_select_First_object_posXpath).click()
         del_button_elem = listPage_object_Tunnels_delButton_posId
         del_button_elem_clickable = self.objects_po.is_element_clickable(del_button_elem,"ID")
-        print("当前元素是否可点击:{}".format(del_button_elem_clickable))
+        print("当前元素是否可点击".format(del_button_elem_clickable))
         assert del_button_elem_clickable == False,"删除按钮不可点击"
         self.objects_po._del_policy(data)
         self._delete(data)
@@ -335,7 +336,7 @@ class Tunnel:
             print("翻页后元素不勾选，测试 == Success")
         except:
             print("翻页后元素不勾选，测试 == Fail")
-    def _search(self, data: {}):
+    def _search(self, data):
         self._goto_subObjectPage()
         if data["Search_type"] == "ID":
             self.driver.find_element(By.ID, listPage_objectSearch_Tunnels_selectLabel_posId).send_keys(self.table_dict['ID'])
@@ -351,7 +352,7 @@ class Tunnel:
             self.driver.find_element(By.XPATH, listPage_objectSearch_Tunnels_select_all_xpath).click()
         self.driver.find_element(By.ID, listPage_objectSearch_Tunnels_buttonSearch_posId).click()
 
-    def _create(self, data: {}):
+    def _create(self, data):
         # 调用消除右上提示弹窗
         #self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
         # 跳转到Tunnel列表页
@@ -416,7 +417,7 @@ class Tunnel:
         print("now_name:", now_name)
         assert self.random_name[:32] == now_name, "Comparison equal"
 
-    def create_tunnel(self,data:{}):
+    def create_tunnel(self,data):
         #使用create_tunnel时需要data传递Name
         # 调用消除右上提示弹窗
         # self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
@@ -503,7 +504,7 @@ class Tunnel:
 
 
 
-    def item_search_verify(self, data: {}):
+    def item_search_verify(self, data):
         self._goto_subObjectPage()
         # 创建Tunnel
         self.random_name = self.my_random.random_name()
@@ -547,7 +548,7 @@ class Tunnel:
 
 
 
-    def _modify(self, data: {}):
+    def _modify(self, data):
         self.driver.find_element(By.ID, mainPage_secondLevelMenu_Tunnel_posId).click()
         data["Search_type"]="ID"
         self._search(data)
@@ -566,7 +567,7 @@ class Tunnel:
         self.assert_ele_tunnel()
         assert  self.random_name[:32] == self.edit_table_dict['Name'],"校验修改Name是否生效"
 
-    def _delete(self,data:{}):
+    def _delete(self,data):
         self._goto_subObjectPage()
         self._search(data)
         self.driver.find_element(By.XPATH,listPage_object_Tunnels_select_First_object_posXpath).click()#选择第一个对象
@@ -625,7 +626,7 @@ class Tunnel:
         self.edit_table_dict = {self.key11: self.value12, self.key12: self.value22, self.key13: self.value23}
         print(self.edit_table_dict)
 
-    def new_security_policy_tunnel(self, data: {}):
+    def new_security_policy_tunnel(self, data):
         # 跳转到安全策略创建页面
         self.driver.find_element(By.ID, mainPage_firstLevelMenu_Policy_posId).click()
         self.driver.find_element(By.ID, mainPage_secondLevelMenu_Security_posId).click()
@@ -654,7 +655,7 @@ class Tunnel:
             print('未找到Object，无法进行引用创建')
             pass
 
-    def _vsys_case(self,data:{}):
+    def _vsys_case(self,data):
         # for step,operation in self.vsys_operate.items():
         # #items()返回包含字典所有键值对的元组列表
         #     self.step =step #将key赋值给step
@@ -692,7 +693,7 @@ class Tunnel:
                 self.tunnel_vsys_operate(operate=self.step_operation[1],data=data)   #Tvsys1 create
         self._clear_tunnel_vsys_create(data)
 
-    def tunnel_vsys_operate(self,operate,data:{}):
+    def tunnel_vsys_operate(self,operate,data):
         if operate == "create":
             self._create(data)
         elif operate == "search":

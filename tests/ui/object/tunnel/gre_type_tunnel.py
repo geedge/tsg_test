@@ -2,11 +2,9 @@
 import time
 import os
 import sys
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 from support.general_ui_utils.object.tunnel import Tunnel
 import support.ui_utils.env_initialization
-
 
 def run(parameter):
     try:
@@ -23,15 +21,12 @@ def run(parameter):
         test_data = {
             "ids":"Tunnel的增删改查:IP",
             "Search_type":"ID",
-           "type": "GRE"
+            "type": "GRE"
         }
 
         t = Tunnel(driver)
         t.tunnel_case(test_data)
         result = ""
-
-        # 清理环境
-        support.ui_utils.env_initialization.teardown()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -43,7 +38,9 @@ def run(parameter):
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)
-
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
 
 if __name__ == '__main__':
     parameter = {

@@ -6,6 +6,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import random
 import time
+from workpath import workdir
+from element_position.objects_element_position import *
+from element_position import objects_element_position
 from support.general_ui_utils.login_logout import loginout
 from support.ui_utils.my_web_driver import MyWebDriver
 from support.general_ui_utils.read_data import ReadData
