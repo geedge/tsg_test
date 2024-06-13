@@ -179,13 +179,6 @@ securityRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labe
 manipulationRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
 manipulationRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
 manipulationRuleListpage_okButton_warningYes_posXpath = securityRuleListpage_okButton_warningYes_posXpath
-securityRuleListpage_okButton_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
-securityRuleListPage_searchLable_posId = "select-label"
-securityRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
-securityRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
-securityRuleListPage_searchLable_searchButton_posId = "searchQuery"
-securityRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
-securityRulelistPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
 # 名字输入定位
 manipulationRulePage_inputName_posXpath = securityRulePage_inputName_posXpath
 # 动作action定位
@@ -225,7 +218,6 @@ manipulationRulePage_addSrcIP_posXpath = "//div[@zs-label='Source']//div[normali
 manipulationRulePage_searchSrcIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
 manipulationRulePage_selectSrcIP_posXpath ="//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 manipulationRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//div[@class='rigth-menu-button-info']//button"
-
 ## Internal IP的添加、查询、选中、关闭操作
 manipulationRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
 manipulationRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath
@@ -263,9 +255,19 @@ manipulationRulePage_addRequestHeader_posXpath = policyRulePage_addRequestHeader
 manipulationRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 manipulationRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
+# action parameter deny
+manipulationRulePage_deny_addResponseCodeSelectBox_posXpath ="//div[@class='panel-content']//label[normalize-space(text())='Response Code']/parent::*//i"   # resposne code 选择框
+manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath ="//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_code}']"   # reposne code 下拉列表定位
+manipulationRulePage_deny_addResponseContentSelectBox_posXpath ="//div[@class='panel-content']//label[normalize-space(text())='Response Content']/parent::*//i"   # resposne content 选择框
+manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath ="//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_type}']"   # reposne content 下拉列表定位
+manipulationRulePage_deny_addResponseContentTextInput_posXpath ="//div[@id='myEditor1']"   # resposnse content text输入框  定位
+manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath ="//div[@class='box-sizing']//i"   # resposne content profile  选择框  定位
+manipulationRulePage_deny_searchResponseProfile_posXpath ="//div[@class='el-scrollbar']//input[@placeholder='Search']"   # resposne content search profile 对话框查询输入框
+manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath ="//div[@class='el-scrollbar']//div[contains(@class, 'margin-top')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
+
 # 保存策略时，ok cancel warnging定位
-manipulationRulePage_enable_posXpath = "//*[@id='OK-_Edit_Home_App_anonymousComponent']//span"
-manipulationRulePage_okButton_yes_posId = "//*[@id='Cancle-_Edit_Home_App_anonymousComponent']//span"
+manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
+manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
 manipulationRulePage_okButton_warningYes_posXpath = "//div[@class='el-message-box__btns']//button[contains(@class, 'el-button--primary')]"
 
 
