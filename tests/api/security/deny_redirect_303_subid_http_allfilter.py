@@ -133,21 +133,22 @@ def run(parameter):
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
-        print("Error: ", e)
-        return "Error: " + str(e)
+      print("Error: ", e)
+      return "Error: " + str(e)
   
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "hebingning",
+        "password": "hbn66AAA",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6411",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "is_log": 0,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

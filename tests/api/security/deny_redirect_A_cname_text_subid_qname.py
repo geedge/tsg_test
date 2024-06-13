@@ -113,8 +113,8 @@ def run(parameter):
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
-        print("Error: ", e)
-        return "Error: " + str(e)
+      print("Error: ", e)
+      return "Error: " + str(e)
   
 if __name__ == "__main__":
     parameter = {

@@ -8,6 +8,7 @@ from support.api_utils.delete_config import *
 from support.api_utils.analysis_result import *
 
 def run(parameter):
+  try:
     print("Begin to run test case: " + parameter["test_case_name"])
     # 测试数据
     test_data = {
@@ -131,7 +132,9 @@ def run(parameter):
     
     print("Finish test case: " + parameter["test_case_name"])
     return result
-  
+  except Exception as e:
+      print("Error: ", e)
+      return "Error: " + str(e)
 if __name__ == "__main__":
     parameter = {
       "script_type": "api",
