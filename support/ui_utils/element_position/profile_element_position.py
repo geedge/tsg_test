@@ -698,6 +698,7 @@ statisticsTemplates_button_chartAdd_posXpath = "//*[@id='dimensions']"    # 添�
 statisticsTemplates_div_paperGrid_posXpath = "//*[@id='proxyTCP']/div[contains(@class, 'paper-grid')]"    # div的包含滚动条的长页面 xpath
 statisticsTemplates_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss    #提示保存按钮警告框OK按钮
 statisticsTemplates_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss    #提示保存警告框Cancel按钮
+statisticsTemplates_button_ChartOK_posXpath = "//*[@id='chart-ok']/span"  # 保存chart的OK按钮 xpath定位
 statisticsTemplates_button_oK_posCss = "#Success span"     #OK按钮css
 statisticsTemplates_button_cancel_posCss = "#Cancel span"      #Cancel按钮
 

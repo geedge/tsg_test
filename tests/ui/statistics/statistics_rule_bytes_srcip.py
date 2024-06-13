@@ -1,0 +1,311 @@
+# -*- coding: UTF-8 -*-
+import time
+import os
+import sys
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from support.ui_utils.object.create_object import CreateObject
+from support.ui_utils.object.search_object import SearchObject
+from support.ui_utils.object.delete_object import DeleteObject
+from support.ui_utils.policy.create_rule import CreateRule
+from support.ui_utils.policy.search_rule import SearchRule
+from support.ui_utils.policy.delete_rule import DeleteRule
+from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
+from support.ui_utils.policy.edit_rule import EditRule
+from support.traffic_replay.traffic_verification import *
+from support.ui_utils.element_position.map_element_position_library import *
+from support.api_utils.analysis_result import *
+from support.api_utils.log_in import *
+import support.ui_utils.env_initialization
+import traceback
+
+
+def run(parameter):
+    try:
+        print("Begin to run test case: " + parameter["test_case_name"])
+        # 脚本启动时间
+        start_time = time.time()
+
+        # 环境初始化
+        support.ui_utils.env_initialization.initiate_selenium_request()
+        driver = support.ui_utils.env_initialization.my_driver()
+        support.ui_utils.env_initialization.setup()
+
+        # 测试数据
+        test_data = {
+            "is_multi_priority": False,
+            "rule_num": 1,
+            "policy_type": "statistics",
+            "rule_name": "statistics_rule_bytes_with_src_ip",
+            "rule_action": "statistics",
+            "rule_type": "create",
+            "condition": {
+                "source_ip": [
+                    {
+                        "name": "statistics_bytes_source_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.64.86",
+                            },
+                        ]
+                    }
+                ],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [],
+                "external_port": [],
+                "source_geography": [],
+                "destination_geography": [],
+                "sub_id": [],
+                "device": [],
+                "tunnel": [],
+                "tunnel_level": [],
+                "flag": [],
+                "application": [
+                    {
+                        "name": "http",  #
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
+                "server_fqdn": [
+                ],
+                "protocol_filed": [],
+                "sub_action_override": True,
+                "sub_action": [
+                ],
+                "packet_capture": []
+            },
+            "profile": {
+                "statistics_template": [{
+                    "name": "Auto Bytes Distributed by Client IP",
+                    "profile_type": "statistics_template",
+                    "charts": [
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                            "incoming_bytes:BITRATE:incomingbytes",
+                            "bytes:BITRATE:bytes"
+                          ],
+                          "dimensions": [
+                            "client_ip"
+                          ],
+                          "order_by": "bytes",
+                          "row_limit": "128",
+                          "min_in_size": "1",
+                          "max_out_size": "1"
+                        }
+                      ]
+                }]
+            },
+            "expected_return": "reset",
+            "counters_1": {"hits": 1},
+            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "traffic": {
+                "type": "curl",
+                "command": "curl -kv https://www.baidu.com"
+            },
+            # "traffic": {
+            #     "type": "trex",
+            #     "clients_start_ip": "192.168.64.86",
+            #     "clients_end_ip": "192.168.64.86",
+            #     "servers_start_ip": "2.1.1.1",
+            #     "servers_end_ip": "2.1.1.2",
+            #     "m": 1,
+            #     "d": 1,
+            #     "yaml_name": "test_https",
+            #     "pcap_name": "test_https"
+            # },
+            # "traffic": {
+            #     "type": "nslookup",
+            #     "command": "nslookup www.facebook.com"
+            # },
+            # "traffic": {
+            #     "type": "wget",
+            #     "command": "wget -q -O- http://open.node.com:180"
+            # },
+            "token": ""
+        }
+
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        test_data["token"] = token
+        # 添加测试过程中涉及的template
+        template_path = {}
+        template_path["trex_workpath"] = "/opt/trex/v3.03"
+        template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
+
+        # 创建object
+        for cond_key, cond_value in (test_data["condition"].items()):
+            cond_status = 0
+            if cond_key == "application" or cond_key == "sub_action_override":
+                continue   # 直接跳过
+            if len(cond_value) != 0:  # 不为空
+                cond_data = cond_value
+                create_ip = CreateObject(driver)
+                for i in range(len(cond_data)):  # 遍历创建所有condition
+                    element_position_map = get_element_position(cond_key)
+                    cond_code = create_ip.create(cond_data[i], element_position_map)
+                    if cond_code == 200:
+                        print("Create {} object successfully.".format(cond_key))
+                    else:
+                        result = "Fail to create {} object.".format(cond_key)
+                        cond_status = 1
+                        break
+            if cond_status == 1:   # 创建失败，退出遍历创建
+                break
+
+        # 创建Statistics Template
+        if cond_code == 200:
+            profile = test_data["profile"]
+            statistics_templates = profile["statistics_template"]
+            for statistics_template in statistics_templates:
+                cond_status = 0
+                create_statistics_template = CreateStatisticsTemplate(driver)
+                element_position_map = get_profile_element_position("statistics_template")
+                cond_code = create_statistics_template.create(statistics_template, element_position_map)
+                if cond_code == 200:
+                    print("Create {} Profile successfully.".format("statistics_template"))
+                else:
+                    result = "Fail to create {} Profile.".format("statistics_template")
+                    cond_status = 1
+                    break
+                if cond_status == 1:   # 创建失败，退出遍历创建
+                    break
+
+        # 创建rule
+        if cond_code == 200:
+            create_rule = CreateRule(driver)
+            element_position_map = get_element_position(test_data["policy_type"])
+            create_rule_code = create_rule.create(test_data, element_position_map)
+            if create_rule_code == 200:
+                print("Create security rule successfully.")
+            elif create_rule_code != 200:
+                result = "Fail to create security rule."
+
+        """
+        # 触发流量验证
+        if create_rule_code == 200:
+            verify = TrafficVerification()
+            verification_result = verify.traffic_verification(parameter, test_data, [])
+
+            # 编辑修改使用
+            #edit_rule = EditRule(driver)
+            #element_position_map = get_element_position(test_data["policy_type"])
+            #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            #if edit_rule_code == 200:
+                # rule_id = search_rule.get_rule_id()
+               # test_data["rule_id"] = rule_id
+
+
+        # 分析验证结果，并返回给flask
+        if len(verification_result) != 0:
+            analysis = AnalysisResult()
+            result = analysis.analysis_result(test_data, [], verification_result)
+            if len(result) == 0:
+                print("The test case is passed.")
+            elif len(result) != 0:
+                print("The test case is failed. The failure reason is: ", result)
+        """
+
+        # 删除rule
+        create_rule_code = 200
+        result = "temp "
+
+        if create_rule_code == 200:
+            search_rule = SearchRule(driver)
+            element_position_map = get_element_position(test_data["policy_type"])
+            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            if search_rule_code == 200:
+                delete_rule = DeleteRule(driver)
+                delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
+                if delete_rule_code == 200:
+                    print("Delete security rule successfully.")
+                elif delete_rule_code != 200:
+                    result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
+            else:
+                result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
+
+        # 删除object
+        if delete_rule_code == 200:
+            # 删除
+            for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
+                if cond_key == "application" or cond_key == "sub_action_override":
+                    continue  # 直接跳过
+                cond_status = 0
+                if len(cond_value) != 0:  # 不为空
+                    for i in range(len(cond_data)):  # 遍历查询所有condition
+                        search_cond = SearchObject(driver)
+                        element_position_map = get_element_position(cond_key)
+                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
+                        if search_cond_code == 200:
+                            delete_cond = DeleteObject(driver)
+                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
+                            if delete_cond_code == 200:
+                                print("Delete {} object successfully.".format(cond_key))
+                            else:
+                                result = result + " In addition, fail to delete {} object.".format(cond_key)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} object.".format(cond_key)
+                            break
+                        # 退出遍历标志
+                        if cond_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if cond_status == 1:  # 失败，退出遍历创建
+                    break
+
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
+
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print("Duration of running the test case: ", duration)
+
+        print("Finish test case: " + parameter["test_case_name"])
+        return result
+    except Exception as e:
+        print("Error: ", e)
+        traceback.print_exc()
+        return "Error: " + str(e)
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
+
+
+
+if __name__ == '__main__':
+    parameter = {
+        "username": "zhaokun",
+        "password": "zhaokun1",
+        "test_pc_ip": "192.168.64.73",
+        "api_server": "http://192.168.44.72",
+        "is_log": 0,
+        "env": "tsgx",
+        "vsys_id": 6,
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
+        "module_name": "manipulation",
+        "test_case_name": "statistics_rule_bytes_with_src_ip"
+    }
+    run(parameter)
+    """
+    # 在测试文件的当前路径执行如下命令执行测试用例：
+    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
+
+    # 执行如下命令生成测试报告（自动打开浏览器）：
+    allure serve allure
+    """
