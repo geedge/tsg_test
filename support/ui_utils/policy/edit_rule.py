@@ -26,10 +26,14 @@ class EditRule():
             self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
             self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
             time.sleep(1)
-            rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+            if type == "security":
+                rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+                edit_button_position = "appEdit-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
+            elif type == "service_chaining":
+                rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault mouseSchedule el-popover__reference']//span").text
+                edit_button_position = "appEdit-_OperateBtns_ElRow_policy_ServiceChaining_Home_App_anonymousComponent"
             all_button_position = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
             self.driver.find_element(By.XPATH, all_button_position).click()
-            edit_button_position = "appEdit-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
             self.driver.find_element(By.ID, edit_button_position).click()
             return 200, rule_id
         except Exception as e:
