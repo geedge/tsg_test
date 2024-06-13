@@ -145,7 +145,10 @@ def run(parameter):
         print("Error: ", e)
         traceback.print_exc()
         return "Error: " + str(e)
-  
+    finally:
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter)
+      
 if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",

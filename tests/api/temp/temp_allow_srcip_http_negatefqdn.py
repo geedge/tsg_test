@@ -108,20 +108,21 @@ def run(parameter):
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)
-  
+        
 if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/temp",
-        "module_name": "security",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "module_name": "temp",
         "test_case_name": "allow_negate_fqdn"
     }
     run(parameter)
