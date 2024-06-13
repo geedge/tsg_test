@@ -281,6 +281,9 @@ def run(parameter):
         print("Error: ", e)
         traceback.print_exc()
         return "Error: " + str(e)
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
 
 
 
