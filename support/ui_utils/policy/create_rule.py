@@ -31,6 +31,9 @@ class CreateRule():
             # 选择action
             if test_data["policy_type"] == "security" or test_data["policy_type"] == "intercept":
                 self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAction_posId"]).click()
+            # 选择target traffic 
+            elif test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chooseTargetedTraffic_posXpath"]).click()
             elif test_data["policy_type"] == "manipulation":
                 if test_data["rule_action"] == "allow":
                     self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAllow_posId"]).click()
@@ -283,8 +286,17 @@ class CreateRule():
                     print("to be added...")
                 elif test_data["policy_type"] == "statistics":
                     print("to be added...")
-                elif test_data["policy_type"] == "service_Chaining":
-                    print("to be added...")
+                elif test_data["policy_type"] == "service_chaining":
+                    sff_data = test_data["profile"]
+                    # 点击SFF Profile添加按钮
+                    self.driver.find_element(By.ID,create_element_position["policyRulePage_addSFFProfile_posId"]).click()
+                    #在侧滑框中搜索sff并选中
+                    for sff in sff_data:
+                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"]).send_keys(sff["name"])
+                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"]).send_keys(Keys.ENTER)
+                        selectSFFXpath = create_element_position["policyRulePage_selectSFFProfile_posXpath"].format(replaceValue=sff["name"])
+                        self.driver.find_element(By.XPATH,selectSFFXpath).click()
+                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_closeSFFProfile_posXpath"]).click()
                 
             # 点enable
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()

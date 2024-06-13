@@ -593,6 +593,7 @@ listPage_profileColumn_serviceFunctionForwarders_button_ok_posId = "dropColOK-_E
 listPage_profileSearch_serviceFunctionForwarders_selectLabel_posId = mainPage_profileSearch_selectLabel_posId      #查询框id    定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId    #查询按钮id       定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
+listPage_profileSearch_serviceFunctionForwarders_searchName_posId = "2-_FilteredSearch_ElRow_Profile_Forwarders_Home_App_anonymousComponent"
 listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath   #下拉菜单定位   定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath   #输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_serviceFunctionForwarders_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
@@ -600,19 +601,19 @@ listPage_profilTable_serviceFunctionForwarders_tableHeader_posXpath = listPage_p
 listPage_profileBottomPage_serviceFunctionForwarders_button_allSelect_posXpath = mainPage_profileBottomPage_button_allSelect_posXpath     # 底部页面all选择按钮
 listPage_profileBottomPageNum_serviceFunctionForwarders_posXpath = "//*[@id='pagination-_pagination_Profile_Forwarders_Home_App_anonymousComponent']"    # 页面底部翻页 定位
 #listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_serviceFunctionForwarders_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posCss   #删除提示的Tips的yes按钮
+listPage_dialogTips_serviceFunctionForwarders_button_yes_posCss = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"   #删除提示的Tips的yes按钮
 listPage_dialogTips_serviceFunctionForwarders_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posCss   #删除提示的Tips的close按钮
 #listpage->right-menu-content   列表页 引用计数侧滑box
 listPage_rightReferenceDrawer_serviceFunctionForwarders_referencedItems = listPage_profileRightReferenceDrawer_referencedItems      # 引用侧滑中被引用对象的选项div容器
 #Create Service Function Forwarders page 和 Edit Service Function Forwarders   新增和编辑页
 serviceFunctionForwarders_input_Name_posId = "ShapingProfile_profileName"    # name输入框id
 #//*[@class='content-box']//*[normalize-space(text())='Failure Action']/parent::*//span[normalize-space(text())='Re-dispatch']
-serviceFunctionForwarders_radio_labelAndRadioName_posXpath = "//*[@class='content-box']//*[normalize-space(text())='{replaceLabel}']/parent::*//span[normalize-space(text())='{replaceRadioName}']"         # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
-serviceFunctionForwarders_radio_unavailabilityAction_posXpath = "//*[@class='content-box']//*[normalize-space(text())='{replaceLabel}']/following-sibling::div[1]//span[normalize-space(text())='{replaceRadioName}']"         # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
+serviceFunctionForwarders_radio_labelAndRadioName_posXpath = "//*[@class='panel-content']//*[normalize-space(text())='{replaceLabel}']/parent::*//span[normalize-space(text())='{replaceRadioName}']"         # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
+serviceFunctionForwarders_radio_unavailabilityAction_posXpath = "//*[@class='panel-content']//*[normalize-space(text())='{replaceLabel}']/following-sibling::div[1]//span[normalize-space(text())='{replaceRadioName}']"         # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
 serviceFunctionForwarders_input_minHealthServiceFunctions_posXpath = "//*[@id='ShapingProfile-service']"         # Minimum Health Service Functions 输入框 xpath
-serviceFunctionForwarders_button_serviceFunctionsAdd_posXpath = "//*[@class='content-box']//i"         #  Service Functions 添加 xpath
+serviceFunctionForwarders_button_serviceFunctionsAdd_posXpath = "//*[@class='panel-content']//div[@class='MultipleSelect FlagSelect']//i"         #  Service Functions 添加 xpath
 serviceFunctionForwarders_rightDrawer_input_sfDrawerSearch_posXpath = "//*[@class='ToggleDraw']//input[@id='object_ip_search']"         #  sf侧滑 搜索框 xpath
-serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath = "//*[@class='ToggleDraw']//ul/li[1]"         #  sf侧滑 搜索框 xpath
+serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath = "//*[@class='ToggleDraw']//ul/li[1]"         #  sf搜索框第一条数据 xpath
 serviceFunctionForwarders_rightDrawer_button_sfDrawerClose_posXpath = "//*[@class='ToggleDraw']//button[contains(@class, 'right-menu-button-close')]//span"         #  sf侧滑 close按钮 xpath
 serviceFunctionForwarders_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='ShapingProfile-box-right']/div[1]/div"            # enable 开关 xpath
 serviceFunctionForwarders_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss    #提示保存按钮警告框OK按钮
@@ -639,9 +640,10 @@ listPage_profileSearch_serviceFunctions_dropDown_item_posXpath = listPage_profil
 listPage_profileSearch_serviceFunctions_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath   #输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_serviceFunctions_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
 listPage_profilTable_serviceFunctions_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
+listPage_profileBottomPage_serviceFunctions_button_allSelect_posXpath = mainPage_profileBottomPage_button_allSelect_posXpath     # 底部页面all选择按钮
 listPage_profileBottomPageNum_serviceFunctions_posXpath = "//*[@id='pagination-_pagination_Profile_Functions_Home_App_anonymousComponent']"    # 页面底部翻页 定位
 #listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_serviceFunctions_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posCss   #删除提示的Tips的yes按钮
+listPage_dialogTips_serviceFunctions_button_yes_posCss = listPage_dialogTips_serviceFunctionForwarders_button_yes_posCss   #删除提示的Tips的yes按钮
 listPage_dialogTips_serviceFunctions_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posCss   #删除提示的Tips的close按钮
 #listpage->right-menu-content   列表页 引用计数侧滑box
 listPage_rightReferenceDrawer_serviceFunctions_referencedItems = listPage_profileRightReferenceDrawer_referencedItems      # 引用侧滑中被引用对象的选项div容器
@@ -653,7 +655,7 @@ serviceFunctions_radio_selectDevice_posXpath = "//*[contains(@class, 'drawer-box
 serviceFunctions_button_effectiveDevicesDrawerOk_posXpath = "//*[@id='proxyManipulationConditionsAreaSuccess']//span"            #effective devices 侧滑中OK按钮 xpath
 serviceFunctions_button_effectiveDevicesDrawerCancel_posXpath = "//*[@id='proxyManipulationConditionsAreaCancel']//span"            #effective devices 侧滑中Cancel按钮 xpath
 serviceFunctions_radio_connectivityLayer2Switch_posXpath = "//*[@id='vsys0-_Profile_Functions_edit_Home_App_anonymousComponent']"         # Layer 2 Switch 单选按钮 xpath
-serviceFunctions_radio_connectivityXvlan_posXpath = "//*[@id='vsys1-_Profile_Functions_edit_Home_App_anonymousComponent']"          # Function-internal 单选按钮 xpath
+serviceFunctions_radio_connectivityXvlan_posXpath = "//*[@id='vsys1-_Profile_Functions_edit_Home_App_anonymousComponent']"          # vxlan-g 单选按钮 xpath
 serviceFunctions_input_internalVlan_posXpath = "//*[@id='Function-internal']"          # Internal VLAN Tag 输入框 xpath
 serviceFunctions_input_externalVlan_posXpath = "//*[@id='Function-external']"          # external VLAN Tag 输入框 xpath
 serviceFunctions_input_destinationIpAddress_posXpath = "//*[@id='Function-destination']"          # destination Ip Address 输入框 xpath
