@@ -117,10 +117,6 @@ def run(parameter):
         print("Error: ", e)
         return "Error: " + str(e)
     finally:
-        name_list = []
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
-        finally:
         erase = DeleteConfig()
         erase.clear_config(token, parameter)
       
