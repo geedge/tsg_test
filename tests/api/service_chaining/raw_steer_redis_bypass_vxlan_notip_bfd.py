@@ -55,7 +55,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "steer_redis_bypass_vxlan_notip_bfd",
+                    "name": "test_sc_api_steer_redis_bypass_vxlan_notip_bfd",
                     "type": "1",
                     "load_balance_method": "hash-int-ip",
                     "load_balance_localization": "nearby",
@@ -69,7 +69,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vxlan_notip_bfd",
+                            "name": "test_sc_api_vxlan_notip_bfd",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",
@@ -147,17 +147,17 @@ def run(parameter):
   
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "lytest",
+        "password": "123456ly",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 1,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "C:/Users/17310/Desktop/test/tsg_test",
+        "path": "C:/Users/17310/Desktop/test/tsg_test/tests/api",
         "module_name": "service_chaining",
-        "test_case_name": "raw_steer_redis_bypass_vxlan_notip_bfd"
+        "test_case_name": "raw_steer_bypass_vxlan_notip_bfd"
     }
     run(parameter)

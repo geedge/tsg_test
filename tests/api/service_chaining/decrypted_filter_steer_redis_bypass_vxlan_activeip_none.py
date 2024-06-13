@@ -55,7 +55,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "steer_redis_bypass_vxlan_activeip_none",
+                    "name": "test_sc_api_steer_redis_bypass_vxlan_activeip_none",
                     "type": "1",
                     "load_balance_method": "hash-int-ip",
                     "load_balance_localization": "nearby",
@@ -69,7 +69,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vxlan_activeip_none",
+                            "name": "test_sc_api_vxlan_activeip_none",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",
@@ -93,7 +93,7 @@ def run(parameter):
             "expected_return":"vip",
             "traffic":{
                 "type": "curl",
-                "command": "curl -kv https://www.vip.com"
+                "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.vip.com"
             },
         }
         

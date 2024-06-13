@@ -85,7 +85,7 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["ssl"],
-            "expected_return": "bad signature",
+            "expected_return": "invalid",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
@@ -137,14 +137,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
+        "test_subcriber_id": "test6473",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

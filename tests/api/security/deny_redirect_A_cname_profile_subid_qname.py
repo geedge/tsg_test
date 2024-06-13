@@ -90,7 +90,7 @@ def run(parameter):
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
         template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-        template_path["profile_dns_record_template"] = parameter["path"] + "/profile_used_to_create_rule/profile_dns_record_template.json"
+        template_path["profile_dns_record_template"] = parameter["path"] + "/template/profile_dns_record_template.json"
         
         # 获取token
         log_in = LogIn()
@@ -129,15 +129,16 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "test_subcriber_id": "test6473",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "allow_http_fqdn"
+        "test_case_name": "deny_redirect_A_cname_profile_subid_qname"
     }
     run(parameter)

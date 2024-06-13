@@ -292,8 +292,7 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
         
-        # 清理环境
-        support.ui_utils.env_initialization.teardown()
+                # 脚本结束时间和耗时
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -305,12 +304,16 @@ def run(parameter):
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)
-
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
+        
 if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",

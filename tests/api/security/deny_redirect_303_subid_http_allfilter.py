@@ -93,7 +93,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com:180"}],
             "traffic": {
                 "type": "curl",
-                "command": "wget -q -O- -d --debug http://open.node.com:180"
+                "command": "curl -kv --connect-timeout 10 --max-time 10 http://open.node.com:180"
             },
             "token": ""
         }

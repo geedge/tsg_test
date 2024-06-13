@@ -1,7 +1,6 @@
 import json
 import os
-from workpath import workdir
-
+from support.general_ui_utils.workpath import workdir
 class ReadData:
     def __init__(self):
         #json文件和测试文件目录

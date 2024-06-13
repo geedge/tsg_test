@@ -72,7 +72,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "mirror_bypass_vxlan_notip_none",
+                    "name": "test_sc_api_mirror_bypass_vxlan_notip_none",
                     "type": "2",
                     "load_balance_method": "hash-int-ip",
                     "load_balance_localization": "nearby",
@@ -82,7 +82,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vxlan_notip_none",
+                            "name": "test_sc_api_vxlan_notip_none",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",

@@ -55,7 +55,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "mirror_bypass_vxlan_inactiveip_bfd",
+                    "name": "test_sc_api_mirror_bypass_vxlan_inactiveip_bfd",
                     "type": "2",
                     "load_balance_method": "hash-ext-ip",
                     "load_balance_localization": "nearby",
@@ -65,7 +65,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "vxlan_inactiveip_bfd",
+                            "name": "test_sc_api_vxlan_inactiveip_bfd",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",
