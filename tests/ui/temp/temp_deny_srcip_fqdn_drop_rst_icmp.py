@@ -50,6 +50,16 @@ def run(parameter):
                                 "item_type": "ipv4",
                                 "item_value": "192.168.64.86",
                             },
+                            # {
+                            #     "item_operation": "edit",
+                            #     "item_type": "ipv4",
+                            #     "item_value": "192.168.64.86->1.1.1.2",
+                            # },
+                            # {
+                            #     "item_operation": "delete",
+                            #     "item_type": "ipv4",
+                            #     "item_value": "192.168.64.86",
+                            # }
                         ]
                     }
                 ],

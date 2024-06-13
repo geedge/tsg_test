@@ -86,10 +86,7 @@ def run(parameter):
   except Exception as e:
       print("Error: ", e)
       return "Error: " + str(e)
-    finally:
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter)
-      
+  
 if __name__ == "__main__":
     parameter = {
       "script_type": "api",
