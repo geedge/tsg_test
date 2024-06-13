@@ -3,6 +3,7 @@ mainPage_policyFirstLevelMenu_posId = "policy"  # 一级菜单Policies
 mainPage_policySecondLevelMenu_security_posId = "Objects_ProxyInterception"
 mainPage_policySecondLevelMenu_manipulation_posId = "policy_Manipulation"  # 二级菜单manipulatjion
 mainPage_policySecondLevelMenu_shaping_posId = "policy_trafficShaping"  # 二级菜单Shaping
+mainPage_policySecondLevelMenu_statistics_posId = "policy_statistics"  # 二级菜单Statistics
 
 mainPage_button_menu_posXCss = ".menu-btn span"
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
@@ -388,3 +389,83 @@ monitorRulePage_enable_posXpath = shapingRulePage_enable_posXpath
 monitorRulePage_okButton_posId = "OK-_policy_monitor_write_Home_App_anonymousComponent"
 monitorRulePage_warningYes_posXpath =shapingRulePage_okButton_warningYes_posXpath
 monitorRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+
+
+#### statistics
+statisticsRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_statistics_Home_App_anonymousComponent"
+statisticsRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_statistics_Home_App_anonymousComponent"
+statisticsRuleListpage_okButton_warningYes_posXpath = securityRuleListpage_okButton_warningYes_posXpath
+# 名字输入定位
+statisticsRulePage_inputName_posXpath = securityRulePage_inputName_posXpath
+# rule 页面中Add Condition按钮定位
+statisticsRulePage_addCondition_posXpath = policyRulePage_addCondition_internalIP_posXpath
+statisticsRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
+# rule 中添加condition侧滑中选择行定位
+statisticsRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
+statisticsRulePage_addCondition_srcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Geography']"
+statisticsRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Port']"
+statisticsRulePage_addCondition_dstcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='IP Address']"
+statisticsRulePage_addCondition_dstcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Geography']"
+statisticsRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
+statisticsRulePage_addCondition_serverPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
+statisticsRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='IP Address']"
+statisticsRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='Port']"
+statisticsRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='IP Address']"
+statisticsRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='Port']"
+statisticsRulePage_addCondition_Protocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol']"
+statisticsRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URL']"
+statisticsRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Header']"
+statisticsRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Header']"
+statisticsRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Body']"
+statisticsRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Body']"
+# rule 页面中不同condition的添加+符号定位操作
+## Sorce IP Address的添加、查询、选中、关闭操作
+statisticsRulePage_addSrcIP_posXpath = "//div[@zs-label='Source']//div[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//i[contains(@class, 'icon-Create1')]"
+statisticsRulePage_searchSrcIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+statisticsRulePage_selectSrcIP_posXpath ="//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
+statisticsRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//div[@class='rigth-menu-button-info']//button"
+## Internal IP的添加、查询、选中、关闭操作
+statisticsRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
+statisticsRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath
+statisticsRulePage_selectInternalIP_posXpath = policyRulePage_selectInternalIP_posXpath
+statisticsRulePage_closeInternalIP_posXpath = policyRulePage_closeInternalIP_posXpath
+# Internal Port的添加、查询、选中、关闭操作
+statisticsRulePage_addInternalPort_posXpath = policyRulePage_addInternalPort_posXpath
+statisticsRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
+statisticsRulePage_selectInternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
+statisticsRulePage_closeInternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
+# External IP的添加、查询、选中、关闭操作
+statisticsRulePage_addExternalIP_posXpath = policyRulePage_addExternalIP_posXpath
+statisticsRulePage_searchExternalIP_posXpath = policyRulePage_searchExternalIP_posXpath
+statisticsRulePage_selectExternalIP_posXpath = policyRulePage_selectExternalIP_posXpath
+statisticsRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
+# Application的添加、查询、选中、关闭操作
+statisticsRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
+statisticsRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
+statisticsRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
+statisticsRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
+statisticsRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
+statisticsRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
+# Server FQDN的添加、查询、选中、关闭操作
+statisticsRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
+statisticsRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
+statisticsRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
+statisticsRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
+# url的添加、查询、选中、关闭操作
+statisticsRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
+statisticsRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
+statisticsRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
+statisticsRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
+# request header的添加、查询、选中、关闭操作
+statisticsRulePage_addRequestHeader_posXpath = policyRulePage_addRequestHeader_posXpath
+statisticsRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
+statisticsRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
+statisticsRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
+# Template添加按钮定位
+statisticsRulePage_addTemplate_posXpath = "//div[@class='el-form-item__content']/div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"   # resposne code 选择框
+
+# 保存策略时，ok cancel warnging定位
+statisticsRulePage_enable_posXpath = securityRulePage_enable_posXpath
+statisticsRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
+statisticsRulePage_okButton_warningYes_posXpath = "//div[@class='el-message-box__btns']//button[contains(@class, 'el-button--primary')]"
+

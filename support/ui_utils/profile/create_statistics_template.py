@@ -30,7 +30,7 @@ class CreateStatisticsTemplate():
             # 循环操作每个chart
             charts = data["charts"]  # charts数据列表
             operation_type = "create"
-            no_modify = "不修改"
+            no_modify = ""
             data_index = 0
             for i in range(len(charts)):
                 chart_id = "{}".format(i + 1)  # 用于图表排序定位使用
