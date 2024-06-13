@@ -1,7 +1,7 @@
 import os
 
 def insert(keyword, new_content):
-    folder_path = 'D:/Document/Project-TSG/Code/git/tsg_test/tests/api/intercept'
+    folder_path = 'D:/Document/Project-TSG/Code/git/tsg_test/tests/api/statistics'
     for filename in os.listdir(folder_path):
         if filename.endswith('.py'):
             # 构造文件的完整路径
@@ -21,7 +21,8 @@ def insert(keyword, new_content):
 if __name__ == "__main__":
     keyword = "str(e)"
     new_content = """    finally:
+        name_list = []
         erase = DeleteConfig()
-        erase.clear_config(token, parameter)
+        erase.clear_config(token, parameter, name_list)
     """
     insert(keyword, new_content)

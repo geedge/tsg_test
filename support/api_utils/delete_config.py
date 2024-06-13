@@ -220,90 +220,109 @@ class DeleteConfig():
                     else:
                         print("Delete dns record failed.")
     
-    def clear_config(self, token, parameter):
+    def clear_config(self, token, parameter, name_list):
         headers = {"Authorization": token}
         api_server = parameter["api_server"]
         vsys_id = parameter["vsys_id"]
         rule_url = api_server + "/v1/policy/rule"
         obj_url = api_server + "/v1/policy/object"
         template = {'type': 'security', 'name': '', 'with_sub_vsys': 0, 'vsys_id': vsys_id}
+        script_type = parameter["script_type"]
         
-        # 删除security rule
-        template['name'] = 'python_api_auto_test_policy'
-        template['type'] = 'security'
-        self.query_and_delete_by_name(rule_url, template, headers)
-        # 删除monitor rule
-        template['type'] = 'monitor'
-        self.query_and_delete_by_name(rule_url, template, headers)
-        # 删除statistics rule
-        template['type'] = 'statistics'
-        self.query_and_delete_by_name(rule_url, template, headers)
-        # 删除intercept rule
-        template['type'] = 'pxy_intercept'
-        self.query_and_delete_by_name(rule_url, template, headers)
-        # 删除manipulation rule
-        template['type'] = 'pxy_manipulation'
-        self.query_and_delete_by_name(rule_url, template, headers)
-        # 删除Service Chaining rule
-        template['type'] = 'service_chaining'
-        self.query_and_delete_by_name(rule_url, template, headers)
-        
-        # 删除IP Addresses
-        template['name'] = 'python_api_auto_test_obj'
-        template['type'] = 'ip'
-        self.query_and_delete_by_name(obj_url, template, headers)
-        # 删除FQDNs
-        template['type'] = 'fqdn'
-        self.query_and_delete_by_name(obj_url, template, headers)
-        # 删除Subscriber IDs
-        template['type'] = 'subscriberid'
-        self.query_and_delete_by_name(obj_url, template, headers)
-        # 删除HTTP Signatures
-        template['type'] = 'http_signature'
-        self.query_and_delete_by_name(obj_url, template, headers)
-        # 删除Keywords
-        template['type'] = 'keywords'
-        self.query_and_delete_by_name(obj_url, template, headers)
-        # 删除URLs
-        template['type'] = 'url'
-        self.query_and_delete_by_name(obj_url, template, headers)
-        # 删除Accounts
-        template['type'] = 'account'
-        self.query_and_delete_by_name(obj_url, template, headers)
-        # 删除Flags
-        template['type'] = 'flag'  
-        self.query_and_delete_by_name(obj_url, template, headers)
-        
-        # 删除Response Pages
-        template['name'] = 'auto_test_profile'
-        profile_url = api_server + "/v1/policy/profile/response_page"
-        if 'type' in template:
-            del template["type"]
-        self.query_and_delete_by_name(profile_url, template, headers)
-        # 删除DNS Records
-        profile_url = api_server + "/v1/policy/profile/dns_record"
-        self.query_and_delete_by_name(profile_url, template, headers)
-        # 删除Hijack Files
-        profile_url = api_server + "/v1/policy/profile/hijack_file"
-        self.query_and_delete_by_name(profile_url, template, headers)
-        # 删除Insert Scripts
-        profile_url = api_server + "/v1/policy/profile/insert_script"
-        self.query_and_delete_by_name(profile_url, template, headers)
-        # 删除TSG Proxy Scripts
-        profile_url = api_server + "/v1/policy/profile/run_script"
-        self.query_and_delete_by_name(profile_url, template, headers)
-        # 删除Service Function Forwarders
-        template['name'] = 'test_sc_api'
-        profile_url = api_server + "/v1/policy/profile/service_function_forwarder"
-        self.query_and_delete_by_name(profile_url, template, headers)
-        # 删除Service Functions
-        template['name'] = 'test_sc_api'
-        profile_url = api_server + "/v1/policy/profile/service_function"
-        self.query_and_delete_by_name(profile_url, template, headers)
-        # 删除Statistics Templates
-        template['name'] = 'test_statistics_api'
-        profile_url = api_server + "/v1/policy/profile/statistics_template"
-        self.query_and_delete_by_name(profile_url, template, headers)
+        if script_type == "api":
+            # 删除security rule
+            template['name'] = 'python_api_auto_test_policy'
+            template['type'] = 'security'
+            self.query_and_delete_by_name(rule_url, template, headers)
+            # 删除monitor rule
+            template['type'] = 'monitor'
+            self.query_and_delete_by_name(rule_url, template, headers)
+            # 删除statistics rule
+            template['type'] = 'statistics'
+            self.query_and_delete_by_name(rule_url, template, headers)
+            # 删除intercept rule
+            template['type'] = 'pxy_intercept'
+            self.query_and_delete_by_name(rule_url, template, headers)
+            # 删除manipulation rule
+            template['type'] = 'pxy_manipulation'
+            self.query_and_delete_by_name(rule_url, template, headers)
+            # 删除Service Chaining rule
+            template['type'] = 'service_chaining'
+            self.query_and_delete_by_name(rule_url, template, headers)
+
+            # 删除IP Addresses
+            template['name'] = 'python_api_auto_test_obj'
+            template['type'] = 'ip'
+            self.query_and_delete_by_name(obj_url, template, headers)
+            # 删除FQDNs
+            template['type'] = 'fqdn'
+            self.query_and_delete_by_name(obj_url, template, headers)
+            # 删除Subscriber IDs
+            template['type'] = 'subscriberid'
+            self.query_and_delete_by_name(obj_url, template, headers)
+            # 删除HTTP Signatures
+            template['type'] = 'http_signature'
+            self.query_and_delete_by_name(obj_url, template, headers)
+            # 删除Keywords
+            template['type'] = 'keywords'
+            self.query_and_delete_by_name(obj_url, template, headers)
+            # 删除URLs
+            template['type'] = 'url'
+            self.query_and_delete_by_name(obj_url, template, headers)
+            # 删除Accounts
+            template['type'] = 'account'
+            self.query_and_delete_by_name(obj_url, template, headers)
+            # 删除Flags
+            template['type'] = 'flag'  
+            self.query_and_delete_by_name(obj_url, template, headers)
+            
+            # 删除Response Pages
+            template['name'] = 'auto_test_profile'
+            profile_url = api_server + "/v1/policy/profile/response_page"
+            if 'type' in template:
+                del template["type"]
+            self.query_and_delete_by_name(profile_url, template, headers)
+            # 删除DNS Records
+            profile_url = api_server + "/v1/policy/profile/dns_record"
+            self.query_and_delete_by_name(profile_url, template, headers)
+            # 删除Hijack Files
+            profile_url = api_server + "/v1/policy/profile/hijack_file"
+            self.query_and_delete_by_name(profile_url, template, headers)
+            # 删除Insert Scripts
+            profile_url = api_server + "/v1/policy/profile/insert_script"
+            self.query_and_delete_by_name(profile_url, template, headers)
+            # 删除TSG Proxy Scripts
+            profile_url = api_server + "/v1/policy/profile/run_script"
+            self.query_and_delete_by_name(profile_url, template, headers)
+            # 删除Service Function Forwarders
+            template['name'] = 'test_sc_api'
+            profile_url = api_server + "/v1/policy/profile/service_function_forwarder"
+            self.query_and_delete_by_name(profile_url, template, headers)
+            # 删除Service Functions
+            template['name'] = 'test_sc_api'
+            profile_url = api_server + "/v1/policy/profile/service_function"
+            self.query_and_delete_by_name(profile_url, template, headers)
+            # 删除Statistics Templates
+            template['name'] = 'test_statistics_api'
+            profile_url = api_server + "/v1/policy/profile/statistics_template"
+            self.query_and_delete_by_name(profile_url, template, headers)
+        elif script_type == "ui":
+            if len(name_list) > 0:
+                for name_item in name_list:
+                    if name_item["type"] == "security":
+                        template['name'] = name_item["name"]
+                        template['type'] = name_item["type"]
+                        self.query_and_delete_by_name(rule_url, template, headers)
+                    elif name_item["type"] == "ip":
+                        template['name'] = name_item["name"]
+                        template['type'] = name_item["type"]
+                        self.query_and_delete_by_name(obj_url, template, headers)
+                    elif name_item["type"] == "statistics_template":
+                        if 'type' in template:
+                            del template["type"]
+                        template['name'] = 'test_statistics_api'
+                        profile_url = api_server + "/v1/policy/profile/statistics_template"
+                        self.query_and_delete_by_name(profile_url, template, headers)
                                               
     def query_and_delete_by_name(self, url, template, headers):
         response = requests.get(url, headers=headers, params=template, verify=False)
