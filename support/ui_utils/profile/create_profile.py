@@ -6,6 +6,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 import traceback
+from support.ui_utils.profile.create_statistics_template import *
+from support.ui_utils.element_position.map_element_position_library import *
 
 class CreateProfile():
     def __init__(self, driver):
@@ -22,6 +24,8 @@ class CreateProfile():
             self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
             if profile_data["profile_type"] == "response_page":  # response page创建
                 self._create_response_page(profile_data["profile_file"])
+            elif profile_data["profile_type"] == "statistics_template":  # response page创建
+                self._create_statistics_template_page(profile_data["profile_file"])
             elif profile_data["profile_type"] == "hijack":    # hijack file 创建
                 self._create_hijack_file(profile_data["profile_file"])
             # 其它 profile创建
@@ -144,3 +148,20 @@ class CreateProfile():
         except Exception as e:
             print(e)
         return switch_value
+    def _create_statistics_template_page(self, data):
+        statistics_templates = data["statistics_template"]
+        cond_status = 0
+        for statistics_template in statistics_templates:
+            # create_statistics_template = CreateProfile(driver)
+            create_statistics_template = CreateStatisticsTemplate(self.driver)
+            element_position_map = get_profile_element_position("statistics_template")
+            cond_code = create_statistics_template.create(statistics_template, element_position_map)
+            if cond_code == 200:
+                print("Create {} Profile successfully.".format("statistics_template"))
+            else:
+                result = "Fail to create {} Profile.".format("statistics_template")
+                cond_status = 1
+                break
+            if cond_status == 1:  # 创建失败，退出遍历创建
+                break
+        return cond_code

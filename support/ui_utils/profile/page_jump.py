@@ -12,12 +12,12 @@ class PageJump():
     def __init__(self, driver):
         self.driver = driver
         
-    def jump_sub_object_page(self, page_jump_element_position, vsys_name=""):
+    def jump_sub_profile_page(self, page_jump_element_position, vsys_name=""):
         # 菜单操作
         self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
         self.change_vsys(vsys_name=vsys_name)
-        self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()
-        self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"]).click()
+        self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"]).click()
+        self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"]).click()
         
     def change_vsys(self, vsys_name=""):
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()

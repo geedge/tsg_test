@@ -12,12 +12,16 @@ from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
+from support.ui_utils.profile.search_profile import SearchProfile
+#from support.ui_utils.profile.create_profile import CreateProfile
+from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_replay.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 import support.ui_utils.env_initialization
+from support.api_utils.delete_config import *
 import traceback
 
 
@@ -37,9 +41,10 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "statistics_rule_bytes_with_src_ip",
+            "rule_name": "bytes_with_src_ip",
             "rule_action": "statistics",
             "rule_type": "create",
+            "script_type": "ap",
             "condition": {
                 "source_ip": [
                     {
@@ -85,7 +90,7 @@ def run(parameter):
                 ],
                 "packet_capture": []
             },
-            "profile": {
+            "action_parameter": {
                 "statistics_template": [{
                     "name": "Auto Bytes Distributed by Client IP",
                     "profile_type": "statistics_template",
@@ -101,7 +106,7 @@ def run(parameter):
                             "client_ip"
                           ],
                           "order_by": "bytes",
-                          "row_limit": "128",
+                          "row_limit": "100",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }
@@ -136,7 +141,21 @@ def run(parameter):
             # },
             "token": ""
         }
-
+        # name_list汇总
+        name_list = [
+            {
+                "type": "statistics",
+                "name": "statistics",
+            },
+            {
+                "type": "ip",
+                "name": "statistics_bytes_source_ip",
+            },
+            {
+                "type": "statistics_template",
+                "name": "Auto Bytes Distributed by Client IP",
+            },
+        ]
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -167,14 +186,17 @@ def run(parameter):
                 break
 
         # 创建Statistics Template
+        create_statistics_template_code = 0
         if cond_code == 200:
-            profile = test_data["profile"]
+            profile = test_data["action_parameter"]
             statistics_templates = profile["statistics_template"]
             for statistics_template in statistics_templates:
                 cond_status = 0
+                #create_statistics_template = CreateProfile(driver)
                 create_statistics_template = CreateStatisticsTemplate(driver)
                 element_position_map = get_profile_element_position("statistics_template")
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
+                create_statistics_template_code = cond_code
                 if cond_code == 200:
                     print("Create {} Profile successfully.".format("statistics_template"))
                 else:
@@ -231,12 +253,42 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete security rule successfully.")
+                    print("Delete Statistics rule successfully.")
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
                 result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
+        # 删除Statistics Tesmplate
+        result = "temp "
+        if create_statistics_template_code == 200:
+            for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:  # 不为空
+                    for i in range(len(prfi_value)):  # 遍历查询所有profile
+                        search_prfi = SearchProfile(driver)
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_name = prfi_value[i]["name"].strip()
+                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name,
+                                                                                          element_position_map)
+                        if search_prfi_code == 200:
+                            delete_prfi = DeleteProfile(driver)
+                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
+                            if delete_prfi_code == 200:
+                                print("Delete {} profile successfully.".format(prfi_key_out))
+                            else:
+                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+                            break
+                        # 退出遍历标志
+                        if prfi_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if prfi_status == 1:  # 失败，退出遍历创建
+                    break
         # 删除object
         if delete_rule_code == 200:
             # 删除
@@ -266,10 +318,6 @@ def run(parameter):
                 # 退出遍历标志
                 if cond_status == 1:  # 失败，退出遍历创建
                     break
-
-        # 清理环境
-        support.ui_utils.env_initialization.teardown()
-
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -284,6 +332,9 @@ def run(parameter):
     finally:
         # 清理环境
         support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
 
 
 
