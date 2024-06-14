@@ -32,6 +32,10 @@ class TrafficVerification():
             rule_num = 1
         
         if script_type == "ui":
+            if policy_type == "service_chaining":
+                statistics_sc_info_list = []
+                cfg_list["rule_id"] = test_data["rule_id"]
+                statistics_sc_info_list.append(cfg_list)
             temp_list = {}
             temp_list[policy_type] = test_data["rule_id"]
             create_policies_ids = []
@@ -198,19 +202,33 @@ class TrafficVerification():
                 current_utc_time = datetime.now(utc_tz)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 解析trex使用参数， 解析client server ip
-                for ip_item in test_data["obj_condition_1"]:
-                    if "ATTR_SOURCE_IP" in ip_item.values():
-                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                            test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                            test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                if script_type == "api":
+                    for ip_item in test_data["obj_condition_1"]:
+                        if "ATTR_SOURCE_IP" in ip_item.values():
+                            if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                                test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                                test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                            else:
+                                test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                        if "ATTR_DESTINATION_IP" in ip_item.values():
+                            if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                                test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                                test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                            else:
+                                test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                elif script_type == "ui":
+                    for source_ip in test_data["condition"]["source_ip"]:
+                        if "-" in source_ip["item"][0]["item_value"]:
+                            test_data["traffic"]["clients_start_ip"] = source_ip["item"][0]["item_value"].split("-")[0]
+                            test_data["traffic"]["clients_end_ip"] = source_ip["item"][0]["item_value"].split("-")[-1]
                         else:
-                            test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                    if "ATTR_DESTINATION_IP" in ip_item.values():
-                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                            test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                            test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                            test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = source_ip["item"][0]["item_value"]
+                    for dest_ip in test_data["condition"]["destination_ip"]:
+                        if "-" in dest_ip["item"][0]["item_value"]:
+                            test_data["traffic"]["servers_start_ip"] = dest_ip["item"][0]["item_value"].split("-")[0]
+                            test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"].split("-")[-1]
                         else:
-                             test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                            test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"]
                 # 执行回放命令
                 temp_data = json.dumps(test_data["traffic"])
                 sc_result = self.call_rest_api(temp_data)
@@ -238,7 +256,7 @@ class TrafficVerification():
                                 if fail_count >= 2:
                                     break
                                 fail_count += 1
-                            time.sleep(60)
+                            time.sleep(30)
                             n += 1
                     if metric_result == 333:
                         if statistics_info["sf_method"] == "vxlan_g" and statistics_info["sf_dest_ip"] not in active_dest_ips_list:

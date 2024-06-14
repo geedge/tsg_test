@@ -236,8 +236,7 @@ class CreateRule():
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_fairFactor_posId"]).send_keys(test_data["ruleFairFactor"])
             
             # 添加statistics、shaping、sc的profile
-            if "action_parameter" in test_data and len(test_data["action_parameter"]) != 0:
-                profile_data = test_data["action_parameter"]
+            if ("action_parameter" in test_data and len(test_data["action_parameter"]) != 0) or ("profile" in test_data and len(test_data["profile"]) != 0):
                 if test_data["policy_type"] == "shaping":
                     # 点profile的+
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addProfile_posXpath"]).click()
@@ -251,6 +250,7 @@ class CreateRule():
                         if test_data["multiProfile"] == True and y != len(profile_data) - 1:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addProfile_plus_posXpath"]).click()
                 elif test_data["policy_type"] == "manipulation":
+                    profile_data = test_data["action_parameter"]
                     print(212)
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
