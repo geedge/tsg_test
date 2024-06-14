@@ -135,7 +135,8 @@ class CreateObject():
                 for item in add_item_list:
                     object_file = item["keyword_array"][0]
                     file_name = object_file.split("/")[-1]
-                    obj_template_dict["file"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
+                    obj_template_dict["file_dry"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
+                    obj_template_dict["file_import"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
             object_ids_temp_list, timeout_result = self.create_or_import_object(type, obj_template_dict, headers, api_host, is_repeat)
         
         objects_list = []
@@ -270,8 +271,8 @@ class CreateObject():
            
     def create_or_import_object(self, type, obj_template_dict, headers, api_host, is_repeat):
         if type == "create":
-            time1 = datetime.now()
             url = api_host + "/v1/policy/object"
+            time1 = datetime.now()
             response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
             assert response.status_code == 200
             if response.status_code == 200:
@@ -287,7 +288,9 @@ class CreateObject():
             else:
                 timeout_result = True
         elif type == "import":
-            response = requests.post(url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file"], verify=False)
+            import_url = api_host + "/v1/policy/object/import"
+            del headers['Content-Type']
+            response = requests.post(import_url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file_dry"], verify=False)
             assert response.status_code == 200
             if response.status_code == 200:
                 print("Verify the imported {} object successfully.".format(obj_template_dict['object']['type']))
@@ -295,7 +298,7 @@ class CreateObject():
                 print("Verify the imported {} object failed.".format(obj_template_dict['object']['type']))
             time1 = datetime.now()
             url = api_host + "/v1/policy/object/import"
-            response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file"], verify=False)
+            response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file_import"], verify=False)
             time.sleep(20)
             time2 = datetime.now()
             time_difference = time2 - time1

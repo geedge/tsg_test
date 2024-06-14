@@ -154,8 +154,8 @@ def run(parameter):
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_serviceFunctionForwarders_posId
+                    "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+                    "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_serviceFunctionForwarders_posId
                 },
                 "create": {
                     "profileListPage_createButton_posId": listPage_profile_serviceFunctionForwarders_createButton_posId,
@@ -186,8 +186,8 @@ def run(parameter):
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_serviceFunctions_posId
+                    "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+                    "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_serviceFunctions_posId
                 },
                 "create":{
                     "profileListPage_createButton_posId":listPage_profile_serviceFunctions_createButton_posId,
@@ -271,11 +271,11 @@ def run(parameter):
                     "name": "service_chaining_source_ip",
                 },
                 {
-                    "type": "service_function_forwarder",
+                    "type": "service_function_forwarders",
                     "name": "steer_block_vxlan_inactiveip_bfd",
                 },
                 {
-                    "type": "service_function_forwarder",
+                    "type": "service_functions",
                     "name": "vxlan_inactiveip_bfd",
                 }
             ]
@@ -325,7 +325,6 @@ def run(parameter):
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
             if edit_rule_code == 200:
-                # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data,sc_info)
