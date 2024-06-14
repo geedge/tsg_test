@@ -285,7 +285,17 @@ class CreateRule():
                         #
                     print("to be added...")
                 elif test_data["policy_type"] == "statistics":
-                    print("to be added...")
+                    # 点击Statistics Template添加按钮打开Template侧滑列表
+                    self.driver.find_element(By.XPATH, create_element_position["plicyRulePage_addStatisticsTemplate_posXpath"]).click()
+                    # 通过Statistics Template name搜索并选中
+                    profile_data = test_data["profile"]["statistics_template"]
+                    for template in range(len(profile_data)):
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchProfile_posXpath"]).send_keys(profile_data[y]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchProfile_posXpath"]).send_keys(Keys.ENTER)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectProfile_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeProfile_posXpath"]).click()
+                        if test_data["multiProfile"] == True and y != len(profile_data) - 1:
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addProfile_plus_posXpath"]).click()
                 elif test_data["policy_type"] == "service_chaining":
                     sff_data = test_data["profile"]
                     # 点击SFF Profile添加按钮

@@ -346,7 +346,7 @@ test_statistics_rule_element_position = {
         "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
         # 添加Template按钮
-        "plicyRulePage_addTemplate_posXpath": statisticsRulePage_addTemplate_posXpath,
+        "plicyRulePage_addStatisticsTemplate_posXpath": statisticsRulePage_addTemplate_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": statisticsRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": statisticsRulePage_okButton_yes_posId,
