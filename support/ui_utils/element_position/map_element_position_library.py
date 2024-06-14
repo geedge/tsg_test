@@ -307,18 +307,7 @@ test_manipulation_rule_element_position = {
         "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
     }
 }
-
-#object
-test_ip_object_element_position = test_ip_object_element_position
-test_ip_group_object_element_position = test_ip_group_object_element_position
-test_port_object_element_position = test_port_object_element_position
-test_fqdn_object_element_position = test_fqdn_object_element_position
-test_http_signature_object_element_position = test_http_signature_object_element_position
-test_http_url_object_element_position = test_http_url_object_element_position
-#prifile
-test_response_page_element_position = test_response_page_element_position
 #policy
-test_manipulation_rule_element_position = test_manipulation_rule_element_position
 test_statistics_template_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -449,6 +438,7 @@ test_ip_group_object_element_position=test_ip_group_object_element_position
 test_port_object_element_position=test_port_object_element_position
 test_fqdn_object_element_position=test_fqdn_object_element_position
 test_http_signature_object_element_position=test_http_signature_object_element_position
+test_http_url_object_element_position = test_http_url_object_element_position
 test_manipulation_rule_element_position=test_manipulation_rule_element_position
 
 def get_element_position(key_name):
