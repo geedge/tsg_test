@@ -309,19 +309,21 @@ class DeleteConfig():
         elif script_type == "ui":
             if len(name_list) > 0:
                 for name_item in name_list:
-                    if name_item["type"] == "security":
+                    if name_item["type"] == "security" or name_item["type"] == "service_chaining":
                         template['name'] = name_item["name"]
                         template['type'] = name_item["type"]
-                        self.query_and_delete_by_name(rule_url, template, headers)
-                    elif name_item["type"] == "ip":
+                        self.query_and_delete_by_name(rule_url, template, headers)                  
+                    
+                    if name_item["type"] == "ip":
                         template['name'] = name_item["name"]
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(obj_url, template, headers)
-                    elif name_item["type"] == "statistics_template":
+                    
+                    if name_item["type"] == "service_function_forwarders" or name_item["type"] == "service_functions" or name_item["type"] == "statistics_templates":
                         if 'type' in template:
                             del template["type"]
-                        template['name'] = 'test_statistics_api'
-                        profile_url = api_server + "/v1/policy/profile/statistics_template"
+                        template['name'] = name_item["name"]
+                        profile_url = api_server + "/v1/policy/profile/" + name_item["type"]
                         self.query_and_delete_by_name(profile_url, template, headers)
                                               
     def query_and_delete_by_name(self, url, template, headers):
