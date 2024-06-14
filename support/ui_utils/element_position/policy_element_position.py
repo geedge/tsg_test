@@ -465,10 +465,15 @@ statisticsRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHe
 statisticsRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 statisticsRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
 # Template添加按钮定位
-statisticsRulePage_addTemplate_posXpath = "//div[@class='el-form-item__content']/div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"   # resposne code 选择框
-
+statisticsRulePage_add_template_posXpath = "//div[@class='el-form-item__content']/div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"   # resposne code 选择框
+statisticsRulePage_search_template_posXpath = "//div[@class='CommonListDetail list-detail']//div[contains(@class, 'object-item-seach')]//input"
+statisticsRulePage_select_template_posXpath = "//div[@class='CommonListDetail list-detail']//div[@class='UaPopover TemplatePopover popover']"
+statisticsRulePage_close_template_posXpath = "//div[@class='FlagList list-box']//div[@class='rigth-menu-button-info']"
 # 保存策略时，ok cancel warnging定位
 statisticsRulePage_enable_posXpath = securityRulePage_enable_posXpath
-statisticsRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
-statisticsRulePage_okButton_warningYes_posXpath = "//div[@class='el-message-box__btns']//button[contains(@class, 'el-button--primary')]"
+statisticsRulePage_okButton_yes_posId = "OK-_policy_statistics_edit_Home_App_anonymousComponent"
+statisticsRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+statisticsRulePage_okButton_warningNo_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+statisticsRulePage_delete_tip_button_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+statisticsRulePage_delete_tip_button_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
 
