@@ -9,6 +9,7 @@ from support.api_utils.delete_config import *
 from support.api_utils.analysis_result import *
 
 def run(parameter):
+  try:
     print("Begin to run test case: " + parameter["test_case_name"])
     # 测试数据
     test_data = {
@@ -98,6 +99,13 @@ def run(parameter):
     
     print("Finish test case: " + parameter["test_case_name"])
     return result
+  except Exception as e:
+      print("Error: ", e)
+      return "Error: " + str(e)
+  finally:
+    name_list = []
+    erase = DeleteConfig()
+    erase.clear_config(token, parameter, name_list)
   
 if __name__ == "__main__":
     parameter = {
@@ -105,8 +113,9 @@ if __name__ == "__main__":
       "username": "hebingning",
       "password": "hbn66AAA",
       "test_pc_ip": "192.168.64.73",
+      "test_subcriber_id": "",
       "api_server": "http://192.168.44.72",
-      "is_log": 1,
+      "is_log": 0,
       "env": "tsgx",
       "vsys_id": 6,
       "root_path": "D:/python_script/tsg_test",

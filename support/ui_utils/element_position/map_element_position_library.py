@@ -319,6 +319,137 @@ test_http_url_object_element_position = test_http_url_object_element_position
 test_response_page_element_position = test_response_page_element_position
 #policy
 test_manipulation_rule_element_position = test_manipulation_rule_element_position
+test_statistics_template_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_statisticsTemplates_posId
+    },
+    "create": {
+        "templateListPage_createButton_posId": listPage_profile_statisticsTemplates_createButton_posId,
+        "templatePage_inputName_posId": statisticsTemplates_input_Name_posId,
+        "templates_button_chartAdd_posXpath": statisticsTemplates_button_chartAdd_posXpath,
+        "templates_div_paperGrid_posXpath": statisticsTemplates_div_paperGrid_posXpath,
+        "templates_radio_visualizationType_posXpath": statisticsTemplates_radio_visualizationType_posXpath,
+        "templates_input_other_posXpath": statisticsTemplates_input_other_posXpath,
+        "templates_button_ChartOK_posXpath": statisticsTemplates_button_ChartOK_posXpath,
+        "templates_button_oK_posCss": statisticsTemplates_button_oK_posCss,
+        "templates_button_warningSaveYes_posCss": statisticsTemplates_button_warningSaveYes_posCss,
+        # action
+    },
+    "edit":{
+        "templates_button_chartEdit_posXpath":listPage_profile_statisticsTemplates_editButton_posId
+    },
+    "search": {
+        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+        "policyRuleListPage_deleteButton_posId": manipulationRuleListPage_deleteButton_posId,
+        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
+        "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+    }
+}
+test_statistics_rule_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_statistics_posId
+    },
+    "create": {
+        "policyRuleListPage_createButton_posId": statisticsRuleListPage_createButton_posId,
+        # action
+        "policyRulePage_inputName_posXpath": statisticsRulePage_inputName_posXpath,
+        # Add Condition按钮定位
+        "policyRulePage_addCondition_posXpath": statisticsRulePage_addCondition_posXpath,
+        # add condition侧滑的关闭定位
+        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+        # Source IP
+        "policyRulePage_addConditionSrcIP_posXpath": statisticsRulePage_addCondition_srcIP_posXpath,
+        "policyRulePage_addSrcIP_posXpath": statisticsRulePage_addSrcIP_posXpath,
+        "policyRulePage_searchSrcIP_posXpath": statisticsRulePage_searchSrcIP_posXpath,
+        "policyRulePage_selectSrcIP_posXpath": statisticsRulePage_selectSrcIP_posXpath,
+        "policyRulePage_closeSrcIP_posXpath": statisticsRulePage_closeSrcIP_posXpath,
+        # Internal IP
+        "policyRulePage_addConditionInternalIP_posXpath": statisticsRulePage_addCondition_internalIP_posXpath,
+        "policyRulePage_addInternalIP_posXpath": statisticsRulePage_addInternalIP_posXpath,
+        "policyRulePage_searchInternalIP_posXpath": statisticsRulePage_searchInternalIP_posXpath,
+        "policyRulePage_selectInternalIP_posXpath": statisticsRulePage_selectInternalIP_posXpath,
+        "policyRulePage_closeInternalIP_posXpath": statisticsRulePage_closeInternalIP_posXpath,
+        # Internal Port
+        "policyRulePage_addConditionInternalPort_posXpath": statisticsRulePage_addCondition_internalPort_posXpath,
+        "policyRulePage_addInternalPort_posXpath": statisticsRulePage_addInternalPort_posXpath,
+        "policyRulePage_searchInternalPort_posXpath": statisticsRulePage_searchInternalPort_posXpath,
+        "policyRulePage_selectInternalPort_posXpath": statisticsRulePage_selectInternalPort_posXpath,
+        "policyRulePage_closeInternalPort_posXpath": statisticsRulePage_closeInternalPort_posXpath,
+        # External IP
+        "policyRulePage_addConditionExternalIP_posXpath": statisticsRulePage_addCondition_externalIP_posXpath,
+        "policyRulePage_addExternalIP_posXpath": statisticsRulePage_addExternalIP_posXpath,
+        "policyRulePage_searchExternalIP_posXpath": statisticsRulePage_searchExternalIP_posXpath,
+        "policyRulePage_selectExternalIP_posXpath": statisticsRulePage_selectExternalIP_posXpath,
+        "policyRulePage_closeExternalIP_posXpath": statisticsRulePage_closeExternalIP_posXpath,
+        # Application
+        "policyRulePage_addApplication_posXpath": statisticsRulePage_addApplication_posXpath,
+        "policyRulePage_searchApplication_posXpath": statisticsRulePage_searchApplication_posXpath,
+        "policyRulePage_selectApplication_posXpath": statisticsRulePage_selectApplication_posXpath,
+        "policyRulePage_closeApplication_posXpath": statisticsRulePage_closeApplication_posXpath,
+        "policyRulePage_selectApplicationLabel_posXpath": statisticsRulePage_selectApplicationLabel_posXpath,
+        "policyRulePage_selectApplicationGroupLabel_posXpath": statisticsRulePage_selectApplicationGroupLabel_posXpath,
+        # Server FQDN
+        "policyRulePage_addConditionServerFqdn_posXpath": statisticsRulePage_addCondition_serverFqdn_posXpath,
+        "policyRulePage_addServerFqdn_posXpath": statisticsRulePage_addServerFqdn_posXpath,
+        "policyRulePage_searchServerFqdn_posXpath": statisticsRulePage_searchServerFqdn_posXpath,
+        "policyRulePage_selectServerFqdn_posXpath": statisticsRulePage_selectServerFqdn_posXpath,
+        "policyRulePage_closeServerFqdn_posXpath": statisticsRulePage_closeServerFqdn_posXpath,
+        # url
+        "policyRulePage_addConditionUrl_posXpath": statisticsRulePage_addCondition_url_posXpath,
+        "policyRulePage_addUrl_posXpath": statisticsRulePage_addUrl_posXpath,
+        "policyRulePage_searchUrl_posXpath": statisticsRulePage_searchUrl_posXpath,
+        "policyRulePage_selectUrl_posXpath": statisticsRulePage_selectUrl_posXpath,
+        "policyRulePage_closeUrl_posXpath": statisticsRulePage_closeUrl_posXpath,
+        # request header
+        "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
+        "policyRulePage_addRequestHeader_posXpath": securityRulePage_addRequestHeader_posXpath,
+        "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
+        "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
+        "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        # 添加Template按钮
+        "plicyRulePage_addTemplate_posXpath": statisticsRulePage_addTemplate_posXpath,
+        # 保存策略时，ok cancel warnging定位
+        "policyRulePage_enable_posXpath": statisticsRulePage_enable_posXpath,
+        "policyRulePage_okButton_yes_posId": statisticsRulePage_okButton_yes_posId,
+        "policyRulePage_okButton_warningYes_posXpath": statisticsRulePage_okButton_warningYes_posXpath
+    },
+    "search": {
+        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+        "policyRuleListPage_deleteButton_posId": manipulationRuleListPage_deleteButton_posId,
+        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
+        "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+    }
+}
+
+test_ip_object_element_position=test_ip_object_element_position
+test_ip_group_object_element_position=test_ip_group_object_element_position
+test_port_object_element_position=test_port_object_element_position
+test_fqdn_object_element_position=test_fqdn_object_element_position
+test_http_signature_object_element_position=test_http_signature_object_element_position
+test_manipulation_rule_element_position=test_manipulation_rule_element_position
 
 def get_element_position(key_name):
     # object
@@ -338,6 +469,16 @@ def get_element_position(key_name):
     # policy
     elif key_name == "manipulation":
         element_position_map = test_manipulation_rule_element_position
+    elif key_name == "statistics":
+        element_position_map = test_statistics_rule_element_position
+    else:
+        print("{} no element position map".format(key_name))
+        element_position_map = {}
+    return element_position_map
+
+def get_profile_element_position(key_name):
+    if key_name == "statistics_template":
+        element_position_map = test_statistics_template_element_position
     else:
         print("{} no element position map".format(key_name))
         element_position_map = {}

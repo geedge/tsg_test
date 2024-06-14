@@ -99,7 +99,7 @@ def run(parameter):
                 {
                 "profile_type": "response_page",
                 "format": "html",
-                "name": "auto_test_obj",
+                "name": "auto_test_profile",
                 "return_data": 1
                 }
             ],
@@ -152,8 +152,12 @@ def run(parameter):
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
-        print("Error: ", e)
-        return "Error: " + str(e)
+      print("Error: ", e)
+      return "Error: " + str(e)
+    finally:
+        name_list = []
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
   
 if __name__ == "__main__":
     parameter = {

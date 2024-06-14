@@ -16,6 +16,7 @@ from support.ui_utils.element_position.object_element_position import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
+from support.api_utils.delete_config import *
 import support.ui_utils.env_initialization
 
 def run(parameter):
@@ -50,6 +51,16 @@ def run(parameter):
                                 "item_type": "ipv4",
                                 "item_value": "192.168.64.86",
                             },
+                            # {
+                            #     "item_operation": "edit",
+                            #     "item_type": "ipv4",
+                            #     "item_value": "192.168.64.86->1.1.1.2",
+                            # },
+                            # {
+                            #     "item_operation": "delete",
+                            #     "item_type": "ipv4",
+                            #     "item_value": "192.168.64.86",
+                            # }
                         ]
                     }
                 ],
@@ -131,6 +142,22 @@ def run(parameter):
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
+        
+        # name_list汇总
+        name_list = [
+            {
+                "type": "security",
+                "name": "security_rule_deny_ip",
+            },
+            {
+                "type": "ip",
+                "name": "security_source_ip",
+            },
+            {
+                "type": "statistics_template",
+                "name": "11111111",
+            },
+        ]
         
         # 添加定位库集合
         test_rule_element_position = {}
@@ -307,6 +334,9 @@ def run(parameter):
     finally:
         # 清理环境
         support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
         
 if __name__ == '__main__':
     parameter = {

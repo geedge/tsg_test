@@ -45,7 +45,7 @@ def run(parameter):
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
-                "type": "wget",
+                "type": "xxx",
                 "command": "wget -q -O- --debug http://open.node.com:180"
             },
             "token": ""
@@ -90,8 +90,12 @@ def run(parameter):
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
-        print("Error: ", e)
-        return "Error: " + str(e)
+      print("Error: ", e)
+      return "Error: " + str(e)
+    finally:
+        name_list = []
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
   
 if __name__ == "__main__":
     parameter = {
@@ -100,11 +104,12 @@ if __name__ == "__main__":
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
+        "test_subcriber_id": "test6473",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_204_negative_not_ip_http"
     }

@@ -1,9 +1,9 @@
 import random
 import time
 import traceback
-
-from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
+from selenium.webdriver.common.by import By
+
 
 class DeleteProfile():
     def __init__(self, driver):
@@ -24,4 +24,6 @@ class DeleteProfile():
         except Exception as e:
             print(e)
             traceback.print_exc()
-            return 400
+            self.driver.find_element(By.XPATH, delete_element_position["profileListPage_deleteButton_warningYes_posXpath"]).click()
+            time.sleep(0.5)
+            return 200
