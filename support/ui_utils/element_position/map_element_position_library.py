@@ -307,7 +307,6 @@ test_manipulation_rule_element_position = {
         "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
     }
 }
-#policy
 test_statistics_template_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -333,19 +332,18 @@ test_statistics_template_element_position = {
         "templates_button_chartEdit_posXpath":listPage_profile_statisticsTemplates_editButton_posId
     },
     "search": {
-        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
-        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+        "profileListPage_searchLabel_posId": listPage_profileSearch_statisticsTemplates_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_statisticsTemplates_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_statisticsTemplates_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_statisticsTemplates_tableTbody_posXpath
     },
     "delete": {
-        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
-        "policyRuleListPage_deleteButton_posId": manipulationRuleListPage_deleteButton_posId,
-        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-        "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_statisticsTemplates_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_statisticsTemplates_button_yes_posXpath
     }
 }
+#policy
 test_statistics_rule_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -412,11 +410,15 @@ test_statistics_rule_element_position = {
         "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
         # 添加Template按钮
-        "plicyRulePage_addStatisticsTemplate_posXpath": statisticsRulePage_addTemplate_posXpath,
+        "plicyRulePage_addStatisticsTemplate_posXpath": statisticsRulePage_add_template_posXpath,
+        "policyRulePage_searchProfile_posXpath": statisticsRulePage_search_template_posXpath,
+        "policyRulePage_selectProfile_posXpath": statisticsRulePage_select_template_posXpath,
+        "policyRulePage_closeProfile_posXpath": statisticsRulePage_close_template_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": statisticsRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": statisticsRulePage_okButton_yes_posId,
-        "policyRulePage_okButton_warningYes_posXpath": statisticsRulePage_okButton_warningYes_posXpath
+        "policyRulePage_okButton_warningYes_posXpath": statisticsRulePage_okButton_warningYes_posXpath,
+        "policyRulePage_okButton_warningNo_posXpath": statisticsRulePage_okButton_warningNo_posXpath
     },
     "search": {
         "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -427,9 +429,9 @@ test_statistics_rule_element_position = {
     },
     "delete": {
         "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
-        "policyRuleListPage_deleteButton_posId": manipulationRuleListPage_deleteButton_posId,
-        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-        "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+        "policyRuleListPage_deleteButton_posId": statisticsRuleListPage_deleteButton_posId,
+        "policyRuleListPage_okButton_warningYes_posXpath": statisticsRulePage_delete_tip_button_warningYes_posXpath,
+        "policyRuleListPage_okButton_warningNo_posXpath": statisticsRulePage_delete_tip_button_warningNo_posXpath
     }
 }
 
@@ -456,6 +458,8 @@ def get_element_position(key_name):
     # profile
     elif key_name == "response_page":
         element_position_map = test_response_page_element_position
+    elif key_name =="statistics_template":
+        element_position_map = test_statistics_template_element_position
     # policy
     elif key_name == "manipulation":
         element_position_map = test_manipulation_rule_element_position

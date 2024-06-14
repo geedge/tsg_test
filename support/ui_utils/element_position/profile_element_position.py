@@ -860,8 +860,8 @@ listPage_profileSearch_statisticsTemplates_input_itemContent_posXpath = listPage
 listPage_profilTable_statisticsTemplates_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
 listPage_profilTable_statisticsTemplates_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
 #listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_statisticsTemplates_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath   #删除提示的Tips的yes按钮
-listPage_dialogTips_statisticsTemplates_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath   #删除提示的Tips的close按钮
+listPage_dialogTips_statisticsTemplates_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath   #删除提示的Tips的yes按钮
+listPage_dialogTips_statisticsTemplates_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath   #删除提示的Tips的close按钮
 #Create statistics templates page 和 Edit statistics templates page   新增和编辑页
 statisticsTemplates_input_Name_posId = "advancedAdd_policyName"    # name输入框id
 statisticsTemplates_input_metricsAndDimensionsSelect_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class,'margin-top-2')]/div"  # Metrics输入框的定位，可能包含多个。replaceChart repalceLabel需要二次处理
