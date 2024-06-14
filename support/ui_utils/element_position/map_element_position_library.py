@@ -177,8 +177,8 @@ test_response_page_element_position = {
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_responsePages_posId
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_responsePages_posId
     },
     "create": {
         "profileListPage_createButton_posId": listPage_profile_responsePages_createButton_posId,
@@ -205,8 +205,8 @@ test_hijack_file_element_position = {
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_hijackFiles_posId
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_hijackFiles_posId
     },
     "create": {
         "profileListPage_createButton_posId": listPage_profile_hijackFiles_createButton_posId,
@@ -319,6 +319,10 @@ test_manipulation_rule_element_position = {
         "policyRulePage_replace_addSearchInSelectDropItem_posXpath": manipulationRulePage_replace_addSearchInSelectDropItem_posXpath,
         "policyRulePage_replace_addFindInput_posXpath": manipulationRulePage_replace_addFindInput_posXpath,
         "policyRulePage_replace_addReplaceWithInput_posXpath": manipulationRulePage_replace_addReplaceWithInput_posXpath,
+        # hijack profile action parameter
+        "policyRulePage_hijack_addHijackProfileSelectBox_posXpath": manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath,
+        "policyRulePage_hijack_searchHijackProfile_posXpath": manipulationRulePage_hijack_searchHijackProfile_posXpath,
+        "policyRulePage_hijack_searchHijackProfileDorpItem_posXpath": manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": manipulationRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": manipulationRulePage_okButton_yes_posId,

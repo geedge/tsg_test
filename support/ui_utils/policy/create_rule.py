@@ -329,6 +329,17 @@ class CreateRule():
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addFindInput_posXpath"]).send_keys(find_text)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addReplaceWithInput_posXpath"]).clear()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addReplaceWithInput_posXpath"]).send_keys(replace_with_text)
+                    elif test_data["rule_action"] == "hijack":
+                        hijack_profile_data = test_data["action_parameter"]["hijack_file"][0]["profile_file"]
+                        hijack_profile_name = hijack_profile_data["name"]
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_hijack_addHijackProfileSelectBox_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_hijack_searchHijackProfile_posXpath"]).clear()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_hijack_searchHijackProfile_posXpath"]).send_keys(hijack_profile_name)
+                        # 点击回车键
+                        search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_hijack_searchHijackProfile_posXpath"])
+                        search_box.send_keys(Keys.RETURN)
+                        # 选择第一个
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_hijack_searchHijackProfileDorpItem_posXpath"]).click()
                     else:
                         print("to be added manipulation action parameters..")
                 elif test_data["policy_type"] == "statistics":
@@ -371,7 +382,7 @@ class CreateRule():
             # 确认创建
             self.driver.find_element(By.ID, create_element_position["policyRulePage_okButton_yes_posId"]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
-            
+            print(200)
             return 200
         except Exception as e:
             print(e)
