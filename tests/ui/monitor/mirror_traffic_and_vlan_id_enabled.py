@@ -4,6 +4,9 @@ import os
 import sys
 import os
 import sys
+
+from support.ui_utils.profile.search_profile import SearchProfile
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -16,6 +19,8 @@ from support.traffic_replay.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
+from support.ui_utils.profile.create_monitor_profile import CreateProfile
+from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env_initialization
 import traceback
 
@@ -247,17 +252,17 @@ def run(parameter):
                     result = "Fail to create ip object."
                     break
 
-        # if "profile" in test_data  and len(test_data["profile"]) != 0:
-        #     ip_data = test_data["profile"]
-        #     create_ip = Cre(driver)
-        #     for i in range(len(ip_data)):
-        #         create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
-        #         if create_ip_code == 200:
-        #             print("Create ip object successfully.")
-        #         elif create_ip_code != 200:
-        #             result = "Fail to create ip object."
-        #             break
-        #
+        if "profile" in test_data  and len(test_data["profile"]) != 0:
+            profile_data = test_data["profile"]
+            mirror_traffic_profile = CreateProfile(test_monitor_profile_element_position)
+            for i in range(len(profile_data)):
+                create_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position)
+                if create_profile_code == 200:
+                    print("Create Traffic Mirroring Profiles successfully.")
+                elif create_profile_code != 200:
+                    result = "Fail to create Traffic Mirroring Profiles profile."
+                    break
+
 
 
         # 创建rule
@@ -268,26 +273,27 @@ def run(parameter):
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-
+        """
             # 触发流量验证
-        # if create_rule_code == 200:
-        #     edit_rule = EditRule(driver)
-        #     edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
-        #                                              test_rule_element_position)
-        #     if edit_rule_code == 200:
-        #         # rule_id = search_rule.get_rule_id()
-        #         test_data["rule_id"] = rule_id
-        #         verify = TrafficVerification()
-        #         verification_result = verify.traffic_verification(parameter, test_data, [])
-        #
-        #     # 分析验证结果，并返回给flask
-        # if len(verification_result) != 0:
-        #     analysis = AnalysisResult()
-        #     result = analysis.analysis_result(test_data, [], verification_result)
-        #     if len(result) == 0:
-        #         print("The test case is passed.")
-        #     elif len(result) != 0:
-        #         print("The test case is failed. The failure reason is: ", result)
+        if create_rule_code == 200:
+            edit_rule = EditRule(driver)
+            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                                                     test_rule_element_position)
+            if edit_rule_code == 200:
+                # rule_id = search_rule.get_rule_id()
+                test_data["rule_id"] = rule_id
+                verify = TrafficVerification()
+                verification_result = verify.traffic_verification(parameter, test_data, [])
+
+            # 分析验证结果，并返回给flask
+        if len(verification_result) != 0:
+            analysis = AnalysisResult()
+            result = analysis.analysis_result(test_data, [], verification_result)
+            if len(result) == 0:
+                print("The test case is passed.")
+            elif len(result) != 0:
+                print("The test case is failed. The failure reason is: ", result)
+        """
 
             # 删除rule
         if create_rule_code == 200:
@@ -324,7 +330,24 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
 
-                # 脚本结束时间和耗时
+        #删除profile
+        if delete_rule_code == 200:
+            for x in range(len(profile_data)):
+                search_mirror_profile = SearchProfile(driver)
+                profile_return_code,first_row_checkbox_element=search_mirror_profile.search(profile_data[x]['name'],test_monitor_profile_element_position)
+                if profile_return_code == 200:
+                    delete_mirror_profile = DeleteProfile(driver)
+                    delete_profile_code = delete_mirror_profile.delete(test_monitor_profile_element_position,first_row_checkbox_element,True)
+                    if delete_profile_code == 200:
+                        print("Delete monitor profile successfully.")
+                    elif delete_profile_code != 200:
+                        result = result + " In addition, fail to delete profile."
+                        break
+                else:
+                    result = result + " In addition, fail to search profile."
+                    break
+
+
 
             # 脚本结束时间和耗时
         end_time = time.time()
@@ -344,7 +367,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
+        "test_pc_ip": "192.168.50.80",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
