@@ -89,7 +89,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
-                "type": "curl",
+                "type": "xxx",
                 "command": "curl --connect-timeout 5 -m 5 https://www.example.com"
             },
             "token": ""
@@ -132,6 +132,10 @@ def run(parameter):
     except Exception as e:
       print("Error: ", e)
       return "Error: " + str(e)
+    finally:
+        name_list = []
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
   
 if __name__ == "__main__":
     parameter = {

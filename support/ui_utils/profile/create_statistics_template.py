@@ -27,10 +27,11 @@ class CreateStatisticsTemplate():
             template_name = data["name"]
             self.driver.find_element(By.ID, create_element_position["templatePage_inputName_posId"]).send_keys(
                 template_name)
+            self.data = data["profile"]["statistics_template"]
             # 循环操作每个chart
             charts = data["charts"]  # charts数据列表
             operation_type = "create"
-            no_modify = "不修改"
+            no_modify = ""
             data_index = 0
             for i in range(len(charts)):
                 chart_id = "{}".format(i + 1)  # 用于图表排序定位使用
@@ -422,8 +423,8 @@ class CreateStatisticsTemplate():
                         col_dropdownSelect.find_element(By.XPATH, ".//input").click()
 
                         # 异常断言判断 "reverse_case": "....",   # 主要校验不同chart类型，可以选择不同的metrics   # 只是断言使用，无实际页面操作
-                        if "reverse_case" in self.data["chart"][0].keys():
-                            reverse_case_case = self.data["chart"][0]["reverse_case"].strip().lower()
+                        if "reverse_case" in self.data["charts"][0].keys():
+                            reverse_case_case = self.data["charts"][0]["reverse_case"].strip().lower()
                             if reverse_case_case == "table_chart_check_metrics" or reverse_case_case == "bar_chart_check_metrics":  # 校验table or bar chart 可选择 metrics类型
                                 print("table or bar chart metrics disabled 测试用例...")
                                 info_execpt = "is-disabled"
