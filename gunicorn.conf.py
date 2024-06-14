@@ -6,6 +6,6 @@ timeout = 700
 bind = "0.0.0.0:8800"
 
 # 日志配置  
-loglevel = "debug"  
+loglevel = "debug"
 errorlog = "-"
 accesslog = "-"
