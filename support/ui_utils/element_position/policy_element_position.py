@@ -267,15 +267,18 @@ manipulationRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequest
 manipulationRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
 # action parameter deny
-manipulationRulePage_deny_addResponseCodeSelectBox_posXpath ="//div[@class='panel-content']//label[normalize-space(text())='Response Code']/parent::*//i"   # resposne code 选择框
-manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath ="//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_code}']"   # reposne code 下拉列表定位
-manipulationRulePage_deny_addResponseContentSelectBox_posXpath ="//div[@class='panel-content']//label[normalize-space(text())='Response Content']/parent::*//i"   # resposne content 选择框
-manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath ="//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_type}']"   # reposne content 下拉列表定位
-manipulationRulePage_deny_addResponseContentTextInput_posXpath ="//div[@id='myEditor1']"   # resposnse content text输入框  定位
-manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath ="//div[@class='box-sizing']//i"   # resposne content profile  选择框  定位
-manipulationRulePage_deny_searchResponseProfile_posXpath ="//div[@class='el-scrollbar']//input[@placeholder='Search']"   # resposne content search profile 对话框查询输入框
-manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath ="//div[@class='el-scrollbar']//div[contains(@class, 'margin-top')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
-
+manipulationRulePage_deny_addResponseCodeSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Code']/parent::*//i"   # resposne code 选择框
+manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_code}']"   # reposne code 下拉列表定位
+manipulationRulePage_deny_addResponseContentSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Content']/parent::*//i"   # resposne content 选择框
+manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_type}']"   # reposne content 下拉列表定位
+manipulationRulePage_deny_addResponseContentTextInput_posXpath = "//div[@id='myEditor1']"   # resposnse content text输入框  定位
+manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath = "//div[@class='box-sizing']//i"   # resposne content profile  选择框  定位
+manipulationRulePage_deny_searchResponseProfile_posXpath = "//div[@class='el-scrollbar']//input[@placeholder='Search']"   # resposne content search profile 对话框查询输入框
+manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@class='el-scrollbar']//div[contains(@class, 'margin-top')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
+# action parameter redirect http
+manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
+manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
+manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//input[@id='undefined1']"   # redirect url 输入框 定位
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
 manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
