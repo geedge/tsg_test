@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "manipulation",
-            "rule_name": "manipulation_rule_with_monitor_src_ip",
+            "rule_name": "monitor_src_ip",
             "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
@@ -315,7 +315,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "manipulation_rule_with_monitor_src_ip"
+        "test_case_name": "monitor_src_ip"
     }
     run(parameter)
     """

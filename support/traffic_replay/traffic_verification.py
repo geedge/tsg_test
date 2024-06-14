@@ -74,7 +74,7 @@ class TrafficVerification():
             log_result, metric_result = None, None
             if is_log == 1:
                 if is_log_query == 1 or is_counters == 1:
-                    for _ in range(40):
+                    for _ in range(50):
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
