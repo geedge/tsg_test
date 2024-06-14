@@ -61,7 +61,7 @@ test_data = {
         ],
         "packet_capture": []
     },
-    "profile": {
+    "action_parameter": {
         "deny_response_text": [
             {
                 "response_code": 403,
@@ -69,11 +69,11 @@ test_data = {
                 "response_content": "test_response_code",
             }
         ],
-        "deny_response_profile": [
+        "response_page": [
             {
                 "response_code": 404,
                 "response_content_type": "Profile",
-                "response_content": {
+                "profile_file": {
                     "name": "test_tsg_ui_profile_page",
                     "model": "create",
                     "file": "testa.html->"

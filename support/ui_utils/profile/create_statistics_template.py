@@ -27,7 +27,7 @@ class CreateStatisticsTemplate():
             template_name = data["name"]
             self.driver.find_element(By.ID, create_element_position["templatePage_inputName_posId"]).send_keys(
                 template_name)
-            self.data = data["profile"]["statistics_template"]
+            self.data = data
             # 循环操作每个chart
             charts = data["charts"]  # charts数据列表
             operation_type = "create"
@@ -62,8 +62,8 @@ class CreateStatisticsTemplate():
                 self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="dimensions", chart_id=chart_id)
                 # 如果有Order By，则操作
-                if charts[i]["visualization_type"].split("->")[
-                    data_index].strip().lower() == "table":  # 只有table 图的 有order by操作
+                visualization_type_temp =  charts[i]["visualization_type"].split("->")[data_index].strip().lower()
+                if visualization_type_temp == "table" or visualization_type_temp == "bar":  # 只有table\Bar 图的 有order by操作
                     self._operate_order_by(charts[i], data_index=data_index, no_modify=no_modify,
                                            data_key="order_by", chart_id=chart_id)
                 else:
@@ -151,11 +151,10 @@ class CreateStatisticsTemplate():
         :return:
         """
         try:
-            switch_value: str = data[key].split("->")[data_index].strip()  # 用例数据
-            return 200
+            switch_value: str = data[key].split("->")[data_index].strip() # 用例数据
         except Exception as e:
             print(e)
-            return 400
+        return switch_value
 
     def _operate_order_by(self, chart: {}, data_index=0, no_modify="不修改", data_key="", chart_id=""):
         try:
