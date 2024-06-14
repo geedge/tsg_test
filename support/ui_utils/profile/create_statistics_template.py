@@ -69,21 +69,24 @@ class CreateStatisticsTemplate():
                 else:
                     pass
                 # Row Limit 操作
-                if charts[i]["visualization_type"].split("->")[
-                    data_index].strip().lower() == "line":  # line 图的 row limit 操作方式不一样
+                visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
+                if visualization_type_temp == "line" or visualization_type_temp == "table"  or visualization_type_temp == "bar":  # line 图的 row limit 操作方式不一样
                     self._operate_series_limit(charts[i], data_index=data_index, no_modify=no_modify,
                                                data_key="row_limit",
                                                element_position=create_element_position[
                                                    "templates_input_other_posXpath"],
                                                chart_id=chart_id)
+                else:
+                    pass
+                """
                 elif charts[i]["visualization_type"].split("->")[
                     data_index].strip().lower() == "table":  # table 图的 row limit 操作
                     print("table---row limit")
                     self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="row_limit",
                                         element_position=create_element_position["templates_input_other_posXpath"],
                                         chart_id=chart_id)
-                else:
-                    pass
+                """
+
                 # Thresholds - Minimum incoming size 操作
                 self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="min_in_size",
                                     element_position=create_element_position["templates_input_other_posXpath"],
