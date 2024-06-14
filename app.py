@@ -9,6 +9,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask, request, jsonify
+from support.report import *
 
 app = Flask(__name__)
 
@@ -26,6 +27,7 @@ app = Flask(__name__)
 @app.route('/v1/statistics_api', methods=["POST"])
 @app.route('/v1/service_chaining_api', methods=["POST"])
 @app.route('/v1/shaping_api', methods=["POST"])
+@app.route('/v1/temp', methods=["POST"])
 def receive_parameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
@@ -73,6 +75,7 @@ def receive_parameter():
             parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id")
             
             project_path = parse.get("root_path", "path")
+            parameter["root_path"] = project_path
             
             if tag == "api":
                 parameter["path"] = f"{project_path}/tests/api"
@@ -97,6 +100,10 @@ def receive_parameter():
             parameter["module_name"] = module_name
             
             temp_folder_path = parameter["path"] + "/" + module_name
+            
+            # 考虑到MS的报告无法快速过滤结果，会生成csv格式的report
+            # new_report = GenerateReport()
+            # new_report.generate_report(project_path)
             
             # folder_list = os.listdir(temp_folder_path)
             # sys.stdout.write("The test folder contain: {}\n".format(folder_list))

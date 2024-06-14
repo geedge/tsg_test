@@ -154,23 +154,21 @@ test_http_url_object_element_position = {
         "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
         "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
         "objectPage_addItem_posId": urlObjectPage_addItem_posId,
-        # todo
-        "objectPage_item_value_select_posXpath": httpSignatureObjectPage_item_value_select_posXpath,
-        "objectPage_inputItem_posXpath": httpSignatureObjectPage_inputItem_posXpath,
-        "objectPage_item_value_plus_posXpath": httpSignatureObjectPage_item_value_plus_posXpath,
-        "objectPage_button_saveItem_posXpath": httpSignatureObjectPage_button_saveItem_posXpath,
-        "objectPage_okButton_posId": httpSignatureObjectPage_okButton_posId,
-        "objectPage_okButton_warningYes_posXpath": httpSignatureObjectPage_okButton_warningYes_posXpath
+        # item简单定位
+        "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
+        "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
+        "objectPage_okButton_posId": urlObjectPage_okButton_posId,
+        "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
     },
     "search": {
-        "objectListPage_searchLabel_posId": httpSignatureObjectListPage_searchLabel_posId,
-        "objectListPage_searchLabel_selectName_posXpath": httpSignatureObjectListPage_searchLabel_selectName_posXpath,
-        "objectListPage_tableTbody_posXpath": httpSignatureObjectListPage_tableTbody_posXpath
+        "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
     },
     "delete": {
-        "objectListPage_allSelect_posXpath": httpSignatureObjectListPage_allSelect_posXpath,
-        "objectListPage_deleteButton_posId": httpSignatureObjectListPage_deleteButton_posId,
-        "objectListPage_deleteButton_warningYes_posXpath": httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+        "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
     }
 }
 test_response_page_element_position = {
@@ -199,6 +197,33 @@ test_response_page_element_position = {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
         "profileListPage_deleteButton_posId": listPage_profile_responsePages_delButton_posId,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_responsePages_button_yes_posXpath
+    }
+}
+test_hijack_file_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_hijackFiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_hijackFiles_createButton_posId,
+        "profilePage_inputName_posId": hijackFiles_input_Name_posId,
+        "profilePage_okButton_posCss": hijackFiles_button_oK_posCss,
+        "profilePage_okButton_warningYes_posCss": hijackFiles_button_warningSaveYes_posCss,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_hijackFiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_hijackFiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_hijackFiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_hijackFiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_hijackFiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_hijackFiles_button_yes_posXpath
     }
 }
 test_manipulation_rule_element_position = {
@@ -288,6 +313,12 @@ test_manipulation_rule_element_position = {
         "policyRulePage_redirectHttp_addResponseCodeSelectBox_posXpath": manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath,
         "policyRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath": manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath,
         "policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath": manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath,
+        # replace action parameter
+        "policyRulePage_replace_addRegex_posXpath": manipulationRulePage_replace_addRegex_posXpath,
+        "policyRulePage_replace_addSearchInSelectBox_posXpath": manipulationRulePage_replace_addSearchInSelectBox_posXpath,
+        "policyRulePage_replace_addSearchInSelectDropItem_posXpath": manipulationRulePage_replace_addSearchInSelectDropItem_posXpath,
+        "policyRulePage_replace_addFindInput_posXpath": manipulationRulePage_replace_addFindInput_posXpath,
+        "policyRulePage_replace_addReplaceWithInput_posXpath": manipulationRulePage_replace_addReplaceWithInput_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": manipulationRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": manipulationRulePage_okButton_yes_posId,
@@ -441,6 +472,8 @@ test_port_object_element_position=test_port_object_element_position
 test_fqdn_object_element_position=test_fqdn_object_element_position
 test_http_signature_object_element_position=test_http_signature_object_element_position
 test_http_url_object_element_position = test_http_url_object_element_position
+test_response_page_element_position = test_response_page_element_position
+test_hijack_file_element_position = test_hijack_file_element_position
 test_manipulation_rule_element_position=test_manipulation_rule_element_position
 
 def get_element_position(key_name):
@@ -458,6 +491,8 @@ def get_element_position(key_name):
     # profile
     elif key_name == "response_page":
         element_position_map = test_response_page_element_position
+    elif key_name == "hijack_file":
+        element_position_map = test_hijack_file_element_position
     elif key_name =="statistics_template":
         element_position_map = test_statistics_template_element_position
     # policy
@@ -481,4 +516,4 @@ def get_profile_element_position(key_name):
 
 # 勿删 zcw make
 manipulation_object_no_create_list = ["application", "sub_action_override"]
-manipulation_profile_no_create_list = ["deny_response_text", "redirect_url"]
+manipulation_profile_no_create_list = ["deny_response_text", "redirect_url", "replace_parameter"]

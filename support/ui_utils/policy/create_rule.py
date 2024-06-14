@@ -21,7 +21,7 @@ class CreateRule():
             page_jump.jump_sub_policy_page(page_jump_element_position)
             
             # 点击create
-            time.sleep(5)
+            time.sleep(1)
             self.driver.find_element(By.ID, create_element_position["policyRuleListPage_createButton_posId"]).click()
             
             # 输入name
@@ -110,6 +110,7 @@ class CreateRule():
                 # 点application的+
                 if test_data["policy_type"] == "manipulation":
                     if  test_data["condition"]["application"][0]["name"].lower == "doh":  # doh需要操作application
+                        print("to do doh")
                         pass
                     else:   # 非doh不需要操作application
                         pass
@@ -157,11 +158,11 @@ class CreateRule():
                 protocol_field_data = test_data["condition"]["protocol_filed"]
                 for x in range(len(protocol_field_data)):
                     temp = x + 1
-                    if protocol_field_data[x]["field_type"] == "url":
+                    if protocol_field_data[x]["object_type"] == "url":
                         self.add_protocol_field(protocol_field_data, "Url", create_element_position, temp)
-                    elif protocol_field_data[x]["field_type"] == "request_header":
+                    elif protocol_field_data[x]["object_type"] == "request_header":
                         self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
-                    elif protocol_field_data[x]["field_type"] == "response_header":    
+                    elif protocol_field_data[x]["object_type"] == "response_header":
                         print("to be added...")
             
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0 and "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) == 0:
@@ -285,7 +286,6 @@ class CreateRule():
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfileDorpItem_posXpath"]).click()
                         #
                     elif test_data["rule_action"] == "redirect":
-                        print(343)
                         print(test_data["condition"]["application"][0]["name"].lower().strip())
                         if test_data["condition"]["application"][0]["name"].lower().strip() == "http":
                             response_code = test_data["action_parameter"]["redirect_url"][0]["response_code"]
@@ -301,8 +301,36 @@ class CreateRule():
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath"]).send_keys(redirect_url)
                         else:
                             print("doh...")
+                    elif test_data["rule_action"] == "replace":
+                        regex_status =  test_data["action_parameter"]["replace_parameter"][0]["regex"].lower()
+                        search_in =  test_data["action_parameter"]["replace_parameter"][0]["search_in"]
+                        find_text =  test_data["action_parameter"]["replace_parameter"][0]["find"]
+                        replace_with_text =  test_data["action_parameter"]["replace_parameter"][0]["replace_with"]
+                        print(regex_status, search_in, find_text, replace_with_text)
+                        # 操作action parameter，  获取regex当前属性   is-checked 表示开
+                        regex_class_status = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"]).get_attribute("class")
+                        print(regex_class_status)
+                        if regex_status == "on":  # 开
+                            if "is-checked" in regex_class_status:  # 当前状态开，不用再点击
+                                pass
+                            else:   # 当前状态关，需要再点击打开
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"]).click()
+                        else:   # off  关
+                            if "is-checked" in regex_class_status:  # 当前状态开，需要点击关闭
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"]).click()
+                            else:      # # 当前状态关，不用再点击
+                                pass
+                        # 操作search in
+                        search_in_drop_position = create_element_position["policyRulePage_replace_addSearchInSelectDropItem_posXpath"].format(replace_type=search_in)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addSearchInSelectBox_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, search_in_drop_position).click()
+                        # 操作 find   replace with 输入框
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addFindInput_posXpath"]).clear()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addFindInput_posXpath"]).send_keys(find_text)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addReplaceWithInput_posXpath"]).clear()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addReplaceWithInput_posXpath"]).send_keys(replace_with_text)
                     else:
-                        print("to be added...")
+                        print("to be added manipulation action parameters..")
                 elif test_data["policy_type"] == "statistics":
                     # 点击Statistics Template添加按钮打开Template侧滑列表
                     self.driver.find_element(By.XPATH, create_element_position["plicyRulePage_addStatisticsTemplate_posXpath"]).click()

@@ -8,18 +8,20 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.profile.create_profile import CreateProfile
-from support.ui_utils.profile.search_profile import SearchProfile
-from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
+from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
+from support.ui_utils.profile.search_profile import SearchProfile
+#from support.ui_utils.profile.create_profile import CreateProfile
+from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_replay.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 import support.ui_utils.env_initialization
+from support.api_utils.delete_config import *
 import traceback
 
 
@@ -38,14 +40,15 @@ def run(parameter):
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "manipulation",
-            "rule_name": "manipulation_rule_with_redirect_http_src_ip",
-            "rule_action": "redirect",
+            "policy_type": "statistics",
+            "rule_name": "client/server_ips_with_srcip_http",
+            "rule_action": "statistics",
             "rule_type": "create",
+            "script_type": "ap",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "statistics_client/server_ips_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -79,21 +82,7 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
-                "url": [
-                    {
-                        "name": "manipulation_url",
-                        "object_type": "url",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "baidu"
-                            }
-                        ],
-                    },
+                "server_fqdn": [
                 ],
                 "protocol_filed": [],
                 "sub_action_override": True,
@@ -102,13 +91,25 @@ def run(parameter):
                 "packet_capture": []
             },
             "action_parameter": {
-                "redirect_url": [
-                    {
-                        "profile_type": "redirect_response",
-                        "response_code": 301,
-                        "redirect_url": "https://www.jd.com"
-                    }
-                ]
+                "statistics_template": [{
+                    "name": "Auto Client/Server IPs",
+                    "profile_type": "statistics_template",
+                    "charts": [
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "client_ips:APPROX_COUNT_DISTINCT_HLLD:unique client ip",
+                            "server_ips:APPROX_COUNT_DISTINCT_HLLD:unique server ip"
+                          ],
+                          "dimensions": ["time"],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "0",
+                          "max_out_size": "0"
+                        }
+                      ]
+                }]
             },
             "expected_return": "reset",
             "counters_1": {"hits": 1},
@@ -138,7 +139,25 @@ def run(parameter):
             # },
             "token": ""
         }
-
+        # name_list汇总
+        name_list = [
+            {
+                "type": "statistics",
+                "name": "client/server_ips_with_srcip_http",
+            },
+            {
+                "type": "ip",
+                "name": "statistics_client/server_ips_source_ip",
+            },
+            {
+                "type": "statistics_template",
+                "name": "Auto Client/Server IPs",
+            },
+        ]
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        test_data["token"] = token
         # 添加测试过程中涉及的template
         template_path = {}
         template_path["trex_workpath"] = "/opt/trex/v3.03"
@@ -146,10 +165,9 @@ def run(parameter):
 
         # 创建object
         for cond_key, cond_value in (test_data["condition"].items()):
-            if cond_key in manipulation_object_no_create_list:
-                continue   # 直接跳过
             cond_status = 0
-            cond_key_out = cond_key.replace("_", " ")
+            if cond_key == "application" or cond_key == "sub_action_override":
+                continue   # 直接跳过
             if len(cond_value) != 0:  # 不为空
                 cond_data = cond_value
                 create_ip = CreateObject(driver)
@@ -157,47 +175,44 @@ def run(parameter):
                     element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
-                        print("Create {} object successfully.".format(cond_key_out))
+                        print("Create {} object successfully.".format(cond_key))
                     else:
-                        result = "Fail to create {} object.".format(cond_key_out)
+                        result = "Fail to create {} object.".format(cond_key)
                         cond_status = 1
                         break
             if cond_status == 1:   # 创建失败，退出遍历创建
                 break
 
-        # 创建profile
-        prfi_code = 200
-        if "action_parameter" in test_data.keys():
-            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
-                if prfi_key in manipulation_profile_no_create_list:
-                    continue  # 直接跳过
-                prfi_status = 0
-                prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:   # 需要创建profile数据
-                    prfi_data = prfi_value
-                    prfi = CreateProfile(driver)
-                    for i in range(len(prfi_data)): # 遍历创建所有 profile
-                        element_position_map = get_element_position(prfi_key)
-                        prfi_code = prfi.create(prfi_data[i], element_position_map)
-                        if prfi_code == 200:
-                            print("Create {} profile successfully.".format(prfi_key_out))
-                        else:
-                            result = "Fail to create {} profile.".format(prfi_key_out)
-                            prfi_status = 1
-                            break
-                if prfi_status == 1:  # 创建失败，退出遍历创建
+        # 创建Statistics Template
+        create_statistics_template_code = 0
+        if cond_code == 200:
+            profile = test_data["action_parameter"]
+            statistics_templates = profile["statistics_template"]
+            for statistics_template in statistics_templates:
+                cond_status = 0
+                #create_statistics_template = CreateProfile(driver)
+                create_statistics_template = CreateStatisticsTemplate(driver)
+                element_position_map = get_profile_element_position("statistics_template")
+                cond_code = create_statistics_template.create(statistics_template, element_position_map)
+                create_statistics_template_code = cond_code
+                if cond_code == 200:
+                    print("Create {} Profile successfully.".format("statistics_template"))
+                else:
+                    result = "Fail to create {} Profile.".format("statistics_template")
+                    cond_status = 1
+                    break
+                if cond_status == 1:   # 创建失败，退出遍历创建
                     break
 
         # 创建rule
-        if cond_code == 200 and prfi_code == 200:
+        if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print("Create manipulation rule successfully.")
+                print("Create security rule successfully.")
             elif create_rule_code != 200:
-                result = "Fail to create manipulation rule."
-
+                result = "Fail to create security rule."
 
         """
         # 触发流量验证
@@ -225,7 +240,7 @@ def run(parameter):
         """
 
         # 删除rule
-        #create_rule_code = 200
+        create_rule_code = 200
         result = "temp "
 
         if create_rule_code == 200:
@@ -234,59 +249,27 @@ def run(parameter):
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
                 delete_rule = DeleteRule(driver)
-                delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, False)
+                delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete manipulation rule successfully.")
+                    print("Delete Statistics rule successfully.")
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
                 result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
-        # 删除object
-        if delete_rule_code == 200:
-            # 删除
-            for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
-                if cond_key in manipulation_object_no_create_list:
-                    continue  # 直接跳过
-                cond_status = 0
-                cond_key_out = cond_key.replace("_", " ")
-                if len(cond_value) != 0:  # 不为空
-                    for i in range(len(cond_data)):  # 遍历查询所有condition
-                        search_cond = SearchObject(driver)
-                        element_position_map = get_element_position(cond_key)
-                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
-                        if search_cond_code == 200:
-                            delete_cond = DeleteObject(driver)
-                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, False)
-                            if delete_cond_code == 200:
-                                print("Delete {} object successfully.".format(cond_key_out))
-                            else:
-                                result = result + " In addition, fail to delete {} object.".format(cond_key_out)
-                                break
-                        else:
-                            result = result + " In addition, fail to search {} object.".format(cond_key_out)
-                            break
-                        # 退出遍历标志
-                        if cond_status == 1:  # 失败，退出遍历创建
-                            break
-                # 退出遍历标志
-                if cond_status == 1:  # 失败，退出遍历创建
-                    break
-
-        # 删除profile
-        if delete_rule_code == 200:
-            # 删除
+        # 删除Statistics Tesmplate
+        result = "temp "
+        if create_statistics_template_code == 200 and delete_rule_code == 200:
             for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
-                if prfi_key in manipulation_profile_no_create_list:
-                    continue  # 直接跳过
                 prfi_status = 0
                 prfi_key_out = prfi_key.replace("_", " ")
                 if len(prfi_value) != 0:  # 不为空
                     for i in range(len(prfi_value)):  # 遍历查询所有profile
                         search_prfi = SearchProfile(driver)
                         element_position_map = get_element_position(prfi_key)
-                        prfi_name = prfi_value[i]["profile_file"]["name"].strip()
-                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
+                        prfi_name = prfi_value[i]["name"].strip()
+                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name,
+                                                                                          element_position_map)
                         if search_prfi_code == 200:
                             delete_prfi = DeleteProfile(driver)
                             delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
@@ -304,10 +287,35 @@ def run(parameter):
                 # 退出遍历标志
                 if prfi_status == 1:  # 失败，退出遍历创建
                     break
-
-        # 清理环境
-        support.ui_utils.env_initialization.teardown()
-
+        # 删除object
+        if delete_rule_code == 200:
+            # 删除
+            for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
+                if cond_key == "application" or cond_key == "sub_action_override":
+                    continue  # 直接跳过
+                cond_status = 0
+                if len(cond_value) != 0:  # 不为空
+                    for i in range(len(cond_data)):  # 遍历查询所有condition
+                        search_cond = SearchObject(driver)
+                        element_position_map = get_element_position(cond_key)
+                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
+                        if search_cond_code == 200:
+                            delete_cond = DeleteObject(driver)
+                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
+                            if delete_cond_code == 200:
+                                print("Delete {} object successfully.".format(cond_key))
+                            else:
+                                result = result + " In addition, fail to delete {} object.".format(cond_key)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} object.".format(cond_key)
+                            break
+                        # 退出遍历标志
+                        if cond_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if cond_status == 1:  # 失败，退出遍历创建
+                    break
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -318,8 +326,13 @@ def run(parameter):
     except Exception as e:
         print("Error: ", e)
         traceback.print_exc()
-        support.ui_utils.env_initialization.teardown()
         return "Error: " + str(e)
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
 
 
 
@@ -335,7 +348,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "manipulation_rule_with_redirect_http_src_ip"
+        "test_case_name": "statistics_rule_bytes_with_src_ip"
     }
     run(parameter)
     """

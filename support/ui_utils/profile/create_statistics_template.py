@@ -69,21 +69,24 @@ class CreateStatisticsTemplate():
                 else:
                     pass
                 # Row Limit 操作
-                if charts[i]["visualization_type"].split("->")[
-                    data_index].strip().lower() == "line":  # line 图的 row limit 操作方式不一样
+                visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
+                if visualization_type_temp == "line" or visualization_type_temp == "table"  or visualization_type_temp == "bar":  # line 图的 row limit 操作方式不一样
                     self._operate_series_limit(charts[i], data_index=data_index, no_modify=no_modify,
                                                data_key="row_limit",
                                                element_position=create_element_position[
                                                    "templates_input_other_posXpath"],
                                                chart_id=chart_id)
+                else:
+                    pass
+                """
                 elif charts[i]["visualization_type"].split("->")[
                     data_index].strip().lower() == "table":  # table 图的 row limit 操作
                     print("table---row limit")
                     self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="row_limit",
                                         element_position=create_element_position["templates_input_other_posXpath"],
                                         chart_id=chart_id)
-                else:
-                    pass
+                """
+
                 # Thresholds - Minimum incoming size 操作
                 self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="min_in_size",
                                     element_position=create_element_position["templates_input_other_posXpath"],
@@ -198,10 +201,16 @@ class CreateStatisticsTemplate():
                                       'new_incoming_sessions': 'New Incoming Sessions',
                                       'new_outgoing_sessions': 'New Outgoing Sessions',
                                       'new_unestablished_sessions': 'New Unestablished Sessions',
+                                      'incoming_packets': 'Incoming Packets',
+                                      'outgoing_packets': 'Outgoing Packets',
+                                      'packets': 'Packets',
                                       'syn_packets': 'SYN Packets',
                                       'session_ids': 'Session IDs', 'client_ips': 'Client IPs',
                                       'server_ips': 'Server IPs', 'incoming_latency': 'Incoming Latency',
-                                      'outgoing_latency': 'Outgoing Latency', 'latency': 'Latency'}
+                                      'outgoing_latency': 'Outgoing Latency', 'latency': 'Latency',
+                                      'incoming_packet_length': 'Incoming Packet Length',
+                                      'outgoing_packet_length': 'Outgoing Packet Length',
+                                      'packet_length': 'Packet Length'}
         """
         dropdown_item_dimensions_dict23 = {'time':'Time', 'client_ip': 'Client IP', 'server_ip': 'Server IP', 'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
                                          'application': 'Application', 'websketch_categories': 'WebSketch Categories', 'client_ip_matched_objects': 'Client IP Matched Objects',
@@ -217,7 +226,8 @@ class CreateStatisticsTemplate():
                                          'client_ip_matched_objects': 'Client IP Matched Objects',
                                          'server_ip_matched_objects': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
                                          's2c_ttl': 'S2C TTL',
-                                         'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID'}
+                                         'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
+                                         'client_port': 'Client Port','server_port':'Server Port'}
 
         if data_key == "metrics":
             metrics_or_dimensions = chart[data_key]  # metrics 数据列表
