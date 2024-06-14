@@ -7,10 +7,7 @@ mainPage_firstLevelMenu_Objects_posId = "object"  # 一级菜单Global Objects
 mainPage_secondLevelMenu_ipAddress_posId = "Objects_ip"  # 二级菜单IP Addresses
 mainPage_secondLevelMenu_port_posId = "Objects_port"
 mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
-
-mainPage_button_menu_posXCss = ".menu-btn span"
-mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
-mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']"    # vsys tree中vsys name定位
+mainPage_secondLevelMenu_url_posId = "Objects_url"
 
 # ip object
 ipObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent"  # create按钮id
@@ -84,3 +81,9 @@ httpSignatureObjectPage_item_value_plus_posXpath = "//i[@class='iconfont icon-Cr
 httpSignatureObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon iconfont icon-save check']"
 httpSignatureObjectPage_okButton_posId = "OK-_HttpSigDetail_Home_App_anonymousComponent"
 httpSignatureObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
+
+# url
+urlObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
+urlObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
+urlObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
+urlObjectPage_addItem_posId = ipObjectPage_addItem_posId

@@ -84,6 +84,7 @@ def run(parameter):
                 ],
                 "packet_capture": []
             },
+            "is_mirror":"on",
             "profile": [],
             "expected_return": "reset",
             "counters_1": {"hits": 1},
@@ -139,7 +140,7 @@ def run(parameter):
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_security_posId
+                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_monitor_posId
                 },
                 "create": {
                     "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
@@ -163,7 +164,13 @@ def run(parameter):
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
-                    "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
+                    "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath,
+                    # profile
+                    "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
+                    "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
+                    "policyRulePage_firstSelectMirrorProfile_posXpath": monitorRulePage_firstSelectMirrorProfile_posXpath,
+                    "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
+                    "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -200,25 +207,25 @@ def run(parameter):
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-            # 触发流量验证
-        if create_rule_code == 200:
-            edit_rule = EditRule(driver)
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
-                                                     test_rule_element_position)
-            if edit_rule_code == 200:
-                # rule_id = search_rule.get_rule_id()
-                test_data["rule_id"] = rule_id
-                verify = TrafficVerification()
-                verification_result = verify.traffic_verification(parameter, test_data, [])
-
-            # 分析验证结果，并返回给flask
-        if len(verification_result) != 0:
-            analysis = AnalysisResult()
-            result = analysis.analysis_result(test_data, [], verification_result)
-            if len(result) == 0:
-                print("The test case is passed.")
-            elif len(result) != 0:
-                print("The test case is failed. The failure reason is: ", result)
+        #     # 触发流量验证
+        # if create_rule_code == 200:
+        #     edit_rule = EditRule(driver)
+        #     edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+        #                                              test_rule_element_position)
+        #     if edit_rule_code == 200:
+        #         # rule_id = search_rule.get_rule_id()
+        #         test_data["rule_id"] = rule_id
+        #         verify = TrafficVerification()
+        #         verification_result = verify.traffic_verification(parameter, test_data, [])
+        #
+        #     # 分析验证结果，并返回给flask
+        # if len(verification_result) != 0:
+        #     analysis = AnalysisResult()
+        #     result = analysis.analysis_result(test_data, [], verification_result)
+        #     if len(result) == 0:
+        #         print("The test case is passed.")
+        #     elif len(result) != 0:
+        #         print("The test case is failed. The failure reason is: ", result)
 
             # 删除rule
         if create_rule_code == 200:

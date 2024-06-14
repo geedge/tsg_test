@@ -18,6 +18,15 @@ class MyWebDriver(webdriver.Remote):
         :param wait_timeout:        元素等待超时时间
         :return:
         """
+        # 获取当前调用栈
+        current_stack = inspect.stack()
+        # 调用栈的第一个元素是当前的函数调用（my_function），
+        # 第二个元素是调用my_function的地方
+        caller_frame_record = current_stack[1]
+        # 获取调用者的文件名、行号、函数名等信息
+        caller_filename = caller_frame_record.filename
+        caller_lineno = caller_frame_record.lineno
+        time_1 = time.time()
         if wait_timeout > 60:
             wait_timeout = 60
         while wait_timeout > 0:
@@ -26,12 +35,7 @@ class MyWebDriver(webdriver.Remote):
             try:
                 self.element = super().find_element(by, value)
             except:
-                caller_info = inspect.stack()[1]
-                caller_filename = caller_info.filename
-                caller_line_number = caller_info.frame
-                caller_code_context = caller_info.code_context
-                print(caller_filename, caller_line_number, caller_code_context)
-                print(f"查找方法：{by};-->>", f"查找元素：{value}\n")
+                #print(f"{caller_filename}. {caller_lineno} line. find element：{value}. find method: {by}.")
                 throw_assert = 1
                 assert_info = traceback.format_exc()
                 continue
@@ -39,6 +43,10 @@ class MyWebDriver(webdriver.Remote):
                 time.sleep(find_after_wait_time)
                 throw_assert = 0
                 break   #找到则退出循环
+        time_2 = time.time()
+        search_time = time_2 - time_1
+        search_time = round(search_time, 1)
+        #print(f"{caller_filename}. {caller_lineno} line. find element：{value}. find method: {by}. find take time：{search_time} second.")
         if throw_assert == 1:
             print(assert_info)
             raise
@@ -58,7 +66,7 @@ class MyWebDriver(webdriver.Remote):
                 caller_line_number = caller_info.frame
                 caller_code_context = caller_info.code_context
                 print(caller_filename, caller_line_number, caller_code_context)
-                print(f"查找方法：{by};-->>", f"查找元素：{value}\n")
+                print(f"find method：{by};-->>", f"find element：{value}\n")
                 throw_assert = 1
                 assert_info = traceback.format_exc()
                 continue

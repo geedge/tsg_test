@@ -267,15 +267,18 @@ manipulationRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequest
 manipulationRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
 # action parameter deny
-manipulationRulePage_deny_addResponseCodeSelectBox_posXpath ="//div[@class='panel-content']//label[normalize-space(text())='Response Code']/parent::*//i"   # resposne code 选择框
-manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath ="//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_code}']"   # reposne code 下拉列表定位
-manipulationRulePage_deny_addResponseContentSelectBox_posXpath ="//div[@class='panel-content']//label[normalize-space(text())='Response Content']/parent::*//i"   # resposne content 选择框
-manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath ="//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_type}']"   # reposne content 下拉列表定位
-manipulationRulePage_deny_addResponseContentTextInput_posXpath ="//div[@id='myEditor1']"   # resposnse content text输入框  定位
-manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath ="//div[@class='box-sizing']//i"   # resposne content profile  选择框  定位
-manipulationRulePage_deny_searchResponseProfile_posXpath ="//div[@class='el-scrollbar']//input[@placeholder='Search']"   # resposne content search profile 对话框查询输入框
-manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath ="//div[@class='el-scrollbar']//div[contains(@class, 'margin-top')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
-
+manipulationRulePage_deny_addResponseCodeSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Code']/parent::*//i"   # resposne code 选择框
+manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_code}']"   # reposne code 下拉列表定位
+manipulationRulePage_deny_addResponseContentSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Content']/parent::*//i"   # resposne content 选择框
+manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_type}']"   # reposne content 下拉列表定位
+manipulationRulePage_deny_addResponseContentTextInput_posXpath = "//div[@id='myEditor1']"   # resposnse content text输入框  定位
+manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath = "//div[@class='box-sizing']//i"   # resposne content profile  选择框  定位
+manipulationRulePage_deny_searchResponseProfile_posXpath = "//div[@class='el-scrollbar']//input[@placeholder='Search']"   # resposne content search profile 对话框查询输入框
+manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@class='el-scrollbar']//div[contains(@class, 'margin-top')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
+# action parameter redirect http
+manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
+manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
+manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//input[@id='undefined1']"   # redirect url 输入框 定位
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
 manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
@@ -354,8 +357,8 @@ shapingRulePage_okButton_yes_posId = "OK-_policy_shaping_write_Home_App_anonymou
 shapingRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 
 #monitor
+#monitor列表页按钮
 mainPage_policySecondLevelMenu_monitor_posId = "policy_monitor"
-
 monitorRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
 monitorRuleListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
 monitorRuleListPage_searchLable_posId = shapingRuleListPage_searchLable_posId
@@ -364,27 +367,32 @@ monitorRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@cl
 monitorRuleListPage_searchLable_searchButton_posId = "searchQuery"
 monitorRuleListPage_selectRule_posXpath = "//div[contains(@class,'ly-table1')]//tbody//sapn[@class='el-checkbox__inner']"
 monitorRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
-
+#monitor新建页/编辑页面按钮
 monitorRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
 monitorRulePage_mirrorTrafficButton_posXpath ='//*[text()="Mirror Traffic"]/ancestor::div[@class="el-form-item el-form-item--small"]//*[@class="el-switch is-checked"]'
 monitorRulePage_packetCaptureButton_posXpath = '//*[text()="Packet Capture"]/ancestor::div[@class="el-form-item el-form-item--small"]//span[@class="el-switch__core"]'
 monitorRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 monitorRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 monitorRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
-
 monitorRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 monitorRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 monitorRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
 monitorRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
 monitorRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
 monitorRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
-
 monitorRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
-
+##monitor 添加profile的按钮
 monitorRulePage_addVLANIDButton_posXpath = '//*[text()="Add VLAN ID"]/ancestor::div[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//div[@class="el-switch is-checked"]'
 monitorRulePage_firstSelectMirrorProfile_posXpath='//*[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//input[@class="el-input__inner"]'
 monitorRulePage_searchMirrorProfile_posXpath = '//input[@type="search"]'
 monitorRulePage_selectMirrorProfile_posXpath = "//li[@class='el-select-dropdown__item' and contains(text(),'{replaceValue}')]"
+monitorRulePage_addProfile_plusButton_posXpath= '(//i[@class="iconfont icon-Create1"])[last()]'
+monitorRulePage_addProfile_inputName_posXpath='//*[@id="trafficmirror_profileName"]'
+monitorRulePage_addProfile_inputVLANID_posXpath='//*[@id="trafficmirror_addrArray0"]'
+monitorRulePage_addProfile_addVLANID_plusButton_posXpath='//*[@id="addrTypeAdd"]/i'
+monitorRulePage_saveProile_ok_posXpath='//*[@id="trafficMirrorProfile_ok"]'
+monitorRulePage_saveProile_warningYes_posXpath='//button[@class="el-button el-button--default el-button--small el-button--primary operation-confirm"]'
+#monitor新建页/编辑页按钮
 monitorRulePage_enable_posXpath = shapingRulePage_enable_posXpath
 monitorRulePage_okButton_posId = "OK-_policy_monitor_write_Home_App_anonymousComponent"
 monitorRulePage_warningYes_posXpath =shapingRulePage_okButton_warningYes_posXpath
@@ -462,10 +470,15 @@ statisticsRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHe
 statisticsRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 statisticsRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
 # Template添加按钮定位
-statisticsRulePage_addTemplate_posXpath = "//div[@class='el-form-item__content']/div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"   # resposne code 选择框
-
+statisticsRulePage_add_template_posXpath = "//div[@class='el-form-item__content']/div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"   # resposne code 选择框
+statisticsRulePage_search_template_posXpath = "//div[@class='CommonListDetail list-detail']//div[contains(@class, 'object-item-seach')]//input"
+statisticsRulePage_select_template_posXpath = "//div[@class='CommonListDetail list-detail']//div[@class='UaPopover TemplatePopover popover']"
+statisticsRulePage_close_template_posXpath = "//div[@class='FlagList list-box']//div[@class='rigth-menu-button-info']"
 # 保存策略时，ok cancel warnging定位
 statisticsRulePage_enable_posXpath = securityRulePage_enable_posXpath
-statisticsRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
-statisticsRulePage_okButton_warningYes_posXpath = "//div[@class='el-message-box__btns']//button[contains(@class, 'el-button--primary')]"
+statisticsRulePage_okButton_yes_posId = "OK-_policy_statistics_edit_Home_App_anonymousComponent"
+statisticsRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+statisticsRulePage_okButton_warningNo_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+statisticsRulePage_delete_tip_button_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+statisticsRulePage_delete_tip_button_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
 
