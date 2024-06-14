@@ -2,7 +2,7 @@
 import sys
 import time
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.ui_utils.object.page_jump import PageJump
+from support.ui_utils.profile.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
@@ -24,7 +24,7 @@ class CreateProfile():
                 sf_name_list,sc_info= self.get_sf_info(service_functions,sf_profile_element_position,sc_info)
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_object_page(page_jump_element_position)
+            page_jump.jump_sub_profile_page(page_jump_element_position)
             # 点击create
             self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
             # 输入name
@@ -69,10 +69,9 @@ class CreateProfile():
         # Failure Action 操作
         failure_action = self.format_from_data_lower_and_underline(data, key="failure_action")
         failure_action_list = failure_action.split(":")
-        self.sff_operate_radio(create_element_position, key="failure_action", value=failure_action, label_dict=label_dict, radio_name_dict=radio_name_dict)
+        failure_action = failure_action_list[0]
+        self.sff_operate_radio(create_element_position, key="failure_action", value=failure_action, label_dict=label_dict, radio_name_dict=radio_name_dict)     #点击 Failure Action 操作
         if "re-dispatch" in failure_action_list:
-            failure_action = failure_action_list[0]
-            self.sff_operate_radio(create_element_position, key="failure_action", value=failure_action, label_dict=label_dict, radio_name_dict=radio_name_dict)     #点击 Failure Action 操作
             # Unavailability Action 点击操作
             replaceLabel_unavailability_action = label_dict["unavailability_action"]
             replaceRadioName_unavailability_action = radio_name_dict[failure_action_list[1]]
@@ -139,7 +138,7 @@ class CreateProfile():
         create_element_position = profile_element_position["create"]
         #页面跳转
         page_jump = PageJump(self.driver)
-        page_jump.jump_sub_object_page(page_jump_element_position)
+        page_jump.jump_sub_profile_page(page_jump_element_position)
         #点击create
         self.driver.find_element(By.ID,create_element_position["profileListPage_createButton_posId"]).click()
         #在打开页面操作：输入name

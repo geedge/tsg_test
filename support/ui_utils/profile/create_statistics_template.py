@@ -201,10 +201,16 @@ class CreateStatisticsTemplate():
                                       'new_incoming_sessions': 'New Incoming Sessions',
                                       'new_outgoing_sessions': 'New Outgoing Sessions',
                                       'new_unestablished_sessions': 'New Unestablished Sessions',
+                                      'incoming_packets': 'Incoming Packets',
+                                      'outgoing_packets': 'Outgoing Packets',
+                                      'packets': 'Packets',
                                       'syn_packets': 'SYN Packets',
                                       'session_ids': 'Session IDs', 'client_ips': 'Client IPs',
                                       'server_ips': 'Server IPs', 'incoming_latency': 'Incoming Latency',
-                                      'outgoing_latency': 'Outgoing Latency', 'latency': 'Latency'}
+                                      'outgoing_latency': 'Outgoing Latency', 'latency': 'Latency',
+                                      'incoming_packet_length': 'Incoming Packet Length',
+                                      'outgoing_packet_length': 'Outgoing Packet Length',
+                                      'packet_length': 'Packet Length'}
         """
         dropdown_item_dimensions_dict23 = {'time':'Time', 'client_ip': 'Client IP', 'server_ip': 'Server IP', 'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
                                          'application': 'Application', 'websketch_categories': 'WebSketch Categories', 'client_ip_matched_objects': 'Client IP Matched Objects',
@@ -220,7 +226,8 @@ class CreateStatisticsTemplate():
                                          'client_ip_matched_objects': 'Client IP Matched Objects',
                                          'server_ip_matched_objects': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
                                          's2c_ttl': 'S2C TTL',
-                                         'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID'}
+                                         'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
+                                         'client_port': 'Client Port','server_port':'Server Port'}
 
         if data_key == "metrics":
             metrics_or_dimensions = chart[data_key]  # metrics 数据列表
