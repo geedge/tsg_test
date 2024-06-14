@@ -1,6 +1,6 @@
 # gunicorn.conf.py  
 
-timeout = 700
+timeout = 1000
 
 # 绑定到的IP地址和端口号  
 bind = "0.0.0.0:8800"
