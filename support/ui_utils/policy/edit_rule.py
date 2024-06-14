@@ -32,6 +32,9 @@ class EditRule():
             elif type == "service_chaining":
                 rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault mouseSchedule el-popover__reference']//span").text
                 edit_button_position = "appEdit-_OperateBtns_ElRow_policy_ServiceChaining_Home_App_anonymousComponent"
+            elif type == "monitor":
+                rule_id = self.driver.find_element(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+                edit_button_position ="appEdit-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
             all_button_position = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
             self.driver.find_element(By.XPATH, all_button_position).click()
             self.driver.find_element(By.ID, edit_button_position).click()
