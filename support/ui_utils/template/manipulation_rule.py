@@ -17,7 +17,7 @@ test_data = {
                     {
                         "item_operation": "add",
                         "item_type": "ipv4",
-                        "item_value": "192.168.64.86",
+                        "item_value": "192.168.64.88",
                     },
                 ]
             }
@@ -55,7 +55,22 @@ test_data = {
                 ]
             }
         ],
-        "protocol_filed": [],
+        "protocol_filed": [
+            {
+                "name": "manipulation_url",
+                "object_type": "url",
+                "item_operation": "add",
+                "select_type": False,
+                "negate": False,
+                "items": [
+                    {
+                        "item_operation": "add",
+                        "item_type": "url",
+                        "item_value": "baidu->"
+                    }
+                ],
+            }
+        ],
         "sub_action_override": True,
         "sub_action": [
         ],
@@ -80,6 +95,22 @@ test_data = {
                 },
             }
         ],
+        "redirect_url": [
+            {
+                "profile_type": "redirect_response",
+                "response_code": 301,
+                "redirect_url": "https://www.jd.com"
+            }
+        ],
+        "replace_parameter": [
+            {
+                "profile_type": "replace",
+                "regex": "off",
+                "search_in": "HTTP Request-URI",
+                "find": "forecast",
+                "replace_with": "team"
+            }
+        ]
     },
     "expected_return": "reset",
     "counters_1": {"hits": 1},

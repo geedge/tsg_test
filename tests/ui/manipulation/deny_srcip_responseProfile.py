@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "manipulation",
-            "rule_name": "manipulation_rule_deny_srcip_responseProfile",
+            "rule_name": "deny_srcip_responseProfile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -328,7 +328,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "manipulation_rule_deny_srcip_responseProfile"
+        "test_case_name": "deny_srcip_responseProfile"
     }
     run(parameter)
     """

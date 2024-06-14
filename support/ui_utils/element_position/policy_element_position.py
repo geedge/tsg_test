@@ -203,7 +203,7 @@ manipulationRulePage_selectInsert_posId = "insertinsert"
 manipulationRulePage_selectEditElement_posId = "edit_elementedit_element"
 manipulationRulePage_selectRunScript_posId = "run_scriptrun_script"
 # rule 页面中Add Condition按钮定位
-manipulationRulePage_addCondition_posXpath = policyRulePage_addCondition_internalIP_posXpath
+manipulationRulePage_addCondition_posXpath = "//*[@id='policy_condition-_ConditionModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_Edit_Home_App_anonymousComponent']"
 manipulationRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 # rule 中添加condition侧滑中选择行定位
 manipulationRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
@@ -279,6 +279,12 @@ manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@class
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
 manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//input[@id='undefined1']"   # redirect url 输入框 定位
+# action parameter replace
+manipulationRulePage_replace_addRegex_posXpath = "//ul[@class='replacelist']//div[@zs-label='regexEnable']//div[contains(@class, 'el-switch')]"   # regex 开关定位
+manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='replacelist']//div[@zs-label='搜索区域']//i"   # search in 选择框 定位
+manipulationRulePage_replace_addSearchInSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li[normalize-space(text())='{replace_type}']"   # search in 下拉框item 定位
+manipulationRulePage_replace_addFindInput_posXpath = "//ul[@class='replacelist']//div[@zs-label='Fined']//input"   # find 输入框 定位
+manipulationRulePage_replace_addReplaceWithInput_posXpath = "//ul[@class='replacelist']//div[@zs-label='Replace']//input"   # replace with 输入框 定位
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
 manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"

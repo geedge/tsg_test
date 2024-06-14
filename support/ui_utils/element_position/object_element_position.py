@@ -84,6 +84,17 @@ httpSignatureObjectPage_okButton_warningYes_posXpath = "//button[@class='el-butt
 
 # url
 urlObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
+urlObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
 urlObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
 urlObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
 urlObjectPage_addItem_posId = ipObjectPage_addItem_posId
+urlObjectPage_inputItem_posXpath = "//div[@class='item-box']//input"     # input 输入框，简单的第一个定位，后期优化
+urlObjectPage_saveItem_posXpath = "//div[@class='item-box']//i[contains(@class, 'save-color')]"     # input item保存，简单的第一个定位，后期优化
+urlObjectPage_okButton_posId = "OK-_URLDetail_Home_App_anonymousComponent"
+urlObjectPage_okButton_warningYes_posXpath = httpSignatureObjectPage_okButton_warningYes_posXpath
+    # 查询
+urlObjectPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posId
+urlObjectListPage_searchLabel_selectName_posXpath = "//*[@id='2-_FilteredSearch_ElRow_Objects_url_Home_App_anonymousComponent']"
+urlObjectPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
+urlObjectPage_allSelect_posXpath = httpSignatureObjectListPage_allSelect_posXpath
+urlObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
