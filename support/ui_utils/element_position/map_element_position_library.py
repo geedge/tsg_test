@@ -434,6 +434,12 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchSrcIP_posXpath": statisticsRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": statisticsRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": statisticsRulePage_closeSrcIP_posXpath,
+        # Destination IP
+        "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
+        "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
+        "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
+        "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
+        "policyRulePage_closeDstIP_posXpath": statisticsRulePage_closeDstIP_posXpath,
         # Internal IP
         "policyRulePage_addConditionInternalIP_posXpath": statisticsRulePage_addCondition_internalIP_posXpath,
         "policyRulePage_addInternalIP_posXpath": statisticsRulePage_addInternalIP_posXpath,
@@ -519,6 +525,10 @@ def get_element_position(key_name):
     if key_name == "source_ip":
         element_position_map = test_ip_object_element_position
     elif key_name == "source_port":
+        element_position_map = test_port_object_element_position
+    elif key_name == "destination_ip":
+        element_position_map = test_ip_object_element_position
+    elif key_name == "destination_port":
         element_position_map = test_port_object_element_position
     elif key_name == "http_signature":
         element_position_map = test_http_signature_object_element_position

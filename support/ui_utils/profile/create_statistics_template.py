@@ -20,7 +20,7 @@ class CreateStatisticsTemplate():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_profile_page(page_jump_element_position)
+            page_jump.jump_sub_profile_page(page_jump_element_position, "UIwithTrafficTestVsys")
             # 点击create
             self.driver.find_element(By.ID, create_element_position["templateListPage_createButton_posId"]).click()
             # 输入name
@@ -244,9 +244,9 @@ class CreateStatisticsTemplate():
             for j in range(len(metrics_or_dimensions)):  # 循环操作metrics
                 # repalceLabel = "Metrics"   # 定位重组参数使用
                 dropdown_item = metrics_or_dimensions[j].strip().split("->")[data_index].lower()  # 提取数据
-                dropdown_item = "_".join(dropdown_item.split())  # outgoing_bytes
+                #dropdown_item = "_".join(dropdown_item.split())  # outgoing_bytes
                 drop_item_old = metrics_or_dimensions[j].strip().split("->")[0].lower()  # 创建的数据，修改或删除使用
-                drop_item_old = "_".join(drop_item_old.split())
+                #drop_item_old = "_".join(drop_item_old.split())
                 if dropdown_item != no_modify:  # 编辑遇到不修改时，不处理
                     if dropdown_item == "":  # 修改数据参数中，creat为空
                         continue

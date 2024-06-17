@@ -62,7 +62,21 @@ def run(parameter):
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [],
+                "destination_ip": [
+                    {
+                        "name": "statistics_sessons_destination_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "2.1.1.1",
+                            },
+                        ]
+                    }
+                ],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -99,12 +113,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "sessions:Rate:Sessions Rate"
+                            "sessions:Rate:sesions rate"
                           ],
                           "dimensions": [
                             "client_port"
                           ],
-                          "order_by": "Sessions Rate",
+                          "order_by": "sesions rate",
                           "row_limit": "50",
                           "min_in_size": "1",
                           "max_out_size": "1"
@@ -215,6 +229,7 @@ def run(parameter):
                     break
 
         # 创建rule
+        element_position_map = {}
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -234,34 +249,34 @@ def run(parameter):
 
         # 触发流量验证
         create_rule_code = 200
-        #cfg_list = [{"create_policies_ids":[852801]},{"statistics_sc_info_list":[48447]}]
-        cfg_list = {}
-        create_policies_ids = []
-        create_policies_ids.extend(policies_ids)
-        cfg_list["create_policies_ids"] = create_policies_ids
-        statistics_sc_info = []
-        cfg_list["statistics_sc_info_list"] = statistics_sc_info
+
         if create_rule_code == 200:
-            verify = TrafficVerification()
-            verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+            edit_rule = EditRule(driver)
+            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                                                     element_position_map)
+            if edit_rule_code == 200:
+                test_data["rule_id"] = rule_id
+                verify = TrafficVerification()
+                cfg_list = {}
+                verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
 
-            # 编辑修改使用
-            #edit_rule = EditRule(driver)
-            #element_position_map = get_element_position(test_data["policy_type"])
-            #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            #if edit_rule_code == 200:
-                # rule_id = search_rule.get_rule_id()
-               # test_data["rule_id"] = rule_id
+                # 编辑修改使用
+                #edit_rule = EditRule(driver)
+                #element_position_map = get_element_position(test_data["policy_type"])
+                #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
+                #if edit_rule_code == 200:
+                    # rule_id = search_rule.get_rule_id()
+                   # test_data["rule_id"] = rule_id
 
 
-        # 分析验证结果，并返回给flask
-        if len(verification_result) != 0:
-            analysis = AnalysisResult()
-            result = analysis.analysis_result(test_data, [], verification_result)
-            if len(result) == 0:
-                print("The test case is passed.")
-            elif len(result) != 0:
-                print("The test case is failed. The failure reason is: ", result)
+            # 分析验证结果，并返回给flask
+            if len(verification_result) != 0:
+                analysis = AnalysisResult()
+                result = analysis.analysis_result(test_data, [], verification_result)
+                if len(result) == 0:
+                    print("The test case is passed.")
+                elif len(result) != 0:
+                    print("The test case is failed. The failure reason is: ", result)
 
 
         # 删除rule
@@ -374,7 +389,7 @@ if __name__ == '__main__':
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
         "test_case_name": "statistics_rule_bytes_with_src_ip",
-        "script_type": "api",
+        "script_type": "ui",
         "policy_type": "statistics"
     }
     run(parameter)

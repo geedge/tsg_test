@@ -36,6 +36,10 @@ class TrafficVerification():
                 statistics_sc_info_list = []
                 cfg_list["rule_id"] = test_data["rule_id"]
                 statistics_sc_info_list.append(cfg_list)
+            elif policy_type == "statistics":
+                statistics_sc_info_list = []
+                cfg_list["rule_id"] = test_data["rule_id"]
+                #statistics_sc_info_list.append(cfg_list)
             temp_list = {}
             temp_list[policy_type] = test_data["rule_id"]
             create_policies_ids = []
@@ -115,21 +119,39 @@ class TrafficVerification():
             current_utc_time = datetime.now(utc_tz)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             # 解析trex使用参数， 解析client server ip
-            for ip_item in test_data["obj_condition_1"]:
-                if "ATTR_SOURCE_IP" in ip_item.values():
-                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                        clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                        clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                    else:
-                        clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                        clients_end = clients_start
-                if "ATTR_DESTINATION_IP" in ip_item.values():
-                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                        servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                        servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                    else:
-                        servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                        servers_end = servers_start
+            if script_type == "ui":
+                for ip_item in test_data["condition"]:
+                    if "source_ip" in ip_item.values():
+                        if "-" in ip_item["item"][0]["item_value"]:
+                            clients_start = ip_item["item"][0]["item_value"].split("-")[0]
+                            clients_end = ip_item["item"][0]["item_value"].split("-")[-1]
+                        else:
+                            clients_start = ip_item["item"][0]["item_value"]
+                            clients_end = clients_start
+                    if "destination_ip" in ip_item.values():
+                        if "-" in ip_item["item"][0]["item_value"]:
+                            servers_start = ip_item["item"][0]["item_value"].split("-")[0]
+                            servers_end = ip_item["item"][0]["item_value"].split("-")[-1]
+                        else:
+                            servers_start = ip_item["item"][0]["item_value"]
+                            servers_end = servers_start
+                # to do 待补充UI界面验证和清理
+            elif script_type == "api":
+                for ip_item in test_data["obj_condition_1"]:
+                    if "ATTR_SOURCE_IP" in ip_item.values():
+                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                            clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                        else:
+                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                            clients_end = clients_start
+                    if "ATTR_DESTINATION_IP" in ip_item.values():
+                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                            servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                        else:
+                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                            servers_end = servers_start
             verify_policy_break_count = 0
             while True:      # 多次策略验证
                 verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}

@@ -468,9 +468,14 @@ statisticsRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceLis
 # rule 页面中不同condition的添加+符号定位操作
 ## Sorce IP Address的添加、查询、选中、关闭操作
 statisticsRulePage_addSrcIP_posXpath = "//div[@zs-label='Source']//div[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//i[contains(@class, 'icon-Create1')]"
-statisticsRulePage_searchSrcIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+statisticsRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
 statisticsRulePage_selectSrcIP_posXpath ="//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 statisticsRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//div[@class='rigth-menu-button-info']//button"
+## Destination IP Address的添加、查询、选中、关闭操作
+statisticsRulePage_addDstIP_posXpath = "//div[@zs-label='Destination']//div[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//i[contains(@class, 'icon-Create1')]"
+statisticsRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+statisticsRulePage_selectDstIP_posXpath ="//div[@class='destinations list-box']//span[normalize-space(text())='{replaceValue}']"
+statisticsRulePage_closeDstIP_posXpath = "//div[@class='destinations list-box']//div[@class='rigth-menu-button-info']//button"
 ## Internal IP的添加、查询、选中、关闭操作
 statisticsRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
 statisticsRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath
