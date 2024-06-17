@@ -393,7 +393,7 @@ monitorRuleListPage_selectRule_posXpath = "//div[contains(@class,'ly-table1')]//
 monitorRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
 #monitor新建页/编辑页面按钮
 monitorRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
-monitorRulePage_mirrorTrafficButton_posXpath ='//*[text()="Mirror Traffic"]/ancestor::div[@class="el-form-item el-form-item--small"]//*[@class="el-switch is-checked"]'
+monitorRulePage_mirrorTrafficButton_posXpath ='//*[text()="Mirror Traffic"]/ancestor::div[@class="el-form-item el-form-item--small"]//*[@class="el-switch__core"]'
 monitorRulePage_packetCaptureButton_posXpath = '//*[text()="Packet Capture"]/ancestor::div[@class="el-form-item el-form-item--small"]//span[@class="el-switch__core"]'
 monitorRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 monitorRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
@@ -406,7 +406,7 @@ monitorRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicati
 monitorRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
 monitorRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 ##monitor 添加profile的按钮
-monitorRulePage_addVLANIDButton_posXpath = '//*[text()="Add VLAN ID"]/ancestor::div[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//div[@class="el-switch is-checked"]'
+monitorRulePage_addVLANIDButton_posXpath = '//*[text()="Add VLAN ID"]/ancestor::div[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//div[@class="el-switch"]'
 monitorRulePage_firstSelectMirrorProfile_posXpath='//*[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//input[@class="el-input__inner"]'
 monitorRulePage_searchMirrorProfile_posXpath = '//input[@type="search"]'
 monitorRulePage_selectMirrorProfile_posXpath = "//li[@class='el-select-dropdown__item' and contains(text(),'{replaceValue}')]"

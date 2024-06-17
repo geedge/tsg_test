@@ -28,12 +28,12 @@ class SearchRule():
         #self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
         element_tr = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_tableTbody_posXpath"])
         row = element_tr.find_elements(By.XPATH, "tr")
-        if len(row) != 0 and type != "security":
+        if len(row) != 0 and type not in ["security","monitor"]:
             first_row = row[0]
             first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
             first_row_id = first_row.find_element(By.XPATH, "//span[@class='list-popover']").text.strip()
             return 200, first_row_checkBox_element, first_row_id
-        elif len(row) != 0 and type == "security":
+        elif len(row) != 0 and type in ["security","monitor"]:
             return 200, ""
         else:
             return 400, ""

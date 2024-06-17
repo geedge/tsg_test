@@ -156,9 +156,9 @@ def run(parameter):
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
-                    "policyRulePage_searchDstPort_posXpath": securityRulePage_searchDstPort_posXpath,
-                    "policyRulePage_selectDstPort_posXpath": securityRulePage_selectDstPort_posXpath,
-                    "policyRulePage_closeDstPort_posXpath": securityRulePage_closeDstPort_posXpath,
+                    "policyRulePage_searchExternalPort_posXpath": securityRulePage_searchExternalPort_posXpath,
+                    "policyRulePage_selectExternalPort_posXpath": securityRulePage_selectExternalPort_posXpath,
+                    "policyRulePage_closeExternalPort_posXpath": securityRulePage_closeExternalPort_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
@@ -288,7 +288,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
+        "test_pc_ip": "192.168.64.90",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
@@ -296,7 +296,9 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_external_port"
+        "test_case_name": "monitor_external_port",
+        "script_type":"ui",
+
     }
     run(parameter)
     """

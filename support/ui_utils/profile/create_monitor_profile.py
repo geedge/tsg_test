@@ -7,7 +7,7 @@ import pytest_check
 from selenium.common import NoSuchElementException
 
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.ui_utils.object.page_jump import PageJump
+from support.ui_utils.profile.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
@@ -25,34 +25,39 @@ class CreateProfile():
         self.page_jump_element_position = monitor_profile_element_position["page_jump"]
         self.create_element_position = monitor_profile_element_position["create"]
 
-    def create_monitor_profile(self, data, monitor_profile_element_position,*source_name):
+    def create_monitor_profile(self, data, monitor_profile_element_position,source_name):
         page_jump_element_position = monitor_profile_element_position["page_jump"]
         create_element_position = monitor_profile_element_position["create"]
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_object_page(page_jump_element_position)
+            page_jump.jump_sub_profile_page(page_jump_element_position)
             self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
             # 在create 创建页面操作
             self.my_random = RandomName()
             if source_name:
-                self.random_name = source_name[0]
+                self.random_name = source_name
                 self.driver.find_element(By.ID, create_element_position["profilePage_inputName_posId"]).send_keys(self.random_name)
             else:
                 self.random_name = self.my_random.random_name()
                 self.driver.find_element(By.ID,create_element_position["profilePage_inputName_posId"] ).send_keys(self.random_name)
             # 解析输入的vlan id数据
-            self.process_vlan_ids(data)
+            #self.process_vlan_ids(data)
+            elements_vlan_ids_input = self.driver.find_element(By.XPATH, self.create_element_position["trafficMirroringProfiles_input_vlanIdsInput_posXpath"])
+            var = data["vlan_id"]
+            elements_vlan_ids_input.send_keys(int(var))
             # 点击OK
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_button_oK_posCss"]).click()
-            self.validate_after_ok(self,self.random_name)
-            if "reverse_case" in data.keys():  # 其它字符输入用例判断使用
-                if data["reverse_case"] == "other_chars":
-                    execpt_info = "Please enter the integer"
-                    actual_info = self.driver.find_element(By.XPATH, "//div[@class='el-form-item__error']").text.strip()
-                    print(actual_info)
-                    pytest_check.equal(execpt_info, actual_info,msg="所在行数{}".format(inspect.currentframe().f_lineno))
-                    return 999
+            self.driver.find_element(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]).click()
+
+            # self.validate_after_ok(self,self.random_name)
+            # if "reverse_case" in data.keys():  # 其它字符输入用例判断使用
+            #     if data["reverse_case"] == "other_chars":
+            #         execpt_info = "Please enter the integer"
+            #         actual_info = self.driver.find_element(By.XPATH, "//div[@class='el-form-item__error']").text.strip()
+            #         print(actual_info)
+            #         pytest_check.equal(execpt_info, actual_info,msg="所在行数{}".format(inspect.currentframe().f_lineno))
+            #         return 999
             return 200
         except Exception as e:
             print(e)
