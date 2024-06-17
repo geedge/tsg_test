@@ -3,7 +3,9 @@ import copy
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.element_position.profile_element_position import *
-
+from support.ui_utils.policy.create_rule import CreateRule
+from support.ui_utils.policy.search_rule import SearchRule
+from support.ui_utils.policy.delete_rule import DeleteRule
 
 
 test_ip_object_element_position = {
@@ -586,6 +588,110 @@ def get_name_list(test_data):
                     name_list.append(copy.deepcopy(tmp_name_dict))
     print(name_list)
     return name_list
+
+def create_pre_policy(data, driver):
+    "manipulition创建前添加前置策略，security deny quic 和 intercept"
+    create_rule = CreateRule(driver)
+    test_data = data
+    security_temp_deny_quic = {
+            "is_multi_priority": False,
+            "rule_num": 1,
+            "policy_type": "security",
+            "rule_name": "manipulation_pre_deny_quic",
+            "rule_action": "deny",
+            "rule_type": "create",
+            "condition": {
+                "source_ip": [],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [],
+                "external_port": [],
+                "source_geography": [],
+                "destination_geography": [],
+                "sub_id": [],
+                "device": [],
+                "tunnel": [],
+                "tunnel_level": [],
+                "flag": [],
+                "application": [
+                    {
+                        "name": "http",  #
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
+                "server_fqdn": [],
+                "protocol_filed": [],
+                "sub_action_override": True,
+                "sub_action": [],
+                "packet_capture": []
+            },
+            "profile": [],
+            "expected_return": "新闻",
+            "counters_1": {"hits": "many"},
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.90"}],
+            "traffic": {
+                "type": "curl",
+                "command": "curl -kv --connect-timeout 5 -m 10 http://www.news.cn/"
+            },
+            "token": ""
+        }
+    intercept_temp = {
+            "is_multi_priority": False,
+            "rule_num": 1,
+            "policy_type": "intercept",
+            "rule_name": "manipulation_pre_intercept",
+            "rule_action": "intercept",
+            "rule_type": "create",
+            "condition": {
+                "source_ip": [],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [],
+                "external_port": [],
+                "source_geography": [],
+                "destination_geography": [],
+                "sub_id": [],
+                "device": [],
+                "tunnel": [],
+                "tunnel_level": [],
+                "flag": [],
+                "application": [
+                    {
+                        "name": "http",  #
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
+                "server_fqdn": [],
+                "protocol_filed": [],
+                "sub_action_override": True,
+                "sub_action": [],
+                "packet_capture": []
+            },
+            "profile": [],
+            "expected_return": "新闻",
+            "counters_1": {"hits": "many"},
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.90"}],
+            "traffic": {
+                "type": "curl",
+                "command": "curl -kv --connect-timeout 5 -m 10 http://www.news.cn/"
+            },
+            "token": ""
+        }
+
+    security_temp_deny_quic["condition"]["source_ip"] = data["condition"]["source_ip"]
+    security_rule_element_position = get_element_position("security")
+    intercept_rule_element_position = get_element_position("intercept")
+    create_rule.create(security_temp_deny_quic, security_rule_element_position)
+    create_rule.create(test_data, intercept_rule_element_position)
+    pass
 
 
 # 勿删 zcw make

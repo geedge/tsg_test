@@ -185,6 +185,9 @@ def run(parameter):
         if cond_code == 200 and prfi_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
+            # 添加deny quic 和 intercept
+            create_rule_code_1 = create_pre_policy(test_data, driver)
+
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
                 print("Create manipulation rule successfully.")
@@ -325,8 +328,8 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "zcw3",
+        "password": "qa111111",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
