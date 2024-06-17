@@ -230,17 +230,18 @@ def run(parameter):
 
         # 创建rule
         element_position_map = {}
+        create_rule_code = 1
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             search_rule = SearchRule(driver)
             # 获取Rule ID:
-            search_rule_code, first_row_checkbox_element, first_row_id = search_rule.search(test_data["policy_type"],
+            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
                                                                               test_data["rule_name"],
                                                                               element_position_map)
-            if search_rule_code == 200:
-                policies_ids = first_row_id
+            #if search_rule_code == 200:
+                #policies_ids = first_row_id
             if create_rule_code == 200:
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
