@@ -69,7 +69,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "www.example.com"
+                            "jd.com"
                         ]
                         }
                     ]
@@ -80,7 +80,7 @@ def run(parameter):
             "app_name_1": ["dns"],
             "expected_return": "www.www.www",
             "counters_1": {"hits": 2},
-            "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.jd.com"}],
+            "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
                 "command": "nslookup www.jd.com -timeout=1"
@@ -137,12 +137,13 @@ if __name__ == "__main__":
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6473",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

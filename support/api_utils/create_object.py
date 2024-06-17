@@ -76,6 +76,7 @@ class CreateObject():
                                 "create_http_signature_ids": [],
                                 "create_profile_ids": [],
                                 "create_policies_ids": [],
+                                "create_geo_name_ids": [],
                                 "statistics_sc_info_list": []
                             }
                             if obj_template_dict["object"]["type"] == "ip" and len(self.ip_ids) > 0:

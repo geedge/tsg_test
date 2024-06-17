@@ -70,19 +70,19 @@ def receive_parameter():
             
             parameter["api_server"] = parse.get("tsg_url", "login_url")
             
-            parameter["test_pc_ip"] = parse.get("test_pc", "ip")
-
-            parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id")
-            
             project_path = parse.get("root_path", "path")
             parameter["root_path"] = project_path
             
             if tag == "api":
+                parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_api")
+                parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_api")
                 parameter["path"] = f"{project_path}/tests/api"
                 parameter["env"] = "tsgx"
                 parameter["vsys_id"] = 6
                 parameter["is_log"] = 0
             elif tag == "ui":
+                parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_ui_with_traffic")
+                parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["vsys_id"] = 6
                 parameter["is_log"] = 1

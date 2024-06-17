@@ -65,7 +65,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ssl"],
+            "app_name_1": ["http"],
             "expected_return": "百度一下",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com:180"}],
