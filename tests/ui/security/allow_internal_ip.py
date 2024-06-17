@@ -3,7 +3,6 @@ import time
 import pytest
 import os
 import sys
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -17,8 +16,8 @@ from support.ui_utils.element_position.object_element_position import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
+from support.api_utils.delete_config import *
 import support.ui_utils.env_initialization
-import traceback
 
 
 def run(parameter):
@@ -26,24 +25,28 @@ def run(parameter):
         print("Begin to run test case: " + parameter["test_case_name"])
         # 脚本启动时间
         start_time = time.time()
-
+        
         # 环境初始化
         support.ui_utils.env_initialization.initiate_selenium_request()
         driver = support.ui_utils.env_initialization.my_driver()
         support.ui_utils.env_initialization.setup()
-
+        
         # 测试数据
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_ip",
-            "rule_action": "deny",
+            "rule_name": "security_rule_allow_internal_ip",
+            "rule_action": "allow",
             "rule_type": "create",
             "condition": {
-                "source_ip": [
+                "source_ip": [],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [
                     {
-                        "name": "security_source_ip",
+                        "name": "security_internal_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -51,15 +54,11 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
-                            },
+                                "item_value": "192.168.64.91",
+                            }
                         ]
                     }
                 ],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
                 "internal_port": [],
                 "external_ip": [],
                 "external_port": [],
@@ -70,64 +69,21 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [
-                    {
-                        "name": "ssl",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
-                "server_fqdn": [
-                    {
-                        "name": "test_baidu",  # name为www.baidu.com，在Docker中无法识别
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "item": [
-                            "*baidu.com"
-                        ]
-                    }
-                ],
+                "application": [],
+                "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
-                "sub_action": [
-                    {
-                        "type": "drop",
-                        "drop_packet": 1,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
-                    }
-                ],
+                "sub_action": [],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "expected_return": "新闻",
+            "counters_1": {"hits": "many"},
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.88"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 5 -m 10 http://www.news.cn/"
             },
-            # "traffic": {
-            #     "type": "trex",
-            #     "clients_start_ip": "192.168.64.86",
-            #     "clients_end_ip": "192.168.64.86",
-            #     "servers_start_ip": "2.1.1.1",
-            #     "servers_end_ip": "2.1.1.2",
-            #     "m": 1,
-            #     "d": 1,
-            #     "yaml_name": "test_https",
-            #     "pcap_name": "test_https"
-            # },
-            # "traffic": {
-            #     "type": "nslookup",
-            #     "command": "nslookup www.facebook.com"
-            # },
-            # "traffic": {
-            #     "type": "wget",
-            #     "command": "wget -q -O- http://open.node.com:180"
-            # },
             "token": ""
         }
         log_in = LogIn()
@@ -135,11 +91,23 @@ def run(parameter):
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
 
+        # name_list汇总
+        name_list = [
+            {
+                "type": "security",
+                "name": "security_rule_allow_internal_ip"
+            },
+            {
+                "type": "ip",
+                "name": "security_internal_ip"
+            }
+        ]
+        
         # 添加定位库集合
         test_rule_element_position = {}
         if test_data["policy_type"] == "security":
             test_ip_object_element_position = {
-                "page_jump": {
+                "page_jump":{
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
@@ -170,7 +138,7 @@ def run(parameter):
                 }
             }
             test_rule_element_position = {
-                "page_jump": {
+                "page_jump":{
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
@@ -181,11 +149,11 @@ def run(parameter):
                 "create": {
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                    "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
-                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
-                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
-                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
+                    "policyRulePage_selectAction_posId": securityRulePage_selectAllow_posId,
+                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
+                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
+                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
+                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -219,13 +187,13 @@ def run(parameter):
                     "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
                     "policyRuleListPage_deleteButton_posId": securityRuleListPage_deleteButton_posId,
                     "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-                    "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+                    "policyRuleListPage_okButton_warningNo_posXpath":securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
-
+        
         # 创建object
-        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
-            ip_data = test_data["condition"]["source_ip"]
+        if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
+            ip_data = test_data["condition"]["internal_ip"]
             create_ip = CreateObject(driver)
             for i in range(len(ip_data)):
                 create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
@@ -234,7 +202,7 @@ def run(parameter):
                 elif create_ip_code != 200:
                     result = "Fail to create ip object."
                     break
-
+        
         # 创建rule
         if create_ip_code == 200:
             create_rule = CreateRule(driver)
@@ -243,7 +211,7 @@ def run(parameter):
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-
+            
         # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
@@ -253,7 +221,7 @@ def run(parameter):
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data, [])
-
+        
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
@@ -262,7 +230,7 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-
+        
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -276,50 +244,55 @@ def run(parameter):
                     result = result + " In addition, fail to delete security rule."
             else:
                 result = result + " In addition, fail to search security rule."
-
+        
         # 删除object
         if delete_rule_code == 200:
-            # 删除ip
+            # 删除port
             for x in range(len(ip_data)):
                 search_ip = SearchObject(driver)
                 search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
                 if search_ip_code == 200:
-                    delete_ip = DeleteObject(driver)
-                    delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
-                    if delete_ip_code == 200:
-                        print("Delete ip object successfully.")
-                    elif delete_ip_code != 200:
-                        result = result + " In addition, fail to delete ip object."
+                    delete_port = DeleteObject(driver)
+                    delete_port_code = delete_port.delete(test_ip_object_element_position, first_row_checkbox_element, True)
+                    if delete_port_code == 200:
+                        print("Delete port object successfully.")
+                    elif delete_port_code != 200:
+                        result = result + " In addition, fail to delete port object."
                         break
                 else:
-                    result = result + " In addition, fail to search ip object."
+                    result = result + " In addition, fail to search port object."
                     break
-
-        # 清理环境
-        support.ui_utils.env_initialization.teardown()
-
+        
+                # 脚本结束时间和耗时
+        
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
         print("Duration of running the test case: ", duration)
-
+        
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
         print("Error: ", e)
-        traceback.print_exc()
+        print
         return "Error: " + str(e)
-
-
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
+        
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 10,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

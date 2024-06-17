@@ -18,7 +18,7 @@ class CreateRule():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_policy_page(page_jump_element_position)
+            page_jump.jump_sub_policy_page(page_jump_element_position, "UIwithTrafficTestVsys")
             
             # 点击create
             time.sleep(1)
@@ -346,6 +346,17 @@ class CreateRule():
                         search_box.send_keys(Keys.RETURN)
                         # 选择第一个
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_hijack_searchHijackProfileDorpItem_posXpath"]).click()
+                    elif test_data["rule_action"] == "insert":
+                        hijack_profile_data = test_data["action_parameter"]["insert_script"][0]["profile_file"]
+                        hijack_profile_name = hijack_profile_data["name"]
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_insert_addInsertProfileSelectBox_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_insert_searchInsertProfile_posXpath"]).clear()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_insert_searchInsertProfile_posXpath"]).send_keys(hijack_profile_name)
+                        # 点击回车键
+                        search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_insert_searchInsertProfile_posXpath"])
+                        search_box.send_keys(Keys.RETURN)
+                        # 选择第一个
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_insert_searchInsertProfileDorpItem_posXpath"]).click()
                     else:
                         print("to be added manipulation action parameters..")
                 elif test_data["policy_type"] == "statistics":

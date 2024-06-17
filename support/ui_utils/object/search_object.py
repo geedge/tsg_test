@@ -12,7 +12,7 @@ class SearchObject():
         page_jump_element_position = object_element_position["page_jump"]
         # 打开该列表
         page_jump = PageJump(self.driver)
-        page_jump.jump_sub_object_page(page_jump_element_position)
+        page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
         self.driver.find_element(By.ID, search_element_position["objectListPage_searchLabel_posId"]).send_keys(name)
         self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_selectName_posXpath"]).click()
         btn = self.driver.find_element(By.ID, mainPage_objectSearch_buttonSearch_posId)
