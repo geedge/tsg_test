@@ -271,11 +271,11 @@ def run(parameter):
                     "name": "service_chaining_source_ip",
                 },
                 {
-                    "type": "service_function_forwarders",
+                    "type": "service_function_forwarder",
                     "name": "steer_bypass_vxlan_inactiveip_bfd",
                 },
                 {
-                    "type": "service_functions",
+                    "type": "service_function",
                     "name": "vxlan_inactiveip_bfd",
                 }
             ]
@@ -430,7 +430,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,
         "is_log": 1,
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
