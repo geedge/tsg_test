@@ -301,12 +301,52 @@ manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='repla
 manipulationRulePage_replace_addSearchInSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li[normalize-space(text())='{replace_type}']"   # search in 下拉框item 定位
 manipulationRulePage_replace_addFindInput_posXpath = "//ul[@class='replacelist']//div[@zs-label='Fined']//input"   # find 输入框 定位
 manipulationRulePage_replace_addReplaceWithInput_posXpath = "//ul[@class='replacelist']//div[@zs-label='Replace']//input"   # replace with 输入框 定位
+# action parameter replace
+manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath = "//div[@zs-label='劫持文件']//i"   # hijack profile  选择框  定位
+manipulationRulePage_hijack_searchHijackProfile_posXpath = "//body/div/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # hijack search profile 对话框查询输入框
+manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath = "//body/div/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[1]"   # hijack search profile 对话框查询下拉列表第一个元素
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
 manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
 manipulationRulePage_okButton_warningYes_posXpath = "//div[@class='el-message-box__btns']//button[contains(@class, 'el-button--primary')]"
 
+#service chaining
+mainPage_policySecondLevelMenu_servicechaining_posId = "policy_ServiceChaining"
 
+serviceChainingRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_ServiceChaining_Home_App_anonymousComponent"
+serviceChainingRuleListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_policy_ServiceChaining_Home_App_anonymousComponent"
+serviceChainingRuleListPage_searchLable_posId = "select-label"
+serviceChainingRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
+serviceChainingRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
+serviceChainingRuleListPage_searchLable_searchButton_posId = "searchQuery"
+serviceChainingRuleListPage_selectRule_posXpath = "//div[contains(@class,'ly-table1')]//tbody//sapn[@class='el-checkbox__inner']"
+serviceChainingRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
+
+serviceChainingRulePage_inputName_posXpath = "//*[@class='biFangName']//input" 
+serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small is-active']" 
+serviceChainingRulePage_decryptedTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small']" 
+serviceChainingRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
+serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
+serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
+serviceChainingRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
+
+serviceChainingRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
+serviceChainingRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
+serviceChainingRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
+serviceChainingRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
+serviceChainingRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
+serviceChainingRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
+
+serviceChainingRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
+
+serviceChainingRulePage_addSFFProfile_posId = "policy_sff_add-_SFFSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_service_chaining_write_Home_App_anonymousComponent"
+serviceChainingRulePage_searchSFFProfile_posXpath = "//div[@class='SFFList list-box']//input"
+serviceChainingRulePage_selectSFFProfile_posXpath = "//div[@class='SFFList list-box']//span[@class='ellipsis list-popover-click' and text()='{replaceValue}']"
+serviceChainingRulePage_closeSFFProfile_posXpath = "//div[@class='SFFList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+serviceChainingRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
+serviceChainingRulePage_okButton_posId = "OK-_policy_service_chaining_write_Home_App_anonymousComponent"
+serviceChainingRulePage_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+serviceChainingRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 
 
 # shaping

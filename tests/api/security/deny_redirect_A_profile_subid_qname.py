@@ -10,6 +10,8 @@ from support.api_utils.analysis_result import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 脚本启动时间
+        start_time = time.time()
         # 测试数据
         test_data = {
             "is_multi_priority": False,
@@ -90,6 +92,7 @@ def run(parameter):
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
         template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+        template_path["profile_dns_record_template"] = parameter["path"] + "/template/profile_dns_record_template.json"
         
         # 获取token
         log_in = LogIn()

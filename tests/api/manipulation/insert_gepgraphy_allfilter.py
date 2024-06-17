@@ -144,7 +144,7 @@ def run(parameter):
         template_path["pre_intercept_template_path"] = parameter["path"] + "/template/pre_intercept_template.json"
 
         # 添加测试过程中涉及的response pages
-        template_path["profiles_insert_profile_path"] = parameter["path"] + "/profile_used_to_create_rule/Create-Insert-Script-test1"
+        template_path["profiles_insert_profile_path"] = parameter["path"] + "/profile_used_to_create_rule/Create-Insert-Script-test1.js"
         
         # 获取token
         log_in = LogIn()
@@ -195,10 +195,11 @@ if __name__ == "__main__":
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
+        "test_subcriber_id": "",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }

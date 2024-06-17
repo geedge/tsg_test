@@ -8,7 +8,18 @@ from support.api_utils.delete_config import *
 from support.api_utils.analysis_result import *
 
 def run(parameter):
+  try:
     print("Begin to run test case: " + parameter["test_case_name"])
+    # 脚本启动时间
+    start_time = time.time()
+    # 脚本启动时间
+    start_time = time.time()
+    # 脚本启动时间
+    start_time = time.time()
+    # 脚本启动时间
+    start_time = time.time()
+    # 脚本启动时间
+    start_time = time.time()
     # 测试数据
     test_data = {
       "is_multi_priority": True,
@@ -58,14 +69,30 @@ def run(parameter):
     # 分析验证结果，并返回给flask
     analysis = AnalysisResult()
     result = analysis.analysis_result(test_data, cfg_list, verification_result)
-    print("analysis result: ", result)
-   
+    if len(result) == 0:
+        print("The test case is passed.")
+    elif len(result) != 0:
+        print("The test case is failed. The failure reason is: ", result)
     # 删除配置
     erase = DeleteConfig()
     erase.delele_cfg(token, parameter, cfg_list)
+
+    print("Finish test case: " + parameter["test_case_name"])
     
+    # 脚本结束时间和耗时
+    end_time = time.time()
+    duration = end_time - start_time
+    print("Duration of running the test case: ", duration)
+        
     print("Finish test case: " + parameter["test_case_name"])
     return result
+  except Exception as e:
+    print("Error: ", e)
+    return "Error: " + str(e)
+  finally:
+    name_list = []
+    erase = DeleteConfig()
+    erase.clear_config(token, parameter, name_list)
   
 if __name__ == "__main__":
     parameter = {

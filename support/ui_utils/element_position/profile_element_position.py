@@ -826,7 +826,7 @@ serviceFunctions_radio_connectivityXvlan_posXpath = "//*[@id='vsys1-_Profile_Fun
 serviceFunctions_input_internalVlan_posXpath = "//*[@id='Function-internal']"  # Internal VLAN Tag 输入框 xpath
 serviceFunctions_input_externalVlan_posXpath = "//*[@id='Function-external']"  # external VLAN Tag 输入框 xpath
 serviceFunctions_input_destinationIpAddress_posXpath = "//*[@id='Function-destination']"  # destination Ip Address 输入框 xpath
-serviceFunctions_radio_healthCheck_posXpath = "//*[@id='vsys{replaceIndex}-_Profile_Functions_edit_Home_App_anonymousComponent']"  # health Check 单选按钮 xpath   replaceIndex需要二次处理
+serviceFunctions_radio_healthCheck_posXpath = "//label[normalize-space(text())='Health Check']/ancestor::div[@class='el-form-item el-form-item--small']//*[@id='vsys{replaceIndex}-_Profile_Functions_edit_Home_App_anonymousComponent']"  # health Check 单选按钮 xpath   replaceIndex需要二次处理
 serviceFunctions_input_interval_posXpath = "//*[@id='Function-interval']"  # interval 输入框 xpath
 serviceFunctions_input_retries_posXpath = "//*[@id='Function-retires']"  # retires 输入框 xpath
 serviceFunctions_switch_enalbe_posXpath = "//*[@id='Function-admin_status']/parent::*"  # enable 开关 xpath

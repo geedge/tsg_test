@@ -10,6 +10,8 @@ from support.api_utils.analysis_result import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 脚本启动时间
+        start_time = time.time()
         # 测试数据
         test_data = {
             "is_multi_priority": False,
@@ -96,12 +98,12 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ssl"],
+            "app_name_1": ["http"],
             "expected_return": "百度一下",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com:180"}],
             "traffic": {
-                "type": "curl",
+                "type": "wget",
                 "command": "wget -q -O- -d --debug http://open.node.com:180"
             },
             "token": ""
@@ -155,12 +157,13 @@ if __name__ == "__main__":
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6473",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }
