@@ -40,21 +40,7 @@ def run(parameter):
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
-                "source_ip": [
-                    {
-                        "name": "monitor_source_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
-                            },
-                        ]
-                    }
-                ],
+                "source_ip": [],
                 "source_port": [
                     {
                         "name": "monitor_src_port",
@@ -170,9 +156,9 @@ def run(parameter):
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
-                    "policyRulePage_searchDstPort_posXpath": securityRulePage_searchDstPort_posXpath,
-                    "policyRulePage_selectDstPort_posXpath": securityRulePage_selectDstPort_posXpath,
-                    "policyRulePage_closeDstPort_posXpath": securityRulePage_closeDstPort_posXpath,
+                    "policyRulePage_searchSrcPort_posXpath": securityRulePage_searchSrcPort_posXpath,
+                    "policyRulePage_selectSrcPort_posXpath": securityRulePage_selectSrcPort_posXpath,
+                    "policyRulePage_closeSrcPort_posXpath": securityRulePage_closeSrcPort_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
@@ -206,7 +192,7 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
-            #创建object
+            #创建port
         if "source_port" in test_data["condition"] and len(test_data["condition"]["source_port"]) != 0:
             port_data =test_data["condition"]["source_port"]
             create_port = CreateObject(driver)
@@ -302,15 +288,16 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
+        "test_pc_ip": "192.168.64.90",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "source_range_port"
+        "test_case_name": "source_range_port",
+        "script_type": "ui",
     }
     run(parameter)
     """

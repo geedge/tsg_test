@@ -55,7 +55,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
+                                "item_value": "192.168.64.90",
                             },
                         ]
                     }
@@ -74,37 +74,25 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [
-                    {
-                        "name": "http",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
-                "server_fqdn": [
-                ],
+                "application": [],
+                "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
-                "sub_action": [
-                ],
+                "sub_action": [],
                 "packet_capture": []
             },
             "is_mirror":"on",
-            "profile": {
-                    "traffic_mirror_profile":[
+            "profile": [
+
                         {
                             "name":"profile1",
-                            "vlan_id":"1"
-                        },
-                        {
-                            "name": "profile2",
-                            "vlan_id": "2"
+                            "vlan_id":"10"
+                            #vlan的范围：应该是在3-66
                         }
-                    ]
-            },
-            "expected_return": "reset",
+             ],
+            "expected_return": "baidu",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.90"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv https://www.baidu.com"
@@ -150,6 +138,8 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
+
+
             test_monitor_profile_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -173,19 +163,19 @@ def run(parameter):
                     "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
                 },
                 "search": {
-                    "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-                    "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-                    "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
-                    "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+                    "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+                    "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
+                    "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
+                    "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
                 },
                 "delete": {
-                    "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
-                    "policyRuleListPage_deleteButton_posId": manipulationRuleListPage_deleteButton_posId,
-                    "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-                    "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+                    "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+                    "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+                    "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posCss
                 }
             }
+
+
             test_rule_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -215,7 +205,7 @@ def run(parameter):
                     "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
-                    "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
+                    "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath,
                     # profile
                     "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
@@ -254,14 +244,16 @@ def run(parameter):
 
         if "profile" in test_data  and len(test_data["profile"]) != 0:
             profile_data = test_data["profile"]
-            mirror_traffic_profile = CreateProfile(test_monitor_profile_element_position)
+            mirror_traffic_profile = CreateProfile(driver,test_monitor_profile_element_position)
             for i in range(len(profile_data)):
-                create_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position)
+                create_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position,test_data["profile"][i]["name"])
                 if create_profile_code == 200:
                     print("Create Traffic Mirroring Profiles successfully.")
                 elif create_profile_code != 200:
                     result = "Fail to create Traffic Mirroring Profiles profile."
                     break
+
+
 
 
 
@@ -273,7 +265,6 @@ def run(parameter):
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-        """
             # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
@@ -293,7 +284,8 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        """
+
+
 
             # 删除rule
         if create_rule_code == 200:
@@ -343,10 +335,9 @@ def run(parameter):
                     elif delete_profile_code != 200:
                         result = result + " In addition, fail to delete profile."
                         break
-                else:
+                # else:
                     result = result + " In addition, fail to search profile."
                     break
-
 
 
             # 脚本结束时间和耗时
@@ -367,15 +358,16 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.50.80",
+        "test_pc_ip": "192.168.64.90",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
+        "script_type":"ui",
         "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": "manipulation_rule_deny_srcip_responseText"
+        "module_name": "monitor",
+        "test_case_name": "traffic_and_vlan_id_is_enabled"
     }
     run(parameter)
     """

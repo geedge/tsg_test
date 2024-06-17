@@ -53,7 +53,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "port",
-                                "item_value": "80",
+                                "item_value": "443",
                             },
                         ]
                     }
@@ -81,12 +81,12 @@ def run(parameter):
             },
             "is_mirror":"on",
             "profile": [],
-            "expected_return": "yumi",
+            "expected_return": "douban",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.88"}],
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.90"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv http://www.yumi.com"
+                "command": "curl -kv https://www.douban.com"
             },
             "token": ""
         }
@@ -214,7 +214,7 @@ def run(parameter):
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-            # 触发流量验证
+            #触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
@@ -244,11 +244,11 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete security rule successfully.")
+                    print("Delete monitor rule successfully.")
                 elif delete_rule_code != 200:
-                    result = result + " In addition, fail to delete security rule."
+                    result = result + " In addition, fail to delete monitor rule."
             else:
-                result = result + " In addition, fail to search security rule."
+                result = result + " In addition, fail to search monitor rule."
 
             # 删除object
         if delete_rule_code == 200:
@@ -287,9 +287,9 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.88",
+        "username": "AutomationTestAccount",
+        "password": "1qaz@WSX",
+        "test_pc_ip": "192.168.64.90",
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "script_type": "ui",
