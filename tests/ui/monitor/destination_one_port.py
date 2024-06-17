@@ -53,7 +53,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.90",
+                                "item_value": "192.168.64.91",
                             },
                         ]
                     }
@@ -100,7 +100,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "douban",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.90"}],
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv https://www.douban.com"
