@@ -53,6 +53,12 @@ class CreateRule():
                     self.driver.find_element(By.ID, create_element_position["policyRulePage_selectEditElement_posId"]).click()
                 else:   # run script
                     self.driver.find_element(By.ID, create_element_position["policyRulePage_selectRunScript_posId"]).click()
+            elif test_data["policy_type"]== "monitor" and  "is_mirror" in test_data :
+                if test_data["is_mirror"] == "on":
+                    self.driver.find_element(By.XPATH,create_element_position["policyRulePage_mirrorTrafficButton_posXpath"]).click()
+                else:
+                    pass
+
             # 添加ip
             if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
                 src_ip_data = test_data["condition"]["source_ip"]
@@ -375,17 +381,14 @@ class CreateRule():
                         self.driver.find_element(By.XPATH,selectSFFXpath).click()
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_closeSFFProfile_posXpath"]).click()
                 elif test_data["policy_type"] == "monitor":
-                    #步骤：开启mirror_traffic->开启vlan_button->选择select->输入name->搜索
-                    monitor_profile_data = profile_data["traffic_mirror_profileofile"]
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mirrorTrafficButton_posXpath"]).click()
+                    #步骤：开启vlan_button->选择select->输入name->搜索
                     self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addVLANIDButton_posXpath"]).click()
-                    for proile_loop_flag in monitor_profile_data:
+                    for flag in range(len(test_data["profile"])):
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_firstSelectMirrorProfile_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchMirrorProfile_posXpath"]).send_keys(monitor_profile_data["name"])
-                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchSFFProfile_posXpath"]).send_keys(Keys.ENTER)
-                        selectProfileXpath = create_element_position["policyRulePage_selectMirrorProfile_posXpath"].format(replaceValue=monitor_profile_data["name"])
-                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_saveProile_ok_posXpath"]).click()
-                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_saveProile_warningYes_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchMirrorProfile_posXpath"]).send_keys(test_data["profile"][flag]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchMirrorProfile_posXpath"]).send_keys(Keys.ENTER)
+                        selectProfileXpath = create_element_position["policyRulePage_selectMirrorProfile_posXpath"].format(replaceValue=test_data["profile"][flag]["name"])
+                        self.driver.find_element(By.XPATH,selectProfileXpath).click()
 
             # 点enable
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()

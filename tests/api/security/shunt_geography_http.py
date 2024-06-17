@@ -10,6 +10,8 @@ from support.api_utils.analysis_result import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 脚本启动时间
+        start_time = time.time()
         # 测试数据
         test_data = {
             "is_multi_priority": False,
@@ -49,7 +51,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [],
             "traffic": {
-                "type": "xxx",
+                "type": "curl",
                 "command": "curl -kv www.yumi.com"
             },
             "token": ""
@@ -101,7 +103,7 @@ if __name__ == "__main__":
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
         "api_server": "http://192.168.44.72",
         "test_subcriber_id": "test6473",
         "script_type": "api",

@@ -38,7 +38,6 @@ def run(parameter):
                     ]
                 },
                 {
-                    "is_negate": 1,
                     "attribute_name": "ATTR_SERVER_FQDN",
                     "object_type": "fqdn",
                     "object_sub_type": "fqdn",
@@ -48,7 +47,7 @@ def run(parameter):
                             "add_item_list": [
                                 {
                                     "keyword_array": [
-                                        "/root/python_script/tsg_policy_api/data/upload_file/fqdn.txt"
+                                        "/app/tests/api/profile_used_to_create_rule/fqdn_import.txt"
                                     ]
                                 }
                             ]

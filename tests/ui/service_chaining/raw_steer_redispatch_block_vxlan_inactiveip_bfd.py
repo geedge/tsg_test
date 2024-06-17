@@ -38,7 +38,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "service_chaining",
-            "rule_name": "raw_steer_redis_bypass_vxlan_inactiveip_bfd",
+            "rule_name": "raw_steer_redispatch_block_vxlan_inactiveip_bfd",
             "rule_action": "service_chaining",
             "targeted_traffic": "raw",
             "rule_type": "create",
@@ -81,18 +81,18 @@ def run(parameter):
             "multiProfile": True,
             "profile": [
                 {
-                    "name": "steer_redis_bypass_vxlan_inactiveip_bfd",
+                    "name": "steer_redispatch_block_vxlan_inactiveip_bfd",
                     "profile_type": "create",
                     "type": "steering",
                     "load_balance_method": "hash_innermost_int-ip",
                     "load_balance_localization": "nearby",
-                    "failure_action": "Re-dispatch:Bypass:0",
+                    "failure_action": "Re-dispatch:Block",
                     "service_functions": [
                         {
                             "name": "vxlan_inactiveip_bfd",
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
-                            "connectivity": "VXLAN-G:2.2.2.54",
+                            "connectivity": "VXLAN-G:2.2.2.71",
                             "health_check": "BFD:600:6",
                             "enable": "on"
                         }
@@ -162,7 +162,6 @@ def run(parameter):
                     "profilePge_inputName_posId": serviceFunctionForwarders_input_Name_posId,
                     "profilePage_operateRadio_posXpath": serviceFunctionForwarders_radio_labelAndRadioName_posXpath,
                     "profilePage_operateUnavailabilityAction_Radio_posXpath":serviceFunctionForwarders_radio_unavailabilityAction_posXpath,
-                    "profilePage_inputMiniHealthServerFunctions_posXpath":serviceFunctionForwarders_input_minHealthServiceFunctions_posXpath,
                     "profilePage_addSF_posXpath": serviceFunctionForwarders_button_serviceFunctionsAdd_posXpath,
                     "profilePage_searchSF_posXpath":serviceFunctionForwarders_rightDrawer_input_sfDrawerSearch_posXpath,
                     "profilePage_chooseSF_posXpath":serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath,
@@ -266,7 +265,7 @@ def run(parameter):
             name_list = [
                 {
                     "type": "service_chaining",
-                    "name": "raw_steer_redis_bypass_vxlan_inactiveip_bfd",
+                    "name": "raw_steer_redispatch_block_vxlan_inactiveip_bfd",
                 },
                 {
                     "type": "ip",
@@ -274,7 +273,7 @@ def run(parameter):
                 },
                 {
                     "type": "service_function_forwarders",
-                    "name": "steer_redis_bypass_vxlan_inactiveip_bfd",
+                    "name": "steer_redispatch_block_vxlan_inactiveip_bfd",
                 },
                 {
                     "type": "service_functions",
@@ -437,7 +436,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "raw_steer_redis_bypass_vxlan_inactiveip_bfd"
+        "test_case_name": "raw_steer_redispatch_block_vxlan_inactiveip_bfd"
     }
     run(parameter)
     """

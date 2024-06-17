@@ -38,6 +38,8 @@ class GetLog():
                 schema_type = 'security_event'
             elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
                 schema_type = 'proxy_event'
+            elif policy_type == 'monitor':
+                schema_type ='monitor_event'
             policy_id = list(create_policies_ids[i].values())[0]
             fields = self.get_log_schema(token, schema_type, api_host, vsys_id)
             if policy_type == 'security':
@@ -52,6 +54,10 @@ class GetLog():
                 log_source = 'proxy_event'
                 identifier_name = 'proxy-event-manipulation-list'
                 log_query_rule_type = 'proxy_rule_list'
+            elif policy_type == 'monitor':
+                log_source ='monitor_event'
+                identifier_name = 'monitor-event-list'
+                log_query_rule_type ='monitor_rule_list'
             log_condition_dict['columns'] = fields
             log_condition_dict['start_time'] = start_time
             log_condition_dict['end_time'] = end_time
@@ -59,7 +65,7 @@ class GetLog():
             log_condition_dict['source'] = log_source
             log_condition_dict['identifier_name'] = identifier_name
             log_condition_dict['execution_mode'] = 'oneshot'
-            
+
             # 从conditions中获取object_type判断是否存在subscriberid
             # 加script_type判断条件的原因是：ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":

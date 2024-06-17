@@ -56,7 +56,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
+                                "item_value": "10.64.1.1",
                             },
                         ]
                     }
@@ -114,10 +114,17 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
             "traffic": {
-                "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "type": "trex",
+                "clients_start_ip": "10.64.1.1",
+                "clients_end_ip": "10.64.1.1",
+                "servers_start_ip": "2.1.1.1",
+                "servers_end_ip": "2.1.1.2",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "test_https"
             },
             # "traffic": {
             #     "type": "trex",
@@ -159,6 +166,8 @@ def run(parameter):
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
+
+
         # 添加测试过程中涉及的template
         template_path = {}
         template_path["trex_workpath"] = "/opt/trex/v3.03"
@@ -210,16 +219,31 @@ def run(parameter):
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
+            search_rule = SearchRule(driver)
+            # 获取Rule ID:
+            search_rule_code, first_row_checkbox_element, first_row_id = search_rule.search(test_data["policy_type"],
+                                                                              test_data["rule_name"],
+                                                                              element_position_map)
+            if search_rule_code == 200:
+                policies_ids = first_row_id
             if create_rule_code == 200:
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-        """
+
         # 触发流量验证
+        create_rule_code = 200
+        #cfg_list = [{"create_policies_ids":[852801]},{"statistics_sc_info_list":[48447]}]
+        cfg_list = {}
+        create_policies_ids = []
+        create_policies_ids.extend(policies_ids)
+        cfg_list["create_policies_ids"] = create_policies_ids
+        statistics_sc_info = []
+        cfg_list["statistics_sc_info_list"] = statistics_sc_info
         if create_rule_code == 200:
             verify = TrafficVerification()
-            verification_result = verify.traffic_verification(parameter, test_data, [])
+            verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
@@ -238,7 +262,7 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        """
+
 
         # 删除rule
         create_rule_code = 200
@@ -349,7 +373,9 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "statistics_rule_bytes_with_src_ip"
+        "test_case_name": "statistics_rule_bytes_with_src_ip",
+        "script_type": "api",
+        "policy_type": "statistics"
     }
     run(parameter)
     """

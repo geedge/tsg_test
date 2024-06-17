@@ -50,7 +50,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
+                                "item_value": "192.168.64.90",
                             },
                         ]
                     }
@@ -69,24 +69,16 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [
-                    {
-                        "name": "http",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
-                "server_fqdn": [
-                ],
+                "application": [],
+                "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
-                "sub_action": [
-                ],
+                "sub_action": [],
                 "packet_capture": []
             },
             "is_mirror":"on",
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "baidu",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
@@ -163,7 +155,7 @@ def run(parameter):
                     "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
-                    "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
+                    "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath,
                     # profile
                     "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
@@ -186,17 +178,17 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
-            #创建object
-            if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
-                ip_data =test_data["condition"]["source_ip"]
-                create_ip = CreateObject(driver)
-                for i in range(len(ip_data)):
-                    create_ip_code =create_ip.create(ip_data[i],test_ip_object_element_position)
-                    if create_ip_code == 200:
-                        print("Create ip object successfully.")
-                    elif create_ip_code != 200:
-                        result = "Fail to create ip object."
-                        break
+        #创建object
+        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+            ip_data =test_data["condition"]["source_ip"]
+            create_ip = CreateObject(driver)
+            for i in range(len(ip_data)):
+                create_ip_code =create_ip.create(ip_data[i],test_ip_object_element_position)
+                if create_ip_code == 200:
+                    print("Create ip object successfully.")
+                elif create_ip_code != 200:
+                    result = "Fail to create ip object."
+                    break
 
             # 创建rule
         if create_ip_code == 200:
@@ -207,25 +199,25 @@ def run(parameter):
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-        #     # 触发流量验证
-        # if create_rule_code == 200:
-        #     edit_rule = EditRule(driver)
-        #     edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
-        #                                              test_rule_element_position)
-        #     if edit_rule_code == 200:
-        #         # rule_id = search_rule.get_rule_id()
-        #         test_data["rule_id"] = rule_id
-        #         verify = TrafficVerification()
-        #         verification_result = verify.traffic_verification(parameter, test_data, [])
-        #
-        #     # 分析验证结果，并返回给flask
-        # if len(verification_result) != 0:
-        #     analysis = AnalysisResult()
-        #     result = analysis.analysis_result(test_data, [], verification_result)
-        #     if len(result) == 0:
-        #         print("The test case is passed.")
-        #     elif len(result) != 0:
-        #         print("The test case is failed. The failure reason is: ", result)
+            # 触发流量验证
+        if create_rule_code == 200:
+            edit_rule = EditRule(driver)
+            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                                                     test_rule_element_position)
+            if edit_rule_code == 200:
+                # rule_id = search_rule.get_rule_id()
+                test_data["rule_id"] = rule_id
+                verify = TrafficVerification()
+                verification_result = verify.traffic_verification(parameter, test_data, [])
+
+            # 分析验证结果，并返回给flask
+        if len(verification_result) != 0:
+            analysis = AnalysisResult()
+            result = analysis.analysis_result(test_data, [], verification_result)
+            if len(result) == 0:
+                print("The test case is passed.")
+            elif len(result) != 0:
+                print("The test case is failed. The failure reason is: ", result)
 
             # 删除rule
         if create_rule_code == 200:
@@ -282,15 +274,16 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
+        "test_pc_ip": "192.168.64.90",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": "manipulation_rule_deny_srcip_responseText"
+        "module_name": "monitor",
+        "test_case_name": "traffic_enabled",
+        "script_type":"ui",
     }
     run(parameter)
     """

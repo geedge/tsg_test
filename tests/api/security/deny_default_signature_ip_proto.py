@@ -12,19 +12,17 @@ def run(parameter):
         print("Begin to run test case: " + parameter["test_case_name"])
         # 脚本启动时间
         start_time = time.time()
-        
         # 测试数据
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
             "rule_action_1": "deny",
-            "method_1": "block",
-            "code_1": 403,
+            "method_1": "default",
             "do_log_1": 2,
+            "send_tcp_reset_1": 0,
             "obj_condition_1": [
-            {
-                "is_negate": 1,
+                {
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",
@@ -32,29 +30,21 @@ def run(parameter):
                     {
                     "add_item_list": [
                         {
-                        "ip_address": "1.1.1.1",
+                        "ip_address": "default",
                         "port_range": "0-65535"
                         }
                     ]
                     }
                 ]
-            }
-            ],
-            "profile_condition_1": [
-                {
-                "profile_type": "response_page",
-                "format": "html",
-                "name": "auto_test_profile",
-                "return_data": 1
                 }
             ],
-            "app_name_1": ["http"],
-            "expected_return": "403 Forbidden",
+            "app_name_1": ["ip_proto"],
+            "expected_return": "timed out",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],
             "traffic": {
-                "type": "wget",
-                "command": "wget -q -O- --debug http://open.node.com:180"
+                "type": "curl",
+                "command": "curl --connect-timeout 5 -m 5 -kv https://open.node.com:1443"
             },
             "token": ""
         }
@@ -63,9 +53,6 @@ def run(parameter):
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
         template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-
-        # 添加测试过程中涉及的response pages
-        template_path["profiles_deny_path"] = parameter["path"] + "/profile_used_to_create_rule/Response-Pages_1.html"
         
         # 获取token
         log_in = LogIn()
@@ -80,6 +67,7 @@ def run(parameter):
         # 流量验证
         verify = TrafficVerification()
         verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+        # print("verification result: ", verification_result)
         
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()
@@ -88,16 +76,11 @@ def run(parameter):
             print("The test case is passed.")
         elif len(result) != 0:
             print("The test case is failed. The failure reason is: ", result)
-      
+    
         # 删除配置
         erase = DeleteConfig()
         erase.delele_cfg(token, parameter, cfg_list)
         
-        # 脚本结束时间和耗时
-        end_time = time.time()
-        duration = end_time - start_time
-        print("Duration of running the test case: ", duration)
-            
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
@@ -117,10 +100,10 @@ if __name__ == "__main__":
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 0,
+        "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_alert_204_negative_not_ip_http"
+        "test_case_name": "allow_http_fqdn"
     }
     run(parameter)
