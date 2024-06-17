@@ -4,6 +4,9 @@ import os
 import sys
 import os
 import sys
+
+from support.api_utils.delete_config import DeleteConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -36,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_template",
+            "rule_name": "monitor_rule_mirror_traffic_enabled",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -50,7 +53,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.90",
+                                "item_value": "192.168.64.91",
                             },
                         ]
                     }
@@ -91,6 +94,18 @@ def run(parameter):
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
+
+        # name_list汇总
+        name_list = [
+            {
+                "type": "monitor",
+                "name": "monitor_rule_mirror_traffic_enabled"
+            },
+            {
+                "type":"ip",
+                "name":"monitor_source_ip"
+            }
+        ]
 
         # 添加定位库集合
         test_rule_element_position = {}
@@ -269,12 +284,15 @@ def run(parameter):
     finally:
         # 清理环境
         support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
 
 if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.90",
+        "test_pc_ip": "192.168.64.91",
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",

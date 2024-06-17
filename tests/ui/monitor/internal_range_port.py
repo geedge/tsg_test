@@ -4,6 +4,9 @@ import os
 import sys
 import os
 import sys
+
+from support.api_utils.delete_config import DeleteConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -36,11 +39,25 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_template",
+            "rule_name": "monitor_rule_internal_range_port",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
+                "source_ip": [
+                    {
+                        "name": "monitor_source_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.64.91",
+                            },
+                        ]
+                    }
+                ],
                 "source_port": [],
                 "destination_ip": [],
                 "destination_port": [],
@@ -82,10 +99,10 @@ def run(parameter):
             "profile": [],
             "expected_return": "新闻",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv http://www.news.com"
+                "command": "curl -kv http://www.moe.gov.cn/"
             },
             "token": ""
         }
@@ -98,11 +115,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_source_port"
+                "name": "monitor_rule_internal_range_port"
             },
             {
                 "type": "port",
-                "name": "monitor_source_port"
+                "name": "monitor_internal_range_port"
+            },
+            {
+                "type":"ip",
+                "name":"monitor_source_ip"
             }
         ]
 
@@ -177,6 +198,11 @@ def run(parameter):
                     "policyRulePage_firstSelectMirrorProfile_posXpath": monitorRulePage_firstSelectMirrorProfile_posXpath,
                     "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
                     "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
+                    # 添加ip
+                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -192,7 +218,19 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
-            #创建object
+        # 创建object
+        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+            ip_data = test_data["condition"]["source_ip"]
+            create_ip = CreateObject(driver)
+            for i in range(len(ip_data)):
+                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+                if create_ip_code == 200:
+                    print("Create ip object successfully.")
+                elif create_ip_code != 200:
+                    result = "Fail to create ip object."
+                    break
+
+        #创建object
         if "internal_port" in test_data["condition"] and len(test_data["condition"]["internal_port"]) != 0:
             port_data =test_data["condition"]["internal_port"]
             create_port = CreateObject(driver)
@@ -283,15 +321,18 @@ def run(parameter):
     finally:
         # 清理环境
         support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
 
 if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.90",
+        "test_pc_ip": "192.168.64.91",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",

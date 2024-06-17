@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_template",
+            "rule_name": "monitor_rule_traffic_and_vlan_id_enabled",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -55,7 +55,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.90",
+                                "item_value": "192.168.64.91",
                             },
                         ]
                     }
@@ -92,7 +92,7 @@ def run(parameter):
              ],
             "expected_return": "baidu",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.90"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv https://www.baidu.com"
@@ -103,6 +103,18 @@ def run(parameter):
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
+
+        # name_list汇总
+        name_list = [
+            {
+                "type": "monitor",
+                "name": "monitor_rule_traffic_and_vlan_id_enabled"
+            },
+            {
+                "type":"ip",
+                "name":"monitor_source_ip"
+            }
+        ]
 
         # 添加定位库集合
         test_rule_element_position = {}
@@ -230,7 +242,7 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
-            #创建object
+        #创建object
         if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
             ip_data =test_data["condition"]["source_ip"]
             create_ip = CreateObject(driver)
@@ -253,10 +265,6 @@ def run(parameter):
                     result = "Fail to create Traffic Mirroring Profiles profile."
                     break
 
-
-
-
-
         # 创建rule
         if create_ip_code == 200:
             create_rule = CreateRule(driver)
@@ -265,7 +273,7 @@ def run(parameter):
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-            # 触发流量验证
+        # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
@@ -276,7 +284,7 @@ def run(parameter):
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data, [])
 
-            # 分析验证结果，并返回给flask
+        # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
@@ -285,9 +293,7 @@ def run(parameter):
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
 
-
-
-            # 删除rule
+        # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
@@ -303,7 +309,7 @@ def run(parameter):
             else:
                 result = result + " In addition, fail to search security rule."
 
-            # 删除object
+        # 删除object
         if delete_rule_code == 200:
             # 删除ip
             for x in range(len(ip_data)):
@@ -340,7 +346,7 @@ def run(parameter):
                     break
 
 
-            # 脚本结束时间和耗时
+        # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
         print("Duration of running the test case: ", duration)
@@ -358,9 +364,9 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.90",
+        "test_pc_ip": "192.168.64.91",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "script_type":"ui",
         "vsys_id": 6,

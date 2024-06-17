@@ -322,7 +322,7 @@ class DeleteConfig():
         elif script_type == "ui":
             if len(name_list) > 0:
                 for name_item in name_list:
-                    if name_item["type"] == "security" or name_item["type"] == "service_chaining":
+                    if name_item["type"] == "security" or name_item["type"] == "service_chaining"  or name_item["type"] == "monitor":
                         template['name'] = name_item["name"]
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(rule_url, template, headers)
