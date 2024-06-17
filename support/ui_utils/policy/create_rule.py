@@ -18,7 +18,7 @@ class CreateRule():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_policy_page(page_jump_element_position)
+            page_jump.jump_sub_policy_page(page_jump_element_position, "UIwithTrafficTestVsys")
             
             # 点击create
             time.sleep(1)
