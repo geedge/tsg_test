@@ -256,7 +256,7 @@ class TrafficVerification():
                                 if fail_count >= 2:
                                     break
                                 fail_count += 1
-                            time.sleep(30)
+                            time.sleep(15)
                             n += 1
                     if metric_result == 333:
                         if statistics_info["sf_method"] == "vxlan_g" and statistics_info["sf_dest_ip"] not in active_dest_ips_list:

@@ -332,7 +332,7 @@ class DeleteConfig():
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(obj_url, template, headers)
                     
-                    if name_item["type"] == "service_function_forwarders" or name_item["type"] == "service_functions" or name_item["type"] == "statistics_templates":
+                    if name_item["type"] == "service_function_forwarder" or name_item["type"] == "service_function" or name_item["type"] == "statistics_templates":
                         if 'type' in template:
                             del template["type"]
                         template['name'] = name_item["name"]

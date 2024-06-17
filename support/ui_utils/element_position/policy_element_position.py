@@ -334,6 +334,11 @@ serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpa
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 serviceChainingRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
 
+serviceChainingRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
+serviceChainingRulePage_searchDstIP_posXpath =  "//div[@class='destinations list-box']//div[contains(@class, 'object-item-seach')]//input"
+serviceChainingRulePage_selectDstIP_posXpath = "//div[@class='destinations list-box']//span[normalize-space(text())='{replaceValue}']"
+serviceChainingRulePage_closeDstIP_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
 serviceChainingRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 serviceChainingRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 serviceChainingRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath

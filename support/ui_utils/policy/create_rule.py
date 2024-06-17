@@ -404,7 +404,7 @@ class CreateRule():
             return 400, None
         
     def add_ip(self, ip_data, ip_condition_type, create_element_position):
-        if ip_condition_type != "SrcIP":
+        if ip_condition_type != "SrcIP" and ip_condition_type != "DstIP":
             # 点add condition的+
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
             # 选中port
