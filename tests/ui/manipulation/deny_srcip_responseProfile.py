@@ -21,6 +21,7 @@ from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 import support.ui_utils.env_initialization
 import traceback
+from support.api_utils.delete_config import DeleteConfig
 
 
 def run(parameter):
@@ -129,6 +130,14 @@ def run(parameter):
             # },
             "token": ""
         }
+
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        test_data["token"] = token
+
+        # name_list汇总
+        name_list = get_name_list(test_data)
 
         # 添加测试过程中涉及的template
         template_path = {}
@@ -297,10 +306,6 @@ def run(parameter):
                     break
 
 
-
-        # 清理环境
-        support.ui_utils.env_initialization.teardown()
-
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -311,8 +316,13 @@ def run(parameter):
     except Exception as e:
         print("Error: ", e)
         traceback.print_exc()
-        support.ui_utils.env_initialization.teardown()
         return "Error: " + str(e)
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
 
 
 
@@ -323,6 +333,7 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
+        "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",

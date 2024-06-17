@@ -301,10 +301,14 @@ manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='repla
 manipulationRulePage_replace_addSearchInSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li[normalize-space(text())='{replace_type}']"   # search in 下拉框item 定位
 manipulationRulePage_replace_addFindInput_posXpath = "//ul[@class='replacelist']//div[@zs-label='Fined']//input"   # find 输入框 定位
 manipulationRulePage_replace_addReplaceWithInput_posXpath = "//ul[@class='replacelist']//div[@zs-label='Replace']//input"   # replace with 输入框 定位
-# action parameter replace
+# action parameter hijack
 manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath = "//div[@zs-label='劫持文件']//i"   # hijack profile  选择框  定位
 manipulationRulePage_hijack_searchHijackProfile_posXpath = "//body/div/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # hijack search profile 对话框查询输入框
 manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath = "//body/div/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[1]"   # hijack search profile 对话框查询下拉列表第一个元素
+# action parameter insert
+manipulationRulePage_insert_addInsertProfileSelectBox_posXpath = "//div[@zs-label='劫持文件']//span[@class='el-input__suffix-inner']//i"   # insert script  选择框  定位
+manipulationRulePage_insert_searchInsertProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
+manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
 manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"

@@ -1,3 +1,5 @@
+import copy
+
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.element_position.profile_element_position import *
@@ -226,6 +228,33 @@ test_hijack_file_element_position = {
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_hijackFiles_button_yes_posXpath
     }
 }
+test_insert_script_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_insertScripts_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_insertScripts_createButton_posId,
+        "profilePage_inputName_posId": insertScripts_input_Name_posId,
+        "profilePage_okButton_posCss": insertScripts_button_oK_posCss,
+        "profilePage_okButton_warningYes_posCss": insertScripts_button_warningSaveYes_posCss,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_insertScripts_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_insertScripts_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_insertScripts_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_insertScripts_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_insertScripts_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_insertScripts_button_yes_posXpath
+    }
+}
 test_manipulation_rule_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -323,6 +352,10 @@ test_manipulation_rule_element_position = {
         "policyRulePage_hijack_addHijackProfileSelectBox_posXpath": manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath,
         "policyRulePage_hijack_searchHijackProfile_posXpath": manipulationRulePage_hijack_searchHijackProfile_posXpath,
         "policyRulePage_hijack_searchHijackProfileDorpItem_posXpath": manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath,
+        # insert script action parameter
+        "policyRulePage_insert_addInsertProfileSelectBox_posXpath": manipulationRulePage_insert_addInsertProfileSelectBox_posXpath,
+        "policyRulePage_insert_searchInsertProfile_posXpath": manipulationRulePage_insert_searchInsertProfile_posXpath,
+        "policyRulePage_insert_searchInsertProfileDorpItem_posXpath": manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": manipulationRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": manipulationRulePage_okButton_yes_posId,
@@ -478,6 +511,7 @@ test_http_signature_object_element_position=test_http_signature_object_element_p
 test_http_url_object_element_position = test_http_url_object_element_position
 test_response_page_element_position = test_response_page_element_position
 test_hijack_file_element_position = test_hijack_file_element_position
+test_insert_script_element_position = test_insert_script_element_position
 test_manipulation_rule_element_position=test_manipulation_rule_element_position
 
 def get_element_position(key_name):
@@ -497,6 +531,8 @@ def get_element_position(key_name):
         element_position_map = test_response_page_element_position
     elif key_name == "hijack_file":
         element_position_map = test_hijack_file_element_position
+    elif key_name == "insert_script":
+        element_position_map = test_insert_script_element_position
     elif key_name =="statistics_template":
         element_position_map = test_statistics_template_element_position
     # policy
@@ -516,6 +552,40 @@ def get_profile_element_position(key_name):
         print("{} no element position map".format(key_name))
         element_position_map = {}
     return element_position_map
+
+
+def get_name_list(test_data):
+    # 提取test_data数据中name列表，用于删除数据
+    # [
+    #             {
+    #                 "type": "security",
+    #                 "name": "security_rule_deny_ip",
+    #             }
+    #         ]
+    name_list = []
+    tmp_name_dict = {}
+    if "condition" in test_data.keys() and len(test_data["condition"]) != 0:
+        for key, value in test_data["condition"].items():
+            if key in manipulation_object_no_create_list:
+                continue  # 直接跳过
+            if len(value) != 0:
+                for i in range(len(value)):
+                    tmp_name_dict = {}
+                    tmp_name_dict["type"] = value[i]["object_type"]
+                    tmp_name_dict["name"] = value[i]["name"]
+                    name_list.append(copy.deepcopy(tmp_name_dict))
+    if "action_parameter" in test_data.keys() and len(test_data["action_parameter"]) != 0:
+        for key, value in test_data["action_parameter"].items():
+            if key in manipulation_profile_no_create_list:
+                continue  # 直接跳过
+            if len(value) != 0:
+                for i in range(len(value)):
+                    tmp_name_dict = {}
+                    tmp_name_dict["type"] = value[i]["profile_type"]
+                    tmp_name_dict["name"] = value[i]["profile_file"]["name"]
+                    name_list.append(copy.deepcopy(tmp_name_dict))
+    print(name_list)
+    return name_list
 
 
 # 勿删 zcw make

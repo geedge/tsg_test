@@ -476,8 +476,8 @@ listPage_profileSearch_insertScripts_input_itemContent_posXpath = listPage_profi
 listPage_profilTable_insertScripts_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_insertScripts_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_insertScripts_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_insertScripts_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_insertScripts_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_insertScripts_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_insertScripts_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_Profile_Insert_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_insertScripts_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_Profile_Insert_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath

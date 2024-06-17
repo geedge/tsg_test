@@ -1,0 +1,1 @@
+alert("鎵цjavascript!");

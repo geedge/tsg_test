@@ -9,6 +9,7 @@ import traceback
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.element_position.map_element_position_library import get_profile_element_position
 from support.ui_utils.profile.create_hijack_profile import CreateHijackProfile
+from support.ui_utils.profile.create_insert_profile import CreateInsertProfile
 from support.ui_utils.profile.create_response_page import CreateResponsePage
 
 class CreateProfile():
@@ -30,6 +31,8 @@ class CreateProfile():
                 self._create_statistics_template_page(profile_data["profile_file"])
             elif profile_data["profile_type"] == "hijack":    # hijack file 创建
                 self._create_hijack_file(profile_data["profile_file"])
+            elif profile_data["profile_type"] == "insert":    # insert script 创建
+                self._create_insert_script(profile_data["profile_file"])
             # 其它 profile创建
             return 200
         except Exception as e:
@@ -44,8 +47,14 @@ class CreateProfile():
         Pl = CreateResponsePage(self.driver)
         Pl.create_response_page(data)
 
-    def _create_hijack_file(self, data):   # 新建profile
+    def _create_hijack_file(self, data):
+        # 新建hijack_file
         Pl = CreateHijackProfile(self.driver)
+        Pl.create_hijack_file(data)
+
+    def _create_insert_script(self, data):
+        # 新建hijack_file
+        Pl = CreateInsertProfile(self.driver)
         Pl.create_hijack_file(data)
 
     def _create_statistics_template_page(self, data):

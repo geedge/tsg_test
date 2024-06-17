@@ -9,10 +9,6 @@ class CreateHijackProfile():
         self.driver = driver
 
     def create_hijack_file(self, data):
-        #页面跳转
-
-        #在打开页面操作：输入name
-        # Name
         profile_name = data["name"]
         self.driver.find_element(By.ID, hijackFiles_input_Name_posId).clear()
         self.driver.find_element(By.ID, hijackFiles_input_Name_posId).send_keys(profile_name)
@@ -44,7 +40,7 @@ class CreateHijackProfile():
             create_file = data["file"].split("->")[data_index]  # 提取上传文件绝对路径
             profile_path = os.path.dirname(os.path.abspath(__file__))  # ...support\ui_utils\profile
             file_abs = os.path.join(profile_path, "profile_file", "hijack_file", create_file)
-            print(file_abs)
+            #print(file_abs)
             self.driver.find_element(By.XPATH, hijackFiles_input_fileUpLoad_posXpath).send_keys(file_abs)
         #download name 下载文件名称操作
         self._operate_switch(data, data_index=data_index, no_modify=no_modify, switch_name="download_name", element_position=hijackFiles_switch_downLoadName_posXpath)

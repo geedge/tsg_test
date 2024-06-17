@@ -110,6 +110,18 @@ test_data = {
                 "find": "forecast",
                 "replace_with": "team"
             }
+        ],
+        "hijack_file": [
+            {
+                "profile_type": "hijack",
+                "profile_file": {
+                    "name": "test_tsg_ui_profile_page",
+                    "model": "create",
+                    "file": "test_png_1.png->",
+                    "download_name": "Mirror Server Response->",
+                    "file_type": "png->"
+                }
+            }
         ]
     },
     "expected_return": "reset",
