@@ -57,7 +57,7 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["ssl"],
-            "expected_return": "京东",
+            "expected_return": "jd",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
@@ -115,17 +115,18 @@ def run(parameter):
   
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_subcriber_id": "",
+        "test_pc_ip": "192.168.64.91",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_alert_204_negative_not_ip_http"
+        "test_case_name": "allow_http_fqdn"
     }
     run(parameter)
