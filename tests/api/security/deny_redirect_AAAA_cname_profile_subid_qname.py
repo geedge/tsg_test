@@ -69,7 +69,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "jd.com"
+                            "example.com"
                         ]
                         }
                     ]
@@ -83,7 +83,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.jd.com -timeout=1"
+                "command": "nslookup www.example.com -timeout=1"
             },
             "token": ""
         }

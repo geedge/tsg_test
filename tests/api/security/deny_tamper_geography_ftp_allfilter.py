@@ -96,7 +96,7 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["ftp"],
-            "expected_return": "reset",
+            "expected_return": "timed out",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],
             "traffic": {
@@ -152,15 +152,16 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "test_subcriber_id": "",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/python_engine/tsg_test",
-        "path": "D:/python_engine/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

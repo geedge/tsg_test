@@ -50,7 +50,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
+                                "item_value": "192.168.64.87",
                             },
                             # {
                             #     "item_operation": "edit",
@@ -351,12 +351,12 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.87",
+        "test_subcriber_id": "test6777",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

@@ -64,12 +64,12 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["dns"],
-            "expected_return": "recursion not",
+            "expected_return": "SERVFAIL",
             "counters_1": {"hits": 2},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.example.com -timeout=1"
+                "command": "nslookup www.example.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }
@@ -120,14 +120,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }
