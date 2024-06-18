@@ -22,16 +22,16 @@ class CreateProfile():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_profile_page(page_jump_element_position)
+            page_jump.jump_sub_profile_page(page_jump_element_position, "UIwithTrafficTestVsys")
             # 点击create
             self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
             if profile_data["profile_type"] == "response_page":  # response page创建
                 self._create_response_page(profile_data["profile_file"])
             elif profile_data["profile_type"] == "statistics_template":  # response page创建
                 self._create_statistics_template_page(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "hijack":    # hijack file 创建
+            elif profile_data["profile_type"] == "hijack_file":    # hijack file 创建
                 self._create_hijack_file(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "insert":    # insert script 创建
+            elif profile_data["profile_type"] == "insert_script":    # insert script 创建
                 self._create_insert_script(profile_data["profile_file"])
             # 其它 profile创建
             return 200

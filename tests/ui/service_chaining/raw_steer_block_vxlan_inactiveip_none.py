@@ -22,6 +22,7 @@ from support.api_utils.analysis_result import *
 import support.ui_utils.env_initialization
 from support.api_utils.log_in import *
 from support.api_utils.delete_config import *
+from support.ui_utils.object.generate_random_ip import *
 
 def run(parameter):
     try:
@@ -284,6 +285,10 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
+        # 将测试数据中的ip替换为随机ip
+        random_ip = GenerateRandomIP(driver)
+        test_data = random_ip.generate_random_ip(test_data,run_env=parameter["env"])
+        
         # 创建object
         if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
             ip_data = test_data["condition"]["source_ip"]

@@ -2,7 +2,7 @@
 test_data = {
     "is_multi_priority": False,
     "rule_num": 1,
-    "policy_type": "manipulation",
+    "policy_type": "pxy_manipulation",
     "rule_name": "manipulation_rule_with_allow_src_ip",
     "rule_action": "allow",
     "rule_type": "create",
@@ -120,6 +120,18 @@ test_data = {
                     "file": "test_png_1.png->",
                     "download_name": "Mirror Server Response->",
                     "file_type": "png->"
+                }
+            }
+        ],
+        "insert_script": [
+            {
+                "profile_type": "insert",
+                "profile_file": {
+                    "name": "test_tsg_ui_profile_page",
+                    "model": "create",
+                    "script": "test_js_1.js->",
+                    "script_type": "js->",
+                    "insert_position": "Before Page Load->"
                 }
             }
         ]
