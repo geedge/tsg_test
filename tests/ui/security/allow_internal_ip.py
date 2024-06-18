@@ -79,7 +79,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "POST",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.88"}],
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 5 -m 10 http://open.node.com:180"

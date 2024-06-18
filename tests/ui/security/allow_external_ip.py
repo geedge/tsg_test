@@ -98,7 +98,7 @@ def run(parameter):
                 "name": "security_rule_allow_external_ip"
             },
             {
-                "type": "port",
+                "type": "ip",
                 "name": "security_external_ip"
             }
         ]

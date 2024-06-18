@@ -103,7 +103,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "POST",
+            "expected_return": "youtube",
             "counters_1": {"hits": 1},
             "log_query_param_1": [],
             "traffic": {

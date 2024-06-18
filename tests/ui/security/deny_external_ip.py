@@ -36,7 +36,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_allow_external_ip",
+            "rule_name": "security_rule_deny_external_ip",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -48,7 +48,7 @@ def run(parameter):
                 "internal_port": [],
                 "external_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "security_external_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -102,11 +102,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_internal_range_port"
+                "name": "security_rule_deny_external_ip"
             },
             {
-                "type": "port",
-                "name": "security_internal_port"
+                "type": "ip",
+                "name": "security_external_ip"
             }
         ]
         
