@@ -27,7 +27,8 @@ app = Flask(__name__)
 @app.route('/v1/statistics_api', methods=["POST"])
 @app.route('/v1/service_chaining_api', methods=["POST"])
 @app.route('/v1/shaping_api', methods=["POST"])
-@app.route('/v1/temp', methods=["POST"])
+@app.route('/v1/temp_api', methods=["POST"])
+@app.route('/v1/temp_ui', methods=["POST"])
 def receive_parameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
@@ -79,12 +80,12 @@ def receive_parameter():
                 parameter["path"] = f"{project_path}/tests/api"
                 parameter["env"] = "tsgx"
                 parameter["vsys_id"] = 6
-                parameter["is_log"] = 0
+                parameter["is_log"] = 1
             elif tag == "ui":
                 parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_ui_with_traffic")
                 parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
                 parameter["path"] = f"{project_path}/tests/ui"
-                parameter["vsys_id"] = 6
+                parameter["vsys_id"] = 11
                 parameter["is_log"] = 1
             elif tag == "general_ui":
                 parameter["path"] = f"{project_path}/tests/ui"
