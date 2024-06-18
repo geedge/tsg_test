@@ -20,9 +20,11 @@ def run(parameter):
             "policy_type": "security",
             "rule_action_1": "deny",
             "method_1": "drop",
+            "send_tcp_reset_1": "",
             "do_log_1": 2,
             "obj_condition_1": [
             {
+                "is_negate": 1,
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",
@@ -30,7 +32,7 @@ def run(parameter):
                     {
                     "add_item_list": [
                         {
-                        "ip_address": "1.1.1.1",
+                        "ip_address": "default",
                         "port_range": "0-65535"
                         }
                     ]
@@ -44,7 +46,7 @@ def run(parameter):
             "log_query_param_1": [],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.facebook.com -timeout=1"
+                "command": "nslookup www.facebook.com"
             },
             "token": ""
         }
@@ -99,15 +101,16 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_alert_204_negative_not_ip_http"
+        "test_case_name": "deny_drop_negative_not_ip_dns"
     }
     run(parameter)

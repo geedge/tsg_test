@@ -12,8 +12,6 @@ def run(parameter):
     print("Begin to run test case: " + parameter["test_case_name"])
     # 脚本启动时间
     start_time = time.time()
-    # 脚本启动时间
-    start_time = time.time()
     # 测试数据
     test_data = {
       "is_multi_priority": True,
@@ -141,9 +139,10 @@ if __name__ == "__main__":
       "script_type": "api",
       "username": "hebingning",
       "password": "hbn66AAA",
-      "test_pc_ip": "192.168.64.73",
+      "test_pc_ip": "192.168.64.88",
+      "test_subcriber_id": "test6488",
       "api_server": "http://192.168.44.72",
-      "is_log": 1,
+      "is_log": 0,
       "env": "tsgx",
       "vsys_id": 6,
       "root_path": "D:/python_script/tsg_test",
