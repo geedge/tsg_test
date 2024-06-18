@@ -377,20 +377,23 @@ def run(parameter):
         # 删除object
         if delete_rule_code == 200:
             # 删除ip
-            for x in range(len(ip_data)):
-                search_ip = SearchObject(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
-                if search_ip_code == 200:
-                    delete_ip = DeleteObject(driver)
-                    delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
-                    if delete_ip_code == 200:
-                        print("Delete ip object successfully.")
-                    elif delete_ip_code != 200:
-                        result = result + " In addition, fail to delete ip object."
-                        break
-                else:
-                    result = result + " In addition, fail to search ip object."
-                    break
+            for condition_key in test_data["condition"].keys():
+                if condition_key == "source_ip" or condition_key == "destination_ip":
+                    ip_data = test_data["condition"][condition_key]
+                    for x in range(len(ip_data)):
+                        search_ip = SearchObject(driver)
+                        search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
+                        if search_ip_code == 200:
+                            delete_ip = DeleteObject(driver)
+                            delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
+                            if delete_ip_code == 200:
+                                print("Delete ip object successfully.")
+                            elif delete_ip_code != 200:
+                                result = result + " In addition, fail to delete ip object."
+                                break
+                        else:
+                            result = result + " In addition, fail to search ip object."
+                            break
 
         # 删除profile
         if delete_rule_code == 200:
