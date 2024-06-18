@@ -55,7 +55,7 @@ def run(parameter):
                         "latitude": "0",
                         "longitude": "0",
                         "addr_type": 4,
-                        "ip_address": "121.14.154.93"
+                        "ip_address": "8.8.8.8"
                         }
                     ]
                     }
@@ -84,7 +84,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.example.com -timeout=1"
+                "command": "nslookup www.example.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }
