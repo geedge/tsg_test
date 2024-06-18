@@ -322,17 +322,17 @@ class DeleteConfig():
         elif script_type == "ui":
             if len(name_list) > 0:
                 for name_item in name_list:
-                    if name_item["type"] == "security" or name_item["type"] == "service_chaining":
+                    if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept"]:
                         template['name'] = name_item["name"]
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(rule_url, template, headers)
                         
-                    if name_item["type"] == "ip" or name_item["type"] == "port":
+                    if name_item["type"] in ["ip", "port", "url"]:
                         template['name'] = name_item["name"]
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(obj_url, template, headers)
                     
-                    if name_item["type"] == "service_function_forwarders" or name_item["type"] == "service_functions" or name_item["type"] == "statistics_templates":
+                    if name_item["type"] in ["service_function_forwarders", "service_functions", "statistics_templates"]:
                         if 'type' in template:
                             del template["type"]
                         template['name'] = name_item["name"]
@@ -344,13 +344,13 @@ class DeleteConfig():
         assert response.status_code == 200
         return_json_data = json.loads(response.text)
         if '/policy/rule' in url or '/policy/object' in url:
-            type = template['type']
+            tmp_type = template['type']
         if '/policy/rule' in url:    
             data_list = return_json_data['data']['rules']
-            delete_info = type + ' ' + 'rule'
+            delete_info = tmp_type + ' ' + 'rule'
         elif '/policy/object' in url:
             data_list = return_json_data['data']['objects']
-            delete_info = type
+            delete_info = tmp_type
         elif 'response_page' in url:
             data_list = return_json_data['data']['response_pages']
             delete_info = 'response_page'.replace("_", " ")

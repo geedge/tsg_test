@@ -1,4 +1,5 @@
 import copy
+import time
 
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
@@ -257,6 +258,7 @@ test_insert_script_element_position = {
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_insertScripts_button_yes_posXpath
     }
 }
+#policy
 test_manipulation_rule_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -377,6 +379,118 @@ test_manipulation_rule_element_position = {
         "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
     }
 }
+test_security_rule_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_security_posId
+    },
+    "create": {
+        "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
+        "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
+        "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
+        "policyRulePage_addConditionInternalPort_posXpath": securityRulePage_addCondition_internalPort_posXpath,
+        "policyRulePage_addInternalPort_posXpath": securityRulePage_addInternalPort_posXpath,
+        "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
+        "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
+        "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
+        "policyRulePage_searchInternalPort_posXpath": securityRulePage_searchInternalPort_posXpath,
+        "policyRulePage_selectInternalPort_posXpath": securityRulePage_selectInternalPort_posXpath,
+        "policyRulePage_closeInternalPort_posXpath": securityRulePage_closeInternalPort_posXpath,
+        "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
+        "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
+        "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
+        "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
+        "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
+        "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
+        "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+        "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
+        "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
+        "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath,
+        # Add Condition按钮定位
+        "policyRulePage_addCondition_posXpath": manipulationRulePage_addCondition_posXpath,
+        # add condition侧滑的关闭定位
+        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+        # Source IP
+        "policyRulePage_addConditionSrcIP_posXpath": manipulationRulePage_addCondition_srcIP_posXpath,
+        "policyRulePage_addSrcIP_posXpath": manipulationRulePage_addSrcIP_posXpath,
+        "policyRulePage_searchSrcIP_posXpath": manipulationRulePage_searchSrcIP_posXpath,
+        "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
+        "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
+    },
+    "search": {
+        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+        "policyRuleListPage_deleteButton_posId": securityRuleListPage_deleteButton_posId,
+        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
+        "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+    }
+}
+test_intercept_rule_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_intercept_posId
+    },
+    "create": {
+        "policyRuleListPage_createButton_posId": interceptRuleListPage_createButton_posId,
+        "policyRulePage_inputName_posXpath": interceptRulePage_inputName_posXpath,
+        "policyRulePage_selectAction_posId": interceptRulePage_selectDeny_posId,
+        "policyRulePage_addConditionInternalPort_posXpath": securityRulePage_addCondition_internalPort_posXpath,
+        "policyRulePage_addInternalPort_posXpath": securityRulePage_addInternalPort_posXpath,
+        "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
+        "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
+        "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
+        "policyRulePage_searchInternalPort_posXpath": securityRulePage_searchInternalPort_posXpath,
+        "policyRulePage_selectInternalPort_posXpath": securityRulePage_selectInternalPort_posXpath,
+        "policyRulePage_closeInternalPort_posXpath": securityRulePage_closeInternalPort_posXpath,
+        "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
+        "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
+        "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
+        "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
+        "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
+        "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
+        "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+        "policyRulePage_enable_posXpath": interceptRulePage_enable_posXpath,
+        "policyRulePage_okButton_yes_posId": interceptRulePage_okButton_yes_posId,
+        "policyRulePage_okButton_warningYes_posXpath": interceptRulePage_okButton_warningYes_posXpath,
+        # Add Condition按钮定位
+        "policyRulePage_addCondition_posXpath": manipulationRulePage_addCondition_posXpath,
+        # add condition侧滑的关闭定位
+        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+        # Source IP
+        "policyRulePage_addConditionSrcIP_posXpath": manipulationRulePage_addCondition_srcIP_posXpath,
+        "policyRulePage_addSrcIP_posXpath": manipulationRulePage_addSrcIP_posXpath,
+        "policyRulePage_searchSrcIP_posXpath": manipulationRulePage_searchSrcIP_posXpath,
+        "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
+        "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
+    },
+    "search": {
+        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+        "policyRuleListPage_deleteButton_posId": interceptRuleListPage_deleteButton_posId,
+        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
+        "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+    }
+}
 test_statistics_template_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -413,7 +527,6 @@ test_statistics_template_element_position = {
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_statisticsTemplates_button_yes_posXpath
     }
 }
-#policy
 test_statistics_rule_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -514,7 +627,9 @@ test_http_url_object_element_position = test_http_url_object_element_position
 test_response_page_element_position = test_response_page_element_position
 test_hijack_file_element_position = test_hijack_file_element_position
 test_insert_script_element_position = test_insert_script_element_position
-test_manipulation_rule_element_position=test_manipulation_rule_element_position
+test_manipulation_rule_element_position = test_manipulation_rule_element_position
+test_security_rule_element_position = test_security_rule_element_position
+test_intercept_rule_element_position = test_intercept_rule_element_position
 
 def get_element_position(key_name):
     # object
@@ -538,8 +653,12 @@ def get_element_position(key_name):
     elif key_name =="statistics_template":
         element_position_map = test_statistics_template_element_position
     # policy
-    elif key_name == "manipulation":
+    elif key_name == "pxy_manipulation":
         element_position_map = test_manipulation_rule_element_position
+    elif key_name == "security":
+        element_position_map = test_security_rule_element_position
+    elif key_name == "pxy_intercept":
+        element_position_map = test_intercept_rule_element_position
     elif key_name == "statistics":
         element_position_map = test_statistics_rule_element_position
     else:
@@ -566,6 +685,10 @@ def get_name_list(test_data):
     #         ]
     name_list = []
     tmp_name_dict = {}
+    # 添加策略的
+    tmp_name_dict["type"] = test_data["policy_type"]
+    tmp_name_dict["name"] = test_data["rule_name"]
+    name_list.append(copy.deepcopy(tmp_name_dict))
     if "condition" in test_data.keys() and len(test_data["condition"]) != 0:
         for key, value in test_data["condition"].items():
             if key in manipulation_object_no_create_list:
@@ -586,7 +709,7 @@ def get_name_list(test_data):
                     tmp_name_dict["type"] = value[i]["profile_type"]
                     tmp_name_dict["name"] = value[i]["profile_file"]["name"]
                     name_list.append(copy.deepcopy(tmp_name_dict))
-    print(name_list)
+    #print(name_list)
     return name_list
 
 def create_pre_policy(data, driver):
@@ -618,7 +741,7 @@ def create_pre_policy(data, driver):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "quic",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -642,7 +765,7 @@ def create_pre_policy(data, driver):
     intercept_temp = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "intercept",
+            "policy_type": "pxy_intercept",
             "rule_name": "manipulation_pre_intercept",
             "rule_action": "intercept",
             "rule_type": "create",
@@ -667,6 +790,11 @@ def create_pre_policy(data, driver):
                         "name": "http",  #
                         "object_type": "application",
                         "negate": False
+                    },
+                    {
+                        "name": "ssl",  #
+                        "object_type": "application",
+                        "negate": False
                     }
                 ],
                 "server_fqdn": [],
@@ -687,12 +815,35 @@ def create_pre_policy(data, driver):
         }
 
     security_temp_deny_quic["condition"]["source_ip"] = data["condition"]["source_ip"]
+    intercept_temp["condition"]["source_ip"] = data["condition"]["source_ip"]
     security_rule_element_position = get_element_position("security")
-    intercept_rule_element_position = get_element_position("intercept")
-    create_rule.create(security_temp_deny_quic, security_rule_element_position)
-    create_rule.create(test_data, intercept_rule_element_position)
-    pass
+    intercept_rule_element_position = get_element_position("pxy_intercept")
+    #create_rule.create(security_temp_deny_quic, security_rule_element_position)
+    #print("Create security rule successfully.")
+    create_rule.create(intercept_temp, intercept_rule_element_position)
+    print("Create intercept rule successfully.")
+    tmp_list = [
+        # {
+        #     "type": "security",
+        #     "name": security_temp_deny_quic["rule_name"],
+        # },
+        {
+            "type": "pxy_intercept",
+            "name": intercept_temp["rule_name"],
+        }
+    ]
+    return tmp_list
 
+def delete_pre_policy(name_list, driver):
+    for i in range(len(name_list)):
+        policy_type = name_list[i]["type"]
+        policy_name = name_list[i]["name"]
+        element_position = get_element_position(policy_type)
+        search_rule = SearchRule(driver)
+        search_rule_code, first_row_checkbox_element = search_rule.search(policy_type, policy_name, element_position)
+        delete_rule = DeleteRule(driver)
+        delete_rule_code = delete_rule.delete(element_position, first_row_checkbox_element, True)
+        time.sleep(2)
 
 # 勿删 zcw make
 manipulation_object_no_create_list = ["application", "sub_action_override"]

@@ -25,7 +25,7 @@ class TrafficVerification():
         token = test_data["token"]
         policy_type = test_data["policy_type"]
         isMultiPriority = test_data["is_multi_priority"]
-        
+
         if isMultiPriority:
             rule_num = test_data["rule_num"]
         else:
@@ -60,6 +60,7 @@ class TrafficVerification():
             
             # 触发流量
             temp_data = json.dumps(test_data["traffic"])
+            print("Start producing test traffic")
             output = self.call_rest_api(temp_data)
             print("Start to verify the effect of the policy rule.")
             cmd_return = output
@@ -351,7 +352,9 @@ class TrafficVerification():
         url = api_server + ":" + port + "/v1/traffic"
         headers = {"Content-Type": "application/json"}
         print("Begin to send traffic for effect verification.")
+        print(url, data)
         response = requests.post(url, data=data, headers=headers)
+        print(response)
         if response.status_code == 200: 
             jsonData = json.loads(response.text)
             jsonData = response.json()

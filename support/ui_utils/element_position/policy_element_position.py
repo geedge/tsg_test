@@ -1,6 +1,7 @@
 mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
 mainPage_policyFirstLevelMenu_posId = "policy"  # 一级菜单Policies
 mainPage_policySecondLevelMenu_security_posId = "Objects_ProxyInterception"
+mainPage_policySecondLevelMenu_intercept_posId = "policy_Intercept"  # 二级菜单intercept
 mainPage_policySecondLevelMenu_manipulation_posId = "policy_Manipulation"  # 二级菜单manipulatjion
 mainPage_policySecondLevelMenu_shaping_posId = "policy_trafficShaping"  # 二级菜单Shaping
 mainPage_policySecondLevelMenu_statistics_posId = "policy_statistics"  # 二级菜单Statistics
@@ -200,6 +201,18 @@ securityRulePage_subAction_alert_responseContent_selectProfile_posId = "filelist
 
 securityRulePage_packetCapture_posXpath = "//form[@class='el-form policy_edit el-form--label-left']//div[17]//span"
 securityRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labelStyle padding-left20 el-form-item--small']//input[@class='el-input__inner']"
+
+# intercept
+interceptRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
+interceptRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
+
+interceptRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
+interceptRulePage_selectDeny_posId = "interceptintercept"
+
+interceptRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
+interceptRulePage_okButton_yes_posId = "OK-_policy_Intercept_edit_Home_App_anonymousComponent"
+interceptRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+
 
 
 #### manipulation

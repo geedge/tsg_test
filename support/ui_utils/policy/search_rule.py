@@ -31,13 +31,15 @@ class SearchRule():
         if len(row) != 0 and type not in ["security","monitor"]:
             first_row = row[0]
             first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
-            first_row_id = first_row.find_element(By.XPATH, "//span[@class='list-popover']").text.strip()
-            return 200, first_row_checkBox_element, first_row_id
+            return 200, first_row_checkBox_element
         elif len(row) != 0 and type in ["security","monitor"]:
-            return 200, ""
+            first_row = row[0]
+            first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
+            return 200, first_row_checkBox_element
         else:
             return 400, ""
-        
+
+
     def get_rule_id(self):
         rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
         return rule_id

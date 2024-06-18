@@ -35,7 +35,7 @@ class MyWebDriver(webdriver.Remote):
             try:
                 self.element = super().find_element(by, value)
             except:
-                print(f"{caller_filename}. {caller_lineno} line. find element：{value}. find method: {by}.")
+                #print(f"{caller_filename}. {caller_lineno} line. find element：{value}. find method: {by}.")
                 throw_assert = 1
                 assert_info = traceback.format_exc()
                 continue
