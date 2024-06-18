@@ -98,7 +98,7 @@ def run(parameter):
             "is_mirror":"on",
             "profile": [],
             "expected_return": "新闻",
-            "counters_1": {"hits": 1},
+            "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
@@ -242,7 +242,7 @@ def run(parameter):
                     result = "Fail to create ip object."
                     break
 
-            # 创建rule
+        # 创建rule
         if create_port_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
@@ -251,7 +251,7 @@ def run(parameter):
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-            # 触发流量验证
+        # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
@@ -262,7 +262,7 @@ def run(parameter):
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data, [])
 
-            # 分析验证结果，并返回给flask
+        # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
@@ -271,7 +271,7 @@ def run(parameter):
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
 
-            # 删除rule
+        # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
@@ -287,16 +287,34 @@ def run(parameter):
             else:
                 result = result + " In addition, fail to search security rule."
 
-            # 删除object
+        # 删除object
         if delete_rule_code == 200:
             # 删除ip
-            for x in range(len(port_data)):
+            for x in range(len(ip_data)):
                 search_ip = SearchObject(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(port_data[x]["name"],
+                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"],
                                                                               test_ip_object_element_position)
                 if search_ip_code == 200:
                     delete_port = DeleteObject(driver)
-                    delete_ip_code = delete_port.delete(test_port_object_element_position, first_row_checkbox_element, True)
+                    delete_ip_code = delete_port.delete(test_ip_object_element_position,
+                                                        first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+            # 删除port
+            for x in range(len(port_data)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(port_data[x]["name"],
+                                                                              test_port_object_element_position)
+                if search_ip_code == 200:
+                    delete_port = DeleteObject(driver)
+                    delete_ip_code = delete_port.delete(test_port_object_element_position,
+                                                        first_row_checkbox_element, True)
                     if delete_ip_code == 200:
                         print("Delete ip object successfully.")
                     elif delete_ip_code != 200:
@@ -334,7 +352,7 @@ if __name__ == '__main__':
         "script_type": "ui",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",

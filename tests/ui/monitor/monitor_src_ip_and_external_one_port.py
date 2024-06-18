@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_external_range_port",
+            "rule_name": "monitor_rule_external_one_port",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -66,7 +66,7 @@ def run(parameter):
                 "external_ip": [],
                 "external_port": [
                     {
-                        "name": "monitor_external_range_port",
+                        "name": "monitor_external_one_port",
                         "object_type": "port",
                         "select_type": False,
                         "negate": False,
@@ -74,7 +74,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "port",
-                                "item_value": "443-445",
+                                "item_value": "443",
                             },
                         ]
                     }
@@ -98,7 +98,7 @@ def run(parameter):
             "is_mirror":"on",
             "profile": [],
             "expected_return": "douban",
-            "counters_1": {"hits": 1},
+            "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.douban.com"}],
             "traffic": {
                 "type": "curl",
@@ -115,11 +115,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_external_range_port"
+                "name": "monitor_rule_external_one_port"
             },
             {
                 "type": "port",
-                "name": "monitor_external_range_port"
+                "name": "monitor_external_one_port"
             },
             {
                 "type":"ip",
@@ -291,13 +291,31 @@ def run(parameter):
         # 删除object
         if delete_rule_code == 200:
             # 删除ip
-            for x in range(len(port_data)):
+            for x in range(len(ip_data)):
                 search_ip = SearchObject(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(port_data[x]["name"],
+                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"],
                                                                               test_ip_object_element_position)
                 if search_ip_code == 200:
                     delete_port = DeleteObject(driver)
-                    delete_ip_code = delete_port.delete(test_port_object_element_position, first_row_checkbox_element, True)
+                    delete_ip_code = delete_port.delete(test_ip_object_element_position,
+                                                        first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+            # 删除port
+            for x in range(len(port_data)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(port_data[x]["name"],
+                                                                              test_port_object_element_position)
+                if search_ip_code == 200:
+                    delete_port = DeleteObject(driver)
+                    delete_ip_code = delete_port.delete(test_port_object_element_position,
+                                                        first_row_checkbox_element, True)
                     if delete_ip_code == 200:
                         print("Delete ip object successfully.")
                     elif delete_ip_code != 200:
@@ -332,7 +350,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",

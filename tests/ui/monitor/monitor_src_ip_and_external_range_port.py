@@ -39,13 +39,13 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_internal_ip",
+            "rule_name": "monitor_rule_external_range_port",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "monitor_internal_ip",
+                        "name": "monitor_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -64,7 +64,21 @@ def run(parameter):
                 "internal_ip": [],
                 "internal_port": [],
                 "external_ip": [],
-                "external_port": [],
+                "external_port": [
+                    {
+                        "name": "monitor_external_range_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "443-445",
+                            },
+                        ]
+                    }
+                ],
                 "source_geography": [],
                 "destination_geography": [],
                 "sub_id": [],
@@ -83,12 +97,12 @@ def run(parameter):
             },
             "is_mirror":"on",
             "profile": [],
-            "expected_return": "baidu",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "expected_return": "douban",
+            "counters_1": {"hits": "many"},
+            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.douban.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "command": "curl -kv https://www.douban.com"
             },
             "token": ""
         }
@@ -101,11 +115,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_internal_ip"
+                "name": "monitor_rule_external_range_port"
             },
             {
-                "type": "ip",
-                "name": "monitor_internal_ip"
+                "type": "port",
+                "name": "monitor_external_range_port"
+            },
+            {
+                "type":"ip",
+                "name":"monitor_source_ip"
             }
         ]
 
@@ -154,16 +172,14 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    ###src_port
-                    "policyRulePage_addConditionSrcPort_posXpath": securityRulePage_addCondition_srcPort_posXpath,
-                    "policyRulePage_addSrcPort_posXpath": securityRulePage_addSrcPort_posXpath,
-                    "policyRulePage_searchSrcPort_posXpath": securityRulePage_searchSrcPort_posXpath,
-                    "policyRulePage_selectSrcPort_posXpath": securityRulePage_selectSrcPort_posXpath,
-                    "policyRulePage_closeSrcPort_posXpath": securityRulePage_closeSrcPort_posXpath,
-                    ###src_port
+                    "policyRulePage_addConditionExternalPort_posXpath": securityRulePage_addCondition_externalPort_posXpath,
+                    "policyRulePage_addExternalPort_posXpath": securityRulePage_addExternalPort_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
+                    "policyRulePage_searchExternalPort_posXpath": securityRulePage_searchExternalPort_posXpath,
+                    "policyRulePage_selectExternalPort_posXpath": securityRulePage_selectExternalPort_posXpath,
+                    "policyRulePage_closeExternalPort_posXpath": securityRulePage_closeExternalPort_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
@@ -183,11 +199,10 @@ def run(parameter):
                     "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
                     "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
                     # 添加ip
-                    "policyRulePage_addConditionInternalIP_posXpath": policyRulePage_addCondition_internalIP_posXpath,
-                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
-                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
-                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
-                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -205,8 +220,8 @@ def run(parameter):
             }
 
         # 创建object
-        if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
-            ip_data = test_data["condition"]["internal_ip"]
+        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+            ip_data = test_data["condition"]["source_ip"]
             create_ip = CreateObject(driver)
             for i in range(len(ip_data)):
                 create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
@@ -216,8 +231,20 @@ def run(parameter):
                     result = "Fail to create ip object."
                     break
 
+        #创建object
+        if "external_port" in test_data["condition"] and len(test_data["condition"]["external_port"]) != 0:
+            port_data =test_data["condition"]["external_port"]
+            create_port = CreateObject(driver)
+            for i in range(len(port_data)):
+                create_port_code =create_port.create(port_data[i],test_port_object_element_position)
+                if create_port_code == 200:
+                    print("Create ip object successfully.")
+                elif create_port_code != 200:
+                    result = "Fail to create ip object."
+                    break
+
         # 创建rule
-        if create_ip_code == 200:
+        if create_port_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -270,7 +297,25 @@ def run(parameter):
                                                                               test_ip_object_element_position)
                 if search_ip_code == 200:
                     delete_port = DeleteObject(driver)
-                    delete_ip_code = delete_port.delete(test_port_object_element_position, first_row_checkbox_element, True)
+                    delete_ip_code = delete_port.delete(test_ip_object_element_position,
+                                                        first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+            # 删除port
+            for x in range(len(port_data)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(port_data[x]["name"],
+                                                                              test_port_object_element_position)
+                if search_ip_code == 200:
+                    delete_port = DeleteObject(driver)
+                    delete_ip_code = delete_port.delete(test_port_object_element_position,
+                                                        first_row_checkbox_element, True)
                     if delete_ip_code == 200:
                         print("Delete ip object successfully.")
                     elif delete_ip_code != 200:
@@ -305,12 +350,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "source_range_port",
-        "script_type": "ui",
+        "test_case_name": "monitor_external_port",
+        "script_type":"ui",
+
     }
     run(parameter)
     """
