@@ -24,7 +24,7 @@ class CreateProfile():
                 sf_name_list,sc_info= self.get_sf_info(service_functions,sf_profile_element_position,sc_info)
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_profile_page(page_jump_element_position)
+            page_jump.jump_sub_profile_page(page_jump_element_position,"UIwithTrafficTestVsys")
             # 点击create
             self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
             # 输入name
@@ -56,9 +56,9 @@ class CreateProfile():
         # Type 操作
         sff_type = self.format_from_data_lower_and_underline(data, key="type")  
         if sff_type == "steering":
-            sc_info["type"] = "1"
+            sc_info["type"] = 1
         elif sff_type == "mirroring":
-            sc_info["type"] = "2"
+            sc_info["type"] = 2
         self.sff_operate_radio(create_element_position, key="type", value=sff_type, label_dict=label_dict, radio_name_dict=radio_name_dict)
         # Load Balance Method 操作
         load_balance_method = self.format_from_data_lower_and_underline(data, key="load_balance_method")
@@ -138,7 +138,7 @@ class CreateProfile():
         create_element_position = profile_element_position["create"]
         #页面跳转
         page_jump = PageJump(self.driver)
-        page_jump.jump_sub_profile_page(page_jump_element_position)
+        page_jump.jump_sub_profile_page(page_jump_element_position,"UIwithTrafficTestVsys")
         #点击create
         self.driver.find_element(By.ID,create_element_position["profileListPage_createButton_posId"]).click()
         #在打开页面操作：输入name

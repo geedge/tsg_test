@@ -52,7 +52,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -m 5 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },
             "token": ""
         }

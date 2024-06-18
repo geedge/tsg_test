@@ -91,7 +91,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
-                "type": "xxx",
+                "type": "timed out",
                 "command": "curl --connect-timeout 5 -m 5 https://www.example.com"
             },
             "token": ""
@@ -144,9 +144,9 @@ if __name__ == "__main__":
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
-        "test_subcriber_id": "test6473",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,

@@ -12,21 +12,13 @@ def run(parameter):
     print("Begin to run test case: " + parameter["test_case_name"])
     # 脚本启动时间
     start_time = time.time()
-    # 脚本启动时间
-    start_time = time.time()
-    # 脚本启动时间
-    start_time = time.time()
-    # 脚本启动时间
-    start_time = time.time()
-    # 脚本启动时间
-    start_time = time.time()
     # 测试数据
     test_data = {
       "is_multi_priority": True,
       "rule_num": 2,
       "policy_type": "security",
       "rule_action_1": "shunt",
-      "rule_action_1": "allow",
+      "rule_action_2": "allow",
       "do_log_1": 0,
       "do_log_2": 2,
       "obj_condition_1": [

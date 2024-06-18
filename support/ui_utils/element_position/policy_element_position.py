@@ -63,6 +63,12 @@ policyRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list
 policyRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='IP Address']"
 policyRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='IP Protocol']"
+
+policyRulePage_addIpProtocol_posXpath = "//div[@zs-label='Protocol']//p[normalize-space(text())='IP Protocol']/ancestor::div[@zs-label='Protocol']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 policyRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
@@ -347,6 +353,11 @@ serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpa
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 serviceChainingRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
 
+serviceChainingRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
+serviceChainingRulePage_searchDstIP_posXpath =  "//div[@class='destinations list-box']//div[contains(@class, 'object-item-seach')]//input"
+serviceChainingRulePage_selectDstIP_posXpath = "//div[@class='destinations list-box']//span[normalize-space(text())='{replaceValue}']"
+serviceChainingRulePage_closeDstIP_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
 serviceChainingRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 serviceChainingRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 serviceChainingRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
@@ -355,6 +366,12 @@ serviceChainingRulePage_selectApplicationLabel_posXpath = policyRulePage_selectA
 serviceChainingRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
 
 serviceChainingRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
+serviceChainingRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
+serviceChainingRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
+serviceChainingRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
+serviceChainingRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
+serviceChainingRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
+serviceChainingRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 
 serviceChainingRulePage_addSFFProfile_posId = "policy_sff_add-_SFFSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_service_chaining_write_Home_App_anonymousComponent"
 serviceChainingRulePage_searchSFFProfile_posXpath = "//div[@class='SFFList list-box']//input"
@@ -470,9 +487,14 @@ statisticsRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceLis
 # rule 页面中不同condition的添加+符号定位操作
 ## Sorce IP Address的添加、查询、选中、关闭操作
 statisticsRulePage_addSrcIP_posXpath = "//div[@zs-label='Source']//div[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//i[contains(@class, 'icon-Create1')]"
-statisticsRulePage_searchSrcIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+statisticsRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
 statisticsRulePage_selectSrcIP_posXpath ="//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 statisticsRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//div[@class='rigth-menu-button-info']//button"
+## Destination IP Address的添加、查询、选中、关闭操作
+statisticsRulePage_addDstIP_posXpath = "//div[@zs-label='Destination']//div[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//i[contains(@class, 'icon-Create1')]"
+statisticsRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
+statisticsRulePage_selectDstIP_posXpath ="//div[@class='destinations list-box']//span[normalize-space(text())='{replaceValue}']"
+statisticsRulePage_closeDstIP_posXpath = "//div[@class='destinations list-box']//div[@class='rigth-menu-button-info']//button"
 ## Internal IP的添加、查询、选中、关闭操作
 statisticsRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
 statisticsRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath

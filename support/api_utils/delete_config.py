@@ -322,7 +322,7 @@ class DeleteConfig():
         elif script_type == "ui":
             if len(name_list) > 0:
                 for name_item in name_list:
-                    if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept"]:
+                    if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept", "monitor"]:
                         template['name'] = name_item["name"]
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(rule_url, template, headers)
@@ -332,7 +332,7 @@ class DeleteConfig():
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(obj_url, template, headers)
                     
-                    if name_item["type"] in ["service_function_forwarders", "service_functions", "statistics_templates"]:
+                    if name_item["type"] in ["service_function_forwarder", "service_function", "statistics_templates"]:
                         if 'type' in template:
                             del template["type"]
                         template['name'] = name_item["name"]

@@ -58,12 +58,12 @@ def run(parameter):
             }
             ],
             "app_name_1": ["http"],
-            "expected_return": "404 Page Not Found",
+            "expected_return": "200",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
                 "type": "wget",
-                "command": "wget -q -O- http://open.node.com:180"
+                "command": "wget -q -O- --debug http://open.node.com:180"
             },
             "token": ""
         }

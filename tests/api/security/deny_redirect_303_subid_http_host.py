@@ -54,6 +54,22 @@ def run(parameter):
                     ]
                     }
                 ]
+                },
+                {
+                "attribute_name": "ATTR_HTTP_URL",
+                "object_type": "url",
+                "object_sub_type": "url",
+                "object_list": [
+                    {
+                    "add_item_list": [
+                        {
+                        "keyword_array": [
+                            "open.node.com"
+                        ]
+                        }
+                    ]
+                    }
+                ]
                 }
             ],
             "app_name_1": ["http"],
@@ -111,16 +127,17 @@ def run(parameter):
   
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_subcriber_id": "",
+        "test_pc_ip": "192.168.64.91",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "vsys_id": 11,
+        "is_log": 0,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

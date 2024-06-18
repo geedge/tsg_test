@@ -134,10 +134,7 @@ def run(parameter):
     name_list = []
     erase = DeleteConfig()
     erase.clear_config(token, parameter, name_list)
-  finally:
-    name_list = []
-    erase = DeleteConfig()
-    erase.clear_config(token, parameter, name_list)
+
   
 if __name__ == "__main__":
     parameter = {

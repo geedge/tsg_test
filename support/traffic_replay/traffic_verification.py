@@ -36,6 +36,10 @@ class TrafficVerification():
                 statistics_sc_info_list = []
                 cfg_list["rule_id"] = test_data["rule_id"]
                 statistics_sc_info_list.append(cfg_list)
+            elif policy_type == "statistics":
+                statistics_sc_info_list = []
+                cfg_list["rule_id"] = test_data["rule_id"]
+                #statistics_sc_info_list.append(cfg_list)
             temp_list = {}
             temp_list[policy_type] = test_data["rule_id"]
             create_policies_ids = []
@@ -60,8 +64,7 @@ class TrafficVerification():
             
             # 触发流量
             temp_data = json.dumps(test_data["traffic"])
-            print("Start producing test traffic")
-            output = self.call_rest_api(temp_data)
+            output = self.call_traffic_server(temp_data, script_type)
             print("Start to verify the effect of the policy rule.")
             cmd_return = output
             # print(output)
@@ -116,21 +119,39 @@ class TrafficVerification():
             current_utc_time = datetime.now(utc_tz)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             # 解析trex使用参数， 解析client server ip
-            for ip_item in test_data["obj_condition_1"]:
-                if "ATTR_SOURCE_IP" in ip_item.values():
-                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                        clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                        clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                    else:
-                        clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                        clients_end = clients_start
-                if "ATTR_DESTINATION_IP" in ip_item.values():
-                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                        servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                        servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                    else:
-                        servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                        servers_end = servers_start
+            if script_type == "ui":
+                for ip_item in test_data["condition"]:
+                    if "source_ip" in ip_item.values():
+                        if "-" in ip_item["item"][0]["item_value"]:
+                            clients_start = ip_item["item"][0]["item_value"].split("-")[0]
+                            clients_end = ip_item["item"][0]["item_value"].split("-")[-1]
+                        else:
+                            clients_start = ip_item["item"][0]["item_value"]
+                            clients_end = clients_start
+                    if "destination_ip" in ip_item.values():
+                        if "-" in ip_item["item"][0]["item_value"]:
+                            servers_start = ip_item["item"][0]["item_value"].split("-")[0]
+                            servers_end = ip_item["item"][0]["item_value"].split("-")[-1]
+                        else:
+                            servers_start = ip_item["item"][0]["item_value"]
+                            servers_end = servers_start
+                # to do 待补充UI界面验证和清理
+            elif script_type == "api":
+                for ip_item in test_data["obj_condition_1"]:
+                    if "ATTR_SOURCE_IP" in ip_item.values():
+                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                            clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                        else:
+                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                            clients_end = clients_start
+                    if "ATTR_DESTINATION_IP" in ip_item.values():
+                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                            servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                        else:
+                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                            servers_end = servers_start
             verify_policy_break_count = 0
             while True:      # 多次策略验证
                 verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
@@ -153,7 +174,7 @@ class TrafficVerification():
             test_data["traffic"]["servers_start_ip"] = servers_start
             test_data["traffic"]["servers_end_ip"] = servers_end
             temp_data = json.dumps(test_data["traffic"])
-            statistics_result = self.call_rest_api(temp_data)
+            statistics_result = self.call_traffic_server(temp_data, script_type)
             statistics_metircs = statistics_result["result"]
             #traffic_replay = TrafficReplay(template_path)
             #statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
@@ -232,7 +253,7 @@ class TrafficVerification():
                             test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"]
                 # 执行回放命令
                 temp_data = json.dumps(test_data["traffic"])
-                sc_result = self.call_rest_api(temp_data)
+                sc_result = self.call_traffic_server(temp_data, script_type)
                 sc_metircs = sc_result["result"]
                 # traffic_replay = TrafficReplay(template_path)
                 # sc_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
@@ -257,7 +278,7 @@ class TrafficVerification():
                                 if fail_count >= 2:
                                     break
                                 fail_count += 1
-                            time.sleep(30)
+                            time.sleep(15)
                             n += 1
                     if metric_result == 333:
                         if statistics_info["sf_method"] == "vxlan_g" and statistics_info["sf_dest_ip"] not in active_dest_ips_list:
@@ -276,7 +297,7 @@ class TrafficVerification():
                 time.sleep(20)
                 # 触发流量
                 temp_data = json.dumps(test_data["traffic"])
-                output = self.call_rest_api(temp_data)
+                output = self.call_traffic_server(temp_data, script_type)
                 print("Start to verify the effect of the policy rule.")
                 cmd_return = output
                 expected_return = test_data["expected_return"]
@@ -343,18 +364,19 @@ class TrafficVerification():
                 break
         return is_counters, is_log_query
     
-    def call_rest_api(self, data):
+    def call_traffic_server(self, data, script_type):
         parse = configparser.ConfigParser()
         parse_dir = os.path.join(workdir, "configuration_file.ini")
         parse.read(parse_dir, encoding="utf-8")
-        api_server = parse.get("traffic_server", "server_url")
+        if script_type == "api":
+            traffic_server = parse.get("traffic_server", "api_server_url")
+        elif script_type == "ui":
+            traffic_server = parse.get("traffic_server", "ui_server_url")
         port = parse.get("traffic_port", "server_port")
-        url = api_server + ":" + port + "/v1/traffic"
+        url = traffic_server + ":" + port + "/v1/traffic"
         headers = {"Content-Type": "application/json"}
         print("Begin to send traffic for effect verification.")
-        print(url, data)
         response = requests.post(url, data=data, headers=headers)
-        print(response)
         if response.status_code == 200: 
             jsonData = json.loads(response.text)
             jsonData = response.json()
