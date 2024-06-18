@@ -2,9 +2,8 @@
 import inspect
 import sys
 import time
-
+import traceback
 import pytest_check
-from selenium.common import NoSuchElementException
 
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.profile.page_jump import PageJump
@@ -60,8 +59,11 @@ class CreateProfile():
             #         return 999
             return 200
         except Exception as e:
-            print(e)
+            print("Error: ", e)
+            traceback.print_exc()
+            print(str(e))
             return 400
+
 
 
 
