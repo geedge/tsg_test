@@ -158,7 +158,12 @@ class CreateRule():
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                     elif server_fqdn_data[t]["object_type"] == "category":
                         print("to be added...")
-            
+
+            #添加ip_protocol
+            if "ip_protocol" in test_data["condition"] and len(test_data["condition"]["ip_protocol"]) != 0:
+                protocol_field_data = test_data["condition"]["ip_protocol"]
+                self.add_ip_protocol(protocol_field_data, "IpProtocol", create_element_position)
+
             # 添加protocol field
             if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
                 protocol_field_data = test_data["condition"]["protocol_filed"]
@@ -451,3 +456,25 @@ class CreateRule():
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)]).send_keys(Keys.ENTER)
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
+
+
+    def add_ip_protocol(self, ip_protocol_data, filed_type, create_element_position):
+        # 点add condition的+
+        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+        # 选中port
+        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
+        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+        # 点source port的+
+        self.driver.find_element(By.XPATH, create_element_position[ "policyRulePage_add{}_posXpath".format(filed_type)]).click()
+        # 通过port name搜索并选中
+        is_first_iteration = True
+        for z in ip_protocol_data:
+            #如果不是第一次循环，需要点加号调侧滑框
+            if not is_first_iteration:
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addCondition_posXpath"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)]).send_keys(z)
+            self.driver.find_element(By.XPATH, create_element_position[ "policyRulePage_search{}_posXpath".format(filed_type)]).send_keys(Keys.ENTER)
+            temp_element_position = create_element_position[ "policyRulePage_select{}_posXpath".format(filed_type)].format( replaceValue=z)
+            self.driver.find_element(By.XPATH, temp_element_position).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
+            is_first_iteration = False

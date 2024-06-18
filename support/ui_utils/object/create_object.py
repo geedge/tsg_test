@@ -43,15 +43,15 @@ class CreateObject():
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] == "keyword":
                 print("to be added...")
-            elif data["object_type"] == "url" or data["object_type"] == "account" or data["object_type"] == "phone_number":
+            elif data["object_type"] == "url" or data["object_type"] == "account" or data["object_type"] == "phone_number" or data["object_type"] == "fqdn":
                 for i in range(len(data["items"])):   # 只是简单的添加了一个item，后期优化
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
                     item_value = data["items"][i]["item_value"].split("->")[0].strip()
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(item_value)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
                     break
-            elif data["object_type"] == "fqdn":
-                print("to be added..")
+            # elif data["object_type"] == "fqdn":
+            #     print("to be added..")
             elif data["object_type"] == "tunnel":
                 print("to be added...")
             elif data["object_type"] == "flag":
@@ -66,6 +66,8 @@ class CreateObject():
                 for x in data["item"]:
                     if data["object_type"] == "ip":
                         self.driver.find_element(By.ID, create_element_position["objectPage_ipType_posId"]).click()
+                    # elif data["object_type"] == "fqdn":
+                    #     print("add item")
                     if x["item_operation"] == "add":
                         self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(x["item_value"])

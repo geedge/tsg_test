@@ -205,7 +205,7 @@ def run(parameter):
                     result = "Fail to create ip object."
                     break
 
-            # 创建rule
+        # 创建rule
         if create_ip_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
@@ -214,7 +214,7 @@ def run(parameter):
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-            # 触发流量验证
+        # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
@@ -225,7 +225,7 @@ def run(parameter):
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data, [])
 
-            # 分析验证结果，并返回给flask
+        # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
@@ -234,7 +234,7 @@ def run(parameter):
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
 
-            # 删除rule
+        # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
@@ -250,7 +250,7 @@ def run(parameter):
             else:
                 result = result + " In addition, fail to search security rule."
 
-            # 删除object
+        # 删除object
         if delete_rule_code == 200:
             # 删除ip
             for x in range(len(ip_data)):
@@ -269,9 +269,7 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
 
-                # 脚本结束时间和耗时
-
-            # 脚本结束时间和耗时
+        # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
         print("Duration of running the test case: ", duration)

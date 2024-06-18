@@ -77,12 +77,12 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "新闻",
+            "expected_return": "POST",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.88"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 5 -m 10 http://www.news.cn/"
+                "command": "curl -kv --connect-timeout 5 -m 10 http://open.node.com:180"
             },
             "token": ""
         }
@@ -150,6 +150,7 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectAllow_posId,
+                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
                     "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
                     "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
                     "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
@@ -247,20 +248,20 @@ def run(parameter):
         
         # 删除object
         if delete_rule_code == 200:
-            # 删除port
+            # 删除ip
             for x in range(len(ip_data)):
                 search_ip = SearchObject(driver)
                 search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
                 if search_ip_code == 200:
-                    delete_port = DeleteObject(driver)
-                    delete_port_code = delete_port.delete(test_ip_object_element_position, first_row_checkbox_element, True)
-                    if delete_port_code == 200:
-                        print("Delete port object successfully.")
-                    elif delete_port_code != 200:
-                        result = result + " In addition, fail to delete port object."
+                    delete_ip = DeleteObject(driver)
+                    delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
                         break
                 else:
-                    result = result + " In addition, fail to search port object."
+                    result = result + " In addition, fail to search ip object."
                     break
         
                 # 脚本结束时间和耗时
@@ -287,7 +288,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.88",
+        "test_pc_ip": "192.168.64.91",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
