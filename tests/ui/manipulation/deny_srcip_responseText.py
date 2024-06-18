@@ -301,7 +301,7 @@ if __name__ == '__main__':
         "vsys_id": 11,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "pxy_manipulation",
+        "module_name": "manipulation",
         "test_case_name": "deny_srcip_responseText"
     }
     run(parameter)
