@@ -332,11 +332,14 @@ class DeleteConfig():
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(obj_url, template, headers)
                     
-                    if name_item["type"] in ["service_function_forwarder", "service_function", "statistics_templates"]:
+                    if name_item["type"] in ["service_function_forwarder", "service_function", "statistics_templates", "response_page", "hijack_file",
+                                             "insert_script"]:
                         if 'type' in template:
                             del template["type"]
                         template['name'] = name_item["name"]
                         profile_url = api_server + "/v1/policy/profile/" + name_item["type"]
+                        # print(profile_url)
+                        # print(template)
                         self.query_and_delete_by_name(profile_url, template, headers)
                                               
     def query_and_delete_by_name(self, url, template, headers):

@@ -38,7 +38,7 @@ def run(parameter):
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "manipulation",
+            "policy_type": "pxy_manipulation",
             "rule_name": "deny_srcip_responseText",
             "rule_action": "deny",
             "rule_type": "create",
@@ -53,25 +53,11 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
+                                "item_value": parameter["test_pc_ip"]
                             },
                         ]
                     }
                 ],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [],
-                "external_port": [],
-                "source_geography": [],
-                "destination_geography": [],
-                "sub_id": [],
-                "device": [],
-                "tunnel": [],
-                "tunnel_level": [],
-                "flag": [],
                 "application": [
                     {
                         "name": "http",  #
@@ -79,13 +65,6 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
-                ],
-                "protocol_filed": [],
-                "sub_action_override": True,
-                "sub_action": [
-                ],
-                "packet_capture": []
             },
             "action_parameter": {
                 "deny_response_text":[
@@ -96,32 +75,13 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "reset",
+            "expected_return": "test_response_code",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 10 --max-time 30 https://www.baidu.com"
             },
-            # "traffic": {
-            #     "type": "trex",
-            #     "clients_start_ip": "192.168.64.86",
-            #     "clients_end_ip": "192.168.64.86",
-            #     "servers_start_ip": "2.1.1.1",
-            #     "servers_end_ip": "2.1.1.2",
-            #     "m": 1,
-            #     "d": 1,
-            #     "yaml_name": "test_https",
-            #     "pcap_name": "test_https"
-            # },
-            # "traffic": {
-            #     "type": "nslookup",
-            #     "command": "nslookup www.facebook.com"
-            # },
-            # "traffic": {
-            #     "type": "wget",
-            #     "command": "wget -q -O- http://open.node.com:180"
-            # },
             "token": ""
         }
 
@@ -138,40 +98,45 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-
         # 创建object
-        for cond_key, cond_value in (test_data["condition"].items()):
-            if cond_key in manipulation_object_no_create_list:
-                continue   # 直接跳过
-            cond_status = 0
-            cond_key_out = cond_key.replace("_", " ")
-            if len(cond_value) != 0:  # 不为空
-                cond_data = cond_value
-                create_ip = CreateObject(driver)
-                for i in range(len(cond_data)):  # 遍历创建所有condition
-                    element_position_map = get_element_position(cond_key)
-                    cond_code = create_ip.create(cond_data[i], element_position_map)
-                    if cond_code == 200:
-                        print("Create {} object successfully.".format(cond_key_out))
-                    else:
-                        result = "Fail to create {} object.".format(cond_key_out)
-                        cond_status = 1
-                        break
-            if cond_status == 1:   # 创建失败，退出遍历创建
-                break
+        if "condition" in test_data.keys():
+            for cond_key, cond_value in (test_data["condition"].items()):
+                if cond_key in manipulation_object_no_create_list:
+                    continue  # 直接跳过
+                cond_status = 0
+                cond_key_out = cond_key.replace("_", " ")
+                if len(cond_value) != 0:  # 不为空
+                    cond_data = cond_value
+                    create_ip = CreateObject(driver)
+                    for i in range(len(cond_data)):  # 遍历创建所有condition
+                        if cond_key == "protocol_filed":
+                            tmp_key = cond_data[i]["object_type"]
+                            cond_key_out = tmp_key.replace("_", " ")
+                            element_position_map = get_element_position(tmp_key)
+                        else:
+                            element_position_map = get_element_position(cond_key)
+                        cond_code = create_ip.create(cond_data[i], element_position_map)
+                        if cond_code == 200:
+                            print("Create {} object successfully.".format(cond_key_out))
+                        else:
+                            result = "Fail to create {} object.".format(cond_key_out)
+                            cond_status = 1
+                            break
+                if cond_status == 1:  # 创建失败，退出遍历创建
+                    break
 
         # 创建profile
         prfi_code = 200
         if "action_parameter" in test_data.keys():
-            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
+            for prfi_key, prfi_value in (test_data["action_parameter"]).items():
                 if prfi_key in manipulation_profile_no_create_list:
                     continue  # 直接跳过
                 prfi_status = 0
                 prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:   # 需要创建profile数据
+                if len(prfi_value) != 0:  # 需要创建profile数据
                     prfi_data = prfi_value
                     prfi = CreateProfile(driver)
-                    for i in range(len(prfi_data)): # 遍历创建所有 profile
+                    for i in range(len(prfi_data)):  # 遍历创建所有 profile
                         element_position_map = get_element_position(prfi_key)
                         prfi_code = prfi.create(prfi_data[i], element_position_map)
                         if prfi_code == 200:
@@ -187,27 +152,27 @@ def run(parameter):
         if cond_code == 200 and prfi_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
+            # 添加deny quic 和 intercept
+            tmp_name_list = create_pre_policy(test_data, driver)
+            for tmp in tmp_name_list:
+                name_list.insert(0, copy.deepcopy(tmp))
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
                 print("Create manipulation rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create manipulation rule."
 
-
-        """
         # 触发流量验证
         if create_rule_code == 200:
-            verify = TrafficVerification()
-            verification_result = verify.traffic_verification(parameter, test_data, [])
-
-            # 编辑修改使用
-            #edit_rule = EditRule(driver)
-            #element_position_map = get_element_position(test_data["policy_type"])
-            #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            #if edit_rule_code == 200:
-                # rule_id = search_rule.get_rule_id()
-               # test_data["rule_id"] = rule_id
-
+            edit_rule = EditRule(driver)
+            element_position_map = get_element_position(test_data["policy_type"])
+            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            if edit_rule_code == 200:
+                test_data["rule_id"] = rule_id
+                verify = TrafficVerification()
+                verification_result = verify.traffic_verification(parameter, test_data, [])
+            else:
+                print("traffic verification failed")
 
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -217,19 +182,17 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        """
 
         # 删除rule
-        #create_rule_code = 200
-        result = "temp "
-
         if create_rule_code == 200:
+            # 删除提前先发的security intercept策略
+            delete_pre_policy(tmp_name_list, driver)
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
                 delete_rule = DeleteRule(driver)
-                delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, False)
+                delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
                     print("Delete manipulation rule successfully.")
                 elif delete_rule_code != 200:
@@ -238,7 +201,7 @@ def run(parameter):
                 result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
         # 删除object
-        if delete_rule_code == 200:
+        if delete_rule_code == 200 and "condition" in test_data.keys():
             # 删除
             for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
                 if cond_key in manipulation_object_no_create_list:
@@ -248,11 +211,16 @@ def run(parameter):
                 if len(cond_value) != 0:  # 不为空
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
-                        element_position_map = get_element_position(cond_key)
+                        if cond_key == "protocol_filed":
+                            tmp_key = cond_data[i]["object_type"]
+                            cond_key_out = tmp_key.replace("_", " ")
+                            element_position_map = get_element_position(tmp_key)
+                        else:
+                            element_position_map = get_element_position(cond_key)
                         search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
                         if search_cond_code == 200:
                             delete_cond = DeleteObject(driver)
-                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, False)
+                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                             if delete_cond_code == 200:
                                 print("Delete {} object successfully.".format(cond_key_out))
                             else:
@@ -269,7 +237,7 @@ def run(parameter):
                     break
 
         # 删除profile
-        if delete_rule_code == 200:
+        if delete_rule_code == 200 and "action_parameter" in test_data.keys():
             # 删除
             for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
                 if prfi_key in manipulation_profile_no_create_list:
@@ -284,7 +252,7 @@ def run(parameter):
                         search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
                         if search_prfi_code == 200:
                             delete_prfi = DeleteProfile(driver)
-                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
+                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element, True)
                             if delete_prfi_code == 200:
                                 print("Delete {} profile successfully.".format(prfi_key_out))
                             else:
@@ -322,17 +290,18 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
+        "username": "zcw3",
+        "password": "qa111111",
+        "test_pc_ip": "192.168.64.91",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
+        "module_name": "pxy_manipulation",
         "test_case_name": "deny_srcip_responseText"
     }
     run(parameter)
