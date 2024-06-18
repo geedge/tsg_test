@@ -83,7 +83,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "baidu",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv https://www.baidu.com"
@@ -294,7 +294,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
