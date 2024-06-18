@@ -79,13 +79,13 @@ def receive_parameter():
                 parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_api")
                 parameter["path"] = f"{project_path}/tests/api"
                 parameter["env"] = "tsgx"
-                parameter["vsys_id"] = parse.get("tsg_url", "id_for_api")
+                parameter["vsys_id"] = parse.get("vsys", "id_for_api")
                 parameter["is_log"] = parse.get("is_log", "api")
             elif tag == "ui":
                 parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_ui_with_traffic")
                 parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
                 parameter["path"] = f"{project_path}/tests/ui"
-                parameter["vsys_id"] = parse.get("tsg_url", "id_for_ui")
+                parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
                 parameter["is_log"] = parse.get("is_log", "ui")
             elif tag == "general_ui":
                 parameter["path"] = f"{project_path}/tests/ui"
