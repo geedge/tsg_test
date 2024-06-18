@@ -62,7 +62,7 @@ def run(parameter):
             "log_query_param_1": [],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 5 https://www.jd.com"
+                "command": "curl --connect-timeout 10 -m 10 https://www.jd.com"
             },
             "token": ""
         }
