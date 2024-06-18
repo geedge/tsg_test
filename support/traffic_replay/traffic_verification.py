@@ -25,7 +25,7 @@ class TrafficVerification():
         token = test_data["token"]
         policy_type = test_data["policy_type"]
         isMultiPriority = test_data["is_multi_priority"]
-        
+
         if isMultiPriority:
             rule_num = test_data["rule_num"]
         else:
