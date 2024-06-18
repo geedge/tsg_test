@@ -61,7 +61,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com:180"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 10 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"requestbodysubstring\\\",\\\"setcook\\\":\\\"asdf\\\",\\\"contenttype\\\": \\\"charset\\\",\\\"responsebody\\\": \\\"responsebodysubstring\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://open.node.com:180/go"
+                "command": "curl --connect-timeout 5 -m 10  http://open.node.com:180"
             },
             "token": ""
         }
@@ -112,14 +112,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "is_log": 0,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

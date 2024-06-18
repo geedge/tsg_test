@@ -81,7 +81,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "Wget"
+                            "curl"
                         ]
                         }
                     ]
@@ -148,7 +148,8 @@ if __name__ == "__main__":
         "password": "hbn66AAA",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
-        "test_subcriber_id": "test6411",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
