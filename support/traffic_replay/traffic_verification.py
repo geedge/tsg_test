@@ -120,15 +120,18 @@ class TrafficVerification():
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             # 解析trex使用参数， 解析client server ip
             if script_type == "ui":
-                for ip_item in test_data["condition"]:
-                    if "source_ip" in ip_item.values():
+                if "source_ip" in test_data["condition"].keys():
+                    source_ip = test_data["condition"]["source_ip"]
+                    for ip_item in source_ip:
                         if "-" in ip_item["item"][0]["item_value"]:
                             clients_start = ip_item["item"][0]["item_value"].split("-")[0]
                             clients_end = ip_item["item"][0]["item_value"].split("-")[-1]
                         else:
                             clients_start = ip_item["item"][0]["item_value"]
                             clients_end = clients_start
-                    if "destination_ip" in ip_item.values():
+                if "destination_ip" in test_data["condition"].keys():
+                    destination_ip = test_data["condition"]["destination_ip"]
+                    for ip_item in destination_ip:
                         if "-" in ip_item["item"][0]["item_value"]:
                             servers_start = ip_item["item"][0]["item_value"].split("-")[0]
                             servers_end = ip_item["item"][0]["item_value"].split("-")[-1]

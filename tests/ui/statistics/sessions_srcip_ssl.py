@@ -19,6 +19,7 @@ from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_replay.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
+from support.api_utils.organize_config import *
 from support.api_utils.log_in import *
 import support.ui_utils.env_initialization
 from support.api_utils.delete_config import *
@@ -56,7 +57,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.1.1",
+                                "item_value": "10.64.224.2",
                             },
                         ]
                     }
@@ -131,8 +132,8 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.1.1",
-                "clients_end_ip": "10.64.1.1",
+                "clients_start_ip": "10.64.224.2",
+                "clients_end_ip": "10.64.224.2",
                 "servers_start_ip": "2.1.1.1",
                 "servers_end_ip": "2.1.1.2",
                 "m": 1,
@@ -181,6 +182,10 @@ def run(parameter):
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
 
+        # 添加测试过程中涉及的template
+        template_path = {}
+        template_path["trex_workpath"] = "/opt/trex/v3.03"
+        template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
         # 添加测试过程中涉及的template
         template_path = {}
@@ -191,7 +196,7 @@ def run(parameter):
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":
-                continue   # 直接跳过
+                continue  # 直接跳过
             if len(cond_value) != 0:  # 不为空
                 cond_data = cond_value
                 create_ip = CreateObject(driver)
@@ -204,7 +209,7 @@ def run(parameter):
                         result = "Fail to create {} object.".format(cond_key)
                         cond_status = 1
                         break
-            if cond_status == 1:   # 创建失败，退出遍历创建
+            if cond_status == 1:  # 创建失败，退出遍历创建
                 break
 
         # 创建Statistics Template
@@ -214,7 +219,7 @@ def run(parameter):
             statistics_templates = profile["statistics_template"]
             for statistics_template in statistics_templates:
                 cond_status = 0
-                #create_statistics_template = CreateProfile(driver)
+                # create_statistics_template = CreateProfile(driver)
                 create_statistics_template = CreateStatisticsTemplate(driver)
                 element_position_map = get_profile_element_position("statistics_template")
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
@@ -225,7 +230,7 @@ def run(parameter):
                     result = "Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
                     break
-                if cond_status == 1:   # 创建失败，退出遍历创建
+                if cond_status == 1:  # 创建失败，退出遍历创建
                     break
 
         # 创建rule
@@ -240,13 +245,12 @@ def run(parameter):
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
                                                                               test_data["rule_name"],
                                                                               element_position_map)
-            #if search_rule_code == 200:
-                #policies_ids = first_row_id
+            # if search_rule_code == 200:
+            # policies_ids = first_row_id
             if create_rule_code == 200:
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-
 
         # 触发流量验证
         create_rule_code = 200
@@ -255,10 +259,12 @@ def run(parameter):
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
                                                      element_position_map)
+            edit_rule_code = 200
             if edit_rule_code == 200:
                 test_data["rule_id"] = rule_id
+                config = OrganizeConfig()
+                cfg_list = config.create_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                cfg_list = {}
                 verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
 
                 # 编辑修改使用
@@ -335,6 +341,7 @@ def run(parameter):
                 if cond_key == "application" or cond_key == "sub_action_override":
                     continue  # 直接跳过
                 cond_status = 0
+                cond_data = 0
                 if len(cond_value) != 0:  # 不为空
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
@@ -385,7 +392,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 11,#6
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
