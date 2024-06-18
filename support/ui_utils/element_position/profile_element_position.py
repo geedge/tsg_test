@@ -729,7 +729,7 @@ serviceFunctionForwarders_radio_unavailabilityAction_posXpath = "//*[@class='pan
 serviceFunctionForwarders_input_minHealthServiceFunctions_posXpath = "//*[@id='ShapingProfile-service']"         # Minimum Health Service Functions 输入框 xpath
 serviceFunctionForwarders_button_serviceFunctionsAdd_posXpath = "//*[@class='panel-content']//div[@class='MultipleSelect FlagSelect']//i"         #  Service Functions 添加 xpath
 serviceFunctionForwarders_rightDrawer_input_sfDrawerSearch_posXpath = "//*[@class='ToggleDraw']//input[@id='object_ip_search']"         #  sf侧滑 搜索框 xpath
-serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath = "//*[@class='ToggleDraw']//ul/li[1]"         #  sf搜索框第一条数据 xpath
+serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath = "//div[@class='SFList list-box']//span[@class='table-hide name-fontFamily' and normalize-space(text())='{replaceValue}']"         #  sf搜索框第一条数据 xpath
 serviceFunctionForwarders_rightDrawer_button_sfDrawerClose_posXpath = "//*[@class='ToggleDraw']//button[contains(@class, 'right-menu-button-close')]//span"         #  sf侧滑 close按钮 xpath
 serviceFunctionForwarders_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='ShapingProfile-box-right']/div[1]/div"            # enable 开关 xpath
 serviceFunctionForwarders_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss    #提示保存按钮警告框OK按钮
