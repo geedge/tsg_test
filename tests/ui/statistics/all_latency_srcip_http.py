@@ -4,6 +4,9 @@ import os
 import sys
 import os
 import sys
+
+from support.api_utils.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -56,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
+                                "item_value": "10.64.224.1",
                             },
                         ]
                     }
@@ -99,9 +102,9 @@ def run(parameter):
                           "chart_name": "All Latency Line",
                           "visualization_type": "Line",
                           "metrics": [
-                            "incoming_latency:MEDIAN_HDR:IN Latency",
-                            "outgoing_latency:MEDIAN_HDR:All Latency",
-                            "latency:MEDIAN_HDR:Latency"
+                            "incoming_latency:MEDIAN_HDR:in_latency",
+                            "outgoing_latency:MEDIAN_HDR:all_atency",
+                            "latency:MEDIAN_HDR:latency"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -215,11 +218,20 @@ def run(parameter):
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-        """
+
         # 触发流量验证
-        if create_rule_code == 200:
-            verify = TrafficVerification()
-            verification_result = verify.traffic_verification(parameter, test_data, [])
+            # 触发流量验证
+            if create_rule_code == 200:
+                edit_rule = EditRule(driver)
+                edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                                                         element_position_map)
+                edit_rule_code = 200
+                if edit_rule_code == 200:
+                    test_data["rule_id"] = rule_id
+                    config = OrganizeConfig()
+                    cfg_list = config.create_cfg(parameter, test_data, template_path)
+                    verify = TrafficVerification()
+                    verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
@@ -238,7 +250,7 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        """
+
 
         # 删除rule
         create_rule_code = 200

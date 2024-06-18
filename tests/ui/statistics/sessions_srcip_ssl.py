@@ -57,7 +57,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.2",
+                                "item_value": "10.64.224.10",
                             },
                         ]
                     }
@@ -132,10 +132,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.2",
-                "clients_end_ip": "10.64.224.2",
+                "clients_start_ip": "10.64.224.10",
+                "clients_end_ip": "10.64.224.10",
                 "servers_start_ip": "2.1.1.1",
-                "servers_end_ip": "2.1.1.2",
+                "servers_end_ip": "2.1.1.1",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -253,8 +253,6 @@ def run(parameter):
                 result = "Fail to create security rule."
 
         # 触发流量验证
-        create_rule_code = 200
-
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
