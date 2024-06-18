@@ -271,7 +271,6 @@ class CreateRule():
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addProfile_plus_posXpath"]).click()
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
-                    print(212)
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
                         if "deny_response_text" in test_data["action_parameter"].keys():

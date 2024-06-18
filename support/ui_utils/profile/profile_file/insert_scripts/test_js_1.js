@@ -1,1 +1,1 @@
-alert("鎵цjavascript!");
+alert("test_case_javascript!");

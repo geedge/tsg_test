@@ -71,7 +71,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 10 --max-time 30 https://www.baidu.com"
             },
             "token": ""
         }
@@ -283,7 +283,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
-        "test_pc_ip": "192.168.64.93",
+        "test_pc_ip": "192.168.64.91",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
@@ -292,7 +292,7 @@ if __name__ == '__main__':
         "vsys_id": 11,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "pxy_manipulation",
+        "module_name": "manipulation",
         "test_case_name": "allow_src_ip"
     }
 
