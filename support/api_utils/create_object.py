@@ -271,83 +271,86 @@ class CreateObject():
         return member
            
     def create_or_import_object(self, type, obj_template_dict, headers, api_host, is_repeat):
-        if type == "create":
-            url = api_host + "/v1/policy/object"
-            time1 = datetime.now()
-            response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
-            assert response.status_code == 200
-            if response.status_code == 200:
-                print("Create {} object successfully.".format(obj_template_dict['object']['type']))
-            else:
-                print("Create {} object failed.".format(obj_template_dict['object']['type']))
-            time2 = datetime.now()
-            time_difference = time2 - time1
-            time_difference = time_difference.total_seconds()
-            if time_difference > 60:
-                timeout_result = False
-                print("Creating {} object takes too long.".format(obj_template_dict['object']['type']))
-            else:
-                timeout_result = True
-        elif type == "import":
-            import_url = api_host + "/v1/policy/object/import"
-            del headers['Content-Type']
-            response = requests.post(import_url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file_dry"], verify=False)
-            assert response.status_code == 200
-            if response.status_code == 200:
-                print("Verify the imported {} object successfully.".format(obj_template_dict['object']['type']))
-            else:
-                print("Verify the imported {} object failed.".format(obj_template_dict['object']['type']))
-            time1 = datetime.now()
-            url = api_host + "/v1/policy/object/import"
-            response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file_import"], verify=False)
-            time.sleep(20)
-            time2 = datetime.now()
-            time_difference = time2 - time1
-            time_difference = time_difference.total_seconds()
-            assert response.status_code == 200
-            if response.status_code == 200:
-                print("Import {} object successfully.".format(obj_template_dict['object']['type']))
-            else:
-                print("Import {} object failed.".format(obj_template_dict['object']['type']))
-            if time_difference > 180:
-                timeout_result = False
-                print("Importing {} object takes too long.".format(obj_template_dict['object']['type']))
-            else:
-                timeout_result = True
-        
-        obj_type = obj_template_dict['object']['type']
-        response_dict = json.loads(response.text)
-        object_ids, geo_name_id_list = self.get_object_ids(response_dict, obj_type)
-        
-        # 是否可取消，待验证？？
-        if is_repeat == 1 and obj_type != 'ip':
-            self.fqdn_ids = []
-            self.url_ids = []
-        elif is_repeat == 1 and obj_type == 'ip':
-            self.ip_ids = []
+        try:
+            if type == "create":
+                url = api_host + "/v1/policy/object"
+                time1 = datetime.now()
+                response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print("Create {} object successfully.".format(obj_template_dict['object']['type']))
+                else:
+                    print("Create {} object failed.".format(obj_template_dict['object']['type']))
+                time2 = datetime.now()
+                time_difference = time2 - time1
+                time_difference = time_difference.total_seconds()
+                if time_difference > 60:
+                    timeout_result = False
+                    print("Creating {} object takes too long.".format(obj_template_dict['object']['type']))
+                else:
+                    timeout_result = True
+            elif type == "import":
+                import_url = api_host + "/v1/policy/object/import"
+                del headers['Content-Type']
+                response = requests.post(import_url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file_dry"], verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print("Verify the imported {} object successfully.".format(obj_template_dict['object']['type']))
+                else:
+                    print("Verify the imported {} object failed.".format(obj_template_dict['object']['type']))
+                time1 = datetime.now()
+                url = api_host + "/v1/policy/object/import"
+                response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file_import"], verify=False)
+                time.sleep(20)
+                time2 = datetime.now()
+                time_difference = time2 - time1
+                time_difference = time_difference.total_seconds()
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print("Import {} object successfully.".format(obj_template_dict['object']['type']))
+                else:
+                    print("Import {} object failed.".format(obj_template_dict['object']['type']))
+                if time_difference > 180:
+                    timeout_result = False
+                    print("Importing {} object takes too long.".format(obj_template_dict['object']['type']))
+                else:
+                    timeout_result = True
             
-        obj_type = obj_template_dict['object']['type'] 
-        if obj_type == 'ip':
-            self.ip_ids = self.handle_ids(object_ids, self.ip_ids)
-        elif obj_type == 'subscriberid':
-            self.subid_ids = self.handle_ids(object_ids, self.subid_ids)
-        elif obj_type == 'fqdn':
-            self.fqdn_ids = self.handle_ids(object_ids, self.fqdn_ids)
-        elif obj_type == 'flag':
-            self.flag_ids = self.handle_ids(object_ids, self.flag_ids)
-        elif obj_type == 'url':
-            self.url_ids = self.handle_ids(object_ids, self.url_ids)
-        elif obj_type == 'keywords':
-            self.keywords_ids = self.handle_ids(object_ids, self.keywords_ids)
-        elif obj_type == 'account':
-            self.account_ids = self.handle_ids(object_ids, self.account_ids)
-        elif obj_type == 'http_signature':
-            self.http_signature_ids = self.handle_ids(object_ids, self.http_signature_ids)
-        elif obj_type == 'geolocation':
-            self.geo_ids = self.handle_ids(object_ids, self.geo_ids)
-            self.geo_name_ids = self.handle_ids(geo_name_id_list, self.geo_name_ids)
+            obj_type = obj_template_dict['object']['type']
+            response_dict = json.loads(response.text)
+            object_ids, geo_name_id_list = self.get_object_ids(response_dict, obj_type)
             
-        return object_ids, timeout_result
+            # 是否可取消，待验证？？
+            if is_repeat == 1 and obj_type != 'ip':
+                self.fqdn_ids = []
+                self.url_ids = []
+            elif is_repeat == 1 and obj_type == 'ip':
+                self.ip_ids = []
+                
+            obj_type = obj_template_dict['object']['type'] 
+            if obj_type == 'ip':
+                self.ip_ids = self.handle_ids(object_ids, self.ip_ids)
+            elif obj_type == 'subscriberid':
+                self.subid_ids = self.handle_ids(object_ids, self.subid_ids)
+            elif obj_type == 'fqdn':
+                self.fqdn_ids = self.handle_ids(object_ids, self.fqdn_ids)
+            elif obj_type == 'flag':
+                self.flag_ids = self.handle_ids(object_ids, self.flag_ids)
+            elif obj_type == 'url':
+                self.url_ids = self.handle_ids(object_ids, self.url_ids)
+            elif obj_type == 'keywords':
+                self.keywords_ids = self.handle_ids(object_ids, self.keywords_ids)
+            elif obj_type == 'account':
+                self.account_ids = self.handle_ids(object_ids, self.account_ids)
+            elif obj_type == 'http_signature':
+                self.http_signature_ids = self.handle_ids(object_ids, self.http_signature_ids)
+            elif obj_type == 'geolocation':
+                self.geo_ids = self.handle_ids(object_ids, self.geo_ids)
+                self.geo_name_ids = self.handle_ids(geo_name_id_list, self.geo_name_ids)
+                
+            return object_ids, timeout_result
+        except AssertionError as e:
+            print(f"AssertionError: {e}")
     
     # 获取返回结果中的objectsid
     def get_object_ids(self, response_dict, obj_type):

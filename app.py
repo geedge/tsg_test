@@ -131,12 +131,15 @@ def receive_parameter():
                         response_result["data"] = None
                         response_result["success"] = True
                     elif len(result) != 0:
-                        response_result["code"] = 417
+                        response_result["code"] = 416
                         response_result["msg"] = result
                         response_result["data"] = None
                         response_result["success"] = False
                     break
-        
+            
+            value = response_result.get("code", None)
+            if value is None or value == '':
+                response_result["code"] = 417
             response = jsonify(response_result)
             response.status_code = response_result["code"]
         else:

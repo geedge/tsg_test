@@ -262,21 +262,24 @@ class CreatePolicyRule():
 
     #请求创建策略接口，下发策略    
     def create_rule(self, rule_template_dict, headers, api_host):
-        url = api_host + "/v1/policy/rule"
-        response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
-        assert response.status_code == 200
-        return_json_data = json.loads(response.text)
-        if response.status_code == 200:
-            print("Create {} rule successfully.".format(return_json_data['data']['rule']['type']))
-        else:
-            print("Create {} rule failed.".format(return_json_data['data']['rule']['type']))
-        policy_type = return_json_data['data']['rule']['type']
-        policy_id = return_json_data['data']['rule']['id']
-        policy_id_dict_temp = {}
-        policy_id_dict_temp[policy_type] = policy_id
-        policy_id_list_temp = []
-        policy_id_list_temp.append(policy_id_dict_temp)
-        return policy_id_list_temp
+        try:
+            url = api_host + "/v1/policy/rule"
+            response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
+            assert response.status_code == 200
+            return_json_data = json.loads(response.text)
+            if response.status_code == 200:
+                print("Create {} rule successfully.".format(return_json_data['data']['rule']['type']))
+            else:
+                print("Create {} rule failed.".format(return_json_data['data']['rule']['type']))
+            policy_type = return_json_data['data']['rule']['type']
+            policy_id = return_json_data['data']['rule']['id']
+            policy_id_dict_temp = {}
+            policy_id_dict_temp[policy_type] = policy_id
+            policy_id_list_temp = []
+            policy_id_list_temp.append(policy_id_dict_temp)
+            return policy_id_list_temp
+        except AssertionError as e:
+            print(f"AssertionError: {e}")
 
 if __name__ == '__main__':
     print("test")

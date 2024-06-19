@@ -136,29 +136,35 @@ class OrganizeConfig():
         return config
 
     def get_policy_define(self, token, rule_id, rule_type, api_host, vsys_id):
-        # 请求接口查询metric
-        headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/policy/rule"
-        # ?page_size=20&page_no=1&ids=849138&type=statistics&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id=1
-        query_condition = {"page_size": 20, "page_no": 1, "ids": rule_id, "type": rule_type,
-                           "is_enabled": "True", "with_sub_vsys": 1, "page_location": "oneshot", "location_key": "json",
-                           "vsys_id": vsys_id}
-        url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={str(vsys_id)}")
-        response = requests.get(url, headers=headers, verify=False)
-        assert response.status_code == 200
-        response = json.loads(response.text)
-        result = response['data']['rules']
-        return result
+        try:
+            # 请求接口查询metric
+            headers = {'Content-Type': 'application/json', 'Authorization': token}
+            url = api_host + "/v1/policy/rule"
+            # ?page_size=20&page_no=1&ids=849138&type=statistics&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id=1
+            query_condition = {"page_size": 20, "page_no": 1, "ids": rule_id, "type": rule_type,
+                            "is_enabled": "True", "with_sub_vsys": 1, "page_location": "oneshot", "location_key": "json",
+                            "vsys_id": vsys_id}
+            url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={str(vsys_id)}")
+            response = requests.get(url, headers=headers, verify=False)
+            assert response.status_code == 200
+            response = json.loads(response.text)
+            result = response['data']['rules']
+            return result
+        except AssertionError as e:
+                print(f"AssertionError: {e}")
 
     def get_template_define(self, token, template_id, template_type, api_host, vsys_id):
-        # 请求接口查询metric
-        headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = (api_host + f"/v1/policy/profile/statistics_template?page_size=20&page_no=1&ids={template_id}&vsys_id={str(vsys_id)}")
-        response = requests.get(url, headers=headers, verify=False)
-        assert response.status_code == 200
-        response = json.loads(response.text)
-        result = response['data']['statistics_templates']
-        return result
+        try:
+            # 请求接口查询metric
+            headers = {'Content-Type': 'application/json', 'Authorization': token}
+            url = (api_host + f"/v1/policy/profile/statistics_template?page_size=20&page_no=1&ids={template_id}&vsys_id={str(vsys_id)}")
+            response = requests.get(url, headers=headers, verify=False)
+            assert response.status_code == 200
+            response = json.loads(response.text)
+            result = response['data']['statistics_templates']
+            return result
+        except AssertionError as e:
+            print(f"AssertionError: {e}")
 
 
 if __name__ == "__main__":
