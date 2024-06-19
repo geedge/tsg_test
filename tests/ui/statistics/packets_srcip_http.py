@@ -140,7 +140,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts.pcap"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",
@@ -199,9 +199,9 @@ def run(parameter):
                     element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
-                        print("Create {} object successfully.".format(cond_key))
+                        print("------Create {} object successfully.".format(cond_key))
                     else:
-                        result = "Fail to create {} object.".format(cond_key)
+                        result = "!!!Fail to create {} object.".format(cond_key)
                         cond_status = 1
                         break
             if cond_status == 1:   # 创建失败，退出遍历创建
@@ -220,28 +220,26 @@ def run(parameter):
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
                 create_statistics_template_code = cond_code
                 if cond_code == 200:
-                    print("Create {} Profile successfully.".format("statistics_template"))
+                    print("------Create {} Profile successfully.".format("statistics_template"))
                 else:
-                    result = "Fail to create {} Profile.".format("statistics_template")
+                    result = "!!!Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
                     break
                 if cond_status == 1:   # 创建失败，退出遍历创建
                     break
 
         # 创建rule
-        if cond_code == 200:
+        create_rule_code = 0
+        if cond_code == 200 and create_statistics_template_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print("Create security rule successfully.")
+                print("------Create security rule successfully.")
             elif create_rule_code != 200:
-                result = "Fail to create security rule."
-
-
+                result = "!!!Fail to create security rule."
         # 触发流量验证
         if create_rule_code == 200:
-
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
                                                      element_position_map)
@@ -261,21 +259,18 @@ def run(parameter):
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
 
-
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
             if len(result) == 0:
-                print("The test case is passed.")
+                print("------The test case is passed.")
             elif len(result) != 0:
-                print("The test case is failed. The failure reason is: ", result)
+                print("!!!The test case is failed. The failure reason is: ", result)
 
 
         # 删除rule
-        create_rule_code = 200
         result = "temp "
-
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -284,11 +279,11 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete Statistics rule successfully.")
+                    print("------Delete Statistics rule successfully.")
                 elif delete_rule_code != 200:
-                    result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
+                    result = result + "!!!In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
-                result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
+                result = result + "!!! In addition, fail to search {} rule.".format(test_data["policy_type"])
 
         # 删除Statistics Tesmplate
         result = "temp "
@@ -307,12 +302,12 @@ def run(parameter):
                             delete_prfi = DeleteProfile(driver)
                             delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
                             if delete_prfi_code == 200:
-                                print("Delete {} profile successfully.".format(prfi_key_out))
+                                print("------Delete {} profile successfully.".format(prfi_key_out))
                             else:
-                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
+                                result = result + "!!! In addition, fail to delete {} profile.".format(prfi_key_out)
                                 break
                         else:
-                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+                            result = result + " !!!In addition, fail to search {} profile.".format(prfi_key_out)
                             break
                         # 退出遍历标志
                         if prfi_status == 1:  # 失败，退出遍历创建
@@ -321,7 +316,7 @@ def run(parameter):
                 if prfi_status == 1:  # 失败，退出遍历创建
                     break
         # 删除object
-        if delete_rule_code == 200:
+        if delete_rule_code == 200 and "condition" in test_data.keys():
             # 删除
             for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
                 if cond_key == "application" or cond_key == "sub_action_override":
@@ -336,12 +331,12 @@ def run(parameter):
                             delete_cond = DeleteObject(driver)
                             delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                             if delete_cond_code == 200:
-                                print("Delete {} object successfully.".format(cond_key))
+                                print("------Delete {} object successfully.".format(cond_key))
                             else:
-                                result = result + " In addition, fail to delete {} object.".format(cond_key)
+                                result = result + "!!! In addition, fail to delete {} object.".format(cond_key)
                                 break
                         else:
-                            result = result + " In addition, fail to search {} object.".format(cond_key)
+                            result = result + "!!! In addition, fail to search {} object.".format(cond_key)
                             break
                         # 退出遍历标志
                         if cond_status == 1:  # 失败，退出遍历创建
@@ -352,14 +347,14 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", duration)
+        print("------Duration of running the test case: ", duration)
 
-        print("Finish test case: " + parameter["test_case_name"])
+        print("------Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
-        print("Error: ", e)
+        print("!!!Error: ", e)
         traceback.print_exc()
-        return "Error: " + str(e)
+        return "!!!Error: " + str(e)
     finally:
         # 清理环境
         support.ui_utils.env_initialization.teardown()

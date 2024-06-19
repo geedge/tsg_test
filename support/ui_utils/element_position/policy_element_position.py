@@ -559,3 +559,9 @@ statisticsRulePage_okButton_warningNo_posXpath = "//button[@class='el-button el-
 statisticsRulePage_delete_tip_button_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 statisticsRulePage_delete_tip_button_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
 
+# 策略编辑界面右侧信息
+statisticsRulePage_rightInfo_lastHitTime_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[1]//td[2]"
+statisticsRulePage_rightInfo_firstHitTime_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[2]//td[2]"
+statisticsRulePage_rightInfo_throughput_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[3]//td[2]"
+statisticsRulePage_rightInfo_hitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[4]//td[2]"
+statisticsRulePage_rightInfo_72hoursHitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[5]//td[2]"
