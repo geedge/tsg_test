@@ -139,7 +139,7 @@ class CreateConfig():
                         src_ip = "10.64.77.11"
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
-                        src_ip_list[2] = str(random.randint(200, 250))
+                        src_ip_list[2] = str(random.randint(200, 222))
                         src_ip_list[3] = str(random.randint(100, 250))
                         if run_env == "9140":
                             src_ip_list[0] = "172"
@@ -153,7 +153,7 @@ class CreateConfig():
                         two_ip_list = src_ip.split("-")
                         ip_list_1 = two_ip_list[0].split(".")
                         ip_list_2 = two_ip_list[1].split(".")
-                        ip_list_1[2] = str(random.randint(200, 250))
+                        ip_list_1[2] = str(random.randint(200, 222))
                         ip_list_1[3] = str(random.randint(1, 50))
                         ip_list_2[2] = ip_list_1[2]
                         ip_list_2[3] = str(int(ip_list_1[3]) + 200)
