@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_traffic_and_vlan_id_enabled",
+            "rule_name": "monitor_rule_http_mirror_off",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -75,30 +75,27 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [],
-                "server_fqdn": [],
-                "protocol_filed": [
-
+                "application": [
+                    {
+                        "name": "http",  #
+                        "object_type": "application",
+                        "negate": False
+                    }
                 ],
+                "server_fqdn": [],
+                "protocol_filed":[],
                 "sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },
-            "is_mirror":"on",
-            "profile": [
-
-                        {
-                            "name":"profile1",
-                            "vlan_id":"10"
-                            #vlan的范围：应该是在3-66
-                        }
-             ],
-            "expected_return": "baidu",
+            "is_mirror":"off",
+            "profile": [],
+              "expected_return": "news",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
+            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "slope.ru"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "command": "curl -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
             },
             "token": ""
         }
@@ -111,16 +108,17 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_traffic_and_vlan_id_enabled"
+                "name": "monitor_rule_http_mirror_off"
             },
             {
                 "type":"ip",
                 "name":"monitor_source_ip"
             },
             {
-                "type": "monitor_profile",
+                "type": "traffic_mirror",
                 "name": "profile1"
             }
+
         ]
 
         # 添加定位库集合
@@ -157,43 +155,6 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-
-
-            test_monitor_profile_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-                    "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
-                },
-                "create": {
-                    "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
-                    "profilePage_inputName_posId": trafficMirroringProfiles_input_Name_posId,
-                    "profilePage_addLANID_posCss": trafficMirroringProfiles_button_vlanIdAdd_posCss,
-                    "trafficMirroringProfiles_input_vlanIdsInput_posXpath": trafficMirroringProfiles_input_vlanIdsInput_posXpath,
-                    "profilePage_button_oK_posCss": trafficMirroringProfiles_button_oK_posCss,
-                    "profilePage_button_cancel_posCss": trafficMirroringProfiles_button_cancel_posCss,
-                    "profilePage_button_warningSaveYes_posCss": trafficMirroringProfiles_button_warningSaveYes_posCss,
-                    # action
-                },
-                "edit": {
-                    "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
-                },
-                "search": {
-                    "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
-                    "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
-                    "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
-                    "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
-                },
-                "delete": {
-                    "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-                    "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
-                    "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posCss
-                }
-            }
-
 
             test_rule_element_position = {
                 "page_jump": {
@@ -233,7 +194,14 @@ def run(parameter):
                     "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
                     "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
                     "policyRulePage_saveProile_ok_posXpath":monitorRulePage_saveProile_ok_posXpath,
-                    "policyRulePage_saveProile_warningYes_posXpath":monitorRulePage_saveProile_warningYes_posXpath
+                    "policyRulePage_saveProile_warningYes_posXpath":monitorRulePage_saveProile_warningYes_posXpath,
+                    #add ssl sni
+                    "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
+                    "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
+                    "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
+                    "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
+                    "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
+                    "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -261,16 +229,6 @@ def run(parameter):
                     result = "Fail to create ip object."
                     break
 
-        if "profile" in test_data  and len(test_data["profile"]) != 0:
-            profile_data = test_data["profile"]
-            mirror_traffic_profile = CreateProfile(driver,test_monitor_profile_element_position)
-            for i in range(len(profile_data)):
-                create_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position,test_data["profile"][i]["name"])
-                if create_profile_code == 200:
-                    print("Create Traffic Mirroring Profiles successfully.")
-                elif create_profile_code != 200:
-                    result = "Fail to create Traffic Mirroring Profiles profile."
-                    break
 
         # 创建rule
         if create_ip_code == 200:
@@ -335,31 +293,13 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
 
-        #删除profile
-        if delete_rule_code == 200:
-            for x in range(len(profile_data)):
-                search_mirror_profile = SearchProfile(driver)
-                profile_return_code,first_row_checkbox_element=search_mirror_profile.search(profile_data[x]['name'],test_monitor_profile_element_position)
-                if profile_return_code == 200:
-                    delete_mirror_profile = DeleteProfile(driver)
-                    delete_profile_code = delete_mirror_profile.delete(test_monitor_profile_element_position,first_row_checkbox_element,True)
-                    if delete_profile_code == 200:
-                        print("Delete monitor profile successfully.")
-                    elif delete_profile_code != 200:
-                        result = result + " In addition, fail to delete profile."
-                        break
-                # else:
-                    result = result + " In addition, fail to search profile."
-                    break
-
-
-        # 脚本结束时间和耗时
+        #脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
         print("Duration of running the test case: ", duration)
 
         print("Finish test case: " + parameter["test_case_name"])
-        return result
+        #return result
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)
@@ -383,7 +323,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "traffic_and_vlan_id_is_enabled"
+        "test_case_name": "monitor_rule_http_mirror_off"
     }
     run(parameter)
     """
