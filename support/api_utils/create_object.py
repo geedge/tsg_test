@@ -292,7 +292,7 @@ class CreateObject():
             elif type == "import":
                 import_url = api_host + "/v1/policy/object/import"
                 if 'Content-Type' in headers:
-                del headers['Content-Type']
+                    del headers['Content-Type']
                 response = requests.post(import_url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file_dry"], verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
