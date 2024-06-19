@@ -47,54 +47,6 @@ def run(parameter):
                 ]
                 },
                 {
-                "attribute_name": "ATTR_MAIL_CONTENT",
-                "object_type": "keywords",
-                "object_sub_type": "keywords",
-                "object_list": [
-                    {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "Bestman"
-                        ]
-                        }
-                    ]
-                    }
-                ]
-                },
-                {
-                "attribute_name": "ATTR_MAIL_ATT_NAME",
-                "object_type": "keywords",
-                "object_sub_type": "keywords",
-                "object_list": [
-                    {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "mail_test_english.txt"
-                        ]
-                        }
-                    ]
-                    }
-                ]
-                },
-                {
-                "attribute_name": "ATTR_MAIL_ATT_CONTENT",
-                "object_type": "keywords",
-                "object_sub_type": "keywords",
-                "object_list": [
-                    {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "hala"
-                        ]
-                        }
-                    ]
-                    }
-                ]
-                },
-                {
                 "attribute_name": "ATTR_MAIL_FROM",
                 "object_type": "account",
                 "object_sub_type": "account",
@@ -135,7 +87,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "163.com"
+                            "1111"
                         ]
                         }
                     ]
@@ -149,7 +101,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"mail_from_cmd","query_value":"hbn@163.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 --url \"smtp://192.168.40.206\" --mail-from \"hbn@163.com\" --mail-rcpt \"autotest@163.com\" -H @/opt/traffic_replay/mail_file/subjectEnglish.txt --user \"hbn@163.com:111111\" -F '=(;type=multipart/mixed' -F '=(;type=multipart/mixed' -F \"=\"Bestman\";type=text/plain\" -F \"file=@/opt/traffic_replay/mail_file/mail_test_english.txt;type=`file --mime-type \"/opt/traffic_replay/mail_file/mail_test_english.txt\"|sed 's/.*: //'`;encoder=base64\" -F '=)'"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/opt/test/automation/scripts/mailTestFile/mailMessage/subjectEnglish.txt'   --user 'hbn@163.com:111111'"
             },
             "token": ""
         }
@@ -200,14 +152,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

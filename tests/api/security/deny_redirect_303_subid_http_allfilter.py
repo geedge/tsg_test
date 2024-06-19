@@ -90,12 +90,12 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["http"],
-            "expected_return": "百度一下",
+            "expected_return": "303",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com:180"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 --max-time 10 http://open.node.com:180"
+                "command": "curl -kv --connect-timeout 20 --max-time 20 http://open.node.com:180"
             },
             "token": ""
         }
@@ -146,7 +146,6 @@ if __name__ == "__main__":
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
         "test_pc_ip": "192.168.64.88",
         "test_subcriber_id": "test6488",

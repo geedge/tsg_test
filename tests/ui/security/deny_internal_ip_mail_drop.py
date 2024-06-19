@@ -36,7 +36,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_ftp",
+            "rule_name": "security_rule_deny_internal_ip_mail_drop",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -71,7 +71,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "ftp", #
+                        "name": "mail", #
                         "object_type": "application",
                         "negate": False
                     }
@@ -90,12 +90,12 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "reset",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/opt/test/automation/scripts/mailTestFile/mailMessage/subjectEnglish.txt' --user 'hbn@163.com:111111'"
             },
             "token": ""
         }
@@ -108,7 +108,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_ftp"
+                "name": "security_rule_deny_internal_ip_mail_drop"
             },
             {
                 "type": "ip",

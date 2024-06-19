@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "redirect_http_src_ip",
+            "rule_name": "redirect_http_srcip_url",
             "rule_action": "redirect",
             "rule_type": "create",
             "condition": {
@@ -53,7 +53,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.88",
+                                "item_value": parameter["test_pc_ip"],
                             },
                         ]
                     }
@@ -318,7 +318,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "redirect_http_src_ip"
+        "test_case_name": "redirect_http_srcip_url"
     }
     run(parameter)
     """

@@ -45,13 +45,15 @@ test_data = {
         ],
         "server_fqdn": [
             {
-                "name": "test_baidu",  # name为www.baidu.com，在Docker中无法识别
+                "name": "manipulation_fqdn_node",
                 "object_type": "fqdn",
                 "select_type": False,
                 "negate": False,
                 "plus": False,
-                "item": [
-                    "*baidu.com"
+                "items": [
+                    {
+                        "item_value": "baidu.com",
+                    }
                 ]
             }
         ],
@@ -132,6 +134,17 @@ test_data = {
                     "script": "test_js_1.js->",
                     "script_type": "js->",
                     "insert_position": "Before Page Load->"
+                }
+            }
+        ],
+        "run_script": [
+            {
+                "profile_type": "run_script",
+                "profile_file": {
+                    "name": "test_tsg_ui_profile_page",
+                    "model": "create",
+                    "script": "run_script_insert.lua->",
+                    "max_exec_time": "1000->"
                 }
             }
         ]

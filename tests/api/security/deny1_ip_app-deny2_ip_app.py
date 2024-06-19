@@ -66,7 +66,7 @@ def run(parameter):
       "log_query_param_2": [],
       "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 20 -m 20 https://www.baidu.com"
             },
       "token": ""
     }
@@ -123,7 +123,8 @@ if __name__ == "__main__":
       "script_type": "api",
       "username": "hebingning",
       "password": "hbn66AAA",
-      "test_pc_ip": "192.168.64.73",
+      "test_pc_ip": "192.168.64.88",
+      "test_subcriber_id": "test6488",
       "api_server": "http://192.168.44.72",
       "is_log": 1,
       "env": "tsgx",

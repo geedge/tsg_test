@@ -19,7 +19,7 @@ def run(parameter):
             "policy_type": "security",
             "rule_action_1": "deny",
             "method_1": "block",
-            "code_1": 550,
+            "code_1": 551,
             "do_log_1": 2,
             "obj_condition_1": [
                 {
@@ -56,12 +56,12 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["mail"],
-            "expected_return": "550",
+            "expected_return": "551",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"mail_account","query_value":"hbn@163.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 --url \"smtp://192.168.40.206\" --mail-from \"hbn@163.com\" --mail-rcpt \"fan3727n4y82@163.com\" -H @/opt/traffic_replay/mail_file/subjectEnglish.txt --user \"hbn@163.com:111111\" -F '=(;type=multipart/mixed' -F '=(;type=multipart/mixed' -F \"=\"Bestman\";type=text/plain\" -F \"file=@/opt/traffic_replay/mail_file/mail_test_english.txt;type=`file --mime-type \"/opt/traffic_replay/mail_file/mail_test_english.txt\"|sed 's/.*: //'`;encoder=base64\" -F '=)'"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/opt/test/automation/scripts/mailTestFile/mailMessage/subjectEnglish.txt'   --user 'hbn@163.com:111111'"
             },
             "token": ""
         }
@@ -112,14 +112,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "is_log": 0,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

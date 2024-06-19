@@ -36,7 +36,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_allow_internal_ip",
+            "rule_name": "security_rule_deny_external_ip_mail_block_551",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -44,9 +44,11 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [],
                 "destination_port": [],
-                "internal_ip": [
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "security_external_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -54,13 +56,11 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.91",
+                                "item_value": "192.168.40.206",
                             }
                         ]
                     }
                 ],
-                "internal_port": [],
-                "external_ip": [],
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
@@ -69,27 +69,31 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [],
+                "application": [
+                    {
+                        "name": "mail", #
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
                 "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "drop",
-                        "drop_packet": 0,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
+                        "type": "block",
+                        "code": 551
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "Failed",
+            "expected_return": "551",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
+            "log_query_param_1": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 5 -m 10 http://open.node.com:180"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/opt/test/automation/scripts/mailTestFile/mailMessage/subjectEnglish.txt' --user 'hbn@163.com:111111'"
             },
             "token": ""
         }
@@ -102,11 +106,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_internal_ip"
+                "name": "security_rule_deny_external_ip_mail_block_551"
             },
             {
                 "type": "ip",
-                "name": "security_internal_ip"
+                "name": "security_external_ip"
             }
         ]
         
@@ -157,11 +161,11 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
-                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
-                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
-                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
-                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    "policyRulePage_addConditionExternalIP_posXpath": securityRulePage_addCondition_externalIP_posXpath,
+                    "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
+                    "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
+                    "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
+                    "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -176,10 +180,12 @@ def run(parameter):
                     "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
-                    "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
-                    "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
-                    "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+                    "policyRulePage_subAction_block_posXpath": securityRulePage_subAction_block_posXpath,
+                    "policyRulePage_subAction_block_responseCode_posXpath": securityRulePage_subAction_block_responseCode_posXpath,
+                    "policyRulePage_subAction_block_responseCode_change_posXpath": securityRulePage_subAction_block_responseCode_change_posXpath,
+                    "policyRulePage_subAction_block_responseContent_posXpath": securityRulePage_subAction_block_responseContent_posXpath,
+                    "policyRulePage_subAction_block_responseContent_change_posXpath": securityRulePage_subAction_block_responseContent_change_posXpath,
+                    "policyRulePage_subAction_block_responseContent_text_posId": securityRulePage_subAction_block_responseContent_text_posId,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -200,19 +206,19 @@ def run(parameter):
             }
         
         # 创建object
-        if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
-            ip_data = test_data["condition"]["internal_ip"]
-            create_ip = CreateObject(driver)
+        if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
+            ip_data = test_data["condition"]["external_ip"]
+            create_port = CreateObject(driver)
             for i in range(len(ip_data)):
-                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
-                if create_ip_code == 200:
+                create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
+                if create_port_code == 200:
                     print("Create ip object successfully.")
-                elif create_ip_code != 200:
-                    result = "Fail to create ip object."
+                elif create_port_code != 200:
+                    result = "Fail to create ip."
                     break
         
         # 创建rule
-        if create_ip_code == 200:
+        if create_port_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -300,7 +306,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 10,
+        "vsys_id": 11,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

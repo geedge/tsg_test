@@ -296,7 +296,7 @@ manipulationRulePage_selectApplicationLabel_posXpath = policyRulePage_selectAppl
 manipulationRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
 # Server FQDN的添加、查询、选中、关闭操作
 manipulationRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
-manipulationRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
+manipulationRulePage_searchServerFqdn_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
 manipulationRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
 manipulationRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 # url的添加、查询、选中、关闭操作

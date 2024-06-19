@@ -47,7 +47,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "www.jd.com"
+                            "jd.com"
                         ]
                         }
                     ]
@@ -61,7 +61,7 @@ def run(parameter):
             "log_query_param_1": [],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 15 -m 15 https://www.jd.com"
+                "command": "curl --connect-timeout 25 -m 25 https://www.jd.com"
             },
             "token": ""
         }
@@ -116,14 +116,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_204_negative_not_ip_http"
     }

@@ -110,6 +110,36 @@ test_port_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+test_fqdn_object_element_position = {
+    "page_jump":{
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_fqdn_posId
+    },
+    "create": {
+        "objectListPage_createButton_posId": fqdnObjectListPage_createButton_posId,
+        "objectListPage_dropDown_createButton_posId": fqdnObjectListPage_dropDown_createButton_posId,
+        "objectPage_inputName_posXpath": fqdnObjectPage_inputName_posXpath,
+        "objectPage_addItem_posId": fqdnObjectPage_addItem_posId,
+        "objectPage_inputItem_posXpath": fqdnObjectPage_inputItem_posXpath,
+        "objectPage_button_saveItem_posXpath": fqdnObjectPage_button_saveItem_posXpath,
+        "objectPage_okButton_posId": fqdnObjectPage_okButton_posId,
+        "objectPage_okButton_warningYes_posXpath": fqdnObjectPage_okButton_warningYes_posXpath
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": fqdnObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": fqdnObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": fqdnObjectListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": fqdnObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posId": fqdnObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
+    }
+}
 test_http_signature_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -144,7 +174,6 @@ test_http_signature_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": httpSignatureObjectListPage_deleteButton_warningYes_posXpath
     }
 }
-test_fqdn_object_element_position = {}
 test_http_url_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,

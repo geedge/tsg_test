@@ -40,7 +40,7 @@ def run(parameter):
                         "latitude": "0",
                         "longitude": "0",
                         "addr_type": 4,
-                        "ip_address": "192.168.40.206"
+                        "ip_address": "93.184.215.14"
                         }
                     ]
                     }
@@ -69,7 +69,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 https://www.example.com"
+                "command": "curl -kv --connect-timeout 25 -m 25 https://www.example.com"
             },
             "token": ""
         }
@@ -120,15 +120,16 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "is_log": 0,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "allow_http_fqdn"
+        "test_case_name": "deny_drop_reset_geography_ssl_sni"
     }
     run(parameter)

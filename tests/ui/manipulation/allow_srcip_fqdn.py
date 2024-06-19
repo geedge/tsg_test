@@ -23,7 +23,6 @@ import support.ui_utils.env_initialization
 import traceback
 from support.api_utils.delete_config import DeleteConfig
 
-
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
@@ -40,8 +39,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_url_search_in_uri",
-            "rule_action": "edit_element",
+            "rule_name": "allow_srcip_fqdn",
+            "rule_action": "allow",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -66,41 +65,27 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "protocol_filed": [
+                "server_fqdn": [
                     {
-                        "name": "manipulation_url",
-                        "object_type": "url",
-                        "item_operation": "add",
+                        "name": "manipulation_fqdn_node",
+                        "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
+                        "plus": False,
                         "items": [
                             {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "python->"
+                                "item_value": "baidu.com",
                             }
-                        ],
-                    }
-                ],
-            },
-            "action_parameter": {
-                "edit_element_parameter": [
-                    {
-                        "profile_type": "edit_element",
-                        "search_scope": "whole_file",
-                        "start_indicator": "test_keywork",
-                        "contained_keyword": "Python",
-                        "distance_from_anchor": "1",
-                        "treatment": "mark"
+                        ]
                     }
                 ]
             },
-            "expected_return": "need_filter",
+            "expected_return": "关于百度",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "ww.python.org"}],
+            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 20 --max-time 50 https://www.python.org/blogs/"
+                "command": "curl -kv --connect-timeout 10 --max-time 30 https://www.baidu.com"
             },
             "token": ""
         }
@@ -307,11 +292,12 @@ def run(parameter):
         erase.clear_config(token, parameter, name_list)
 
 
+
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
-        "test_pc_ip": "192.168.64.93",
+        "test_pc_ip": "192.168.64.91",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
@@ -321,8 +307,9 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_url_search_in_uri"
+        "test_case_name": "allow_srcip_fqdn"
     }
+
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：
