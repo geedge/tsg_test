@@ -69,6 +69,7 @@ policyRulePage_addIpProtocol_posXpath = "//div[@zs-label='Protocol']//p[normaliz
 policyRulePage_searchIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//input[@id='object_ip_search']"
 policyRulePage_selectIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_little_button_addIpProtocol_posXpath='//div[@zs-label="Protocol"]//*[@class="operate-icon row-edit iconfont icon-Create1"]'
 
 policyRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"

@@ -33,7 +33,7 @@ class CreateRule():
                 self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAction_posId"]).click()
             # 选择target traffic 
             elif test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
-                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chooseTargetedTraffic_posXpath"]).click()
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chozhanoseTargetedTraffic_posXpath"]).click()
             elif test_data["policy_type"] == "pxy_manipulation":
                 if test_data["rule_action"] == "allow":
                     self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAllow_posId"]).click()
@@ -463,9 +463,6 @@ class CreateRule():
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
 
-
-
-
     def add_ip_protocol(self, ip_protocol_data, filed_type, create_element_position):
         # 点add condition的+
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
@@ -479,10 +476,11 @@ class CreateRule():
         for z in ip_protocol_data:
             #如果不是第一次循环，需要点加号调侧滑框
             if not is_first_iteration:
-                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                self.driver.find_element(By.XPATH, policyRulePage_little_button_addIpProtocol_posXpath).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)]).send_keys(z)
             self.driver.find_element(By.XPATH, create_element_position[ "policyRulePage_search{}_posXpath".format(filed_type)]).send_keys(Keys.ENTER)
             temp_element_position = create_element_position[ "policyRulePage_select{}_posXpath".format(filed_type)].format( replaceValue=z)
             self.driver.find_element(By.XPATH, temp_element_position).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
             is_first_iteration = False
+

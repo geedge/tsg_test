@@ -274,7 +274,7 @@ def run(parameter):
             for x in range(len(fqdn_data)):
                 search_fqdn = SearchObject(driver)
                 search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"],
-                                                                                  test_ip_object_element_position)
+                                                                                  test_fqdn_object_element_position)
                 if search_fqdn_code == 200:
                     delete_fqdn = DeleteObject(driver)
                     delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element,
