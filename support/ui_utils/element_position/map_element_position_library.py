@@ -258,6 +258,33 @@ test_insert_script_element_position = {
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_insertScripts_button_yes_posXpath
     }
 }
+test_run_script_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tsgProxyScripts_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_tsgProxyScripts_createButton_posId,
+        "profilePage_inputName_posXpath": tsgProxyScripts_input_Name_posXpath,
+        "profilePage_okButton_posCss": tsgProxyScripts_button_oK_posCss,
+        "profilePage_okButton_warningYes_posCss": tsgProxyScripts_button_warningSaveYes_posCss,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_insertScripts_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_insertScripts_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_insertScripts_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_insertScripts_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_tsgProxyScripts_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_tsgProxyScripts_button_yes_posXpath
+    }
+}
 #policy
 test_manipulation_rule_element_position = {
     "page_jump": {
@@ -360,6 +387,18 @@ test_manipulation_rule_element_position = {
         "policyRulePage_insert_addInsertProfileSelectBox_posXpath": manipulationRulePage_insert_addInsertProfileSelectBox_posXpath,
         "policyRulePage_insert_searchInsertProfile_posXpath": manipulationRulePage_insert_searchInsertProfile_posXpath,
         "policyRulePage_insert_searchInsertProfileDorpItem_posXpath": manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath,
+        # edit element action parameter
+        "policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath": manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath,
+        "policyRulePage_editElement_addSearchScopeInsideElementRadio_posXpath": manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath,
+        "policyRulePage_editElement_addContainedKeywordInput_posXpath": manipulationRulePage_editElement_addContainedKeywordInput_posXpath,
+        "policyRulePage_editElement_addStartIndicatorInput_posXpath": manipulationRulePage_editElement_addStartIndicatorInput_posXpath,
+        "policyRulePage_editElement_addSDistanceFromAnchorInput_posXpath": manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath,
+        "policyRulePage_editElement_addMarkRadio_posXpath": manipulationRulePage_editElement_addMarkRadio_posXpath,
+        "policyRulePage_editElement_addRemoveRadio_posXpath": manipulationRulePage_editElement_addRemoveRadio_posXpath,
+        # insert script action parameter
+        "policyRulePage_runScript_addrunScriptProfileSelectBox_posXpath": manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath,
+        "policyRulePage_runScript_searchrunScriptProfile_posXpath": manipulationRulePage_insert_searchrunScriptProfile_posXpath,
+        "policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath": manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": manipulationRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": manipulationRulePage_okButton_yes_posId,
@@ -662,6 +701,8 @@ def get_element_position(key_name):
         element_position_map = test_insert_script_element_position
     elif key_name =="statistics_template":
         element_position_map = test_statistics_template_element_position
+    elif key_name == "run_script":
+        element_position_map = test_run_script_element_position
     # policy
     elif key_name == "pxy_manipulation":
         element_position_map = test_manipulation_rule_element_position
@@ -857,4 +898,4 @@ def delete_pre_policy(name_list, driver):
 
 # 勿删 zcw make
 manipulation_object_no_create_list = ["application", "sub_action_override"]
-manipulation_profile_no_create_list = ["deny_response_text", "redirect_url", "replace_parameter"]
+manipulation_profile_no_create_list = ["deny_response_text", "redirect_url", "replace_parameter", "edit_element_parameter"]

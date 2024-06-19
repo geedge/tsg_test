@@ -329,6 +329,19 @@ manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath = "//body/div/d
 manipulationRulePage_insert_addInsertProfileSelectBox_posXpath = "//div[@zs-label='劫持文件']//span[@class='el-input__suffix-inner']//i"   # insert script  选择框  定位
 manipulationRulePage_insert_searchInsertProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
 manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+# action parameter edit element
+manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath = "//div[@role='radiogroup']//span[normalize-space(text())='whole file']"
+manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath = "//div[@role='radiogroup']//span[normalize-space(text())='inside element']"
+manipulationRulePage_editElement_addStartIndicatorInput_posXpath = "//label[normalize-space(text())='Start Indicator']/parent::*//input[@id='undefined1']"
+manipulationRulePage_editElement_addContainedKeywordInput_posXpath = "//label[normalize-space(text())='Contained Keyword']/parent::*//input[@id='undefined1']"
+manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath = "//label[normalize-space(text())='Distance from Anchor']/parent::*//input[@class='el-input__inner']"
+manipulationRulePage_editElement_addMarkRadio_posXpath = "//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Mark']"
+manipulationRulePage_editElement_addRemoveRadio_posXpath = "//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Remove']"
+# action parameter run script profile
+manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath = manipulationRulePage_insert_addInsertProfileSelectBox_posXpath   # run script  选择框  定位
+manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
+manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
 manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"

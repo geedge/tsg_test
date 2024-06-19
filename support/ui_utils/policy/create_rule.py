@@ -369,6 +369,41 @@ class CreateRule():
                         search_box.send_keys(Keys.RETURN)
                         # 选择第一个
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_insert_searchInsertProfileDorpItem_posXpath"]).click()
+                    elif test_data["rule_action"] == "edit_element":
+                        search_scope =  test_data["action_parameter"]["edit_element_parameter"][0]["search_scope"].lower().strip()
+                        start_indicator =  test_data["action_parameter"]["edit_element_parameter"][0]["start_indicator"].lower()
+                        contained_keyword =  test_data["action_parameter"]["edit_element_parameter"][0]["contained_keyword"].lower()
+                        distance_from_anchor =  test_data["action_parameter"]["edit_element_parameter"][0]["distance_from_anchor"].lower()
+                        treatment =  test_data["action_parameter"]["edit_element_parameter"][0]["treatment"].lower()
+                        # search scope 操作
+                        if search_scope == "whole_file":
+                            print(create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"])
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"]).click()
+                        else:    # inside_element
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSearchScopeInsideElementRadio_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addStartIndicatorInput_posXpath"]).clear()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addStartIndicatorInput_posXpath"]).send_keys(start_indicator)
+                        # 输入 contained_keyword
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addContainedKeywordInput_posXpath"]).clear()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addContainedKeywordInput_posXpath"]).send_keys(contained_keyword)
+                        # 输入 distance_from_anchor
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSDistanceFromAnchorInput_posXpath"]).clear()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSDistanceFromAnchorInput_posXpath"]).send_keys(distance_from_anchor)
+                        if treatment == "mark":
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addMarkRadio_posXpath"]).click()
+                        else:    # inside_element
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addRemoveRadio_posXpath"]).click()
+                    elif test_data["rule_action"] == "run_script":
+                        run_scirpt_profile_data = test_data["action_parameter"]["run_script"][0]["profile_file"]
+                        run_scirpt_profile_name = run_scirpt_profile_data["name"]
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_runScript_addrunScriptProfileSelectBox_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_runScript_searchrunScriptProfile_posXpath"]).clear()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_runScript_searchrunScriptProfile_posXpath"]).send_keys(run_scirpt_profile_name)
+                        # 点击回车键
+                        search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_runScript_searchrunScriptProfile_posXpath"])
+                        search_box.send_keys(Keys.RETURN)
+                        # 选择第一个
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath"]).click()
                     else:
                         print("to be added manipulation action parameters..")
                 elif test_data["policy_type"] == "statistics":
