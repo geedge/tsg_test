@@ -64,7 +64,7 @@ def run(parameter):
       "log_query_param_2": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
       "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 20 -m 20 https://www.baidu.com"
             },
       "token": ""
     }

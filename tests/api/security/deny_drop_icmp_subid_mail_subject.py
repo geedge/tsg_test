@@ -62,7 +62,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"mail_subject","query_value":"Bestman"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 --url \"smtp://192.168.40.206\" --mail-from \"hbn@163.com\" --mail-rcpt \"autotest@163.com\" -H @/opt/traffic_replay/mail_file/subjectEnglish.txt --user \"hbn@163.com:111111\" -F '=(;type=multipart/mixed' -F '=(;type=multipart/mixed' -F \"=\"Bestman\";type=text/plain\" -F \"file=@/opt/traffic_replay/mail_file/mail_test_english.txt;type=`file --mime-type \"/opt/traffic_replay/mail_file/mail_test_english.txt\"|sed 's/.*: //'`;encoder=base64\" -F '=)'"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/opt/test/automation/scripts/mailTestFile/mailMessage/subjectEnglish.txt'   --user 'hbn@163.com:111111'"
             },
             "token": ""
         }

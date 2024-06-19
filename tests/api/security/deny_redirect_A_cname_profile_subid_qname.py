@@ -69,7 +69,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "www.jd.com"
+                            "www.example.com"
                         ]
                         }
                     ]
@@ -140,8 +140,8 @@ if __name__ == "__main__":
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
-        "test_subcriber_id": "test6473",
+        "is_log": 0,
+        "test_subcriber_id": "test6488",
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",

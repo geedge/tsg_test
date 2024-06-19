@@ -45,7 +45,7 @@ def run(parameter):
             "log_query_param_1": [],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 5 http://open.node.com:180"
+                "command": "curl --connect-timeout 35 -m 35 http://open.node.com:180"
             },
             "token": ""
         }
