@@ -91,8 +91,8 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
-                "type": "timed out",
-                "command": "curl --connect-timeout 5 -m 5 https://www.example.com"
+                "type": "curl",
+                "command": "curl --connect-timeout 10 -m 10 https://www.example.com"
             },
             "token": ""
         }
@@ -149,7 +149,7 @@ if __name__ == "__main__":
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
+        "is_log": 0,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",

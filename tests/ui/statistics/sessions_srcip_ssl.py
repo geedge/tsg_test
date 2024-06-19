@@ -57,7 +57,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.2",
+                                "item_value": "10.64.224.10",
                             },
                         ]
                     }
@@ -114,12 +114,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "sessions:Rate:sesions rate"
+                            "sessions:Rate:sessions"
                           ],
                           "dimensions": [
                             "client_port"
                           ],
-                          "order_by": "sesions rate",
+                          "order_by": "sessions",
                           "row_limit": "50",
                           "min_in_size": "1",
                           "max_out_size": "1"
@@ -132,10 +132,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.2",
-                "clients_end_ip": "10.64.224.2",
+                "clients_start_ip": "10.64.224.10",
+                "clients_end_ip": "10.64.224.10",
                 "servers_start_ip": "2.1.1.1",
-                "servers_end_ip": "2.1.1.2",
+                "servers_end_ip": "2.1.1.1",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -253,8 +253,6 @@ def run(parameter):
                 result = "Fail to create security rule."
 
         # 触发流量验证
-        create_rule_code = 200
-
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
@@ -287,7 +285,7 @@ def run(parameter):
 
 
         # 删除rule
-        create_rule_code = 200
+        #create_rule_code = 200
         result = "temp "
 
         if create_rule_code == 200:
@@ -393,10 +391,10 @@ if __name__ == '__main__':
         "is_log": 0,
         "env": "tsgx",
         "vsys_id": 11,#6
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": "statistics_rule_bytes_with_src_ip",
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": "sessions_srcip_ssl",
         "script_type": "ui",
         "policy_type": "statistics"
     }
