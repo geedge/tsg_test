@@ -115,7 +115,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "incoming_bytes:BITRATE:incomingbytes",
+                            "incoming_bytes:BITRATE:incoming_bytes",
                             "bytes:BITRATE:bytes"
                           ],
                           "dimensions": [
@@ -141,7 +141,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts.pcap"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",
@@ -294,7 +294,7 @@ def run(parameter):
 
         # 删除Statistics Tesmplate
         result = "temp "
-        if create_statistics_template_code == 200:
+        if create_statistics_template_code == 200 and delete_rule_code == 200:
             for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
                 prfi_status = 0
                 prfi_key_out = prfi_key.replace("_", " ")

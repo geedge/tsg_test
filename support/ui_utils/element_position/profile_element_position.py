@@ -514,8 +514,8 @@ listPage_profileSearch_tsgProxyScripts_input_itemContent_posXpath = listPage_pro
 listPage_profilTable_tsgProxyScripts_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_tsgProxyScripts_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_tsgProxyScripts_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_tsgProxyScripts_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_tsgProxyScripts_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_tsgProxyScripts_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # Create tsg proxy scripts page 和 Edit tsg proxy scripts page   新增和编辑页
 tsgProxyScripts_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
 tsgProxyScripts_input_Name_posXpath = "//*[@class='biFangName']//input"  # name输入框xpath

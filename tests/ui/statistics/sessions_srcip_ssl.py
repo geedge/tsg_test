@@ -339,7 +339,6 @@ def run(parameter):
                 if cond_key == "application" or cond_key == "sub_action_override":
                     continue  # 直接跳过
                 cond_status = 0
-                cond_data = 0
                 if len(cond_value) != 0:  # 不为空
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
