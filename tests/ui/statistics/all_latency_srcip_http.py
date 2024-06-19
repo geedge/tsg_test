@@ -357,11 +357,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 6,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": "statistics_rule_bytes_with_src_ip"
+        "vsys_id": 11,#6
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": "all_latency_srcip_http",
+        "script_type": "ui",
+        "policy_type": "statistics"
     }
     run(parameter)
     """

@@ -230,6 +230,7 @@ def run(parameter):
                     break
 
         # 创建rule
+        create_rule_code = 0
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -372,17 +373,20 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
+
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 6,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": "statistics_rule_bytes_with_src_ip"
+        "vsys_id": 11,#6
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": "bytes_srcip_http",
+        "script_type": "ui",
+        "policy_type": "statistics"
     }
     run(parameter)
     """

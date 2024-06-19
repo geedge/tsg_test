@@ -115,12 +115,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "packets:Sum:All Packets"
+                            "packets:SUM:packets"
                           ],
                           "dimensions": [
                             "application"
                           ],
-                          "order_by": "All Packets",
+                          "order_by": "packets",
                           "row_limit": "50",
                           "min_in_size": "0",
                           "max_out_size": "0"
@@ -371,17 +371,20 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
+
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 6,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": "statistics_rule_bytes_with_src_ip"
+        "vsys_id": 11,#6
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": "packets_srcip_http",
+        "script_type": "ui",
+        "policy_type": "statistics"
     }
     run(parameter)
     """

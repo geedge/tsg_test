@@ -114,12 +114,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "sessions:Rate:sesions rate"
+                            "sessions:Rate:sessions"
                           ],
                           "dimensions": [
                             "client_port"
                           ],
-                          "order_by": "sesions rate",
+                          "order_by": "sessions",
                           "row_limit": "50",
                           "min_in_size": "1",
                           "max_out_size": "1"
@@ -285,7 +285,7 @@ def run(parameter):
 
 
         # 删除rule
-        create_rule_code = 200
+        #create_rule_code = 200
         result = "temp "
 
         if create_rule_code == 200:
@@ -391,10 +391,10 @@ if __name__ == '__main__':
         "is_log": 0,
         "env": "tsgx",
         "vsys_id": 11,#6
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": "statistics_rule_bytes_with_src_ip",
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": "sessions_srcip_ssl",
         "script_type": "ui",
         "policy_type": "statistics"
     }
