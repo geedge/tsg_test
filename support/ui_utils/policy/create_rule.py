@@ -183,6 +183,9 @@ class CreateRule():
                         self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
                     elif protocol_field_data[x]["object_type"] == "response_header":
                         print("to be added...")
+                    elif protocol_field_data[x]["object_type"] == 'boolean':
+                        self.add_protocol_field(protocol_field_data, "Boolean", create_element_position, temp)
+
             
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0 and "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) == 0:
                 override_flag = True
@@ -450,8 +453,14 @@ class CreateRule():
     def add_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
         # 点add condition的+
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
-        # 选中protocol filed
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
+        # 选中protocol filed为Boolean类型的值
+        if filed_type == "Boolean":
+            var1 = protocol_field_data[0]["boolean_type"]
+            xpath_temp = create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]
+            xpath_last=xpath_temp.format(replaceValue=var1)
+            self.driver.find_element(By.XPATH,xpath_last).click()
+        else:
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
         # 点protocol filed的+
         temp_element_position = create_element_position["policyRulePage_add{}_posXpath".format(filed_type)].format(replaceValue=num)
