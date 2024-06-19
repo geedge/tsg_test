@@ -4,6 +4,9 @@ import os
 import sys
 import os
 import sys
+
+from support.api_utils.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -56,13 +59,26 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.86",
+                                "item_value": "10.64.224.2",
                             },
                         ]
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [],
+                "destination_ip": [
+                    {
+                        "name": "statistics_all_packet_destination_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "2.1.1.2",
+                            },
+                        ]
+                    }],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -99,9 +115,9 @@ def run(parameter):
                           "chart_name": "All Packets Length Line",
                           "visualization_type": "Line",
                           "metrics": [
-                            "incoming_packet_length:MEDIAN_HDR:IN Packet Length",
-                            "outgoing_packet_length:MEDIAN_HDR:All Packet Length",
-                            "packet_length:MEDIAN_HDR:Packet Length"
+                            "incoming_packet_length:MEDIAN_HDR:in_packet_length",
+                            "outgoing_packet_length:MEDIAN_HDR:all_packet_length",
+                            "packet_length:MEDIAN_HDR:packet_length"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -116,20 +132,16 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
-                "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "type": "trex",
+                "clients_start_ip": "10.64.224.2",
+                "clients_end_ip": "10.64.224.2",
+                "servers_start_ip": "2.1.1.2",
+                "servers_end_ip": "2.1.1.2",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "http_87pkts.pcap"
             },
-            # "traffic": {
-            #     "type": "trex",
-            #     "clients_start_ip": "192.168.64.86",
-            #     "clients_end_ip": "192.168.64.86",
-            #     "servers_start_ip": "2.1.1.1",
-            #     "servers_end_ip": "2.1.1.2",
-            #     "m": 1,
-            #     "d": 1,
-            #     "yaml_name": "test_https",
-            #     "pcap_name": "test_https"
-            # },
             # "traffic": {
             #     "type": "nslookup",
             #     "command": "nslookup www.facebook.com"
@@ -215,13 +227,23 @@ def run(parameter):
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-        """
+
         # 触发流量验证
         if create_rule_code == 200:
-            verify = TrafficVerification()
-            verification_result = verify.traffic_verification(parameter, test_data, [])
+            # 触发流量验证
+            if create_rule_code == 200:
+                edit_rule = EditRule(driver)
+                edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                                                         element_position_map)
+                edit_rule_code = 200
+                if edit_rule_code == 200:
+                    test_data["rule_id"] = rule_id
+                    config = OrganizeConfig()
+                    cfg_list = config.create_cfg(parameter, test_data, template_path)
+                    verify = TrafficVerification()
+                    verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
 
-            # 编辑修改使用
+        # 编辑修改使用
             #edit_rule = EditRule(driver)
             #element_position_map = get_element_position(test_data["policy_type"])
             #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
@@ -238,7 +260,7 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        """
+
 
         # 删除rule
         create_rule_code = 200
@@ -339,17 +361,20 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
+
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 6,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": "statistics_rule_bytes_with_src_ip"
+        "vsys_id": 11,#6
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": "all_packet_length_srcip_http",
+        "script_type": "ui",
+        "policy_type": "statistics"
     }
     run(parameter)
     """

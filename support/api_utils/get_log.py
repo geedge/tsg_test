@@ -201,11 +201,18 @@ class GetLog():
             if r_dict["data"]["result"] == []:   # 为空
                 print("Do not query statistics metric result")
                 # 对应session方式和fqdn category需要另行处理
-                metrics_columns = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
                 try:
+                    metrics_columns = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
                     dimension_columns = test_data["profile_condition_1"][0]["chart_list"][0]["dimensions"][0]["source_columns"][0].lower()
                 except:
                     dimension_columns = "no_dimensions"
+                if dimension_columns == "no_dimensions":
+                    # API和UI因数据格式不一致，所以API方式获取不到按UI方式获取
+                    try:
+                        metrics_columns = test_data["action_parameter"]["statistics_template"][0]["charts"][0]["metrics"].split(":")[0].lower()
+                        dimension_columns = test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
+                    except:
+                        dimension_columns = "no_dimensions"
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
                     return [333, "passthrough"]
                 return [333, "statistics metric No result was found"]
@@ -253,8 +260,26 @@ class GetLog():
                     print("The actual query result data from TSG: \n{}".format(statistics_value))
                     # 重组需要断言使用的key列表
                     assert_key_list = []
+                    dimension_list = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
+                                         'server_ip': 'Server IP', 'client_asn': 'Client ASN',
+                                         'server_asn': 'Server ASN', 'client_country': 'Client Country',
+                                         'server_country': 'Server Country',
+                                         'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
+                                         'application': 'Application',
+                                         'websketch_categories': 'WebSketch Categories',
+                                         'client_ip_matched_objects': 'Client IP Matched Objects',
+                                         'server_ip_matched_objects': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
+                                         's2c_ttl': 'S2C TTL',
+                                         'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
+                                         'client_port': 'Client Port','server_port':'Server Port'}
+
                     for k, v in statistics_value.items():
-                        if isinstance(v, int) or isinstance(v, float):
+                        #if isinstance(v, int) or isinstance(v, float):
+                        #    assert_key_list.append(k)
+                        # 如果dimension为端口则为int类型，所以需要过滤掉
+                        if k in dimension_list.keys():
+                            continue
+                        else:
                             assert_key_list.append(k)
                     # 开始判断key的正确性
                     for i in range(len(assert_key_list)):
@@ -296,6 +321,15 @@ class GetLog():
             elif assert_key == "in_bytes" or assert_key == "out_bytes":
                 print(assert_key)
                 if (statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_sent"] - 10)) or (statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_received"] - 10)):
+                    print(success_result)
+                    metric_result = True
+            elif assert_key == "packets":
+                if statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets"]):    # 预期值减10，因为出现多个时间周期统计的结果实际值减小
+                    print(success_result)
+                    metric_result = True
+            elif assert_key == "in_packets" or assert_key == "out_packets":
+                print(assert_key)
+                if (statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets_sent"])) or (statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets_received"])):
                     print(success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":
@@ -344,6 +378,14 @@ class GetLog():
                     metric_result = True
             elif assert_key == "in_bytes" or assert_key == "out_bytes":
                 if (statistics_value[assert_key] == statistics_metircs_except["total_bytes_sent"]) or (statistics_value[assert_key] == statistics_metircs_except["total_bytes_received"]):
+                    print(success_result)
+                    metric_result = True
+            elif assert_key == "packets":
+                if statistics_value[assert_key] == statistics_metircs_except["total_packets"]:
+                    print(success_result)
+                    metric_result = True
+            elif assert_key == "in_packets" or assert_key == "out_packets":
+                if (statistics_value[assert_key] == statistics_metircs_except["total_packets_sent"]) or (statistics_value[assert_key] == statistics_metircs_except["total_packets_received"]):
                     print(success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":

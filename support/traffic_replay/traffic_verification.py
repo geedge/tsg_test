@@ -37,8 +37,8 @@ class TrafficVerification():
                 cfg_list["rule_id"] = test_data["rule_id"]
                 statistics_sc_info_list.append(cfg_list)
             elif policy_type == "statistics":
-                statistics_sc_info_list = []
-                cfg_list["rule_id"] = test_data["rule_id"]
+                statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
+                #cfg_list["rule_id"] = test_data["rule_id"]
                 #statistics_sc_info_list.append(cfg_list)
             temp_list = {}
             temp_list[policy_type] = test_data["rule_id"]
@@ -120,15 +120,18 @@ class TrafficVerification():
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             # 解析trex使用参数， 解析client server ip
             if script_type == "ui":
-                for ip_item in test_data["condition"]:
-                    if "source_ip" in ip_item.values():
+                if "source_ip" in test_data["condition"].keys():
+                    source_ip = test_data["condition"]["source_ip"]
+                    for ip_item in source_ip:
                         if "-" in ip_item["item"][0]["item_value"]:
                             clients_start = ip_item["item"][0]["item_value"].split("-")[0]
                             clients_end = ip_item["item"][0]["item_value"].split("-")[-1]
                         else:
                             clients_start = ip_item["item"][0]["item_value"]
                             clients_end = clients_start
-                    if "destination_ip" in ip_item.values():
+                if "destination_ip" in test_data["condition"].keys():
+                    destination_ip = test_data["condition"]["destination_ip"]
+                    for ip_item in destination_ip:
                         if "-" in ip_item["item"][0]["item_value"]:
                             servers_start = ip_item["item"][0]["item_value"].split("-")[0]
                             servers_end = ip_item["item"][0]["item_value"].split("-")[-1]
@@ -152,20 +155,20 @@ class TrafficVerification():
                         else:
                             servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                             servers_end = servers_start
-            verify_policy_break_count = 0
-            while True:      # 多次策略验证
-                verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
-                policy_verify = support.api_utils.policy_verify.PolicyVerify()
-                hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
-                if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
-                    break
-                if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
-                    # 直接调用清空策略方法
-                    print("Invalid test, end test. Policy id: {}".format(policy_id))
-                    return False, False, False, "The policy verification fail."
-                verify_policy_break_count += 1
-                time.sleep(20)
-                print("Interval {} second, result of the {} policy verification: Policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id))
+                verify_policy_break_count = 0
+                while True:      # 多次策略验证
+                    verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
+                    policy_verify = support.api_utils.policy_verify.PolicyVerify()
+                    hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
+                    if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
+                        break
+                    if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
+                        # 直接调用清空策略方法
+                        print("Invalid test, end test. Policy id: {}".format(policy_id))
+                        return False, False, False, "The policy verification fail."
+                    verify_policy_break_count += 1
+                    time.sleep(20)
+                    print("Interval {} second, result of the {} policy verification: Policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id))
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             # 将原数据中使用的ip替换为随机生成ip

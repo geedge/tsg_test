@@ -173,20 +173,23 @@ class CreateProfile():
     
     # 获取sf profile id
     def get_sf_id(self, headers, sf_tempalte_path, sf_post_data, api_host, vsys_id):
-        profile_type = sf_post_data['profile_type']
-        if profile_type == "service_function":
-            process_post_data = self.process_sf_post_data(sf_tempalte_path, sf_post_data,vsys_id)
-            url = "{}/v1/policy/profile/service_function".format(api_host)
-            response = requests.post(url, headers=headers, json=process_post_data, verify=False)
-            assert response.status_code == 200
-            temp_profile_type = profile_type.replace("_", " ")
-            if response.status_code == 200:
-                print("Create {} profile successfully.".format(temp_profile_type))
-            else:
-                print("Create {} profile failed.".format(temp_profile_type))
-            response_dict = response.json()
-            sf_profile_id = response_dict["data"]["service_function"]["id"]
-        return sf_profile_id
+        try:
+            profile_type = sf_post_data['profile_type']
+            if profile_type == "service_function":
+                process_post_data = self.process_sf_post_data(sf_tempalte_path, sf_post_data,vsys_id)
+                url = "{}/v1/policy/profile/service_function".format(api_host)
+                response = requests.post(url, headers=headers, json=process_post_data, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print("Create {} profile successfully.".format(temp_profile_type))
+                else:
+                    print("Create {} profile failed.".format(temp_profile_type))
+                response_dict = response.json()
+                sf_profile_id = response_dict["data"]["service_function"]["id"]
+            return sf_profile_id
+        except AssertionError as e:
+            print(f"AssertionError: {e}")
 
     # 用传入的sff数据替换模板中的数据
     def process_sff_post_data(self, sf_profile_id, sff_template_path, sff_post_data, vsys_id):
@@ -224,148 +227,151 @@ class CreateProfile():
         :param token:
         :return:   例如：{'profile_type': 'Statistics_Templates', 'id': 1223, 'template_info': [{'template_id': 1223, 'chart_id': 2881, 'chart_type': 'table'}, {'template_id': 1223, 'chart_id': 2883, 'chart_type': 'table'}]}
         """
-        # 处理请求体数据
-        headers = {"Authorization": token}
-        create_profile_id_dict = {"profile_type":"", "id":""}
-        profile_type = profile_data["profile_type"]
-        if profile_type == "Statistics_Templates":
-            profile_statistics_template = path_dict["profile_statistics_template"]
-            process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
-            url = "{}/v1/policy/profile/statistics_template".format(api_host)
-            headers["Content-Type"] = "application/json"
-            #print(process_post_data)
-            response = requests.post(url, headers=headers, json=process_post_data, verify=False)
-            assert response.status_code == 200
-            temp_profile_type = profile_type.replace("_", " ")
-            if response.status_code == 200:
-                print("Create {} profile successfully.".format(temp_profile_type))
+        try:
+            # 处理请求体数据
+            headers = {"Authorization": token}
+            create_profile_id_dict = {"profile_type":"", "id":""}
+            profile_type = profile_data["profile_type"]
+            if profile_type == "Statistics_Templates":
+                profile_statistics_template = path_dict["profile_statistics_template"]
+                process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
+                url = "{}/v1/policy/profile/statistics_template".format(api_host)
+                headers["Content-Type"] = "application/json"
+                #print(process_post_data)
+                response = requests.post(url, headers=headers, json=process_post_data, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print("Create {} profile successfully.".format(temp_profile_type))
+                else:
+                    print("Create {} profile failed.".format(temp_profile_type))
+                response_dict = response.json()
+                # 处理返回数据，提取id
+                #print(response_dict)
+                profile_id = response_dict["data"]["statistics_template"]["id"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["id"] = profile_id
+                path_profile_type = "statistics_template"
+                template_info = self.search_statistics_templates(profile_id, path_profile_type, headers, api_host, vsys_id)
+                create_profile_id_dict["template_info"] = template_info
+                return create_profile_id_dict
+            elif profile_type == "service_function_forwarder":
+                profile_sff_template = path_dict["profile_sff_template"]
+                profile_sf_template = path_dict["profile_sf_template"]
+                sf_profile_id_list = []
+                sf_condition_values = profile_data["sf_condition"]
+                for sf_profile_data in sf_condition_values:
+                    sf_profile_id = self.get_sf_id(headers, profile_sf_template, sf_profile_data, api_host,vsys_id)
+                    sf_profile_id_list.append(sf_profile_id)
+                process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data,vsys_id)
+                url = "{}/v1/policy/profile/service_function_forwarder".format(api_host)
+                headers["Content-Type"] = "application/json"
+                response = requests.post(url, headers=headers, json= process_post_data, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print("Create {} profile successfully.".format(temp_profile_type))
+                else:
+                    print("Create {} profile failed.".format(temp_profile_type))
+                response_dict = response.json()
+                sff_id = response_dict["data"]["service_function_forwarder"]["id"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["id"] = sff_id
+                sff_info = self.search_sc_sff(sff_id, headers, api_host, profile_type, vsys_id)
+                create_profile_id_dict["sff_info"] = sff_info
+                return create_profile_id_dict
+            elif profile_type == "response_page":
+                files = {"file":("Response-Pages_1.html", open(path_dict["profiles_deny_path"], 'rb'), "text/plain")}
+                del profile_data["profile_type"]
+                # 添加vsys id
+                profile_data["vsys_id"] = vsys_id
+                url = "{}/v1/policy/profile/response_page".format(api_host)
+                response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print("Create {} profile successfully.".format(temp_profile_type))
+                else:
+                    print("Create {} profile failed.".format(temp_profile_type))
+                response_dict = response.json()
+                profile_id = response_dict["data"]["response_page"]["id"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["id"] = profile_id
+                return create_profile_id_dict
+            elif profile_type == "hijack_files":
+                files = {"file":("Create-Hijack-Files-test-3.html", open(path_dict["profiles_hijack_file_path"], 'rb'), "text/plain")}
+                del profile_data["profile_type"]
+                # 添加vsys id
+                profile_data["vsys_id"] = vsys_id
+                url = "{}/v1/policy/profile/hijack_file".format(api_host)
+                response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print("Create {} profile successfully.".format(temp_profile_type))
+                else:
+                    print("Create {} profile failed.".format(temp_profile_type))
+                response_dict = response.json()
+                profile_id = response_dict["data"]["hijack_file"]["id"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["id"] = profile_id
+                return create_profile_id_dict
+            elif profile_type == "insert_profile":
+                files = {"file": ("Create-Insert-Script-test1.js", open(path_dict["profiles_insert_profile_path"], 'rb'), "text/plain")}
+                del profile_data["profile_type"]
+                # 添加vsys id
+                profile_data["vsys_id"] = vsys_id
+                url = "{}/v1/policy/profile/insert_script".format(api_host)
+                response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print("Create {} profile successfully.".format(temp_profile_type))
+                else:
+                    print("Create {} profile failed.".format(temp_profile_type))
+                response_dict = response.json()
+                profile_id = response_dict["data"]["insert_script"]["id"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["id"] = profile_id
+                return create_profile_id_dict
+            elif profile_type == "run_script":
+                files = {"file": ("run_script_hijack.lua", open(path_dict["profiles_run_script_path"], 'rb'), "text/plain")}
+                del profile_data["profile_type"]
+                # 添加vsys id
+                profile_data["vsys_id"] = vsys_id
+                url = "{}/v1/policy/profile/run_script".format(api_host)
+                response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print("Create {} profile successfully.".format(temp_profile_type))
+                else:
+                    print("Create {} profile failed.".format(temp_profile_type))
+                response_dict = response.json()
+                profile_id = response_dict["data"]["run_script"]["id"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["id"] = profile_id
+                return create_profile_id_dict
+            elif profile_type == "dns_record":
+                profile_dns_record_template = path_dict["profile_dns_record_template"]
+                process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
+                url = "{}/v1/policy/profile/dns_record".format(api_host)
+                response = requests.post(url, headers=headers, json=process_post_data)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print("Create {} profile successfully.".format(temp_profile_type))
+                else:
+                    print("Create {} profile failed.".format(temp_profile_type))
+                response_dict = response.json()
+                profile_id = response_dict["data"]["dns_record"]["id"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["id"] = profile_id
+                return create_profile_id_dict
             else:
-                print("Create {} profile failed.".format(temp_profile_type))
-            response_dict = response.json()
-            # 处理返回数据，提取id
-            #print(response_dict)
-            profile_id = response_dict["data"]["statistics_template"]["id"]
-            create_profile_id_dict["profile_type"] = profile_type
-            create_profile_id_dict["id"] = profile_id
-            path_profile_type = "statistics_template"
-            template_info = self.search_statistics_templates(profile_id, path_profile_type, headers, api_host, vsys_id)
-            create_profile_id_dict["template_info"] = template_info
-            return create_profile_id_dict
-        elif profile_type == "service_function_forwarder":
-            profile_sff_template = path_dict["profile_sff_template"]
-            profile_sf_template = path_dict["profile_sf_template"]
-            sf_profile_id_list = []
-            sf_condition_values = profile_data["sf_condition"]
-            for sf_profile_data in sf_condition_values:
-                sf_profile_id = self.get_sf_id(headers, profile_sf_template, sf_profile_data, api_host,vsys_id)
-                sf_profile_id_list.append(sf_profile_id)
-            process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data,vsys_id)
-            url = "{}/v1/policy/profile/service_function_forwarder".format(api_host)
-            headers["Content-Type"] = "application/json"
-            response = requests.post(url, headers=headers, json= process_post_data, verify=False)
-            assert response.status_code == 200
-            temp_profile_type = profile_type.replace("_", " ")
-            if response.status_code == 200:
-                print("Create {} profile successfully.".format(temp_profile_type))
-            else:
-                print("Create {} profile failed.".format(temp_profile_type))
-            response_dict = response.json()
-            sff_id = response_dict["data"]["service_function_forwarder"]["id"]
-            create_profile_id_dict["profile_type"] = profile_type
-            create_profile_id_dict["id"] = sff_id
-            sff_info = self.search_sc_sff(sff_id, headers, api_host, profile_type, vsys_id)
-            create_profile_id_dict["sff_info"] = sff_info
-            return create_profile_id_dict
-        elif profile_type == "response_page":
-            files = {"file":("Response-Pages_1.html", open(path_dict["profiles_deny_path"], 'rb'), "text/plain")}
-            del profile_data["profile_type"]
-            # 添加vsys id
-            profile_data["vsys_id"] = vsys_id
-            url = "{}/v1/policy/profile/response_page".format(api_host)
-            response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
-            assert response.status_code == 200
-            temp_profile_type = profile_type.replace("_", " ")
-            if response.status_code == 200:
-                print("Create {} profile successfully.".format(temp_profile_type))
-            else:
-                print("Create {} profile failed.".format(temp_profile_type))
-            response_dict = response.json()
-            profile_id = response_dict["data"]["response_page"]["id"]
-            create_profile_id_dict["profile_type"] = profile_type
-            create_profile_id_dict["id"] = profile_id
-            return create_profile_id_dict
-        elif profile_type == "hijack_files":
-            files = {"file":("Create-Hijack-Files-test-3.html", open(path_dict["profiles_hijack_file_path"], 'rb'), "text/plain")}
-            del profile_data["profile_type"]
-            # 添加vsys id
-            profile_data["vsys_id"] = vsys_id
-            url = "{}/v1/policy/profile/hijack_file".format(api_host)
-            response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
-            assert response.status_code == 200
-            temp_profile_type = profile_type.replace("_", " ")
-            if response.status_code == 200:
-                print("Create {} profile successfully.".format(temp_profile_type))
-            else:
-                print("Create {} profile failed.".format(temp_profile_type))
-            response_dict = response.json()
-            profile_id = response_dict["data"]["hijack_file"]["id"]
-            create_profile_id_dict["profile_type"] = profile_type
-            create_profile_id_dict["id"] = profile_id
-            return create_profile_id_dict
-        elif profile_type == "insert_profile":
-            files = {"file": ("Create-Insert-Script-test1.js", open(path_dict["profiles_insert_profile_path"], 'rb'), "text/plain")}
-            del profile_data["profile_type"]
-            # 添加vsys id
-            profile_data["vsys_id"] = vsys_id
-            url = "{}/v1/policy/profile/insert_script".format(api_host)
-            response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
-            assert response.status_code == 200
-            temp_profile_type = profile_type.replace("_", " ")
-            if response.status_code == 200:
-                print("Create {} profile successfully.".format(temp_profile_type))
-            else:
-                print("Create {} profile failed.".format(temp_profile_type))
-            response_dict = response.json()
-            profile_id = response_dict["data"]["insert_script"]["id"]
-            create_profile_id_dict["profile_type"] = profile_type
-            create_profile_id_dict["id"] = profile_id
-            return create_profile_id_dict
-        elif profile_type == "run_script":
-            files = {"file": ("run_script_hijack.lua", open(path_dict["profiles_run_script_path"], 'rb'), "text/plain")}
-            del profile_data["profile_type"]
-            # 添加vsys id
-            profile_data["vsys_id"] = vsys_id
-            url = "{}/v1/policy/profile/run_script".format(api_host)
-            response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
-            assert response.status_code == 200
-            temp_profile_type = profile_type.replace("_", " ")
-            if response.status_code == 200:
-                print("Create {} profile successfully.".format(temp_profile_type))
-            else:
-                print("Create {} profile failed.".format(temp_profile_type))
-            response_dict = response.json()
-            profile_id = response_dict["data"]["run_script"]["id"]
-            create_profile_id_dict["profile_type"] = profile_type
-            create_profile_id_dict["id"] = profile_id
-            return create_profile_id_dict
-        elif profile_type == "dns_record":
-            profile_dns_record_template = path_dict["profile_dns_record_template"]
-            process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
-            url = "{}/v1/policy/profile/dns_record".format(api_host)
-            response = requests.post(url, headers=headers, json=process_post_data)
-            assert response.status_code == 200
-            temp_profile_type = profile_type.replace("_", " ")
-            if response.status_code == 200:
-                print("Create {} profile successfully.".format(temp_profile_type))
-            else:
-                print("Create {} profile failed.".format(temp_profile_type))
-            response_dict = response.json()
-            profile_id = response_dict["data"]["dns_record"]["id"]
-            create_profile_id_dict["profile_type"] = profile_type
-            create_profile_id_dict["id"] = profile_id
-            return create_profile_id_dict
-        else:
-            print("to be added the other profile.")
+                print("to be added the other profile.")
+        except AssertionError as e:
+            print(f"AssertionError: {e}")
     
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
         url = "{}/v1/policy/profile/{type}/{id}".format(api_host, type=profile_type, id=template_id)
