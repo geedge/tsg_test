@@ -54,7 +54,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.88",
+                                "item_value": parameter["test_pc_ip"],
                             },
                         ]
                     }
@@ -90,19 +90,19 @@ def run(parameter):
                         "profile_file": {
                             "name": "test_tsg_ui_profile_page",
                             "model": "create",
-                            "file": "test_png_1.png->",
-                            "download_name": "test_png_1.png->",
-                            "file_type": "png->"
+                            "file": "test_html_1.html->",
+                            "download_name": "test_html_1.html->",
+                            "file_type": "html->"
                         }
                     }
                 ]
             },
-            "expected_return": "test_png_1.png",
+            "expected_return": "this.piece.style",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 --max-time 30 https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 20 --max-time 50 https://www.baidu.com"
             },
             "token": ""
         }

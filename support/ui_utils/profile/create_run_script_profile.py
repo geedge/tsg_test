@@ -40,7 +40,7 @@ class CreateRunScriptProfile():
                 create_file = data["script"].split("->")[data_index]  # 提取上传文件绝对路径
                 profile_path = os.path.dirname(os.path.abspath(__file__))  # ...support\ui_utils\profile
                 file_abs = os.path.join(profile_path, "profile_file", "tsg_proxy_scripts", create_file)
-                print(file_abs)
+                #print(file_abs)
                 self.driver.find_element(By.XPATH, tsgProxyScripts_input_runScripts_posXpath).send_keys(file_abs)
             elif file == "" and data_index == -1:
                 element_del = self.driver.find_element(By.XPATH, "//div[@id='runScriptTitleUpload']//i[@class='el-icon-close']")
