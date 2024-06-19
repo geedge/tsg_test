@@ -5,6 +5,7 @@ import sys
 import os
 import sys
 
+from support.api_utils.delete_config import DeleteConfig
 from support.ui_utils.profile.search_profile import SearchProfile
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -76,7 +77,9 @@ def run(parameter):
                 "flag": [],
                 "application": [],
                 "server_fqdn": [],
-                "protocol_filed": [],
+                "protocol_filed": [
+
+                ],
                 "sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
@@ -113,6 +116,10 @@ def run(parameter):
             {
                 "type":"ip",
                 "name":"monitor_source_ip"
+            },
+            {
+                "type": "monitor_profile",
+                "name": "profile1"
             }
         ]
 
@@ -359,6 +366,9 @@ def run(parameter):
     finally:
         # 清理环境
         support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
 
 if __name__ == '__main__':
     parameter = {
