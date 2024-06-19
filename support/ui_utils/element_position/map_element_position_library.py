@@ -765,7 +765,7 @@ def create_pre_policy(data, driver):
             "profile": [],
             "expected_return": "新闻",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.90"}],
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 5 -m 10 http://www.news.cn/"
@@ -816,7 +816,7 @@ def create_pre_policy(data, driver):
             "profile": [],
             "expected_return": "新闻",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.90"}],
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 5 -m 10 http://www.news.cn/"
