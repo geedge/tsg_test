@@ -3,3 +3,4 @@
 1,temp_deny_srcip_fqdn_drop_rst_icmp,PASS,
 2,temp_deny_srcip_fqdn_drop_rst_icmp,PASS,
 3,temp_deny_srcip_fqdn_drop_rst_icmp,PASS,
+4,deny_srcip_fqdn_drop_rst_icmp,PASS,
