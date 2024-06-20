@@ -40,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "run_script_srcip_url",
+            "rule_name": "run_script_srcip_url_fqdn",
             "rule_action": "run_script",
             "rule_type": "create",
             "condition": {
@@ -322,7 +322,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "run_script_srcip_url"
+        "test_case_name": "run_script_srcip_url_fqdn"
     }
     run(parameter)
     """

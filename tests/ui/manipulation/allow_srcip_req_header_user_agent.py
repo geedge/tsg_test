@@ -297,7 +297,7 @@ def run(parameter):
         support.ui_utils.env_initialization.teardown()
         # 删除配置
         erase = DeleteConfig()
-        #erase.clear_config(token, parameter, name_list)
+        erase.clear_config(token, parameter, name_list)
 
 
 
