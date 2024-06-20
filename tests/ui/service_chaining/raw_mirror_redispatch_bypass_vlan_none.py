@@ -560,7 +560,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "raw_mirror_bypass_vlan_none"
+        "test_case_name": "raw_mirror_redispatch_bypass_vlan_none"
     }
     run(parameter)
     """

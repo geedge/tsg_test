@@ -385,10 +385,16 @@ test_manipulation_rule_element_position = {
         "policyRulePage_closeUrl_posXpath": manipulationRulePage_closeUrl_posXpath,
         # request header
         "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
-        "policyRulePage_addRequestHeader_posXpath": securityRulePage_addRequestHeader_posXpath,
+        "policyRulePage_addRequestHeader_posXpath": manipulationRulePage_addRequestHeader_posXpath,
         "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
         "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        # response header
+        "policyRulePage_addConditionResponseHeader_posXpath": securityRulePage_addCondition_responseHeader_posXpath,
+        "policyRulePage_addResponseHeader_posXpath": manipulationRulePage_addResponseHeader_posXpath,
+        "policyRulePage_searchResponseHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
+        "policyRulePage_selectResponseHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
+        "policyRulePage_closeResponseHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
         # deny action parameter
         "policyRulePage_deny_addResponseCodeSelectBox_posXpath":manipulationRulePage_deny_addResponseCodeSelectBox_posXpath,
         "policyRulePage_deny_addResponseCodeSelectDropItem_posXpath":manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath,
