@@ -17,7 +17,7 @@ class DeleteProfile():
             else:
                 first_row_checkbox_element.click()
             self.driver.find_element(By.ID, delete_element_position["profileListPage_deleteButton_posId"]).click()
-            time.sleep(0.5)
+            time.sleep(2)
             self.driver.find_element(By.XPATH, delete_element_position["profileListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(2)
             return 200
