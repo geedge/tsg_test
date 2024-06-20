@@ -92,7 +92,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 https://www.example.com"
+                "command": "curl --connect-timeout 20 -m 20 https://www.example.com"
             },
             "token": ""
         }

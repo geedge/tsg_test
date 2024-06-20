@@ -22,25 +22,9 @@ def run(parameter):
             "do_log_1": 2,
             "obj_condition_1": [
                 {
-                    "attribute_name": "ATTR_SOURCE_IP",
-                    "object_type": "ip",
-                    "object_sub_type": "ip",
-                    "repeat_time": 1,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                  "ip_address": "default",
-                                  "port_range": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
                     "attribute_name": "ATTR_SERVER_FQDN",
                     "object_type": "fqdn",
-                    "object_sub_type": "fqdn",
+                    "object_sub_type": "",
                     "repeat_time": 10,
                     "object_list": [
                         {
@@ -107,23 +91,24 @@ def run(parameter):
     except Exception as e:
       print("Error: ", e)
       return "Error: " + str(e)
-    finally:
-        name_list = []
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
+    # finally:
+    #     name_list = []
+    #     erase = DeleteConfig()
+    #     erase.clear_config(token, parameter, name_list)
   
 if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "is_log": 0,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_import_50w_fqdn"
     }
