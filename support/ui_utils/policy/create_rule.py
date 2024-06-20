@@ -174,21 +174,53 @@ class CreateRule():
 
             # 添加protocol field
             if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
-                protocol_field_data = test_data["condition"]["protocol_filed"]
-                for x in range(len(protocol_field_data)):
-                    temp = x + 1
-                    if protocol_field_data[x]["object_type"] == "url":
-                        self.add_protocol_field(protocol_field_data, "Url", create_element_position, temp)
-                    elif protocol_field_data[x]["object_type"] == "http_signature":
-                        for item_dict in protocol_field_data[x]["item"]:
-                            if item_dict["item_type"] == "request_header":
-                                self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
-                            elif item_dict["item_type"] == "request_header":
-                                print("todo")
-                            else:
-                                print(f"todo {item_dict['item_type']}")
-                    elif protocol_field_data[x]["object_type"] == 'boolean':
-                        self.add_protocol_field(protocol_field_data, "Boolean", create_element_position, temp)
+                protocol_field_datas = test_data["condition"]["protocol_filed"]
+                tmp_protocol_field_data_split_by_type = []   # 将 protocol_filed 分类临时存储
+                tmp_url, tmp_request_header, tmp_response_header, tmp_request_body, tmp_response_body = [], [], [], [], []
+                for _ in range(len(protocol_field_datas)):   # 将 rul、request_header等数据分类处理
+                    tmp_item = protocol_field_datas[_]
+                    if tmp_item["object_type"] == "url":
+                        tmp_url.append(tmp_item)
+                    elif tmp_item["object_type"] == "http_signature":
+                        if tmp_item["item"][0]["item_type"] == "request_header":
+                            tmp_request_header.append(tmp_item)
+                        elif tmp_item["item"][0]["item_type"] == "response_header":
+                            tmp_response_header.append(tmp_item)
+                        else:
+                            print("check..")
+                    elif tmp_item["object_type"] == "keywords":
+                        if tmp_item["item"][0]["item_type"] == "request_body":
+                            tmp_request_body.append(tmp_item)
+                        elif tmp_item["item"][0]["item_type"] == "response_body":
+                            tmp_response_body.append(tmp_item)
+                        else:
+                            print("check..")
+                if len(tmp_url) > 0: tmp_protocol_field_data_split_by_type.append(tmp_url)
+                if len(tmp_request_header) > 0: tmp_protocol_field_data_split_by_type.append(tmp_request_header)
+                if len(tmp_response_header) > 0: tmp_protocol_field_data_split_by_type.append(tmp_response_header)
+                if len(tmp_request_body) > 0: tmp_protocol_field_data_split_by_type.append(tmp_request_body)
+                if len(tmp_response_body) > 0: tmp_protocol_field_data_split_by_type.append(tmp_response_body)
+                #print(tmp_protocol_field_data_split_by_type)
+                for protocol_field_data in tmp_protocol_field_data_split_by_type:
+                    #print(protocol_field_data)
+                    for x in range(len(protocol_field_data)):
+                        temp = x + 1
+                        if protocol_field_data[x]["object_type"] == "url":
+                            self.add_protocol_field(protocol_field_data, "Url", create_element_position, temp)
+                        elif protocol_field_data[x]["object_type"] == "http_signature":
+                            for item_dict in protocol_field_data[x]["item"]:
+                                if item_dict["item_type"] == "request_header":
+                                    self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
+                                elif item_dict["item_type"] == "response_header":
+                                    self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
+                                elif item_dict["item_type"] == "request_body":
+                                    self.add_protocol_field(protocol_field_data, "RequestBody", create_element_position, temp)
+                                elif item_dict["item_type"] == "response_body":
+                                    self.add_protocol_field(protocol_field_data, "ResponseBody", create_element_position, temp)
+                                else:
+                                    print(f"todo {item_dict['item_type']}")
+                        elif protocol_field_data[x]["object_type"] == 'boolean':
+                            self.add_protocol_field(protocol_field_data, "Boolean", create_element_position, temp)
 
             
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0 and "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) == 0:
@@ -470,6 +502,8 @@ class CreateRule():
         # 通过ip name搜索并选中
         for i in range(len(ip_data)):
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).send_keys(ip_data[i]["name"])
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).send_keys(Keys.ENTER)
+            time.sleep(0.3)
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).send_keys(Keys.ENTER)
             temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(ip_condition_type)].format(replaceValue=ip_data[i]["name"])
             self.driver.find_element(By.XPATH, temp_element_position).click()
