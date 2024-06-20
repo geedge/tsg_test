@@ -179,10 +179,14 @@ class CreateRule():
                     temp = x + 1
                     if protocol_field_data[x]["object_type"] == "url":
                         self.add_protocol_field(protocol_field_data, "Url", create_element_position, temp)
-                    elif protocol_field_data[x]["object_type"] == "request_header":
-                        self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
-                    elif protocol_field_data[x]["object_type"] == "response_header":
-                        print("to be added...")
+                    elif protocol_field_data[x]["object_type"] == "http_signature":
+                        for item_dict in protocol_field_data[x]["item"]:
+                            if item_dict["item_type"] == "request_header":
+                                self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
+                            elif item_dict["item_type"] == "request_header":
+                                print("todo")
+                            else:
+                                print(f"todo {item_dict['item_type']}")
                     elif protocol_field_data[x]["object_type"] == 'boolean':
                         self.add_protocol_field(protocol_field_data, "Boolean", create_element_position, temp)
 

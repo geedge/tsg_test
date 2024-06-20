@@ -692,59 +692,6 @@ test_statistics_rule_element_position = {
     }
 }
 
-test_ip_object_element_position=test_ip_object_element_position
-test_ip_group_object_element_position=test_ip_group_object_element_position
-test_port_object_element_position=test_port_object_element_position
-test_fqdn_object_element_position=test_fqdn_object_element_position
-test_http_signature_object_element_position=test_http_signature_object_element_position
-test_http_url_object_element_position = test_http_url_object_element_position
-test_response_page_element_position = test_response_page_element_position
-test_hijack_file_element_position = test_hijack_file_element_position
-test_insert_script_element_position = test_insert_script_element_position
-test_manipulation_rule_element_position = test_manipulation_rule_element_position
-test_security_rule_element_position = test_security_rule_element_position
-test_intercept_rule_element_position = test_intercept_rule_element_position
-
-def get_element_position(key_name):
-    # object
-    if key_name == "source_ip":
-        element_position_map = test_ip_object_element_position
-    elif key_name == "source_port":
-        element_position_map = test_port_object_element_position
-    elif key_name == "destination_ip":
-        element_position_map = test_ip_object_element_position
-    elif key_name == "destination_port":
-        element_position_map = test_port_object_element_position
-    elif key_name == "http_signature":
-        element_position_map = test_http_signature_object_element_position
-    elif key_name == "server_fqdn":
-        element_position_map = test_fqdn_object_element_position
-    elif key_name == "url":
-        element_position_map = test_http_url_object_element_position
-    # profile
-    elif key_name == "response_page":
-        element_position_map = test_response_page_element_position
-    elif key_name == "hijack_file":
-        element_position_map = test_hijack_file_element_position
-    elif key_name == "insert_script":
-        element_position_map = test_insert_script_element_position
-    elif key_name =="statistics_template":
-        element_position_map = test_statistics_template_element_position
-    elif key_name == "run_script":
-        element_position_map = test_run_script_element_position
-    # policy
-    elif key_name == "pxy_manipulation":
-        element_position_map = test_manipulation_rule_element_position
-    elif key_name == "security":
-        element_position_map = test_security_rule_element_position
-    elif key_name == "pxy_intercept":
-        element_position_map = test_intercept_rule_element_position
-    elif key_name == "statistics":
-        element_position_map = test_statistics_rule_element_position
-    else:
-        print("{} no element position map".format(key_name))
-        element_position_map = {}
-    return element_position_map
 
 def get_profile_element_position(key_name):
     if key_name == "statistics_template":
@@ -925,6 +872,62 @@ def delete_pre_policy(name_list, driver):
         delete_rule_code = delete_rule.delete(element_position, first_row_checkbox_element, True)
         time.sleep(2)
 
+test_ip_object_element_position = test_ip_object_element_position
+test_ip_group_object_element_position = test_ip_group_object_element_position
+test_port_object_element_position = test_port_object_element_position
+test_fqdn_object_element_position = test_fqdn_object_element_position
+test_http_signature_object_element_position = test_http_signature_object_element_position
+test_http_url_object_element_position = test_http_url_object_element_position
+test_response_page_element_position = test_response_page_element_position
+test_hijack_file_element_position = test_hijack_file_element_position
+test_insert_script_element_position = test_insert_script_element_position
+test_manipulation_rule_element_position = test_manipulation_rule_element_position
+test_security_rule_element_position = test_security_rule_element_position
+test_intercept_rule_element_position = test_intercept_rule_element_position
+
+def get_element_position(key_name):
+    # object
+    if key_name == "source_ip":
+        element_position_map = test_ip_object_element_position
+    elif key_name == "source_port":
+        element_position_map = test_port_object_element_position
+    elif key_name == "destination_ip":
+        element_position_map = test_ip_object_element_position
+    elif key_name == "destination_port":
+        element_position_map = test_port_object_element_position
+    elif key_name == "http_signature":
+        element_position_map = test_http_signature_object_element_position
+    elif key_name == "server_fqdn":
+        element_position_map = test_fqdn_object_element_position
+    elif key_name == "url":
+        element_position_map = test_http_url_object_element_position
+    # profile
+    elif key_name == "response_page":
+        element_position_map = test_response_page_element_position
+    elif key_name == "hijack_file":
+        element_position_map = test_hijack_file_element_position
+    elif key_name == "insert_script":
+        element_position_map = test_insert_script_element_position
+    elif key_name =="statistics_template":
+        element_position_map = test_statistics_template_element_position
+    elif key_name == "run_script":
+        element_position_map = test_run_script_element_position
+    # policy
+    elif key_name == "pxy_manipulation":
+        element_position_map = test_manipulation_rule_element_position
+    elif key_name == "security":
+        element_position_map = test_security_rule_element_position
+    elif key_name == "pxy_intercept":
+        element_position_map = test_intercept_rule_element_position
+    elif key_name == "statistics":
+        element_position_map = test_statistics_rule_element_position
+    else:
+        print("{} no element position map".format(key_name))
+        element_position_map = {}
+    return element_position_map
+
+
 # 勿删 zcw make
 manipulation_object_no_create_list = ["application", "sub_action_override"]
+#manipulation_object_no_create_list = ["application", "sub_action_override", "source_ip"]
 manipulation_profile_no_create_list = ["deny_response_text", "redirect_url", "replace_parameter", "edit_element_parameter"]
