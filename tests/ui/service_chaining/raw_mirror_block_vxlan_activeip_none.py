@@ -101,7 +101,7 @@ def run(parameter):
                     "type": "mirroring",
                     "load_balance_method": "hash_int-ip",
                     "load_balance_localization": "nearby",
-                    "failure_action": "bypass",
+                    "failure_action": "block",
                     "service_functions": [
                         {
                             "name": "vxlan_activeip_none",

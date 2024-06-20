@@ -127,7 +127,7 @@ def run(parameter):
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
                             "connectivity": "VXLAN-G:6.6.6.28",
-                            "health_check": "BFD:10:2",
+                            "health_check": "None",
                             "enable": "on"
                         }
                     ]
