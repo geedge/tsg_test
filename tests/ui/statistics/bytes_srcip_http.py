@@ -115,7 +115,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "incoming_bytes:BITRATE:incoming bytes",
+                            "in_bytes:BITRATE:in bytes",
                             "bytes:BITRATE:bytes"
                           ],
                           "dimensions": [

@@ -115,8 +115,8 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "client_ips:APPROX_COUNT_DISTINCT_HLLD:client ip sketch",
-                            "server_ips:APPROX_COUNT_DISTINCT_HLLD:client ip sketch"
+                            "client_ip_sketch:APPROX_COUNT_DISTINCT_HLLD:client ip sketch",
+                            "server_ip_sketch:APPROX_COUNT_DISTINCT_HLLD:server ip sketch"
                           ],
                           "dimensions": ["time"],
                           "order_by": "",
@@ -139,7 +139,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts.pcap"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",
