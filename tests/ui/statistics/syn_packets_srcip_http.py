@@ -115,7 +115,7 @@ def run(parameter):
                           "chart_name": "SynPacketsLine",
                           "visualization_type": "Line",
                           "metrics": [
-                            "syn_packets:Rate:syn packets"
+                            "syn_pkts:Rate:syn pkts"
                           ],
                           "dimensions": [
                             "device_group"

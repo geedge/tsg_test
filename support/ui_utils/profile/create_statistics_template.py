@@ -217,7 +217,7 @@ class CreateStatisticsTemplate():
                                       'in_packets': 'Incoming Packets',
                                       'out_packets': 'Outgoing Packets',
                                       'packets': 'Packets',
-                                      'syn_packets': 'SYN Packets',
+                                      'syn_pkts': 'SYN Packets',
                                       'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
                                       'server_ip_sketch': 'Server IPs', 'in_latency': 'Incoming Latency',
                                       'out_latency': 'Outgoing Latency', 'latency': 'Latency',
