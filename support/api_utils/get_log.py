@@ -269,7 +269,9 @@ class GetLog():
                         sum_1 = 0
                         for i in range(1, len(tmp_list_1) - 1):  # 去掉首位两个数计算平均数
                             sum_1 += tmp_list_1[i]
-                        avg_1 = sum_1 / (len(tmp_list_1) - 2)
+                        avg_1 = 0
+                        if sum_1 != 0:
+                            avg_1 = sum_1 / (len(tmp_list_1) - 2)
                         for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
                             if isinstance(v, int):
                                 statistics_value[k] = avg_1

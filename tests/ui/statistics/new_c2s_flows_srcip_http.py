@@ -120,7 +120,7 @@ def run(parameter):
                           "dimensions": [
                             "client_port"
                           ],
-                          "order_by": "All c2s flows",
+                          "order_by": "new c2s flows",
                           "row_limit": "1000",
                           "min_in_size": "1",
                           "max_out_size": "1"
