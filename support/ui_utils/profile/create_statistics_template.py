@@ -37,6 +37,7 @@ class CreateStatisticsTemplate():
                 chart_id = "{}".format(i + 1)  # 用于图表排序定位使用
                 # 点击chart add添加按钮
                 if operation_type == "create":  # 创建时点击添加图表，修改时不点击添加图表
+                    time.sleep(2)
                     self.driver.find_element(By.XPATH,
                                              create_element_position["templates_button_chartAdd_posXpath"]).click()
                 else:  # 修改数据，先点击修改按钮  "Edit"编辑修改
@@ -47,6 +48,7 @@ class CreateStatisticsTemplate():
                 # 页面滚动到最底部
                 # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 # 内嵌页面滚动条向下滚动到最底部
+                time.sleep(2)
                 div_paper_grid = self.driver.find_element(By.XPATH,
                                                           create_element_position["templates_div_paperGrid_posXpath"])
                 self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_paper_grid)
@@ -58,11 +60,18 @@ class CreateStatisticsTemplate():
                 # metrics 操作
                 self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="metrics", chart_id=chart_id)
-                # dimensions 操作
-                self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
+                visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
+                metrics_no_dimension_temp = {"session_identifier_sketch", "client_ip_sketch", "server_ip_sketch'"}
+                first_metric_temp = charts[i]["metrics"][0].split(":")[0]
+                # if first_metric_temp not in{"","不修改","刪除"}:#修改数据待补充处理方式
+                if visualization_type_temp == "table" or visualization_type_temp == "bar" or visualization_type_temp == "line":  # 只有table\Bar 图的 有order by操作
+                    if visualization_type_temp == "line" and ( first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
+                        pass
+                    else:
+                        # dimensions 操作
+                        self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="dimensions", chart_id=chart_id)
                 # 如果有Order By，则操作
-                visualization_type_temp =  charts[i]["visualization_type"].split("->")[data_index].strip().lower()
                 if visualization_type_temp == "table" or visualization_type_temp == "bar":  # 只有table\Bar 图的 有order by操作
                     self._operate_order_by(charts[i], data_index=data_index, no_modify=no_modify,
                                            data_key="order_by", chart_id=chart_id)
@@ -71,11 +80,15 @@ class CreateStatisticsTemplate():
                 # Row Limit 操作
                 visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
                 if visualization_type_temp == "line" or visualization_type_temp == "table"  or visualization_type_temp == "bar":  # line 图的 row limit 操作方式不一样
-                    self._operate_series_limit(charts[i], data_index=data_index, no_modify=no_modify,
-                                               data_key="row_limit",
-                                               element_position=create_element_position[
-                                                   "templates_input_other_posXpath"],
-                                               chart_id=chart_id)
+                    if visualization_type_temp == "line" and (
+                            first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
+                        pass
+                    else:
+                        self._operate_series_limit(charts[i], data_index=data_index, no_modify=no_modify,
+                                                   data_key="row_limit",
+                                                   element_position=create_element_position[
+                                                       "templates_input_other_posXpath"],
+                                                   chart_id=chart_id)
                 else:
                     pass
                 """
@@ -195,21 +208,21 @@ class CreateStatisticsTemplate():
         :param chart_id:    chart_id  UI页面中chart id序号
         :return:
         """
-        dropdown_item_metrics_dict = {'incoming_bytes': 'Incoming Bytes', 'outgoing_bytes': 'Outgoing Bytes',
+        dropdown_item_metrics_dict = {'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
                                       'bytes': 'Bytes', 'new_c2s_flows': 'New C2S Flows',
                                       'new_s2c_flows': 'New S2C Flows', 'sessions': 'Sessions',
-                                      'new_incoming_sessions': 'New Incoming Sessions',
-                                      'new_outgoing_sessions': 'New Outgoing Sessions',
+                                      'new_in_sessions': 'New Incoming Sessions',
+                                      'new_out_sessions': 'New Outgoing Sessions',
                                       'new_unestablished_sessions': 'New Unestablished Sessions',
-                                      'incoming_packets': 'Incoming Packets',
-                                      'outgoing_packets': 'Outgoing Packets',
+                                      'in_packets': 'Incoming Packets',
+                                      'out_packets': 'Outgoing Packets',
                                       'packets': 'Packets',
                                       'syn_packets': 'SYN Packets',
-                                      'session_ids': 'Session IDs', 'client_ips': 'Client IPs',
-                                      'server_ips': 'Server IPs', 'incoming_latency': 'Incoming Latency',
-                                      'outgoing_latency': 'Outgoing Latency', 'latency': 'Latency',
-                                      'incoming_packet_length': 'Incoming Packet Length',
-                                      'outgoing_packet_length': 'Outgoing Packet Length',
+                                      'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
+                                      'server_ip_sketch': 'Server IPs', 'in_latency': 'Incoming Latency',
+                                      'out_latency': 'Outgoing Latency', 'latency': 'Latency',
+                                      'in_packet_length': 'Incoming Packet Length',
+                                      'out_packet_length': 'Outgoing Packet Length',
                                       'packet_length': 'Packet Length'}
         """
         dropdown_item_dimensions_dict23 = {'time':'Time', 'client_ip': 'Client IP', 'server_ip': 'Server IP', 'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
@@ -386,7 +399,7 @@ class CreateStatisticsTemplate():
                                                                                                    ".//i")  # 下拉框元素列表中最后一个为add添加按钮
             # 点击添加按钮
             # 下拉列表
-            # time.sleep(10)
+            time.sleep(3)
             is_click_add = "yes_click"
             for dropdownSelect_item in element_metricsAndDimensionsSelects[1:-1]:  # 下拉框元素列表中第二个到倒数第二个为操作数据
                 dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,
@@ -451,7 +464,8 @@ class CreateStatisticsTemplate():
                             elif reverse_case_case == "histogram_chart_check_metrics":  # 校验histogram chart 可选择 metrics类型
                                 print("histogram chart metrics disabled 测试用例...")
                                 info_execpt = "is-disabled"
-                                is_disabled_list = ["Incoming Bytes", "Outgoing Bytes ", "Bytes", "New C2S Flows",
+                                is_disabled_list = ["Incoming Bytes", "Outgoing Bytes ", "Bytes",
+                                                    'Outgoing Packets','Incoming Packets','Packets',"New C2S Flows",
                                                     "New S2C Flows",
                                                     "New Incoming Sessions", "New Outgoing Sessions", "Sessions",
                                                     "New Unestablished Sessions",

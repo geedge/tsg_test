@@ -138,7 +138,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts.pcap"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",

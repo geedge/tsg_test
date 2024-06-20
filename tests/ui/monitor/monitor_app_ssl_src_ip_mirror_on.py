@@ -92,6 +92,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "mtv",
             "counters_1": {"hits": "many"},
+            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv https://www.mtv.ru/"
@@ -294,7 +295,7 @@ def run(parameter):
         print("Duration of running the test case: ", duration)
 
         print("Finish test case: " + parameter["test_case_name"])
-        #return result
+        return result
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)

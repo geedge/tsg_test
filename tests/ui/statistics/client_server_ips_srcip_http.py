@@ -44,14 +44,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "bytes_with_src_ip",
+            "rule_name": "client/server_ips_with_srcip_http",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ap",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_source_ip",
+                        "name": "statistics_client/server_ips_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.3",
+                                "item_value": "10.64.224.4",
                             },
                         ]
                     }
@@ -67,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_destination_ip",
+                        "name": "statistics_client/server_ips_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -75,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.3",
+                                "item_value": "2.1.1.4",
                             },
                         ]
                     }],
@@ -108,23 +108,21 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Distributed by Client IP",
+                    "name": "Auto Client/Server IPs",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Table",
+                          "visualization_type": "Line",
                           "metrics": [
-                            "incoming_bytes:BITRATE:incoming bytes",
-                            "bytes:BITRATE:bytes"
+                            "client_ip_sketch:APPROX_COUNT_DISTINCT_HLLD:client ip sketch",
+                            "server_ip_sketch:APPROX_COUNT_DISTINCT_HLLD:server ip sketch"
                           ],
-                          "dimensions": [
-                            "client_ip"
-                          ],
-                          "order_by": "bytes",
-                          "row_limit": "100",
-                          "min_in_size": "1",
-                          "max_out_size": "1"
+                          "dimensions": ["time"],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "0",
+                          "max_out_size": "0"
                         }
                       ]
                 }]
@@ -134,10 +132,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
-                "servers_start_ip": "2.1.1.3",
-                "servers_end_ip": "2.1.1.3",
+                "clients_start_ip": "10.64.224.4",
+                "clients_end_ip": "10.64.224.4",
+                "servers_start_ip": "2.1.1.4",
+                "servers_end_ip": "2.1.1.4",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -168,15 +166,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "statistics",
+                "name": "client/server_ips_with_srcip_http",
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_source_ip",
+                "name": "statistics_client/server_ips_source_ip",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Distributed by Client IP",
+                "name": "Auto Client/Server IPs",
             },
         ]
         log_in = LogIn()
@@ -230,7 +228,6 @@ def run(parameter):
                     break
 
         # 创建rule
-        create_rule_code = 0
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -247,6 +244,7 @@ def run(parameter):
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
                                                      element_position_map)
+            edit_rule_code = 200
             if edit_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
@@ -383,7 +381,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "bytes_srcip_http",
+        "test_case_name": "client_server_ips_srcip_http",
         "script_type": "ui",
         "policy_type": "statistics"
     }

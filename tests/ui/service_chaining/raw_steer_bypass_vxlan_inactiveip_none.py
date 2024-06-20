@@ -364,7 +364,7 @@ def run(parameter):
                 },
                 {
                     "type": "service_function_forwarder",
-                    "name": "teer_bypass_vxlan_inactiveip_none",
+                    "name": "steer_bypass_vxlan_inactiveip_none",
                 },
                 {
                     "type": "service_function",

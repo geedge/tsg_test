@@ -15,6 +15,11 @@ policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[
 policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
+policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//input[contains(@id, 'object_ip_search')]"
+policyRulePage_selectDstIP_posXpath = "//div[@class='CommonListDetail list-detail']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeDstIP_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
 policyRulePage_addSrcPort_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchSrcPort_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
 policyRulePage_selectSrcPort_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"

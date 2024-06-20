@@ -115,7 +115,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_c2s_flows:Rate:All c2s flows"
+                            "new_c2s_flows:Rate:new c2s flows"
                           ],
                           "dimensions": [
                             "client_port"
@@ -140,7 +140,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts.pcap"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",
