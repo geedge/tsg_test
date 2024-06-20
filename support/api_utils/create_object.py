@@ -131,8 +131,8 @@ class CreateObject():
                 obj_template_dict['object']['member'] = member
             else:
                 type = "import"
-                obj_template_dict["data"] = {'type': obj_type, 'vsys_id': vsys_id, 'statistics_option': 'elaborate'}
-                obj_template_dict["dry_data"] = {'type': obj_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
+                obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'statistics_option': 'elaborate'}
+                obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
                 for item in add_item_list:
                     object_file = item["keyword_array"][0]
                     file_name = object_file.split("/")[-1]
@@ -275,7 +275,6 @@ class CreateObject():
             if type == "create":
                 url = api_host + "/v1/policy/object"
                 time1 = datetime.now()
-                print(obj_template_dict)
                 response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -292,7 +291,8 @@ class CreateObject():
                     timeout_result = True
             elif type == "import":
                 import_url = api_host + "/v1/policy/object/import"
-                del headers['Content-Type']
+                if 'Content-Type' in headers:
+                    del headers['Content-Type']
                 response = requests.post(import_url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file_dry"], verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:

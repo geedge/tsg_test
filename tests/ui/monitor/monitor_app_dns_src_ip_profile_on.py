@@ -1,8 +1,13 @@
 # -*- coding: UTF-8 -*-
 import time
-import pytest
 import os
 import sys
+import os
+import sys
+
+from support.api_utils.delete_config import DeleteConfig
+from support.ui_utils.profile.search_profile import SearchProfile
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -11,13 +16,14 @@ from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
-from support.ui_utils.element_position.policy_element_position import *
-from support.ui_utils.element_position.object_element_position import *
 from support.traffic_replay.traffic_verification import *
+from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.api_utils.delete_config import *
+from support.ui_utils.profile.create_monitor_profile import CreateProfile
+from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env_initialization
+import traceback
 
 
 def run(parameter):
@@ -25,28 +31,24 @@ def run(parameter):
         print("Begin to run test case: " + parameter["test_case_name"])
         # 脚本启动时间
         start_time = time.time()
-        
+
         # 环境初始化
         support.ui_utils.env_initialization.initiate_selenium_request()
         driver = support.ui_utils.env_initialization.my_driver()
         support.ui_utils.env_initialization.setup()
-        
+
         # 测试数据
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "security",
-            "rule_name": "security_rule_allow_internal_ip",
+            "policy_type": "monitor",
+            "rule_name": "monitor_rule_dns_profile_on",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [
+                "source_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "monitor_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -55,10 +57,14 @@ def run(parameter):
                                 "item_operation": "add",
                                 "item_type": "ipv4",
                                 "item_value": "192.168.64.91",
-                            }
+                            },
                         ]
                     }
                 ],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
                 "internal_port": [],
                 "external_ip": [],
                 "external_port": [],
@@ -69,27 +75,34 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [],
-                "server_fqdn": [],
-                "protocol_filed": [],
-                "sub_action_override": True,
-                "sub_action": [
+                "application": [
                     {
-                        "type": "drop",
-                        "drop_packet": 0,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
+                        "name": "dns",  #
+                        "object_type": "application",
+                        "negate": False
                     }
                 ],
+                "server_fqdn": [],
+                "protocol_filed":[],
+                "sub_action_override": True,
+                "sub_action": [],
                 "packet_capture": []
             },
-            "profile": [],
-            "expected_return": "Failed",
+            "is_mirror":"on",
+            "profile": [
+
+                        {
+                            "name":"profile1",
+                            "vlan_id":"10"
+                            #vlan的范围：应该是在3-66
+                        }
+             ],
+            "expected_return": "bport",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
+            "log_query_param_1": [{"query_field_key": "dns_qname", "query_value": "www.bport.ru"}],
             "traffic": {
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 5 -m 10 http://open.node.com:180"
+                "type": "nslookup",
+                "command": "nslookup -d www.bport.ru 8.8.8.8 -tiemout=1"
             },
             "token": ""
         }
@@ -101,20 +114,25 @@ def run(parameter):
         # name_list汇总
         name_list = [
             {
-                "type": "security",
-                "name": "security_rule_allow_internal_ip"
+                "type": "monitor",
+                "name": "monitor_rule_dns_profile_on"
             },
             {
-                "type": "ip",
-                "name": "security_internal_ip"
+                "type":"ip",
+                "name":"monitor_source_ip"
+            },
+            {
+                "type": "traffic_mirror",
+                "name": "profile1"
             }
+
         ]
-        
+
         # 添加定位库集合
         test_rule_element_position = {}
-        if test_data["policy_type"] == "security":
+        if test_data["policy_type"] == "monitor":
             test_ip_object_element_position = {
-                "page_jump":{
+                "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
@@ -144,24 +162,59 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-            test_rule_element_position = {
-                "page_jump":{
+
+
+            test_monitor_profile_element_position = {
+                "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_security_posId
+                    "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+                    "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
                 },
                 "create": {
-                    "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
+                    "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
+                    "profilePage_inputName_posId": trafficMirroringProfiles_input_Name_posId,
+                    "profilePage_addLANID_posCss": trafficMirroringProfiles_button_vlanIdAdd_posCss,
+                    "trafficMirroringProfiles_input_vlanIdsInput_posXpath": trafficMirroringProfiles_input_vlanIdsInput_posXpath,
+                    "profilePage_button_oK_posCss": trafficMirroringProfiles_button_oK_posCss,
+                    "profilePage_button_cancel_posCss": trafficMirroringProfiles_button_cancel_posCss,
+                    "profilePage_button_warningSaveYes_posCss": trafficMirroringProfiles_button_warningSaveYes_posCss,
+                    # action
+                },
+                "edit": {
+                    "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
+                },
+                "search": {
+                    "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+                    "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
+                    "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
+                    "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
+                },
+                "delete": {
+                    "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+                    "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+                    "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posCss
+                }
+            }
+
+
+            test_rule_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_monitor_posId
+                },
+                "create": {
+                    "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                    "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
-                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
-                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
-                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
-                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -174,15 +227,25 @@ def run(parameter):
                     "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
                     "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
                     "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
-                    "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
-                    "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
-                    "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
-                    "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
-                    "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
+                    "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
+                    "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath,
+                    # profile
+                    "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
+                    "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
+                    "policyRulePage_firstSelectMirrorProfile_posXpath": monitorRulePage_firstSelectMirrorProfile_posXpath,
+                    "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
+                    "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
+                    "policyRulePage_saveProile_ok_posXpath":monitorRulePage_saveProile_ok_posXpath,
+                    "policyRulePage_saveProile_warningYes_posXpath":monitorRulePage_saveProile_warningYes_posXpath,
+                    #add ssl sni
+                    "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
+                    "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
+                    "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
+                    "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
+                    "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
+                    "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -193,24 +256,34 @@ def run(parameter):
                 },
                 "delete": {
                     "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
-                    "policyRuleListPage_deleteButton_posId": securityRuleListPage_deleteButton_posId,
+                    "policyRuleListPage_deleteButton_posId": monitorRuleListPage_deleteButton_posId,
                     "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-                    "policyRuleListPage_okButton_warningNo_posXpath":securityRuleListpage_okButton_warningNo_posXpath
+                    "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
-        
-        # 创建object
-        if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
-            ip_data = test_data["condition"]["internal_ip"]
+        #创建object
+        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+            ip_data =test_data["condition"]["source_ip"]
             create_ip = CreateObject(driver)
             for i in range(len(ip_data)):
-                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+                create_ip_code =create_ip.create(ip_data[i],test_ip_object_element_position)
                 if create_ip_code == 200:
                     print("Create ip object successfully.")
                 elif create_ip_code != 200:
                     result = "Fail to create ip object."
                     break
-        
+
+        if "profile" in test_data  and len(test_data["profile"]) != 0:
+            profile_data = test_data["profile"]
+            mirror_traffic_profile = CreateProfile(driver,test_monitor_profile_element_position)
+            for i in range(len(profile_data)):
+                create_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position,test_data["profile"][i]["name"])
+                if create_profile_code == 200:
+                    print("Create Traffic Mirroring Profiles successfully.")
+                elif create_profile_code != 200:
+                    result = "Fail to create Traffic Mirroring Profiles profile."
+                    break
+
         # 创建rule
         if create_ip_code == 200:
             create_rule = CreateRule(driver)
@@ -219,17 +292,17 @@ def run(parameter):
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-            
         # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                                                     test_rule_element_position)
             if edit_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data, [])
-        
+
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
@@ -238,11 +311,13 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        
+
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
-            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
+                                                                              test_data["rule_name"],
+                                                                              test_rule_element_position)
             if search_rule_code == 200:
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
@@ -252,13 +327,14 @@ def run(parameter):
                     result = result + " In addition, fail to delete security rule."
             else:
                 result = result + " In addition, fail to search security rule."
-        
+
         # 删除object
         if delete_rule_code == 200:
             # 删除ip
             for x in range(len(ip_data)):
                 search_ip = SearchObject(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
+                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"],
+                                                                              test_ip_object_element_position)
                 if search_ip_code == 200:
                     delete_ip = DeleteObject(driver)
                     delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
@@ -270,19 +346,32 @@ def run(parameter):
                 else:
                     result = result + " In addition, fail to search ip object."
                     break
-        
-                # 脚本结束时间和耗时
-        
-        # 脚本结束时间和耗时
+
+        #删除profile
+        if delete_rule_code == 200:
+            for x in range(len(profile_data)):
+                search_mirror_profile = SearchProfile(driver)
+                profile_return_code,first_row_checkbox_element=search_mirror_profile.search(profile_data[x]['name'],test_monitor_profile_element_position)
+                if profile_return_code == 200:
+                    delete_mirror_profile = DeleteProfile(driver)
+                    delete_profile_code = delete_mirror_profile.delete(test_monitor_profile_element_position,first_row_checkbox_element,True)
+                    if delete_profile_code == 200:
+                        print("Delete monitor profile successfully.")
+                    elif delete_profile_code != 200:
+                        result = result + " In addition, fail to delete profile."
+                        break
+                # else:
+                    result = result + " In addition, fail to search profile."
+                    break
+        #脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
         print("Duration of running the test case: ", duration)
-        
+
         print("Finish test case: " + parameter["test_case_name"])
-        return result
+        #return result
     except Exception as e:
         print("Error: ", e)
-        print
         return "Error: " + str(e)
     finally:
         # 清理环境
@@ -290,22 +379,21 @@ def run(parameter):
         # 删除配置
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
-        
+
 if __name__ == '__main__':
     parameter = {
-        "username": "hebingning",
-        "password": "hbn66AAA",
+        "username": "zhaokun",
+        "password": "zhaokun1",
         "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
-        "env": "tsgx",
-        "vsys_id": 10,
         "is_log": 1,
+        "env": "tsgx",
+        "script_type":"ui",
+        "vsys_id": 11,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
-        "module_name": "security",
-        "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
+        "module_name": "monitor",
+        "test_case_name": "monitor_rule_dns_profile_on"
     }
     run(parameter)
     """

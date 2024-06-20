@@ -115,8 +115,8 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "client_ips:APPROX_COUNT_DISTINCT_HLLD:unique client ip",
-                            "server_ips:APPROX_COUNT_DISTINCT_HLLD:unique server ip"
+                            "client_ips:APPROX_COUNT_DISTINCT_HLLD:client ip sketch",
+                            "server_ips:APPROX_COUNT_DISTINCT_HLLD:client ip sketch"
                           ],
                           "dimensions": ["time"],
                           "order_by": "",

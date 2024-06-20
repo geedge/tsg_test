@@ -128,7 +128,7 @@ def run(parameter):
                 "name":"monitor_source_ip"
             },
             {
-                "type":"monitor_profile",
+                "type":"traffic_mirror",
                 "name":"profile1"
             }
         ]

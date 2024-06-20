@@ -45,7 +45,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "/autoFtp/english_big.txt"
+                            "/autoFtp/english.txt"
                         ]
                         }
                     ]
@@ -91,7 +91,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -m 10 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 30 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
             },
             "token": ""
         }

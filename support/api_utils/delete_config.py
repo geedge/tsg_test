@@ -219,6 +219,16 @@ class DeleteConfig():
                             print("Delete dns record successfully.")
                         else:
                             print("Delete dns record failed.")
+                    elif create_profile_ids[del_porfile_index]["profile_type"] == "traffic_mirror": # 删除dns_record
+                        profile_id = create_profile_ids[del_porfile_index]["id"]
+                        url = "{}/v1/policy/profile/traffic_mirror".format(api_server)
+                        del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
+                        response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print("Delete dns record successfully.")
+                        else:
+                            print("Delete dns record failed.")
         except AssertionError as e:
             print(f"AssertionError: {e}")
     
@@ -327,7 +337,7 @@ class DeleteConfig():
                         self.query_and_delete_by_name(obj_url, template, headers)
                     
                     if name_item["type"] in ["service_function_forwarder", "service_function", "statistics_templates", "response_page", "hijack_file",
-                                             "insert_script","monitor_profile","run_script"]:
+                                             "insert_script","traffic_mirror","run_script"]:
                         if 'type' in template:
                             del template["type"]
                         template['name'] = name_item["name"]
@@ -373,6 +383,9 @@ class DeleteConfig():
             elif 'statistics_template' in url:
                 data_list = return_json_data['data']['statistics_templates']
                 delete_info = 'statistics_template'.replace("_", " ")
+            elif 'traffic_mirror' in url:
+                data_list = return_json_data['data']['traffic_mirrors']
+                delete_info = 'traffic_mirror'.replace("_", " ")
             if len(data_list) > 0:
                 delete_data = self.combine_delete_ids(template, data_list)
                 response = requests.delete(url, headers=headers, params=delete_data, verify=False)

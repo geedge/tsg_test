@@ -48,7 +48,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "www.jd.com"
+                            "jd.com"
                         ]
                         }
                     ]
@@ -62,7 +62,7 @@ def run(parameter):
             "log_query_param_1": [],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.jd.com"
+                "command": "curl -kv --connect-timeout 30 -m 30 https://www.jd.com"
             },
             "token": ""
         }

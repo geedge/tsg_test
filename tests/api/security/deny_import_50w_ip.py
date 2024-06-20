@@ -39,23 +39,21 @@ def run(parameter):
                     ]
                 },
                 {
-                    "is_negate": 1,
                     "attribute_name": "ATTR_SERVER_FQDN",
                     "object_type": "fqdn",
                     "object_sub_type": "fqdn",
-                    "repeat_time": 10,
                     "object_list": [
                         {
-                            "add_item_list": [
-                                {
-                                    "keyword_array": [
-                                        "/app/tests/api/profile_used_to_create_rule/fqdn_import.txt"
-                                    ]
-                                }
+                        "add_item_list": [
+                            {
+                            "keyword_array": [
+                                "open.node.com"
                             ]
+                            }
+                        ]
                         }
                     ]
-                }
+            }
             ],
             "app_name_1": ["http"],
             "expected_return": "POST",
@@ -118,8 +116,8 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
