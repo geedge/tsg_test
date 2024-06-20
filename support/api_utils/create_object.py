@@ -109,7 +109,7 @@ class CreateObject():
         
         obj_sub_type = condition['object_sub_type']
         obj_template_dict['object']['sub_type'] = obj_sub_type
-        obj_template_dict['object']['statistics_option'] = 'none'
+        obj_template_dict['object']['statistics_option'] = 'elaborate'
         
         if 'is_negate' in condition.keys():
             is_negate = condition['is_negate']
@@ -131,8 +131,8 @@ class CreateObject():
                 obj_template_dict['object']['member'] = member
             else:
                 type = "import"
-                obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'statistics_option': 'none'}
-                obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'none'}
+                obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'statistics_option': 'elaborate'}
+                obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
                 for item in add_item_list:
                     object_file = item["keyword_array"][0]
                     file_name = object_file.split("/")[-1]

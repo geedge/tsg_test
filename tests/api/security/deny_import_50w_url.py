@@ -41,7 +41,7 @@ def run(parameter):
                     "is_negate": 1,
                     "attribute_name": "ATTR_HTTP_URL",
                     "object_type": "url",
-                    "object_sub_type": "url",
+                    "object_sub_type": "",
                     "repeat_time": 10,
                     "object_list": [
                         {

@@ -65,7 +65,20 @@ def run(parameter):
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [],
+                "destination_ip": [
+                    {
+                        "name": "statistics_all_latency_destination_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "2.1.1.1",
+                            },
+                        ]
+                    }],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -102,8 +115,8 @@ def run(parameter):
                           "chart_name": "All Latency Line",
                           "visualization_type": "Line",
                           "metrics": [
-                            "incoming_latency:MEDIAN_HDR:in_latency",
-                            "outgoing_latency:MEDIAN_HDR:all_atency",
+                            "in_latency:MEDIAN_HDR:in latency",
+                            "out_latency:MEDIAN_HDR:out atency",
                             "latency:MEDIAN_HDR:latency"
                           ],
                           "dimensions": [],
@@ -119,8 +132,15 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
-                "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "type": "trex",
+                "clients_start_ip": "10.64.224.1",
+                "clients_end_ip": "10.64.224.1",
+                "servers_start_ip": "2.1.1.1",
+                "servers_end_ip": "2.1.1.1",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",

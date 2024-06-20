@@ -115,9 +115,9 @@ def run(parameter):
                           "chart_name": "All Packets Length Line",
                           "visualization_type": "Line",
                           "metrics": [
-                            "incoming_packet_length:MEDIAN_HDR:in_packet_length",
-                            "outgoing_packet_length:MEDIAN_HDR:all_packet_length",
-                            "packet_length:MEDIAN_HDR:packet_length"
+                            "in_packet_length:MEDIAN_HDR:in packet length",
+                            "out_packet_length:MEDIAN_HDR:out packet length",
+                            "packet_length:MEDIAN_HDR:packet length"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -140,7 +140,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts.pcap"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "nslookup",

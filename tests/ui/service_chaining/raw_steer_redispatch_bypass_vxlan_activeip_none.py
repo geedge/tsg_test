@@ -115,7 +115,7 @@ def run(parameter):
             "multiProfile": True,
             "profile": [
                 {
-                    "name": "raw_steer_redispatch_bypass_vxlan_activeip_bfd",
+                    "name": "raw_steer_redispatch_bypass_vxlan_activeip_none",
                     "profile_type": "create",
                     "type": "steering",
                     "load_balance_method": "hash_int-ip",
@@ -123,7 +123,7 @@ def run(parameter):
                     "failure_action": "Re-dispatch:Bypass:0",
                     "service_functions": [
                         {
-                            "name": "vxlan_activeip_bfd",
+                            "name": "vxlan_activeip_none",
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
                             "connectivity": "VXLAN-G:2.2.2.53",

@@ -115,7 +115,7 @@ def run(parameter):
                           "chart_name": "Latency",
                           "visualization_type": "Histogram",
                           "metrics": [
-                            "packet_length:PERCENTILES_HDR:Packet Length"
+                            "packet_length:PERCENTILES_HDR:packet length"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -138,7 +138,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts.pcap"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",

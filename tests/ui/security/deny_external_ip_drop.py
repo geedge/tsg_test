@@ -238,7 +238,8 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        
+        # 避免报错：stale element not found
+        time.sleep(5)
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -300,7 +301,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 10,
+        "vsys_id": 11,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

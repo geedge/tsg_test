@@ -23,8 +23,6 @@ def my_driver():
     chrome_option = webdriver.ChromeOptions()
     os_name = platform.system()
     if os_name == "Linux":
-        # result = subprocess.check_output("docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' automation", shell=True)
-        # output = result.decode("utf-8")
         remote_url = get_docker_ip()
         # 启用无窗口模式
         chrome_option.add_argument("--no-sandbox")
@@ -35,10 +33,18 @@ def my_driver():
     elif os_name == "Windows":
         remote_url = read_config("selenium_server", "url")
         # 启用无痕模式
+        chrome_option.add_argument("--incognito")
+        # 启用无窗口模式
         # chrome_option.add_argument("--headless")
         # chrome_option.add_argument("--disable-gpu")
         # chrome_option.add_argument("--window-size=1920, 1200")
-        chrome_option.add_argument("--incognito")
+    # 关闭“chrome正受到自动测试软件的控制”
+    # chrome_option.add_experimental_option('useAutomationExtension', False)
+    # chrome_option.add_experimental_option('excludeSwitches', ['enable-automation'])
+    # 取消idle timeout
+    # chrome_option.add_argument("--disable-idle-timeout")
+    # 不关闭浏览器窗口
+    # chrome_option.add_experimental_option("detach", True)
     # 打开chrome浏览器
     driver = MyWebDriver(
         command_executor=remote_url,
@@ -92,23 +98,6 @@ def get_docker_ip():
                 docker_ip = addr.address
                 remote_url = "http://" + docker_ip + ":4444"
                 return remote_url
-            
-# @pytest.fixture()
-# def demo_fixture():
-#     global driver
-#     setup()
-#     yield driver
-#     teardown()
-
-# def pytest_collection_modifyitems(items):
-#     """
-#     测试用例收集完成时，将收集到的name和nodeid的中文显示在控制台上,中文转换
-#     https://www.cnblogs.com/canglongdao/p/13418305.html
-#     https://blog.csdn.net/weixin_46043193/article/details/114284643
-#     """
-#     for i in items:
-#         i.name = i.name.encode("utf-8").decode("unicode_escape")
-#         i._nodeid = i.nodeid.encode("utf-8").decode("unicode_escape")
 
 # 处理ctrl+c中断
 def handle_interrupt(sinnum, frame):
@@ -118,6 +107,3 @@ def handle_interrupt(sinnum, frame):
     if driver:
         driver.close()
     exit(1)
-
-# 注册Ctrl+C中断处理函数，该函数切勿打开，因为：该函数不能在子线程中运行，只能在主线程中运行
-# signal.signal(signal.SIGINT, handle_interrupt)

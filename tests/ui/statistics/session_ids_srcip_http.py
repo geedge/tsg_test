@@ -6,6 +6,7 @@ import os
 import sys
 
 from support.api_utils.organize_config import OrganizeConfig
+from support.report import GenerateReport
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
@@ -115,7 +116,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "session_ids:APPROX_COUNT_DISTINCT_HLLD:Session IDs"
+                            "session_identifier_sketch:APPROX_COUNT_DISTINCT_HLLD:session identifier sketch"
                           ],
                           "dimensions": ["time"],
                           "order_by": "",
@@ -138,7 +139,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts.pcap"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",
@@ -239,11 +240,9 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
-
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
                                                      element_position_map)
-            edit_rule_code = 200
             if edit_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
@@ -258,8 +257,6 @@ def run(parameter):
             #if edit_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
-
-
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
@@ -268,7 +265,17 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-
+        # 生成csv报告
+        report_data = []
+        report_data.append(parameter["test_case_name"])
+        if False in verification_result:
+            result_flag = "Fail"
+        else:
+            result_flag = "PASS"
+        report_data.append(result_flag)
+        report_data.append(result)
+        new_report = GenerateReport()
+        new_report.insert_data(parameter, report_data)
 
         # 删除rule
         create_rule_code = 200

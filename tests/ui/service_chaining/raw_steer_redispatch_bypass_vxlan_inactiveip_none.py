@@ -115,7 +115,7 @@ def run(parameter):
             "multiProfile": True,
             "profile": [
                 {
-                    "name": "raw_steer_redispatch_bypass_vxlan_inactiveip_none",
+                    "name": "steer_redispatch_bypass_vxlan_inactiveip_none",
                     "profile_type": "create",
                     "type": "steering",
                     "load_balance_method": "hash_innermost_int-ip",

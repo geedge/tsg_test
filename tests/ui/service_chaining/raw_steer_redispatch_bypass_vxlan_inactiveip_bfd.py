@@ -93,7 +93,7 @@ def run(parameter):
                             "name": "vxlan_inactiveip_bfd",
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
-                            "connectivity": "VXLAN-G:2.2.2.54",
+                            "connectivity": "VXLAN-G:2.2.2.55",
                             "health_check": "BFD:600:6",
                             "enable": "on"
                         }

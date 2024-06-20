@@ -93,7 +93,7 @@ def run(parameter):
                             "name": "vxlan_inactiveip_none",
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
-                            "connectivity": "VXLAN-G:2.2.2.60",
+                            "connectivity": "VXLAN-G:2.2.2.55",
                             "health_check": "None",
                             "enable": "on"
                         }
