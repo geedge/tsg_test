@@ -72,6 +72,26 @@ test_data = \
                                 "item_value": "baidu->"
                             }
                         ],
+                    },
+                    {
+                        "name": "manipulation_http_signature",
+                        "object_type": "http_signature",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "request_header",
+                                "item_key": "User-Agent",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "curl"
+                                ]
+                            }
+                        ],
                     }
                 ],
                 "sub_action_override": True,
