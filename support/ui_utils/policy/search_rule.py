@@ -2,6 +2,7 @@
 # import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
+from time import sleep
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policy.page_jump import PageJump
@@ -17,6 +18,7 @@ class SearchRule():
         page_jump = PageJump(self.driver)
         page_jump.jump_sub_policy_page(page_jump_element_position, "UIwithTrafficTestVsys")
         # 点击search查询框
+        sleep(5)
         self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"]).click()
         dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
         self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
