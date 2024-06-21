@@ -52,7 +52,7 @@ class CreateStatisticsTemplate():
                 # 页面滚动到最底部
                 # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 # 内嵌页面滚动条向下滚动到最底部
-                time.sleep(2)
+                #time.sleep(2)
                 print("template5,scroll")
                 div_paper_grid = self.driver.find_element(By.XPATH,
                                                           create_element_position["templates_div_paperGrid_posXpath"])
@@ -411,6 +411,7 @@ class CreateStatisticsTemplate():
                                    "approx_count_distinct_hlld": "APPROX_COUNT_DISTINCT_HLLD"}
 
         try:
+            time.sleep(3)
             # ep_metricsAndDimensionsAdd = statisticsTemplates_button_metricsAndDimensionsAdd_posXpath.format(replaceChart=chart_id, repalceLabel=dropdown_name)   #添加按钮定位
             ep_metricsAndDimensionsSelects = statisticsTemplates_input_metricsAndDimensionsSelect_posXpath.format(
                 replaceChart=chart_id, repalceLabel=dropdown_name)  # 下拉框定位，可能存在多个

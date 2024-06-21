@@ -251,7 +251,7 @@ def run(parameter):
             if edit_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.create_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
 

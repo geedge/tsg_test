@@ -172,6 +172,9 @@ def run(parameter):
             {
                 "type": "ip",
                 "name": "statistics_all_bytes_line_source_ip",
+            },{
+                "type": "ip",
+                "name": "statistics_all_bytes_line_destination_ip",
             },
             {
                 "type": "ip",
@@ -253,9 +256,9 @@ def run(parameter):
             if edit_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.create_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
