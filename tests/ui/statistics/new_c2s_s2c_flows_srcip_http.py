@@ -2,8 +2,6 @@
 import time
 import os
 import sys
-import os
-import sys
 
 from support.api_utils.organize_config import OrganizeConfig
 

@@ -346,12 +346,12 @@ class GetLog():
                         statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_received"] - 10)):
                     print(success_result)
                     metric_result = True
-            elif assert_key == "packets":
+            elif assert_key == "pkts":
                 if statistics_value[assert_key] > (
                 statistics_metircs_except_avg["total_packets"]):  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
                     print(success_result)
                     metric_result = True
-            elif assert_key == "in_packets" or assert_key == "out_packets":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
+            elif assert_key == "in_pkts" or assert_key == "out_pkts":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
                 print(assert_key)
                 if (statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets_sent"])) or (
                         statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets_received"])):
@@ -413,12 +413,12 @@ class GetLog():
                         statistics_value[assert_key] == statistics_metircs_except["total_bytes_received"] * 8):
                     print(success_result)
                     metric_result = True
-            elif assert_key == "packets":
+            elif assert_key == "pkts":
                 if statistics_value[assert_key] == statistics_metircs_except["total_packets"] or statistics_value[
                     assert_key] == statistics_metircs_except["total_packets"] * 8:
                     print(success_result)
                     metric_result = True
-            elif assert_key == "in_packets" or assert_key == "out_packets":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
+            elif assert_key == "in_pkts" or assert_key == "out_pkts":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
                 if (statistics_value[assert_key] == statistics_metircs_except["total_packets_sent"]) or (
                         statistics_value[assert_key] == statistics_metircs_except["total_packets_received"]):
                     print(success_result)

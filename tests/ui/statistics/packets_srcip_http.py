@@ -115,12 +115,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "packets:SUM:packets"
+                            "pkts:SUM:pkts"
                           ],
                           "dimensions": [
                             "application"
                           ],
-                          "order_by": "packets",
+                          "order_by": "pkts",
                           "row_limit": "50",
                           "min_in_size": "0",
                           "max_out_size": "0"

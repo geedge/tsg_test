@@ -214,9 +214,9 @@ class CreateStatisticsTemplate():
                                       'new_in_sessions': 'New Incoming Sessions',
                                       'new_out_sessions': 'New Outgoing Sessions',
                                       'new_unestablished_sessions': 'New Unestablished Sessions',
-                                      'in_packets': 'Incoming Packets',
-                                      'out_packets': 'Outgoing Packets',
-                                      'packets': 'Packets',
+                                      'in_pkts': 'Incoming Packets',
+                                      'out_pkts': 'Outgoing Packets',
+                                      'pkts': 'Packets',
                                       'syn_pkts': 'SYN Packets',
                                       'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
                                       'server_ip_sketch': 'Server IPs', 'in_latency': 'Incoming Latency',
@@ -250,8 +250,7 @@ class CreateStatisticsTemplate():
             metrics_or_dimensions = chart[data_key]  # dimensions 数据列表
             dropdown_item_dict = dropdown_item_dimensions_dict
             repalceLabel = "Dimensions"
-
-        print(metrics_or_dimensions)
+            #print(metrics_or_dimensions)
         try:
             # print(666)
             for j in range(len(metrics_or_dimensions)):  # 循环操作metrics
@@ -319,8 +318,12 @@ class CreateStatisticsTemplate():
                                                                      repalceLabel=repalceLabel)  # input的定位，接下来向上反找,在向下找
                         element_position_1 = element_position_1.replace("span",
                                                                         "label")  # chart name中的定位，需要将span替换为label
-                        self.driver.find_element(By.XPATH, element_position_1).find_element(By.XPATH,
-                                                                                            "./parent::*/parent::*//span").click()
+                        #self.driver.find_element(By.XPATH, element_position_1).find_element(By.XPATH,
+                        #                                                                    "./parent::*/parent::*//span").click()
+                        element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1).find_element(By.XPATH,
+                                                                                            "./parent::*/parent::*//span")
+                        self.actions.move_to_element(element_dropdown_item).perform()
+                        self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                         return 0
                     elif data_value == "":  # 输入框为空
                         return 0
@@ -328,7 +331,7 @@ class CreateStatisticsTemplate():
                 element_position_1 = element_position.format(replaceChart=chart_id, repalceLabel=repalceLabel)
                 # 定位元素中span换成label
                 element_position_1 = element_position_1.replace("span", "*")
-                print(element_position_1)
+                #print(element_position_1)
                 self.driver.find_element(By.XPATH, element_position_1).clear()
                 self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
             return 200
@@ -363,9 +366,11 @@ class CreateStatisticsTemplate():
                 element_position_1 = element_position_1.replace("span", "*")
                 print(element_position_1)
                 self.driver.find_element(By.XPATH, element_position_1).click()
-                self.driver.find_element(By.XPATH, element_position_1). \
+                element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1). \
                     find_element(By.XPATH,
-                                 f"./ancestor::*[contains(@class, 'el-form-item el-form-item--small')]//*[contains(@class, 'el-select-dropdown__list')]/li/span[normalize-space(text())='{data_value_1}']").click()
+                                 f"./ancestor::*[contains(@class, 'el-form-item el-form-item--small')]//*[contains(@class, 'el-select-dropdown__list')]/li/span[normalize-space(text())='{data_value_1}']")
+                self.actions.move_to_element(element_dropdown_item).perform()
+                self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                 # self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
             return 200
         except Exception as e:
@@ -504,7 +509,7 @@ class CreateStatisticsTemplate():
                         else:  # demesions数据操作
                             col_name = new_value
                             replaceDropdownIterm = dropdown_item_dict[col_name]
-                            print(replaceDropdownIterm)
+                            #print(replaceDropdownIterm)
                             element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,
                                                                                     f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
                             # 移动元素到页面，在执行点击
