@@ -98,6 +98,10 @@ def run(parameter):
       analysis = AnalysisResult()
       result = analysis.analysis_result(test_data, cfg_list, verification_result)
       print("analysis result: ", result)
+      # 脚本结束时间和耗时
+      end_time = time.time()
+      duration = end_time - start_time
+      print("Duration of running the test case: ", duration)
     
       # 删除配置
       erase = DeleteConfig()

@@ -116,6 +116,7 @@ def run(parameter):
         erase = DeleteConfig()
         erase.delele_cfg(token, parameter, cfg_list)
         
+
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:

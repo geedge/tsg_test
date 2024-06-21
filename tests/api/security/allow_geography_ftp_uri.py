@@ -103,11 +103,26 @@ def run(parameter):
             print("The test case is passed.")
         elif len(result) != 0:
             print("The test case is failed. The failure reason is: ", result)
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print("Duration of running the test case: ", duration)
+        print("Finish test case: " + parameter["test_case_name"])
     
         # 删除配置
         erase = DeleteConfig()
         erase.delele_cfg(token, parameter, cfg_list)
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print("Duration of running the test case: ", duration)
+        print("Finish test case: " + parameter["test_case_name"])
         
+        print("Finish test case: " + parameter["test_case_name"])
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print("Duration of running the test case: ", duration)
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
