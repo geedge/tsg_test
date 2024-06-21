@@ -119,9 +119,9 @@ def run(parameter):
                             "new_out_sessions:SUM:new out sessions",
                             "sessions:SUM:sessions"
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
+                          "dimensions": ["application"],
+                          "order_by": "sessions",
+                          "row_limit": "8192",
                           "min_in_size": "0",
                           "max_out_size": "0"
                         }
