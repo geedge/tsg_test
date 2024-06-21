@@ -6,10 +6,14 @@ from support.api_utils.create_config import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.delete_config import *
 from support.api_utils.analysis_result import *
+from support.report import *
 
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
         # 脚本启动时间
         start_time = time.time()
         
@@ -112,7 +116,19 @@ def run(parameter):
         name_list = []
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
-        
+        # 生成csv报告
+        if result is not None and result != "" and len(result) != 0:
+            report_data = []
+            report_data.append(parameter["test_case_name"])
+            if False in verification_result:
+                result_flag = "Fail"
+            else:
+                result_flag = "PASS"
+            report_data.append(result_flag)
+            report_data.append(result)
+            new_report = GenerateReport()
+            new_report.insert_data(parameter, report_data)
+            
 if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",

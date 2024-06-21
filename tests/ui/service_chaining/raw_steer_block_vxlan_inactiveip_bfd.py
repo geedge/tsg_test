@@ -27,6 +27,9 @@ from support.ui_utils.object.generate_random_ip import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
         # 脚本启动时间
         start_time = time.time()
 
