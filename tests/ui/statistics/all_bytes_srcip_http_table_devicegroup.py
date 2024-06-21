@@ -169,7 +169,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "statistics",
+                "name": "all_bytes_with_src_ip_http_table_devicegroup",
             },
             {
                 "type": "ip",
@@ -180,7 +180,7 @@ def run(parameter):
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Distributed by Client IP",
+                "name": "Auto All Bytes Distributed by Device Group",
             },
         ]
         log_in = LogIn()

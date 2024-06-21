@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_with_src_ip_http_table_devicegroup",
+            "rule_name": "all_bytes_with_src_ip_http_line",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ap",
@@ -167,7 +167,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_with_src_ip_http_table_devicegroup",
+                "name": "all_bytes_with_src_ip_http_line",
             },
             {
                 "type": "ip",
