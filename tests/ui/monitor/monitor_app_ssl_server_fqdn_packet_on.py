@@ -99,7 +99,10 @@ def run(parameter):
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [],
-                "packet_capture": []
+                "packet_capture": [{
+                        "enable":True,
+                        "capture_depth":"500"
+                     }]
             },
             "is_mirror": "on",
             "profile": [],

@@ -56,7 +56,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.91",
+                                "item_value": "192.168.64.90",
                             },
                         ]
                     }
@@ -82,10 +82,31 @@ def run(parameter):
                         "negate": False
                     },
                     {
-                        "name": "https",  #
+                        "name": "http",  #
+                        "object_type": "application",
+                        "negate": False
+                    },
+                    {
+                        "name": "mail",  #
+                        "object_type": "application",
+                        "negate": False
+                    },
+                    {
+                        "name": "dns",  #
+                        "object_type": "application",
+                        "negate": False
+                    },
+                    {
+                        "name": "quic",  #
+                        "object_type": "application",
+                        "negate": False
+                    },
+                    {
+                        "name": "sip",  #
                         "object_type": "application",
                         "negate": False
                     }
+
                 ],
                 "server_fqdn": [],
                 "protocol_filed":[],
@@ -97,7 +118,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "mtv",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.90"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv https://www.mtv.ru/"
@@ -172,6 +193,7 @@ def run(parameter):
                     "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
                     "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
                     "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
+                    "policyRulePage_little_button_addApplication_posId":policyRulePage_little_button_addApplication_posId,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -315,7 +337,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.90",
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",
