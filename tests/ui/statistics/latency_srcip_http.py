@@ -115,7 +115,7 @@ def run(parameter):
                           "chart_name": "Latency",
                           "visualization_type": "Histogram",
                           "metrics": [
-                            "latency:PERCENTILES_HDR:Latency"
+                            "latency_ms_sketch:PERCENTILES_HDR:latency ms sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -170,6 +170,10 @@ def run(parameter):
             {
                 "type": "ip",
                 "name": "statistics_latency_source_ip",
+            },
+            {
+                "type": "ip",
+                "name": "statistics_latency_destination_ip",
             },
             {
                 "type": "statistics_template",
@@ -249,11 +253,7 @@ def run(parameter):
                 config = OrganizeConfig()
                 cfg_list = config.create_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
+                verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)

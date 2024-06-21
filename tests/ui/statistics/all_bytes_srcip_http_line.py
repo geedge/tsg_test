@@ -51,7 +51,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_all_bytes_source_ip",
+                        "name": "statistics_all_bytes_line_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.13",
+                                "item_value": "10.64.224.14",
                             },
                         ]
                     }
@@ -67,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_all_bytes_destination_ip",
+                        "name": "statistics_all_bytes_line_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -75,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.13",
+                                "item_value": "2.1.1.14",
                             },
                         ]
                     }],
@@ -108,20 +108,18 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Bytes Distributed by Device Group",
+                    "name": "Auto All Bytes Line",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Table",
+                          "visualization_type": "Line",
                           "metrics": [
-                            "in_bytes:SUM:in bytes",
-                            "out_bytes:SUM:out bytes",
-                            "bytes:SUM:bytes"
+                            "in_bytes:BITRATE:in bytes",
+                            "out_bytes:BITRATE:out bytes",
+                            "bytes:BITRATE:bytes"
                           ],
-                          "dimensions": [
-                            "device_group"
-                          ],
+                          "dimensions": [],
                           "order_by": "bytes",
                           "row_limit": "100",
                           "min_in_size": "1",
@@ -135,10 +133,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.13",
-                "clients_end_ip": "10.64.224.13",
-                "servers_start_ip": "2.1.1.13",
-                "servers_end_ip": "2.1.1.13",
+                "clients_start_ip": "10.64.224.14",
+                "clients_end_ip": "10.64.224.14",
+                "servers_start_ip": "2.1.1.14",
+                "servers_end_ip": "2.1.1.14",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -169,15 +167,19 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "statistics",
+                "name": "all_bytes_with_src_ip_http_table_devicegroup",
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_source_ip",
+                "name": "statistics_all_bytes_line_source_ip",
+            },
+            {
+                "type": "ip",
+                "name": "statistics_all_bytes_line_destination_ip",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Distributed by Client IP",
+                "name": "Auto All Bytes Line",
             },
         ]
         log_in = LogIn()
@@ -253,11 +255,7 @@ def run(parameter):
                 config = OrganizeConfig()
                 cfg_list = config.create_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
+                verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
@@ -373,6 +371,8 @@ def run(parameter):
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
 
+
+
 if __name__ == '__main__':
     parameter = {
 
@@ -386,7 +386,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_with_srcip_http_table_devicegroup",
+        "test_case_name": "all_bytes_srcip_http_line",
         "script_type": "ui",
         "policy_type": "statistics"
     }
