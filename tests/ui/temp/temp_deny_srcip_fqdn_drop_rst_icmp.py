@@ -4,7 +4,6 @@ import pytest
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from support.report import *
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
@@ -287,18 +286,6 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        
-        # 生成csv报告
-        report_data = []
-        report_data.append(parameter["test_case_name"])
-        if False in verification_result:
-            result_flag = "Fail"
-        else:
-            result_flag = "PASS"
-        report_data.append(result_flag)
-        report_data.append(result)
-        new_report = GenerateReport()
-        new_report.insert_data(parameter, report_data)
         
         # 删除rule
         if create_rule_code == 200:
