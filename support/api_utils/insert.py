@@ -36,19 +36,19 @@ def insert(keyword, new_content):
             #     file.writelines(lines)
     
 if __name__ == "__main__":
-    keyword = "The test case is failed"
-    new_content = """
-        # 生成csv报告
-        report_data = []
-        report_data.append(parameter["test_case_name"])
-        if False in verification_result:
-            result_flag = "Fail"
-        else:
-            result_flag = "PASS"
-        report_data.append(result_flag)
-        report_data.append(result)
-        new_report = GenerateReport()
-        new_report.insert_data(parameter, report_data)
+    keyword = "erase.clear_config"
+    new_content = """        # 生成csv报告
+        if len(result) != 0:
+            report_data = []
+            report_data.append(parameter["test_case_name"])
+            if False in verification_result:
+                result_flag = "Fail"
+            else:
+                result_flag = "PASS"
+            report_data.append(result_flag)
+            report_data.append(result)
+            new_report = GenerateReport()
+            new_report.insert_data(parameter, report_data)
     """
     # keyword = "def run"
     # new_content = "from support.report import *"
