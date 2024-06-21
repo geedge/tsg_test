@@ -172,15 +172,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "statistics",
+                "name": "all_bytes_with_src_ip_http_table_devicegroup",
             },
             {
                 "type": "ip",
                 "name": "statistics_bytes_source_ip",
+            },{
+                "type": "ip",
+                "name": "statistics_bytes_destination_ip",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Distributed by Client IP",
+                "name": "Auto All Bytes Distributed by Device Group",
             },
         ]
         log_in = LogIn()
@@ -254,13 +257,9 @@ def run(parameter):
             if edit_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.create_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
+                verification_result = verify.traffic_verification(driver,parameter, test_data, cfg_list)
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
@@ -375,6 +374,8 @@ def run(parameter):
         # 删除配置
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
+
+
 
 if __name__ == '__main__':
     parameter = {

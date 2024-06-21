@@ -8,7 +8,7 @@ import json
 
 
 class OrganizeConfig():
-    def create_cfg(self, parameter, test_data, template_path):
+    def organize_cfg(self, parameter, test_data, template_path):
         # 变量初始化
         api_server = parameter["api_server"]
         run_env = parameter["env"]

@@ -33,7 +33,7 @@ class CreateRule():
                 self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAction_posId"]).click()
             # 选择target traffic 
             elif test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
-                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chozhanoseTargetedTraffic_posXpath"]).click()
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chooseTargetedTraffic_posXpath"]).click()
             elif test_data["policy_type"] == "pxy_manipulation":
                 if test_data["rule_action"] == "allow":
                     self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAllow_posId"]).click()
@@ -126,12 +126,16 @@ class CreateRule():
                     # 通过application name搜索并选中
                     if len(application_data) == 1:
                         override_flag = True
+                    is_first_iteration = True
                     for j in range(len(application_data)):
                         if application_data[j]["object_type"] == "application":
                             if test_data["policy_type"] == "pxy_intercept":
                                 pass    # intercept 不用点击 application 或 group
                             else:
-                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationLabel_posXpath"]).click()
+                                if is_first_iteration:
+                                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationLabel_posXpath"]).click()
+                                else:
+                                    self.driver.find_element(By.ID,create_element_position["policyRulePage_little_button_addApplication_posId"]).click()
                         elif application_data[j]["object_type"] == "application_group":
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationGroupLabel_posXpath"]).click()
                         if test_data["policy_type"] == "pxy_intercept":  # intercept 中 application不用搜索，直接选择
@@ -143,6 +147,7 @@ class CreateRule():
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"]).send_keys(Keys.ENTER)
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"]).click()
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
+                            is_first_iteration =False
                 
             # 添加server fqdn
             if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:

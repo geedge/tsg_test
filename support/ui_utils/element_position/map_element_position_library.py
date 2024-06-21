@@ -846,8 +846,9 @@ def create_pre_policy(data, driver):
             },
             "token": ""
         }
-
     security_temp_deny_quic["condition"]["source_ip"] = data["condition"]["source_ip"]
+    if test_data["policy_type"] == "service_chaining":
+        intercept_temp["rule_name"] = "service_chaining_pre_intercept"
     intercept_temp["condition"]["source_ip"] = data["condition"]["source_ip"]
     security_rule_element_position = get_element_position("security")
     intercept_rule_element_position = get_element_position("pxy_intercept")
@@ -877,6 +878,7 @@ def delete_pre_policy(name_list, driver):
         delete_rule = DeleteRule(driver)
         delete_rule_code = delete_rule.delete(element_position, first_row_checkbox_element, True)
         time.sleep(2)
+        return delete_rule_code
 
 test_ip_object_element_position = test_ip_object_element_position
 test_ip_group_object_element_position = test_ip_group_object_element_position

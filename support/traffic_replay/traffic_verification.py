@@ -306,7 +306,7 @@ class TrafficVerification():
                 current_utc_time = datetime.now(utc_tz)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 等待时间，等待策略生效
-                time.sleep(20)
+                time.sleep(10)
                 # 触发流量
                 temp_data = json.dumps(test_data["traffic"])
                 output = self.call_traffic_server(temp_data, script_type)
@@ -333,7 +333,7 @@ class TrafficVerification():
                                 if fail_count >= 2:
                                     break
                                 fail_count += 1
-                            time.sleep(60)
+                            time.sleep(15)
                             n += 1
                     if metric_result == 333:
                         if statistics_info["sf_method"] == "vxlan_g" and statistics_info["sf_dest_ip"] not in active_dest_ips_list:

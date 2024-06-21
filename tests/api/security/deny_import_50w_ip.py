@@ -28,7 +28,7 @@ def run(parameter):
                     "attribute_name": "ATTR_SOURCE_IP",
                     "object_type": "ip",
                     "object_sub_type": "ip",
-                    "repeat_time": 10,
+                    "repeat_time": 3,
                     "object_list": [
                         {
                             "add_item_list": [

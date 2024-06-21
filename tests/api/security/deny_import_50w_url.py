@@ -45,7 +45,7 @@ def run(parameter):
                     "attribute_name": "ATTR_HTTP_URL",
                     "object_type": "url",
                     "object_sub_type": "",
-                    "repeat_time": 10,
+                    "repeat_time": 3,
                     "object_list": [
                         {
                             "add_item_list": [
