@@ -36,7 +36,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_external_ip_ftp_drop",
+            "rule_name": "security_rule_deny_external_ip_ftp_drop_reset",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -90,7 +90,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "timed out",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
@@ -108,7 +108,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_external_ip_ftp"
+                "name": "security_rule_deny_external_ip_ftp_drop_reset"
             },
             {
                 "type": "ip",

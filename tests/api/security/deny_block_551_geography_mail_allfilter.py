@@ -62,22 +62,6 @@ def run(parameter):
                     ]
                     }
                 ]
-                },
-                {
-                "attribute_name": "ATTR_MAIL_ATT_CONTENT",
-                "object_type": "keywords",
-                "object_sub_type": "keywords",
-                "object_list": [
-                    {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "hala"
-                        ]
-                        }
-                    ]
-                    }
-                ]
                 }
             ],
             "app_name_1": ["mail"],
