@@ -63,7 +63,7 @@ def run(parameter):
             "log_query_param_1": [],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 25 -m 25 https://www.jd.com"
+                "command": "curl -kv --connect-timeout 25 -m 25 https://open.node.com:1443"
             },
             "token": ""
         }

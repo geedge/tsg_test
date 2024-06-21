@@ -18,9 +18,9 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "security",
             "rule_action_1": "deny",
-            "method_1": "default",
+            "method_1": "drop",
             "do_log_1": 2,
-            "send_tcp_reset_1": 0,
+            "send_tcp_reset_1": "",
             "send_icmp_unreachable_1": 1,
             "obj_condition_1": [
                 {
@@ -33,7 +33,7 @@ def run(parameter):
                         {
                         "type": "library",
                         "continent": "Asia",
-                        "geoname_id": "971415",
+                        "geoname_id": "971271",
                         "super_administrative_area": "auto_geo_obj",
                         "administrative_area": "auto_geo_obj",
                         "country_abbr": "auto_geo_obj",
@@ -42,16 +42,16 @@ def run(parameter):
                         "latitude": "0",
                         "longitude": "0",
                         "addr_type": 4,
-                        "ip_address": "121.14.154.93"
+                        "ip_address": "8.8.8.8"
                         }
                     ]
                     }
                 ]
                 },
                 {
-                "attribute_name": "ATTR_DNS_QNAME",
+                "attribute_name": "ATTR_DNS_QNAME ",
                 "object_type": "fqdn",
-                "object_sub_type": "",
+                "object_sub_type": "fqdn",
                 "object_list": [
                     {
                     "add_item_list": [
@@ -71,7 +71,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.example.com -timeout=1"
+                "command": "nslookup www.example.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }
@@ -103,7 +103,12 @@ def run(parameter):
             print("The test case is passed.")
         elif len(result) != 0:
             print("The test case is failed. The failure reason is: ", result)
-    
+        
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print("Duration of running the test case: ", duration)
+        print("Finish test case: " + parameter["test_case_name"])
         # 删除配置
         erase = DeleteConfig()
         erase.delele_cfg(token, parameter, cfg_list)
@@ -122,14 +127,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }

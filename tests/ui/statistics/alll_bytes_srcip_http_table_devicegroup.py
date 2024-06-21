@@ -373,8 +373,6 @@ def run(parameter):
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
 
-
-
 if __name__ == '__main__':
     parameter = {
 
