@@ -260,7 +260,11 @@ def run(parameter):
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(parameter, test_data, [])
+                verification_result = verify.traffic_verification(driver, parameter, test_data, [])
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:

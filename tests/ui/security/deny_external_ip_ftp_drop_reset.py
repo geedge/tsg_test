@@ -36,7 +36,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_external_ip_ftp_drop",
+            "rule_name": "security_rule_deny_external_ip_ftp_drop_reset",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -90,7 +90,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "timed out",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
@@ -108,7 +108,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_external_ip_ftp"
+                "name": "security_rule_deny_external_ip_ftp_drop_reset"
             },
             {
                 "type": "ip",
@@ -234,7 +234,11 @@ def run(parameter):
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(parameter, test_data, [])
+                verification_result = verify.traffic_verification(driver, parameter, test_data, [])
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
         
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:

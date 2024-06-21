@@ -7,11 +7,9 @@ class AnalysisResult():
         cmd_result = verification_result[0]
         log_result = verification_result[1]
         metric_result = verification_result[2]
-        if len(verification_result) == 4:
-            statistics_failure_reason = verification_result[3]
         failure_reason = ""
-        if condition["policy_type"] == "statistics":
-            failure_reason = statistics_failure_reason
+        if condition["policy_type"] == "statistics" and len(verification_result) == 5:
+            failure_reason = verification_result[3]
         elif condition["policy_type"] == "service_chaining":
             if cmd_result == False or log_result == False or metric_result == False:
                 failure_reason = failure_reason + "The verification result of metrics is failed, the failure reason is: the metrics do not match the expectation value."

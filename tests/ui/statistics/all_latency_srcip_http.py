@@ -115,9 +115,9 @@ def run(parameter):
                           "chart_name": "All Latency Line",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_latency:MEDIAN_HDR:in latency",
-                            "out_latency:MEDIAN_HDR:out atency",
-                            "latency:MEDIAN_HDR:latency"
+                            "in_latency_ms_sketch:MEDIAN_HDR:in latency ms sketch",
+                            "out_latency_ms_sketch:MEDIAN_HDR:out latency ms sketch",
+                            "latency_ms_sketch:MEDIAN_HDR:latency ms sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -251,7 +251,11 @@ def run(parameter):
                     config = OrganizeConfig()
                     cfg_list = config.create_cfg(parameter, test_data, template_path)
                     verify = TrafficVerification()
-                    verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+                    verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)

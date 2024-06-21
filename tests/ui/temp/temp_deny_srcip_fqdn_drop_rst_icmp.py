@@ -4,6 +4,7 @@ import pytest
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from support.report import *
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
@@ -272,7 +273,11 @@ def run(parameter):
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(parameter, test_data, [])
+                verification_result = verify.traffic_verification(driver, parameter, test_data, [])
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
         
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -282,6 +287,18 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
+        
+        # 生成csv报告
+        report_data = []
+        report_data.append(parameter["test_case_name"])
+        if False in verification_result:
+            result_flag = "Fail"
+        else:
+            result_flag = "PASS"
+        report_data.append(result_flag)
+        report_data.append(result)
+        new_report = GenerateReport()
+        new_report.insert_data(parameter, report_data)
         
         # 删除rule
         if create_rule_code == 200:

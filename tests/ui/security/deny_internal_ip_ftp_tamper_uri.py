@@ -78,7 +78,22 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [],
-                "protocol_filed": [],
+                "protocol_filed": [
+                    {
+                        "name": "ftp_url",
+                        "object_type": "url",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "url",
+                                "item_value": "english->"
+                            }
+                        ],
+                    }
+                ],
                 "sub_action_override": True,
                 "sub_action": [
                     {
@@ -106,7 +121,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_ftp_tamper"
+                "name": "security_rule_deny_internal_ip_ftp_tamper_uri"
             },
             {
                 "type": "ip",
@@ -278,7 +293,11 @@ def run(parameter):
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(parameter, test_data, [])
+                verification_result = verify.traffic_verification(driver, parameter, test_data, [])
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
         
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -287,26 +306,7 @@ def run(parameter):
             if len(result) == 0:
                 print("The test case is passed.")
             elif len(result) != 0:
-                print("The test case is failed. The failure reason is: ", result)
-        # 环境初始化
-        # support.ui_utils.env_initialization.initiate_selenium_request()
-        # driver = support.ui_utils.env_initialization.my_driver()
-        
-        # support.ui_utils.env_initialization.setup()
-        time.sleep(200)
-        now = datetime.now()
-        print(now)
-        now = datetime.now()
-        print(now)
-        # print("window_handles is "+ str(driver.window_handles))
-        print(driver)
-        if len(driver.window_handles) == 0:
-            print("浏览器已退出")
-            support.ui_utils.env_initialization.initiate_selenium_request()
-            driver = support.ui_utils.env_initialization.my_driver()
-            support.ui_utils.env_initialization.setup()
-        
-        
+                print("The test case is failed. The failure reason is: ", result) 
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)

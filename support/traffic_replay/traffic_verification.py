@@ -5,6 +5,7 @@ import requests
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import support.api_utils.get_log
 import support.api_utils.policy_verify
+import support.ui_utils.env_initialization
 import subprocess
 import configparser
 import json
@@ -16,7 +17,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # from support.traffic_replay.traffic_replay import TrafficReplay
 
 class TrafficVerification():
-    def traffic_verification(self, parameter, test_data, cfg_list):
+    def traffic_verification(self, driver, parameter, test_data, cfg_list):
+        my_driver = driver
         api_server = parameter["api_server"]
         script_type = parameter["script_type"]
         is_log = parameter["is_log"]
@@ -78,7 +80,14 @@ class TrafficVerification():
             log_result, metric_result = None, None
             if is_log == 1:
                 if is_log_query == 1 or is_counters == 1:
-                    for _ in range(50):
+                    for i in range(50):
+                        print("Get log and metric for the {} time.".format(i+1))
+                        if i == 30 and script_type == "ui" and driver:
+                            print("Operate the browser to prevent timeout close.")
+                            support.ui_utils.env_initialization.teardown()
+                            support.ui_utils.env_initialization.initiate_selenium_request()
+                            my_driver = support.ui_utils.env_initialization.my_driver()
+                            support.ui_utils.env_initialization.setup()
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -111,7 +120,7 @@ class TrafficVerification():
             elif log_result == None:
                 print('The boolean of "log_result" is none. The mean is: do not get logs.')
             
-            return cmd_result, log_result, metric_result
+            return cmd_result, log_result, metric_result, my_driver
         elif policy_type == "statistics":      # statistics 使用trex流量回放验证
             # 获取开始时间
             time.sleep(5)
@@ -217,7 +226,7 @@ class TrafficVerification():
                     if metric_results[1] == "passthrough":     # incoming或者outgoing的session方向
                         print("The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
                         metric_result = True
-            return metric_result, metric_result, metric_result, metric_results[1]    # 匹配其它策略模式
+            return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
         elif policy_type == "service_chaining":
             active_dest_ips_list = ["2.2.2.53", "2.2.2.56", "2.2.2.57"] # vxlan时判断dest_ip是否在bfd探测为active的ip里
             if test_data["targeted_traffic"] == "raw":
@@ -333,7 +342,7 @@ class TrafficVerification():
                             metric_result = False
                     elif metric_result == 444:
                         metric_result = False
-            return cmd_result, metric_result, metric_result
+            return cmd_result, metric_result, metric_result, my_driver
         elif policy_type == "shaping":
             print("to be added.")
             return True, True, True
