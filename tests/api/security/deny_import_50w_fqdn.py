@@ -25,7 +25,7 @@ def run(parameter):
                     "attribute_name": "ATTR_SERVER_FQDN",
                     "object_type": "fqdn",
                     "object_sub_type": "",
-                    "repeat_time": 10,
+                    "repeat_time": 3,
                     "object_list": [
                         {
                             "add_item_list": [

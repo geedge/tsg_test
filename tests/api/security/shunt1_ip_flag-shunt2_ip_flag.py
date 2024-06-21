@@ -88,14 +88,14 @@ def run(parameter):
       ],
       "app_name_1": [],
       "app_name_2": [],
-      "expected_return": "百度一下",
+      "expected_return": "POST",
       "counters_1": {},
       "counters_2": {"hits": 0},
       "log_query_param_1": [],
       "log_query_param_2": [],
       "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
             },
       "token": ""
     }
