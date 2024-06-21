@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_ssl_mirror_on",
+            "rule_name": "monitor_app_skype",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -80,7 +80,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "Skype",  #
+                        "name": "skype",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -93,12 +93,12 @@ def run(parameter):
             },
             "is_mirror":"on",
             "profile": [],
-            "expected_return": "mtv",
+            "expected_return": "skype",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"}],
+            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.skype.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.mtv.ru/"
+                "command": "curl -kv https://www.skype.com/"
             },
             "token": ""
         }
@@ -111,7 +111,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_ssl_mirror_on"
+                "name": "monitor_app_skype"
             },
             {
                 "type":"ip",
@@ -326,7 +326,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_rule_ssl_mirror_on"
+        "test_case_name": "monitor_app_skype"
     }
     run(parameter)
     """

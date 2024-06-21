@@ -123,7 +123,7 @@ def run(parameter):
                             "client_port"
                           ],
                           "order_by": "sessions",
-                          "row_limit": "50",
+                          "row_limit": "10",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }

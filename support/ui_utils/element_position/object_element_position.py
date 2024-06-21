@@ -10,6 +10,32 @@ mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
 mainPage_secondLevelMenu_keywords_posId = "Objects_keywords"
 mainPage_secondLevelMenu_url_posId = "Objects_url"
 mainPage_secondLevelMenu_fqdn_posId = "Objects_fqdn"  # 二级菜单IP Addresses
+mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
+
+#Object Group公共定位
+ObjectListPage_searchLabel_posId = "select-label"  # 查询框id
+ObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+ObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
+ObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
+ObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
+groupObjectPage_inputName_posXpath="//*[@class='biFangName']//input"#input_name
+groupObjectPage_addSubordinate_posXpath="//div[@data-desc='subObject']//div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"#add sub……+
+groupObjectPage_searchSubordinate_posXpath="//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']" #search_sub 输入框替换值name
+groupObjectPage_selectSubordinate_posXpath="//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"#select_sub 替换值name
+groupObjectPage_closeSubordinate_posXpath='//div[contains(@class,"list-box")]' #close_sub  替换值type
+groupObjectPage_addSubordinateObject_posId="temporary_form" #再次add sub的按钮
+groupObjectPage_enableExclude_posXpath="//span[@class='el-switch__core']"#enable exclude
+groupObjectPage_addExclude_posXpath="//div[@data-desc='exclude subObject']//div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"#addexclude
+groupObjectPage_searchExclude_posXpath="//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"    #search_sub 输入框替换值name
+groupObjectPage_selectExclude_posXpath="//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"   #select_sub 替换值name
+groupObjectPage_closeExclude_posXpath=groupObjectPage_closeSubordinate_posXpath  #close_sub  替换值type
+groupObjectPage_addExcludeObject_posId=groupObjectPage_addSubordinateObject_posId #再次add sub的按钮
+
+#app group
+applicationGroupobjectListPage_createButton_posId="Application_appGroups"#create_button
+applicationGroupObjectPage_okButton_posId = "OK-_AppGroupDetail_Home_App_anonymousComponent" # OK按钮
+appllicationGroupObjectPage_okButton_warningYes_posXpath = "//div[@class='el-message-box__wrapper']//button[contains(@class, 'el-button--primary operation-confirm')]//span"
+applicationGroupObjectListPage_deleteButton_posId = id="appDel-_OperateBtns_ElCol_ElRow_Application_appGroups_Home_App_anonymousComponent"
 
 # ip object
 ipObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent"  # create按钮id
@@ -113,7 +139,7 @@ urlObjectPage_inputItem_posXpath = "//div[@class='item-box']//input"     # input
 urlObjectPage_saveItem_posXpath = "//div[@class='item-box']//i[contains(@class, 'save-color')]"     # input item保存，简单的第一个定位，后期优化
 urlObjectPage_okButton_posId = "OK-_URLDetail_Home_App_anonymousComponent"
 urlObjectPage_okButton_warningYes_posXpath = httpSignatureObjectPage_okButton_warningYes_posXpath
-    # 查询
+# 查询
 urlObjectPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posId
 urlObjectListPage_searchLabel_selectName_posXpath = "//*[@id='2-_FilteredSearch_ElRow_Objects_url_Home_App_anonymousComponent']"
 urlObjectPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
@@ -141,3 +167,9 @@ keywordsObjectPage_item_value_plus_posXpath = "//i[@class='iconfont icon-Create1
 keywordsObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon iconfont icon-save check']"
 keywordsObjectPage_okButton_posId = "OK-_keywordsDetail_Home_App_anonymousComponent"
 keywordsObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
+
+
+
+
+
+

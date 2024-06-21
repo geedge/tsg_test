@@ -103,7 +103,10 @@ class CreateObject():
             page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
             # 点击create group
             self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"]).click()
-            self.driver.find_element(By.ID, create_element_position["objectListPage_dropDown_createGroupButton_posId".format(object_type)]).click()
+            if object_type == "ApplicationGroup":
+                pass
+            else:
+                self.driver.find_element(By.ID, create_element_position["objectListPage_dropDown_createGroupButton_posId".format(object_type)]).click()
             # 输入name
             object_name = data["name"]
             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputName_posXpath"]).send_keys(object_name)

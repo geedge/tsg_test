@@ -1,0 +1,455 @@
+# -*- coding: UTF-8 -*-
+import time
+import os
+import sys
+import os
+import sys
+
+from support.api_utils.delete_config import DeleteConfig
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from support.ui_utils.object.create_object import CreateObject
+from support.ui_utils.object.search_object import SearchObject
+from support.ui_utils.object.delete_object import DeleteObject
+from support.ui_utils.policy.create_rule import CreateRule
+from support.ui_utils.policy.search_rule import SearchRule
+from support.ui_utils.policy.delete_rule import DeleteRule
+from support.ui_utils.policy.edit_rule import EditRule
+from support.traffic_replay.traffic_verification import *
+from support.ui_utils.element_position.map_element_position_library import *
+from support.api_utils.analysis_result import *
+from support.api_utils.log_in import *
+import support.ui_utils.env_initialization
+import traceback
+
+
+def run(parameter):
+    try:
+        print("Begin to run test case: " + parameter["test_case_name"])
+        #参数初始化
+        result = ""
+        
+        # 脚本启动时间
+        start_time = time.time()
+
+        # 环境初始化
+        support.ui_utils.env_initialization.initiate_selenium_request()
+        driver = support.ui_utils.env_initialization.my_driver()
+        support.ui_utils.env_initialization.setup()
+
+        # 测试数据
+        test_data = {
+            "is_multi_priority": False,
+            "rule_num": 1,
+            "policy_type": "monitor",
+            "rule_name": "monitor_rule_internal_ip_external_ip_internal_port_external_port",
+            "rule_action": "deny",
+            "rule_type": "create",
+            "condition": {
+                "source_ip": [],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [{
+                        "name": "monitor_internal_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.64.91",
+                            },
+                        ]
+                    }],
+                "internal_port": [ {
+                        "name": "monitor_internal_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "1-65535",
+                            },
+                        ]
+                    }],
+                "external_ip": [{
+                        "name": "monitor_external_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "93.184.215.14",
+                            },
+                        ]
+                    }],
+                "external_port": [
+                    {
+                        "name": "monitor_external_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "80",
+                            },
+                        ]
+                    }
+                ],
+                "source_geography": [],
+                "destination_geography": [],
+                "sub_id": [],
+                "device": [],
+                "tunnel": [],
+                "tunnel_level": [],
+                "flag": [],
+                "application": [],
+                "server_fqdn": [
+                ],
+                "protocol_filed": [],
+                "sub_action_override": True,
+                "sub_action": [
+                ],
+                "packet_capture": []
+            },
+            "is_mirror":"on",
+            "profile": [],
+            "expected_return": "Example Domain",
+            "counters_1": {"hits": "many"},
+            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "www.example.com"}],
+            "traffic": {
+                "type": "curl",
+                "command": "curl -kv http://www.example.com"
+            },
+        }
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        test_data["token"] = token
+
+        # name_list汇总
+        name_list = [
+            {
+                "type": "monitor",
+                "name": "monitor_rule_internal_ip_external_ip_internal_port_external_port"
+            },
+            {
+                "type": "ip",
+                "name": "monitor_internal_ip",
+            },
+            {
+                "type": "ip",
+                "name": "monitor_external_ip",
+            },
+            {
+                "type": "port",
+                "name": "monitor_internal_port",
+            },
+            {
+                "type": "port",
+                "name": "monitor_external_port",
+            }
+        ]
+
+        # 添加定位库集合
+        test_rule_element_position = {}
+        if test_data["policy_type"] == "monitor":
+            test_rule_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_monitor_posId
+                },
+                "create": {
+                    "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
+                    "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
+                    "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
+                    ###src_port
+                    "policyRulePage_addConditionSrcPort_posXpath": securityRulePage_addCondition_srcPort_posXpath,
+                    "policyRulePage_addSrcPort_posXpath": securityRulePage_addSrcPort_posXpath,
+                    "policyRulePage_searchSrcPort_posXpath": securityRulePage_searchSrcPort_posXpath,
+                    "policyRulePage_selectSrcPort_posXpath": securityRulePage_selectSrcPort_posXpath,
+                    "policyRulePage_closeSrcPort_posXpath": securityRulePage_closeSrcPort_posXpath,
+                    ###src_port
+                    "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
+                    "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
+                    "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
+                    "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
+                    "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
+                    "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
+                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+                    "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
+                    "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
+                    "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
+                    "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
+                    "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+                    "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
+                    "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
+                    "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath,
+                    # profile
+                    "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
+                    "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
+                    "policyRulePage_firstSelectMirrorProfile_posXpath": monitorRulePage_firstSelectMirrorProfile_posXpath,
+                    "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
+                    "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
+                    # 添加ip
+                    "policyRulePage_addConditionInternalIP_posXpath": policyRulePage_addCondition_internalIP_posXpath,
+                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
+                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
+                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
+                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    # 添加ip
+                    "policyRulePage_addConditionExternalIP_posXpath": policyRulePage_addCondition_externalIP_posXpath,
+                    "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
+                    "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
+                    "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
+                    "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
+                    #添加external port
+                    "policyRulePage_addConditionExternalPort_posXpath": securityRulePage_addCondition_externalPort_posXpath,
+                    "policyRulePage_addExternalPort_posXpath": securityRulePage_addExternalPort_posXpath,
+                    "policyRulePage_searchExternalPort_posXpath": securityRulePage_searchExternalPort_posXpath,
+                    "policyRulePage_selectExternalPort_posXpath": securityRulePage_selectExternalPort_posXpath,
+                    "policyRulePage_closeExternalPort_posXpath": securityRulePage_closeExternalPort_posXpath,
+                    #添加internal port
+                    "policyRulePage_addConditionInternalPort_posXpath": securityRulePage_addCondition_internalPort_posXpath,
+                    "policyRulePage_addInternalPort_posXpath": securityRulePage_addInternalPort_posXpath,
+                    "policyRulePage_searchInternalPort_posXpath": securityRulePage_searchInternalPort_posXpath,
+                    "policyRulePage_selectInternalPort_posXpath": securityRulePage_selectInternalPort_posXpath,
+                    "policyRulePage_closeInternalPort_posXpath": securityRulePage_closeInternalPort_posXpath,
+
+                },
+                "search": {
+                    "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
+                    "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+                    "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
+                    "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
+                    "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+                    "policyRuleListPage_deleteButton_posId": monitorRuleListPage_deleteButton_posId,
+                    "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
+                    "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+                }
+            }
+
+        # 创建object
+        if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
+            ip_data1 = test_data["condition"]["internal_ip"]
+            create_ip = CreateObject(driver)
+            for i in range(len(ip_data1)):
+                create_ip_code = create_ip.create(ip_data1[i], test_ip_object_element_position)
+                if create_ip_code == 200:
+                    print("Create ip object successfully.")
+                elif create_ip_code != 200:
+                    result = "Fail to create ip object."
+                    break
+
+        # 创建object
+        if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
+            ip_data2 = test_data["condition"]["external_ip"]
+            create_ip = CreateObject(driver)
+            for i in range(len(ip_data2)):
+                create_ip_code = create_ip.create(ip_data2[i], test_ip_object_element_position)
+                if create_ip_code == 200:
+                    print("Create ip object successfully.")
+                elif create_ip_code != 200:
+                    result = "Fail to create ip object."
+                    break
+
+        # 创建object
+        if "internal_port" in test_data["condition"] and len(test_data["condition"]["internal_port"]) != 0:
+            port_data1 = test_data["condition"]["internal_port"]
+            create_port = CreateObject(driver)
+            for i in range(len(port_data1)):
+                create_port_code = create_port.create(port_data1[i], test_port_object_element_position)
+                if create_port_code == 200:
+                    print("Create ip object successfully.")
+                elif create_port_code != 200:
+                    result = "Fail to create ip object."
+                    break
+
+        # 创建object
+        if "external_port" in test_data["condition"] and len(test_data["condition"]["external_port"]) != 0:
+            port_data2 = test_data["condition"]["external_port"]
+            create_port = CreateObject(driver)
+            for i in range(len(port_data2)):
+                create_port_code = create_port.create(port_data2[i], test_port_object_element_position)
+                if create_port_code == 200:
+                    print("Create ip object successfully.")
+                elif create_port_code != 200:
+                    result = "Fail to create ip object."
+                    break
+
+        # 创建rule
+        if create_ip_code == 200:
+            create_rule = CreateRule(driver)
+            create_rule_code = create_rule.create(test_data, test_rule_element_position)
+            if create_rule_code == 200:
+                print("Create security rule successfully.")
+            elif create_rule_code != 200:
+                result = "Fail to create security rule."
+
+        # 触发流量验证
+        if create_rule_code == 200:
+            edit_rule = EditRule(driver)
+            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                                                     test_rule_element_position)
+            if edit_rule_code == 200:
+                # rule_id = search_rule.get_rule_id()
+                test_data["rule_id"] = rule_id
+                verify = TrafficVerification()
+                verification_result = verify.traffic_verification(driver, parameter, test_data, [])
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
+
+        # 分析验证结果，并返回给flask
+        if len(verification_result) != 0:
+            analysis = AnalysisResult()
+            result = analysis.analysis_result(test_data, [], verification_result)
+            if len(result) == 0:
+                print("The test case is passed.")
+            elif len(result) != 0:
+                print("The test case is failed. The failure reason is: ", result)
+
+        # 删除rule
+        if create_rule_code == 200:
+            search_rule = SearchRule(driver)
+            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
+                                                                              test_data["rule_name"],
+                                                                              test_rule_element_position)
+            if search_rule_code == 200:
+                delete_rule = DeleteRule(driver)
+                delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
+                if delete_rule_code == 200:
+                    print("Delete security rule successfully.")
+                elif delete_rule_code != 200:
+                    result = result + " In addition, fail to delete security rule."
+            else:
+                result = result + " In addition, fail to search security rule."
+
+        # 删除object
+        if delete_rule_code == 200:
+            # 删除ip1
+            for x in range(len(ip_data1)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data1[x]["name"],
+                                                                              test_ip_object_element_position)
+                if search_ip_code == 200:
+                    delete_ip = DeleteObject(driver)
+                    delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+
+            # 删除ip2
+            for x in range(len(ip_data2)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data2[x]["name"],
+                                                                              test_ip_object_element_position)
+                if search_ip_code == 200:
+                    delete_ip = DeleteObject(driver)
+                    delete_ip_code = delete_ip.delete(test_ip_object_element_position,
+                                                      first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+
+            # 删除port1
+            for x in range(len(port_data1)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(port_data1[x]["name"],
+                                                                              test_port_object_element_position)
+                if search_ip_code == 200:
+                    delete_port = DeleteObject(driver)
+                    delete_ip_code = delete_port.delete(test_port_object_element_position,
+                                                        first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+
+            # 删除port2
+            for x in range(len(port_data2)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(port_data2[x]["name"],
+                                                                              test_port_object_element_position)
+                if search_ip_code == 200:
+                    delete_port = DeleteObject(driver)
+                    delete_ip_code = delete_port.delete(test_port_object_element_position,
+                                                        first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print("Duration of running the test case: ", duration)
+
+        print("Finish test case: " + parameter["test_case_name"])
+        return result
+    except Exception as e:
+        print("Error: ", e)
+        return "Error: " + str(e)
+    finally:
+        # 清理环境
+        support.ui_utils.env_initialization.teardown()
+        # 删除配置
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
+
+if __name__ == '__main__':
+    parameter = {
+        "username": "zhaokun",
+        "password": "zhaokun1",
+        "test_pc_ip": "192.168.64.91",
+        "api_server": "http://192.168.44.72",
+        "is_log": 1,
+        "env": "tsgx",
+        "vsys_id": 11,
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
+        "module_name": "monitor",
+        "test_case_name": "monitor_rule_internal_ip_external_ip_internal_port_external_port",
+        "script_type": "ui",
+    }
+    run(parameter)
+    """
+    # 在测试文件的当前路径执行如下命令执行测试用例：
+    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
+
+    # 执行如下命令生成测试报告（自动打开浏览器）：
+    allure serve allure
+    """

@@ -14,6 +14,7 @@ class SearchRule():
     def search(self, type, name, rule_element_position, vsys_name=""):
         search_element_position = rule_element_position["search"]
         page_jump_element_position = rule_element_position["page_jump"]
+        sleep(5)
         # 打开该列表
         page_jump = PageJump(self.driver)
         page_jump.jump_sub_policy_page(page_jump_element_position, "UIwithTrafficTestVsys")

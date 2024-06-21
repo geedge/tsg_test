@@ -31,6 +31,9 @@ import traceback
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
         # 脚本启动时间
         start_time = time.time()
 
@@ -120,8 +123,8 @@ def run(parameter):
                             "bytes:BITRATE:bytes"
                           ],
                           "dimensions": [],
-                          "order_by": "bytes",
-                          "row_limit": "100",
+                          "order_by": "",
+                          "row_limit": "",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }
