@@ -174,6 +174,38 @@ test_http_signature_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": httpSignatureObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+test_keywords_object_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
+    },
+    "create": {
+        "objectListPage_createButton_posId": keywordsObjectListPage_createButton_posId,
+        "objectListPage_dropDown_createButton_posId": keywordsObjectListPage_dropDown_createButton_posId,
+        "objectPage_inputName_posXpath": keywordsObjectPage_inputName_posXpath,
+        "objectPage_addItem_posId": keywordsObjectPage_addItem_posId,
+        "objectPage_item_value_select_posXpath": keywordsObjectPage_item_value_select_posXpath,
+        "objectPage_inputItem_posXpath": keywordsObjectPage_inputItem_posXpath,
+        "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
+        "objectPage_button_saveItem_posXpath": keywordsObjectPage_button_saveItem_posXpath,
+        "objectPage_okButton_posId": keywordsObjectPage_okButton_posId,
+        "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": keywordsObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": keywordsObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": keywordsObjectListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": keywordsObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posId": keywordsObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_warningYes_posXpath": keywordsObjectListPage_deleteButton_warningYes_posXpath
+    }
+}
 test_http_url_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -395,6 +427,18 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchResponseHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
         "policyRulePage_selectResponseHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
         "policyRulePage_closeResponseHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        # request body
+        "policyRulePage_addConditionRequestBody_posXpath": securityRulePage_addCondition_requestBody_posXpath,
+        "policyRulePage_addRequestBody_posXpath": manipulationRulePage_addRequestBody_posXpath,
+        "policyRulePage_searchRequestBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
+        "policyRulePage_selectRequestBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
+        "policyRulePage_closeRequestBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        # response body
+        "policyRulePage_addConditionResponseBody_posXpath": securityRulePage_addCondition_responseBody_posXpath,
+        "policyRulePage_addResponseBody_posXpath": manipulationRulePage_addResponseBody_posXpath,
+        "policyRulePage_searchResponseBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
+        "policyRulePage_selectResponseBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
+        "policyRulePage_closeResponseBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
         # deny action parameter
         "policyRulePage_deny_addResponseCodeSelectBox_posXpath":manipulationRulePage_deny_addResponseCodeSelectBox_posXpath,
         "policyRulePage_deny_addResponseCodeSelectDropItem_posXpath":manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath,
@@ -886,6 +930,7 @@ test_port_object_element_position = test_port_object_element_position
 test_fqdn_object_element_position = test_fqdn_object_element_position
 test_http_signature_object_element_position = test_http_signature_object_element_position
 test_http_url_object_element_position = test_http_url_object_element_position
+test_keywords_object_element_position = test_keywords_object_element_position
 test_response_page_element_position = test_response_page_element_position
 test_hijack_file_element_position = test_hijack_file_element_position
 test_insert_script_element_position = test_insert_script_element_position
@@ -905,6 +950,8 @@ def get_element_position(key_name):
         element_position_map = test_port_object_element_position
     elif key_name == "http_signature":
         element_position_map = test_http_signature_object_element_position
+    elif key_name == "keywords":
+        element_position_map = test_keywords_object_element_position
     elif key_name == "server_fqdn":
         element_position_map = test_fqdn_object_element_position
     elif key_name == "url":

@@ -218,7 +218,11 @@ class CreateRule():
                                     self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
                                 elif item_dict["item_type"] == "response_header":
                                     self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
-                                elif item_dict["item_type"] == "request_body":
+                                else:
+                                    print(f"todo {item_dict['item_type']}")
+                        elif protocol_field_data[x]["object_type"] == "keywords":
+                            for item_dict in protocol_field_data[x]["item"]:
+                                if item_dict["item_type"] == "request_body":
                                     self.add_protocol_field(protocol_field_data, "RequestBody", create_element_position, temp)
                                 elif item_dict["item_type"] == "response_body":
                                     self.add_protocol_field(protocol_field_data, "ResponseBody", create_element_position, temp)

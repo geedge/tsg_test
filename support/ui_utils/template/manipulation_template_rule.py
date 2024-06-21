@@ -112,6 +112,25 @@ test_data = \
                                 ]
                             }
                         ],
+                    },
+                    {
+                        "name": "manipulation_keywords_request_body",
+                        "object_type": "keywords",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "request_body",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "test_request_body"
+                                ]
+                            }
+                        ],
                     }
                 ],
                 "sub_action_override": True,

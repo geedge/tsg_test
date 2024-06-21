@@ -41,8 +41,22 @@ class CreateObject():
                         if data["plus"] == True and num < len(i["value"]):
                             self.driver.find_element(By.XPATH, create_element_position["objectPage_item_value_plus_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
-            elif data["object_type"] == "keyword":
-                print("to be added...")
+            elif data["object_type"] == "keywords":
+                for i in data["item"]:
+                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
+                    #self.driver.find_element(By.XPATH, create_element_position["objectPage_item_key_dropDown_posXpath"]).click()
+                    #temp_element_position = create_element_position["objectPage_item_key_dropDown_select_posXpath"].format(replaceValue=i["item_key"])
+                    #self.driver.find_element(By.XPATH, temp_element_position).click()
+                    temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=i["item_value"])
+                    self.driver.find_element(By.XPATH, temp_element_position).click()
+                    num = 0
+                    for t in i["value"]:
+                        num += 1
+                        temp_element_position = create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=num)
+                        self.driver.find_element(By.XPATH, temp_element_position).send_keys(t)
+                        if data["plus"] == True and num < len(i["value"]):
+                            self.driver.find_element(By.XPATH, create_element_position["objectPage_item_value_plus_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] == "url" or data["object_type"] == "account" or data["object_type"] == "phone_number" or data["object_type"] == "fqdn":
                 for i in range(len(data["items"])):   # 只是简单的添加了一个item，后期优化
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()

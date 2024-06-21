@@ -7,6 +7,7 @@ mainPage_firstLevelMenu_Objects_posId = "object"  # 一级菜单Global Objects
 mainPage_secondLevelMenu_ipAddress_posId = "Objects_ip"  # 二级菜单IP Addresses
 mainPage_secondLevelMenu_port_posId = "Objects_port"
 mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
+mainPage_secondLevelMenu_keywords_posId = "Objects_keywords"
 mainPage_secondLevelMenu_url_posId = "Objects_url"
 mainPage_secondLevelMenu_fqdn_posId = "Objects_fqdn"  # 二级菜单IP Addresses
 
@@ -118,3 +119,25 @@ urlObjectListPage_searchLabel_selectName_posXpath = "//*[@id='2-_FilteredSearch_
 urlObjectPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
 urlObjectPage_allSelect_posXpath = httpSignatureObjectListPage_allSelect_posXpath
 urlObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+
+
+# keywords
+keywordsObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_keywords_Home_App_anonymousComponent"
+keywordsObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_keywords_Home_App_anonymousComponent"
+keywordsObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+# httpSignatureObjectListPage_deleteButton_warningNo_posCss
+keywordsObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_keywords_Home_App_anonymousComponent"
+keywordsObjectListPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posId
+keywordsObjectListPage_searchLabel_selectName_posXpath = "//li[@id='2-_FilteredSearch_ElRow_Objects_keywords_Home_App_anonymousComponent']"
+keywordsObjectListPage_allSelect_posXpath = httpSignatureObjectListPage_allSelect_posXpath
+keywordsObjectListPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
+keywordsObjectPage_inputName_posXpath = httpSignatureObjectPage_inputName_posXpath
+keywordsObjectPage_addItem_posId = httpSignatureObjectPage_addItem_posId
+httpSignatureObjectPage_item_key_dropDown_posXpath = "//div[@class='SelectInput district-select']//div[@class='el-select inline-input el-select--small']//input"
+httpSignatureObjectPage_item_key_dropDown_select_posXpath = "//span[normalize-space(text())='{replaceValue}']"
+keywordsObjectPage_item_value_select_posXpath  = "//span[normalize-space(text())='{replaceValue}']"
+keywordsObjectPage_inputItem_posXpath = "//div[@class='expr-collection Expressions']//div[{replaceValue}]//input"
+keywordsObjectPage_item_value_plus_posXpath = "//i[@class='iconfont icon-Create1 cursor']"
+keywordsObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon iconfont icon-save check']"
+keywordsObjectPage_okButton_posId = "OK-_keywordsDetail_Home_App_anonymousComponent"
+keywordsObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
