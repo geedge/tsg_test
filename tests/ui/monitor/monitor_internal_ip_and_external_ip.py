@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_internal_ip",
+            "rule_name": "monitor_rule_internal_ip_external_ip",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -93,14 +93,13 @@ def run(parameter):
             },
             "is_mirror":"on",
             "profile": [],
-            "expected_return": "baidu",
+            "expected_return": "Example Domain",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "www.example.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "command": "curl -kv http://www.example.com"
             },
-            "token": ""
         }
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
@@ -111,11 +110,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_internal_ip"
+                "name": "monitor_rule_internal_ip_external_ip"
             },
             {
                 "type": "ip",
-                "name": "monitor_internal_ip"
+                "name": "monitor_internal_ip",
+            },
+            {
+                "type": "ip",
+                "name": "monitor_external_ip",
             }
         ]
 
@@ -168,6 +171,12 @@ def run(parameter):
                     "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
                     "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
                     "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    # 添加ip
+                    "policyRulePage_addConditionExternalIP_posXpath": policyRulePage_addCondition_externalIP_posXpath,
+                    "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
+                    "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
+                    "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
+                    "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -186,10 +195,10 @@ def run(parameter):
 
         # 创建object
         if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
-            ip_data = test_data["condition"]["internal_ip"]
+            ip_data1 = test_data["condition"]["internal_ip"]
             create_ip = CreateObject(driver)
-            for i in range(len(ip_data)):
-                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+            for i in range(len(ip_data1)):
+                create_ip_code = create_ip.create(ip_data1[i], test_ip_object_element_position)
                 if create_ip_code == 200:
                     print("Create ip object successfully.")
                 elif create_ip_code != 200:
@@ -198,10 +207,10 @@ def run(parameter):
 
         # 创建object
         if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
-            ip_data = test_data["condition"]["external_ip"]
+            ip_data2 = test_data["condition"]["external_ip"]
             create_ip = CreateObject(driver)
-            for i in range(len(ip_data)):
-                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+            for i in range(len(ip_data2)):
+                create_ip_code = create_ip.create(ip_data2[i], test_ip_object_element_position)
                 if create_ip_code == 200:
                     print("Create ip object successfully.")
                 elif create_ip_code != 200:
@@ -259,14 +268,32 @@ def run(parameter):
 
         # 删除object
         if delete_rule_code == 200:
-            # 删除ip
-            for x in range(len(ip_data)):
+            # 删除ip1
+            for x in range(len(ip_data1)):
                 search_ip = SearchObject(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"],
+                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data1[x]["name"],
                                                                               test_ip_object_element_position)
                 if search_ip_code == 200:
                     delete_ip = DeleteObject(driver)
                     delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
+                    if delete_ip_code == 200:
+                        print("Delete ip object successfully.")
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+
+            # 删除ip2
+            for x in range(len(ip_data2)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data2[x]["name"],
+                                                                              test_ip_object_element_position)
+                if search_ip_code == 200:
+                    delete_ip = DeleteObject(driver)
+                    delete_ip_code = delete_ip.delete(test_ip_object_element_position,
+                                                      first_row_checkbox_element, True)
                     if delete_ip_code == 200:
                         print("Delete ip object successfully.")
                     elif delete_ip_code != 200:
@@ -305,7 +332,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_internal_ip",
+        "test_case_name": "monitor_rule_internal_ip_external_ip",
         "script_type": "ui",
     }
     run(parameter)
