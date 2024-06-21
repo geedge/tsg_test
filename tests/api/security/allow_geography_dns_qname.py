@@ -39,7 +39,7 @@ def run(parameter):
                         "latitude": "0",
                         "longitude": "0",
                         "addr_type": 4,
-                        "ip_address": "93.184.215.14"
+                        "ip_address": "8.8.8.8"
                         }
                     ]
                     }
@@ -68,7 +68,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.example.com -timeout=1"
+                "command": "nslookup www.example.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }
@@ -90,7 +90,7 @@ def run(parameter):
         
         # 流量验证
         verify = TrafficVerification()
-        verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
         # print("verification result: ", verification_result)
         
         # 分析验证结果，并返回给flask

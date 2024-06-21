@@ -40,7 +40,7 @@ def run(parameter):
                         "latitude": "0",
                         "longitude": "0",
                         "addr_type": 4,
-                        "ip_address": "121.14.154.93"
+                        "ip_address": "8.8.8.8"
                         }
                     ]
                     }
@@ -91,7 +91,7 @@ def run(parameter):
         
         # 流量验证
         verify = TrafficVerification()
-        verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
         # print("verification result: ", verification_result)
         
         # 分析验证结果，并返回给flask
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
+        "is_log": 0,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",

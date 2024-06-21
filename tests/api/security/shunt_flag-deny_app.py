@@ -13,12 +13,6 @@ def run(parameter):
     print("Begin to run test case: " + parameter["test_case_name"])
     # 脚本启动时间
     start_time = time.time()
-    # 脚本启动时间
-    start_time = time.time()
-    # 脚本启动时间
-    start_time = time.time()
-    # 脚本启动时间
-    start_time = time.time()
     # 测试数据
     test_data = {
       "is_multi_priority": True,
@@ -78,7 +72,7 @@ def run(parameter):
     
     # 流量验证
     verify = TrafficVerification()
-    verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+    verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
     print("verification result: ", verification_result)
     
     # 分析验证结果，并返回给flask

@@ -60,7 +60,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 https://www.example.com"
+                "command": "curl --connect-timeout 25 -m 25 https://www.example.com"
             },
             "token": ""
         }
@@ -82,7 +82,7 @@ def run(parameter):
         
         # 流量验证
         verify = TrafficVerification()
-        verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
         # print("verification result: ", verification_result)
         
         # 分析验证结果，并返回给flask

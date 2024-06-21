@@ -242,72 +242,84 @@ class GetLog():
                 if statistics_info["chart_type"] == "line" or statistics_info["chart_type"] == "table" or \
                         statistics_info["chart_type"] == "bar":
                     # print(f'{statistics_info["chart_type"]}>>断言对比...')
-                    # print(statistics_info)
-                    statistics_value = copy.deepcopy(result_list[0])
-                    # 将列表中metric值设置为0
-                    for k, v in statistics_value.items():
-                        if isinstance(v, int):
-                            statistics_value[k] = 0
-                    # 遍历result结果，将metric值累加并存储到statistics_value;因为流量单一，只能统计第一个计算值
-                    tmp_list_1 = []  # 下面for..提取值使用
-                    for result_index in range(len(result_list)):
-                        if "session_identifier_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理
-                            for k, v in result_list[result_index].items():
-                                if isinstance(v, int):
-                                    if v != 0:
-                                        tmp_list_1.append(v)  # 将不等于0的数值添加到列表中，为了计算平均数
-                        else:  # 其它的取值方式
-                            for k, v in result_list[result_index].items():
-                                if isinstance(v, int):
-                                    statistics_value[k] += v
-                            if "client_ip_matched_objects".lower() in result_list[
-                                0].keys() or "server_ip_matched_objects".lower() in result_list[
-                                0].keys() or "websketch_categories".lower() in result_list[0].keys():
+                    histogram_sketch_line_flag = False
+                    histogram_sketch_temp ={"in_latency_ms_sketch","out_latency_ms_sketch","latency_ms_sketch",
+                                  "in_pkt_length_sketch","out_pkt_length_sketch","pkt_length_sketch"}
+                    if statistics_info["chart_type"] == "line":
+                        for histogram_sketch in histogram_sketch_temp:
+                            if histogram_sketch in result_list[0].keys():
+                                histogram_sketch_line_flag = True
                                 break
-                    if "session_identifier_sketch" in result_list[0].keys() or "client_ip_sketch" in result_list[
-                        0].keys() or "server_ip_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理
-                        sum_1 = 0
-                        for i in range(1, len(tmp_list_1) - 1):  # 去掉首位两个数计算平均数
-                            sum_1 += tmp_list_1[i]
-                        avg_1 = 0
-                        if sum_1 != 0:
-                            avg_1 = sum_1 / (len(tmp_list_1) - 2)
-                        for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
+                    if histogram_sketch_line_flag:
+                        print("The histogram Metrics Line does not statistic the results.")
+                        metric_results = [True, ""]
+                    else:
+                        # print(statistics_info)
+                        statistics_value = copy.deepcopy(result_list[0])
+                        # 将列表中metric值设置为0
+                        for k, v in statistics_value.items():
                             if isinstance(v, int):
-                                statistics_value[k] = avg_1
-                    print("The actual query result data from TSG: \n{}".format(statistics_value))
-                    # 重组需要断言使用的key列表
-                    assert_key_list = []
-                    dimension_list = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
-                                      'server_ip': 'Server IP', 'client_asn': 'Client ASN',
-                                      'server_asn': 'Server ASN', 'client_country': 'Client Country',
-                                      'server_country': 'Server Country',
-                                      'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
-                                      'application': 'Application',
-                                      'websketch_categories': 'WebSketch Categories',
-                                      'client_ip_matched_objects': 'Client IP Matched Objects',
-                                      'server_ip_matched_objects': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
-                                      's2c_ttl': 'S2C TTL',
-                                      'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
-                                      'client_port': 'Client Port', 'server_port': 'Server Port'}
-                    for k, v in statistics_value.items():
-                        # if isinstance(v, int) or isinstance(v, float):
-                        #    assert_key_list.append(k)
-                        # 如果dimension为端口则为int类型，所以需要过滤掉
-                        if k in dimension_list.keys():
-                            continue
-                        else:
-                            assert_key_list.append(k)
-                    # 开始判断key的正确性
-                    for i in range(len(assert_key_list)):
-                        metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
-                                                                          assert_key_list[i], statistics_value,
-                                                                          statistics_metircs_except,
-                                                                          trex_ip_info)  # 判断正确调用函数
-                        metric_result = metric_results[0]
-                        if metric_result == False:
-                            print("Failure on assertion, the assertion is: {}".format(assert_key_list[i]))
-                            break
+                                statistics_value[k] = 0
+                        # 遍历result结果，将metric值累加并存储到statistics_value;因为流量单一，只能统计第一个计算值
+                        tmp_list_1 = []  # 下面for..提取值使用
+                        for result_index in range(len(result_list)):
+                            if "session_identifier_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理
+                                for k, v in result_list[result_index].items():
+                                    if isinstance(v, int):
+                                        if v != 0:
+                                            tmp_list_1.append(v)  # 将不等于0的数值添加到列表中，为了计算平均数
+                            else:  # 其它的取值方式
+                                for k, v in result_list[result_index].items():
+                                    if isinstance(v, int):
+                                        statistics_value[k] += v
+                                if "client_ip_matched_objects".lower() in result_list[
+                                    0].keys() or "server_ip_matched_objects".lower() in result_list[
+                                    0].keys() or "websketch_categories".lower() in result_list[0].keys():
+                                    break
+                        if "session_identifier_sketch" in result_list[0].keys() or "client_ip_sketch" in result_list[
+                            0].keys() or "server_ip_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理
+                            sum_1 = 0
+                            for i in range(1, len(tmp_list_1) - 1):  # 去掉首位两个数计算平均数
+                                sum_1 += tmp_list_1[i]
+                            avg_1 = 0
+                            if sum_1 != 0:
+                                avg_1 = sum_1 / (len(tmp_list_1) - 2)
+                            for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
+                                if isinstance(v, int):
+                                    statistics_value[k] = avg_1
+                        print("The actual query result data from TSG: \n{}".format(statistics_value))
+                        # 重组需要断言使用的key列表
+                        assert_key_list = []
+                        dimension_list = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
+                                          'server_ip': 'Server IP', 'client_asn': 'Client ASN',
+                                          'server_asn': 'Server ASN', 'client_country': 'Client Country',
+                                          'server_country': 'Server Country',
+                                          'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
+                                          'application': 'Application',
+                                          'websketch_categories': 'WebSketch Categories',
+                                          'client_ip_matched_objects': 'Client IP Matched Objects',
+                                          'server_ip_matched_objects': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
+                                          's2c_ttl': 'S2C TTL',
+                                          'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
+                                          'client_port': 'Client Port', 'server_port': 'Server Port'}
+                        for k, v in statistics_value.items():
+                            # if isinstance(v, int) or isinstance(v, float):
+                            #    assert_key_list.append(k)
+                            # 如果dimension为端口则为int类型，所以需要过滤掉
+                            if k in dimension_list.keys():
+                                continue
+                            else:
+                                assert_key_list.append(k)
+                        # 开始判断key的正确性
+                        for i in range(len(assert_key_list)):
+                            metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
+                                                                              assert_key_list[i], statistics_value,
+                                                                              statistics_metircs_except,
+                                                                              trex_ip_info)  # 判断正确调用函数
+                            metric_result = metric_results[0]
+                            if metric_result == False:
+                                print("Failure on assertion, the assertion is: {}".format(assert_key_list[i]))
+                                break
                 elif statistics_info["chart_type"] == "histogram":
                     print("The histogram does not statistic the results.")
                     metric_results = [True, ""]
@@ -346,12 +358,12 @@ class GetLog():
                         statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_received"] - 10)):
                     print(success_result)
                     metric_result = True
-            elif assert_key == "packets":
+            elif assert_key == "pkts":
                 if statistics_value[assert_key] > (
                 statistics_metircs_except_avg["total_packets"]):  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
                     print(success_result)
                     metric_result = True
-            elif assert_key == "in_packets" or assert_key == "out_packets":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
+            elif assert_key == "in_pkts" or assert_key == "out_pkts":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
                 print(assert_key)
                 if (statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets_sent"])) or (
                         statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets_received"])):
@@ -413,12 +425,12 @@ class GetLog():
                         statistics_value[assert_key] == statistics_metircs_except["total_bytes_received"] * 8):
                     print(success_result)
                     metric_result = True
-            elif assert_key == "packets":
+            elif assert_key == "pkts":
                 if statistics_value[assert_key] == statistics_metircs_except["total_packets"] or statistics_value[
                     assert_key] == statistics_metircs_except["total_packets"] * 8:
                     print(success_result)
                     metric_result = True
-            elif assert_key == "in_packets" or assert_key == "out_packets":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
+            elif assert_key == "in_pkts" or assert_key == "out_pkts":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
                 if (statistics_value[assert_key] == statistics_metircs_except["total_packets_sent"]) or (
                         statistics_value[assert_key] == statistics_metircs_except["total_packets_received"]):
                     print(success_result)

@@ -115,9 +115,9 @@ def run(parameter):
                           "chart_name": "All Packets Length Line",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_packet_length:MEDIAN_HDR:in packet length",
-                            "out_packet_length:MEDIAN_HDR:out packet length",
-                            "packet_length:MEDIAN_HDR:packet length"
+                            "in_pkt_length_sketch:MEDIAN_HDR:in pkt length sketch",
+                            "out_pkt_length_sketch:MEDIAN_HDR:out pkt length sketch",
+                            "pkt_length_sketch:MEDIAN_HDR:pkt length sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -241,7 +241,11 @@ def run(parameter):
                     config = OrganizeConfig()
                     cfg_list = config.create_cfg(parameter, test_data, template_path)
                     verify = TrafficVerification()
-                    verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+                    verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
         # 编辑修改使用
             #edit_rule = EditRule(driver)

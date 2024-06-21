@@ -3,10 +3,10 @@ import csv
 import pandas as pd
 
 class GenerateReport():
-    def generate_report(self, root_path):
+    def generate_report(self, script_type, root_path):
         report_folder_path = root_path + "/report"
         bool = self.is_file_in_directory(report_folder_path, "report.csv")
-        report_path = report_folder_path + "/report.csv"
+        report_path = report_folder_path + "/report_{}.csv".format(script_type)
         if bool == False:
             title_data = []
             title_data.append(["Name", "Result", "Failure Reason"])
@@ -18,7 +18,7 @@ class GenerateReport():
         return os.path.exists(file_path) and os.path.isfile(file_path) 
     
     def insert_data(self, parameter, report_data):
-        report_path = parameter["root_path"] + "/report/report.csv"
+        report_path = parameter["root_path"] + "/report/report_{}.csv".format(parameter["script_type"])
         row_count = 0
         with open(report_path, mode='r', newline='', encoding='utf-8') as file:  
             reader = csv.reader(file)  

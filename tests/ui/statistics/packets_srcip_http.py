@@ -115,12 +115,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "packets:SUM:packets"
+                            "pkts:SUM:pkts"
                           ],
                           "dimensions": [
                             "application"
                           ],
-                          "order_by": "packets",
+                          "order_by": "pkts",
                           "row_limit": "50",
                           "min_in_size": "0",
                           "max_out_size": "0"
@@ -249,7 +249,11 @@ def run(parameter):
                 config = OrganizeConfig()
                 cfg_list = config.create_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)

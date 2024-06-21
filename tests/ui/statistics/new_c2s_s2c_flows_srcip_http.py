@@ -2,8 +2,6 @@
 import time
 import os
 import sys
-import os
-import sys
 
 from support.api_utils.organize_config import OrganizeConfig
 
@@ -59,7 +57,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.6",
+                                "item_value": "10.64.224.12",
                             },
                         ]
                     }
@@ -75,7 +73,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.6",
+                                "item_value": "2.1.1.12",
                             },
                         ]
                     }],
@@ -134,10 +132,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.6",
-                "clients_end_ip": "10.64.224.6",
-                "servers_start_ip": "2.1.1.6",
-                "servers_end_ip": "2.1.1.6",
+                "clients_start_ip": "10.64.224.12",
+                "clients_end_ip": "10.64.224.12",
+                "servers_start_ip": "2.1.1.12",
+                "servers_end_ip": "2.1.1.12",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -252,7 +250,11 @@ def run(parameter):
                 config = OrganizeConfig()
                 cfg_list = config.create_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
@@ -274,7 +276,7 @@ def run(parameter):
 
 
         # 删除rule
-        create_rule_code = 200
+        #create_rule_code = 200
         result = "temp "
 
         if create_rule_code == 200:
@@ -375,7 +377,7 @@ if __name__ == '__main__':
 
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
+        "test_pc_ip": "192.168.64.38",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",

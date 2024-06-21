@@ -62,22 +62,6 @@ def run(parameter):
                     ]
                     }
                 ]
-                },
-                {
-                "attribute_name": "ATTR_MAIL_ATT_CONTENT",
-                "object_type": "keywords",
-                "object_sub_type": "keywords",
-                "object_list": [
-                    {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "hala"
-                        ]
-                        }
-                    ]
-                    }
-                ]
                 }
             ],
             "app_name_1": ["mail"],
@@ -108,7 +92,7 @@ def run(parameter):
         
         # 流量验证
         verify = TrafficVerification()
-        verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
         # print("verification result: ", verification_result)
         
         # 分析验证结果，并返回给flask

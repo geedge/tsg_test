@@ -21,6 +21,7 @@ def run(parameter):
             "rule_action_1": "deny",
             "method_1": "drop",
             "do_log_1": 2,
+            "send_tcp_reset_1": "",
             "obj_condition_1": [
             {
                 "is_negate": 1,
@@ -67,7 +68,7 @@ def run(parameter):
         
         # 流量验证
         verify = TrafficVerification()
-        verification_result = verify.traffic_verification(parameter, test_data, cfg_list)
+        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
         
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()
