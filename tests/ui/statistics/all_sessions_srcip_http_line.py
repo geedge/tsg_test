@@ -120,8 +120,8 @@ def run(parameter):
                             "sessions:RATE:sessions"
                           ],
                           "dimensions": [],
-                          "order_by": "sessions",
-                          "row_limit": "1024",
+                          "order_by": "",
+                          "row_limit": "",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }

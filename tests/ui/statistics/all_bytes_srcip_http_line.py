@@ -123,8 +123,8 @@ def run(parameter):
                             "bytes:BITRATE:bytes"
                           ],
                           "dimensions": [],
-                          "order_by": "bytes",
-                          "row_limit": "100",
+                          "order_by": "",
+                          "row_limit": "",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }
