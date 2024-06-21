@@ -79,7 +79,7 @@ test_data = \
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
+                        "plus" : False,
                         "Statistics": "None",
                         "item": [
                             {
@@ -89,6 +89,26 @@ test_data = \
                                 "item_value": "TEXT",
                                 "value": [
                                     "curl"
+                                ]
+                            }
+                        ],
+                    },
+                    {
+                        "name": "manipulation_res_header_http_signature",
+                        "object_type": "http_signature",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "response_header",
+                                "item_key": "Content-Type",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "text/html"
                                 ]
                             }
                         ],

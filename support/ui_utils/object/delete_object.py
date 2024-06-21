@@ -22,7 +22,7 @@ class DeleteObject():
                 # self.driver.find_element(By.CSS_SELECTOR, ipObjectListPage_deleteButton_warningNo_posCss).click()
                 # self.driver.find_element(By.ID, ipObjectListPage_deleteButton_posId).click()  # 点击删除按钮
                 self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
-            time.sleep(0.5)
+            time.sleep(1)
             return 200
         except Exception as e:
             print(e)

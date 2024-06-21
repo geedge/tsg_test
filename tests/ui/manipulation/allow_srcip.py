@@ -208,7 +208,7 @@ def run(parameter):
                             element_position_map = get_element_position(tmp_key)
                         else:
                             element_position_map = get_element_position(cond_key)
-                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
+                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"], element_position_map)
                         if search_cond_code == 200:
                             delete_cond = DeleteObject(driver)
                             delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
