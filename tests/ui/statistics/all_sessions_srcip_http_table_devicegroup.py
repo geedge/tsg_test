@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.28",
+                                "item_value": "10.64.224.30",
                             },
                         ]
                     }
@@ -75,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.28",
+                                "item_value": "2.1.1.30",
                             },
                         ]
                     }],
@@ -121,7 +121,7 @@ def run(parameter):
                           ],
                           "dimensions": ["device_group"],
                           "order_by": "sessions",
-                          "row_limit": "2048",
+                          "row_limit": "500",
                           "min_in_size": "0",
                           "max_out_size": "0"
                         }
@@ -133,10 +133,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.27",
-                "clients_end_ip": "10.64.224.27",
-                "servers_start_ip": "2.1.1.27",
-                "servers_end_ip": "2.1.1.27",
+                "clients_start_ip": "10.64.224.30",
+                "clients_end_ip": "10.64.224.30",
+                "servers_start_ip": "2.1.1.30",
+                "servers_end_ip": "2.1.1.30",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",

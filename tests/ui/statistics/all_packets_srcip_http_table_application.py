@@ -121,7 +121,7 @@ def run(parameter):
                           ],
                           "dimensions": ["application"],
                           "order_by": "pkts",
-                          "row_limit": "1024",
+                          "row_limit": "500",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }

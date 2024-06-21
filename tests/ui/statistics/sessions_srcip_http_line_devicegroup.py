@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.28",
+                                "item_value": "10.64.224.29",
                             },
                         ]
                     }
@@ -75,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.28",
+                                "item_value": "2.1.1.29",
                             },
                         ]
                     }],
@@ -131,10 +131,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.28",
-                "clients_end_ip": "10.64.224.28",
-                "servers_start_ip": "2.1.1.28",
-                "servers_end_ip": "2.1.1.28",
+                "clients_start_ip": "10.64.224.29",
+                "clients_end_ip": "10.64.224.29",
+                "servers_start_ip": "2.1.1.29",
+                "servers_end_ip": "2.1.1.29",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",

@@ -124,7 +124,7 @@ def run(parameter):
                             "device_group"
                           ],
                           "order_by": "syn line",
-                          "row_limit": "10",
+                          : "10",
                           "min_in_size": "0",
                           "max_out_size": "0"
                         }

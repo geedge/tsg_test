@@ -121,7 +121,7 @@ def run(parameter):
                           ],
                           "dimensions": ["application"],
                           "order_by": "sessions",
-                          "row_limit": "8192",
+                          "row_limit": "1000",
                           "min_in_size": "0",
                           "max_out_size": "0"
                         }
