@@ -115,9 +115,9 @@ def run(parameter):
                           "chart_name": "All Packets Length Line",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_packet_length:MEDIAN_HDR:in packet length",
-                            "out_packet_length:MEDIAN_HDR:out packet length",
-                            "packet_length:MEDIAN_HDR:packet length"
+                            "in_pkt_length_sketch:MEDIAN_HDR:in pkt length sketch",
+                            "out_pkt_length_sketch:MEDIAN_HDR:out pkt length sketch",
+                            "pkt_length_sketch:MEDIAN_HDR:pkt length sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",

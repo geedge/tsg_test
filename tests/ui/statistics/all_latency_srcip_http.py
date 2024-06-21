@@ -115,9 +115,9 @@ def run(parameter):
                           "chart_name": "All Latency Line",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_latency:MEDIAN_HDR:in latency",
-                            "out_latency:MEDIAN_HDR:out atency",
-                            "latency:MEDIAN_HDR:latency"
+                            "in_latency_ms_sketch:MEDIAN_HDR:in latency ms sketch",
+                            "out_latency_ms_sketch:MEDIAN_HDR:out latency ms sketch",
+                            "latency_ms_sketch:MEDIAN_HDR:latency ms sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",

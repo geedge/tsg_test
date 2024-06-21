@@ -15,6 +15,7 @@ class CreateStatisticsTemplate():
         self.actions = ActionChains(self.driver)
 
     def create(self, data, template_element_position):
+        print("template1")
         page_jump_element_position = template_element_position["page_jump"]
         create_element_position = template_element_position["create"]
         try:
@@ -23,8 +24,10 @@ class CreateStatisticsTemplate():
             page_jump.jump_sub_profile_page(page_jump_element_position, "UIwithTrafficTestVsys")
             # 点击create
             self.driver.find_element(By.ID, create_element_position["templateListPage_createButton_posId"]).click()
+            print("template2,create button")
             # 输入name
             template_name = data["name"]
+            print("template3,create button")
             self.driver.find_element(By.ID, create_element_position["templatePage_inputName_posId"]).send_keys(
                 template_name)
             self.data = data
@@ -37,7 +40,7 @@ class CreateStatisticsTemplate():
                 chart_id = "{}".format(i + 1)  # 用于图表排序定位使用
                 # 点击chart add添加按钮
                 if operation_type == "create":  # 创建时点击添加图表，修改时不点击添加图表
-                    time.sleep(2)
+                    print("template4,create button")
                     self.driver.find_element(By.XPATH,
                                              create_element_position["templates_button_chartAdd_posXpath"]).click()
                 else:  # 修改数据，先点击修改按钮  "Edit"编辑修改
@@ -45,19 +48,23 @@ class CreateStatisticsTemplate():
                         "templates_button_chartEdit_posXpath"].format(
                         replaceChart=chart_id)
                     self.driver.find_element(By.XPATH, statisticsTemplates_button_chartEdit_posXpath_1).click()
+                time.sleep(2)
                 # 页面滚动到最底部
                 # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 # 内嵌页面滚动条向下滚动到最底部
                 time.sleep(2)
+                print("template5,scroll")
                 div_paper_grid = self.driver.find_element(By.XPATH,
                                                           create_element_position["templates_div_paperGrid_posXpath"])
                 self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_paper_grid)
                 # Visualization Type 操作
+                print("template6,Visualization Type")
                 self._operate_radio(charts[i], data_index=data_index, no_modify=no_modify,
                                     data_key="visualization_type",
                                     ep_radio=create_element_position["templates_radio_visualizationType_posXpath"],
                                     chart_id=chart_id)
                 # metrics 操作
+                print("template7,metrics")
                 self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="metrics", chart_id=chart_id)
                 visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
@@ -66,31 +73,34 @@ class CreateStatisticsTemplate():
                 # if first_metric_temp not in{"","不修改","刪除"}:#修改数据待补充处理方式
                 if visualization_type_temp == "table" or visualization_type_temp == "bar" or visualization_type_temp == "line":  # 只有table\Bar 图的 有order by操作
                     if visualization_type_temp == "line" and ( first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
-                        pass
+                        print("Line No Dimensions")
                     else:
                         # dimensions 操作
+                        print("template8,dimensions")
                         self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="dimensions", chart_id=chart_id)
                 # 如果有Order By，则操作
                 if visualization_type_temp == "table" or visualization_type_temp == "bar":  # 只有table\Bar 图的 有order by操作
+                    print("template9,Order By")
                     self._operate_order_by(charts[i], data_index=data_index, no_modify=no_modify,
                                            data_key="order_by", chart_id=chart_id)
                 else:
-                    pass
+                    print("No Order By")
                 # Row Limit 操作
                 visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
                 if visualization_type_temp == "line" or visualization_type_temp == "table"  or visualization_type_temp == "bar":  # line 图的 row limit 操作方式不一样
                     if visualization_type_temp == "line" and (
                             first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
-                        pass
+                        print("No Row Limit")
                     else:
+                        print("template10,No Row Limit")
                         self._operate_series_limit(charts[i], data_index=data_index, no_modify=no_modify,
                                                    data_key="row_limit",
                                                    element_position=create_element_position[
                                                        "templates_input_other_posXpath"],
                                                    chart_id=chart_id)
                 else:
-                    pass
+                    print("No Row Limit")
                 """
                 elif charts[i]["visualization_type"].split("->")[
                     data_index].strip().lower() == "table":  # table 图的 row limit 操作
@@ -99,8 +109,8 @@ class CreateStatisticsTemplate():
                                         element_position=create_element_position["templates_input_other_posXpath"],
                                         chart_id=chart_id)
                 """
-
                 # Thresholds - Minimum incoming size 操作
+                print("template11,No Row Limit")
                 self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="min_in_size",
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
@@ -109,13 +119,18 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 输入chart name
+                print("template12,chart name")
                 self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="chart_name",
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 点击chart的OK保存按钮
+                print("template13,chart OK")
                 self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
             # 确认创建，点击Template的OK保存按钮
+            print("template14,Template OK")
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["templates_button_oK_posCss"]).click()
+
+            print("template14,Template warningSaveYes")
             self.driver.find_element(By.CSS_SELECTOR,
                                      create_element_position["templates_button_warningSaveYes_posCss"]).click()
             return 200
@@ -219,11 +234,12 @@ class CreateStatisticsTemplate():
                                       'pkts': 'Packets',
                                       'syn_pkts': 'SYN Packets',
                                       'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
-                                      'server_ip_sketch': 'Server IPs', 'in_latency': 'Incoming Latency',
-                                      'out_latency': 'Outgoing Latency', 'latency': 'Latency',
-                                      'in_packet_length': 'Incoming Packet Length',
-                                      'out_packet_length': 'Outgoing Packet Length',
-                                      'packet_length': 'Packet Length'}
+                                      'server_ip_sketch': 'Server IPs', 'in_latency_ms_sketch': 'Incoming Latency',
+                                      'out_latency_ms_sketch': 'Outgoing Latency', 'latency_ms_sketch': 'Latency',
+                                      'in_pkt_length_sketch': 'Incoming Packet Length',
+                                      'out_pkt_length_sketch': 'Outgoing Packet Length',
+                                      'pkt_length_sketch': 'Packet Length'
+                                      }
         """
         dropdown_item_dimensions_dict23 = {'time':'Time', 'client_ip': 'Client IP', 'server_ip': 'Server IP', 'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
                                          'application': 'Application', 'websketch_categories': 'WebSketch Categories', 'client_ip_matched_objects': 'Client IP Matched Objects',
