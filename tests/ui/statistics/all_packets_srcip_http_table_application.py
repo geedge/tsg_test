@@ -44,14 +44,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_with_src_ip_http_table_devicegroup",
+            "rule_name": "all_packets_with_src_ip_http_table_application",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ap",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_all_bytes_source_ip",
+                        "name": "statistics_all_packets_table_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.13",
+                                "item_value": "10.64.224.24",
                             },
                         ]
                     }
@@ -67,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_all_bytes_destination_ip",
+                        "name": "statistics_all_packets_table_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -75,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.13",
+                                "item_value": "2.1.1.24",
                             },
                         ]
                     }],
@@ -108,22 +108,20 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Bytes Distributed by Device Group",
+                    "name": "Auto All Packets Line Application",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:in bytes",
-                            "out_bytes:SUM:out bytes",
-                            "bytes:SUM:bytes"
+                            "in_pkts:SUM:in pkts",
+                            "out_pkts:SUM:out pkts",
+                            "pkts:SUM:pkts"
                           ],
-                          "dimensions": [
-                            "device_group"
-                          ],
-                          "order_by": "bytes",
-                          "row_limit": "100",
+                          "dimensions": ["application"],
+                          "order_by": "pkts",
+                          "row_limit": "500",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }
@@ -135,10 +133,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.13",
-                "clients_end_ip": "10.64.224.13",
-                "servers_start_ip": "2.1.1.13",
-                "servers_end_ip": "2.1.1.13",
+                "clients_start_ip": "10.64.224.24",
+                "clients_end_ip": "10.64.224.24",
+                "servers_start_ip": "2.1.1.24",
+                "servers_end_ip": "2.1.1.24",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -169,15 +167,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "statistics",
+                "name": "all_packets_with_src_ip_http_table_application",
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_source_ip",
+                "name": "statistics_all_packets_table_source_ip",
+            },{
+                "type": "ip",
+                "name": "statistics_all_packets_table_destination_ip",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Distributed by Client IP",
+                "name": "Auto All Packets Line Applicaton",
             },
         ]
         log_in = LogIn()
@@ -251,13 +252,9 @@ def run(parameter):
             if edit_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.create_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
@@ -373,6 +370,8 @@ def run(parameter):
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
 
+
+
 if __name__ == '__main__':
     parameter = {
 
@@ -386,7 +385,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_with_srcip_http_table_devicegroup",
+        "test_case_name": "all_packets_with_src_ip_http_table_application",
         "script_type": "ui",
         "policy_type": "statistics"
     }

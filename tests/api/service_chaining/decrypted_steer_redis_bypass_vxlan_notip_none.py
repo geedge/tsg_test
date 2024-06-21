@@ -10,6 +10,9 @@ from support.api_utils.analysis_result import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
         # 测试数据
         test_data = {
             "is_multi_priority": False,

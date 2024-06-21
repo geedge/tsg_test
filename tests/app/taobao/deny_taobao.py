@@ -10,6 +10,9 @@ from support.app_utils.call_airtest import *
 
 def run(parameter):
     print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
     # 测试数据
     test_data_json = {
       "is_multi_priority": False,

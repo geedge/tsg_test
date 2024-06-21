@@ -27,6 +27,9 @@ from support.ui_utils.object.generate_random_ip import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
         # 脚本启动时间
         start_time = time.time()
 
@@ -120,7 +123,7 @@ def run(parameter):
                     "type": "steering",
                     "load_balance_method": "hash_int-ip",
                     "load_balance_localization": "nearby",
-                    "failure_action": "Re-dispatch:Block",
+                    "failure_action": "Re-dispatch:bypass:1",
                     "service_functions": [
                         {
                             "name": "vxlan_unavailableip_none",

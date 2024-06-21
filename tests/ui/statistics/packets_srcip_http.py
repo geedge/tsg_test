@@ -31,6 +31,9 @@ import traceback
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
         # 脚本启动时间
         start_time = time.time()
 
@@ -174,6 +177,10 @@ def run(parameter):
                 "name": "statistics_packets_source_ip",
             },
             {
+                "type": "ip",
+                "name": "statistics_packets_destination_ip",
+            },
+            {
                 "type": "statistics_template",
                 "name": "AAuto Packets Distributed by Application",
             },
@@ -247,7 +254,7 @@ def run(parameter):
             if edit_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.create_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
                 if len(verification_result) == 4:

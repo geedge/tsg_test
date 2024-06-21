@@ -10,6 +10,9 @@ from support.api_utils.analysis_result import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
         # 脚本启动时间
         start_time = time.time()
         # 测试数据
@@ -118,6 +121,11 @@ def run(parameter):
         erase = DeleteConfig()
         erase.delele_cfg(token, parameter, cfg_list)
         
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print("Duration of running the test case: ", duration)
+        print("Finish test case: " + parameter["test_case_name"])
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
