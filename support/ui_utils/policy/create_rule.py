@@ -33,7 +33,7 @@ class CreateRule():
                 self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAction_posId"]).click()
             # 选择target traffic 
             elif test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
-                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chozhanoseTargetedTraffic_posXpath"]).click()
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chooseTargetedTraffic_posXpath"]).click()
             elif test_data["policy_type"] == "pxy_manipulation":
                 if test_data["rule_action"] == "allow":
                     self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAllow_posId"]).click()

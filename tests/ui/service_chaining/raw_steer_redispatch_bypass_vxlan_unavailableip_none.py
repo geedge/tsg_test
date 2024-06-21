@@ -120,7 +120,7 @@ def run(parameter):
                     "type": "steering",
                     "load_balance_method": "hash_int-ip",
                     "load_balance_localization": "nearby",
-                    "failure_action": "Re-dispatch:Block",
+                    "failure_action": "Re-dispatch:bypass:1",
                     "service_functions": [
                         {
                             "name": "vxlan_unavailableip_none",
