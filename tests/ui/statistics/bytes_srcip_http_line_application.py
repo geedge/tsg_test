@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "bytes_with_src_ip_http_line_devicegroup",
+            "rule_name": "bytes_with_src_ip_http_line_application",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ap",
@@ -119,7 +119,7 @@ def run(parameter):
                           ],
                           "dimensions": ["application"],
                           "order_by": "bytes",
-                          "row_limit": "100",
+                          "row_limit": "15",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }
@@ -165,7 +165,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "bytes_with_src_ip_http_line_devicegroup",
+                "name": "bytes_with_src_ip_http_line_application",
             },
             {
                 "type": "ip",
@@ -387,7 +387,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "bytes_with_src_ip_http_line_devicegroup",
+        "test_case_name": "bytes_with_src_ip_http_line_application",
         "script_type": "ui",
         "policy_type": "statistics"
     }
