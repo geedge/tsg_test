@@ -365,8 +365,8 @@ class GetLog():
                     metric_result = True
             elif assert_key == "in_pkts" or assert_key == "out_pkts":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
                 print(assert_key)
-                if (statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets_sent"])) or (
-                        statistics_value[assert_key] > (statistics_metircs_except_avg["total_packets_received"])):
+                if (statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets_sent"])) or (
+                        statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets_received"])):
                     print(success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":# or assert_key == "new_incoming_sessions" or assert_key == "new_outgoing_sessions":
@@ -427,7 +427,7 @@ class GetLog():
                     metric_result = True
             elif assert_key == "pkts":
                 if statistics_value[assert_key] == statistics_metircs_except["total_packets"] or statistics_value[
-                    assert_key] == statistics_metircs_except["total_packets"] * 8:
+                    assert_key] == statistics_metircs_except["total_packets"]:
                     print(success_result)
                     metric_result = True
             elif assert_key == "in_pkts" or assert_key == "out_pkts":# or assert_key == "incoming_packets" or assert_key == "outgoing_packets":
