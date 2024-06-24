@@ -163,6 +163,7 @@ if __name__ == "__main__":
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
+        "test_subcriber_id": "test86",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
