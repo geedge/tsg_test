@@ -103,7 +103,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "ww.python.org"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 20 --max-time 50 https://www.python.org/doc/"
+                "command": "curl --compressed  -kv --connect-timeout 20 --max-time 50 https://www.python.org/doc/"
             },
             "token": ""
         }

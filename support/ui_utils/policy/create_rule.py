@@ -323,35 +323,38 @@ class CreateRule():
                     profile_data = test_data["action_parameter"]
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
-                        if "deny_response_text" in test_data["action_parameter"].keys():
-                            response_type = "deny_response_text"   # 这个变量索引key使用
+                        if "deny_response_block" in test_data["action_parameter"].keys():    # action为 close connection
+                            pass
                         else:
-                            response_type = "response_page"
-                        response_code = test_data["action_parameter"][response_type][0]["response_code"]
-                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseCodeSelectBox_posXpath"]).click()
-                        response_code_drop_position = create_element_position["policyRulePage_deny_addResponseCodeSelectDropItem_posXpath"].format(replace_code=response_code)
-                        self.driver.find_element(By.XPATH, response_code_drop_position).click()
-                        # 选择 response content type
-                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseContentSelectBox_posXpath"]).click()
-                        response_content_type = test_data["action_parameter"][response_type][0]["response_content_type"].strip()
-                        response_content_type_position = create_element_position["policyRulePage_deny_addResponseContentSelectDropItem_posXpath"].format(replace_type=response_content_type)
-                        self.driver.find_element(By.XPATH, response_content_type_position).click()
-                        if response_content_type == "TEXT":
-                            # 输入response content text
-                            response_context_text = test_data["action_parameter"][response_type][0]["response_content"].strip()
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseContentTextInput_posXpath"]).clear()
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseContentTextInput_posXpath"]).send_keys(response_context_text)
-                        else:   # Profile
-                            response_profile_data = test_data["action_parameter"][response_type][0]["profile_file"]
-                            response_profile_name = response_profile_data["name"]
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseContentProfileSelectBox_posXpath"]).click()
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfile_posXpath"]).clear()
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfile_posXpath"]).send_keys(response_profile_name)
-                            # 点击回车键
-                            search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfile_posXpath"])
-                            search_box.send_keys(Keys.RETURN)
-                            # 选择第一个
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfileDorpItem_posXpath"]).click()
+                            if "deny_response_text" in test_data["action_parameter"].keys():
+                                response_type = "deny_response_text"   # 这个变量索引key使用
+                            else:
+                                response_type = "response_page"
+                            response_code = test_data["action_parameter"][response_type][0]["response_code"]
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseCodeSelectBox_posXpath"]).click()
+                            response_code_drop_position = create_element_position["policyRulePage_deny_addResponseCodeSelectDropItem_posXpath"].format(replace_code=response_code)
+                            self.driver.find_element(By.XPATH, response_code_drop_position).click()
+                            # 选择 response content type
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseContentSelectBox_posXpath"]).click()
+                            response_content_type = test_data["action_parameter"][response_type][0]["response_content_type"].strip()
+                            response_content_type_position = create_element_position["policyRulePage_deny_addResponseContentSelectDropItem_posXpath"].format(replace_type=response_content_type)
+                            self.driver.find_element(By.XPATH, response_content_type_position).click()
+                            if response_content_type == "TEXT":
+                                # 输入response content text
+                                response_context_text = test_data["action_parameter"][response_type][0]["response_content"].strip()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseContentTextInput_posXpath"]).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseContentTextInput_posXpath"]).send_keys(response_context_text)
+                            else:   # Profile
+                                response_profile_data = test_data["action_parameter"][response_type][0]["profile_file"]
+                                response_profile_name = response_profile_data["name"]
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_addResponseContentProfileSelectBox_posXpath"]).click()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfile_posXpath"]).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfile_posXpath"]).send_keys(response_profile_name)
+                                # 点击回车键
+                                search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfile_posXpath"])
+                                search_box.send_keys(Keys.RETURN)
+                                # 选择第一个
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfileDorpItem_posXpath"]).click()
                         #
                     elif test_data["rule_action"] == "redirect":
                         print(test_data["condition"]["application"][0]["name"].lower().strip())
