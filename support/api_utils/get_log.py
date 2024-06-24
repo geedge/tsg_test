@@ -206,7 +206,6 @@ class GetLog():
             return [333, "The statistics metric API query failed. Procedure"]
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
-                print("Do not query statistics metric result")
                 # 对应session方式和fqdn category需要另行处理
                 try:
                     metrics_columns = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0][
@@ -215,6 +214,7 @@ class GetLog():
                     test_data["profile_condition_1"][0]["chart_list"][0]["dimensions"][0]["source_columns"][0].lower()
                 except:
                     dimension_columns = "no_dimensions"
+
                 if dimension_columns == "no_dimensions":
                     # API和UI因数据格式不一致，所以API方式获取不到按UI方式获取
                     try:
@@ -227,7 +227,9 @@ class GetLog():
                         dimension_columns = "no_dimensions"
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
                     return [333, "passthrough"]
-                return [333, "statistics metric No result was found"]
+                else:
+                    print("Do not query statistics metric result")
+                return [333, "statistics metric no result was found"]
             else:  # 提取结果，并断言
                 metric_result = False  # 默认
                 result_list_source = r_dict["data"]["result"]
