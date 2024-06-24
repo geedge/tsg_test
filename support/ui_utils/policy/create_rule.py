@@ -111,6 +111,32 @@ class CreateRule():
                 external_port_group_data = test_data["condition"]["external_port_group"]
                 self.add_port(external_port_group_data, "ExternalPort", create_element_position)
 
+            # 添加device
+            if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
+                device_data = test_data["condition"]["device"]
+                for t in range(len(device_data)):
+                    if device_data[t]["object_type"] == "imsi":
+                        # 点add condition的+
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        # 选中server fqdn
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                        # 点server fqdn的+，因为dst ip已经是第一层且t初始值是0，所以要+2
+                        temp_element_position = create_element_position["policyRulePage_addImsi_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 通过server fqdn name搜索并选中
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(device_data[t]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(Keys.ENTER)
+                        time.sleep(5)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
+                    elif device_data[t]["object_type"] == "phone_number":
+                        print("to be added...")
+                    elif device_data[t]["object_type"] == "imei":
+                        print("to be added...")
+                    elif device_data[t]["object_type"] == "apn":
+                        print("to be added...")
+
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
                 # 点application的+
@@ -579,4 +605,5 @@ class CreateRule():
             self.driver.find_element(By.XPATH, temp_element_position).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
             is_first_iteration = False
+
 

@@ -9,6 +9,7 @@ mainPage_secondLevelMenu_port_posId = "Objects_port"
 mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
 mainPage_secondLevelMenu_keywords_posId = "Objects_keywords"
 mainPage_secondLevelMenu_url_posId = "Objects_url"
+mainPage_secondLevelMenu_mobileIdentify_posId = "Objects_mobile_identity"
 mainPage_secondLevelMenu_fqdn_posId = "Objects_fqdn"  # 二级菜单IP Addresses
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
 
@@ -71,6 +72,26 @@ ipGroupObjectPage_searchExcludeIP_posXpath = "//div[@class='CommonListDetail lis
 ipGroupObjectPage_selectExcludeIP_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
 ipGroupObjectPage_closeExcludeIP_posXpath = "//div[@class='KeywordsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 ipGroupObjectPage_addExcludeObject_posId = "temporary_form"
+
+# imsi object
+mobile_identitiesObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_mobile_identity_Home_App_anonymousComponent"  # create按钮id
+mobile_identitiesObjectListPage_dropDown_createButton_posId = 'object0-_OperateBtns_ElRow_Objects_mobile_identity_Home_App_anonymousComponent'  # 从下拉菜单中选择Mobile Identity
+ipObjectListPage_dropDown_createGroupButton_posId = "object1-_OperateBtns_ElRow_Objects_mobile_identity_Home_App_anonymousComponent"
+imsiObjectListPage_searchLabel_posId = ipObjectListPage_searchLabel_posId = "select-label"  # 查询框id
+imsiObjectListPage_searchLabel_selectName_posXpath = '//li[@id="2-_FilteredSearch_ElRow_Objects_mobile_identity_Home_App_anonymousComponent"]'  # 查询Name
+imsiObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_mobile_identity_Home_App_anonymousComponent"
+imsiObjectListPage_deleteButton_warningYes_posXpath = ipObjectListPage_deleteButton_warningYes_posXpath 
+ipObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
+imsiObjectListPage_allSelect_posXpath = ipObjectListPage_allSelect_posXpath
+imsiObjectListPage_tableTbody_posXpath = ipObjectListPage_tableTbody_posXpath
+mobile_identitiesObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath # name输入框Xpath
+imsiObjectPage_imsiType_posId = "IMSIimsi"
+imsiObjectPage_addItem_posId = ipObjectPage_addItem_posId  # 添加item_id
+imsiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
+imsiObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
+imsiObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
+imsiObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
+
 
 # port
 portObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"

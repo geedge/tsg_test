@@ -15,9 +15,12 @@ class DeleteRule():
         delete_element_position = rule_element_position["delete"]
         try:
             if is_del_all == True:
+                time.sleep(3)
                 self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_allSelect_posXpath"]).click()
             else:
+                time.sleep(3)
                 first_row_checkbox_element.click()
+            time.sleep(3)
             self.driver.find_element(By.ID, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
             random_yes_or_no = random.randint(0, 1)
             if random_yes_or_no == 0:

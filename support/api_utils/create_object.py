@@ -131,6 +131,7 @@ class CreateObject():
                 obj_template_dict['object']['member'] = member
             else:
                 type = "import"
+                obj_template_dict['object']['statistics_option'] = 'none'
                 obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'statistics_option': 'elaborate'}
                 obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
                 for item in add_item_list:

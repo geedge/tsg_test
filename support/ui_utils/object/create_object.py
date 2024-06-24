@@ -1,6 +1,7 @@
 # import os
 import sys
 import time
+from traceback import print_tb
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.object.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
@@ -80,8 +81,8 @@ class CreateObject():
                 for x in data["item"]:
                     if data["object_type"] == "ip":
                         self.driver.find_element(By.ID, create_element_position["objectPage_ipType_posId"]).click()
-                    # elif data["object_type"] == "fqdn":
-                    #     print("add item")
+                    elif data["object_type"] == "imsi":
+                        self.driver.find_element(By.ID, create_element_position["objectPage_imsiType_posId"]).click()
                     if x["item_operation"] == "add":
                         self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(x["item_value"])
