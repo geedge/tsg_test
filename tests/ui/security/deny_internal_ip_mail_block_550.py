@@ -109,7 +109,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_mail_drop"
+                "name": "security_rule_deny_internal_ip_mail_block_550"
             },
             {
                 "type": "ip",

@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.90",
+                                "item_value": "192.168.64.91",
                             },
                         ]
                     }
@@ -121,7 +121,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "mtv",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.90"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv https://www.mtv.ru/"
@@ -344,7 +344,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.90",
+        "test_pc_ip": "192.168.64.91",
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",

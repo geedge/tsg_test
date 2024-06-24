@@ -65,6 +65,8 @@ policyRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']/
 policyRulePage_addCondition_uri_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URI']"
 policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
 policyRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Header']"
+policyRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Body']"
+policyRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Body']"
 policyRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='IP Address']"
@@ -167,6 +169,8 @@ securityRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_
 securityRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
 securityRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
 securityRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
+securityRulePage_addCondition_requestBody_posXpath = policyRulePage_addCondition_requestBody_posXpath
+securityRulePage_addCondition_responseBody_posXpath = policyRulePage_addCondition_responseBody_posXpath
 securityRulePage_addCondition_responseHeader_posXpath = policyRulePage_addCondition_responseHeader_posXpath
 securityRulePage_addCondition_srcPort_posXpath = policyRulePage_addCondition_srcPort_posXpath
 securityRulePage_addCondition_dstPort_posXpath = policyRulePage_addCondition_dstPort_posXpath
@@ -325,6 +329,16 @@ manipulationRulePage_addResponseHeader_posXpath = "//p[normalize-space(text())='
 manipulationRulePage_searchResponseHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 manipulationRulePage_selectResponseHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeResponseHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
+# request body 的添加、查询、选中、关闭操作
+manipulationRulePage_addRequestBody_posXpath = "//p[normalize-space(text())='Request Body']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+manipulationRulePage_searchRequestBody_posXpath = policyRulePage_searchRequestHeader_posXpath
+manipulationRulePage_selectRequestBody_posXpath = policyRulePage_selectRequestHeader_posXpath
+manipulationRulePage_closeRequestBody_posXpath = policyRulePage_closeRequestHeader_posXpath
+# response body 的添加、查询、选中、关闭操作
+manipulationRulePage_addResponseBody_posXpath = "//p[normalize-space(text())='Response Body']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+manipulationRulePage_searchResponseBody_posXpath = policyRulePage_searchRequestHeader_posXpath
+manipulationRulePage_selectResponseBody_posXpath = policyRulePage_selectRequestHeader_posXpath
+manipulationRulePage_closeResponseBody_posXpath = policyRulePage_closeRequestHeader_posXpath
 # action parameter deny
 manipulationRulePage_deny_addResponseCodeSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Code']/parent::*//i"   # resposne code 选择框
 manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_code}']"   # reposne code 下拉列表定位

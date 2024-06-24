@@ -8,111 +8,115 @@ from support.api_utils.delete_config import *
 from support.api_utils.analysis_result import *
 
 def run(parameter):
-  try:
-      print("Begin to run test case: " + parameter["test_case_name"])
+    try:
+        print("Begin to run test case: " + parameter["test_case_name"])
         # 参数初始化
         result = ""
-        
-      # 脚本启动时间
-      start_time = time.time()
-      # 测试数据
-      test_data = {
-        "is_multi_priority": True,
-        "rule_num": 2,
-        "policy_type": "security",
-        "rule_action_1": "allow",
-        "rule_action_2": "deny",
-        "method_2": "drop",
-        "do_log_1": 2,
-        "do_log_2": 2,
-        "obj_condition_1": [],
-        "obj_condition_2": [
-          {
-            "attribute_name": "ATTR_FLAG",
-            "object_type": "flag",
-            "object_sub_type": "flag",
-            "repeat_time": 1,
-            "object_list": [
-              {
-                "add_item_list": [
-                  {
-                    "flag": 8,
-                    "mask": 8
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "attribute_name": "ATTR_SERVER_FQDN",
-            "object_type": "fqdn",
-            "object_sub_type": "fqdn",
-            "repeat_time": 1,
-            "object_list": [
-              {
-                "add_item_list": [
-                  {
-                    "keyword_array": [
-                      "www.baidu.com"
+            
+        # 脚本启动时间
+        start_time = time.time()
+        # 测试数据
+        test_data = {
+            "is_multi_priority": True,
+            "rule_num": 2,
+            "policy_type": "security",
+            "rule_action_1": "allow",
+            "rule_action_2": "deny",
+            "method_2": "drop",
+            "do_log_1": 2,
+            "do_log_2": 2,
+            "obj_condition_1": [],
+            "obj_condition_2": [
+            {
+                "attribute_name": "ATTR_FLAG",
+                "object_type": "flag",
+                "object_sub_type": "flag",
+                "repeat_time": 1,
+                "object_list": [
+                {
+                    "add_item_list": [
+                    {
+                        "flag": 8,
+                        "mask": 8
+                    }
                     ]
-                  }
+                }
                 ]
-              }
-            ]
-          }   
-        ],
-        "app_name_1": ["ssl"],
-        "app_name_2": ["ssl"],
-        "expected_return": "百度一下",
-        "counters_1": {"hits": 1},
-        "counters_2": {"hits": 0},
-        "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
-        "log_query_param_2": [],
-              "traffic": {
-                  "type": "curl",
-                  "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-              },
-        "token": ""
-      }
-      
-      # 添加测试过程中涉及的template
-      template_path = {}
-      template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-      template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-      
-      # 获取token
-      log_in = LogIn()
-      pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-      token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-      test_data["token"] = token
-      
-      # 创建Object、Profile、Rule
-      config = CreateConfig()
-      cfg_list = config.create_cfg(parameter, test_data, template_path)
-      
-      # 流量验证
-      verify = TrafficVerification()
-      verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
-      print("verification result: ", verification_result)
-      
-      # 分析验证结果，并返回给flask
-      analysis = AnalysisResult()
-      result = analysis.analysis_result(test_data, cfg_list, verification_result)
-      print("analysis result: ", result)
-    
-      # 删除配置
-      erase = DeleteConfig()
-      erase.delele_cfg(token, parameter, cfg_list)
-      
-      print("Finish test case: " + parameter["test_case_name"])
-      return result
-  except Exception as e:
-      print("Error: ", e)
-      return "Error: " + str(e)
-  finally:
-    name_list = []
-    erase = DeleteConfig()
-    erase.clear_config(token, parameter, name_list)
+            },
+            {
+                "attribute_name": "ATTR_SERVER_FQDN",
+                "object_type": "fqdn",
+                "object_sub_type": "fqdn",
+                "repeat_time": 1,
+                "object_list": [
+                {
+                    "add_item_list": [
+                    {
+                        "keyword_array": [
+                        "www.baidu.com"
+                        ]
+                    }
+                    ]
+                }
+                ]
+            }   
+            ],
+            "app_name_1": ["ssl"],
+            "app_name_2": ["ssl"],
+            "expected_return": "百度一下",
+            "counters_1": {"hits": 1},
+            "counters_2": {"hits": 0},
+            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
+            "log_query_param_2": [],
+                "traffic": {
+                    "type": "curl",
+                    "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                },
+            "token": ""
+        }
+        
+        # 添加测试过程中涉及的template
+        template_path = {}
+        template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
+        template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+        
+        # 获取token
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        test_data["token"] = token
+        
+        # 创建Object、Profile、Rule
+        config = CreateConfig()
+        cfg_list = config.create_cfg(parameter, test_data, template_path)
+        
+        # 流量验证
+        verify = TrafficVerification()
+        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
+        print("verification result: ", verification_result)
+        
+        # 分析验证结果，并返回给flask
+        analysis = AnalysisResult()
+        result = analysis.analysis_result(test_data, cfg_list, verification_result)
+        print("analysis result: ", result)
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print("Duration of running the test case: ", duration)
+        
+        # 删除配置
+        erase = DeleteConfig()
+        erase.delele_cfg(token, parameter, cfg_list)
+        
+        print("Finish test case: " + parameter["test_case_name"])
+        return result
+    except Exception as e:
+        print("Error: ", e)
+        return "Error: " + str(e)
+    finally:
+        name_list = []
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
   
 if __name__ == "__main__":
     parameter = {

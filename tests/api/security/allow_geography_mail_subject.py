@@ -13,6 +13,8 @@ def run(parameter):
         # 参数初始化
         result = ""
         
+        # 脚本启动时间
+        start_time = time.time()
         # 测试数据
         test_data = {
             "is_multi_priority": False,

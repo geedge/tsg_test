@@ -115,8 +115,10 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
         print("Duration of running the test case: ", duration)
-            
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
