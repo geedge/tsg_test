@@ -251,7 +251,10 @@ def run(parameter):
                     "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
                     "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
                     "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
-                    "policyRulePage_little_button_addBoolean_posXpath": policyRulePage_little_button_addBoolean_posXpath
+                    "policyRulePage_little_button_addBoolean_posXpath": policyRulePage_little_button_addBoolean_posXpath,
+                    # packet capture depth
+                    "policyRulePage_packetCapture_posXpath": securityRulePage_packetCapture_posXpath,
+                    "policyRulePage_packetCapture_depth_posXpath": securityRulePage_packetCapture_depth_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,

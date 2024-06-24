@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_https_profile_on",
+            "rule_name": "monitor_rule_https_mirror_off",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -91,7 +91,7 @@ def run(parameter):
                 "sub_action": [],
                 "packet_capture": []
             },
-            "is_mirror": "on",
+            "is_mirror": "off",
             "profile": [],
             "expected_return": "mtv",
             "counters_1": {"hits": "many"},
@@ -111,7 +111,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_https_profile_on"
+                "name": "monitor_rule_https_mirror_off"
             },
             {
                 "type": "ip",
@@ -340,7 +340,7 @@ def run(parameter):
         print("Duration of running the test case: ", duration)
 
         print("Finish test case: " + parameter["test_case_name"])
-        # return result
+        return result
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)
@@ -365,7 +365,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_rule_https_mirror_on"
+        "test_case_name": "monitor_rule_https_mirror_off"
     }
     run(parameter)
     """

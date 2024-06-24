@@ -331,9 +331,9 @@ def run(parameter):
                 if delete_rule_code == 200:
                     print("Delete security rule successfully.")
                 elif delete_rule_code != 200:
-                    result = result + " In addition, fail to delete security rule."
+                    result = result + " In addition, fail to delete monitor rule."
             else:
-                result = result + " In addition, fail to search security rule."
+                result = result + " In addition, fail to search monitor rule."
 
         # 删除object
         if delete_rule_code == 200:
@@ -367,7 +367,7 @@ def run(parameter):
                     elif delete_profile_code != 200:
                         result = result + " In addition, fail to delete profile."
                         break
-                # else:
+                else:
                     result = result + " In addition, fail to search profile."
                     break
         #脚本结束时间和耗时

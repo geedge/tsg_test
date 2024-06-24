@@ -224,7 +224,8 @@ class TrafficVerification():
                 if  metric_results[0] == 333:     # API 查询失败时变量赋值
                     metric_result = False
                     if metric_results[1] == "passthrough":     # incoming或者outgoing的session方向
-                        print("The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
+                        #print("The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
+                        metric_results[1] = ""
                         metric_result = True
             return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
         elif policy_type == "service_chaining":
