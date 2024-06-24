@@ -6,6 +6,7 @@ from support.api_utils.create_config import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.delete_config import *
 from support.api_utils.analysis_result import *
+from support.report import *
 
 def run(parameter):
     try:
@@ -50,7 +51,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "jd.com"
+                            "open.node"
                         ]
                         }
                     ]
@@ -114,7 +115,21 @@ def run(parameter):
         name_list = []
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
-  
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):  
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "PASS"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
+      
 if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
@@ -125,7 +140,7 @@ if __name__ == "__main__":
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 0,
+        "is_log": 1,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
