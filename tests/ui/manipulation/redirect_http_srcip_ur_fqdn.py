@@ -247,6 +247,7 @@ def run(parameter):
                 cond_status = 0
                 cond_key_out = cond_key.replace("_", " ")
                 if len(cond_value) != 0:  # 不为空
+                    cond_data = cond_value
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
                         if cond_key == "protocol_filed":

@@ -231,6 +231,7 @@ def run(parameter):
                 cond_status = 0
                 cond_key_out = cond_key.replace("_", " ")
                 if len(cond_value) != 0:  # 不为空
+                    cond_data = cond_value
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
                         if cond_key == "protocol_filed":
@@ -306,7 +307,7 @@ def run(parameter):
         support.ui_utils.env_initialization.teardown()
         # 删除配置
         erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
+        #erase.clear_config(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  

@@ -921,6 +921,11 @@ def delete_pre_policy(name_list, driver):
         search_rule_code, first_row_checkbox_element = search_rule.search(policy_type, policy_name, element_position)
         delete_rule = DeleteRule(driver)
         delete_rule_code = delete_rule.delete(element_position, first_row_checkbox_element, True)
+        if delete_rule_code == 200:
+            print("Delete {} rule successfully.".format(policy_type))
+        elif delete_rule_code != 200:
+            result = " In addition, fail to delete {} rule.".format(policy_type)
+            print(result)
         time.sleep(2)
         return delete_rule_code
 
@@ -984,5 +989,4 @@ def get_element_position(key_name):
 
 # 勿删 zcw make
 manipulation_object_no_create_list = ["application", "sub_action_override"]
-#manipulation_object_no_create_list = ["application", "sub_action_override", "source_ip"]
 manipulation_profile_no_create_list = ["deny_response_text", "deny_response_block", "redirect_url", "replace_parameter", "edit_element_parameter"]
