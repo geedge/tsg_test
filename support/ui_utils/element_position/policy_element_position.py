@@ -27,7 +27,7 @@ policyRulePage_closeSrcPort_posXpath = "//div[@class='SourceList list-box']//but
 
 policyRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchApplication_posXpath = "//div[@class='AppList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectApplication_posXpath = "//div[@class='floatleft margin-top20 overflow-y-auto overflow-x-hidden width100']//li[1]//div[@class='reference-box el-popover__reference']"
+policyRulePage_selectApplication_posXpath = '//div[@class="LocalationDraswer lstsub policy-right-show-edit v-draswer"]//li[1]//div[@class="row-content-cell"]'
 policyRulePage_closeApplication_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 policyRulePage_selectApplicationLabel_posXpath = "//div[@class='el-tabs__nav is-top']//div[normalize-space(text())='Application']"
 policyRulePage_selectApplicationGroupLabel_posXpath = "//div[normalize-space(text())='Group']"

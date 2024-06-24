@@ -32,7 +32,7 @@ groupObjectPage_closeExclude_posXpath=groupObjectPage_closeSubordinate_posXpath 
 groupObjectPage_addExcludeObject_posId=groupObjectPage_addSubordinateObject_posId #再次add sub的按钮
 
 #app group
-applicationGroupobjectListPage_createButton_posId="Application_appGroups"#create_button
+applicationGroupobjectListPage_createButton_posId="app_create-_OperateBtns_ElCol_ElRow_Application_appGroups_Home_App_anonymousComponent"#create_button
 applicationGroupObjectPage_okButton_posId = "OK-_AppGroupDetail_Home_App_anonymousComponent" # OK按钮
 appllicationGroupObjectPage_okButton_warningYes_posXpath = "//div[@class='el-message-box__wrapper']//button[contains(@class, 'el-button--primary operation-confirm')]//span"
 applicationGroupObjectListPage_deleteButton_posId = id="appDel-_OperateBtns_ElCol_ElRow_Application_appGroups_Home_App_anonymousComponent"

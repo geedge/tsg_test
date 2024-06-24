@@ -55,11 +55,11 @@ def run(parameter):
                         "select_type": False,
                         "negate": False,
                         "item": [
-                            # {
-                            #     "item_operation": "add",
-                            #     "item_type": "ipv4",
-                            #     "item_value": "192.168.64.91",
-                            # },
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.64.91",
+                            },
                         ]
                     }
                 ],
@@ -77,8 +77,7 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [],
-                "application_group":[
+                "application": [
                     {
                         "name": "monitor_contain_ssl_exclude_http",
                         "group_subordinate": [
@@ -91,7 +90,8 @@ def run(parameter):
                                 "name": "http"
                             }
                         ],
-                        "select_type": "False"
+                        "select_type": "False",
+                        "object_type":"application_group"
                     }
                 ],
                 "server_fqdn": [],
@@ -242,7 +242,6 @@ def run(parameter):
                     "policyRulePage_saveProile_warningYes_posXpath":monitorRulePage_saveProile_warningYes_posXpath,
                     #add app_group
                     "policyRulePage_selectApplicationGroupLabel_posXpath": securityRulePage_selectApplicationGroupLabel_posXpath,
-
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -270,8 +269,8 @@ def run(parameter):
                     result = "Fail to create ip object."
                     break
 
-        if "application_group" in test_data["condition"] and len(test_data["condition"]["application_group"]) != 0:
-            application_group_data = test_data["condition"]["application_group"]
+        if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
+            application_group_data = test_data["condition"]["application"]
             create_application_group = CreateObject(driver)
             for x in range(len(application_group_data)):
                 create_application_group_code = create_application_group.create_group(application_group_data[x],"ApplicationGroup",test_application_group_object_element_position)
@@ -282,14 +281,14 @@ def run(parameter):
                     break
 
 
-                        # 创建rule
-        if create_ip_code == 200:
+        # 创建rule
+        if create_application_group_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
-                print("Create security rule successfully.")
+                print("Create monitor rule successfully.")
             elif create_rule_code != 200:
-                result = "Fail to create security rule."
+                result = "Fail to create monitor rule."
         # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
