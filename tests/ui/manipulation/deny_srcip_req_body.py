@@ -22,6 +22,7 @@ from support.api_utils.log_in import *
 import support.ui_utils.env_initialization
 import traceback
 from support.api_utils.delete_config import DeleteConfig
+from support.report import *
 
 def run(parameter):
     try:
@@ -42,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "deny_srcip_responseText",
+            "rule_name": "deny_srcip_req_body",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -310,7 +311,21 @@ def run(parameter):
         support.ui_utils.env_initialization.teardown()
         # 删除配置
         erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
+        #erase.clear_config(token, parameter, name_list)
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "PASS"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
 
 
 
@@ -328,7 +343,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "deny_srcip_responseText"
+        "test_case_name": "deny_srcip_req_body"
     }
     run(parameter)
     """

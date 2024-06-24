@@ -229,7 +229,8 @@ def run(parameter):
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-            
+        # 脚本启动时间
+        start_time1 = time.time()    
         # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
@@ -254,6 +255,10 @@ def run(parameter):
                 print("The test case is failed. The failure reason is: ", result)
         # 避免报错：stale element not found
         time.sleep(5)
+        # 脚本结束时间和耗时
+        end_time1 = time.time()
+        duration1 = end_time1 - start_time1
+        print("Duration of traffic case: ", duration1)
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -297,7 +302,6 @@ def run(parameter):
         return result
     except Exception as e:
         print("Error: ", e)
-        print
         return "Error: " + str(e)
     finally:
         # 清理环境
