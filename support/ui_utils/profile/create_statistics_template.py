@@ -15,7 +15,6 @@ class CreateStatisticsTemplate():
         self.actions = ActionChains(self.driver)
 
     def create(self, data, template_element_position):
-        print("template1")
         page_jump_element_position = template_element_position["page_jump"]
         create_element_position = template_element_position["create"]
         try:
@@ -24,10 +23,8 @@ class CreateStatisticsTemplate():
             page_jump.jump_sub_profile_page(page_jump_element_position, "UIwithTrafficTestVsys")
             # 点击create
             self.driver.find_element(By.ID, create_element_position["templateListPage_createButton_posId"]).click()
-            print("template2,create button")
             # 输入name
             template_name = data["name"]
-            print("template3,create button")
             self.driver.find_element(By.ID, create_element_position["templatePage_inputName_posId"]).send_keys(
                 template_name)
             self.data = data
@@ -40,7 +37,6 @@ class CreateStatisticsTemplate():
                 chart_id = "{}".format(i + 1)  # 用于图表排序定位使用
                 # 点击chart add添加按钮
                 if operation_type == "create":  # 创建时点击添加图表，修改时不点击添加图表
-                    print("template4,create button")
                     self.driver.find_element(By.XPATH,
                                              create_element_position["templates_button_chartAdd_posXpath"]).click()
                 else:  # 修改数据，先点击修改按钮  "Edit"编辑修改
@@ -53,18 +49,18 @@ class CreateStatisticsTemplate():
                 # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 # 内嵌页面滚动条向下滚动到最底部
                 #time.sleep(2)
-                print("template5,scroll")
+                #print("template5,scroll")
                 div_paper_grid = self.driver.find_element(By.XPATH,
                                                           create_element_position["templates_div_paperGrid_posXpath"])
                 self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_paper_grid)
                 # Visualization Type 操作
-                print("template6,Visualization Type")
+                #print("template6,Visualization Type")
                 self._operate_radio(charts[i], data_index=data_index, no_modify=no_modify,
                                     data_key="visualization_type",
                                     ep_radio=create_element_position["templates_radio_visualizationType_posXpath"],
                                     chart_id=chart_id)
                 # metrics 操作
-                print("template7,metrics")
+                #print("template7,metrics")
                 self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="metrics", chart_id=chart_id)
                 visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
@@ -76,12 +72,12 @@ class CreateStatisticsTemplate():
                         print("Line No Dimensions")
                     else:
                         # dimensions 操作
-                        print("template8,dimensions")
+                        #print("template8,dimensions")
                         self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="dimensions", chart_id=chart_id)
                 # 如果有Order By，则操作
                 if visualization_type_temp == "table" or visualization_type_temp == "bar":  # 只有table\Bar 图的 有order by操作
-                    print("template9,Order By")
+                    #print("template9,Order By")
                     self._operate_order_by(charts[i], data_index=data_index, no_modify=no_modify,
                                            data_key="order_by", chart_id=chart_id)
                 else:
@@ -93,7 +89,7 @@ class CreateStatisticsTemplate():
                             first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
                         print("No Row Limit")
                     else:
-                        print("template10,No Row Limit")
+                        #print("template10,No Row Limit")
                         self._operate_series_limit(charts[i], data_index=data_index, no_modify=no_modify,
                                                    data_key="row_limit",
                                                    element_position=create_element_position[
@@ -110,7 +106,7 @@ class CreateStatisticsTemplate():
                                         chart_id=chart_id)
                 """
                 # Thresholds - Minimum incoming size 操作
-                print("template11,No Row Limit")
+                #print("template11,No Row Limit")
                 self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="min_in_size",
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
@@ -119,20 +115,23 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 输入chart name
-                print("template12,chart name")
+                #print("template12,chart name")
                 self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="chart_name",
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 点击chart的OK保存按钮
-                print("template13,chart OK")
+                #print("template13,chart OK")
                 self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
             # 确认创建，点击Template的OK保存按钮
-            print("template14,Template OK")
+            #print("template14,Template OK")
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["templates_button_oK_posCss"]).click()
 
-            print("template14,Template warningSaveYes")
+            #print("template14,Template warningSaveYes")
             self.driver.find_element(By.CSS_SELECTOR,
                                      create_element_position["templates_button_warningSaveYes_posCss"]).click()
+            #print(self.driver.find_element(By.CSS_SELECTOR,
+            #                         create_element_position["templates_button_warningSaveYes_posCss"]).is_enabled())
+            #print("template14,Template warningSaveYes after")
             return 200
         except Exception as e:
             print(e)
@@ -205,7 +204,8 @@ class CreateStatisticsTemplate():
                     replaceChart=chart_id, repalceLabel=dropdown_name, replaceDropdownIterm=data_value)
                 element_dropdown_item = self.driver.find_element(By.XPATH, ep_metricsAndDimensionsDropdownItem)
                 # 移动元素到页面，在执行点击
-                self.actions.move_to_element(element_dropdown_item).perform()
+                #self.actions.move_to_element(element_dropdown_item).perform()
+                self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 self.driver.execute_script("arguments[0].click();", element_dropdown_item)
             return 200
         except Exception as e:
@@ -291,8 +291,8 @@ class CreateStatisticsTemplate():
                                                      old_value=drop_item_old, new_value=dropdown_item,
                                                      dropdown_item_dict=dropdown_item_dict)
                         else:  # 新增数据  4.5.6.3->
-                            print("to dropdown_add")
-                            print(dropdown_item)
+                            #print("to dropdown_add")
+                            #print(dropdown_item)
                             self.dropdown_add(chart_id=chart_id, dropdown_name=repalceLabel, new_value=dropdown_item,
                                               dropdown_item_dict=dropdown_item_dict)
             return 200
@@ -339,7 +339,10 @@ class CreateStatisticsTemplate():
                         #                                                                    "./parent::*/parent::*//span").click()
                         element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1).find_element(By.XPATH,
                                                                                             "./parent::*/parent::*//span")
-                        self.actions.move_to_element(element_dropdown_item).perform()
+                        #print("template12,chart name")
+                        #print(element_dropdown_item.is_enabled())
+                        self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
+                        #self.actions.move_to_element(element_dropdown_item).perform()
                         self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                         return 0
                     elif data_value == "":  # 输入框为空
@@ -381,12 +384,18 @@ class CreateStatisticsTemplate():
                 element_position_1 = element_position.format(replaceChart=chart_id, repalceLabel=repalceLabel)
                 # 定位元素中span换成label
                 element_position_1 = element_position_1.replace("span", "*")
-                print(element_position_1)
+                #print(element_position_1)
+                #print(self.driver.find_element(By.XPATH, element_position_1).is_enabled())
+                #self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
+                #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                 self.driver.find_element(By.XPATH, element_position_1).click()
                 element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1). \
                     find_element(By.XPATH,
                                  f"./ancestor::*[contains(@class, 'el-form-item el-form-item--small')]//*[contains(@class, 'el-select-dropdown__list')]/li/span[normalize-space(text())='{data_value_1}']")
-                self.actions.move_to_element(element_dropdown_item).perform()
+                #print("template10,No Row Limit")
+                #print(element_dropdown_item.is_enabled())
+                #self.actions.move_to_element(element_dropdown_item).perform()
+                self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                 # self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
             return 200
@@ -403,8 +412,8 @@ class CreateStatisticsTemplate():
         :param dropdown_item_dict:  下拉列表新增值item映射的字典
         :return:
         """
-        print(5555)
-        print(dropdown_name)
+        #print(5555)
+        #print(dropdown_name)
         dropdown_aggragate_dict = {"sum": "SUM", "rate": "RATE", "bitrate": "BITRATE",
                                    "percentiles_hdr": "PERCENTILES_HDR", "median_hdr": "MEDIAN_HDR",
                                    "p95_percentile_hdr": "P95_PERCENTILE_HDR",
@@ -416,8 +425,8 @@ class CreateStatisticsTemplate():
             # ep_metricsAndDimensionsAdd = statisticsTemplates_button_metricsAndDimensionsAdd_posXpath.format(replaceChart=chart_id, repalceLabel=dropdown_name)   #添加按钮定位
             ep_metricsAndDimensionsSelects = statisticsTemplates_input_metricsAndDimensionsSelect_posXpath.format(
                 replaceChart=chart_id, repalceLabel=dropdown_name)  # 下拉框定位，可能存在多个
-            print(6666)
-            print(ep_metricsAndDimensionsSelects)
+            #print(6666)
+            #print(ep_metricsAndDimensionsSelects)
             element_metricsAndDimensionsSelects = self.driver.find_elements(By.XPATH,
                                                                             ep_metricsAndDimensionsSelects)  # 下拉框元素列表
             element_metricsAndDimensionsAdd = element_metricsAndDimensionsSelects[-1].find_element(By.XPATH,
@@ -427,7 +436,7 @@ class CreateStatisticsTemplate():
             time.sleep(3)
             is_click_add = "yes_click"
             for dropdownSelect_item in element_metricsAndDimensionsSelects[1:-1]:  # 下拉框元素列表中第二个到倒数第二个为操作数据
-                print(7777)
+                #print(7777)
                 dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,
                                                                                    "./div[1]//input").get_attribute(
                     "value")
@@ -436,15 +445,15 @@ class CreateStatisticsTemplate():
                     is_click_add = "no_click"
                     break
             if is_click_add == "yes_click":
-                print(8888)
+                #print(8888)
                 element_metricsAndDimensionsAdd.click()  # 全部都有数据时，需要点击添加
             # 点击空的下拉列表框选项
-            print(9999)
-            print(ep_metricsAndDimensionsSelects)
+            #print(9999)
+            #print(ep_metricsAndDimensionsSelects)
             element_metricsAndDimensionsSelects2 = self.driver.find_elements(By.XPATH,
                                                                              ep_metricsAndDimensionsSelects)  # 下拉框元素列表  重新获取一次
             if dropdown_name == "Metrics":
-                print(1010)
+                #print(1010)
                 create_class = element_metricsAndDimensionsSelects2[-1].find_element(By.XPATH, ".//i").get_attribute(
                     "class")
                 # print(create_class)
@@ -455,7 +464,7 @@ class CreateStatisticsTemplate():
             else:
                 tmp_element_metricsAndDimensionsSelects2 = element_metricsAndDimensionsSelects2[1:-1]
             for dropdownSelect_item in tmp_element_metricsAndDimensionsSelects2:
-                print(1111)
+                #print(1111)
                 dropdownSelect_item_list = dropdownSelect_item.find_elements(By.XPATH, "./div")  # 所有列的集合
                 # print(dropdownSelect_item_list)
                 dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,
@@ -471,7 +480,7 @@ class CreateStatisticsTemplate():
                         # dimension需要操作一列
                         tmp_dropdownSelect_item_list = dropdownSelect_item_list[0:1]
                     for col_dropdownSelect in tmp_dropdownSelect_item_list:  # 需要操作的每一个行中列的数量
-                        print(1212)
+                        #print(1212)
                         col_dropdownSelect.find_element(By.XPATH, ".//input").click()
 
                         # 异常断言判断 "reverse_case": "....",   # 主要校验不同chart类型，可以选择不同的metrics   # 只是断言使用，无实际页面操作
@@ -483,8 +492,8 @@ class CreateStatisticsTemplate():
                                 is_disabled_list = ["Session IDs", "Client IPs", "Server IPs", "Incoming Latency",
                                                     "Outgoing Latency", "Latency"]
                                 el_drop_item_class_xpath = "//*[contains(@class, 'Metric')]//div[contains(@class, 'multipleSelect')]//div[@class='el-scrollbar']//li[contains(@class, 'el-select-dropdown__item')]"
-                                print(1313)
-                                print(el_drop_item_class_xpath)
+                                #print(1313)
+                                #print(el_drop_item_class_xpath)
                                 drop_items = self.driver.find_elements(By.XPATH, el_drop_item_class_xpath)
                                 for i in drop_items:
                                     item_name = i.find_element(By.XPATH, ".//span").text.strip()
@@ -503,8 +512,8 @@ class CreateStatisticsTemplate():
                                                     "New Unestablished Sessions",
                                                     "SYN Packets", "Session IDs", "Client IPs", "Server IPs"]
                                 el_drop_item_class_xpath = "//*[contains(@class, 'Metric')]//div[contains(@class, 'multipleSelect')]//div[@class='el-scrollbar']//li[contains(@class, 'el-select-dropdown__item')]"
-                                print(1414)
-                                print(el_drop_item_class_xpath)
+                                #print(1414)
+                                #print(el_drop_item_class_xpath)
                                 drop_items = self.driver.find_elements(By.XPATH, el_drop_item_class_xpath)
                                 for i in drop_items:
                                     item_name = i.find_element(By.XPATH, ".//span").text.strip()
@@ -525,16 +534,17 @@ class CreateStatisticsTemplate():
                             else:
                                 replaceDropdownIterm = col_name
                             if col_n == 0 or col_n == 1:
-                                print(1515)
+                                #print(1515)
                                 element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,
                                                                                         f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
 
-                                print(element_dropdown_item)
+                                #print(element_dropdown_item)
                                 # 移动元素到页面，在执行点击
-                                self.actions.move_to_element(element_dropdown_item).perform()
+                                #self.actions.move_to_element(element_dropdown_item).perform()
+                                self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                                 self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                             elif col_n == 2:
-                                print(1616)
+                                #print(1616)
                                 # 输入label值
                                 col_dropdownSelect.find_element(By.XPATH, ".//input").clear()
                                 col_dropdownSelect.find_element(By.XPATH, ".//input").send_keys(replaceDropdownIterm)
@@ -543,13 +553,22 @@ class CreateStatisticsTemplate():
                             col_name = new_value
                             replaceDropdownIterm = dropdown_item_dict[col_name]
                             #print(replaceDropdownIterm)
-                            print(1717)
-                            element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,
-                                                                                    f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
-                            print(element_dropdown_item)
-                            # 移动元素到页面，在执行点击
-                            self.actions.move_to_element(element_dropdown_item).perform()
+                            #print(1717)
+                            #time.sleep(3)
+                            elements = col_dropdownSelect.find_elements(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
+                            #print(len(elements))
+                            element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
+                            #element_dropdown_item = col_dropdownSelect.find_element(By.XPATH, f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
+                            #col_dropdownSelect.execute_script("window.scrollTo(0," + str(element_dropdown_item.location["y"]) + ")")
+                            #print(element_dropdown_item)
+                            #print(element_dropdown_item.is_enabled())
+                            #print(1818)
+                            self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                             self.driver.execute_script("arguments[0].click();", element_dropdown_item)
+                            #element_dropdown_item.click()
+                            # 移动元素到页面，在执行点击
+                            #self.actions.move_to_element(element_dropdown_item).perform()
+                            #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                     break
             return 200
         except Exception as e:
@@ -626,7 +645,8 @@ class CreateStatisticsTemplate():
                                                                                                    new_value_list[0]])
             element_dropdown_item = self.driver.find_element(By.XPATH, ep_metricsAndDimensionsDropdownItem)
             # 移动元素到页面，在执行点击
-            self.actions.move_to_element(element_dropdown_item).perform()
+            #self.actions.move_to_element(element_dropdown_item).perform()
+            self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
             self.driver.execute_script("arguments[0].click();", element_dropdown_item)
             # Metrics列数据，还需要修改Aggregate label数据
             if dropdown_name == "Metrics":
