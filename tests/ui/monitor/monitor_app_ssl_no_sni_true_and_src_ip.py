@@ -373,7 +373,7 @@ def run(parameter):
                     elif delete_profile_code != 200:
                         result = result + " In addition, fail to delete profile."
                         break
-                # else:
+                else:
                     result = result + " In addition, fail to search profile."
                     break
 

@@ -245,6 +245,9 @@ def run(parameter):
                     "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
                     "policyRulePage_saveProile_ok_posXpath": monitorRulePage_saveProile_ok_posXpath,
                     "policyRulePage_saveProile_warningYes_posXpath": monitorRulePage_saveProile_warningYes_posXpath,
+                    # packet capture depth
+                    "policyRulePage_packetCapture_posXpath": securityRulePage_packetCapture_posXpath,
+                    "policyRulePage_packetCapture_depth_posXpath": securityRulePage_packetCapture_depth_posXpath,
 
                 },
                 "search": {
