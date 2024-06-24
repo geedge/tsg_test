@@ -82,7 +82,7 @@ class TrafficVerification():
                 if is_log_query == 1 or is_counters == 1:
                     for i in range(50):
                         print("Get log and metric for the {} time.".format(i+1))
-                        if i == 30 and script_type == "ui" and driver:
+                        if i == 10 and script_type == "ui" and driver:
                             print("Operate the browser to prevent timeout close.")
                             support.ui_utils.env_initialization.teardown()
                             support.ui_utils.env_initialization.initiate_selenium_request()

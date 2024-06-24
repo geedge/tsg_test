@@ -27,7 +27,7 @@ policyRulePage_closeSrcPort_posXpath = "//div[@class='SourceList list-box']//but
 
 policyRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchApplication_posXpath = "//div[@class='AppList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectApplication_posXpath = "//div[@class='floatleft margin-top20 overflow-y-auto overflow-x-hidden width100']//li[1]//div[@class='reference-box el-popover__reference']"
+policyRulePage_selectApplication_posXpath = '//div[@class="LocalationDraswer lstsub policy-right-show-edit v-draswer"]//li[1]//div[@class="row-content-cell"]'
 policyRulePage_closeApplication_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 policyRulePage_selectApplicationLabel_posXpath = "//div[@class='el-tabs__nav is-top']//div[normalize-space(text())='Application']"
 policyRulePage_selectApplicationGroupLabel_posXpath = "//div[normalize-space(text())='Group']"
@@ -58,7 +58,14 @@ policyRulePage_searchExternalPort_posXpath = "//div[@class='ExternalsList list-b
 policyRulePage_selectExternalPort_posXpath = "//div[@class='ExternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeExternalPort_posXpath = "//div[@class='ExternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
+policyRulePage_addImsi_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Device']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchImsi_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectImsi_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeImsi_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+
 policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
+policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
 policyRulePage_addCondition_dstPort_posXpath = "//div[@class='SourceList list-box']//li[4]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
@@ -141,6 +148,9 @@ securityRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort
 securityRulePage_selectInternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
 securityRulePage_closeInternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
 
+# imsi映射
+
+
 securityRulePage_addDstPort_posXpath = policyRulePage_addDstPort_posXpath
 securityRulePage_searchDstPort_posXpath = policyRulePage_searchDstPort_posXpath
 securityRulePage_selectDstPort_posXpath = policyRulePage_selectDstPort_posXpath
@@ -166,6 +176,7 @@ securityRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApp
 securityRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 securityRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
 
+securityRulePage_addCondition_imsi_posXpath = policyRulePage_addConditionImsi_posXpath
 securityRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
 securityRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
 securityRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
@@ -195,6 +206,11 @@ securityRulePage_addRequestHeader_posXpath = policyRulePage_addRequestHeader_pos
 securityRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 securityRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 securityRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
+
+securityRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
+securityRulePage_searchServerFqdn_posXpath = policyRulePage_searchImsi_posXpath
+securityRulePage_selectServerFqdn_posXpath = policyRulePage_selectImsi_posXpath
+securityRulePage_closeServerFqdn_posXpath = policyRulePage_closeImsi_posXpath
 
 securityRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 securityRulePage_okButton_yes_posId = "OK-_SecurityAdd_Home_App_anonymousComponent"
@@ -231,6 +247,7 @@ securityRulePage_subAction_alert_responseContent_selectProfile_posId = "filelist
 securityRulePage_packetCapture_posXpath = "//form[@class='el-form policy_edit el-form--label-left']//div[17]//span"
 securityRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labelStyle padding-left20 el-form-item--small']//input[@class='el-input__inner']"
 
+ 
 # intercept
 interceptRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
 interceptRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
