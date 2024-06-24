@@ -368,10 +368,7 @@ def run(parameter):
         return result
     except Exception as e:
         print("Error: ", e)
-        print
         return "Error: " + str(e)
-    finally:
-        # 清理环境
         support.ui_utils.env_initialization.teardown()
         # 删除配置
         erase = DeleteConfig()

@@ -93,7 +93,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"server_port", "query_value": 80}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 5 -m 10 http://www.news.cn/"
+                "command": "curl -kv --connect-timeout 25 -m 25 http://www.news.cn/"
             },
             "token": ""
         }
@@ -284,7 +284,6 @@ def run(parameter):
         return result
     except Exception as e:
         print("Error: ", e)
-        print
         return "Error: " + str(e)
     finally:
         # 清理环境

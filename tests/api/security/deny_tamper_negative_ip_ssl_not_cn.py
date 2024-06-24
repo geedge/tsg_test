@@ -51,7 +51,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "jd.com"
+                            "open.node"
                         ]
                         }
                     ]
@@ -140,7 +140,7 @@ if __name__ == "__main__":
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 0,
+        "is_log": 1,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",

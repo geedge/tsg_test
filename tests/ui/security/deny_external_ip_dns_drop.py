@@ -298,7 +298,6 @@ def run(parameter):
         return result
     except Exception as e:
         print("Error: ", e)
-        print
         return "Error: " + str(e)
     finally:
         # 清理环境

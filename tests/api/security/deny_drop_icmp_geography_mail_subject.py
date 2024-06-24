@@ -37,7 +37,7 @@ def run(parameter):
                         {
                         "type": "library",
                         "continent": "Asia",
-                        "geoname_id": "971421",
+                        "geoname_id": "971420",
                         "super_administrative_area": "auto_geo_obj",
                         "administrative_area": "auto_geo_obj",
                         "country_abbr": "auto_geo_obj",
