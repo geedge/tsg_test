@@ -131,6 +131,25 @@ test_data = \
                                 ]
                             }
                         ],
+                    },
+                    {
+                        "name": "manipulation_keywords_response_body",
+                        "object_type": "keywords",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "response_body",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "test_resbody"
+                                ]
+                            }
+                        ],
                     }
                 ],
                 "sub_action_override": True,
@@ -155,6 +174,11 @@ test_data = \
                             "model": "create",
                             "file": "testa.html->"
                         },
+                    },
+                ],
+                "deny_response_block": [
+                    {
+                        "Manipulation_block": "close_connection"
                     }
                 ],
                 "redirect_url": [
