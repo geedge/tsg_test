@@ -116,18 +116,22 @@ def run(parameter):
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
         # 生成csv报告
-        if result is not None and result != "" and len(result) != 0:
-            report_data = []
-            report_data.append(parameter["test_case_name"])
-            if False in verification_result:
-                result_flag = "Fail"
-            else:
-                result_flag = "PASS"
-            report_data.append(result_flag)
-            report_data.append(result)
-            new_report = GenerateReport()
-            new_report.insert_data(parameter, report_data)
-            
+        directory = parameter["root_path"] + "/report"
+        filename = "{}_report.csv".format(parameter["script_type"])
+        file_path = os.path.join(directory, filename)  
+        if os.path.exists(file_path) and os.path.isfile(file_path):  
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "PASS"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
+                
 if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",

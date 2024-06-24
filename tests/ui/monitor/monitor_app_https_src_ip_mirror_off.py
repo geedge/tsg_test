@@ -25,6 +25,7 @@ from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env_initialization
 import traceback
 
+from support.report import *
 
 def run(parameter):
     try:
@@ -45,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_https_profile_on",
+            "rule_name": "monitor_rule_https_mirror_off",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -91,7 +92,7 @@ def run(parameter):
                 "sub_action": [],
                 "packet_capture": []
             },
-            "is_mirror": "on",
+            "is_mirror": "off",
             "profile": [],
             "expected_return": "mtv",
             "counters_1": {"hits": "many"},
@@ -111,7 +112,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_https_profile_on"
+                "name": "monitor_rule_https_mirror_off"
             },
             {
                 "type": "ip",
@@ -340,7 +341,7 @@ def run(parameter):
         print("Duration of running the test case: ", duration)
 
         print("Finish test case: " + parameter["test_case_name"])
-        # return result
+        return result
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)
@@ -350,7 +351,21 @@ def run(parameter):
         # 删除配置
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
-
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):  
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "PASS"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
+    
 
 if __name__ == '__main__':
     parameter = {
@@ -365,7 +380,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_rule_https_mirror_on"
+        "test_case_name": "monitor_rule_https_mirror_off"
     }
     run(parameter)
     """

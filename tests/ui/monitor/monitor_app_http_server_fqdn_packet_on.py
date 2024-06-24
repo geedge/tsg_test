@@ -25,6 +25,7 @@ from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env_initialization
 import traceback
 
+from support.report import *
 
 def run(parameter):
     try:
@@ -245,6 +246,9 @@ def run(parameter):
                     "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
                     "policyRulePage_saveProile_ok_posXpath": monitorRulePage_saveProile_ok_posXpath,
                     "policyRulePage_saveProile_warningYes_posXpath": monitorRulePage_saveProile_warningYes_posXpath,
+                    # packet capture depth
+                    "policyRulePage_packetCapture_posXpath": securityRulePage_packetCapture_posXpath,
+                    "policyRulePage_packetCapture_depth_posXpath": securityRulePage_packetCapture_depth_posXpath,
 
                 },
                 "search": {
@@ -386,7 +390,21 @@ def run(parameter):
         # 删除配置
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
-
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):  
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "PASS"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
+    
 
 if __name__ == '__main__':
     parameter = {

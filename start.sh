@@ -1,5 +1,7 @@
 #!/bin/sh
 
+systemctl disable firewalld.service
+
 cd /opt
 git clone git@git.mesalab.cn:chongming/tsg_test.git
 cd /opt/tsg_test
