@@ -951,11 +951,11 @@ test_intercept_rule_element_position = test_intercept_rule_element_position
 
 def get_element_position(key_name):
     # object
-    if key_name == "source_ip":
+    if key_name == "source_ip" or key_name == "internal_ip":
         element_position_map = test_ip_object_element_position
     elif key_name == "source_port":
         element_position_map = test_port_object_element_position
-    elif key_name == "destination_ip":
+    elif key_name == "destination_ip" or key_name == "external_ip":
         element_position_map = test_ip_object_element_position
     elif key_name == "destination_port":
         element_position_map = test_port_object_element_position

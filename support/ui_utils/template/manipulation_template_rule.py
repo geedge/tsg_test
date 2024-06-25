@@ -18,7 +18,7 @@ test_data = \
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.88",
+                                "item_value": "192.168.64.99",
                             },
                         ]
                     }
@@ -38,9 +38,23 @@ test_data = \
                         ]
                     }
                 ],
+                "internal_ip": [
+                    {
+                        "name": "manipulation_internal_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.64.99",
+                            }
+                        ]
+                    }
+                ],
                 "source_port": [],
                 "destination_port": [],
-                "internal_ip": [],
                 "internal_port": [],
                 "external_ip": [],
                 "external_port": [],
