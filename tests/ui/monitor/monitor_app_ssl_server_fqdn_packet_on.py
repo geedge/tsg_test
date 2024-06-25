@@ -228,12 +228,6 @@ def run(parameter):
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                    "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
@@ -256,6 +250,13 @@ def run(parameter):
                     # packet capture depth
                     "policyRulePage_packetCapture_posXpath": securityRulePage_packetCapture_posXpath,
                     "policyRulePage_packetCapture_depth_posXpath": securityRulePage_packetCapture_depth_posXpath,
+                    # 添加Server FQDN
+                    "policyRulePage_addConditionServerFqdn_posXpath": policyRulePage_addCondition_serverFqdn_posXpath,
+                    "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
+                    "policyRulePage_addServerFqdn_posXpath": policyRulePage_addServerFqdn_posXpath,
+                    "policyRulePage_searchServerFqdn_posXpath": policyRulePage_searchServerFqdn_posXpath,
+                    "policyRulePage_selectServerFqdn_posXpath": policyRulePage_selectServerFqdn_posXpath,
+                    "policyRulePage_closeServerFqdn_posXpath": policyRulePage_closeServerFqdn_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
