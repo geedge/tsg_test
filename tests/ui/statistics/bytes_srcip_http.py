@@ -172,7 +172,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "statistics",
+                "name": "bytes_with_src_ip",
             },
             {
                 "type": "ip",
