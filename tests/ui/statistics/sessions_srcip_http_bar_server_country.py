@@ -45,14 +45,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_with_src_ip_http_line_devicegroup",
+            "rule_name": "sessions_srcip_http_bar_server_country",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packets_line_source_ip",
+                        "name": "statistics_sessions_bar_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -60,7 +60,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.23",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -68,7 +68,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_packets_line_destination_ip",
+                        "name": "statistics_all_sessions_bar_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -76,7 +76,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.23",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -109,17 +109,17 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Packets Line Device Group",
+                    "name": "Auto Sessions Bar Dimension Server Country",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Bar",
                           "metrics": [
-                            "pkts:RATE:pkts"
+                            "sessions:RATE:sessions"
                           ],
-                          "dimensions": ["application"],
-                          "order_by": "pkts",
+                          "dimensions": ["server_country"],
+                          "order_by": "sessions",
                           "row_limit": "10",
                           "min_in_size": "1",
                           "max_out_size": "1"
@@ -132,10 +132,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.23",
-                "clients_end_ip": "10.64.224.23",
-                "servers_start_ip": "2.1.1.23",
-                "servers_end_ip": "2.1.1.23",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -166,18 +166,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packets_with_src_ip_http_line_devicegroup",
+                "name": "sessions_srcip_http_bar_server_country",
             },
             {
                 "type": "ip",
-                "name": "statistics_packets_line_source_ip",
+                "name": "statistics_all_sessions_bar_source_ip",
             },{
                 "type": "ip",
-                "name": "statistics_packets_line_destination_ip",
+                "name": "statistics_all_sessions_bar_destination_ip",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Packets Line Device Group",
+                "name": "Auto Sessions Bar Dimension Server Country",
             },
         ]
         log_in = LogIn()
@@ -245,6 +245,7 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
+
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
                                                      element_position_map)
@@ -397,7 +398,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_with_src_ip_http_line_devicegroup",
+        "test_case_name": "sessions_srcip_http_bar_server_country",
         "script_type": "ui",
         "policy_type": "statistics"
     }

@@ -253,8 +253,7 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        # 避免报错：stale element not found
-        time.sleep(5)
+        
         # 脚本结束时间和耗时
         end_time1 = time.time()
         duration1 = end_time1 - start_time1
