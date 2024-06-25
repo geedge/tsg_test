@@ -60,6 +60,10 @@ class GetLog():
                 log_source = 'monitor_event'
                 identifier_name = 'monitor-event-list'
                 log_query_rule_type = 'monitor_rule_list'
+            elif policy_type == 'statistics':
+                log_source = 'session_record'
+                identifier_name = 'session-record-list'
+                log_query_rule_type = 'statistics_rule_list'
             log_condition_dict['columns'] = fields
             log_condition_dict['start_time'] = start_time
             log_condition_dict['end_time'] = end_time
