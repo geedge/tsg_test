@@ -48,7 +48,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "bytes_srcip_http_bar_clientip",
+            "rule_name": "bytes_srcip_http_bar_server_fqdn",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ap",
@@ -112,17 +112,17 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Bar Distributed by Client IP",
+                    "name": "Auto Bytes Bar Distributed by Server Fqdn",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "bytes:BITRATE:bytes"
+                            "bytes:RATE:bytes"
                           ],
                           "dimensions": [
-                            "client_ip"
+                            "server_fqdn"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
@@ -171,7 +171,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "bytes_srcip_http_bar_clientip",
+                "name": "bytes_srcip_http_bar_server_fqdn",
             },
             {
                 "type": "ip",
@@ -182,7 +182,7 @@ def run(parameter):
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Bar Distributed by Client IP",
+                "name": "Auto Bytes Bar Distributed by Server Fqdn",
             },
         ]
         log_in = LogIn()
@@ -405,7 +405,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "bytes_srcip_http_bar_clientip",
+        "test_case_name": "bytes_srcip_http_bar_server_fqdn",
         "script_type": "ui",
         "policy_type": "statistics"
     }
