@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "allow_srcip",
+            "rule_name": "allow_srcip_dstip",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -75,7 +75,8 @@ def run(parameter):
                                 "item_value": "192.168.40.206",
                             },
                         ]
-                    }],
+                    }
+                ],
                 "application": [
                     {
                         "name": "http",  #
@@ -330,7 +331,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "allow_srcip"
+        "test_case_name": "allow_srcip_dstip"
     }
 
     run(parameter)

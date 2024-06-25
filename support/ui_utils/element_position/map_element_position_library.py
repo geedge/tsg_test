@@ -378,6 +378,12 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchSrcIP_posXpath": manipulationRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
+        # Destination IP
+        "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
+        "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
+        "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
+        "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
+        "policyRulePage_closeDstIP_posXpath": statisticsRulePage_closeDstIP_posXpath,
         # Internal IP
         "policyRulePage_addConditionInternalIP_posXpath": manipulationRulePage_addCondition_internalIP_posXpath,
         "policyRulePage_addInternalIP_posXpath": manipulationRulePage_addInternalIP_posXpath,

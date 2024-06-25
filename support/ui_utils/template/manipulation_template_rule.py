@@ -23,8 +23,22 @@ test_data = \
                         ]
                     }
                 ],
+                "destination_ip": [
+                    {
+                        "name": "manipulation_destination_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.40.206",
+                            },
+                        ]
+                    }
+                ],
                 "source_port": [],
-                "destination_ip": [],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
