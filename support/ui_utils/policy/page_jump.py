@@ -2,8 +2,8 @@ import os
 # import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
-import time
 from time import sleep
+import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 import configparser
@@ -17,7 +17,6 @@ class PageJump():
         vsys_name:空值时，参数来自配置文件
         """
         # 菜单操作
-        sleep(5)
         self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
         self.change_vsys(vsys_name=vsys_name)
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()

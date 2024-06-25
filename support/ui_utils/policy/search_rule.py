@@ -2,7 +2,7 @@
 # import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
-from time import sleep
+import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policy.page_jump import PageJump
@@ -14,12 +14,10 @@ class SearchRule():
     def search(self, type, name, rule_element_position, vsys_name=""):
         search_element_position = rule_element_position["search"]
         page_jump_element_position = rule_element_position["page_jump"]
-        sleep(5)
         # 打开该列表
         page_jump = PageJump(self.driver)
         page_jump.jump_sub_policy_page(page_jump_element_position)
         # 点击search查询框
-        sleep(5)
         self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"]).click()
         dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
         self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
@@ -28,20 +26,16 @@ class SearchRule():
         # 强制点击js方法
         btn = self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"])
         self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
+        time.sleep(3)
         #self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
         element_tr = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_tableTbody_posXpath"])
         row = element_tr.find_elements(By.XPATH, "tr")
-        if len(row) != 0 and type not in ["security","monitor"]:
-            first_row = row[0]
-            first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
-            return 200, first_row_checkBox_element
-        elif len(row) != 0 and type in ["security","monitor"]:
+        if len(row) != 0:
             first_row = row[0]
             first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
             return 200, first_row_checkBox_element
         else:
             return 400, ""
-
 
     def get_rule_id(self):
         rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
