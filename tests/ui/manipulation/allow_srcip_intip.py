@@ -299,7 +299,7 @@ def run(parameter):
         support.ui_utils.env_initialization.teardown()
         # 删除配置
         erase = DeleteConfig()
-        #erase.clear_config(token, parameter, name_list)
+        erase.clear_config(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  

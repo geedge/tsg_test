@@ -927,6 +927,8 @@ def delete_pre_policy(name_list, driver):
         search_rule_code, first_row_checkbox_element = search_rule.search(policy_type, policy_name, element_position)
         delete_rule = DeleteRule(driver)
         delete_rule_code = delete_rule.delete(element_position, first_row_checkbox_element, True)
+        if policy_type == "pxy_intercept":
+            policy_type = "intercept"
         if delete_rule_code == 200:
             print("Delete {} rule successfully.".format(policy_type))
         elif delete_rule_code != 200:
