@@ -18,8 +18,8 @@ class CreateRule():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_policy_page(page_jump_element_position, "UIwithTrafficTestVsys")
-            
+            page_jump.jump_sub_policy_page(page_jump_element_position)
+
             # 点击create
             time.sleep(1)
             self.driver.find_element(By.ID, create_element_position["policyRuleListPage_createButton_posId"]).click()

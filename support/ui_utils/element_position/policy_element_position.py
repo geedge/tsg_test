@@ -8,7 +8,7 @@ mainPage_policySecondLevelMenu_statistics_posId = "policy_statistics"  # 二级�
 
 mainPage_button_menu_posXCss = ".menu-btn span"
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
-mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']"    # vsys tree中vsys name定位
+mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//div[@class='VsysTree']/ul//li"    # vsys tree中vsys name定位
 
 policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"

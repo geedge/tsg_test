@@ -18,7 +18,8 @@ class CreateObject():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
+            #page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
+            page_jump.jump_sub_object_page(page_jump_element_position)
             # 点击create
             self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"]).click()
             self.driver.find_element(By.ID, create_element_position["objectListPage_dropDown_createButton_posId"]).click()
@@ -101,7 +102,8 @@ class CreateObject():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
+            #page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
+            page_jump.jump_sub_object_page(page_jump_element_position)
             # 点击create group
             self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"]).click()
             if object_type == "ApplicationGroup":

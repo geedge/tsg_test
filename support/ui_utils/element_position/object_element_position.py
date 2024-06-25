@@ -2,7 +2,7 @@ mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
 mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
 mainPage_objectSearch_buttonSearch_posId = "searchQuery"  # 查询按钮id
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
-mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']"    # vsys tree中vsys name定位
+mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
 mainPage_firstLevelMenu_Objects_posId = "object"  # 一级菜单Global Objects
 mainPage_secondLevelMenu_ipAddress_posId = "Objects_ip"  # 二级菜单IP Addresses
 mainPage_secondLevelMenu_port_posId = "Objects_port"

@@ -17,7 +17,7 @@ class SearchRule():
         sleep(5)
         # 打开该列表
         page_jump = PageJump(self.driver)
-        page_jump.jump_sub_policy_page(page_jump_element_position, "UIwithTrafficTestVsys")
+        page_jump.jump_sub_policy_page(page_jump_element_position)
         # 点击search查询框
         sleep(5)
         self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"]).click()

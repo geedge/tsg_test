@@ -23,7 +23,7 @@ class CreateProfile():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_profile_page(page_jump_element_position, "UIwithTrafficTestVsys")
+            page_jump.jump_sub_profile_page(page_jump_element_position)
             # 点击create
             self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
             if profile_data["profile_type"] == "response_page":  # response page创建
