@@ -331,7 +331,7 @@ class DeleteConfig():
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(rule_url, template, headers)
                         
-                    if name_item["type"] in ["ip", "port", "url"]:
+                    if name_item["type"] in ["ip", "port", "url", "fqdn", "http_signature"]:
                         template['name'] = name_item["name"]
                         template['type'] = name_item["type"]
                         self.query_and_delete_by_name(obj_url, template, headers)

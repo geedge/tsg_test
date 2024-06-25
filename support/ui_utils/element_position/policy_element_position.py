@@ -234,6 +234,7 @@ securityRulePage_subAction_block_responseContent_clickProfile_posXpath = "//div[
 securityRulePage_subAction_block_responseContent_searchProfile_posXpath = "//input[@class='width85']"
 securityRulePage_subAction_block_responseContent_selectProfile_posId = "filelist_select0"
 securityRulePage_subAction_redirect_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Redirect']"
+securityRulePage_subAction_redirect_input_posXpath = "myEditor1"
 securityRulePage_subAction_alert_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Alert']"
 securityRulePage_subAction_alert_responseCode_posXpath = "//div[contains(@zs-label, '应答码')]//input[@class='el-input__inner']"
 securityRulePage_subAction_alert_responseCode_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"
