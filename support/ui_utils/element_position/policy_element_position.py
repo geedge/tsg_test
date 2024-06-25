@@ -208,9 +208,9 @@ securityRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHead
 securityRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
 
 securityRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
-securityRulePage_searchServerFqdn_posXpath = policyRulePage_searchImsi_posXpath
-securityRulePage_selectServerFqdn_posXpath = policyRulePage_selectImsi_posXpath
-securityRulePage_closeServerFqdn_posXpath = policyRulePage_closeImsi_posXpath
+securityRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
+securityRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
+securityRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
 
 securityRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 securityRulePage_okButton_yes_posId = "OK-_SecurityAdd_Home_App_anonymousComponent"

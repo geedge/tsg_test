@@ -236,6 +236,8 @@ def run(parameter):
                     break
 
         # 创建rule
+        create_rule_code = 0
+        delete_rule_code = 0
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -247,22 +249,21 @@ def run(parameter):
 
 
         # 触发流量验证
-            # 触发流量验证
-            if create_rule_code == 200:
-                edit_rule = EditRule(driver)
-                edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
-                                                         element_position_map)
-                edit_rule_code = 200
-                if edit_rule_code == 200:
-                    test_data["rule_id"] = rule_id
-                    config = OrganizeConfig()
-                    cfg_list = config.organize_cfg(parameter, test_data, template_path)
-                    verify = TrafficVerification()
-                    verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
+        if create_rule_code == 200:
+            edit_rule = EditRule(driver)
+            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                                                     element_position_map)
+            edit_rule_code = 200
+            if edit_rule_code == 200:
+                test_data["rule_id"] = rule_id
+                config = OrganizeConfig()
+                cfg_list = config.organize_cfg(parameter, test_data, template_path)
+                verify = TrafficVerification()
+                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
+            if len(verification_result) == 4:
+                driver = verification_result[3]
+            elif len(verification_result) == 5:
+                driver = verification_result[4]
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
@@ -282,11 +283,10 @@ def run(parameter):
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
 
+        # 避免报错：stale element not found
+        time.sleep(5)
 
         # 删除rule
-        create_rule_code = 200
-        result = "temp "
-
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -302,12 +302,12 @@ def run(parameter):
                 result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
         # 删除Statistics Tesmplate
-        result = "temp "
         if create_statistics_template_code == 200 and delete_rule_code == 200:
             for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
                 prfi_status = 0
                 prfi_key_out = prfi_key.replace("_", " ")
                 if len(prfi_value) != 0:  # 不为空
+                    cond_data = cond_value
                     for i in range(len(prfi_value)):  # 遍历查询所有profile
                         search_prfi = SearchProfile(driver)
                         element_position_map = get_element_position(prfi_key)
