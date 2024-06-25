@@ -263,8 +263,7 @@ def run(parameter):
                     result = result + " In addition, fail to delete security rule."
             else:
                 result = result + " In addition, fail to search security rule."
-        # 避免报错：stale element not found
-        time.sleep(5)
+        
         # 删除object
         if delete_rule_code == 200:
             # 删除port

@@ -253,9 +253,7 @@ def run(parameter):
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
                 
-        # 避免报错：stale element not found
-        time.sleep(5)
-        # 删除rule
+        
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)

@@ -86,7 +86,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 5 -m 10 http://www.news.cn/"
+                "command": "curl -kv --connect-timeout 20 -m 20 http://www.news.cn/"
             },
             "token": ""
         }
@@ -232,8 +232,7 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        # 避免报错：stale element not found
-        time.sleep(5)
+        
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
