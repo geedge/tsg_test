@@ -378,6 +378,12 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchSrcIP_posXpath": manipulationRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
+        # Destination IP
+        "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
+        "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
+        "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
+        "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
+        "policyRulePage_closeDstIP_posXpath": statisticsRulePage_closeDstIP_posXpath,
         # Internal IP
         "policyRulePage_addConditionInternalIP_posXpath": manipulationRulePage_addCondition_internalIP_posXpath,
         "policyRulePage_addInternalIP_posXpath": manipulationRulePage_addInternalIP_posXpath,
@@ -921,6 +927,8 @@ def delete_pre_policy(name_list, driver):
         search_rule_code, first_row_checkbox_element = search_rule.search(policy_type, policy_name, element_position)
         delete_rule = DeleteRule(driver)
         delete_rule_code = delete_rule.delete(element_position, first_row_checkbox_element, True)
+        if policy_type == "pxy_intercept":
+            policy_type = "intercept"
         if delete_rule_code == 200:
             print("Delete {} rule successfully.".format(policy_type))
         elif delete_rule_code != 200:
@@ -945,11 +953,11 @@ test_intercept_rule_element_position = test_intercept_rule_element_position
 
 def get_element_position(key_name):
     # object
-    if key_name == "source_ip":
+    if key_name == "source_ip" or key_name == "internal_ip":
         element_position_map = test_ip_object_element_position
     elif key_name == "source_port":
         element_position_map = test_port_object_element_position
-    elif key_name == "destination_ip":
+    elif key_name == "destination_ip" or key_name == "external_ip":
         element_position_map = test_ip_object_element_position
     elif key_name == "destination_port":
         element_position_map = test_port_object_element_position

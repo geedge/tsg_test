@@ -102,7 +102,7 @@ def run(parameter):
                                 "dest_ip":"2.2.2.55"
                             },
                             "health_check":{
-                                "method":"bfd"
+                                "method":"none"                 
                             },
                             "is_valid":1,
                             "vsys_id":1

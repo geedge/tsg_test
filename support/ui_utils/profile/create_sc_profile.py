@@ -24,7 +24,7 @@ class CreateProfile():
                 sf_name_list,sc_info= self.get_sf_info(service_functions,sf_profile_element_position,sc_info)
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_profile_page(page_jump_element_position,"UIwithTrafficTestVsys")
+            page_jump.jump_sub_profile_page(page_jump_element_position)
             # 点击create
             self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
             # 输入name
@@ -138,7 +138,7 @@ class CreateProfile():
         create_element_position = profile_element_position["create"]
         #页面跳转
         page_jump = PageJump(self.driver)
-        page_jump.jump_sub_profile_page(page_jump_element_position,"UIwithTrafficTestVsys")
+        page_jump.jump_sub_profile_page(page_jump_element_position)
         #点击create
         self.driver.find_element(By.ID,create_element_position["profileListPage_createButton_posId"]).click()
         #在打开页面操作：输入name

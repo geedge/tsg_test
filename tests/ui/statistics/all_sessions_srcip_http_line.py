@@ -32,6 +32,8 @@ from support.report import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
         # 脚本启动时间
         start_time = time.time()
 
@@ -48,7 +50,7 @@ def run(parameter):
             "rule_name": "all_sessions_with_src_ip_http_line",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ap",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
@@ -234,6 +236,7 @@ def run(parameter):
 
         # 创建rule
         create_rule_code = 0
+        delete_rule_code = 0
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -246,7 +249,6 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
-
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
                                                      element_position_map)
@@ -275,11 +277,10 @@ def run(parameter):
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
 
+        # 避免报错：stale element not found
+        time.sleep(5)
 
         # 删除rule
-        create_rule_code = 200
-        result = "temp "
-
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -295,7 +296,6 @@ def run(parameter):
                 result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
         # 删除Statistics Tesmplate
-        result = "temp "
         if create_statistics_template_code == 200 and delete_rule_code == 200:
             for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
                 prfi_status = 0
@@ -332,6 +332,7 @@ def run(parameter):
                     continue  # 直接跳过
                 cond_status = 0
                 if len(cond_value) != 0:  # 不为空
+                    cond_data = cond_value
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
                         element_position_map = get_element_position(cond_key)

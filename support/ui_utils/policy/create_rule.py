@@ -18,14 +18,15 @@ class CreateRule():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_policy_page(page_jump_element_position, "UIwithTrafficTestVsys")
-            
+            page_jump.jump_sub_policy_page(page_jump_element_position)
+
             # 点击create
             time.sleep(1)
             self.driver.find_element(By.ID, create_element_position["policyRuleListPage_createButton_posId"]).click()
             
             # 输入name
             rule_name = test_data["rule_name"]
+            time.sleep(1)
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_inputName_posXpath"]).send_keys(rule_name)
             
             # 选择action
@@ -127,7 +128,7 @@ class CreateRule():
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(device_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(Keys.ENTER)
-                        time.sleep(5)
+                        time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
                     elif device_data[t]["object_type"] == "phone_number":
@@ -192,7 +193,7 @@ class CreateRule():
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"]).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"]).send_keys(Keys.ENTER)
-                        time.sleep(5)
+                        time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                     elif server_fqdn_data[t]["object_type"] == "category":
@@ -299,8 +300,11 @@ class CreateRule():
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_responseContent_searchProfile_posXpath"]).send_keys(Keys.ENTER)
                             self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_block_responseContent_selectProfile_posId"]).click()
                 elif sub_action_data[0]["type"] == "redirect":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).clear()
+                    #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).clear()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).click()
+                    redirect_url = sub_action_data[0]["to_url"]
+                    self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_redirect_input_posId"]).clear()
+                    self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_redirect_input_posId"]).send_keys(redirect_url)
                 elif sub_action_data[0]["type"] == "alert":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseCode_posXpath"]).click()

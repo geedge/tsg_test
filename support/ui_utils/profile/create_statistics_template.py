@@ -20,7 +20,7 @@ class CreateStatisticsTemplate():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_profile_page(page_jump_element_position, "UIwithTrafficTestVsys")
+            page_jump.jump_sub_profile_page(page_jump_element_position)
             # 点击create
             self.driver.find_element(By.ID, create_element_position["templateListPage_createButton_posId"]).click()
             # 输入name
@@ -251,9 +251,9 @@ class CreateStatisticsTemplate():
                                          'server_country': 'Server Country',
                                          'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
                                          'application': 'Application',
-                                         'websketch_categories': 'WebSketch Categories',
-                                         'client_ip_matched_objects': 'Client IP Matched Objects',
-                                         'server_ip_matched_objects': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
+                                         'fqdn_category': 'WebSketch Categories',
+                                         'client_ip_object': 'Client IP Matched Objects',
+                                         'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
                                          's2c_ttl': 'S2C TTL',
                                          'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
                                          'client_port': 'Client Port','server_port':'Server Port'}
@@ -421,7 +421,7 @@ class CreateStatisticsTemplate():
                                    "approx_count_distinct_hlld": "APPROX_COUNT_DISTINCT_HLLD"}
 
         try:
-            time.sleep(3)
+            #time.sleep(3)
             # ep_metricsAndDimensionsAdd = statisticsTemplates_button_metricsAndDimensionsAdd_posXpath.format(replaceChart=chart_id, repalceLabel=dropdown_name)   #添加按钮定位
             ep_metricsAndDimensionsSelects = statisticsTemplates_input_metricsAndDimensionsSelect_posXpath.format(
                 replaceChart=chart_id, repalceLabel=dropdown_name)  # 下拉框定位，可能存在多个

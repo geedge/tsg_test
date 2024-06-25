@@ -32,6 +32,9 @@ from support.report import *
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
+        # 参数初始化
+        result = ""
+        
         # 脚本启动时间
         start_time = time.time()
 
@@ -45,14 +48,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_with_src_ip_http_line_devicegroup",
+            "rule_name": "bytes_srcip_http_bar_serverip",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ap",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packets_line_source_ip",
+                        "name": "statistics_bytes_bar_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -60,7 +63,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.23",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -68,7 +71,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_packets_line_destination_ip",
+                        "name": "statistics_bytes_bar_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -76,7 +79,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.23",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -109,33 +112,35 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Packets Line Device Group",
+                    "name": "Auto Bytes Bar Distributed by Server IP",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Bar",
                           "metrics": [
-                            "pkts:RATE:pkts"
+                            "bytes:RATE:bytes"
                           ],
-                          "dimensions": ["application"],
-                          "order_by": "pkts",
-                          "row_limit": "10",
-                          "min_in_size": "1",
-                          "max_out_size": "1"
+                          "dimensions": [
+                            "server_ip"
+                          ],
+                          "order_by": "bytes",
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "max_out_size": "0"
                         }
                       ]
                 }]
             },
             "expected_return": "reset",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.23",
-                "clients_end_ip": "10.64.224.23",
-                "servers_start_ip": "2.1.1.23",
-                "servers_end_ip": "2.1.1.23",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -166,18 +171,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packets_with_src_ip_http_line_devicegroup",
+                "name": "bytes_srcip_http_bar_server_ip",
             },
             {
                 "type": "ip",
-                "name": "statistics_packets_line_source_ip",
+                "name": "statistics_bytes_bar_source_ip",
             },{
                 "type": "ip",
-                "name": "statistics_packets_line_destination_ip",
+                "name": "statistics_bytes_bar_destination_ip",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Packets Line Device Group",
+                "name": "Auto Bytes Bar Distributed by Server IP",
             },
         ]
         log_in = LogIn()
@@ -232,6 +237,7 @@ def run(parameter):
 
         # 创建rule
         create_rule_code = 0
+        delete_rule_code = 0
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -244,7 +250,6 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
-
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
                                                      element_position_map)
@@ -254,6 +259,10 @@ def run(parameter):
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
             #edit_rule = EditRule(driver)
@@ -273,11 +282,9 @@ def run(parameter):
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
 
-
+        # 避免报错：stale element not found
+        time.sleep(5)
         # 删除rule
-        create_rule_code = 200
-        result = "temp "
-
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -293,7 +300,6 @@ def run(parameter):
                 result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
         # 删除Statistics Tesmplate
-        result = "temp "
         if create_statistics_template_code == 200 and delete_rule_code == 200:
             for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
                 prfi_status = 0
@@ -330,6 +336,7 @@ def run(parameter):
                     continue  # 直接跳过
                 cond_status = 0
                 if len(cond_value) != 0:  # 不为空
+                    cond_data = cond_value
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
                         element_position_map = get_element_position(cond_key)
@@ -392,13 +399,13 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 11,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_with_src_ip_http_line_devicegroup",
+        "test_case_name": "bytes_srcip_http_bar_server_ip",
         "script_type": "ui",
         "policy_type": "statistics"
     }

@@ -30,7 +30,7 @@ class CreateProfile():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_profile_page(page_jump_element_position,"UIwithTrafficTestVsys")
+            page_jump.jump_sub_profile_page(page_jump_element_position)
             self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
             # 在create 创建页面操作
             self.my_random = RandomName()

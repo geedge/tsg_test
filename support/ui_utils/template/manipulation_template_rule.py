@@ -18,17 +18,73 @@ test_data = \
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.88",
+                                "item_value": "192.168.64.99",
+                            },
+                        ]
+                    }
+                ],
+                "destination_ip": [
+                    {
+                        "name": "manipulation_destination_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.40.206",
+                            },
+                        ]
+                    }
+                ],
+                "internal_ip": [
+                    {
+                        "name": "manipulation_internal_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.64.99",
+                            }
+                        ]
+                    }
+                ],
+                "external_ip": [
+                    {
+                        "name": "manipulation_external_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.40.206",
+                            }
+                        ]
+                    }
+                ],
+                "destination_port": [
+                    {
+                        "name": "security_destination_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "443",
                             },
                         ]
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
                 "internal_port": [],
-                "external_ip": [],
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],

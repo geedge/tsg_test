@@ -13,7 +13,7 @@ class SearchProfile():
         page_jump_element_position = profile_element_position["page_jump"]
         # 打开该列表
         page_jump = PageJump(self.driver)
-        page_jump.jump_sub_profile_page(page_jump_element_position,"UIwithTrafficTestVsys")
+        page_jump.jump_sub_profile_page(page_jump_element_position)
         self.driver.find_element(By.ID, search_element_position["profileListPage_searchLabel_posId"]).click()
         # 通过name 查询
         dropdown_item_posXpath = search_element_position["profileListPage_searchLabel_selectName_posXpath"].format(replaceName="Name")

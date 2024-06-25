@@ -246,8 +246,7 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
-        # 避免报错：stale element not found
-        time.sleep(5)
+        
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)

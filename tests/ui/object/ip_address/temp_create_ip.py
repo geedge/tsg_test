@@ -32,8 +32,8 @@ def run(parameter):
             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
         }
         page_jump = PageJump(driver)
-        page_jump.jump_sub_object_page(page_jump_element_position, "UIAutoTestVsys")
-        
+        page_jump.jump_sub_object_page(page_jump_element_position)
+
         # 测试数据
         test_data = {
             "ids": "用例1、IP的增删改查",

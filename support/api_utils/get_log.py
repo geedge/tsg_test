@@ -60,6 +60,10 @@ class GetLog():
                 log_source = 'monitor_event'
                 identifier_name = 'monitor-event-list'
                 log_query_rule_type = 'monitor_rule_list'
+            elif policy_type == 'statistics':
+                log_source = 'session_record'
+                identifier_name = 'session-record-list'
+                log_query_rule_type = 'statistics_rule_list'
             log_condition_dict['columns'] = fields
             log_condition_dict['start_time'] = start_time
             log_condition_dict['end_time'] = end_time
@@ -298,9 +302,9 @@ class GetLog():
                                           'server_country': 'Server Country',
                                           'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
                                           'application': 'Application',
-                                          'websketch_categories': 'WebSketch Categories',
-                                          'client_ip_matched_objects': 'Client IP Matched Objects',
-                                          'server_ip_matched_objects': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
+                                          'fqdn_category': 'WebSketch Categories',
+                                          'client_ip_object': 'Client IP Matched Objects',
+                                          'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
                                           's2c_ttl': 'S2C TTL',
                                           'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
                                           'client_port': 'Client Port', 'server_port': 'Server Port'}

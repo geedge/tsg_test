@@ -18,7 +18,7 @@ class EditRule():
             page_jump_element_position = rule_element_position["page_jump"]
             # 打开该列表
             page_jump = PageJump(self.driver)
-            page_jump.jump_sub_policy_page(page_jump_element_position, "UIwithTrafficTestVsys")
+            page_jump.jump_sub_policy_page(page_jump_element_position)
             # 点击search查询框
             self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"]).click()
             dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
