@@ -68,7 +68,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_all_sessions_line_destination_ip",
+                        "name": "statistics_all_sessions_bar_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -114,7 +114,7 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Bar",
                           "metrics": [
                             "sessions:RATE:sessions"
                           ],
@@ -170,10 +170,10 @@ def run(parameter):
             },
             {
                 "type": "ip",
-                "name": "statistics_all_sessions_line_source_ip",
+                "name": "statistics_all_sessions_bar_source_ip",
             },{
                 "type": "ip",
-                "name": "statistics_all_sessions_line_destination_ip",
+                "name": "statistics_all_sessions_bar_destination_ip",
             },
             {
                 "type": "statistics_template",
