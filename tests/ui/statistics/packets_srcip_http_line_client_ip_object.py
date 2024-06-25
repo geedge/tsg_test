@@ -56,6 +56,7 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -72,6 +73,7 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -190,6 +192,9 @@ def run(parameter):
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
         # 创建object
+        # Statistics Rule使用随机IP
+        organize_config = OrganizeConfig()
+        cond_value = organize_config.generate_random_ip(test_data, parameter["env"])
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":

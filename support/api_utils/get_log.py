@@ -223,11 +223,11 @@ class GetLog():
                     # API和UI因数据格式不一致，所以API方式获取不到按UI方式获取
                     try:
                         metrics_columns = \
-                        test_data["action_parameter"]["statistics_template"][0]["charts"][0]["metrics"].split(":")[
-                            0].lower()
+                        test_data["action_parameter"]["statistics_template"][0]["charts"][0]["metrics"][0].split(":")[0].lower()
                         dimension_columns = \
                         test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
-                    except:
+                    except Exception as e:
+                        print("Error: ", e)
                         dimension_columns = "no_dimensions"
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
                     return [333, "passthrough"]
@@ -278,9 +278,9 @@ class GetLog():
                                 for k, v in result_list[result_index].items():
                                     if isinstance(v, int):
                                         statistics_value[k] += v
-                                if "client_ip_matched_objects".lower() in result_list[
-                                    0].keys() or "server_ip_matched_objects".lower() in result_list[
-                                    0].keys() or "websketch_categories".lower() in result_list[0].keys():
+                                if "client_ip_sketch".lower() in result_list[
+                                    0].keys() or "server_ip_ip_sketch".lower() in result_list[
+                                    0].keys() or "fqdn_category".lower() in result_list[0].keys():
                                     break
                         if "session_identifier_sketch" in result_list[0].keys() or "client_ip_sketch" in result_list[
                             0].keys() or "server_ip_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理

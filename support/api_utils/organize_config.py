@@ -89,10 +89,10 @@ class OrganizeConfig():
 
     def generate_random_ip(self, config, run_env):
         # statistics中将ip改为随机
-        if "obj_condition_1" in config.keys():
-            for obj in config["obj_condition_1"]:
-                if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
-                    src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
+        if "condition" in config.keys():
+            for obj in config["condition"]:
+                if "source_ip" in obj.keys() or "destination_ip" in obj.keys():
+                    src_ip = obj["source_ip"][0]["item"][0]["item_value"]
                     if "default" in src_ip:
                         src_ip = "10.64.77.11"
                     if "-" not in src_ip and "/" not in src_ip:
@@ -106,7 +106,7 @@ class OrganizeConfig():
                             src_ip_list[0] = "10"
                             src_ip_list[1] = "64"
                         new_src_ip = ".".join(src_ip_list)
-                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
+                        obj["source_ip"][0]["item"][0]["item_value"] = new_src_ip
                     elif "-" in src_ip and "/" not in src_ip:
                         two_ip_list = src_ip.split("-")
                         ip_list_1 = two_ip_list[0].split(".")

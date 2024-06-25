@@ -399,7 +399,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_packets_with_src_ip_http_line",
+        "test_case_name": "all_packets_with_src_ip_http_table_devicegroup",
         "script_type": "ui",
         "policy_type": "statistics"
     }
