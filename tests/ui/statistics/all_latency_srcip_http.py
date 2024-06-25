@@ -51,7 +51,7 @@ def run(parameter):
             "rule_name": "all_latency_with_srcip_http",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ap",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {

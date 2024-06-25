@@ -51,7 +51,7 @@ def run(parameter):
             "rule_name": "bytes_with_src_ip",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ap",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
@@ -172,7 +172,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "statistics",
+                "name": "bytes_with_src_ip",
             },
             {
                 "type": "ip",

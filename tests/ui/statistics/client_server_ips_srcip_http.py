@@ -51,7 +51,7 @@ def run(parameter):
             "rule_name": "client/server_ips_with_srcip_http",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ap",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
