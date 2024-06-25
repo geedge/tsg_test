@@ -49,7 +49,7 @@ def run(parameter):
             "rule_name": "sessons_with_srcip_ssl",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ap",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {

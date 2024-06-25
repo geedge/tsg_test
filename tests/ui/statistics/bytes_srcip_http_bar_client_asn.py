@@ -51,7 +51,7 @@ def run(parameter):
             "rule_name": "bytes_srcip_http_bar_client_asn",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ap",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
