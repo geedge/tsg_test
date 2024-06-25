@@ -127,7 +127,7 @@ class CreateRule():
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(device_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(Keys.ENTER)
-                        time.sleep(5)
+                        time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
                     elif device_data[t]["object_type"] == "phone_number":
@@ -192,7 +192,7 @@ class CreateRule():
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"]).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"]).send_keys(Keys.ENTER)
-                        time.sleep(5)
+                        time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                     elif server_fqdn_data[t]["object_type"] == "category":
