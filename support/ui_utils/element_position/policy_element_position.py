@@ -63,6 +63,8 @@ policyRulePage_searchImsi_posXpath = "//div[@class='SourceList list-box']//input
 policyRulePage_selectImsi_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeImsi_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
+# phone number
+policyRulePage_choosePhoneNumber_posXpath = "//*[@id='tab-phone_number' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'Phone Number')]"
 
 policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
@@ -211,6 +213,9 @@ securityRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
 securityRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
 securityRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
 securityRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
+
+#phone number 
+securityRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath
 
 securityRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 securityRulePage_okButton_yes_posId = "OK-_SecurityAdd_Home_App_anonymousComponent"

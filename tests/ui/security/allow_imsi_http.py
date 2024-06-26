@@ -57,13 +57,13 @@ def run(parameter):
                 "device": [
                     {
                         "name": "security_imsi",
-                        "object_type": "imsi",
+                        "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "",
+                                "item_type": "imsi",
                                 "item_value": "$110035141486424",
                             }
                         ]
@@ -107,7 +107,7 @@ def run(parameter):
                 "name": "security_rule_allow_imsi_http"
             },
             {
-                "type": "imsi",
+                "type": "mobile_identity",
                 "name": "security_imsi"
             }
         ]

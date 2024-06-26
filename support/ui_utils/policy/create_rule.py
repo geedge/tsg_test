@@ -116,23 +116,39 @@ class CreateRule():
             if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
                 device_data = test_data["condition"]["device"]
                 for t in range(len(device_data)):
-                    if device_data[t]["object_type"] == "imsi":
+                    if device_data[t]['item'][0]["item_type"] == "imsi":
                         # 点add condition的+
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
-                        # 选中server fqdn
+                        # 选中imsi
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-                        # 点server fqdn的+，因为dst ip已经是第一层且t初始值是0，所以要+2
+                        # 点imsi的+，因为dst ip已经是第一层且t初始值是0，所以要+2
                         temp_element_position = create_element_position["policyRulePage_addImsi_posXpath"]
                         self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 通过server fqdn name搜索并选中
+                        # 通过imsi搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(device_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(Keys.ENTER)
                         time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
-                    elif device_data[t]["object_type"] == "phone_number":
-                        print("to be added...")
+                    elif device_data[t]['item'][0]["item_type"] == "phone_number":
+                        # 点add condition的+
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        # 都属于device，所以调用imsi的定位即可
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                        # 点device的+
+                        temp_element_position = create_element_position["policyRulePage_addImsi_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 选中phone number
+                        temp_element_position = create_element_position["policyRulePage_choosePhoneNumber_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 通过phone number搜索并选中(与imsi共用)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(device_data[t]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(Keys.ENTER)
+                        time.sleep(3)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
                     elif device_data[t]["object_type"] == "imei":
                         print("to be added...")
                     elif device_data[t]["object_type"] == "apn":
@@ -274,13 +290,14 @@ class CreateRule():
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_dropPkt_posXpath"]).clear()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_dropPkt_posXpath"]).send_keys(sub_action_data[0]["drop_packet"])
                     # quic不支持tcp rst；默认tcp rst是选中，不需要操作，只有当sendTcpRst为false时
-                    if override_flag == False or sub_action_data[0]["send_tcp_rst"] == False:
+                    if (override_flag == False or sub_action_data[0]["send_tcp_rst"]) and len(test_data["condition"]["application"]) == 1 and test_data["condition"]["application"][0]['name'] == "quic" == False:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendTcpRst_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendIcmp_posXpath"]).click()
                 elif sub_action_data[0]["type"] == "rate_limit":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_rateLimit_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_rateLimit_rate_posXpath"]).send_keys(sub_action_data[0]["rate_value"])
                 elif sub_action_data[0]["type"] == "tamper":
+                    time.sleep(1)
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_tamper_posXpath"]).click()
                 elif sub_action_data[0]["type"] == "block":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_posXpath"]).click()

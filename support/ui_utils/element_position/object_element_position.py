@@ -76,6 +76,12 @@ ipGroupObjectPage_closeExcludeIP_posXpath = "//div[@class='KeywordsList list-box
 ipGroupObjectPage_addExcludeObject_posId = "temporary_form"
 
 # imsi object
+imsiObjectPage_imsiType_posId = "IMSIimsi"
+imsiObjectPage_addItem_posId = ipObjectPage_addItem_posId  # 添加item_id
+imsiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
+imsiObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
+imsiObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
+imsiObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
 mobile_identitiesObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_mobile_identity_Home_App_anonymousComponent"  # create按钮id
 mobile_identitiesObjectListPage_dropDown_createButton_posId = 'object0-_OperateBtns_ElRow_Objects_mobile_identity_Home_App_anonymousComponent'  # 从下拉菜单中选择Mobile Identity
 ipObjectListPage_dropDown_createGroupButton_posId = "object1-_OperateBtns_ElRow_Objects_mobile_identity_Home_App_anonymousComponent"
@@ -87,13 +93,15 @@ ipObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delC
 imsiObjectListPage_allSelect_posXpath = ipObjectListPage_allSelect_posXpath
 imsiObjectListPage_tableTbody_posXpath = ipObjectListPage_tableTbody_posXpath
 mobile_identitiesObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath # name输入框Xpath
-imsiObjectPage_imsiType_posId = "IMSIimsi"
-imsiObjectPage_addItem_posId = ipObjectPage_addItem_posId  # 添加item_id
-imsiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
-imsiObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
-imsiObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
-imsiObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
 
+
+# phone number
+phoneNumberObjectPage_phoneNumberType_posId = "Phone Numberphone_number"
+phoneNumberObjectPage_addItem_posId = ipObjectPage_addItem_posId  # 添加item_id
+phoneNumberObjectPage_inputItem_posXpath = '//div[@class="content-input el-input el-input--small"]//input'
+phoneNumberObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
+phoneNumberObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
+phoneNumberObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
 
 # port
 portObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"

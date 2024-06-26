@@ -57,13 +57,13 @@ def run(parameter):
                 "device": [
                     {
                         "name": "security_imsi",
-                        "object_type": "imsi",
+                        "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "",
+                                "item_type": "imsi",
                                 "item_value": "$110035141486424",
                             }
                         ]
@@ -107,7 +107,7 @@ def run(parameter):
                 "name": "security_rule_allow_imsi_mail"
             },
             {
-                "type": "imsi",
+                "type": "mobile_identity",
                 "name": "security_imsi"
             }
         ]
@@ -201,13 +201,13 @@ def run(parameter):
             device_data = test_data["condition"]["device"]
             create_device = CreateObject(driver)
             for i in range(len(device_data)):
-                object_type = device_data[i]['object_type']
-                if object_type == 'imsi':
+                object_sub_type = device_data[i]['item'][0]['item_type']
+                if object_sub_type == 'imsi':
                     create_device_code = create_device.create(device_data[i], test_imsi_object_element_position)
                 if create_device_code == 200:
-                    print("Create {} object successfully.".format(object_type))
+                    print("Create {} object successfully.".format(object_sub_type))
                 elif create_device_code != 200:
-                    result = "Fail to create {} object.".format(object_type)
+                    result = "Fail to create {} object.".format(object_sub_type)
                     break
         
         # 创建rule
@@ -261,21 +261,20 @@ def run(parameter):
             # 删除device相关的object
             for y in range(len(device_data)):
                 search_device = SearchObject(driver)
-                object_type = device_data[i]['object_type']
-                if object_type == 'imsi':
+                object_sub_type = device_data[i]['item'][0]['item_type']
+                if object_sub_type == 'imsi':
                     search_device_code, first_row_checkbox_element = search_device.search(device_data[y]["name"], test_imsi_object_element_position)
                 if search_device_code == 200:
                     delete_device = DeleteObject(driver)
-                    if object_type == 'imsi':
+                    if object_sub_type == 'imsi':
                         delete_device_code = delete_device.delete(test_imsi_object_element_position, first_row_checkbox_element, True)
                     if delete_device_code == 200:
-                        print("Delete {} object successfully.".format(object_type))
+                        print("Delete {} object successfully.".format(object_sub_type))
                     elif delete_device_code != 200:
-                        result = result + " In addition, fail to delete {} object.".format(object_type)
+                        result = result + " In addition, fail to delete {} object.".format(object_sub_type)
                         break
                 else:
-                    result = result + " In addition, fail to search {} object.".format(object_type)
-                # 脚本结束时间和耗时
+                    result = result + " In addition, fail to search {} object.".format(object_sub_type)
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -303,7 +302,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
