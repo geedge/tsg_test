@@ -286,10 +286,6 @@ def run(parameter):
                     "name": "service_chaining_source_ip",
                 },
                 {
-                    "type": "ip",
-                    "name": "service_chaining_destination_ip",    
-                },
-                {
                     "type": "service_function_forwarder",
                     "name": "mirror_block_vlan_none",
                 },
