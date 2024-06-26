@@ -13,7 +13,6 @@ class SearchObject():
         # 打开该列表
         page_jump = PageJump(self.driver)
         time.sleep(3)
-        #page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
         page_jump.jump_sub_object_page(page_jump_element_position)
         self.driver.find_element(By.ID, search_element_position["objectListPage_searchLabel_posId"]).send_keys(name)
         self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_selectName_posXpath"]).click()
