@@ -134,8 +134,8 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "drop",
-                        "drop_packet": 0,
                         "send_tcp_rst": True,
+                        "drop_packet": 0,
                         "send_icmp_unreachable": True
                     }
                 ],
@@ -406,7 +406,6 @@ def run(parameter):
             create_protocol_filed = CreateObject(driver)
             for x in range(len(protocol_field_data)):
                 object_type = protocol_field_data[x]['object_type']
-                print("x is " + str(x))
                 if object_type == 'url':
                     create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_url_object_element_position)
                 elif object_type == 'http_signature':
