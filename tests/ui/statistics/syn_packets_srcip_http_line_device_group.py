@@ -48,7 +48,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "syn_packets_srcip_http",
+            "rule_name": "syn_packets_srcip_http_line_device_group",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
@@ -112,14 +112,14 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto SynPackets Distributed by Device Group",
+                    "name": "Auto Syn Packets Line Dimension Device Group",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "SynPacketsLine",
+                          "chart_name": "Syn Packets Line Dimension Device Group",
                           "visualization_type": "Line",
                           "metrics": [
-                            "syn_pkts:Rate:"
+                            "syn_pkts:Rate:syn pkts"
                           ],
                           "dimensions": [
                             "device_group"
@@ -171,18 +171,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "syn_packets_srcip_http",
+                "name": "syn_packets_srcip_http_line_device_group"
             },
             {
                 "type": "ip",
-                "name": "statistics_new_syn_packets_source_ip",
+                "name": "statistics_syn_packets_source_ip"
             },{
                 "type": "ip",
-                "name": "statistics_new_syn_packets_destination_ip",
+                "name": "statistics_syn_packets_destination_ip"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto SynPackets Distributed by Device Group",
+                "name": "Auto Syn Packets Line Dimension Device Group"
             },
         ]
         log_in = LogIn()
@@ -410,7 +410,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "syn_packets_srcip_http",
+        "test_case_name": "syn_packets_srcip_http_line_device_group",
         "script_type": "ui",
         "policy_type": "statistics"
     }
