@@ -83,9 +83,23 @@ test_data = \
                         ]
                     }
                 ],
+                "external_port": [
+                    {
+                        "name": "manipulation_external_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "443",
+                            },
+                        ]
+                    }
+                ],
                 "source_port": [],
                 "internal_port": [],
-                "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
                 "sub_id": [],

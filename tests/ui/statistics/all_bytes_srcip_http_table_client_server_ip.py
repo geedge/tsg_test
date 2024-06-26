@@ -48,7 +48,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "bytes_srcip_http_bar_client_server_ip",
+            "rule_name": "bytes_srcip_http_table_client_server_ip",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
@@ -174,7 +174,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "bytes_srcip_http_bar_client_server_ip",
+                "name": "bytes_srcip_http_table_client_server_ip",
             },
             {
                 "type": "ip",
@@ -411,7 +411,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "bytes_srcip_http_bar_client_server_ip",
+        "test_case_name": "bytes_srcip_http_table_client_server_ip",
         "script_type": "ui",
         "policy_type": "statistics"
     }

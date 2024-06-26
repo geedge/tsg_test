@@ -306,7 +306,7 @@ class GetLog():
                                           'fqdn_category': 'WebSketch Categories',
                                           'client_ip_object': 'Client IP Matched Objects',
                                           'server_ip_object': 'Server IP Matched Objects',
-                                          'webSketch_categories': 'WebSketch Categories',
+                                          'websketch_categories': 'WebSketch Categories',
                                           'client_ip_matched_objects': 'Client IP Matched Objects',
                                           'server_ip_matched_objects': 'Server IP Matched Objects','c2s_ttl': 'C2S TTL',
                                           's2c_ttl': 'S2C TTL',

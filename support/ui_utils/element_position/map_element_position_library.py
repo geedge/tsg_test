@@ -398,6 +398,18 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchInternalPort_posXpath": manipulationRulePage_searchInternalPort_posXpath,
         "policyRulePage_selectInternalPort_posXpath": manipulationRulePage_selectInternalPort_posXpath,
         "policyRulePage_closeInternalPort_posXpath": manipulationRulePage_closeInternalPort_posXpath,
+        # Destination Port
+        "policyRulePage_addConditionDstPort_posXpath": manipulationRulePage_addCondition_destinationPort_posXpath,
+        "policyRulePage_addDstPort_posXpath": manipulationRulePage_addDstPort_posXpath,
+        "policyRulePage_searchDstPort_posXpath": manipulationRulePage_searchDstPort_posXpath,
+        "policyRulePage_selectDstPort_posXpath": manipulationRulePage_selectDstPort_posXpath,
+        "policyRulePage_closeDstPort_posXpath": manipulationRulePage_closeDstPort_posXpath,
+        # external Port
+        "policyRulePage_addConditionExternalPort_posXpath": manipulationRulePage_addCondition_externalPort_posXpath,
+        "policyRulePage_addExternalPort_posXpath": manipulationRulePage_addExternalPort_posXpath,
+        "policyRulePage_searchExternalPort_posXpath": manipulationRulePage_searchExternalPort_posXpath,
+        "policyRulePage_selectExternalPort_posXpath": manipulationRulePage_selectExternalPort_posXpath,
+        "policyRulePage_closeExternalPort_posXpath": manipulationRulePage_closeExternalPort_posXpath,
         # External IP
         "policyRulePage_addConditionExternalIP_posXpath": manipulationRulePage_addCondition_externalIP_posXpath,
         "policyRulePage_addExternalIP_posXpath": manipulationRulePage_addExternalIP_posXpath,
@@ -955,13 +967,9 @@ test_intercept_rule_element_position = test_intercept_rule_element_position
 
 def get_element_position(key_name):
     # object
-    if key_name == "source_ip" or key_name == "internal_ip":
+    if key_name == "source_ip" or key_name == "internal_ip" or  key_name == "destination_ip" or key_name == "external_ip":
         element_position_map = test_ip_object_element_position
-    elif key_name == "source_port":
-        element_position_map = test_port_object_element_position
-    elif key_name == "destination_ip" or key_name == "external_ip":
-        element_position_map = test_ip_object_element_position
-    elif key_name == "destination_port":
+    elif key_name == "source_port" or key_name == "destination_port" or key_name == "external_port":
         element_position_map = test_port_object_element_position
     elif key_name == "http_signature":
         element_position_map = test_http_signature_object_element_position

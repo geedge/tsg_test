@@ -104,7 +104,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "ww.python.org"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 20 --max-time 50 https://www.python.org/blogs/"
+                "command": "curl -kv --compressed  --connect-timeout 20 --max-time 50 https://www.python.org/blogs/"
             },
             "token": ""
         }
@@ -334,7 +334,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.93",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",

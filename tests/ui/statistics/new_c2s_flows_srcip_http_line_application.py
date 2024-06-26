@@ -48,14 +48,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "syn_packets_srcip_http",
+            "rule_name": "new_c2s_flows_srcip_http_line_application",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_new_syn_packets_source_ip",
+                        "name": "statistics_flows_line_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -63,7 +63,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.11",
+                                "item_value": "10.64.224.6",
                             },
                         ]
                     }
@@ -71,7 +71,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_new_syn_packets_destination_ip",
+                        "name": "statistics_flows_line_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -79,7 +79,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.9",
+                                "item_value": "2.1.1.6",
                             },
                         ]
                     }],
@@ -112,35 +112,35 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto SynPackets Distributed by Device Group",
+                    "name": "Auto New C2S Flows Rate Line Dimensions Application",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "SynPacketsLine",
+                          "chart_name": "C2S Flows Rate Line Dimensions Application",
                           "visualization_type": "Line",
                           "metrics": [
-                            "syn_pkts:Rate:"
+                            "new_c2s_flows:RATE:new c2s flows"
                           ],
                           "dimensions": [
-                            "device_group"
+                              "application"
                           ],
-                          "order_by": "syn pkts",
+                          "order_by": "new c2s flows",
                           "row_limit": "10",
-                          "min_in_size": "0",
-                          "max_out_size": "0"
+                          "min_in_size": "1",
+                          "max_out_size": "1"
                         }
                       ]
                 }]
             },
             "expected_return": "reset",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.9",
-                "clients_end_ip": "10.64.224.9",
-                "servers_start_ip": "2.1.1.9",
-                "servers_end_ip": "2.1.1.9",
+                "clients_start_ip": "10.64.224.6",
+                "clients_end_ip": "10.64.224.6",
+                "servers_start_ip": "2.1.1.6",
+                "servers_end_ip": "2.1.1.6",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -171,18 +171,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "syn_packets_srcip_http",
+                "name": "new_c2s_flows_srcip_http_line_application"
             },
             {
                 "type": "ip",
-                "name": "statistics_new_syn_packets_source_ip",
+                "name": "statistics_new_c2s_flows_line_source_ip"
             },{
                 "type": "ip",
-                "name": "statistics_new_syn_packets_destination_ip",
+                "name": "statistics_new_c2s_flows_line_destination_ip"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto SynPackets Distributed by Device Group",
+                "name": "Auto New C2S Flows Rate Line Dimensions Application"
             },
         ]
         log_in = LogIn()
@@ -253,6 +253,7 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
+
             edit_rule = EditRule(driver)
             edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
                                                      element_position_map)
@@ -288,7 +289,6 @@ def run(parameter):
 
         # 避免报错：stale element not found
         time.sleep(5)
-
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -410,7 +410,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "syn_packets_srcip_http",
+        "test_case_name": "new_c2s_flows_srcip_http_line_application",
         "script_type": "ui",
         "policy_type": "statistics"
     }
