@@ -35,9 +35,9 @@ def run(parameter):
         start_time = time.time()
 
         # 环境初始化
+        support.ui_utils.env_initialization.initiate_selenium_request()
         driver = support.ui_utils.env_initialization.my_driver()
         support.ui_utils.env_initialization.setup()
-
         # 测试数据
         test_data = {
             "is_multi_priority": False,
