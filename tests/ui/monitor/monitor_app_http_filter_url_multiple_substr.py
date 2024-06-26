@@ -98,7 +98,9 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "$www.chinaenvironment.com/zxjh/index_59.html->"
+                                "item_value": "www.chinaenvironment.com/zxjh/index_59.html->"
+                                              "www.chinaenvironment.com/zxjh/index_59.html->"
+                                              "www.chinaenvironment.com/zxjh/index_59.html",
                                 #data["items"][i]["item_value"].split("->")[0].strip()
                                 #表达式运算的结果是english
                             }
@@ -202,7 +204,9 @@ def run(parameter):
                     "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
                     "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
                     "objectPage_okButton_posId": urlObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
+                    "objectPage_okButton_warningYes_posXpath":urlObjectPage_okButton_warningYes_posXpath,
+                    "ObjectPage_sameItem_addItem_posXpath":urlObjectPage_sameItem_addItem_posXpath,
+                    "ObjectPage_sameItem_inputItem_posXpath": urlObjectPage_sameItem_inputItem_posXpath,
                 },
                 "search": {
                     "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
@@ -426,7 +430,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.90",
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",

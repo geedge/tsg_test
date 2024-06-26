@@ -101,10 +101,10 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "response_header",
-                                "item_key": "Connection",
+                                "item_key": "Content-Type",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "*alive",
+                                    "*html",
                                 ]
                             }
                         ],
@@ -124,12 +124,12 @@ def run(parameter):
             "profile": [
 
             ],
-            "expected_return": "Travel",
+            "expected_return": "china",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "slope.ru"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -N -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
+                "command": "curl -N -kv http://www.chinaenvironment.com/zxjh/index_59.html"
             },
             "token": ""
         }
