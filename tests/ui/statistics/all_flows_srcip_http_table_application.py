@@ -112,7 +112,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Flows Rate Table Dimensions Application",
+                    "name": "Auto All Flows Sum Table Dimensions Application",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -181,7 +181,7 @@ def run(parameter):
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Flows Rate Table Dimensions Application"
+                "name": "Auto All Flows Sum Table Dimensions Application"
             },
         ]
         log_in = LogIn()
