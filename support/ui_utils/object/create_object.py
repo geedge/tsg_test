@@ -89,8 +89,10 @@ class CreateObject():
                 for x in data["item"]:
                     if data["object_type"] == "ip":
                         self.driver.find_element(By.ID, create_element_position["objectPage_ipType_posId"]).click()
-                    elif data["object_type"] == "imsi":
+                    if x["item_type"] == "imsi":
                         self.driver.find_element(By.ID, create_element_position["objectPage_imsiType_posId"]).click()
+                    elif x["item_type"] == "phone_number":
+                        self.driver.find_element(By.ID, create_element_position["objectPage_phnoeNumberType_posId"]).click()
                     if x["item_operation"] == "add":
                         self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(x["item_value"])

@@ -173,6 +173,7 @@ def run(parameter):
                     "policyRulePage_searchIpProtocol_posXpath": policyRulePage_searchIpProtocol_posXpath,
                     "policyRulePage_selectIpProtocol_posXpath": policyRulePage_selectIpProtocol_posXpath,
                     "policyRulePage_closeIpProtocol_posXpath": policyRulePage_closeIpProtocol_posXpath,
+                    # close condition
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
