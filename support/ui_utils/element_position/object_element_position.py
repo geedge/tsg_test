@@ -160,6 +160,8 @@ urlObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
 urlObjectPage_addItem_posId = ipObjectPage_addItem_posId
 urlObjectPage_inputItem_posXpath = "//div[@class='item-box']//input"     # input 输入框，简单的第一个定位，后期优化
 urlObjectPage_saveItem_posXpath = "//div[@class='item-box']//i[contains(@class, 'save-color')]"     # input item保存，简单的第一个定位，后期优化
+urlObjectPage_sameItem_inputItem_posXpath='(//div[@class="item-box"]//input)[last()]'
+urlObjectPage_sameItem_addItem_posXpath='//div[@class="expr-box"]//i[@class="iconfont icon-Create1 cursor"]'
 urlObjectPage_okButton_posId = "OK-_URLDetail_Home_App_anonymousComponent"
 urlObjectPage_okButton_warningYes_posXpath = httpSignatureObjectPage_okButton_warningYes_posXpath
 # 查询

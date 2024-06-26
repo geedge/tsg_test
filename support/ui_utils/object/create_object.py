@@ -61,8 +61,16 @@ class CreateObject():
             elif data["object_type"] == "url" or data["object_type"] == "account" or data["object_type"] == "phone_number" or data["object_type"] == "fqdn":
                 for i in range(len(data["items"])):   # 只是简单的添加了一个item，后期优化
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
-                    item_value = data["items"][i]["item_value"].split("->")[0].strip()
-                    self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(item_value)
+                    item_values = data["items"][i]["item_value"].split("->")
+                    for j,item_value in enumerate(item_values): #同一item中添加数据时为else路径
+                        item_value = item_value.strip()
+                        if item_value == '':
+                            continue
+                        if j == 0:
+                            self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(item_value)
+                        else:
+                            self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
+                            self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
                     break
             # elif data["object_type"] == "fqdn":

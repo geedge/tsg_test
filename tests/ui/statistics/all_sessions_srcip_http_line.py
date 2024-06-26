@@ -133,7 +133,7 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "type": "trex",
                 "clients_start_ip": "10.64.224.26",
@@ -193,7 +193,10 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-        # 创建object
+                # 创建object
+        # Statistics Rule使用随机IP
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter["env"])
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":
