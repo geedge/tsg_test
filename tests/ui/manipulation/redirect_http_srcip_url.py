@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "redirect_http_srcip_url",
+            "rule_name": "redirect_http_srcip_dstport_url",
             "rule_action": "redirect",
             "rule_type": "create",
             "condition": {
@@ -58,6 +58,21 @@ def run(parameter):
                                 "item_operation": "add",
                                 "item_type": "ipv4",
                                 "item_value": parameter["test_pc_ip"],
+                            },
+                        ]
+                    }
+                ],
+                "destination_port": [
+                    {
+                        "name": "manipulation_destination_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "443",
                             },
                         ]
                     }
@@ -331,7 +346,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.93",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
@@ -341,7 +356,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "redirect_http_srcip_url"
+        "test_case_name": "redirect_http_srcip_dstport_url"
     }
     run(parameter)
     """

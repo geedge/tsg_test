@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "monitor_src_ip",
+            "rule_name": "monitor_srcip",
             "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
@@ -306,7 +306,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.93",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
@@ -316,7 +316,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "monitor_src_ip"
+        "test_case_name": "monitor_srcip"
     }
     run(parameter)
     """

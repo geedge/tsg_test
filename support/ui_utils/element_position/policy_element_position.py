@@ -291,8 +291,9 @@ manipulationRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceLis
 manipulationRulePage_addCondition_serverPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='Port']"
-manipulationRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='IP Address']"
+manipulationRulePage_addCondition_destinationPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='Port']"
+manipulationRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_Protocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol']"
 manipulationRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URL']"
 manipulationRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Header']"
@@ -315,6 +316,16 @@ manipulationRulePage_addInternalPort_posXpath = policyRulePage_addInternalPort_p
 manipulationRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
 manipulationRulePage_selectInternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
 manipulationRulePage_closeInternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
+# destination port 的添加、查询、选中、关闭操作
+manipulationRulePage_addDstPort_posXpath = policyRulePage_addDstPort_posXpath
+manipulationRulePage_searchDstPort_posXpath = policyRulePage_searchDstPort_posXpath
+manipulationRulePage_selectDstPort_posXpath = policyRulePage_selectDstPort_posXpath
+manipulationRulePage_closeDstPort_posXpath = policyRulePage_closeDstPort_posXpath
+# external port 的添加、查询、选中、关闭操作
+manipulationRulePage_addExternalPort_posXpath = policyRulePage_addExternalPort_posXpath
+manipulationRulePage_searchExternalPort_posXpath = policyRulePage_searchExternalPort_posXpath
+manipulationRulePage_selectExternalPort_posXpath = policyRulePage_selectExternalPort_posXpath
+manipulationRulePage_closeExternalPort_posXpath = policyRulePage_closeExternalPort_posXpath
 # External IP的添加、查询、选中、关闭操作
 manipulationRulePage_addExternalIP_posXpath = policyRulePage_addExternalIP_posXpath
 manipulationRulePage_searchExternalIP_posXpath = policyRulePage_searchExternalIP_posXpath
