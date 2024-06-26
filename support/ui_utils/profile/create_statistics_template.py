@@ -242,7 +242,7 @@ class CreateStatisticsTemplate():
                                       }
         """
         dropdown_item_dimensions_dict23 = {'time':'Time', 'client_ip': 'Client IP', 'server_ip': 'Server IP', 'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
-                                         'application': 'Application', 'websketch_categories': 'WebSketch Categories', 'client_ip_matched_objects': 'Client IP Matched Objects',
+                                         'application': 'Application', 'websketch_categories': 'WebSketch Categories', 'client_ip_object': 'Client IP Matched Objects',
                                          'server_ip_matched_objects': 'Server IP Matched Objects'}
         """
         dropdown_item_dimensions_dict = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',

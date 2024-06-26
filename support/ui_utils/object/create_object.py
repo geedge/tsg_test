@@ -18,7 +18,6 @@ class CreateObject():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            #page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
             page_jump.jump_sub_object_page(page_jump_element_position)
             # 点击create
             self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"]).click()
@@ -88,6 +87,16 @@ class CreateObject():
                         self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(x["item_value"])
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
+            if "statistics_option" in data.keys():
+                # 如果修改Object的统计参数则进行操作
+                statistics_option_temp = data["statistics_option"]
+                time.sleep(1)
+                if statistics_option_temp in {"None","Brief","Elaborate"}:
+                    self.driver.find_element(By.ID, create_element_position["objectPage_statistics_select_posId"]).click()
+                    element_dropdown_item = self.driver.find_element(By.XPATH, create_element_position["objectPage_statistics_select_option_posXpath"].format(statistics_option_temp))
+                    # 移动元素到页面，在执行点击
+                    self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
+                    self.driver.execute_script("arguments[0].click();", element_dropdown_item)
             # 确认创建
             self.driver.find_element(By.ID, create_element_position["objectPage_okButton_posId"]).click()
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
@@ -102,7 +111,6 @@ class CreateObject():
         try:
             # 页面跳转
             page_jump = PageJump(self.driver)
-            #page_jump.jump_sub_object_page(page_jump_element_position, "UIwithTrafficTestVsys")
             page_jump.jump_sub_object_page(page_jump_element_position)
             # 点击create group
             self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"]).click()

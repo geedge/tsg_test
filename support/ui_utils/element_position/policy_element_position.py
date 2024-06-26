@@ -539,7 +539,7 @@ statisticsRuleListpage_okButton_warningYes_posXpath = securityRuleListpage_okBut
 # 名字输入定位
 statisticsRulePage_inputName_posXpath = securityRulePage_inputName_posXpath
 # rule 页面中Add Condition按钮定位
-statisticsRulePage_addCondition_posXpath = policyRulePage_addCondition_internalIP_posXpath
+statisticsRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 statisticsRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 # rule 中添加condition侧滑中选择行定位
 statisticsRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"

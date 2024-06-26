@@ -205,6 +205,7 @@ class GetLog():
         r_dict = response.json()
         # print("statistics metric result data：")
         # print(r_dict)
+        print("Get the metric information of rule id {}".format(statistics_info["rule_id"]))
         if r_dict["code"] != 200:
             print("statistics metric query failed.")
             return [333, "The statistics metric API query failed. Procedure"]
@@ -223,11 +224,11 @@ class GetLog():
                     # API和UI因数据格式不一致，所以API方式获取不到按UI方式获取
                     try:
                         metrics_columns = \
-                        test_data["action_parameter"]["statistics_template"][0]["charts"][0]["metrics"].split(":")[
-                            0].lower()
+                        test_data["action_parameter"]["statistics_template"][0]["charts"][0]["metrics"][0].split(":")[0].lower()
                         dimension_columns = \
                         test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
-                    except:
+                    except Exception as e:
+                        print("Error: ", e)
                         dimension_columns = "no_dimensions"
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
                     return [333, "passthrough"]
@@ -278,9 +279,9 @@ class GetLog():
                                 for k, v in result_list[result_index].items():
                                     if isinstance(v, int):
                                         statistics_value[k] += v
-                                if "client_ip_matched_objects".lower() in result_list[
-                                    0].keys() or "server_ip_matched_objects".lower() in result_list[
-                                    0].keys() or "websketch_categories".lower() in result_list[0].keys():
+                                if "client_ip_sketch".lower() in result_list[
+                                    0].keys() or "server_ip_ip_sketch".lower() in result_list[
+                                    0].keys() or "fqdn_category".lower() in result_list[0].keys():
                                     break
                         if "session_identifier_sketch" in result_list[0].keys() or "client_ip_sketch" in result_list[
                             0].keys() or "server_ip_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理
@@ -304,7 +305,10 @@ class GetLog():
                                           'application': 'Application',
                                           'fqdn_category': 'WebSketch Categories',
                                           'client_ip_object': 'Client IP Matched Objects',
-                                          'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
+                                          'server_ip_object': 'Server IP Matched Objects',
+                                          'webSketch_categories': 'WebSketch Categories',
+                                          'client_ip_matched_objects': 'Client IP Matched Objects',
+                                          'server_ip_matched_objects': 'Server IP Matched Objects','c2s_ttl': 'C2S TTL',
                                           's2c_ttl': 'S2C TTL',
                                           'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
                                           'client_port': 'Client Port', 'server_port': 'Server Port'}

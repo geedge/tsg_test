@@ -118,8 +118,8 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_sessions:RATE:in sessions",
-                            "new_out_sessions:RATE:out sessions",
+                            "new_in_sessions:RATE:new in sessions",
+                            "new_out_sessions:RATE:new out sessions",
                             "sessions:RATE:sessions"
                           ],
                           "dimensions": [],

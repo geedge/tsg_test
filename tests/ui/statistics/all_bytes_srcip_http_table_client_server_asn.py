@@ -112,7 +112,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Bar Distributed by Client ASN",
+                    "name": "Auto Bytes Bar Distributed by Client and Server ASN",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -123,6 +123,7 @@ def run(parameter):
                           ],
                           "dimensions": [
                             "client_asn"
+                            "server_asn"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
@@ -182,7 +183,7 @@ def run(parameter):
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Bar Distributed by Client ASN",
+                "name": "Auto Bytes Bar Distributed by Client and Server ASN",
             },
         ]
         log_in = LogIn()
