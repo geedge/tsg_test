@@ -433,7 +433,7 @@ class CreateStatisticsTemplate():
                                                                                                    ".//i")  # 下拉框元素列表中最后一个为add添加按钮
             # 点击添加按钮
             # 下拉列表
-            time.sleep(3)
+            time.sleep(1)
             is_click_add = "yes_click"
             for dropdownSelect_item in element_metricsAndDimensionsSelects[1:-1]:  # 下拉框元素列表中第二个到倒数第二个为操作数据
                 #print(7777)
