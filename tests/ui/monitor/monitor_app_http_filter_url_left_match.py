@@ -6,6 +6,7 @@ import os
 import sys
 
 from support.api_utils.delete_config import DeleteConfig
+from support.report import GenerateReport
 from support.ui_utils.profile.search_profile import SearchProfile
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -45,8 +46,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_app_http_request_heaser_ful_match",
-            "rule_action": "",
+            "rule_name": "monitor_app_http_url_left_match",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -85,30 +86,24 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
-                ],
+                "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "monitor_http_request_header",
-                        "object_type": "http_signature",
+                        "name": "monitor_http_url",
+                        "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": True,
-                        "Statistics": "None",
-                        "item": [
+                        "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "curl"
-                                ]
-                            },
-                        ]
+                                "item_type": "url",
+                                "item_value": "www.chinaenvironment*->"
+                                #data["items"][i]["item_value"].split("->")[0].strip()
+                                #表达式运算的结果是english
+                            }
+                        ],
                     }
-
                 ],
                 "sub_action_override": True,
                 "sub_action": [],
@@ -123,12 +118,12 @@ def run(parameter):
             "profile": [
 
             ],
-            "expected_return": "Travel",
+            "expected_return": "china",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "slope.ru"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
+                "command": "curl -N -kv http://www.chinaenvironment.com/zxjh/index_59.html"
             },
             "token": ""
         }
@@ -141,21 +136,87 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_app_http_request_heaser_ful_match"
+                "name": "monitor_app_http_url_left_match"
             },
             {
                 "type": "ip",
                 "name": "monitor_source_ip"
             },
             {
-                "type": "http_signature",
-                "name": "monitor_http_request_header"
+                "type": "url",
+                "name": "monitor_http_url"
             }
+
         ]
 
         # 添加定位库集合
         test_rule_element_position = {}
         if test_data["policy_type"] == "monitor":
+            test_ip_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
+                    "objectPage_ipType_posId": ipObjectPage_ipType_posId,
+                    "objectPage_addItem_posId": ipObjectPage_addItem_posId,
+                    "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": ipObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": ipObjectListPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": ipObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
+
+            test_url_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": urlObjectPage_addItem_posId,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
+                    "objectPage_okButton_posId": urlObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
+
+
             test_rule_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -177,6 +238,12 @@ def run(parameter):
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
+                    "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
+                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
+                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
+                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
+                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
@@ -198,25 +265,7 @@ def run(parameter):
                     # packet capture depth
                     "policyRulePage_packetCapture_posXpath": securityRulePage_packetCapture_posXpath,
                     "policyRulePage_packetCapture_depth_posXpath": securityRulePage_packetCapture_depth_posXpath,
-                    # 添加Server FQDN
-                    "policyRulePage_addConditionServerFqdn_posXpath": policyRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": policyRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": policyRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": policyRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": policyRulePage_closeServerFqdn_posXpath,
-                    #添加request header
-                    "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
-                    "policyRulePage_addRequestHeader_posXpath": securityRulePage_addRequestHeader_posXpath,
-                    "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
-                    "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
-                    "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
-                    #添加response header
-                    "policyRulePage_addConditionResponseHeader_posXpath": policyRulePage_addCondition_responseHeader_posXpath,
-                    "policyRulePage_addResponseHeader_posXpath": monitorRulePage_addResponseHeader_posXpath,
-                    "policyRulePage_searchResponseHeader_posXpath": monitorRulePage_searchResponseHeader_posXpath,
-                    "policyRulePage_selectResponseHeader_posXpath": monitorRulePage_selectResponseHeader_posXpath,
-                    "policyRulePage_closeResponseHeader_posXpath": monitorRulePage_closeResponseHeader_posXpath,
+
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -244,32 +293,25 @@ def run(parameter):
                     result = "Fail to create ip object."
                     break
 
-
-        # 创建url 、request header、response header
+        # 创建url
         if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
             protocol_field_data = test_data["condition"]["protocol_filed"]
-            for i in range(len(protocol_field_data)):
-                create_field = CreateObject(driver)
-                tmp_key = protocol_field_data[i]["object_type"]
-                cond_key_out = tmp_key.replace("_"," ")
-                element_position_map = get_element_position(tmp_key)
-                create_field_code = create_field.create(protocol_field_data[i], element_position_map)
-                if create_field_code == 200:
-                    print("Create {} object successfully.".format(cond_key_out))
-                elif create_field_code != 200:
-                    result = "Fail to create {} object.".format(cond_key_out)
+            create_url = CreateObject(driver)
+            for x in range(len(protocol_field_data)):
+                create_url_code = create_url.create(protocol_field_data[x], test_url_object_element_position)
+                if create_url_code == 200:
+                    print("Create url object successfully.")
+                elif create_url_code != 200:
+                    result = "Fail to create url."
                     break
-
-        # 创建rulecond_key_out
-        if create_field_code == 200:
+        # 创建rule
+        if create_ip_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-
-
         # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
@@ -329,17 +371,16 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
 
-
         # 删除profile
         if delete_rule_code == 200:
-            # 删除filter
+            # 删除url
             for y in range(len(protocol_field_data)):
                 search_url = SearchObject(driver)
                 search_url_code, first_row_checkbox_element = search_url.search(protocol_field_data[y]["name"],
-                                                                                element_position_map)
+                                                                                test_url_object_element_position)
                 if search_url_code == 200:
                     delete_url = DeleteObject(driver)
-                    delete_url_code = delete_url.delete(element_position_map, first_row_checkbox_element,
+                    delete_url_code = delete_url.delete(test_url_object_element_position, first_row_checkbox_element,
                                                         True)
                     if delete_url_code == 200:
                         print("Delete url object successfully.")
@@ -363,8 +404,22 @@ def run(parameter):
         # 清理环境
         support.ui_utils.env_initialization.teardown()
         # 删除配置
-        # erase = DeleteConfig()
-        # erase.clear_config(token, parameter, name_list)
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "PASS"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
 
 
 if __name__ == '__main__':
@@ -380,7 +435,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_app_http_request_heaser_ful_match"
+        "test_case_name": "monitor_app_http_url_left_match"
     }
     run(parameter)
     """

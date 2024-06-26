@@ -6,6 +6,7 @@ import os
 import sys
 
 from support.api_utils.delete_config import DeleteConfig
+from support.report import GenerateReport
 from support.ui_utils.profile.search_profile import SearchProfile
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -45,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_app_http_url_request_heaser_response_header",
+            "rule_name": "monitor_app_http_filter_request_header_left_match",
             "rule_action": "",
             "rule_type": "create",
             "condition": {
@@ -100,10 +101,10 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "request_header",
-                                "item_key": "Connection",
+                                "item_key": "User-Agent",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "keep*"
+                                    "cur*"
                                 ]
                             },
                         ]
@@ -128,7 +129,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "slope.ru"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
+                "command": "curl -N -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
             },
             "token": ""
         }
@@ -141,7 +142,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_app_http_url_request_heaser_response_header"
+                "name": "monitor_app_http_filter_request_header_left_match"
             },
             {
                 "type": "ip",
@@ -363,8 +364,22 @@ def run(parameter):
         # 清理环境
         support.ui_utils.env_initialization.teardown()
         # 删除配置
-        # erase = DeleteConfig()
-        # erase.clear_config(token, parameter, name_list)
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "PASS"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
 
 
 if __name__ == '__main__':
@@ -380,7 +395,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_app_http_url_request_heaser_response_header"
+        "test_case_name": "monitor_app_http_filter_request_header_left_match"
     }
     run(parameter)
     """

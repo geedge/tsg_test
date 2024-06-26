@@ -6,6 +6,7 @@ import os
 import sys
 
 from support.api_utils.delete_config import DeleteConfig
+from support.report import GenerateReport
 from support.ui_utils.profile.search_profile import SearchProfile
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -45,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_app_http_url",
+            "rule_name": "monitor_app_http_url_right_match",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -59,7 +60,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.91",
+                                "item_value": parameter['test_pc_ip'],
                             },
                         ]
                     }
@@ -97,7 +98,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "$www.chinaenvironment.com/zxjh/index_59.html->"
+                                "item_value": "*chinaenvironment.com/zxjh/index_59.html->"
                                 #data["items"][i]["item_value"].split("->")[0].strip()
                                 #表达式运算的结果是english
                             }
@@ -122,7 +123,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv http://www.chinaenvironment.com/zxjh/index_59.html"
+                "command": "curl -N -kv http://www.chinaenvironment.com/zxjh/index_59.html"
             },
             "token": ""
         }
@@ -135,7 +136,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_app_http_url"
+                "name": "monitor_app_http_url_right_match"
             },
             {
                 "type": "ip",
@@ -405,6 +406,20 @@ def run(parameter):
         # 删除配置
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "PASS"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
 
 
 if __name__ == '__main__':
@@ -420,7 +435,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_app_http_url"
+        "test_case_name": "monitor_app_http_url_right_match"
     }
     run(parameter)
     """
