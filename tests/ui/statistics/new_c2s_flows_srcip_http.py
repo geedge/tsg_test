@@ -112,7 +112,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Sessions Distributed by Client Port",
+                    "name": "Auto New C2S Flows Dimensions Client Port",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -171,18 +171,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "new_c2s_flows_with_srcip_http",
+                "name": "new_c2s_flows_with_srcip_http"
             },
             {
                 "type": "ip",
-                "name": "statistics_new_c2s_flows_source_ip",
+                "name": "statistics_new_c2s_flows_source_ip"
             },{
                 "type": "ip",
-                "name": "statistics_new_c2s_flows_destination_ip",
+                "name": "statistics_new_c2s_flows_destination_ip"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Sessions Distributed by Client Port",
+                "name": "Auto New C2S Flows Dimensions Client Port"
             },
         ]
         log_in = LogIn()

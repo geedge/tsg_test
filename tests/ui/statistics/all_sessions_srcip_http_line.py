@@ -133,7 +133,7 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "type": "trex",
                 "clients_start_ip": "10.64.224.26",
