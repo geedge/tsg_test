@@ -89,15 +89,15 @@ class OrganizeConfig():
 
     def generate_random_ip(self, config, run_env):
         # statistics中将ip改为随机
-        if "obj_condition_1" in config.keys():
-            for obj in config["obj_condition_1"]:
-                if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
-                    src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
+        if "condition" in config.keys():
+            for obj in config["condition"]:
+                if "source_ip" == obj or "destination_ip" in obj:
+                    src_ip = config["condition"]["source_ip"][0]["item"][0]["item_value"]
                     if "default" in src_ip:
                         src_ip = "10.64.77.11"
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
-                        src_ip_list[2] = str(random.randint(200, 250))
+                        src_ip_list[2] = str(random.randint(224, 224))
                         src_ip_list[3] = str(random.randint(100, 250))
                         if run_env == "9140":
                             src_ip_list[0] = "172"
@@ -106,7 +106,7 @@ class OrganizeConfig():
                             src_ip_list[0] = "10"
                             src_ip_list[1] = "64"
                         new_src_ip = ".".join(src_ip_list)
-                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
+                        config["condition"]["source_ip"][0]["item"][0]["item_value"] = new_src_ip
                     elif "-" in src_ip and "/" not in src_ip:
                         two_ip_list = src_ip.split("-")
                         ip_list_1 = two_ip_list[0].split(".")
@@ -131,7 +131,7 @@ class OrganizeConfig():
                         new_two_ip_list.append(new_ip_1)
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
-                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
+                        config["condition"]["source_ip"][0]["item"][0]["item_value"] = new_two_ip
         print("Config random ip for statistics and sc rule.")
         return config
 

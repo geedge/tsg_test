@@ -524,6 +524,12 @@ monitorRulePage_enable_posXpath = shapingRulePage_enable_posXpath
 monitorRulePage_okButton_posId = "OK-_policy_monitor_write_Home_App_anonymousComponent"
 monitorRulePage_warningYes_posXpath =shapingRulePage_okButton_warningYes_posXpath
 monitorRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+#add response header
+monitorRulePage_addResponseHeader_posXpath = manipulationRulePage_addResponseHeader_posXpath
+monitorRulePage_searchResponseHeader_posXpath = manipulationRulePage_searchResponseHeader_posXpath
+monitorRulePage_selectResponseHeader_posXpath = manipulationRulePage_selectResponseHeader_posXpath
+monitorRulePage_closeResponseHeader_posXpath = manipulationRulePage_closeResponseHeader_posXpath
+
 
 
 #### statistics
