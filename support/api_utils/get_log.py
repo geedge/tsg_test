@@ -205,6 +205,7 @@ class GetLog():
         r_dict = response.json()
         # print("statistics metric result data：")
         # print(r_dict)
+        print("Get the metric information of rule id {}".format(statistics_info["rule_id"]))
         if r_dict["code"] != 200:
             print("statistics metric query failed.")
             return [333, "The statistics metric API query failed. Procedure"]
@@ -304,7 +305,10 @@ class GetLog():
                                           'application': 'Application',
                                           'fqdn_category': 'WebSketch Categories',
                                           'client_ip_object': 'Client IP Matched Objects',
-                                          'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
+                                          'server_ip_object': 'Server IP Matched Objects',
+                                          'webSketch_categories': 'WebSketch Categories',
+                                          'client_ip_matched_objects': 'Client IP Matched Objects',
+                                          'server_ip_matched_objects': 'Server IP Matched Objects','c2s_ttl': 'C2S TTL',
                                           's2c_ttl': 'S2C TTL',
                                           'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
                                           'client_port': 'Client Port', 'server_port': 'Server Port'}
