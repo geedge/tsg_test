@@ -48,14 +48,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "bytes_srcip_http_bar_client_server_asn",
+            "rule_name": "bytes_srcip_http_table_client_server_asn",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_bar_source_ip",
+                        "name": "statistics_bytes_table_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -71,7 +71,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_bar_destination_ip",
+                        "name": "statistics_bytes_table_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -112,17 +112,19 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Bar Distributed by Client and Server ASN",
+                    "name": "Auto Bytes Table Distributed by Client and Server ASN",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Bar",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "bytes:RATE:bytes"
+                            "in_bytes:SUM:in bytes",
+                            "out_bytes:SUM:out bytes",
+                            "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "client_asn"
+                            "client_asn",
                             "server_asn"
                           ],
                           "order_by": "bytes",
@@ -172,18 +174,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "bytes_srcip_http_bar_client_server_asn",
+                "name": "bytes_srcip_http_table_client_server_asn",
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_bar_source_ip",
+                "name": "statistics_bytes_table_source_ip",
             },{
                 "type": "ip",
-                "name": "statistics_bytes_bar_destination_ip",
+                "name": "statistics_bytes_table_destination_ip",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Bar Distributed by Client and Server ASN",
+                "name": "Auto Bytes Table Distributed by Client and Server ASN",
             },
         ]
         log_in = LogIn()
@@ -195,7 +197,10 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-        # 创建object
+                # 创建object
+        # Statistics Rule使用随机IP
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter["env"])
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":

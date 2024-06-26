@@ -203,9 +203,9 @@ class GetLog():
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         # assert response.status_code == 200
         r_dict = response.json()
-        # print("statistics metric result data：")
-        # print(r_dict)
-        print("Get the metric information of rule id {}".format(statistics_info["rule_id"]))
+        print("statistics metric result data：")
+        print(r_dict)
+        print("Get the metric information of rule id {}".format(post_data_ori_dict))
         if r_dict["code"] != 200:
             print("statistics metric query failed.")
             return [333, "The statistics metric API query failed. Procedure"]
@@ -321,6 +321,7 @@ class GetLog():
                             else:
                                 assert_key_list.append(k)
                         # 开始判断key的正确性
+                        print("Determine the correctness of the Key:{}".format(str(assert_key_list)))
                         for i in range(len(assert_key_list)):
                             metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
                                                                               assert_key_list[i], statistics_value,
