@@ -55,7 +55,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_new_syn_packets_source_ip",
+                        "name": "statistics_syn_packets_line_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -71,7 +71,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_new_syn_packets_destination_ip",
+                        "name": "statistics_syn_packets_line_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -175,10 +175,10 @@ def run(parameter):
             },
             {
                 "type": "ip",
-                "name": "statistics_syn_packets_source_ip"
+                "name": "statistics_syn_packets_line_source_ip"
             },{
                 "type": "ip",
-                "name": "statistics_syn_packets_destination_ip"
+                "name": "statistics_syn_packets_line_destination_ip"
             },
             {
                 "type": "statistics_template",

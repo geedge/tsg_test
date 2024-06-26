@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_sessions_srcip_http_table_client_server_ip",
+            "rule_name": "all_sessions_srcip_http_table_client_server_ip_matched_objects",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
