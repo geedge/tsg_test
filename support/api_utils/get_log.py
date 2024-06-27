@@ -239,12 +239,26 @@ class GetLog():
                 metric_result = False  # 默认
                 result_list_source = r_dict["data"]["result"]
                 result_list = []
-                for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
-                    tmp_dict = {}
-                    for k, v in _.items():
-                        k_0 = "_".join(k.lower().split())  # 将key变为小写且使用下划线连接
-                        tmp_dict[k_0] = v
-                    result_list.append(tmp_dict)
+                if "metrics_dimension" in statistics_info.keys(): #ui操作
+                    for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
+                        tmp_dict = {}
+                        for k, v in _.items():
+                            if k in statistics_info["metrics_dimension"]["metrics"].keys():
+                                k_0 = statistics_info["metrics_dimension"]["metrics"][k]  # 将key变为小写且使用下划线连接
+                            elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
+                                k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
+                            else:
+                                print("The interface query chart results are inconsistent with the user-defined data")
+                                #throw Exception e
+                            tmp_dict[k_0] = v
+                        result_list.append(tmp_dict)
+                else:
+                    for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
+                        tmp_dict = {}
+                        for k, v in _.items():
+                            k_0 = "_".join(k.lower().split())  # 将key变为小写且使用下划线连接
+                            tmp_dict[k_0] = v
+                        result_list.append(tmp_dict)
                 statistics_value = 0
                 if statistics_info["chart_type"] == "line" or statistics_info["chart_type"] == "table" or \
                         statistics_info["chart_type"] == "bar":
