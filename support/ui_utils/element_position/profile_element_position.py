@@ -876,8 +876,13 @@ statisticsTemplates_dropdown_posXpath = "//form[contains(@class, 'ly-addform1')]
 statisticsTemplates_button_chartAdd_posXpath = "//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath
 statisticsTemplates_button_chartEdit_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//div[@class='operateIcon']//i[contains(@class, 'icon-Edit')]"  # 编辑图标按钮 xpath
 statisticsTemplates_div_paperGrid_posXpath = "//*[@id='proxyTCP']/div[contains(@class, 'paper-grid')]"    # div的包含滚动条的长页面 xpath
+statisticsTemplates_div_rightDetails_posXpath = "//div[@id='router-view-container']//div[@class='paper-grid-right']//form/div"  # 右侧详情div容器 xpath
 statisticsTemplates_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss    #提示保存按钮警告框OK按钮
 statisticsTemplates_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss    #提示保存警告框Cancel按钮
 statisticsTemplates_button_ChartOK_posXpath = "//*[@id='chart-ok']/span"  # 保存chart的OK按钮 xpath定位
 statisticsTemplates_button_oK_posCss = "#Success span"     #OK按钮css
 statisticsTemplates_button_cancel_posCss = "#Cancel span"      #Cancel按钮
+statisticsTemplates_charts_posXpath = "//div[@class='el-form-item template-edit-chart el-form-item--small']"#"//form[@class='el-form el-form--label-top']" # 编辑页码获取所有Chart Name所在Chart
+statisticsTemplates_label_chart_name_posXpath = ".//label[@for='name']/..//div[normalize-space(text())='{repalceLabel}']" # 编辑页码Chart Name定位Chart
+statisticsTemplates_button_chart_edit_posXpath = ".//div[@class='operateIcon']/i[contains(@class,'icon-Edit')]" # chart编辑按钮
+statisticsTemplates_button_chart_delete_posXpath = ".//div[@class='operateIcon']/i[contains(@class,'icon-Delete')]" # chart删除按钮

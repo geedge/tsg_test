@@ -84,6 +84,9 @@ policyRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList li
 policyRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='IP Protocol']"
 policyRulePage_addCondition_Boolean_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='{replaceValue}']"
+policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
+policyRulePage_addCondition_ftpAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
+policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Content']"
 
 policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -112,6 +115,18 @@ policyRulePage_addRequestHeader_posXpath = "//div[@class='FilterModuleSelect fil
 policyRulePage_searchRequestHeader_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
 policyRulePage_selectRequestHeader_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeRequestHeader_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+#ftp account
+policyRulePage_addFtpAccount_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Account']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchFtpAccount_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectFtpAccount_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeFtpAccount_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+# ftp content
+policyRulePage_addFtpContent_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Content']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchFtpContent_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectFtpContent_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeFtpContent_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 # security
 securityRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
@@ -150,7 +165,6 @@ securityRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort
 securityRulePage_selectInternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
 securityRulePage_closeInternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
 
-# imsi映射
 
 
 securityRulePage_addDstPort_posXpath = policyRulePage_addDstPort_posXpath
@@ -191,6 +205,8 @@ securityRulePage_addCondition_externalPort_posXpath = policyRulePage_addConditio
 securityRulePage_addCondition_internalIP_posXpath = policyRulePage_addCondition_internalIP_posXpath
 securityRulePage_addCondition_externalIP_posXpath = policyRulePage_addCondition_externalIP_posXpath
 securityRulePage_addCondition_internalPort_posXpath = policyRulePage_addCondition_internalPort_posXpath
+securityRulePage_addCondition_ftpAccount_posXpath = policyRulePage_addCondition_ftpAccount_posXpath
+securityRulePage_addCondition_ftpContent_posXpath = policyRulePage_addCondition_ftpContent_posXpath
 securityRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
  
 
@@ -213,6 +229,17 @@ securityRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
 securityRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
 securityRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
 securityRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
+# ftp account
+securityRulePage_addftpAccount_posXpath = policyRulePage_addFtpAccount_posXpath 
+securityRulePage_searchftpAccount_posXpath = policyRulePage_searchFtpAccount_posXpath 
+securityRulePage_selectftpAccount_posXpath = policyRulePage_selectFtpAccount_posXpath 
+securityRulePage_closeftpAccount_posXpath = policyRulePage_closeFtpAccount_posXpath
+# ftp content
+securityRulePage_addftpContent_posXpath = policyRulePage_addFtpContent_posXpath 
+securityRulePage_searchftpContent_posXpath = policyRulePage_searchFtpContent_posXpath 
+securityRulePage_selectftpContent_posXpath = policyRulePage_selectFtpContent_posXpath 
+securityRulePage_closeftpContent_posXpath = policyRulePage_closeFtpContent_posXpath
+
 
 #phone number 
 securityRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath

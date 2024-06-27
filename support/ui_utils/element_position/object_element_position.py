@@ -12,6 +12,7 @@ mainPage_secondLevelMenu_url_posId = "Objects_url"
 mainPage_secondLevelMenu_mobileIdentify_posId = "Objects_mobile_identity"
 mainPage_secondLevelMenu_fqdn_posId = "Objects_fqdn"  # 二级菜单IP Addresses
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
+mainPage_secondLevelMenu_account_posId = "Objects_account"
 
 #Object Group公共定位
 ObjectListPage_searchLabel_posId = "select-label"  # 查询框id
@@ -201,7 +202,24 @@ keywordsObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon icon
 keywordsObjectPage_okButton_posId = "OK-_keywordsDetail_Home_App_anonymousComponent"
 keywordsObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
 
-
+# account
+accountObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
+accountObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
+accountObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+accountObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
+accountObjectPage_inputName_posXpath = keywordsObjectPage_inputName_posXpath
+accountObjectPage_addItem_posId = keywordsObjectPage_addItem_posId
+accountObjectPage_inputItem_posXpath = urlObjectPage_inputItem_posXpath
+accountObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon iconfont icon-save check color31739C']"
+accountObjectPage_okButton_posId = "OK-_accountsDetail_Home_App_anonymousComponent"
+accountObjectPage_okButton_warningYes_posXpath = keywordsObjectPage_okButton_warningYes_posXpath
+# 查询
+accountObjectPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posId
+accountObjectListPage_searchLabel_selectName_posXpath = "//*[@id='2-_FilteredSearch_ElRow_Objects_account_Home_App_anonymousComponent']"
+accountObjectPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
+accountObjectPage_allSelect_posXpath = httpSignatureObjectListPage_allSelect_posXpath
+accountObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+accountObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
 
 
 

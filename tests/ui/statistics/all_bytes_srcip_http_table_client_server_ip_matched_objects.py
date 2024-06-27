@@ -59,6 +59,7 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -75,6 +76,7 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -112,7 +114,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Table Distributed by Client and Server IP Matched Objects",
+                    "name": "Auto All Bytes Table Distributed by Client and Server IP Matched Objects",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -185,7 +187,7 @@ def run(parameter):
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Table Distributed by Client and Server IP Matched Objects"
+                "name": "Auto All Bytes Table Distributed by Client and Server IP Matched Objects"
             },
         ]
         log_in = LogIn()
@@ -197,7 +199,7 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-                # 创建object
+        # 创建object
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter["env"])

@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_allow_phone_number_http_req_body",
+            "rule_name": "security_rule_deny_phone_number_http_req_body_rate_low",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -129,7 +129,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_phone_number_mail"
+                "name": "security_rule_deny_phone_number_http_req_body_rate_low"
             },
             {
                 "type": "mobile_identity",

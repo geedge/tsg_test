@@ -120,7 +120,7 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 点击chart的OK保存按钮
-                #print("template13,chart OK")
+                print("click chart OK！")
                 self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
             # 确认创建，点击Template的OK保存按钮
             #print("template14,Template OK")
@@ -389,6 +389,7 @@ class CreateStatisticsTemplate():
                 #self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                 self.driver.find_element(By.XPATH, element_position_1).click()
+                self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
                 element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1). \
                     find_element(By.XPATH,
                                  f"./ancestor::*[contains(@class, 'el-form-item el-form-item--small')]//*[contains(@class, 'el-select-dropdown__list')]/li/span[normalize-space(text())='{data_value_1}']")
