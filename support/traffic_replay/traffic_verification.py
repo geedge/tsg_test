@@ -193,11 +193,11 @@ class TrafficVerification():
             #traffic_replay = TrafficReplay(template_path)
             #statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
             time.sleep(50)
-            # 点击 Statistics Rule编辑界面的Add Condition按钮
-            element_statistics_action = my_driver.find_element(By.XPATH, statisticsRulePage_addCondition_posXpath)
+            # 点击 menu
+            element_menu = my_driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss)
             # 移动元素到页面，在执行点击
-            my_driver.execute_script("arguments[0].scrollIntoView();", element_statistics_action)
-            my_driver.execute_script("arguments[0].click();", element_statistics_action)
+            my_driver.execute_script("arguments[0].scrollIntoView();", element_menu)
+            my_driver.execute_script("arguments[0].click();", element_menu)
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -215,8 +215,8 @@ class TrafficVerification():
                     while n < 6:
                         time.sleep(70)
                         # 移动元素到页面，在执行点击
-                        my_driver.execute_script("arguments[0].scrollIntoView();", element_statistics_action)
-                        my_driver.execute_script("arguments[0].click();", element_statistics_action)
+                        my_driver.execute_script("arguments[0].scrollIntoView();", element_menu)
+                        my_driver.execute_script("arguments[0].click();", element_menu)
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')

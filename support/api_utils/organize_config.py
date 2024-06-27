@@ -18,11 +18,14 @@ class OrganizeConfig():
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
         policy_define = self.get_policy_define(token, test_data["rule_id"], test_data["policy_type"], api_server,
                                                vsys_id)
-        # statistics和sc需要随机ip
         if test_data["policy_type"] == "statistics":
             # 从Statistics Rule定义信息中获取流量验证所需数据格式
+            statistics_template_metrics_dimension_list = self.get_template_chart_metric_dimension(test_data)
             for policy in policy_define:
                 create_policies_ids.append({'statistics': policy["id"]})
+                # 从Test Data中解析Metrics Key和Label、Dimensions Key和界面显示之间的字典关系
+                statistics_template_metrics_dict = {}
+                statistics_template_dimensions_dict = {}
                 for source in policy["source"]:
                     if source["attribute_name"] == "ATTR_SOURCE_IP":
                         for object in source["objects"]:
@@ -46,26 +49,37 @@ class OrganizeConfig():
                     template_id = user_region["template_id"]
                     template_define = self.get_template_define(token, template_id, "statistics_template",
                                                                api_server, vsys_id)
+                    # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
+                    template_number = 0
                     for template in template_define:
                         template_temp = []
-                        for chart in template["dataview"]["charts"]:
-                            chart_info = {"template_id": 0, "chart_id": 0, "chart_type": "line", "version": 0,
-                                          'sql': ""}
-                            chart_info["template_id"] = template_id
-                            chart_info["chart_id"] = chart["id"]
-                            chart_info["chart_type"] = chart["display"]["type"]
-                            chart_info["version"] = chart["version"]
-                            chart_info["sql"] = chart["query"]["sql"]
-                            template_temp.append(chart_info)
-                            statistics_info = {}
-                            statistics_info["rule_id"] = test_data["rule_id"]
-                            statistics_info["template_id"] = template_id
-                            statistics_info["chart_id"] = chart["id"]
-                            statistics_info["chart_type"] = chart["display"]["type"]
-                            statistics_info["version"] = chart["version"]
-                            statistics_info["sql"] = chart["query"]["sql"]
-                            statistics_sc_info_list.append(statistics_info)
-                        create_profile_ids.append({'profile_type': 'Statistics_Templates', 'id': 50555, 'template_info': template_temp})
+                        # 从接口搜索出的Template定义Chart个数和测试数据test_data中解析出的TemplateChart个数一致
+                        if len(template["dataview"]["charts"]) == len(statistics_template_metrics_dimension_list[template_number]["template_charts"]):
+                            chart_number = 0
+                            for chart in template["dataview"]["charts"]:
+                                chart_info = {"template_id": 0, "chart_id": 0, "chart_type": "line", "version": 0,
+                                              'sql': ""}
+                                chart_info["template_id"] = template_id
+                                chart_info["chart_id"] = chart["id"]
+                                chart_info["chart_type"] = chart["display"]["type"]
+                                chart_info["version"] = chart["version"]
+                                chart_info["sql"] = chart["query"]["sql"]
+                                template_temp.append(chart_info)
+                                statistics_info = {}
+                                statistics_info["rule_id"] = test_data["rule_id"]
+                                statistics_info["template_id"] = template_id
+                                statistics_info["chart_id"] = chart["id"]
+                                statistics_info["chart_type"] = chart["display"]["type"]
+                                statistics_info["version"] = chart["version"]
+                                statistics_info["sql"] = chart["query"]["sql"]
+                                statistics_info["metrics_dimension"] = statistics_template_metrics_dimension_list[template_number]["template_charts"][chart_number]
+                                statistics_sc_info_list.append(statistics_info)
+                                chart_number = chart_number + 1
+                            template_number = template_number + 1
+
+                        else:
+                            print("The number of Template definition charts searched from the interface is inconsistent with the number of TemplateCharts parsed from the test data test_data!")
+                        create_profile_ids.append({'profile_type': 'Statistics_Templates', 'id': template_id, 'template_info': template_temp})
                         template_info = {"profile_type": "", "id": 0, "template_info": []}
                         template_info["profile_type"] = ""
                         template_info["id"] = template_id
@@ -84,7 +98,9 @@ class OrganizeConfig():
         cfg_list["create_profile_ids"] = create_profile_ids
         cfg_list["create_policies_ids"] = create_policies_ids
         cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
-        # cfg_list["timeout_result"] = timeout_result
+        #cfg_list["timeout_result"] = timeout_result
+        cfg_list["statistics_template_metrics_dict"] = statistics_template_metrics_dict
+        cfg_list["statistics_template_dimensions_dict"] = statistics_template_dimensions_dict
         return cfg_list
 
     def generate_random_ip(self, config, run_env):
@@ -166,6 +182,43 @@ class OrganizeConfig():
         except AssertionError as e:
             print(f"AssertionError: {e}")
 
-
+    def get_template_chart_metric_dimension(self, test_data):
+        # 从Statistics Rule定义信息中获取流量验证所需数据格式
+        #[{"template_name":"","template_charts":[{"metrics":{"a":"avalue","b":"bvalue"},"dimensions":{"a":"avalue","b":"bvalue"}}]}]
+        statistics_template_metrics_dimension_list = []
+        dimensions_dict = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
+                           'server_ip': 'Server IP', 'client_asn': 'Client ASN',
+                           'server_asn': 'Server ASN', 'client_country': 'Client Country',
+                           'server_country': 'Server Country',
+                           'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
+                           'application': 'Application',
+                           'fqdn_category': 'WebSketch Categories',
+                           'client_ip_object': 'Client IP Matched Objects',
+                           'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
+                           's2c_ttl': 'S2C TTL',
+                           'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
+                           'client_port': 'Client Port', 'server_port': 'Server Port'}
+        if test_data["policy_type"] == "statistics":
+            if "action_parameter" in test_data.keys():
+                chart_dict = {"metrics": {}, "dimensions": {}}
+                template_metrics_dimension_list = {"template_name": "", "template_charts": []}
+                if "statistics_template" in test_data["action_parameter"].keys():
+                    for statistics_template in test_data["action_parameter"]["statistics_template"]:
+                        template_metrics_dimension_list["template_name"] = statistics_template["name"]
+                        template_metrics_dimension_dict = []
+                        for chart in statistics_template["charts"]:
+                            chart_temp_dict = {}
+                            for metric in chart["metrics"]:
+                                metric_array = metric.split(":")
+                                chart_temp_dict[metric_array[2]] = metric_array[0]
+                            chart_dict["metrics"] = chart_temp_dict
+                            chart_temp_dict = {}
+                            for dimension in chart["dimensions"]:
+                                chart_temp_dict[dimensions_dict[dimension]] = dimension
+                            chart_dict["dimensions"] = chart_temp_dict
+                            template_metrics_dimension_dict.append(chart_dict)
+                        template_metrics_dimension_list["template_charts"] = template_metrics_dimension_dict
+                        statistics_template_metrics_dimension_list.append(template_metrics_dimension_list)
+        return statistics_template_metrics_dimension_list
 if __name__ == "__main__":
     print("test")
