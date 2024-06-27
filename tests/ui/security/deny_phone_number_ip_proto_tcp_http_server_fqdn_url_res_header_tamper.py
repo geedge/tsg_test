@@ -136,8 +136,6 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "tamper",
-                        "drop_packet": 0,
-                        "send_icmp_unreachable": True
                     }
                 ],
                 "packet_capture": []
