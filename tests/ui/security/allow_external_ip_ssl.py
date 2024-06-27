@@ -80,32 +80,19 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
-                    {
-                        "name": "test_node",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "items": [
-                            {
-                                "item_value": "$www.youtube.com",
-                            }
-                        ]
-                    }
-                ],
+                "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "youtube",
+            "expected_return": "POST",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 20 -m 20 https://www.youtube.com"
+                "command": "curl -kv --connect-timeout 20 -m 20 https://open.node.com:1443"
             },
             "token": ""
         }
