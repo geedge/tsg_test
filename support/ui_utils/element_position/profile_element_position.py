@@ -881,3 +881,5 @@ statisticsTemplates_button_warningSaveCancel_posCss = dnsRecordsProfilePage_butt
 statisticsTemplates_button_ChartOK_posXpath = "//*[@id='chart-ok']/span"  # 保存chart的OK按钮 xpath定位
 statisticsTemplates_button_oK_posCss = "#Success span"     #OK按钮css
 statisticsTemplates_button_cancel_posCss = "#Cancel span"      #Cancel按钮
+statisticsTemplates_charts_posXpath = "//div[@class='el-form-item template-edit-chart el-form-item--small']"#"//form[@class='el-form el-form--label-top']" # 编辑页码获取所有Chart Name所在Chart
+statisticsTemplates_label_chart_name_posXpath = "//form[@class='el-form el-form--label-top']//label[@for='name']/..//div[normalize-space(text())='{repalceLabel}']" # 编辑页码Chart Name定位Chart

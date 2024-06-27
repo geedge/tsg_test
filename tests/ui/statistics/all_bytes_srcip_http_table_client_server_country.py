@@ -48,7 +48,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "bytes_srcip_http_table_client_server_country",
+            "rule_name": "all_bytes_srcip_http_table_client_server_country",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
@@ -112,7 +112,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Table Distributed by Client and Server Country",
+                    "name": "Auto All Bytes Table Distributed by Client and Server Country",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -174,7 +174,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "bytes_srcip_http_table_client_server_country",
+                "name": "all_bytes_srcip_http_table_client_server_country",
             },
             {
                 "type": "ip",
@@ -185,7 +185,7 @@ def run(parameter):
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Table Distributed by Client and Server Country",
+                "name": "Auto All Bytes Table Distributed by Client and Server Country",
             },
         ]
         log_in = LogIn()
@@ -411,7 +411,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "bytes_srcip_http_table_client_server_country",
+        "test_case_name": "all_bytes_srcip_http_table_client_server_country",
         "script_type": "ui",
         "policy_type": "statistics"
     }

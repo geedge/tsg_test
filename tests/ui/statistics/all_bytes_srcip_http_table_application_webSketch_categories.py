@@ -112,7 +112,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Table Distributed by Application and WebSketch Categories",
+                    "name": "Auto All Bytes Table Distributed by Application and WebSketch Categories",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -185,7 +185,7 @@ def run(parameter):
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Table Distributed by Application and WebSketch Categories"
+                "name": "Auto All Bytes Table Distributed by Application and WebSketch Categories"
             },
         ]
         log_in = LogIn()
