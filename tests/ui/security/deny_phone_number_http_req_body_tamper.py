@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_allow_phone_number_http_req_body",
+            "rule_name": "security_rule_deny_phone_number_http_req_body_tamper",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -113,7 +113,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "timed out",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
             "traffic": {
@@ -131,7 +131,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_phone_number_mail"
+                "name": "security_rule_deny_phone_number_http_req_body_tamper"
             },
             {
                 "type": "mobile_identity",
@@ -392,12 +392,12 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.100",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

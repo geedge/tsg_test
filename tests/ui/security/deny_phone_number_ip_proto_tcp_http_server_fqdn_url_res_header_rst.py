@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_phone_number_ip_proto_tcp_http_server_fqdn_url_res_header_rst",
+            "rule_name": "deny_phone_number_ip_proto_tcp_http_server_fqdn_url_res_header_rst",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -112,7 +112,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "manipulation_res_header_http_signature",
+                        "name": "security_res_header_http_signature",
                         "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
@@ -162,7 +162,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_phone_number_mail"
+                "name": "deny_phone_number_ip_proto_tcp_http_server_fqdn_url_res_header_rst"
             },
             {
                 "type": "mobile_identity",
