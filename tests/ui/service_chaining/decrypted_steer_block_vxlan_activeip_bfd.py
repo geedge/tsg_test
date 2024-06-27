@@ -86,7 +86,7 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "facebook",
+                        "name": "test_facebook",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -106,7 +106,7 @@ def run(parameter):
             "multiProfile": True,
             "profile": [
                 {
-                    "name": "decrypted_steer_block_vxlan_activeip_bfd",
+                    "name": "steer_block_vxlan_activeip_bfd",
                     "profile_type": "create",
                     "type": "steering",
                     "load_balance_method": "hash_int-ip",
@@ -340,7 +340,7 @@ def run(parameter):
                 },
                 {
                     "type": "fqdn",
-                    "name": "facebook",
+                    "name": "test_facebook",
                 },
                 {
                     "type": "service_function_forwarder",
