@@ -96,7 +96,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "account",
+                                "item_type": "ftp_account",
                                 "item_value": "ftpuser->"
                             }
                         ],
@@ -189,7 +189,7 @@ def run(parameter):
                     "objectPage_addItem_posId": accountObjectPage_addItem_posId,
                     # item简单定位
                     "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": accountObjectPage_saveItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
                     "objectPage_okButton_posId": accountObjectPage_okButton_posId,
                     "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath
                 },
@@ -245,11 +245,11 @@ def run(parameter):
                     "policyRulePage_saveProile_ok_posXpath": monitorRulePage_saveProile_ok_posXpath,
                     "policyRulePage_saveProile_warningYes_posXpath": monitorRulePage_saveProile_warningYes_posXpath,
                     # 添加account
-                    "policyRulePage_addConditionAccount_posXpath": policyRulePage_addCondition_account_posXpath,
-                    "policyRulePage_addAccount_posXpath": policyRulePage_addAccount_posXpath,
-                    "policyRulePage_searchAccount_posXpath": policyRulePage_searchAccount_posXpath,
-                    "policyRulePage_selectAccount_posXpath": policyRulePage_selectAccount_posXpath,
-                    "policyRulePage_closeAccount_posXpath": policyRulePage_closeAccount_posXpath,
+                     "policyRulePage_addConditionFtpAccount_posXpath": securityRulePage_addCondition_ftpAccount_posXpath,
+                    "policyRulePage_addFtpAccount_posXpath": securityRulePage_addftpAccount_posXpath,
+                    "policyRulePage_searchFtpAccount_posXpath": securityRulePage_searchftpAccount_posXpath,
+                    "policyRulePage_selectFtpAccount_posXpath": securityRulePage_selectftpAccount_posXpath,
+                    "policyRulePage_closeFtpAccount_posXpath": securityRulePage_closeftpAccount_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,

@@ -99,7 +99,7 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "content",
+                                "item_type": "ftp_content",
                                 "item_value": "TEXT",
                                 "value": [
                                     "autotest"
@@ -252,11 +252,11 @@ def run(parameter):
                     "policyRulePage_saveProile_ok_posXpath": monitorRulePage_saveProile_ok_posXpath,
                     "policyRulePage_saveProile_warningYes_posXpath": monitorRulePage_saveProile_warningYes_posXpath,
                     # keywords:content
-                    "policyRulePage_addConditionContent_posXpath": policyRulePage_addCondition_content_posXpath,#此处实际为新加uri
-                    "policyRulePage_addContent_posXpath": policyRulePage_addContent_posXpath,
-                    "policyRulePage_searchContent_posXpath": policyRulePage_searchContent_posXpath,
-                    "policyRulePage_selectContent_posXpath": policyRulePage_selectContent_posXpath,
-                    "policyRulePage_closeContent_posXpath": policyRulePage_closeContent_posXpath,
+                    "policyRulePage_addConditionFtpContent_posXpath": securityRulePage_addCondition_ftpContent_posXpath,
+                    "policyRulePage_addFtpContent_posXpath": securityRulePage_addftpContent_posXpath,
+                    "policyRulePage_searchFtpContent_posXpath": securityRulePage_searchftpContent_posXpath,
+                    "policyRulePage_selectFtpContent_posXpath": securityRulePage_selectftpContent_posXpath,
+                    "policyRulePage_closeFtpContent_posXpath": securityRulePage_closeftpContent_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
