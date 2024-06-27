@@ -133,10 +133,7 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "tamper",
-                        "drop_packet": 0,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
+                        "type": "tamper"
                     }
                 ],
                 "packet_capture": []

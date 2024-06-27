@@ -83,7 +83,7 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "ftp_url",
+                        "name": "security_ftp_url",
                         "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,

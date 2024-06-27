@@ -224,7 +224,7 @@ class CreateRule():
             if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
                 protocol_field_datas = test_data["condition"]["protocol_filed"]
                 tmp_protocol_field_data_split_by_type = []   # 将 protocol_filed 分类临时存储
-                tmp_url, tmp_request_header, tmp_response_header, tmp_request_body, tmp_response_body = [], [], [], [], []
+                tmp_url, tmp_request_header, tmp_response_header, tmp_request_body, tmp_response_body, tmp_ftp_account, tmp_ftp_content = [], [], [], [], [], [], []
                 tmp_boolean= []
                 for _ in range(len(protocol_field_datas)):   # 将 rul、request_header等数据分类处理
                     tmp_item = protocol_field_datas[_]
@@ -242,13 +242,20 @@ class CreateRule():
                             tmp_request_body.append(tmp_item)
                         elif tmp_item["item"][0]["item_type"] == "response_body":
                             tmp_response_body.append(tmp_item)
+                        elif tmp_item["item"][0]["item_type"] == "ftp_content":
+                            tmp_ftp_content.append(tmp_item)
                         else:
                             print("check..")
+                    elif tmp_item["object_type"] == "account":
+                        if tmp_item["items"][0]["item_type"] == "ftp_account":
+                            tmp_ftp_account.append(tmp_item)
                 if len(tmp_url) > 0: tmp_protocol_field_data_split_by_type.append(tmp_url)
                 if len(tmp_request_header) > 0: tmp_protocol_field_data_split_by_type.append(tmp_request_header)
                 if len(tmp_response_header) > 0: tmp_protocol_field_data_split_by_type.append(tmp_response_header)
                 if len(tmp_request_body) > 0: tmp_protocol_field_data_split_by_type.append(tmp_request_body)
                 if len(tmp_response_body) > 0: tmp_protocol_field_data_split_by_type.append(tmp_response_body)
+                if len(tmp_ftp_account) > 0: tmp_protocol_field_data_split_by_type.append(tmp_ftp_account)
+                if len(tmp_ftp_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_ftp_content)
                 if len(tmp_boolean) > 0: tmp_protocol_field_data_split_by_type.append(tmp_boolean)
                 #print(tmp_protocol_field_data_split_by_type)
                 for protocol_field_data in tmp_protocol_field_data_split_by_type:
@@ -271,6 +278,14 @@ class CreateRule():
                                     self.add_protocol_field(protocol_field_data, "RequestBody", create_element_position, temp)
                                 elif item_dict["item_type"] == "response_body":
                                     self.add_protocol_field(protocol_field_data, "ResponseBody", create_element_position, temp)
+                                elif item_dict["item_type"] == "ftp_content":
+                                    self.add_protocol_field(protocol_field_data, "FtpContent", create_element_position, temp)
+                                else:
+                                    print(f"todo {item_dict['item_type']}")
+                        elif protocol_field_data[x]["object_type"] == "account":
+                            for item_dict in protocol_field_data[x]["items"]:
+                                if item_dict["item_type"] == "ftp_account":
+                                    self.add_protocol_field(protocol_field_data, "FtpAccount", create_element_position, temp)
                                 else:
                                     print(f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == 'boolean':
@@ -292,7 +307,7 @@ class CreateRule():
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_dropPkt_posXpath"]).clear()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_dropPkt_posXpath"]).send_keys(sub_action_data[0]["drop_packet"])
                     # quic不支持tcp rst；默认tcp rst是选中，不需要操作，只有当sendTcpRst为false时
-                    if (override_flag == False or sub_action_data[0]["send_tcp_rst"]) and len(test_data["condition"]["application"]) == 1 and test_data["condition"]["application"][0]['name'] == "quic" == False:
+                    if (override_flag == False and len(test_data["condition"]["application"]) == 1 and test_data["condition"]["application"][0]['name'] == "quic")or sub_action_data[0]["send_tcp_rst"] == False:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendTcpRst_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendIcmp_posXpath"]).click()
                 elif sub_action_data[0]["type"] == "rate_limit":

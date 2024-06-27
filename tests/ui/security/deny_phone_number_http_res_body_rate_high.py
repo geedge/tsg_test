@@ -39,7 +39,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_allow_phone_number_http_req_body",
+            "rule_name": "security_rule_deny_phone_number_http_res_body_rate_high",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -82,7 +82,7 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_keywords_response_body",
+                        "name": "security_keywords_response_body",
                         "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
@@ -129,7 +129,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_phone_number_mail"
+                "name": "security_rule_deny_phone_number_http_res_body_rate_high"
             },
             {
                 "type": "mobile_identity",
