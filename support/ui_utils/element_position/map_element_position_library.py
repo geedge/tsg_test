@@ -392,6 +392,12 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchInternalIP_posXpath": manipulationRulePage_searchInternalIP_posXpath,
         "policyRulePage_selectInternalIP_posXpath": manipulationRulePage_selectInternalIP_posXpath,
         "policyRulePage_closeInternalIP_posXpath": manipulationRulePage_closeInternalIP_posXpath,
+        # source Port
+        "policyRulePage_addConditionSrcPort_posXpath": manipulationRulePage_addCondition_srcPort_posXpath,
+        "policyRulePage_addSrcPort_posXpath": manipulationPage_addSrcPort_posXpath,
+        "policyRulePage_searchSrcPort_posXpath": manipulationRulePage_searchSrcPort_posXpath,
+        "policyRulePage_selectSrcPort_posXpath": manipulationRulePage_selectSrcPort_posXpath,
+        "policyRulePage_closeSrcPort_posXpath": manipulationRulePage_closeSrcPort_posXpath,
         # Internal Port
         "policyRulePage_addConditionInternalPort_posXpath": manipulationRulePage_addCondition_internalPort_posXpath,
         "policyRulePage_addInternalPort_posXpath": manipulationRulePage_addInternalPort_posXpath,
@@ -969,7 +975,7 @@ def get_element_position(key_name):
     # object
     if key_name == "source_ip" or key_name == "internal_ip" or  key_name == "destination_ip" or key_name == "external_ip":
         element_position_map = test_ip_object_element_position
-    elif key_name == "source_port" or key_name == "destination_port" or key_name == "external_port":
+    elif key_name == "source_port" or key_name == "destination_port" or key_name == "external_port" or key_name == "internal_port":
         element_position_map = test_port_object_element_position
     elif key_name == "http_signature":
         element_position_map = test_http_signature_object_element_position

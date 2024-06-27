@@ -68,9 +68,39 @@ test_data = \
                         ]
                     }
                 ],
+                "source_port": [
+                    {
+                        "name": "manipulation_src_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "1000-65530",
+                            },
+                        ]
+                    }
+                ],
+                "internal_port": [
+                    {
+                        "name": "manipulation_internal_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "1000-65530",
+                            },
+                        ]
+                    }
+                ],
                 "destination_port": [
                     {
-                        "name": "security_destination_port",
+                        "name": "manipulation_destination_port",
                         "object_type": "port",
                         "select_type": False,
                         "negate": False,
@@ -98,8 +128,6 @@ test_data = \
                         ]
                     }
                 ],
-                "source_port": [],
-                "internal_port": [],
                 "source_geography": [],
                 "destination_geography": [],
                 "sub_id": [],

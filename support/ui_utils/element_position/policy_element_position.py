@@ -289,12 +289,12 @@ manipulationRulePage_addCondition_close_posXpath = policyRulePage_addCondition_c
 # rule 中添加condition侧滑中选择行定位
 manipulationRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_srcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Geography']"
-manipulationRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_dstcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_dstcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Geography']"
 manipulationRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
 manipulationRulePage_addCondition_serverPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='IP Address']"
+manipulationRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_destinationPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='Port']"
@@ -316,6 +316,11 @@ manipulationRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXp
 manipulationRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath
 manipulationRulePage_selectInternalIP_posXpath = policyRulePage_selectInternalIP_posXpath
 manipulationRulePage_closeInternalIP_posXpath = policyRulePage_closeInternalIP_posXpath
+# source Port的添加、查询、选中、关闭操作
+manipulationPage_addSrcPort_posXpath = policyRulePage_addSrcPort_posXpath
+manipulationRulePage_searchSrcPort_posXpath = policyRulePage_searchSrcPort_posXpath
+manipulationRulePage_selectSrcPort_posXpath = policyRulePage_selectSrcPort_posXpath
+manipulationRulePage_closeSrcPort_posXpath = policyRulePage_closeSrcPort_posXpath
 # Internal Port的添加、查询、选中、关闭操作
 manipulationRulePage_addInternalPort_posXpath = policyRulePage_addInternalPort_posXpath
 manipulationRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
