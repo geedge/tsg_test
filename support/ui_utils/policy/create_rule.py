@@ -225,6 +225,7 @@ class CreateRule():
                 protocol_field_datas = test_data["condition"]["protocol_filed"]
                 tmp_protocol_field_data_split_by_type = []   # 将 protocol_filed 分类临时存储
                 tmp_url, tmp_request_header, tmp_response_header, tmp_request_body, tmp_response_body = [], [], [], [], []
+                tmp_boolean= []
                 for _ in range(len(protocol_field_datas)):   # 将 rul、request_header等数据分类处理
                     tmp_item = protocol_field_datas[_]
                     if tmp_item["object_type"] == "url":
@@ -248,6 +249,7 @@ class CreateRule():
                 if len(tmp_response_header) > 0: tmp_protocol_field_data_split_by_type.append(tmp_response_header)
                 if len(tmp_request_body) > 0: tmp_protocol_field_data_split_by_type.append(tmp_request_body)
                 if len(tmp_response_body) > 0: tmp_protocol_field_data_split_by_type.append(tmp_response_body)
+                if len(tmp_boolean) > 0: tmp_protocol_field_data_split_by_type.append(tmp_boolean)
                 #print(tmp_protocol_field_data_split_by_type)
                 for protocol_field_data in tmp_protocol_field_data_split_by_type:
                     #print(protocol_field_data)
