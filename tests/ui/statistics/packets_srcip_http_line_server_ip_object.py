@@ -55,6 +55,7 @@ def run(parameter):
                         "name": "statistics_packets_line_source_ip",
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option":"Brief",
                         "negate": False,
                         "item": [
                             {
@@ -71,6 +72,7 @@ def run(parameter):
                         "name": "statistics_packets_line_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option":"Brief",
                         "negate": False,
                         "item": [
                             {

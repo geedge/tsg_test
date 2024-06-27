@@ -55,6 +55,7 @@ def run(parameter):
                         "name": "statistics_sessions_table_source_ip",
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option":"Brief",
                         "negate": False,
                         "item": [
                             {
@@ -72,6 +73,7 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
