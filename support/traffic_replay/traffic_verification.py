@@ -193,11 +193,12 @@ class TrafficVerification():
             #traffic_replay = TrafficReplay(template_path)
             #statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
             time.sleep(50)
-            # 点击 语言快捷切换按钮
-            element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
-            # 移动元素到页面，在执行点击
-            my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
-            my_driver.execute_script("arguments[0].click();", element_language_menu)
+            if script_type == "ui":
+                # 点击 语言快捷切换按钮
+                element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
+                # 移动元素到页面，在执行点击
+                my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
+                my_driver.execute_script("arguments[0].click();", element_language_menu)
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -214,9 +215,12 @@ class TrafficVerification():
                     fail_count = 1   #失败重试变量
                     while n < 6:
                         time.sleep(70)
-                        # 移动元素到页面，再执行点击
-                        my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
-                        my_driver.execute_script("arguments[0].click();", element_language_menu)
+                        if script_type == "ui":
+                            # 点击 语言快捷切换按钮
+                            element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
+                            # 移动元素到页面，再执行点击
+                            my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
+                            my_driver.execute_script("arguments[0].click();", element_language_menu)
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
