@@ -214,7 +214,7 @@ class TrafficVerification():
                     fail_count = 1   #失败重试变量
                     while n < 6:
                         time.sleep(70)
-                        # 移动元素到页面，在执行点击
+                        # 移动元素到页面，再执行点击
                         my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
                         my_driver.execute_script("arguments[0].click();", element_language_menu)
                         utc_tz = pytz.timezone('UTC')
