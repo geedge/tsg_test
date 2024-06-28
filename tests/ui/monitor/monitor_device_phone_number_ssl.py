@@ -125,7 +125,7 @@ def run(parameter):
         # 添加定位库集合
         test_rule_element_position = {}
         if test_data["policy_type"] == "monitor":
-            test_imsi_object_element_position = {
+            test_phone_number_object_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
@@ -138,12 +138,12 @@ def run(parameter):
                     "objectListPage_createButton_posId": mobile_identitiesObjectListPage_createButton_posId,
                     "objectListPage_dropDown_createButton_posId": mobile_identitiesObjectListPage_dropDown_createButton_posId,
                     "objectPage_inputName_posXpath": mobile_identitiesObjectPage_inputName_posXpath,
-                    "objectPage_imsiType_posId": imsiObjectPage_imsiType_posId,
-                    "objectPage_addItem_posId": imsiObjectPage_addItem_posId,
-                    "objectPage_inputItem_posXpath": imsiObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": imsiObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": imsiObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": imsiObjectPage_okButton_warningYes_posXpath
+                    "objectPage_phnoeNumberType_posId": phoneNumberObjectPage_phoneNumberType_posId,
+                    "objectPage_addItem_posId": phoneNumberObjectPage_addItem_posId,
+                    "objectPage_inputItem_posXpath": phoneNumberObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": phoneNumberObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": phoneNumberObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": phoneNumberObjectPage_okButton_warningYes_posXpath
                 },
                 "search": {
                     "objectListPage_searchLabel_posId": imsiObjectListPage_searchLabel_posId,
@@ -202,6 +202,8 @@ def run(parameter):
                     "policyRulePage_searchImsi_posXpath": policyRulePage_searchImsi_posXpath,
                     "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
                     "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
+                    # phone number
+                    "policyRulePage_choosePhoneNumber_posXpath": securityRulePage_choosePhoneNumber_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -223,8 +225,8 @@ def run(parameter):
             create_device = CreateObject(driver)
             for i in range(len(device_data)):
                 object_sub_type = device_data[i]['item'][0]['item_type']
-                if object_sub_type == 'imsi':
-                    create_device_code = create_device.create(device_data[i], test_imsi_object_element_position)
+                if object_sub_type == 'phone_number':
+                    create_device_code = create_device.create(device_data[i], test_phone_number_object_element_position)
                 if create_device_code == 200:
                     print("Create {} object successfully.".format(object_sub_type))
                 elif create_device_code != 200:
@@ -285,13 +287,13 @@ def run(parameter):
             for y in range(len(device_data)):
                 search_device = SearchObject(driver)
                 object_sub_type = device_data[i]['item'][0]['item_type']
-                if object_sub_type == 'imsi':
+                if object_sub_type == 'phone_number':
                     search_device_code, first_row_checkbox_element = search_device.search(device_data[y]["name"],
-                                                                                          test_imsi_object_element_position)
+                                                                                          test_phone_number_object_element_position)
                 if search_device_code == 200:
                     delete_device = DeleteObject(driver)
-                    if object_sub_type == 'imsi':
-                        delete_device_code = delete_device.delete(test_imsi_object_element_position,
+                    if object_sub_type == 'phone_number':
+                        delete_device_code = delete_device.delete(test_phone_number_object_element_position,
                                                                   first_row_checkbox_element, True)
                     if delete_device_code == 200:
                         print("Delete {} object successfully.".format(object_sub_type))

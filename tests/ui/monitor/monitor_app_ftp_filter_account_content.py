@@ -46,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_ftp_uri_content",
+            "rule_name": "monitor_rule_ftp_account_content",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -88,20 +88,6 @@ def run(parameter):
                 ],
                 "server_fqdn": [],
                 "protocol_filed": [
-                    {
-                        "name": "monitor_ftp_uri",
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "english->"
-                            }
-                        ],
-                    },
                     {
                         "name": "monitor_keywords_ftp_content",
                         "object_type": "keywords",
@@ -169,12 +155,7 @@ def run(parameter):
             {
                 "type":test_data["condition"]["protocol_filed"][0]['object_type'],
                 "name":test_data["condition"]["protocol_filed"][0]['name']
-            },
-            {
-                "type": test_data["condition"]["protocol_filed"][1]['object_type'],
-                "name": test_data["condition"]["protocol_filed"][1]['name']
             }
-
         ]
 
         # 添加定位库集合
@@ -551,7 +532,7 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.9",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "script_type": "ui",
         "vsys_id": 1,
