@@ -120,7 +120,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "reset",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
@@ -138,7 +138,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_ftp_drop_uri"
+                "name": "security_rule_deny_internal_ip_ftp_uri_account_tamper"
             },
             {
                 "type": "ip",
@@ -458,7 +458,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

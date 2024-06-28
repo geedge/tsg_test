@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_server_fqdn_url_req_header_http_block_403_text",
+            "rule_name": "deny_external_ip_server_fqdn_url_req_header_http_block_403_profile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -53,9 +53,11 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [],
                 "destination_port": [],
-                "internal_ip": [
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "security_external_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -63,13 +65,11 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
+                                "item_value": "192.168.40.206",
                             }
                         ]
                     }
                 ],
-                "internal_port": [],
-                "external_ip": [],
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
@@ -138,8 +138,8 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "alert",
-                        "code": 200,
+                        "type": "block",
+                        "code": 403,
                         "content_type": "Profile",
                         "content": "test_tsg_ui_profile_page"
                     }
@@ -150,7 +150,7 @@ def run(parameter):
                 "response_page": [
                     {
                         "profile_type": "response_page",
-                        "response_code": 200,
+                        "response_code": 403,
                         "response_content_type": "Profile",
                         "profile_file": {
                             "name": "test_tsg_ui_profile_page",
@@ -160,7 +160,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "200",
+            "expected_return": "403",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
@@ -178,7 +178,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_server_fqdn_url_req_header_http_block_403_text"
+                "name": "deny_external_ip_server_fqdn_url_req_header_http_block_403_profile"
             },
             {
                 "type": "ip",
@@ -342,10 +342,11 @@ def run(parameter):
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
                     "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
-                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
-                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
-                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
-                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    "policyRulePage_addConditionExternalIP_posXpath": securityRulePage_addCondition_externalIP_posXpath,
+                    "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
+                    "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
+                    "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
+                    "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -410,15 +411,15 @@ def run(parameter):
             }
         
         # 创建object
-        if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
-            ip_data = test_data["condition"]["internal_ip"]
+        if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
+            ip_data = test_data["condition"]["external_ip"]
             create_port = CreateObject(driver)
             for i in range(len(ip_data)):
                 create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
                 if create_port_code == 200:
                     print("Create ip object successfully.")
                 elif create_port_code != 200:
-                    result = "Fail to create ip object."
+                    result = "Fail to create ip."
                     break
         if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
             fqdn_data = test_data["condition"]["server_fqdn"]

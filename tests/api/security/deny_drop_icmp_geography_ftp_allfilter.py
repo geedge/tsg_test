@@ -107,7 +107,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -m 10 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 40 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },
             "token": ""
         }
@@ -153,37 +153,38 @@ def run(parameter):
     except Exception as e:
       print("Error: ", e)
       return "Error: " + str(e)
-    finally:
-        name_list = []
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
-        # 生成csv报告
-        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
-            if result is not None and result != "" and len(result) != 0:
-                report_data = []
-                report_data.append(parameter["test_case_name"])
-                if False in verification_result:
-                    result_flag = "Fail"
-                else:
-                    result_flag = "PASS"
-                report_data.append(result_flag)
-                report_data.append(result)
-                new_report = GenerateReport()
-                new_report.insert_data(parameter, report_data)
+    # finally:
+    #     name_list = []
+    #     erase = DeleteConfig()
+    #     erase.clear_config(token, parameter, name_list)
+    #     # 生成csv报告
+    #     file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+    #     if os.path.exists(file_path) and os.path.isfile(file_path):  
+    #         if result is not None and result != "" and len(result) != 0:
+    #             report_data = []
+    #             report_data.append(parameter["test_case_name"])
+    #             if False in verification_result:
+    #                 result_flag = "Fail"
+    #             else:
+    #                 result_flag = "PASS"
+    #             report_data.append(result_flag)
+    #             report_data.append(result)
+    #             new_report = GenerateReport()
+    #             new_report.insert_data(parameter, report_data)
       
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.100",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
+        "test_subcriber_id": "test6488",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "allow_http_fqdn"
     }
