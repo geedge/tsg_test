@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_server_fqdn_url_req_header_http_block_403_text",
+            "rule_name": "deny_internal_ip_server_fqdn_url_req_header_http_block_404_profile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -160,7 +160,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "403",
+            "expected_return": "404",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
@@ -178,7 +178,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_server_fqdn_url_req_header_http_block_403_text"
+                "name": "deny_internal_ip_server_fqdn_url_req_header_http_block_404_profile"
             },
             {
                 "type": "ip",

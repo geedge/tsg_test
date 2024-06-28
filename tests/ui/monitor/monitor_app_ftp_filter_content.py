@@ -116,7 +116,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "auto",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "ftp_account", "query_value": "ftp_user"}],
+            "log_query_param_1": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
@@ -194,8 +194,9 @@ def run(parameter):
                     "objectListPage_dropDown_createButton_posId": keywordsObjectListPage_dropDown_createButton_posId,
                     "objectPage_inputName_posXpath": keywordsObjectPage_inputName_posXpath,
                     "objectPage_addItem_posId": keywordsObjectPage_addItem_posId,
-                    # item简单定位
+                    "objectPage_item_value_select_posXpath": keywordsObjectPage_item_value_select_posXpath,
                     "objectPage_inputItem_posXpath": keywordsObjectPage_inputItem_posXpath,
+                    "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
                     "objectPage_button_saveItem_posXpath": keywordsObjectPage_button_saveItem_posXpath,
                     "objectPage_okButton_posId": keywordsObjectPage_okButton_posId,
                     "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath

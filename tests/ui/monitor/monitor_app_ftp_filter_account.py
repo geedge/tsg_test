@@ -109,7 +109,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "auto",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "ftp_account", "query_value": "ftp_user"}],
+            "log_query_param_1": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
@@ -411,10 +411,10 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.9",
         "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "script_type": "ui",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
