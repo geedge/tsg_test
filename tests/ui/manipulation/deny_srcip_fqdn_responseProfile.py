@@ -92,7 +92,7 @@ def run(parameter):
                         "response_code": 404,
                         "response_content_type": "Profile",
                         "profile_file": {
-                            "name": "test_tsg_ui_profile_page",
+                            "name": "manipulation_profile_page",
                             "model": "create",
                             "file": "testa.html->"
                         },

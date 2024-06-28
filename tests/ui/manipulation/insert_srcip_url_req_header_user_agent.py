@@ -112,7 +112,7 @@ def run(parameter):
                     {
                         "profile_type": "insert_script",
                         "profile_file": {
-                            "name": "test_tsg_ui_profile_page",
+                            "name": "manipulation_insert_profile",
                             "model": "create",
                             "script": "test_js_1.js->",
                             "script_type":  "js->",

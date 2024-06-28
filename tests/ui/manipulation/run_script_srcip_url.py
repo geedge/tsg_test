@@ -92,7 +92,7 @@ def run(parameter):
                     {
                         "profile_type": "run_script",
                         "profile_file": {
-                            "name": "test_tsg_ui_profile_page",
+                            "name": "manipulation_run_script_profile",
                             "model": "create",
                             "script": "run_script_insert.lua->",
                             "max_exec_time": "1000->"

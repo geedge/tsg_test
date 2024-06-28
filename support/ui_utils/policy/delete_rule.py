@@ -15,21 +15,15 @@ class DeleteRule():
         delete_element_position = rule_element_position["delete"]
         try:
             if is_del_all == True:
-                time.sleep(3)
+                time.sleep(1)
                 self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_allSelect_posXpath"]).click()
             else:
-                time.sleep(3)
+                time.sleep(1)
                 first_row_checkbox_element.click()
-            time.sleep(3)
+            time.sleep(1)
             self.driver.find_element(By.ID, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
-            random_yes_or_no = random.randint(0, 1)
-            if random_yes_or_no == 0:
-                self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
-            else:
-                # self.driver.find_element(By.CSS_SELECTOR, delete_element_position["policyRuleListPage_okButton_warningNo_posXpath"]).click()
-                # self.driver.find_element(By.ID, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
-                self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
-            time.sleep(0.5)
+            self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
+            time.sleep(3)
             return 200
         except Exception as e:
             print(e)

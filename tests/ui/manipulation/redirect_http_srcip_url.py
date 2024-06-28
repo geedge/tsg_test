@@ -110,7 +110,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "https://www.jd.com",
+            "expected_return": "https://www.jd.com,301",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {

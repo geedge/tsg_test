@@ -20,8 +20,8 @@ class PageJump():
         vsys_name:空值时，参数来自配置文件
         """
         # 菜单操作，先判断是否是当前Vsys再判断是否重新选择Vsys
-        #self.driver.find_element(By.CSS_SELECTOR,
-        #                         page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
+        btn = self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"])
+        self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
         self.change_vsys(vsys_name=vsys_name, page_jump_element_position=page_jump_element_position)
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"]).click()
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"]).click()

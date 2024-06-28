@@ -112,7 +112,7 @@ def run(parameter):
                     {
                         "profile_type": "hijack_file",
                         "profile_file": {
-                            "name": "test_tsg_ui_profile_page",
+                            "name": "manipulation_hijack_profile",
                             "model": "create",
                             "file": "test_html_1.html->",
                             "download_name": "test_html_1.html->",

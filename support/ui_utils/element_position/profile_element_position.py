@@ -6,7 +6,7 @@ loginPage_error_posXpath = "//p[@class='el-message__content']"
 
 #main页面
 ##上导航栏及语言切换按钮
-mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
+mainPage_navigationBar_logo_posCss = ".logo"
 mainPage_input_language_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']"
 mainPage_language_change_posXpath = "//span[@class='el-input__prefix']//i"
 mainPage_language_chinese_posXpath = "//div/ul/li/span[contains(text(),'简体中文')]"
