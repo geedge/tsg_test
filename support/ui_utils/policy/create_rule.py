@@ -249,6 +249,8 @@ class CreateRule():
                     elif tmp_item["object_type"] == "account":
                         if tmp_item["items"][0]["item_type"] == "ftp_account":
                             tmp_ftp_account.append(tmp_item)
+                    elif tmp_item["object_type"] == "boolean":
+                        tmp_boolean.append(tmp_item)
                 if len(tmp_url) > 0: tmp_protocol_field_data_split_by_type.append(tmp_url)
                 if len(tmp_request_header) > 0: tmp_protocol_field_data_split_by_type.append(tmp_request_header)
                 if len(tmp_response_header) > 0: tmp_protocol_field_data_split_by_type.append(tmp_response_header)
