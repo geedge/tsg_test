@@ -142,7 +142,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "autotest",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.100"}],
+            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"

@@ -57,7 +57,7 @@ def run(parameter):
                 "device": [
                     {
                         "name": "security_imsi",
-                        "mobile_identity": "mobile_identity",
+                        "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,
                         "item": [

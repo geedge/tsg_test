@@ -101,10 +101,10 @@ def run(parameter):
             },
             "expected_return": "https://www.daixiaorui.com",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 --max-time 30 https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }
@@ -342,7 +342,7 @@ if __name__ == '__main__':
         "script_type": "ui",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",

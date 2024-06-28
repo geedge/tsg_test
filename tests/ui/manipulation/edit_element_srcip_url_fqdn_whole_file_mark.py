@@ -115,10 +115,10 @@ def run(parameter):
             },
             "expected_return": "need_filter",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "ww.python.org"}],
+            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "ww.python.org"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --compressed  --connect-timeout 20 --max-time 50 https://www.python.org/blogs/"
+                "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
             },
             "token": ""
         }
@@ -354,7 +354,7 @@ if __name__ == '__main__':
         "script_type": "ui",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",

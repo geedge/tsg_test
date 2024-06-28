@@ -19,16 +19,16 @@ class PageJump():
         """
         vsys_name:空值时，参数来自配置文件
         """
-        # 菜单操作
-        self.driver.find_element(By.CSS_SELECTOR,
-                                 page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
-        self.change_vsys(vsys_name=vsys_name)
+        # 菜单操作，先判断是否是当前Vsys再判断是否重新选择Vsys
+        #self.driver.find_element(By.CSS_SELECTOR,
+        #                         page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
+        self.change_vsys(vsys_name=vsys_name, page_jump_element_position=page_jump_element_position)
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"]).click()
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"]).click()
 
-    def change_vsys(self, vsys_name=""):
+    def change_vsys(self, vsys_name="", page_jump_element_position=""):
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
-        #print(f"the current vsys: {current_vsys_name}")
+        print(f"the current vsys: {current_vsys_name}")
         current_path = os.path.dirname(__file__)   # 当前文件目录
         temp_path = os.path.dirname(os.path.dirname(os.path.dirname(current_path)))
         conf_path = os.path.join(temp_path, "configuration_file.ini")
@@ -43,6 +43,9 @@ class PageJump():
             change_vsys_name = id_vsys_format
         else:     # 切换到指定vsys
             change_vsys_name = vsys_name
+        print(f"the change_vsys_name: {change_vsys_name}")
+        if change_vsys_name != current_vsys_name:
+            self.driver.find_element(By.CSS_SELECTOR,page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
         self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
         vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
         time.sleep(1)

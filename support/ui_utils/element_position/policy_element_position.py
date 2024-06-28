@@ -9,7 +9,7 @@ mainPage_policySecondLevelMenu_statistics_posId = "policy_statistics"  # 二级�
 mainPage_button_menu_posXCss = ".menu-btn span"
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//div[@class='VsysTree']/ul//li"    # vsys tree中vsys name定位
-
+language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']/.."#快捷切换语言按钮
 policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
 policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
@@ -316,12 +316,12 @@ manipulationRulePage_addCondition_close_posXpath = policyRulePage_addCondition_c
 # rule 中添加condition侧滑中选择行定位
 manipulationRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_srcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Geography']"
-manipulationRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_dstcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_dstcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Geography']"
 manipulationRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
 manipulationRulePage_addCondition_serverPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='IP Address']"
+manipulationRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_destinationPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='Port']"
@@ -343,6 +343,11 @@ manipulationRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXp
 manipulationRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath
 manipulationRulePage_selectInternalIP_posXpath = policyRulePage_selectInternalIP_posXpath
 manipulationRulePage_closeInternalIP_posXpath = policyRulePage_closeInternalIP_posXpath
+# source Port的添加、查询、选中、关闭操作
+manipulationPage_addSrcPort_posXpath = policyRulePage_addSrcPort_posXpath
+manipulationRulePage_searchSrcPort_posXpath = policyRulePage_searchSrcPort_posXpath
+manipulationRulePage_selectSrcPort_posXpath = policyRulePage_selectSrcPort_posXpath
+manipulationRulePage_closeSrcPort_posXpath = policyRulePage_closeSrcPort_posXpath
 # Internal Port的添加、查询、选中、关闭操作
 manipulationRulePage_addInternalPort_posXpath = policyRulePage_addInternalPort_posXpath
 manipulationRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
