@@ -215,6 +215,9 @@ class OrganizeConfig():
                             chart_temp_dict = {}
                             for dimension in chart["dimensions"]:
                                 chart_temp_dict[dimensions_dict[dimension]] = dimension
+                            if chart["visualization_type"] == "Line":
+                                #因Line的Time Dimension仅有一个选项为默认必选，所以测试参数未带有此选项需要特殊处理
+                                chart_temp_dict["Time"] = "time"
                             chart_dict["dimensions"] = chart_temp_dict
                             template_metrics_dimension_dict.append(chart_dict)
                         template_metrics_dimension_list["template_charts"] = template_metrics_dimension_dict
