@@ -476,28 +476,28 @@ def run(parameter):
 
         
 
-        # # 触发流量验证
-        # if create_rule_code == 200:
-        #     edit_rule = EditRule(driver)
-        #     edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
-        #     if edit_rule_code == 200:
-        #         # rule_id = search_rule.get_rule_id()
-        #         test_data["rule_id"] = rule_id
-        #         verify = TrafficVerification()
-        #         verification_result = verify.traffic_verification(driver, parameter, test_data, [])
-        #         if len(verification_result) == 4:
-        #             driver = verification_result[3]
-        #         elif len(verification_result) == 5:
-        #             driver = verification_result[4]
+        # 触发流量验证
+        if create_rule_code == 200:
+            edit_rule = EditRule(driver)
+            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+            if edit_rule_code == 200:
+                # rule_id = search_rule.get_rule_id()
+                test_data["rule_id"] = rule_id
+                verify = TrafficVerification()
+                verification_result = verify.traffic_verification(driver, parameter, test_data, [])
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
         
-        # # 分析验证结果，并返回给flask
-        # if len(verification_result) != 0:
-        #     analysis = AnalysisResult()
-        #     result = analysis.analysis_result(test_data, [], verification_result)
-        #     if len(result) == 0:
-        #         print("The test case is passed.")
-        #     elif len(result) != 0:
-        #         print("The test case is failed. The failure reason is: ", result)
+        # 分析验证结果，并返回给flask
+        if len(verification_result) != 0:
+            analysis = AnalysisResult()
+            result = analysis.analysis_result(test_data, [], verification_result)
+            if len(result) == 0:
+                print("The test case is passed.")
+            elif len(result) != 0:
+                print("The test case is failed. The failure reason is: ", result)
         
         # 删除rule
         if create_rule_code == 200:
