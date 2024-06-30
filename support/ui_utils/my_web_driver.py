@@ -46,7 +46,7 @@ class MyWebDriver(webdriver.Remote):
         time_2 = time.time()
         search_time = time_2 - time_1
         search_time = round(search_time, 1)
-        print(f"{caller_filename}. {caller_lineno} line. find element：{value}. find method: {by}. find take time：{search_time} second.")
+        # print(f"{caller_filename}. {caller_lineno} line. find element：{value}. find method: {by}. find take time：{search_time} second.")
         if throw_assert == 1:
             print(assert_info)
             raise
