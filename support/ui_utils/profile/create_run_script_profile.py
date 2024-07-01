@@ -20,7 +20,7 @@ class CreateRunScriptProfile():
         if self.driver.element_isExist(By.CSS_SELECTOR,tsgProxyScripts_button_warningSaveYes_posCss):
             self.driver.find_element(By.CSS_SELECTOR, tsgProxyScripts_button_warningSaveYes_posCss).click()
 
-    def _operate_page(self, data: {}, operation_type="create"):
+    def _operate_page(self, data, operation_type="create"):
         """
         除name的其它选项操作，共创建、修改逻辑调用
         :param data:
@@ -52,7 +52,7 @@ class CreateRunScriptProfile():
             #输入数据
             self.driver.find_element(By.XPATH, tsgProxyScripts_input_maximumExecutionTime_posXpath).send_keys(max_exec_time)
 
-    def _get_value_from_data(self, data: {}, key="", data_index=0):
+    def _get_value_from_data(self, data, key="", data_index=0):
         """
         从data数据中，根据key提取值
         :param data:
