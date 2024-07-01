@@ -120,7 +120,7 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 点击chart的OK保存按钮
-                print("click chart OK！")
+                #print("Click the chart OK save button！")
                 self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
             # 确认创建，点击Template的OK保存按钮
             #print("template14,Template OK")
