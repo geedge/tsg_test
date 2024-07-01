@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class MyWebDriver(webdriver.Remote):
     def find_element(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.3, find_after_wait_time=0.3, wait_timeout=10):
         """
-        封装find_element方法：
+        封装find_element方法:
         :param by:
         :param value:
         :param find_before_wait_time:   开始查找元素前等待时间
@@ -35,7 +35,7 @@ class MyWebDriver(webdriver.Remote):
             try:
                 self.element = super().find_element(by, value)
             except:
-                #print(f"{caller_filename}. {caller_lineno} line. find element：{value}. find method: {by}.")
+                #print(f"{caller_filename}. {caller_lineno} line. find element: {value}. find method: {by}.")
                 throw_assert = 1
                 assert_info = traceback.format_exc()
                 continue
@@ -46,7 +46,7 @@ class MyWebDriver(webdriver.Remote):
         time_2 = time.time()
         search_time = time_2 - time_1
         search_time = round(search_time, 1)
-        # print(f"{caller_filename}. {caller_lineno} line. find element：{value}. find method: {by}. find take time：{search_time} second.")
+        # print(f"{caller_filename}. {caller_lineno} line. find element:{value}. find method: {by}. find take time:{search_time} second.")
         if throw_assert == 1:
             print(assert_info)
             raise
@@ -66,7 +66,7 @@ class MyWebDriver(webdriver.Remote):
                 caller_line_number = caller_info.frame
                 caller_code_context = caller_info.code_context
                 print(caller_filename, caller_line_number, caller_code_context)
-                print(f"find method：{by};-->>", f"find element：{value}\n")
+                #print(f"find method:{by};-->>", f"find element:{value}\n")
                 throw_assert = 1
                 assert_info = traceback.format_exc()
                 continue

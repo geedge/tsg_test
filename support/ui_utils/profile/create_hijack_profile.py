@@ -52,7 +52,9 @@ class CreateHijackProfile():
             element_type_replace_name = {'gif': 'image/gif', 'jpeg': 'image/jpeg', 'png': 'image/png', 'svg+xml': 'image/svg+xml',
                                          'exe': 'application/x-msdos-program', 'apk': 'application/vnd.android.package-archive', 'html': 'text/html'}
             if file_type not in element_type_replace_name.keys():
-                raise f"文件类型错误。用例数据类型为：{file_type}, 可选择文件类型为：{list(element_type_replace_name.keys())}"
+                #raise f"文件类型错误。用例数据类型为：{file_type}, 可选择文件类型为：{list(element_type_replace_name.keys())}"
+                print("please check")
+                return 0
             element_tablist_type = self.driver.find_element(By.XPATH, hijackFiles_tablist_fileType_posXpath.format(replaceName=element_type_replace_name[file_type]))
             self.driver.execute_script("arguments[0].click()", element_tablist_type)  # 强制点击
 

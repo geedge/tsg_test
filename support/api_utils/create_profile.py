@@ -114,7 +114,7 @@ class CreateProfile():
                     if post_statistics_data["chart_list"][chart_idex]["metrics"][_]["source_columns"].lower().strip() == post_order_by.lower().strip():
                         function_name = post_statistics_data["chart_list"][chart_idex]["metrics"][_]["function"]
                         break
-                    print("order_by参数错误：{}".format(post_order_by))
+                    #print("order_by参数错误：{}".format(post_order_by))
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
             # 重组 limit、 drilldown_limit
             f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = str(post_statistics_data["chart_list"][chart_idex]["limit"])
