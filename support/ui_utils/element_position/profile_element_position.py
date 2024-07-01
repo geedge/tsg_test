@@ -452,8 +452,8 @@ hijackFiles_input_Name_posId = "hijack_name"  # name输入框id
 hijackFiles_input_fileUpLoad_posXpath = "//*[@id='uploadFile']/parent::*//input"  # input 上传文件xpath
 hijackFiles_switch_downLoadName_posXpath = "//*[@id='contentNameChoose']/parent::*"  # download name状态开关  xpath，点击操作其子元素改变状态
 hijackFiles_input_downLoadName_posXpath = "//*[@id='hijack_contentName']"  # 下载文件名称输入框 xpath
-hijackFiles_button_fileType_posXpath = "//*[@id='hijackAddContentType']"  # 添加文件类型按钮 xpath
-hijackFiles_tablist_fileType_posXpath = "//*[@class='right-show-edit']//span[normalize-space(text())='{replaceName}']"  # 右侧滑中type元素定位 xpath。需要二次处理，replaceName替换为类型名称
+hijackFiles_button_fileType_posXpath = "//*[normalize-space(text())='File Type']/parent::*//input"  # 添加文件类型按钮 xpath
+hijackFiles_tablist_fileType_posXpath = "//*[@class='el-scrollbar']//span[normalize-space(text())='{replaceName}']"  # 右侧滑中type元素定位 xpath。需要二次处理，replaceName替换为类型名称
 hijackFiles_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 hijackFiles_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
 hijackFiles_button_oK_posCss = "#hijackAddOk1 span"  # OK按钮css
