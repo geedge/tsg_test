@@ -100,39 +100,39 @@ def run(parameter):
       elif len(result) != 0:
           print("The test case is failed. The failure reason is: ", result)
       # 删除配置
-          erase = DeleteConfig()
-          erase.delele_cfg(token, parameter, cfg_list)
+      erase = DeleteConfig()
+      erase.delele_cfg(token, parameter, cfg_list)
 
-          print("Finish test case: " + parameter["test_case_name"])
+      print("Finish test case: " + parameter["test_case_name"])
+      
+      # 脚本结束时间和耗时
+      end_time = time.time()
+      duration = end_time - start_time
+      print("Duration of running the test case: ", duration)
           
-          # 脚本结束时间和耗时
-          end_time = time.time()
-          duration = end_time - start_time
-          print("Duration of running the test case: ", duration)
-              
-          print("Finish test case: " + parameter["test_case_name"])
-          return result
+      print("Finish test case: " + parameter["test_case_name"])
+      return result
     except Exception as e:
       print("Error: ", e)
       return "Error: " + str(e)
     finally:
-        name_list = []
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
-        # 生成csv报告
-        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
-            if result is not None and result != "" and len(result) != 0:
-                report_data = []
-                report_data.append(parameter["test_case_name"])
-                if False in verification_result:
-                    result_flag = "Fail"
-                else:
-                    result_flag = "PASS"
-                report_data.append(result_flag)
-                report_data.append(result)
-                new_report = GenerateReport()
-                new_report.insert_data(parameter, report_data)
+      name_list = []
+      erase = DeleteConfig()
+      erase.clear_config(token, parameter, name_list)
+      # 生成csv报告
+      file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+      if os.path.exists(file_path) and os.path.isfile(file_path):  
+          if result is not None and result != "" and len(result) != 0:
+              report_data = []
+              report_data.append(parameter["test_case_name"])
+              if False in verification_result:
+                  result_flag = "Fail"
+              else:
+                  result_flag = "PASS"
+              report_data.append(result_flag)
+              report_data.append(result)
+              new_report = GenerateReport()
+              new_report.insert_data(parameter, report_data)
       
 if __name__ == "__main__":
     parameter = {
