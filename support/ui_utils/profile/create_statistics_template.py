@@ -488,7 +488,7 @@ class CreateStatisticsTemplate():
                         if "reverse_case" in self.data["charts"][0].keys():
                             reverse_case_case = self.data["charts"][0]["reverse_case"].strip().lower()
                             if reverse_case_case == "table_chart_check_metrics" or reverse_case_case == "bar_chart_check_metrics":  # 校验table or bar chart 可选择 metrics类型
-                                print("table or bar chart metrics disabled 测试用例...")
+                                print("table or bar chart metrics disabled test case...")
                                 info_execpt = "is-disabled"
                                 is_disabled_list = ["Session IDs", "Client IPs", "Server IPs", "Incoming Latency",
                                                     "Outgoing Latency", "Latency"]
@@ -504,7 +504,7 @@ class CreateStatisticsTemplate():
                                         #pytest_check.is_in(info_execpt, item_class,
                                         #                   msg="所在行数{}".format(inspect.currentframe().f_lineno))
                             elif reverse_case_case == "histogram_chart_check_metrics":  # 校验histogram chart 可选择 metrics类型
-                                print("histogram chart metrics disabled 测试用例...")
+                                print("histogram chart metrics disabled case...")
                                 info_execpt = "is-disabled"
                                 is_disabled_list = ["Incoming Bytes", "Outgoing Bytes ", "Bytes",
                                                     'Outgoing Packets','Incoming Packets','Packets',"New C2S Flows",
