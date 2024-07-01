@@ -76,7 +76,7 @@ class CreateProfile():
                 vlan_ids_create.append(i.strip().split("->")[0])
         # 循环输入vlan id
         if len(vlan_ids_create) > 32:
-            print("vlan id 数据超出32个，仅保留前32个")
+            #print("vlan id 数据超出32个，仅保留前32个")
             vlan_ids_create = vlan_ids_create[:32]
         for j in range(len(vlan_ids_create)):
             # 输入ipnut
