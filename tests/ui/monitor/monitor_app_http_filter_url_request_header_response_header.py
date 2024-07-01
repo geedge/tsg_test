@@ -87,18 +87,6 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [
-                    {
-                        "name": "monitor_test_slope",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "items": [
-                            {
-                                "item_value": "*slope.ru",
-                            }
-                        ]
-                    }
                 ],
                 "protocol_filed": [
                     {
@@ -134,17 +122,7 @@ def run(parameter):
                                 "value": [
                                     "curl"
                                 ]
-                            },
-                            # {
-                            #     "item_operation": "add",
-                            #     "item_type": "request_header",
-                            #     "item_key": "User-Agent",
-                            #     "item_value": "HEX",
-                            #     "value": [
-                            #         "6375726C"
-                            #     ]
-                            #     #curl的十六进制形式
-                            # }
+                            }
                         ]
                     },
                     {
@@ -164,20 +142,9 @@ def run(parameter):
                                 "value": [
                                     "text/html",
                                     "text/html",
-                                    "text/html",
-                                    "text/html",
-                                    "text/html"
                                 ]
                             },
-                            # {
-                            #     "item_operation": "add",
-                            #     "item_type": "response_header",
-                            #     "item_key": "Content-Type",
-                            #     "item_value": "HEX",
-                            #     "value": [
-                            #         "746578742F68746D6C",
-                            #     ]
-                            # }
+
                         ],
                     }
 
@@ -231,10 +198,7 @@ def run(parameter):
                 "type": "http_signature",
                 "name": "monitor_http_response_header"
             },
-            {
-                "type": "fqdn",
-                "name": "monitor_test_slope"
-            }
+
         ]
 
         # 添加定位库集合
@@ -497,7 +461,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.9",
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",
