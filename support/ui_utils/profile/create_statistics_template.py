@@ -137,7 +137,7 @@ class CreateStatisticsTemplate():
             print(e)
             return 400
 
-    def _operate_radio(self, chart: {}, data_index=0, no_modify="不修改", data_key="", ep_radio="", chart_id=""):
+    def _operate_radio(self, chart, data_index=0, no_modify="不修改", data_key="", ep_radio="", chart_id=""):
         """
         单选按钮操作
         :param data:
@@ -172,7 +172,7 @@ class CreateStatisticsTemplate():
             print(f"捕获到异常: {e}", file=sys.stderr)
             return 400
 
-    def _get_value_from_data(self, data: {}, key="", data_index=0):
+    def _get_value_from_data(self, data, key="", data_index=0):
         """
         从data数据中，根据key提取值
         :param data:
@@ -186,7 +186,7 @@ class CreateStatisticsTemplate():
             print(e)
         return switch_value
 
-    def _operate_order_by(self, chart: {}, data_index=0, no_modify="不修改", data_key="", chart_id=""):
+    def _operate_order_by(self, chart, data_index=0, no_modify="不修改", data_key="", chart_id=""):
         try:
             data_value: str = self._get_value_from_data(chart, key=data_key, data_index=data_index)  # 提取数据 Table
             if data_value == "":
@@ -212,7 +212,7 @@ class CreateStatisticsTemplate():
             print(e)
             return 400
 
-    def _operate_metrics_or_dimensions_dropdown(self, chart: {}, data_index=0, no_modify="不修改", data_key="",
+    def _operate_metrics_or_dimensions_dropdown(self, chart, data_index=0, no_modify="不修改", data_key="",
                                                 chart_id=""):
         """
         操作metrics dimensions函数
@@ -300,7 +300,7 @@ class CreateStatisticsTemplate():
             print(e)
             return 400
 
-    def _operate_input(self, chart: {}, data_index=0, no_modify="不修改", data_key="", element_position="",
+    def _operate_input(self, chart, data_index=0, no_modify="不修改", data_key="", element_position="",
                        chart_id=""):
         """
         页面中输入框类型操作
@@ -359,7 +359,7 @@ class CreateStatisticsTemplate():
             print(e)
             return 400
 
-    def _operate_series_limit(self, chart: {}, data_index=0, no_modify="不修改", data_key="", element_position="",
+    def _operate_series_limit(self, chart, data_index=0, no_modify="不修改", data_key="", element_position="",
                               chart_id=""):
         """
         页面中输入框类型操作
@@ -488,7 +488,7 @@ class CreateStatisticsTemplate():
                         if "reverse_case" in self.data["charts"][0].keys():
                             reverse_case_case = self.data["charts"][0]["reverse_case"].strip().lower()
                             if reverse_case_case == "table_chart_check_metrics" or reverse_case_case == "bar_chart_check_metrics":  # 校验table or bar chart 可选择 metrics类型
-                                print("table or bar chart metrics disabled 测试用例...")
+                                print("Invalid Metric Verification Test Cases for Table and Bar Charts")
                                 info_execpt = "is-disabled"
                                 is_disabled_list = ["Session IDs", "Client IPs", "Server IPs", "Incoming Latency",
                                                     "Outgoing Latency", "Latency"]
@@ -504,7 +504,7 @@ class CreateStatisticsTemplate():
                                         #pytest_check.is_in(info_execpt, item_class,
                                         #                   msg="所在行数{}".format(inspect.currentframe().f_lineno))
                             elif reverse_case_case == "histogram_chart_check_metrics":  # 校验histogram chart 可选择 metrics类型
-                                print("histogram chart metrics disabled 测试用例...")
+                                print("Invalid Metric Verification Test Cases for Histogram Charts")
                                 info_execpt = "is-disabled"
                                 is_disabled_list = ["Incoming Bytes", "Outgoing Bytes ", "Bytes",
                                                     'Outgoing Packets','Incoming Packets','Packets',"New C2S Flows",
