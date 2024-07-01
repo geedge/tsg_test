@@ -21,13 +21,14 @@ def screenshot_on_failure(func):
                 if not os.path.exists(file_path_work):
                     os.makedirs(file_path_work)
                 if not os.path.exists(file_path):
-                    print(f"截图保存于：{file_path}")
+                    #print(f"截图保存于：{file_path}")
                     driver.save_screenshot(file_path)
                 #删除历史7天前数据
                 try:
                     clear_history(file_path)
                 except:
-                    print("删除历史数据失败...")
+                    print("please check")
+                    #print("删除历史数据失败...")
                 raise
     return warpper
 

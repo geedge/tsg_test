@@ -18,7 +18,7 @@ class CreateInsertProfile():
         if self.driver.find_element(By.CSS_SELECTOR, insertScripts_button_warningSaveYes_posCss).is_displayed():
             self.driver.find_element(By.CSS_SELECTOR, insertScripts_button_warningSaveYes_posCss).click()
 
-    def _operate_page(self, data: {}, operation_type="create"):
+    def _operate_page(self, data, operation_type="create"):
         """
         除name的其它选项操作，共创建、修改逻辑调用
         :param data:
@@ -43,7 +43,7 @@ class CreateInsertProfile():
                 #上传文件
                 self.driver.find_element(By.XPATH, insertScripts_input_scriptUpLoad_posXpath).send_keys(file_abs)
 
-    def _operate_scriptType(self, data: {}, data_index=0, no_modify="不修改"):
+    def _operate_scriptType(self, data, data_index=0, no_modify="不修改"):
         """
         脚本类型操作,。
         :param data:
@@ -71,7 +71,7 @@ class CreateInsertProfile():
                 else:          #css类型点击列表
                     self.driver.find_element(By.XPATH, insertScripts_dropdown_cssItem_posXpath).click()
 
-    def _get_value_from_data(self, data: {}, key="", data_index=0):
+    def _get_value_from_data(self, data, key="", data_index=0):
         """
         从data数据中，根据key提取值
         :param data:

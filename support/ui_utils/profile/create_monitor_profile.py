@@ -146,7 +146,7 @@ class CreateProfile():
             # 检查是否未输入必填项
             if self.driver.element_isExist(By.XPATH, "//div[contains(text(),'Please enter the content')]"):
                 error_message = self.driver.find_element(By.XPATH,"//div[contains(text(),'Please enter the content')]").text.strip()
-                print("未输入必填项，报错：", error_message)
+                #print("未输入必填项，报错：", error_message)
 
                 # 点击取消
                 self.driver.find_element(By.CSS_SELECTOR, self.create_element_position[ "profilePage_button_oK_posCss"]).click()

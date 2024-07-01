@@ -61,7 +61,7 @@ class ProfilePublicFunc:
         headers = element_header.find_elements(By.XPATH, "th")     # table header
         rows = element_tbody.find_elements(By.XPATH, "tr")     # table body
         if len(rows) == 0:
-            print(f"没有查询到数据：查询条件：{kwargs}")
+            #print(f"没有查询到数据：查询条件：{kwargs}")
             return [0, 0]
         map_header_className = {}  # 表头名称和th.class的映射，为了从表body中取对应列的值{"ID":"33"}
         for th in headers:
@@ -595,7 +595,7 @@ class ProfilePublicFunc:
         headers = element_header.find_elements(By.XPATH, "th")     # table header
         rows = element_tbody.find_elements(By.XPATH, "tr")     # table body
         if len(rows) == 0:
-            print(f"没有查询到数据：查询条件：{kwargs}")
+            #print(f"没有查询到数据：查询条件：{kwargs}")
             return 0
         map_header_className = {}  # 表头名称和th.class的映射，为了从表body中取对应列的值{"ID":"33"}
         for th in headers:

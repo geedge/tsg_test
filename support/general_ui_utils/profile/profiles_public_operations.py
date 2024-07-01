@@ -66,7 +66,7 @@ class ProfilesPublicOperations:
         headers = element_header.find_elements(By.XPATH, "th")  # table header
         rows = element_tbody.find_elements(By.XPATH, "tr")  # table body
         if len(rows) == 0:
-            print(f"没有查询到数据：查询条件：{kwargs}")
+            #print(f"没有查询到数据：查询条件：{kwargs}")
             return [0, 0]
         map_header_className = {}  # 表头名称和th.class的映射，为了从表body中取对应列的值{"ID":"33"}
         for th in headers:
@@ -347,7 +347,7 @@ class ProfilesPublicOperations:
         """
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath, find_before_wait_time=0.6, ).text.strip().lower()
         if vsys_name.lower() == current_vsys_name:
-            print(f"当前系统所在vsys：{current_vsys_name}")
+            #print(f"当前系统所在vsys：{current_vsys_name}")
             return 0
         else:  # 空为切换默认   剩下为指定切换
             if vsys_name == "":  # 空，切换到默认vsys
@@ -357,11 +357,11 @@ class ProfilesPublicOperations:
                 change_vsys_name = config_content.get("vsys", "vsys_name")
                 # change_vsys_name = "UIAutoTestVsys"
                 if change_vsys_name.lower() == current_vsys_name:  # 如果默认系统和当前一直，也不用点击
-                    print(f"当前系统所在vsys：{current_vsys_name}")
+                    #print(f"当前系统所在vsys：{current_vsys_name}")
                     return 0
             else:  # 切换到指定vsys
                 change_vsys_name = vsys_name
-            print(f"当前系统所在vsys：{current_vsys_name}，需要切换到vsys：{change_vsys_name}")
+            #print(f"当前系统所在vsys：{current_vsys_name}，需要切换到vsys：{change_vsys_name}")
             self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()  # 点击vsys menu
             # 如果切换vsys时弹出 Leave this page?的确认弹窗，点击确认
             if self.driver.element_isExist(By.XPATH, leave_this_page_elem_Xpath, timeout=0.5):
@@ -381,8 +381,8 @@ class ProfilesPublicOperations:
                     el_vsys_item.click()
                     break
             if flag_num == 0:
-                print(f"测试用户没有vsys：{change_vsys_name}")
-                raise ValueError(f"测试用户没有vsys：{change_vsys_name}")
+                #print(f"测试用户没有vsys：{change_vsys_name}")
+                raise ValueError(f"user vsys:{change_vsys_name}")
 
     def column_setting(self, mainPage_profileColumn_columnSetting_posId,
                        listPage_profileColumn_button_columnAll_posXpath, listPage_profileColumn_button_cancel_posId,
@@ -902,7 +902,7 @@ class ProfilesPublicOperations:
         headers = element_header.find_elements(By.XPATH, "th")  # table header
         rows = element_tbody.find_elements(By.XPATH, "tr")  # table body
         if len(rows) == 0:
-            print(f"没有查询到数据：查询条件：{kwargs}")
+            #print(f"没有查询到数据：查询条件：{kwargs}")
             return 0
         map_header_className = {}  # 表头名称和th.class的映射，为了从表body中取对应列的值{"ID":"33"}
         for th in headers:
