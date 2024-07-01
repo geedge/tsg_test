@@ -169,7 +169,7 @@ class CreateStatisticsTemplate():
                 self.driver.find_element(By.XPATH, ep_attackType_radio).click()
             return 200
         except Exception as e:
-            print(f"捕获到异常: {e}", file=sys.stderr)
+            print(f"Exception: {e}", file=sys.stderr)
             return 400
 
     def _get_value_from_data(self, data, key="", data_index=0):
