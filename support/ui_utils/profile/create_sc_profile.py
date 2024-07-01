@@ -149,6 +149,7 @@ class CreateProfile():
         #点击OK
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_posCss"]).click()
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_warningYes_posCss"]).click()
+        time.sleep(2)
         return sf_name,result_info
     
     def operate_sf_page(self,data,create_element_position,sc_info):
@@ -204,6 +205,11 @@ class CreateProfile():
             # 输入input操作
             self.operate_input(data_interval,create_element_position["profilePage_inputInterval_posXpath"],True)
             self.operate_input(data_retries,create_element_position["profilePage_inputRetries_posXpath"],True)
+        if data["enable"] == "off":
+            self.driver.find_element(By.XPATH,create_element_position["profilePage_switch_enableButton_posXpath"]).click()
+            sc_info["admin_status"] = 0
+        else:
+            sc_info["admin_status"] = 1
         return sc_info
     def operate_input(self, data_input="", ep_input="", is_clear=True):
         """

@@ -168,7 +168,8 @@ def run(parameter):
               report_data.append(result)
               new_report = GenerateReport()
               new_report.insert_data(parameter, report_data)
-    if __name__ == "__main__":
+              
+if __name__ == "__main__":
     parameter = {
       "script_type": "api",
       "username": "hebingning",

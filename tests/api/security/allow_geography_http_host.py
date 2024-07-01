@@ -118,8 +118,8 @@ def run(parameter):
         return result
 
     except Exception as e:
-      print("Error: ", e)
-      return "Error: " + str(e)
+        print("Error: ", e)
+        return "Error: " + str(e)
     finally:
         name_list = []
         erase = DeleteConfig()

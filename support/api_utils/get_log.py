@@ -84,14 +84,14 @@ class GetLog():
                 log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}",
                                                                                     f"client_ip='{test_pc_ip}'")
             url = api_host + "/v1/log/query"
-            print("Begin to query log by condition.")
+            #print("Begin to query log by condition.")
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200
             log_list = json.loads(response.text)
             log_list = log_list['data']['result']
             log_index = i + 1
             log_query_params = test_data['log_query_param_' + str(log_index)]
-            print("Compare log with test data.")
+            #print("Compare log with test data.")
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
                     for log_query_param in log_query_params:
@@ -125,14 +125,14 @@ class GetLog():
             hit_query_condition['start_time'] = start_time
             hit_query_condition['end_time'] = end_time
             hit_query_condition['vsys_id'] = vsys_id
-            print("Begin to query metric by condition.")
+            #print("Begin to query metric by condition.")
             response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
             index = i + 1
             counter = test_data['counters_' + str(index)]
             result_len = len(response['data']['result'])
-            print("Compare metric with test data.")
+           # print("Compare metric with test data.")
             # 需要hits == 0时，则验证，验证通过metric置为true
             if 'hits' in counter and counter['hits'] == 0 and result_len == 0:
                 metric_result = True
@@ -205,7 +205,7 @@ class GetLog():
         r_dict = response.json()
         #print("statistics metric result data：")
         #print(r_dict)
-        print("Get the metric information of rule id {}".format(post_data_ori_dict))
+        #print("Get the metric information of rule id {}".format(post_data_ori_dict))
         if r_dict["code"] != 200:
             print("statistics metric query failed.")
             return [333, "The statistics metric API query failed. Procedure"]
@@ -308,7 +308,7 @@ class GetLog():
                             for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
                                 if isinstance(v, int):
                                     statistics_value[k] = avg_1
-                        print("The actual query result data from TSG: \n{}".format(statistics_value))
+                        #print("The actual query result data from TSG: \n{}".format(statistics_value))
                         # 重组需要断言使用的key列表
                         assert_key_list = []
                         dimension_list = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
@@ -335,7 +335,7 @@ class GetLog():
                             else:
                                 assert_key_list.append(k)
                         # 开始判断key的正确性
-                        print("Determine the correctness of the Key:{}".format(str(assert_key_list)))
+                        #print("Determine the correctness of the Key:{}".format(str(assert_key_list)))
                         for i in range(len(assert_key_list)):
                             metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
                                                                               assert_key_list[i], statistics_value,
@@ -360,7 +360,7 @@ class GetLog():
         failure_info_2 = ""
         failure_info_3 = ""
         if chart_type == "line":
-            print(f"Total number of expected results for traffic replay: \n{statistics_metircs_except}")
+            #print(f"Total number of expected results for traffic replay: \n{statistics_metircs_except}")
             failure_info_1 = f"Total expected results for traffic playback:{statistics_metircs_except}"
             statistics_metircs_except_avg = {}  # 重组预期1秒粒度结果
             for k, v in statistics_metircs_except.items():
@@ -371,41 +371,41 @@ class GetLog():
             if assert_key != "session_identifier_sketch" and assert_key != "client_ip_sketch" and assert_key != "server_ip_sketch":  # 除了这几个gauge，需要打印下信息
                 print(f"Average number of traffic playback in 1 second granularity: \n{statistics_metircs_except_avg}")
             failure_info_2 = f"Average number of traffic playback in 1-second granularity: {statistics_metircs_except_avg}"
-            print(assert_key)
+            #print(assert_key)
             if assert_key == "bytes":
                 if statistics_value[assert_key] > (
                         statistics_metircs_except_avg["total_bytes"] - 10):  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
                     print(success_result)
                     metric_result = True
             elif assert_key == "in_bytes" or assert_key == "out_bytes":
-                print(assert_key)
+               # print(assert_key)
                 if (statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_sent"] - 10)) or (
                         statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_received"] - 10)):
-                    print(success_result)
+                    #print(success_result)
                     metric_result = True
             elif assert_key == "pkts":
                 if statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets"]):  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
-                    print(success_result)
+                    #print(success_result)
                     metric_result = True
             elif assert_key == "in_pkts" or assert_key == "out_pkts":
-                print(assert_key)
+               # print(assert_key)
                 if (statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets_sent"])) or (
                         statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets_received"])):
-                    print(success_result)
+                    #print(success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":
                 if assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions":  # 双向流，两个方向都是一样的
                     if statistics_value[assert_key] == statistics_metircs_except_avg["total_syn_pkt"]:
-                        print(success_result)
+                        #print(success_result)
                         metric_result = True
                 elif assert_key == "syn_pkts":
                     if statistics_value[assert_key] == (statistics_metircs_except_avg["total_syn_pkt"] * 2):
-                        print(success_result)
+                        #print(success_result)
                         metric_result = True
                 elif assert_key == "new_in_sessions" or assert_key == "new_out_sessions":# 区分方向
                     if statistics_value[assert_key] == statistics_metircs_except_avg["total_syn_pkt"] or \
                             statistics_value[assert_key] == 0:
-                        print(success_result)
+                        #print(success_result)
                         metric_result = True
             elif assert_key == "session_identifier_sketch" or assert_key == "client_ip_sketch" or assert_key == "server_ip_sketch":
                 statistics_metircs_except_gauge = {}
@@ -421,7 +421,7 @@ class GetLog():
                         unique_server_ips = sessions_count
                     statistics_metircs_except_gauge["client_ip_sketch"] = unique_client_ips
                     statistics_metircs_except_gauge["server_ip_sketch"] = unique_server_ips
-                    print(f"Gauge of traffic playback in 1-second granularity: \n{statistics_metircs_except_gauge}")
+                    #print(f"Gauge of traffic playback in 1-second granularity: \n{statistics_metircs_except_gauge}")
                     if -3 < statistics_value[assert_key] - statistics_metircs_except_gauge[assert_key] < 3:
                         print("Statistics result normal.")
                         metric_result = True
@@ -431,24 +431,24 @@ class GetLog():
         elif chart_type == "histogram":
             metric_result = True
         else:  # table bar等二维图表
-            print(f"Total number of traffic replay: \n{statistics_metircs_except}")
+            #print(f"Total number of traffic replay: \n{statistics_metircs_except}")
             failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
             if assert_key == "bytes":
                 # Metrics Aggregate影响核对值，临时if方式，后期优化传如Metrics Aggregate Map进行比对判断
                 if statistics_value[assert_key] == statistics_metircs_except["total_bytes"] or statistics_value[
                     assert_key] == statistics_metircs_except["total_bytes"] * 8:
-                    print(success_result)
+                    #print(success_result)
                     metric_result = True
             elif assert_key == "in_bytes" or assert_key == "out_bytes":
                 if (statistics_value[assert_key] == statistics_metircs_except["total_bytes_sent"]) or (
                         statistics_value[assert_key] == statistics_metircs_except["total_bytes_received"]
                         or statistics_value[assert_key] == statistics_metircs_except["total_bytes_sent"] * 8) or (
                         statistics_value[assert_key] == statistics_metircs_except["total_bytes_received"] * 8):
-                    print(success_result)
+                    #print(success_result)
                     metric_result = True
             elif assert_key == "pkts":
                 if statistics_value[assert_key] == statistics_metircs_except["total_packets"]:
-                    print(success_result)
+                    #print(success_result)
                     metric_result = True
             elif assert_key == "in_pkts" or assert_key == "out_pkts":
                 if (statistics_value[assert_key] == statistics_metircs_except["total_packets_sent"]) or (
@@ -458,16 +458,16 @@ class GetLog():
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":# or assert_key == "new_incoming_sessions" or assert_key == "new_outgoing_sessions":
                 if assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions":  # 双向流，两个方向都是一样的
                     if statistics_value[assert_key] == statistics_metircs_except["total_syn_pkt"]:
-                        print(success_result)
+                        #print(success_result)
                         metric_result = True
                 elif assert_key == "syn_pkts":
                     if statistics_value[assert_key] == (statistics_metircs_except["total_syn_pkt"] * 2):
-                        print(success_result)
+                        #print(success_result)
                         metric_result = True
                 elif assert_key == "new_in_sessions" or assert_key == "new_out_sessions":# 区分方向
                     if statistics_value[assert_key] == statistics_metircs_except["total_syn_pkt"] or statistics_value[
                         assert_key] == 0:
-                        print(success_result)
+                        #print(success_result)
                         metric_result = True
             else:
                 print(f"Key for missing assertion: {assert_key}")

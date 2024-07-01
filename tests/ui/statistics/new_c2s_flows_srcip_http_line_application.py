@@ -124,7 +124,7 @@ def run(parameter):
                           "dimensions": [
                               "application"
                           ],
-                          "order_by": "new c2s flows",
+                          "order_by": "",
                           "row_limit": "10",
                           "min_in_size": "1",
                           "max_out_size": "1"
