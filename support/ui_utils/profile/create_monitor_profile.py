@@ -160,7 +160,7 @@ class CreateProfile():
                 self.driver.find_element(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]).click()
                 return True
 
-        except NoSuchElementException as e:
+        except Exception as e:
             print("Element not found: ", e)
             return False
 
