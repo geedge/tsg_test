@@ -107,8 +107,8 @@ def run(parameter):
         print("Duration of running the test case: ", duration)
         print("Finish test case: " + parameter["test_case_name"])
     except Exception as e:
-      print("Error: ", e)
-      return "Error: " + str(e)
+        print("Error: ", e)
+        return "Error: " + str(e)
     finally:
         name_list = []
         erase = DeleteConfig()

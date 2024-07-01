@@ -95,10 +95,10 @@ def run(parameter):
     except Exception as e:
       print("Error: ", e)
       return "Error: " + str(e)
-    # finally:
-    #     name_list = []
-    #     erase = DeleteConfig()
-    #     erase.clear_config(token, parameter, name_list)
+    finally:
+        name_list = []
+        erase = DeleteConfig()
+        erase.clear_config(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
