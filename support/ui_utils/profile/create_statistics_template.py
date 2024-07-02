@@ -388,9 +388,10 @@ class CreateStatisticsTemplate():
                 #print(self.driver.find_element(By.XPATH, element_position_1).is_enabled())
                 #self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
-                element_position_1 = self.driver.find_element(By.XPATH, element_position_1).click()
-                self.driver.execute_script("arguments[0].scrollIntoView();", element_position_1)
-                self.driver.execute_script("arguments[0].click();", element_position_1)
+                self.driver.find_element(By.XPATH, element_position_1).click()
+                #element_position_1 = self.driver.find_element(By.XPATH, element_position_1)
+                #self.driver.execute_script("arguments[0].scrollIntoView();", element_position_1)
+                #self.driver.execute_script("arguments[0].click();", element_position_1)
                 self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
                 element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1). \
                     find_element(By.XPATH,

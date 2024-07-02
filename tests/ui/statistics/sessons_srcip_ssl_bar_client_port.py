@@ -46,14 +46,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "sessons_with_srcip_ssl",
+            "rule_name": "sessons_srcip_ssl_bar_client_port",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_sessions_source_ip",
+                        "name": "statistics_sessions_bar_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_sessions_destination_ip",
+                        "name": "statistics_sessions_bar_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -170,15 +170,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "sessons_with_srcip_ssl",
+                "name": "sessons_srcip_ssl_bar_client_port",
             },
             {
                 "type": "ip",
-                "name": "statistics_sessions_source_ip",
+                "name": "statistics_sessions_bar_source_ip",
             },
             {
                 "type": "ip",
-                "name": "statistics_sessions_destination_ip",
+                "name": "statistics_sessions_bar_destination_ip",
             },
             {
                 "type": "statistics_template",
@@ -421,7 +421,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "sessions_srcip_ssl",
+        "test_case_name": "sessons_srcip_ssl_bar_client_port",
         "script_type": "ui",
         "policy_type": "statistics"
     }
