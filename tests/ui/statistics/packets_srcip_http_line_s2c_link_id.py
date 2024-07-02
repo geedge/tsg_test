@@ -400,7 +400,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_srcip_http_line_c2s_link_id",
+        "test_case_name": "packets_srcip_http_line_s2c_link_id",
         "script_type": "ui",
         "policy_type": "statistics"
     }
