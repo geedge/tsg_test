@@ -87,7 +87,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "Mozilla/5.0"
+                            "Chrome"
                         ]
                         }
                     ]
