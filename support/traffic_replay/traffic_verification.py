@@ -301,17 +301,25 @@ class TrafficVerification():
                             metric_result = log.get_sc_metric(token, start_time, end_time, statistics_info, sc_metircs, active_dest_ips_list, api_server, vsys_id)
                             if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                 break
-                            elif metric_result == False or metric_result == 333:  # 查询验证失败时，再查询验证两次
+                            elif metric_result == False:  # 查询验证失败时，再查询验证两次
                                 if fail_count >= 2:
                                     break
                                 fail_count += 1
                             time.sleep(15)
                             n += 1
                     if metric_result == 333:
-                        if statistics_info["sf_method"] == "vxlan_g" and statistics_info["sf_dest_ip"] not in active_dest_ips_list:
-                            metric_result = True
-                        else:
-                            metric_result = False
+                        if statistics_info["sf_method"] == "vxlan_g":
+                            if statistics_info["sf_dest_ip"] not in active_dest_ips_list:
+                                metric_result = True
+                            elif statistics_info["sf_dest_ip"] in active_dest_ips_list and statistics_info["admin_status"] == 0:
+                                metric_result = True
+                            else:
+                                metric_result = False
+                        elif statistics_info["sf_method"] == "layer2_switch":
+                            if statistics_info["admin_status"] == 0:
+                                metric_result = True
+                            else:
+                                metric_result = False
                     elif metric_result == 444:
                         metric_result = False
                 cmd_result = metric_result
@@ -351,10 +359,18 @@ class TrafficVerification():
                             time.sleep(15)
                             n += 1
                     if metric_result == 333:
-                        if statistics_info["sf_method"] == "vxlan_g" and statistics_info["sf_dest_ip"] not in active_dest_ips_list:
-                            metric_result = True
-                        else:
-                            metric_result = False
+                        if statistics_info["sf_method"] == "vxlan_g":
+                            if statistics_info["sf_dest_ip"] not in active_dest_ips_list:
+                                metric_result = True
+                            elif statistics_info["sf_dest_ip"] in active_dest_ips_list and statistics_info["admin_status"] == 0:
+                                metric_result = True
+                            else:
+                                metric_result = False
+                        elif statistics_info["sf_method"] == "layer2_switch":
+                            if statistics_info["admin_status"] == 0:
+                                metric_result = True
+                            else:
+                                metric_result = False
                     elif metric_result == 444:
                         metric_result = False
             return cmd_result, metric_result, metric_result, my_driver
