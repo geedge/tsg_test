@@ -51,7 +51,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "jd.com"
+                            "open.node"
                         ]
                         }
                     ]
