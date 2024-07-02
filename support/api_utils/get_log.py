@@ -375,7 +375,7 @@ class GetLog():
             if assert_key == "bytes":
                 if statistics_value[assert_key] > (
                         statistics_metircs_except_avg["total_bytes"] - 10):  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
-                    print(success_result)
+                    #print(success_result)
                     metric_result = True
             elif assert_key == "in_bytes" or assert_key == "out_bytes":
                # print(assert_key)
@@ -453,7 +453,7 @@ class GetLog():
             elif assert_key == "in_pkts" or assert_key == "out_pkts":
                 if (statistics_value[assert_key] == statistics_metircs_except["total_packets_sent"]) or (
                         statistics_value[assert_key] == statistics_metircs_except["total_packets_received"]):
-                    print(success_result)
+                    #print(success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":# or assert_key == "new_incoming_sessions" or assert_key == "new_outgoing_sessions":
                 if assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions":  # 双向流，两个方向都是一样的

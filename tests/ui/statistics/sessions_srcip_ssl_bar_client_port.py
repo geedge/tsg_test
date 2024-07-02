@@ -46,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "sessons_srcip_ssl_bar_client_port",
+            "rule_name": "sessions_srcip_ssl_bar_client_port",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
@@ -170,7 +170,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "sessons_srcip_ssl_bar_client_port",
+                "name": "sessions_srcip_ssl_bar_client_port",
             },
             {
                 "type": "ip",
@@ -260,9 +260,9 @@ def run(parameter):
             # if search_rule_code == 200:
             # policies_ids = first_row_id
             if create_rule_code == 200:
-                print("Create security rule successfully.")
+                print("Create {} rule successfully.".format(test_data["policy_type"]))
             elif create_rule_code != 200:
-                result = "Fail to create security rule."
+                result = "Fail to create {} rule.".format(test_data["policy_type"])
 
         # 触发流量验证
         if create_rule_code == 200:
@@ -421,7 +421,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "sessons_srcip_ssl_bar_client_port",
+        "test_case_name": "sessions_srcip_ssl_bar_client_port",
         "script_type": "ui",
         "policy_type": "statistics"
     }
