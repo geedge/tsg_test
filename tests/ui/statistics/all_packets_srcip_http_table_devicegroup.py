@@ -47,7 +47,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_packets_with_src_ip_http_table_devicegroup",
+            "rule_name": "all_packets_src_ip_http_table_devicegroup",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
@@ -170,7 +170,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_packets_with_src_ip_http_table_devicegroup",
+                "name": "all_packets_src_ip_http_table_devicegroup",
             },
             {
                 "type": "ip",
@@ -402,7 +402,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_packets_with_src_ip_http_table_devicegroup",
+        "test_case_name": "all_packets_src_ip_http_table_devicegroup",
         "script_type": "ui",
         "policy_type": "statistics"
     }
