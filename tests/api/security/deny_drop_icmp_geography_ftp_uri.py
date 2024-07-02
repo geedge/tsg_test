@@ -37,7 +37,7 @@ def run(parameter):
                         {
                         "type": "library",
                         "continent": "Asia",
-                        "geoname_id": "971417",
+                        "geoname_id": "971419",
                         "super_administrative_area": "auto_geo_obj",
                         "administrative_area": "auto_geo_obj",
                         "country_abbr": "auto_geo_obj",
@@ -75,7 +75,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -m 10 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 40 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },
             "token": ""
         }

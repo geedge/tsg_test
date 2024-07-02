@@ -86,7 +86,7 @@ def run(parameter):
         erase.delele_cfg(token, parameter, cfg_list)
         
         
-# 脚本结束时间和耗时
+        # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
         print("Duration of running the test case: ", duration)

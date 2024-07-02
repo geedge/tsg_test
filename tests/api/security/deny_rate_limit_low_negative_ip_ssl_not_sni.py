@@ -53,7 +53,7 @@ def run(parameter):
                 "add_item_list": [
                     {
                     "keyword_array": [
-                        "www.jd.com"
+                        "open.node"
                     ]
                     }
                 ]
@@ -138,12 +138,13 @@ if __name__ == "__main__":
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6488",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_204_negative_not_ip_http"
     }
