@@ -65,11 +65,11 @@ def run(parameter):
         "expected_return": "百度一下",
         "counters_1": {"hits": 1},
         "counters_2": {"hits": 0},
-        "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
+        "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"open.node.com"}],
         "log_query_param_2": [],
         "traffic": {
                   "type": "curl",
-                  "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                  "command": "curl -kv --connect-timeout 10 -m 10 https://open.node.com:1443"
               },
         "token": ""
       }
