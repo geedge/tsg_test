@@ -159,6 +159,7 @@ class CreateProfile():
         sf_template_dict["service_function"]["vsys_id"] = vsys_id
         sf_template_dict["service_function"]["name"] = sf_post_data["name"]
         sf_template_dict["service_function"]["connectivity"]["method"] = sf_post_data["connectivity"]["method"]
+        sf_template_dict["service_function"]["admin_status"] = sf_post_data["admin_status"]
         if sf_post_data["connectivity"]["method"] == "vxlan_g":
             sf_template_dict["service_function"]["connectivity"]["dest_ip"] = sf_post_data["connectivity"]["dest_ip"]
             sf_template_dict["service_function"]["health_check"]["method"] = sf_post_data["health_check"]["method"]
@@ -425,6 +426,8 @@ class CreateProfile():
         else:
             sf_info["connectivity"]["method"] = r_dict["data"]["service_function"]["connectivity"]["method"]
             sf_info["health_check"]["method"] = "none"
+        sf_info["device_tag"] = r_dict["data"]["service_function"]["device_group"]["value"]
+        sf_info["admin_status"] = r_dict["data"]["service_function"]["admin_status"]
         return sf_info
 
 if __name__ == '__main__':
