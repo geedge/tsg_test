@@ -475,7 +475,7 @@ class GetLog():
                 metric_result = False
         if metric_result == False:
             print(failure_reason)
-            actual_result = "Total actual results: {statistics_value}"
+            actual_result = f"Total actual results: {statistics_value}"
             failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
         return metric_result, failure_reason_info
 
