@@ -45,12 +45,12 @@ def run(parameter):
             }
             ],
             "app_name_1": ["ssl"],
-            "expected_return": "京东",
+            "expected_return": "POST",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.jd.com"
+                "command": "curl -kv https://open.node.com:1443"
             },
             "token": ""
         }
@@ -94,8 +94,8 @@ def run(parameter):
         print("Finish test case: " + parameter["test_case_name"])
         return result
     except Exception as e:
-      print("Error: ", e)
-      return "Error: " + str(e)
+        print("Error: ", e)
+        return "Error: " + str(e)
     finally:
         name_list = []
         erase = DeleteConfig()

@@ -50,7 +50,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "baidu"
+                            "open.node"
                         ]
                         }
                     ]
@@ -61,10 +61,10 @@ def run(parameter):
             "app_name_1": ["ssl"],
             "expected_return": "reset",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"open.node.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 https://www.baidu.com"
+                "command": "curl --connect-timeout 20 -m 20 https://open.node.com:1443"
             },
             "token": ""
         }
@@ -106,9 +106,10 @@ def run(parameter):
         duration = end_time - start_time
         print("Duration of running the test case: ", duration)
         print("Finish test case: " + parameter["test_case_name"])
+        return result
     except Exception as e:
-      print("Error: ", e)
-      return "Error: " + str(e)
+        print("Error: ", e)
+        return "Error: " + str(e)
     finally:
         name_list = []
         erase = DeleteConfig()

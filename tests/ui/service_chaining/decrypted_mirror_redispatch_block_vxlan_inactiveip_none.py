@@ -60,7 +60,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.91"
+                                "item_value": parameter["test_pc_ip"]
                             }
                         ]
                     }
@@ -443,7 +443,7 @@ def run(parameter):
             print("Duration of running the test case: ", duration)
             
             print("Finish test case: " + parameter["test_case_name"])
-        #     return result
+            return result
     except Exception as e:
         print("Error: ", e)
         return "Error: " + str(e)

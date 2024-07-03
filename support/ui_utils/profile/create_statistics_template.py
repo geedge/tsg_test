@@ -169,7 +169,7 @@ class CreateStatisticsTemplate():
                 self.driver.find_element(By.XPATH, ep_attackType_radio).click()
             return 200
         except Exception as e:
-            print(f"捕获到异常: {e}", file=sys.stderr)
+            print(f"Exception: {e}", file=sys.stderr)
             return 400
 
     def _get_value_from_data(self, data, key="", data_index=0):
@@ -224,8 +224,8 @@ class CreateStatisticsTemplate():
         :return:
         """
         dropdown_item_metrics_dict = {'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
-                                      'bytes': 'Bytes', 'new_c2s_flows': 'New C2S Flows',
-                                      'new_s2c_flows': 'New S2C Flows', 'sessions': 'Sessions',
+                                      'bytes': 'Bytes', 'new_c2s_flows': 'New Client-to-Server Flows',
+                                      'new_s2c_flows': 'New Server-to-Client Flows', 'sessions': 'Sessions',
                                       'new_in_sessions': 'New Incoming Sessions',
                                       'new_out_sessions': 'New Outgoing Sessions',
                                       'new_unestablished_sessions': 'New Unestablished Sessions',
@@ -233,6 +233,9 @@ class CreateStatisticsTemplate():
                                       'out_pkts': 'Outgoing Packets',
                                       'pkts': 'Packets',
                                       'syn_pkts': 'SYN Packets',
+                                      'c2s_ip_fragments': 'Client-to-Server IP Fragments',
+                                      's2c_ip_fragments': 'Server-to-Client IP Fragments',
+                                      'ip_fragments': 'IP Fragments',
                                       'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
                                       'server_ip_sketch': 'Server IPs', 'in_latency_ms_sketch': 'Incoming Latency',
                                       'out_latency_ms_sketch': 'Outgoing Latency', 'latency_ms_sketch': 'Latency',
@@ -253,9 +256,9 @@ class CreateStatisticsTemplate():
                                          'application': 'Application',
                                          'fqdn_category': 'WebSketch Categories',
                                          'client_ip_object': 'Client IP Matched Objects',
-                                         'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
-                                         's2c_ttl': 'S2C TTL',
-                                         'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
+                                         'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'Client-to-Server TTL',
+                                         's2c_ttl': 'Server-to-Client TTL',
+                                         'c2s_link_id': 'Client-to-Server Link ID', 's2c_link_id': 'Server-to-Client Link ID',
                                          'client_port': 'Client Port','server_port':'Server Port'}
 
         if data_key == "metrics":
@@ -384,11 +387,16 @@ class CreateStatisticsTemplate():
                 element_position_1 = element_position.format(replaceChart=chart_id, repalceLabel=repalceLabel)
                 # 定位元素中span换成label
                 element_position_1 = element_position_1.replace("span", "*")
-                #print(element_position_1)
+                print("element_position_1"+element_position_1)
                 #print(self.driver.find_element(By.XPATH, element_position_1).is_enabled())
                 #self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
-                self.driver.find_element(By.XPATH, element_position_1).click()
+                #浏览器模式下定位
+                #self.driver.find_element(By.XPATH, element_position_1).click()
+                #无浏览器模式下定位
+                element_position_1 = self.driver.find_element(By.XPATH, element_position_1)
+                self.driver.execute_script("arguments[0].scrollIntoView();", element_position_1)
+                self.driver.execute_script("arguments[0].click();", element_position_1)
                 self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
                 element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1). \
                     find_element(By.XPATH,

@@ -92,7 +92,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "Mozilla/5.0"
+                            "Chrome"
                         ]
                         }
                     ]
@@ -131,7 +131,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com:180"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 10 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"requestbodysubstringhello\\\",\\\"setcook\\\":\\\"asdf\\\",\\\"contenttype\\\": \\\"charset\\\",\\\"responsebody\\\": \\\"responsebodysubstring\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://open.node.com:180/go"
+                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"hello\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"hello\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://open.node.com:180/go"
             },
             "token": ""
         }

@@ -30,97 +30,97 @@ def run(parameter):
             "do_log_1": 2,
             "obj_condition_1": [
                 {
-                "attribute_name": "ATTR_DESTINATION_GEO_COUNTRY",
-                "object_type": "geolocation",
-                "object_sub_type": "geolocation",
-                "object_list": [
+            "attribute_name": "ATTR_DESTINATION_GEO_COUNTRY",
+            "object_type": "geolocation",
+            "object_sub_type": "geolocation",
+            "object_list": [
+                {
+                "add_item_list": [
                     {
-                    "add_item_list": [
-                        {
-                        "type": "library",
-                        "continent": "Asia",
-                        "geoname_id": "961156",
-                        "super_administrative_area": "auto_geo_obj",
-                        "administrative_area": "auto_geo_obj",
-                        "country_abbr": "auto_geo_obj",
-                        "country": "auto_geo_obj",
-                        "location_type": "country",
-                        "latitude": "0",
-                        "longitude": "0",
-                        "addr_type": 4,
-                        "ip_address": "192.168.40.206"
-                        }
-                    ]
+                    "type": "library",
+                    "continent": "Asia",
+                    "geoname_id": "961140",
+                    "super_administrative_area": "auto_geo_obj",
+                    "administrative_area": "auto_geo_obj",
+                    "country_abbr": "auto_geo_obj",
+                    "country": "auto_geo_obj",
+                    "location_type": "country",
+                    "latitude": "0",
+                    "longitude": "0",
+                    "addr_type": 4,
+                    "ip_address": "192.168.40.206"
                     }
                 ]
-                },
+                }
+            ]
+            },
+            {
+            "attribute_name": "ATTR_HTTP_URL",
+            "object_type": "url",
+            "object_sub_type": "url",
+            "object_list": [
                 {
-                "attribute_name": "ATTR_SERVER_FQDN",
-                "object_type": "fqdn",
-                "object_sub_type": "fqdn",
-                "object_list": [
+                "add_item_list": [
                     {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "open.node.com"
-                        ]
-                        }
-                    ]
-                    }
-                ]
-                },
-                {
-                "attribute_name": "ATTR_HTTP_URL",
-                "object_type": "url",
-                "object_sub_type": "url",
-                "object_list": [
-                    {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "open.node.com"
-                        ]
-                        }
-                    ]
-                    }
-                ]
-                },
-                {
-                "attribute_name": "ATTR_HTTP_REQ_HDR",
-                "object_type": "http_signature",
-                "object_sub_type": "http_signature",
-                "object_list": [
-                    {
-                    "context_name" : "User-Agent",
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "Mozilla/5.0"
-                        ]
-                        }
-                    ]
-                    }
-                ]
-                },
-                {
-                "attribute_name": "ATTR_HTTP_RES_HDR",
-                "object_type": "http_signature",
-                "object_sub_type": "http_signature",
-                "object_list": [
-                    {
-                    "context_name" : "Content-Type",
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "text/html"
-                        ]
-                        }
+                    "keyword_array": [
+                        "open.node"
                     ]
                     }
                 ]
                 }
-            ],
+            ]
+            },
+            {
+            "attribute_name": "ATTR_SERVER_FQDN",
+            "object_type": "fqdn",
+            "object_sub_type": "fqdn",
+            "object_list": [
+                {
+                "add_item_list": [
+                    {
+                    "keyword_array": [
+                        "open.node"
+                    ]
+                    }
+                ]
+                }
+            ]
+            },
+            {
+            "attribute_name": "ATTR_HTTP_REQ_HDR",
+            "object_type": "http_signature",
+            "object_sub_type": "http_signature",
+            "object_list": [
+                {
+                "context_name" : "User-Agent",
+                "add_item_list": [
+                    {
+                    "keyword_array": [
+                        "Chrome"
+                    ]
+                    }
+                ]
+                }
+            ]
+            },
+            {
+            "attribute_name": "ATTR_HTTP_RES_HDR",
+            "object_type": "http_signature",
+            "object_sub_type": "http_signature",
+            "object_list": [
+                {
+                "context_name" : "Content-Type",
+                "add_item_list": [
+                    {
+                    "keyword_array": [
+                        "text/html"
+                    ]
+                    }
+                ]
+                }
+            ]
+            }
+        ],
             "app_name_1": ["http"],
             "expected_return": "need_filter",
             "counters_1": {"hits": 1},
@@ -197,14 +197,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6488",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }

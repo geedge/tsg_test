@@ -85,7 +85,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "Mozilla/5.0"
+                            "curl"
                         ]
                         }
                     ]
@@ -111,12 +111,12 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["http"],
-            "expected_return": "京东",
+            "expected_return": "301",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.yumi.com"}],
             "traffic": {
                 "type": "wget",
-                "command": "wget --debug  -q -O- --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.yumi.com"
+                "command": "curl -kv https://www.yumi.com"
             },
             "token": ""
         }
@@ -188,12 +188,13 @@ if __name__ == "__main__":
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.86",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6488",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }

@@ -194,9 +194,9 @@ class OrganizeConfig():
                            'application': 'Application',
                            'fqdn_category': 'WebSketch Categories',
                            'client_ip_object': 'Client IP Matched Objects',
-                           'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'C2S TTL',
-                           's2c_ttl': 'S2C TTL',
-                           'c2s_link_id': 'C2S Link ID', 's2c_link_id': 'S2C Link ID',
+                           'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'Client-to-Server TTL',
+                           's2c_ttl': 'Server-to-Client TTL',
+                           'c2s_link_id': 'Client-to-Server Link ID', 's2c_link_id': 'Server-to-Client Link ID',
                            'client_port': 'Client Port', 'server_port': 'Server Port'}
         if test_data["policy_type"] == "statistics":
             if "action_parameter" in test_data.keys():

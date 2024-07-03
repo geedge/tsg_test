@@ -4,6 +4,9 @@ import os
 import sys
 import os
 import sys
+
+from support.api_utils.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -19,7 +22,6 @@ from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_replay.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
-from support.api_utils.organize_config import *
 from support.api_utils.log_in import *
 import support.ui_utils.env_initialization
 from support.api_utils.delete_config import *
@@ -46,14 +48,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "sessons_with_srcip_ssl",
+            "rule_name": "all_bytes_srcip_http_table_client_ip",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_sessions_source_ip",
+                        "name": "statistics_all_bytes_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,7 +63,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.10",
+                                "item_value": "10.64.224.16",
                             },
                         ]
                     }
@@ -69,7 +71,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_sessions_destination_ip",
+                        "name": "statistics_all_bytes_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -77,11 +79,10 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.1",
+                                "item_value": "2.1.1.16",
                             },
                         ]
-                    }
-                ],
+                    }],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -96,7 +97,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "ssl",  #
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -111,20 +112,22 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Sessions Distributed by Client Port",
+                    "name": "Auto All Bytes Distributed by Client IP",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Bar",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "sessions:Rate:sessions"
+                            "in_bytes:SUM:in bytes",
+                            "out_bytes:SUM:out bytes",
+                            "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "client_port"
+                            "client_ip"
                           ],
-                          "order_by": "sessions",
-                          "row_limit": "10",
+                          "order_by": "bytes",
+                          "row_limit": "100",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }
@@ -133,17 +136,17 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
+            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.10",
-                "clients_end_ip": "10.64.224.10",
-                "servers_start_ip": "2.1.1.1",
-                "servers_end_ip": "2.1.1.1",
+                "clients_start_ip": "10.64.224.16",
+                "clients_end_ip": "10.64.224.16",
+                "servers_start_ip": "2.1.1.16",
+                "servers_end_ip": "2.1.1.16",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "test_https"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",
@@ -170,31 +173,24 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "sessons_with_srcip_ssl",
+                "name": "all_bytes_srcip_http_table_client_ip",
             },
             {
                 "type": "ip",
-                "name": "statistics_sessions_source_ip",
-            },
-            {
+                "name": "statistics_bytes_source_ip",
+            },{
                 "type": "ip",
-                "name": "statistics_sessions_destination_ip",
+                "name": "statistics_bytes_destination_ip",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Sessions Distributed by Client Port",
+                "name": "Auto All Bytes Distributed by Client IP",
             },
         ]
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
-
-        # 添加测试过程中涉及的template
-        template_path = {}
-        template_path["trex_workpath"] = "/opt/trex/v3.03"
-        template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
-
         # 添加测试过程中涉及的template
         template_path = {}
         template_path["trex_workpath"] = "/opt/trex/v3.03"
@@ -207,7 +203,7 @@ def run(parameter):
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":
-                continue  # 直接跳过
+                continue   # 直接跳过
             if len(cond_value) != 0:  # 不为空
                 cond_data = cond_value
                 create_ip = CreateObject(driver)
@@ -220,7 +216,7 @@ def run(parameter):
                         result = "Fail to create {} object.".format(cond_key)
                         cond_status = 1
                         break
-            if cond_status == 1:  # 创建失败，退出遍历创建
+            if cond_status == 1:   # 创建失败，退出遍历创建
                 break
 
         # 创建Statistics Template
@@ -230,7 +226,7 @@ def run(parameter):
             statistics_templates = profile["statistics_template"]
             for statistics_template in statistics_templates:
                 cond_status = 0
-                # create_statistics_template = CreateProfile(driver)
+                #create_statistics_template = CreateProfile(driver)
                 create_statistics_template = CreateStatisticsTemplate(driver)
                 element_position_map = get_profile_element_position("statistics_template")
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
@@ -241,28 +237,21 @@ def run(parameter):
                     result = "Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
                     break
-                if cond_status == 1:  # 创建失败，退出遍历创建
+                if cond_status == 1:   # 创建失败，退出遍历创建
                     break
 
         # 创建rule
-        element_position_map = {}
         create_rule_code = 0
         delete_rule_code = 0
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
-            search_rule = SearchRule(driver)
-            # 获取Rule ID:
-            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
-                                                                              test_data["rule_name"],
-                                                                              element_position_map)
-            # if search_rule_code == 200:
-            # policies_ids = first_row_id
             if create_rule_code == 200:
                 print("Create security rule successfully.")
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
+
 
         # 触发流量验证
         if create_rule_code == 200:
@@ -274,30 +263,23 @@ def run(parameter):
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
+                verification_result = verify.traffic_verification(driver,parameter, test_data, cfg_list)
 
-                # 编辑修改使用
-                #edit_rule = EditRule(driver)
-                #element_position_map = get_element_position(test_data["policy_type"])
-                #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-                #if edit_rule_code == 200:
-                    # rule_id = search_rule.get_rule_id()
-                   # test_data["rule_id"] = rule_id
-
-
-            # 分析验证结果，并返回给flask
-            if len(verification_result) != 0:
-                analysis = AnalysisResult()
-                result = analysis.analysis_result(test_data, [], verification_result)
-                if len(result) == 0:
-                    print("The test case is passed.")
-                elif len(result) != 0:
-                    print("The test case is failed. The failure reason is: ", result)
-
+            # 编辑修改使用
+            #edit_rule = EditRule(driver)
+            #element_position_map = get_element_position(test_data["policy_type"])
+            #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            #if edit_rule_code == 200:
+                # rule_id = search_rule.get_rule_id()
+               # test_data["rule_id"] = rule_id
+        # 分析验证结果，并返回给flask
+        if len(verification_result) != 0:
+            analysis = AnalysisResult()
+            result = analysis.analysis_result(test_data, [], verification_result)
+            if len(result) == 0:
+                print("The test case is passed.")
+            elif len(result) != 0:
+                print("The test case is failed. The failure reason is: ", result)
         # 避免报错：stale element not found
         time.sleep(5)
 
@@ -411,6 +393,7 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
+
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
@@ -421,7 +404,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "sessions_srcip_ssl",
+        "test_case_name": "all_bytes_srcip_http_table_client_ip",
         "script_type": "ui",
         "policy_type": "statistics"
     }

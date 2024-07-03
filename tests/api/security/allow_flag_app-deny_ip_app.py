@@ -62,14 +62,14 @@ def run(parameter):
         ],
         "app_name_1": ["ssl"],
         "app_name_2": ["ssl"],
-        "expected_return": "百度一下",
+        "expected_return": "POST",
         "counters_1": {"hits": 1},
         "counters_2": {"hits": 0},
-        "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
+        "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"open.node.com"}],
         "log_query_param_2": [],
         "traffic": {
                   "type": "curl",
-                  "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                  "command": "curl -kv --connect-timeout 10 -m 10 https://open.node.com:1443"
               },
         "token": ""
       }
@@ -110,8 +110,8 @@ def run(parameter):
       print("Finish test case: " + parameter["test_case_name"])
       return result
     except Exception as e:
-      print("Error: ", e)
-      return "Error: " + str(e)
+        print("Error: ", e)
+        return "Error: " + str(e)
     finally:
         name_list = []
         erase = DeleteConfig()
@@ -119,18 +119,19 @@ def run(parameter):
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
-            if result is not None and result != "" and len(result) != 0:
-                report_data = []
-                report_data.append(parameter["test_case_name"])
-                if False in verification_result:
-                    result_flag = "Fail"
-                else:
-                    result_flag = "PASS"
-                report_data.append(result_flag)
-                report_data.append(result)
-                new_report = GenerateReport()
-                new_report.insert_data(parameter, report_data)
-    if __name__ == "__main__":
+          if result is not None and result != "" and len(result) != 0:
+            report_data = []
+            report_data.append(parameter["test_case_name"])
+            if False in verification_result:
+                result_flag = "Fail"
+            else:
+                result_flag = "PASS"
+            report_data.append(result_flag)
+            report_data.append(result)
+            new_report = GenerateReport()
+            new_report.insert_data(parameter, report_data)
+      
+if __name__ == "__main__":
     parameter = {
       "script_type": "api",
       "username": "hebingning",

@@ -444,10 +444,10 @@ class CreateRule():
                         search_in =  test_data["action_parameter"]["replace_parameter"][0]["search_in"]
                         find_text =  test_data["action_parameter"]["replace_parameter"][0]["find"]
                         replace_with_text =  test_data["action_parameter"]["replace_parameter"][0]["replace_with"]
-                        print(regex_status, search_in, find_text, replace_with_text)
+                        #print(regex_status, search_in, find_text, replace_with_text)
                         # 操作action parameter，  获取regex当前属性   is-checked 表示开
                         regex_class_status = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"]).get_attribute("class")
-                        print(regex_class_status)
+                        #print(regex_class_status)
                         if regex_status == "on":  # 开
                             if "is-checked" in regex_class_status:  # 当前状态开，不用再点击
                                 pass

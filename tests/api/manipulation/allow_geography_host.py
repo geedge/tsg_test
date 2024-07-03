@@ -70,7 +70,7 @@ def run(parameter):
             "app_name_1": ["http"],
             "expected_return": "TSG",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.example.com"}],
+            "log_query_param_1": [{"query_field_key":"http_url","query_value":"www.example.com/"}],
             "traffic": {
                 "type": "wget",
                 "command": "wget --debug -q -O- --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36\" https://www.example.com/"
@@ -121,8 +121,9 @@ def run(parameter):
         print("Error: ", e)
         return "Error: " + str(e)
     finally:
+        name_list = []
         erase = DeleteConfig()
-        erase.clear_config(token, parameter)
+        erase.clear_config(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
@@ -142,14 +143,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6488",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 1,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }

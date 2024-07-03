@@ -39,7 +39,7 @@ class CreateProfile():
         except Exception as e:
             print(e)
             return 400
-    def operate_sff_page(self, data: {},sc_info,sf_name_list,sff_profile_element_position):
+    def operate_sff_page(self, data,sc_info,sf_name_list,sff_profile_element_position):
         create_element_position = sff_profile_element_position["create"]
         """
         除name的其它选项操作，共创建、修改逻辑调用
@@ -113,7 +113,7 @@ class CreateProfile():
         str_b = re.sub(r"\s+", "_", str_a)
         return str_b
 
-    def format_from_data_lower_and_underline(self, data: {}, key=""):
+    def format_from_data_lower_and_underline(self, data, key=""):
         value = data[key]
         value = self.format_lower_and_underline(value)
         return value  
@@ -133,7 +133,7 @@ class CreateProfile():
                 serviceFunctions_name = self.create_sf_profile(service_functions[sf],sf_profile_element_position,sc_info)
         return sf_name_list,sc_info
     
-    def create_sf_profile(self,data: {},profile_element_position,sc_info):
+    def create_sf_profile(self,data, profile_element_position, sc_info):
         page_jump_element_position = profile_element_position["page_jump"]
         create_element_position = profile_element_position["create"]
         #页面跳转
@@ -149,9 +149,10 @@ class CreateProfile():
         #点击OK
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_posCss"]).click()
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_warningYes_posCss"]).click()
+        time.sleep(2)
         return sf_name,result_info
     
-    def operate_sf_page(self,data:{},create_element_position,sc_info):
+    def operate_sf_page(self,data,create_element_position,sc_info):
         # Device Group 操作
         device_group = self.format_from_data_lower_and_underline(data, key="device_group")
         device_group_list = device_group.split(":")
@@ -204,6 +205,11 @@ class CreateProfile():
             # 输入input操作
             self.operate_input(data_interval,create_element_position["profilePage_inputInterval_posXpath"],True)
             self.operate_input(data_retries,create_element_position["profilePage_inputRetries_posXpath"],True)
+        if data["enable"] == "off":
+            self.driver.find_element(By.XPATH,create_element_position["profilePage_switch_enableButton_posXpath"]).click()
+            sc_info["admin_status"] = 0
+        else:
+            sc_info["admin_status"] = 1
         return sc_info
     def operate_input(self, data_input="", ep_input="", is_clear=True):
         """
