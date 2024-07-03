@@ -11,18 +11,18 @@
 # cd /opt/tsg_test
 # git pull
 
-python /opt/tsg_test/package/install_docker.py
+# python /opt/tsg_test/package/install_docker.py
 
-if [[ "$(docker images -q)" == "" ]] || [[ "$(docker images --format "{{.Repository}}:{{.Tag}}" | grep 'package')" != "package:base" ]]; then
-    echo "No Docker images, start to building."
-    cd /opt/tsg_test/package/
-    docker build -t package:base .
-    echo "The Docker images have been created."
-else
-    echo "Exist Docker images"
-fi
+# if [[ "$(docker images -q)" == "" ]] || [[ "$(docker images --format "{{.Repository}}:{{.Tag}}" | grep 'package')" != "package:base" ]]; then
+#     echo "No Docker images, start to building."
+#     cd /opt/tsg_test/package/
+#     docker build -t package:base .
+#     echo "The Docker images have been created."
+# else
+#     echo "Exist Docker images"
+# fi
 
-docker images
+# docker images
 
 if [[ "$(docker ps -q)" == "" ]]; then
     echo "No Docker containers, start to building."
@@ -35,6 +35,4 @@ fi
 
 docker ps -a
 
-docker run -d --name automation --privileged -p 8800:8800 test:test
-# docker exec -it -uroot automation bash -c "java -jar /app/package/selenium-server-4.8.1.jar standalone &"
-# docker exec -it -uroot automation bash -c "gunicorn -c gunicorn.conf.py app:app &"
+docker run -d --network=host --name automation --privileged --cap-add=ALL -v /dev:/dev -v /lib/modules:/lib/modules -p 8800:8800 test:test

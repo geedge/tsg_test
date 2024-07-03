@@ -11,6 +11,7 @@ import configparser
 import json
 import platform
 import pytz
+import traffic_replay
 from support.traffic_replay.workpath import workdir
 from datetime import datetime
 from selenium.webdriver.common.by import By
@@ -67,8 +68,7 @@ class TrafficVerification():
             time.sleep(10)
             
             # 触发流量
-            temp_data = json.dumps(test_data["traffic"])
-            output = self.call_traffic_server(temp_data, script_type)
+            output = self.call_traffic_server(test_data["traffic"], script_type)
             print("Start to verify the effect of the policy rule.")
             cmd_return = output
             # print(output)
@@ -187,11 +187,7 @@ class TrafficVerification():
             test_data["traffic"]["clients_end_ip"] = clients_end
             test_data["traffic"]["servers_start_ip"] = servers_start
             test_data["traffic"]["servers_end_ip"] = servers_end
-            temp_data = json.dumps(test_data["traffic"])
-            statistics_result = self.call_traffic_server(temp_data, script_type)
-            statistics_metircs = statistics_result["result"]
-            #traffic_replay = TrafficReplay(template_path)
-            #statistics_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
+            statistics_metircs = self.call_traffic_server(test_data["traffic"], script_type)
             time.sleep(50)
             if script_type == "ui":
                 # 点击 语言快捷切换按钮
@@ -279,11 +275,7 @@ class TrafficVerification():
                         else:
                             test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"]
                 # 执行回放命令
-                temp_data = json.dumps(test_data["traffic"])
-                sc_result = self.call_traffic_server(temp_data, script_type)
-                sc_metircs = sc_result["result"]
-                # traffic_replay = TrafficReplay(template_path)
-                # sc_metircs = traffic_replay.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
+                sc_metircs = self.call_traffic_server(test_data["traffic"], script_type)
                 time.sleep(20)
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
@@ -331,8 +323,7 @@ class TrafficVerification():
                 # 等待时间，等待策略生效
                 time.sleep(10)
                 # 触发流量
-                temp_data = json.dumps(test_data["traffic"])
-                output = self.call_traffic_server(temp_data, script_type)
+                output = self.call_traffic_server(test_data["traffic"], script_type)
                 print("Start to verify the effect of the policy rule.")
                 cmd_return = output
                 expected_return = test_data["expected_return"]
@@ -379,7 +370,8 @@ class TrafficVerification():
             return True, True, True
 
     def is_in(self, full_str, sub_str):
-        temp = full_str["result"]
+        # temp = full_str["result"]
+        temp = full_str
         sub_str = sub_str.split(',')
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
         cmd_result = all(word in temp for word in sub_str)
@@ -408,22 +400,40 @@ class TrafficVerification():
         return is_counters, is_log_query
     
     def call_traffic_server(self, data, script_type):
-        parse = configparser.ConfigParser()
-        parse_dir = os.path.join(workdir, "configuration_file.ini")
-        parse.read(parse_dir, encoding="utf-8")
-        if script_type == "api":
-            traffic_server = parse.get("traffic_server", "api_server_url")
-        elif script_type == "ui":
-            traffic_server = parse.get("traffic_server", "ui_server_url")
-        port = parse.get("traffic_port", "server_port")
-        url = traffic_server + ":" + port + "/v1/traffic"
-        headers = {"Content-Type": "application/json"}
-        print("Begin to send traffic for effect verification.")
-        response = requests.post(url, data=data, headers=headers)
-        if response.status_code == 200: 
-            jsonData = json.loads(response.text)
-            jsonData = response.json()
-        return jsonData
-
+        type = data.get("type")
+        if type == "curl" or type == "wget" or type == "nslookup":
+            print("Execute {} operation.".format(type))
+            command = data.get("command")
+            p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+            output, error = p.communicate()
+            cmd_result = output + error
+        elif type == "trex":
+            print("Execute {} operation.".format(type))
+            pcap_name = data.get("pcap_name") + ".pcap"
+            yaml_name = data.get("yaml_name") + ".yaml"
+            m = data.get("m")
+            d = data.get("d")
+            clients_start_ip = data.get("clients_start_ip")
+            clients_end_ip = data.get("clients_end_ip")
+            servers_start_ip = data.get("servers_start_ip")
+            servers_end_ip = data.get("servers_end_ip")
+            path_dict = {
+                "trex_workpath": "/opt/trex/v3.05",
+                "traffic_playback_workpath": "/opt/tsg_test/support/traffic_replay"
+            }
+            path = "/opt/trex"
+            entries = os.listdir(path)  
+            dir_names = [entry for entry in entries if os.path.isdir(os.path.join(path, entry))]
+            if len(dir_names) == 1:
+                join_trex_workpath = "/opt/trex/{}".format(dir_names[0])
+                path_dict["trex_workpath"] = join_trex_workpath
+            parse = configparser.ConfigParser()
+            parse_dir = os.path.join(workdir, "configuration_file.ini")
+            parse.read(parse_dir, encoding="utf-8")
+            path_dict["traffic_playback_workpath"] = parse.get("traffic_playback", "traffic_playback_workpath")
+            tr = traffic_replay.TrafficReplay(path_dict)
+            cmd_result = tr.trex_playback(yaml_name, pcap_name, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
+        return cmd_result
+        
 if __name__ == "__main__":
     print("test")
