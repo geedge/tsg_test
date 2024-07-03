@@ -42,7 +42,6 @@ def run(parameter):
                     ]
                 },
                 {
-                    "is_negate": 1,
                     "attribute_name": "ATTR_HTTP_URL",
                     "object_type": "url",
                     "object_sub_type": "",
@@ -135,16 +134,16 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 1,
+        "vsys_id": 1,
+        "is_log": 0,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "temp",
-        "test_case_name": "deny_import_50w_fqdn"
+        "test_case_name": "deny_import_50w_url"
     }
     run(parameter)

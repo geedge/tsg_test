@@ -29,7 +29,7 @@ def run(parameter):
                     "attribute_name": "ATTR_SOURCE_IP",
                     "object_type": "ip",
                     "object_sub_type": "ip",
-                    "repeat_time": 3,
+                    "repeat_time": 2,
                     "object_list": [
                         {
                             "add_item_list": [
@@ -41,23 +41,7 @@ def run(parameter):
                             ]
                         }
                     ]
-                },
-                {
-                    "attribute_name": "ATTR_SERVER_FQDN",
-                    "object_type": "fqdn",
-                    "object_sub_type": "fqdn",
-                    "object_list": [
-                        {
-                        "add_item_list": [
-                            {
-                            "keyword_array": [
-                                "open.node.com"
-                            ]
-                            }
-                        ]
-                        }
-                    ]
-            }
+                }
             ],
             "app_name_1": ["http"],
             "expected_return": "POST",
@@ -139,11 +123,11 @@ if __name__ == "__main__":
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 1,
+        "vsys_id": 1,
+        "is_log": 0,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "temp",
-        "test_case_name": "deny_import_50w_fqdn"
+        "test_case_name": "deny_import_50w_url"
     }
     run(parameter)

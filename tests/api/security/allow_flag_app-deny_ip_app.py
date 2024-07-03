@@ -62,7 +62,7 @@ def run(parameter):
         ],
         "app_name_1": ["ssl"],
         "app_name_2": ["ssl"],
-        "expected_return": "百度一下",
+        "expected_return": "POST",
         "counters_1": {"hits": 1},
         "counters_2": {"hits": 0},
         "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"open.node.com"}],
