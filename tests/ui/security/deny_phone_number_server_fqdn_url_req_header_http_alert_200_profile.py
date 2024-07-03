@@ -160,7 +160,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "404",
+            "expected_return": "200",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
