@@ -59,12 +59,12 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["dns"],
-            "expected_return": "recursion not",
+            "expected_return": "SERVFAIL",
             "counters_1": {"hits": 2},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.example.com -timeout=1"
+                "command": "nslookup www.example.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }
