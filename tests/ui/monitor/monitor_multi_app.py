@@ -60,7 +60,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.91",
+                                "item_value": parameter['test_pc_ip'],
                             },
                         ]
                     }
@@ -122,7 +122,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "mtv",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv https://www.mtv.ru/"
