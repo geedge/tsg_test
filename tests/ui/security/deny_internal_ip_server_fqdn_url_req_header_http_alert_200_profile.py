@@ -411,7 +411,7 @@ def run(parameter):
         
         # 创建object
         if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
-            ip_data = test_data["condition"]["external_ip"]
+            ip_data = test_data["condition"]["internal_ip"]
             create_port = CreateObject(driver)
             for i in range(len(ip_data)):
                 create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
