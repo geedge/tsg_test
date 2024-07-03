@@ -419,7 +419,9 @@ class TrafficVerification():
         url = traffic_server + ":" + port + "/v1/traffic"
         headers = {"Content-Type": "application/json"}
         print("Begin to send traffic for effect verification.")
+        #print(url, data)
         response = requests.post(url, data=data, headers=headers)
+        #print(response.json())
         if response.status_code == 200: 
             jsonData = json.loads(response.text)
             jsonData = response.json()

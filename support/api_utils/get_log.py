@@ -204,7 +204,7 @@ class GetLog():
         # assert response.status_code == 200
         r_dict = response.json()
         #print("statistics metric result data：")
-        #print(r_dict)
+        print(r_dict)
         #print("Get the metric information of rule id {}".format(post_data_ori_dict))
         if r_dict["code"] != 200:
             print("statistics metric query failed.")
@@ -293,9 +293,7 @@ class GetLog():
                                 for k, v in result_list[result_index].items():
                                     if isinstance(v, int):
                                         statistics_value[k] += v
-                                if "client_ip_sketch".lower() in result_list[
-                                    0].keys() or "server_ip_ip_sketch".lower() in result_list[
-                                    0].keys() or "fqdn_category".lower() in result_list[0].keys():
+                                if result_list[0].keys() in ["client_ip_sketch", "server_ip_ip_sketch", "fqdn_category", "client_ip_matched_objects", "server_ip_matched_objects", "websketch_categories"]:   #兼容UI API，所以三组值
                                     break
                         if "session_identifier_sketch" in result_list[0].keys() or "client_ip_sketch" in result_list[
                             0].keys() or "server_ip_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理
