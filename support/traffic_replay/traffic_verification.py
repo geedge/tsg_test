@@ -352,7 +352,7 @@ class TrafficVerification():
                             metric_result = log.get_sc_metric(token, start_time, end_time, statistics_info,"", active_dest_ips_list, api_server, vsys_id)
                             if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                 break
-                            elif metric_result == False or metric_result == 333:  # 查询验证失败时，再查询验证两次
+                            elif metric_result == False:  # 查询验证失败时，再查询验证两次
                                 if fail_count >= 2:
                                     break
                                 fail_count += 1
