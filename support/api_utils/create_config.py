@@ -18,7 +18,7 @@ class CreateConfig():
         
         # statistics和sc需要随机ip
         if test_data["policy_type"] == "statistics" or (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw"):
-            test_data = self.generate_random_ip(test_data, run_env)
+            test_data = self.generate_random_ip(test_data, run_env, vsys_id)
         
         # 指定循环次数
         isMultiPriority = test_data["is_multi_priority"]
@@ -131,7 +131,7 @@ class CreateConfig():
         
         return cfg_list
     
-    def generate_random_ip(self, config, run_env):
+    def generate_random_ip(self, config, run_env, vsys_id):
         # statistics中将ip改为随机
         if "obj_condition_1" in config.keys():
             for obj in config["obj_condition_1"]:
@@ -141,7 +141,10 @@ class CreateConfig():
                         src_ip = "10.64.77.11"
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
-                        src_ip_list[2] = str(random.randint(200, 222))
+                        if str(vsys_id) == "6":   #根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(200, 222))
+                        else:
+                            src_ip_list[2] = str(random.randint(224, 250))
                         src_ip_list[3] = str(random.randint(100, 250))
                         if run_env == "9140":
                             src_ip_list[0] = "172"
@@ -155,7 +158,10 @@ class CreateConfig():
                         two_ip_list = src_ip.split("-")
                         ip_list_1 = two_ip_list[0].split(".")
                         ip_list_2 = two_ip_list[1].split(".")
-                        ip_list_1[2] = str(random.randint(200, 222))
+                        if str(vsys_id) == "6":
+                            ip_list_1[2] = str(random.randint(200, 222))
+                        else:
+                            ip_list_1[2] = str(random.randint(224, 250))
                         ip_list_1[3] = str(random.randint(1, 50))
                         ip_list_2[2] = ip_list_1[2]
                         ip_list_2[3] = str(int(ip_list_1[3]) + 200)
