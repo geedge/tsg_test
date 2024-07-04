@@ -164,8 +164,8 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "type": "wget",
+                "command": "wget -q -O- --debug http://open.node.com:180"
             },
             "token": ""
         }

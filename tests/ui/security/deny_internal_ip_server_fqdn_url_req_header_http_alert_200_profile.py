@@ -164,8 +164,8 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "type": "wget",
+                "command": "wget -q -O- --debug http://open.node.com:180"
             },
             "token": ""
         }
@@ -410,8 +410,8 @@ def run(parameter):
             }
         
         # 创建object
-        if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
-            ip_data = test_data["condition"]["external_ip"]
+        if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
+            ip_data = test_data["condition"]["internal_ip"]
             create_port = CreateObject(driver)
             for i in range(len(ip_data)):
                 create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)

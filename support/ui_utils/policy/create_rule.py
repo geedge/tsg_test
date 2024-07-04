@@ -346,7 +346,7 @@ class CreateRule():
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseCode_posXpath"]).click()
                     dropdown_item_posXpath = create_element_position["policyRulePage_subAction_alert_responseCode_change_posXpath"].format(replaceValue=sub_action_data[0]["code"])
                     self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
-                    if sub_action_data[0]["code"] == "200":
+                    if sub_action_data[0]["code"] == 200:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_posXpath"]).click()
                         dropdown_item_posXpath = create_element_position["policyRulePage_subAction_alert_responseContent_change_posXpath"].format(replaceValue=sub_action_data[0]["content_type"])
                         self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()

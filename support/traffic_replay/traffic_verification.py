@@ -343,7 +343,7 @@ class TrafficVerification():
                             metric_result = log.get_sc_metric(token, start_time, end_time, statistics_info,"", active_dest_ips_list, api_server, vsys_id)
                             if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                 break
-                            elif metric_result == False or metric_result == 333:  # 查询验证失败时，再查询验证两次
+                            elif metric_result == False:  # 查询验证失败时，再查询验证两次
                                 if fail_count >= 2:
                                     break
                                 fail_count += 1
@@ -400,40 +400,24 @@ class TrafficVerification():
         return is_counters, is_log_query
     
     def call_traffic_server(self, data, script_type):
-        type = data.get("type")
-        if type == "curl" or type == "wget" or type == "nslookup":
-            print("Execute {} operation.".format(type))
-            command = data.get("command")
-            p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-            output, error = p.communicate()
-            cmd_result = output + error
-        elif type == "trex":
-            print("Execute {} operation.".format(type))
-            pcap_name = data.get("pcap_name") + ".pcap"
-            yaml_name = data.get("yaml_name") + ".yaml"
-            m = data.get("m")
-            d = data.get("d")
-            clients_start_ip = data.get("clients_start_ip")
-            clients_end_ip = data.get("clients_end_ip")
-            servers_start_ip = data.get("servers_start_ip")
-            servers_end_ip = data.get("servers_end_ip")
-            path_dict = {
-                "trex_workpath": "/opt/trex/v3.05",
-                "traffic_playback_workpath": "/opt/tsg_test/support/traffic_replay"
-            }
-            path = "/opt/trex"
-            entries = os.listdir(path)  
-            dir_names = [entry for entry in entries if os.path.isdir(os.path.join(path, entry))]
-            if len(dir_names) == 1:
-                join_trex_workpath = "/opt/trex/{}".format(dir_names[0])
-                path_dict["trex_workpath"] = join_trex_workpath
-            parse = configparser.ConfigParser()
-            parse_dir = os.path.join(workdir, "configuration_file.ini")
-            parse.read(parse_dir, encoding="utf-8")
-            path_dict["traffic_playback_workpath"] = parse.get("traffic_playback", "traffic_playback_workpath")
-            tr = traffic_replay.TrafficReplay(path_dict)
-            cmd_result = tr.trex_playback(yaml_name, pcap_name, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
-        return cmd_result
-        
+        parse = configparser.ConfigParser()
+        parse_dir = os.path.join(workdir, "configuration_file.ini")
+        parse.read(parse_dir, encoding="utf-8")
+        if script_type == "api":
+            traffic_server = parse.get("traffic_server", "api_server_url")
+        elif script_type == "ui":
+            traffic_server = parse.get("traffic_server", "ui_server_url")
+        port = parse.get("traffic_port", "server_port")
+        url = traffic_server + ":" + port + "/v1/traffic"
+        headers = {"Content-Type": "application/json"}
+        print("Begin to send traffic for effect verification.")
+        #print(url, data)
+        response = requests.post(url, data=data, headers=headers)
+        #print(response.json())
+        if response.status_code == 200: 
+            jsonData = json.loads(response.text)
+            jsonData = response.json()
+        return jsonData
+    
 if __name__ == "__main__":
     print("test")

@@ -120,7 +120,7 @@ def run(parameter):
             ],
             "expected_return": "china",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": "192.168.64.91"}],
+            "log_query_param_1": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -N -kv http://www.chinaenvironment.com/zxjh/index_59.html"
