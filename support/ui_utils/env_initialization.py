@@ -92,8 +92,8 @@ def initiate_selenium_request():
 
 def get_docker_ip():
     interfaces = psutil.net_if_addrs()
-    if "eth0" in interfaces:
-        for addr in interfaces["eth0"]:
+    if "docker0" in interfaces:
+        for addr in interfaces["docker0"]:
             if addr.family == 2:
                 docker_ip = addr.address
                 remote_url = "http://" + docker_ip + ":4444"
