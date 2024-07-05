@@ -16,7 +16,7 @@ from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
-#from support.ui_utils.profile.create_profile import CreateProfile
+# from support.ui_utils.profile.create_profile import CreateProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_replay.traffic_verification import *
@@ -29,12 +29,13 @@ import traceback
 
 from support.report import *
 
+
 def run(parameter):
     try:
         print("Begin to run test case: " + parameter["test_case_name"])
         # 参数初始化
         result = ""
-        
+
         # 脚本启动时间
         start_time = time.time()
 
@@ -48,14 +49,14 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_with_src_ip_http_table_application",
+            "rule_name": "all_bytes_srcip_http_table_application",
             "rule_action": "statistics",
             "rule_type": "create",
             "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_all_bytes_source_ip",
+                        "name": "statistics_bytes_table_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -63,7 +64,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.16",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -71,7 +72,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_all_bytes_destination_ip",
+                        "name": "statistics_bytes_table_destination_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -79,7 +80,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.16",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -112,37 +113,37 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Bytes Distributed by Application",
+                    "name": "Auto All Bytes Table Distributed by Application",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
-                          "visualization_type": "Table",
-                          "metrics": [
-                            "in_bytes:SUM:in bytes",
-                            "out_bytes:SUM:out bytes",
-                            "bytes:SUM:bytes"
-                          ],
-                          "dimensions": [
-                            "application"
-                          ],
-                          "order_by": "bytes",
-                          "row_limit": "100",
-                          "min_in_size": "1",
-                          "max_out_size": "1"
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:SUM:in bytes",
+                                "out_bytes:SUM:out bytes",
+                                "bytes:SUM:bytes"
+                            ],
+                            "dimensions": [
+                                "application"
+                            ],
+                            "order_by": "bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
                         }
-                      ]
+                    ]
                 }]
             },
             "expected_return": "reset",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param_1": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "type": "trex",
-                "clients_start_ip": "10.64.224.16",
-                "clients_end_ip": "10.64.224.16",
-                "servers_start_ip": "2.1.1.16",
-                "servers_end_ip": "2.1.1.16",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -173,18 +174,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_with_src_ip_http_table_application",
+                "name": "all_bytes_srcip_http_table_application"
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_source_ip",
-            },{
+                "name": "statistics_bytes_table_source_ip"
+            }, {
                 "type": "ip",
-                "name": "statistics_bytes_destination_ip",
+                "name": "statistics_bytes_table_destination_ip"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Bytes Distributed by Application",
+                "name": "Auto All Bytes Table Distributed by Application"
             },
         ]
         log_in = LogIn()
@@ -196,14 +197,14 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-                # 创建object
+        # 创建object
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter["env"])
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":
-                continue   # 直接跳过
+                continue  # 直接跳过
             if len(cond_value) != 0:  # 不为空
                 cond_data = cond_value
                 create_ip = CreateObject(driver)
@@ -216,7 +217,7 @@ def run(parameter):
                         result = "Fail to create {} object.".format(cond_key)
                         cond_status = 1
                         break
-            if cond_status == 1:   # 创建失败，退出遍历创建
+            if cond_status == 1:  # 创建失败，退出遍历创建
                 break
 
         # 创建Statistics Template
@@ -226,7 +227,7 @@ def run(parameter):
             statistics_templates = profile["statistics_template"]
             for statistics_template in statistics_templates:
                 cond_status = 0
-                #create_statistics_template = CreateProfile(driver)
+                # create_statistics_template = CreateProfile(driver)
                 create_statistics_template = CreateStatisticsTemplate(driver)
                 element_position_map = get_profile_element_position("statistics_template")
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
@@ -237,7 +238,7 @@ def run(parameter):
                     result = "Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
                     break
-                if cond_status == 1:   # 创建失败，退出遍历创建
+                if cond_status == 1:  # 创建失败，退出遍历创建
                     break
 
         # 创建rule
@@ -252,7 +253,6 @@ def run(parameter):
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
-
         # 触发流量验证
         if create_rule_code == 200:
             edit_rule = EditRule(driver)
@@ -263,15 +263,20 @@ def run(parameter):
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = TrafficVerification()
-                verification_result = verify.traffic_verification(driver,parameter, test_data, cfg_list)
+                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
-            #edit_rule = EditRule(driver)
-            #element_position_map = get_element_position(test_data["policy_type"])
-            #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            #if edit_rule_code == 200:
-                # rule_id = search_rule.get_rule_id()
-               # test_data["rule_id"] = rule_id
+            # edit_rule = EditRule(driver)
+            # element_position_map = get_element_position(test_data["policy_type"])
+            # edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            # if edit_rule_code == 200:
+            # rule_id = search_rule.get_rule_id()
+            # test_data["rule_id"] = rule_id
+
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
@@ -280,14 +285,16 @@ def run(parameter):
                 print("The test case is passed.")
             elif len(result) != 0:
                 print("The test case is failed. The failure reason is: ", result)
+
         # 避免报错：stale element not found
         time.sleep(5)
-
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
-            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
+                                                                              test_data["rule_name"],
+                                                                              element_position_map)
             if search_rule_code == 200:
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
@@ -339,10 +346,12 @@ def run(parameter):
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
                         element_position_map = get_element_position(cond_key)
-                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
+                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"],
+                                                                                          element_position_map)
                         if search_cond_code == 200:
                             delete_cond = DeleteObject(driver)
-                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
+                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element,
+                                                                  True)
                             if delete_cond_code == 200:
                                 print("Delete {} object successfully.".format(cond_key))
                             else:
@@ -376,7 +385,7 @@ def run(parameter):
         erase.clear_config(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
+        if os.path.exists(file_path) and os.path.isfile(file_path):
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
                 report_data.append(parameter["test_case_name"])
@@ -388,7 +397,6 @@ def run(parameter):
                 report_data.append(result)
                 new_report = GenerateReport()
                 new_report.insert_data(parameter, report_data)
-    
 
 
 if __name__ == '__main__':
@@ -398,13 +406,13 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 11,#6
+        "vsys_id": 11,  # 6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_with_src_ip_http_table_application",
+        "test_case_name": "all_bytes_srcip_http_table_application",
         "script_type": "ui",
         "policy_type": "statistics"
     }
