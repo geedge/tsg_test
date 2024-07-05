@@ -71,13 +71,13 @@ class TrafficReplay():
                         open_flows = int(match_flows.group(1))
 
         p.wait()
-        print("The statistics of a single session are as follows: ")
-        print(pcap_info_dict)
+        print("The statistics of a single session are as follows: ", flush=True)
+        print(pcap_info_dict, flush=True)
         sum_count = m * d
-        print(f"Replay packet {sum_count} time, replay cps: {m}, replay duration: {d}. The expected statistical results are as follows: ")
-        print(f"Actual replay packet {open_flows} time")
+        print(f"Replay packet {sum_count} time, replay cps: {m}, replay duration: {d}. The expected statistical results are as follows: ", flush=True)
+        print(f"Actual replay packet {open_flows} time", flush=True)
         metric_info_dict = {key:(value*open_flows) for key, value in pcap_info_dict.items()}
-        print(metric_info_dict)
+        print(metric_info_dict, flush=True)
         return metric_info_dict
 
 if __name__ == '__main__':
