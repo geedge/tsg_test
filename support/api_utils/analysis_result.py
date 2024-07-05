@@ -16,6 +16,10 @@ class AnalysisResult():
         elif condition["policy_type"] == "security" or condition["policy_type"] == "monitor" or condition["policy_type"] == "pxy_manipulation":
             if cmd_result == False and log_result == True and metric_result == True and timeout_result == True:
                 failure_reason = failure_reason + "The verification result of policy effect is failed, the failure reason is: the contents returned by the command do not contain the expected value."
+            elif cmd_result == False and log_result == None and metric_result == None and timeout_result == True:
+                failure_reason = failure_reason + "The verification result of policy effect is failed, the failure reason are: the contents returned by the command do not contain the expected value, the metrics do not match the expectation value, the expected value is not queried in the logs"
+            elif cmd_result == True and log_result == None and metric_result == None and timeout_result == True:
+                failure_reason = failure_reason + "The verification result of policy effect is failed, the failure reason are: the metrics do not match the expectation value, the expected value is not queried in the logs"    
             elif cmd_result == False and log_result == True and metric_result == True and timeout_result == False:
                 failure_reason = failure_reason + "The verification result of policy effect and creating time are failed, the failure reason is: the contents returned by the command do not contain the expected value, the creating time is over 60s"
             elif cmd_result == False and log_result == False and metric_result == True and timeout_result == True:

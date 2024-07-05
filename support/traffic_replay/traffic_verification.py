@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 import time
@@ -221,8 +222,8 @@ class TrafficVerification():
                 for statistics_info in statistics_sc_info_list:
                     n = 1    #自增变量
                     fail_count = 1   #失败重试变量
-                    while n < 6:
-                        time.sleep(70)
+                    while n < 20:
+                        time.sleep(7)
                         if script_type == "ui":
                             # 点击 语言快捷切换按钮
                             element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
@@ -237,7 +238,7 @@ class TrafficVerification():
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
                         elif metric_result == False:  # 查询验证失败时，再查询验证一次
-                            if fail_count > 3:
+                            if fail_count > 10:
                                 break
                             fail_count += 1
                         elif  metric_results[0] == 333 and metric_results[1] == "passthrough":    # session的incoming outgoing,fqdn_category区分判断
@@ -475,6 +476,6 @@ class TrafficVerification():
                 tr = traffic_replay.TrafficReplay(path_dict)
                 cmd_result = tr.trex_playback(yaml_name, pcap_name, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
             return cmd_result
-        
+
 if __name__ == "__main__":
     print("test")
