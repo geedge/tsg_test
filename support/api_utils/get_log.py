@@ -76,7 +76,7 @@ class GetLog():
             # 加script_type判断条件的原因是：ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0][
                 "attribute_name"] == "ATTR_SUBSCRIBER_ID":
-                log_filter = f"subscriber_id= 'test23' AND has({log_query_rule_type},{policy_id})"
+                log_filter = f"subscriber_id='test6488' AND has({log_query_rule_type},{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
                 log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type},{policy_id})"
