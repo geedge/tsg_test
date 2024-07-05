@@ -415,7 +415,7 @@ def run(parameter):
                 if False in verification_result:
                     result_flag = "Fail"
                 else:
-                    result_flag = "PASS"
+                    result_flag = "Pass"
                 report_data.append(result_flag)
                 report_data.append(result)
                 new_report = GenerateReport()

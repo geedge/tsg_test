@@ -324,7 +324,7 @@ def run(parameter):
                 if False in verification_result:
                     result_flag = "Fail"
                 else:
-                    result_flag = "PASS"
+                    result_flag = "Pass"
                 report_data.append(result_flag)
                 report_data.append(result)
                 new_report = GenerateReport()
@@ -335,12 +335,13 @@ if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
-        "test_pc_ip": "192.168.64.93",
+        "test_pc_ip": "192.168.64.87",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "is_log": 1,
         "env": "tsgx",
+        "debug_flag": "local",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
