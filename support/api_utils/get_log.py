@@ -293,8 +293,14 @@ class GetLog():
                                 for k, v in result_list[result_index].items():
                                     if isinstance(v, int):
                                         statistics_value[k] += v
-                                if result_list[0].keys() in ["client_ip_sketch", "server_ip_ip_sketch", "fqdn_category", "client_ip_matched_objects", "server_ip_matched_objects", "websketch_categories"]:   #兼容UI API，所以三组值
-                                    break
+                                break_flag = 0     # 默认外层循环累加，累加标志
+                                tmp_break_list = ["client_ip_sketch", "server_ip_ip_sketch", "fqdn_category", "client_ip_matched_objects", "server_ip_matched_objects", "websketch_categories"]   #兼容UI API，所以三组值
+                                for item in tmp_break_list:    #遍历判断是否符合上述条件，获取退出累加标志1。"client_ip_sketch", "server_ip_ip_sketch", "fqdn_category"
+                                    if item in result_list[0].keys():
+                                        break_flag = 1    # 退出外层累加标志
+                                        break
+                                if break_flag == 1:
+                                    break   # 退出累加循环
                         if "session_identifier_sketch" in result_list[0].keys() or "client_ip_sketch" in result_list[
                             0].keys() or "server_ip_sketch" in result_list[0].keys():  # session_identifier_sketch 需要单独处理
                             sum_1 = 0

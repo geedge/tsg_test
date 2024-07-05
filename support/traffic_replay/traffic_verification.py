@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 import time
@@ -17,6 +18,7 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # from support.traffic_replay.traffic_replay import TrafficReplay
+
 
 class TrafficVerification():
     def traffic_verification(self, driver, parameter, test_data, cfg_list):
@@ -417,14 +419,19 @@ class TrafficVerification():
             traffic_server = parse.get("traffic_server", "ui_server_url")
         port = parse.get("traffic_port", "server_port")
         url = traffic_server + ":" + port + "/v1/traffic"
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": "application/json; charset=utf-8"}
         print("Begin to send traffic for effect verification.")
         #print(url, data)
         response = requests.post(url, data=data, headers=headers)
-        #print(response.json())
+        #print(response.text)
         if response.status_code == 200: 
-            jsonData = json.loads(response.text)
-            jsonData = response.json()
+            #jsonData = json.loads(response.text)
+            try:
+                jsonData = response.json()   # json解析遇到html格式字符出错，临时替换方法
+            except:
+                jsonData = {"code":200, "result":response.text}
+        else:
+            print(url, data, " error")
         return jsonData
 
 if __name__ == "__main__":
