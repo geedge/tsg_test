@@ -182,7 +182,7 @@ class CreateConfig():
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
                         obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
-        print("Config random ip for statistics and sc rule.")
+        print("Config random ip for statistics and sc rule.", flush=True)
         return config
 
 if __name__ == "__main__":

@@ -78,7 +78,7 @@ class OrganizeConfig():
                             template_number = template_number + 1
 
                         else:
-                            print("The number of Template definition charts searched from the interface is inconsistent with the number of TemplateCharts parsed from the test data test_data!")
+                            print("The number of Template definition charts searched from the interface is inconsistent with the number of TemplateCharts parsed from the test data test_data!", flush=True)
                         create_profile_ids.append({'profile_type': 'Statistics_Templates', 'id': template_id, 'template_info': template_temp})
                         template_info = {"profile_type": "", "id": 0, "template_info": []}
                         template_info["profile_type"] = ""
@@ -148,7 +148,7 @@ class OrganizeConfig():
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
                         config["condition"]["source_ip"][0]["item"][0]["item_value"] = new_two_ip
-        print("Config random ip for statistics and sc rule.")
+        print("Config random ip for statistics and sc rule.", flush=True)
         return config
 
     def get_policy_define(self, token, rule_id, rule_type, api_host, vsys_id):
