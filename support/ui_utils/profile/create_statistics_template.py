@@ -120,18 +120,23 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 点击chart的OK保存按钮
-                #print("Click the chart OK save button！")
-                self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
+                print("Click the chart OK save button")
+                #self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
+                chart_ok_btn = self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"])
+                self.driver.execute_script("arguments[0].scrollIntoView();", chart_ok_btn)
+                self.driver.execute_script("arguments[0].click();", chart_ok_btn)
             # 确认创建，点击Template的OK保存按钮
             #print("template14,Template OK")
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["templates_button_oK_posCss"]).click()
 
             #print("template14,Template warningSaveYes")
-            self.driver.find_element(By.CSS_SELECTOR,
-                                     create_element_position["templates_button_warningSaveYes_posCss"]).click()
+            #self.driver.find_element(By.CSS_SELECTOR,create_element_position["templates_button_warningSaveYes_posCss"]).click()
+            warning_save_yes_btn = self.driver.find_element(By.CSS_SELECTOR,create_element_position["templates_button_warningSaveYes_posCss"])
+            self.driver.execute_script("arguments[0].scrollIntoView();", warning_save_yes_btn)
+            self.driver.execute_script("arguments[0].click();", warning_save_yes_btn)
             #print(self.driver.find_element(By.CSS_SELECTOR,
             #                         create_element_position["templates_button_warningSaveYes_posCss"]).is_enabled())
-            #print("template14,Template warningSaveYes after")
+            print("template14,Template warningSaveYes after")
             return 200
         except Exception as e:
             print(e)
@@ -387,16 +392,16 @@ class CreateStatisticsTemplate():
                 element_position_1 = element_position.format(replaceChart=chart_id, repalceLabel=repalceLabel)
                 # 定位元素中span换成label
                 element_position_1 = element_position_1.replace("span", "*")
-                print("element_position_1"+element_position_1)
+                #print("element_position_1"+element_position_1)
                 #print(self.driver.find_element(By.XPATH, element_position_1).is_enabled())
                 #self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                 #浏览器模式下定位
-                #self.driver.find_element(By.XPATH, element_position_1).click()
+                self.driver.find_element(By.XPATH, element_position_1).click()
                 #无浏览器模式下定位
-                element_position_1 = self.driver.find_element(By.XPATH, element_position_1)
-                self.driver.execute_script("arguments[0].scrollIntoView();", element_position_1)
-                self.driver.execute_script("arguments[0].click();", element_position_1)
+                #element_position_1 = self.driver.find_element(By.XPATH, element_position_1)
+                #self.driver.execute_script("arguments[0].scrollIntoView();", element_position_1)
+                #self.driver.execute_script("arguments[0].click();", element_position_1)
                 self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
                 element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1). \
                     find_element(By.XPATH,
