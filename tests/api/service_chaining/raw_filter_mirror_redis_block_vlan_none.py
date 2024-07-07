@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
-from support.api_utils.create_config import *
+from support.api_utils.create_policy import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
@@ -137,8 +137,8 @@ def run(parameter):
         test_data["token"] = token
         
         # 创建Object、Profile、Rule
-        config = CreateConfig()
-        cfg_list = config.create_cfg(parameter, test_data, template_path)
+        create = CreatePolicy()
+        cfg_list = create.create_policy(parameter, test_data, template_path)
         
         # 流量验证
         verify = TrafficVerification()
