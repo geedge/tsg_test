@@ -102,7 +102,7 @@ def run(parameter):
         # 流量验证
         verify = TrafficVerification()
         verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
-        # print("verification result: ", verification_result)
+        # print("verification result: ", verification_result, flush=True)
         
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()

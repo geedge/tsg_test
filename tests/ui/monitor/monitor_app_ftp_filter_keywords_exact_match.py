@@ -375,7 +375,7 @@ def run(parameter):
                     delete_content_code = delete_content.delete(test_keywords_object_element_position,
                                                                 first_row_checkbox_element, True)
                     if delete_content_code == 200:
-                        print("Delete url object successfully.")
+                        print("Delete url object successfully.", flush=True)
                     elif delete_content_code != 200:
                         result = result + " In addition, fail to delete account object."
                         break

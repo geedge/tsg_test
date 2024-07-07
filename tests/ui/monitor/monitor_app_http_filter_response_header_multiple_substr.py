@@ -346,7 +346,7 @@ def run(parameter):
                     delete_url_code = delete_url.delete(element_position_map, first_row_checkbox_element,
                                                         True)
                     if delete_url_code == 200:
-                        print("Delete url object successfully.")
+                        print("Delete url object successfully.", flush=True)
                     elif delete_url_code != 200:
                         result = result + " In addition, fail to delete ip object."
                         break

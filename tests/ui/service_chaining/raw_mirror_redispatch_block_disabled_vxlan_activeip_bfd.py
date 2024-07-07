@@ -417,7 +417,7 @@ def run(parameter):
             for j in range(len(profile_data)):
                 create_profile_code,sc_info= service_chaining_profile.create_sff_profile(profile_data[j],test_service_function_forwarder_profile_element_position,test_service_function_profile_element_position)
                 if create_profile_code == 200:
-                        print("Create service function forwarder profile successfully.")
+                        print("Create service function forwarder profile successfully.", flush=True)
                 elif create_profile_code != 200:
                         result = "Fail to create service chaining profile."
                         break
@@ -428,7 +428,7 @@ def run(parameter):
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
-                print("Create service chaining rule successfully.")
+                print("Create service chaining rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create service chaining rule."
             
@@ -462,7 +462,7 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete service chaining rule successfully.")
+                    print("Delete service chaining rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete service chaining rule."
                 else:
@@ -515,7 +515,7 @@ def run(parameter):
                     delete_sff = DeleteProfile(driver)
                     delete_sff_code = delete_sff.delete(test_service_function_forwarder_profile_element_position, first_row_checkbox_element, True)
                     if delete_sff_code == 200:
-                        print("Delete sff successfully.")
+                        print("Delete sff successfully.", flush=True)
                         # 删除sf
                         sf_data = test_data["profile"][x]["service_functions"]
                         search_sf = SearchProfile(driver)
@@ -525,7 +525,7 @@ def run(parameter):
                                 delete_sf = DeleteProfile(driver)
                                 delete_sf_code = delete_sf.delete(test_service_function_profile_element_position, first_row_checkbox_element, True)
                                 if delete_sf_code == 200:
-                                    print("Delete sf successfully.")
+                                    print("Delete sf successfully.", flush=True)
                                 elif delete_sf_code != 200:
                                     result = result + " In addition, fail to delete sf."
                                     break

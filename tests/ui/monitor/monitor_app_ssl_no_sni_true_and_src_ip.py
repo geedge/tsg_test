@@ -289,7 +289,7 @@ def run(parameter):
             for i in range(len(profile_data)):
                 create_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position,test_data["profile"][i]["name"])
                 if create_profile_code == 200:
-                    print("Create Traffic Mirroring Profiles successfully.")
+                    print("Create traffic mirroring profile successfully.", flush=True)
                 elif create_profile_code != 200:
                     result = "Fail to create Traffic Mirroring Profiles profile."
                     break
@@ -370,7 +370,7 @@ def run(parameter):
                     delete_mirror_profile = DeleteProfile(driver)
                     delete_profile_code = delete_mirror_profile.delete(test_monitor_profile_element_position,first_row_checkbox_element,True)
                     if delete_profile_code == 200:
-                        print("Delete monitor profile successfully.")
+                        print("Delete monitor profile successfully.", flush=True)
                     elif delete_profile_code != 200:
                         result = result + " In addition, fail to delete profile."
                         break

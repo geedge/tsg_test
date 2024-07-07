@@ -284,7 +284,7 @@ def run(parameter):
             for x in range(len(protocol_field_data)):
                 create_account_code = create_account.create(protocol_field_data[x], test_account_object_element_position)
                 if create_account_code == 200:
-                    print("Create url object successfully.")
+                    print("Create url object successfully.", flush=True)
                 elif create_account_code != 200:
                     result = "Fail to create url."
                     break
@@ -365,7 +365,7 @@ def run(parameter):
                     delete_account = DeleteObject(driver)
                     delete_account_code = delete_account.delete(test_account_object_element_position, first_row_checkbox_element, True)
                     if delete_account_code == 200:
-                        print("Delete url object successfully.")
+                        print("Delete url object successfully.", flush=True)
                     elif delete_account_code != 200:
                         result = result + " In addition, fail to delete account object."
                         break
