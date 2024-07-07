@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
 import json
-from support.api_utils.delete_config import DeleteConfig
+from support.api_utils.delete_policy import *
 from datetime import datetime
 
 class CreateObject():
@@ -88,8 +88,8 @@ class CreateObject():
                             if obj_template_dict["object"]["type"] == "url" and len(self.url_ids) > 0:
                                 create_url_ids.extend(self.url_ids)
                                 cfg_list["create_url_ids"] = create_url_ids
-                            erase = DeleteConfig()
-                            erase.delele_cfg(token, parameter, cfg_list)
+                            delete = DeletePolicy()
+                            delete.delele_policy_by_cfg(token, parameter, cfg_list)
         
         return timeout_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, self.geo_name_ids
     

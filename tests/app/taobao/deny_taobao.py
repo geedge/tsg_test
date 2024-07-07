@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.api_utils.log_in import *
 from support.api_utils.create_config import *
 from support.traffic_replay.traffic_verification import *
-from support.api_utils.delete_config import *
+from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.app_utils.call_airtest import *
 
@@ -88,8 +88,8 @@ def run(parameter):
         print("analysis result: ", result)
    
     # 删除配置
-    erase = DeleteConfig()
-    erase.delele_cfg(token, parameter, cfg_list)
+    delete = DeletePolicy()
+    delete.delele_policy_by_cfg(token, parameter, cfg_list)
             
 if __name__ == '__main__':
     parameter = {

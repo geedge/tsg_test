@@ -5,7 +5,7 @@ import sys
 import os
 import sys
 
-from support.api_utils.delete_config import DeleteConfig
+from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -363,8 +363,8 @@ def run(parameter):
         # 清理环境
         support.ui_utils.env.teardown()
         # 删除配置
-        # erase = DeleteConfig()
-        # erase.clear_config(token, parameter, name_list)
+        # delete = DeletePolicy()
+        # delete.delete_policy_by_name(token, parameter, name_list)
 
 if __name__ == '__main__':
     parameter = {

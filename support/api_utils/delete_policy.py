@@ -4,8 +4,8 @@ import copy
 import requests
 import json
 
-class DeleteConfig():    
-    def delele_cfg(self, token, parameter, cfg_list):
+class DeletePolicy():    
+    def delele_policy_by_cfg(self, token, parameter, cfg_list):
         try:
             headers = {"Authorization": token}
             api_server = parameter["api_server"]
@@ -232,7 +232,7 @@ class DeleteConfig():
         except AssertionError as e:
             print(f"AssertionError: {e}", flush=True)
     
-    def clear_config(self, token, parameter, name_list):
+    def delete_policy_by_name(self, token, parameter, name_list):
         headers = {"Authorization": token}
         api_server = parameter["api_server"]
         vsys_id = parameter["vsys_id"]

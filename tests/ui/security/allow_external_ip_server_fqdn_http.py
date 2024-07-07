@@ -16,7 +16,7 @@ from support.ui_utils.element_position.object_element_position import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.api_utils.delete_config import *
+from support.api_utils.delete_policy import *
 import support.ui_utils.env
 
 from support.report import *
@@ -365,8 +365,8 @@ def run(parameter):
         # 清理环境
         support.ui_utils.env.teardown()
         # 删除配置
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
+        delete = DeletePolicy()
+        delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  

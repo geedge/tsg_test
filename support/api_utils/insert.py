@@ -36,7 +36,7 @@ def insert(keyword, new_content):
                 file.writelines(lines)
     
 if __name__ == "__main__":
-    # keyword = "erase.clear_config"
+    # keyword = "delete.delete_policy_by_name"
     # new_content = """        # 生成csv报告
     #     file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
     #     if os.path.exists(file_path) and os.path.isfile(file_path):  

@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.api_utils.log_in import *
 from support.api_utils.create_config import *
 from support.traffic_replay.traffic_verification import *
-from support.api_utils.delete_config import *
+from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 import traceback
 from support.report import *
@@ -143,8 +143,8 @@ def run(parameter):
             print("The test case is failed. The failure reason is: ", result, flush=True)
     
         # 删除配置
-        erase = DeleteConfig()
-        erase.delele_cfg(token, parameter, cfg_list)
+        delete = DeletePolicy()
+        delete.delele_policy_by_cfg(token, parameter, cfg_list)
         
 		
         # 脚本结束时间和耗时
@@ -160,8 +160,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         name_list = []
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
+        delete = DeletePolicy()
+        delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
