@@ -43,11 +43,11 @@ class PageJump():
         try:
             menu_enabled = self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).is_enabled()
         except Exception as e:
-            print("Error: ", e)
+            print("Error: ", e, flush=True)
         finally:
             if menu_enabled == False:
                 # 因Case：sessions_srcip_ssl_bar_client_port执行时界面会弹出悬浮层掩盖Menu按钮导致用例失败，此处添加点击使得悬浮层消失：
-                print("menu_enabled:{}".format(menu_enabled))
+                # print("menu_enabled:{}".format(menu_enabled), flush=True)
                 self.driver.find_element(By.XPATH, mainPage_version_posXpath).click()
         self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
         #current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
@@ -64,4 +64,4 @@ class PageJump():
                 #print(f"Change to vsys {current_vsys_name}")
                 break
         if flag_num == 0:
-            print(f"no vsys: {change_vsys_name}")
+            print(f"no vsys: {change_vsys_name}", flush=True)

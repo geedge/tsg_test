@@ -6,7 +6,7 @@ import requests
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import support.api_utils.get_log
 import support.api_utils.policy_verify
-import support.ui_utils.env_initialization
+import support.ui_utils.env
 import subprocess
 import configparser
 import json
@@ -94,10 +94,10 @@ class TrafficVerification():
                         print("Get log and metric for the {} time.\n".format(i+1), flush=True)
                         if i == 10 and script_type == "ui" and driver:
                             print("Operate the browser to prevent timeout close.", flush=True)
-                            support.ui_utils.env_initialization.teardown()
-                            support.ui_utils.env_initialization.initiate_selenium_request()
-                            my_driver = support.ui_utils.env_initialization.my_driver()
-                            support.ui_utils.env_initialization.setup()
+                            support.ui_utils.env.teardown()
+                            support.ui_utils.env.initiate_selenium_request()
+                            my_driver = support.ui_utils.env.my_driver()
+                            support.ui_utils.env.setup()
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')

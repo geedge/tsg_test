@@ -352,7 +352,7 @@ class CreateObject():
                 
             return object_ids, timeout_result
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
     
     # 获取返回结果中的objectsid
     def get_object_ids(self, response_dict, obj_type):

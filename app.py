@@ -92,7 +92,7 @@ def receive_parameter():
             elif tag == "general_ui":
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["sub_module_name"] = sub_module_name
-                print("to be added.")
+                sys.stdout.write("to be added.")
             elif tag == "app":
                 parameter["path"] = f"{project_path}/tests/app"
                 parameter["app_name"] = req_json.get("app_name")

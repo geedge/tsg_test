@@ -25,5 +25,5 @@ class EditObject():
             print("to be added")
             return 200
         except Exception as e:
-            print(e)
+            print(e, flush=True)
             return 400

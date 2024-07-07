@@ -10,7 +10,7 @@ from support.report import *
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"])
+        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -126,18 +126,18 @@ def run(parameter):
         analysis = AnalysisResult()
         result = analysis.analysis_result(test_data, cfg_list, verification_result)
         if len(result) == 0:
-            print("The test case is passed.")
+            print("The test case is passed.", flush=True)
         elif len(result) != 0:
-            print("The test case is failed. The failure reason is: ", result)
+            print("The test case is failed. The failure reason is: ", result, flush=True)
     
         # 删除配置
         erase = DeleteConfig()
         erase.delele_cfg(token, parameter, cfg_list)
         
-        print("Finish test case: " + parameter["test_case_name"])
+        print("Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e)
+        print("Error: ", e, flush=True)
         return "Error: " + str(e)
     finally:
         name_list = []

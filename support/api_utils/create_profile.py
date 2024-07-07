@@ -190,7 +190,7 @@ class CreateProfile():
                 sf_profile_id = response_dict["data"]["service_function"]["id"]
             return sf_profile_id
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
 
     # 用传入的sff数据替换模板中的数据
     def process_sff_post_data(self, sf_profile_id, sff_template_path, sff_post_data, vsys_id):
@@ -372,7 +372,7 @@ class CreateProfile():
             else:
                 print("to be added the other profile.")
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
     
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
         url = "{}/v1/policy/profile/{type}/{id}".format(api_host, type=profile_type, id=template_id)

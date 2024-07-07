@@ -37,7 +37,7 @@ class CreateProfile():
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_warningYes_posXpath"]).click()
             return 200,sc_info
         except Exception as e:
-            print(e)
+            print(e, flush=True)
             return 400
     def operate_sff_page(self, data,sc_info,sf_name_list,sff_profile_element_position):
         create_element_position = sff_profile_element_position["create"]

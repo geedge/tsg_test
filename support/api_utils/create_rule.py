@@ -279,7 +279,7 @@ class CreatePolicyRule():
             policy_id_list_temp.append(policy_id_dict_temp)
             return policy_id_list_temp
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
 
 if __name__ == '__main__':
     print("test")

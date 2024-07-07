@@ -125,13 +125,13 @@ class ProfilePublicFunc:
         """
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
         if vsys_name.lower() == current_vsys_name:
-            print(f"the current vsys: {current_vsys_name}")
+            # print(f"the current vsys: {current_vsys_name}")
             return 0
         else:    # 空为切换默认   剩下为指定切换
             if vsys_name == "":     # 空，切换到默认vsys
                 change_vsys_name = "UIAutoTestVsys"
                 if change_vsys_name.lower() == current_vsys_name:    # 如果默认系统和当前一直，也不用点击
-                    print(f"the current vsys: {current_vsys_name}")
+                    # print(f"the current vsys: {current_vsys_name}")
                     return 0
             else:     # 切换到指定vsys
                 change_vsys_name = vsys_name
@@ -146,7 +146,7 @@ class ProfilePublicFunc:
                     el_vsys_item.click()
                     break
             if flag_num == 0:
-                print(f"no vsys: {change_vsys_name}")
+                # print(f"no vsys: {change_vsys_name}")
                 raise ValueError(f"no vsys: {change_vsys_name}")
 
     def column_setting(self, mainPage_profileColumn_columnSetting_posId,listPage_profileColumn_button_columnAll_posId,
@@ -228,7 +228,7 @@ class ProfilePublicFunc:
         # Go to
         for _ in range(3):
             random_page = random.sample(range(1, pages+1), 1)[0]
-            print("random_page=", random_page)
+            # print("random_page=", random_page)
             self.driver.find_element(By.XPATH, "//span[text()='Go to']//input").send_keys(Keys.CONTROL + "a")
             self.driver.find_element(By.XPATH, "//span[text()='Go to']//input").send_keys(Keys.BACKSPACE)
             self.driver.find_element(By.XPATH, "//span[text()='Go to']//input").send_keys(random_page)
@@ -245,11 +245,11 @@ class ProfilePublicFunc:
             enview_pages = []
             if pages < 8:
                 random_page = random.sample(range(1, pages+1), 1)[0]
-                print("random_page=", random_page)
+                # print("random_page=", random_page)
                 self.driver.find_element(By.XPATH, f"//li[text()='{random_page}']").click()
             if pages >= 8:
                 for i in range(len(enview_pages_element)):
-                    print("1=", enview_pages_element[i].text)
+                    # print("1=", enview_pages_element[i].text)
                     if enview_pages_element[i].text != "":
                         enview_pages.append(enview_pages_element[i].text)
                 # print(enview_pages)
@@ -326,14 +326,14 @@ class ProfilePublicFunc:
         """校验数据是否只有查看权限"""
         # 校验当前数据是否为只能查看
         text_view = self.driver.find_element(By.ID, listPage_profile_profiles_editButton_posId).text.strip()
-        print("text_view=", text_view)
+        # print("text_view=", text_view)
         pytest_check.equal(self.driver.find_element(By.ID, listPage_profile_profiles_editButton_posId).text.strip(), "View", msg="所在行数{}".format(inspect.currentframe().f_lineno))
         # 校验删除按钮是否置灰
         text_del = self.driver.find_element(By.ID,
                                             listPage_profile_profiles_delButton_posId).get_attribute("class")
-        print("text_del=", text_del)
+        # print("text_del=", text_del)
         disabled_class = text_del.split(" ")[-1].strip()
-        print("disabled_class=", disabled_class)
+        # print("disabled_class=", disabled_class)
         pytest_check.equal(disabled_class, "is-disabled", msg="所在行数{}".format(inspect.currentframe().f_lineno))
         # 校验是否带锁
         self.driver.isElementExist("//i[@class='iconfont icon-lock']")
@@ -370,7 +370,7 @@ class ProfilePublicFunc:
             self.driver.find_element(By.XPATH, rule_application_search_posXpath).send_keys(Keys.ENTER)
             self.driver.find_element(By.XPATH, "//div[@class='AppList list-box']//div[@class='CommonListDetail list-detail']//ul[contains(@class, 'tableList')]/li[1]").click()
         # Action Parameters
-        print("actionParameters=", actionParameters)
+        # print("actionParameters=", actionParameters)
         if action == "Security_Deny":
             if application == "dns":
                 # 勾选Override Application Deny Action
@@ -484,7 +484,7 @@ class ProfilePublicFunc:
                     self.driver.find_element(By.XPATH, actionParameters[4]).send_keys(Keys.ENTER)
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH, "(//div[@class='select-search-option'])[6]/li")
-                    print("len(profile_results):", len(profile_results))
+                    # print("len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH, "(//div[@class='select-search-option'])[6]/li").text.strip(),
@@ -495,7 +495,7 @@ class ProfilePublicFunc:
                         # result = self.driver.find_element(By.XPATH, "(//div[@class='select-search-option'])[6]/li[2]").get_attribute("value")
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='Traffic Mirror Profile']/parent::div//input").get_attribute("value")
-                        print("result=", result)
+                        # print("result=", result)
                 elif actionParameters[0] == "SSL_Decryption_Keyring":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
@@ -503,7 +503,7 @@ class ProfilePublicFunc:
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH,
                                                                 "(//div[@class='select-search-option'])[6]/li")
-                    print("len(profile_results):", len(profile_results))
+                    # print("len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH,
@@ -513,14 +513,14 @@ class ProfilePublicFunc:
                     elif len(profile_results) > 1:
                         profile_results[1].click()   # 获取第一条profile [0]为No Data
                         result = self.driver.find_element(By.XPATH, f"//label[text()='{actionParameters[3]}']/parent::div//input").get_attribute("value")
-                        print("result=", result)
+                        # print("result=", result)
                 elif actionParameters[0] == "SSL_Decryption_Profile":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(Keys.ENTER)
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH, "(//div[@class='select-search-option'])[6]/li")
-                    print("len(profile_results):", len(profile_results))
+                    # print("len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH, "(//div[@class='select-search-option'])[6]/li").text.strip(),
@@ -530,7 +530,7 @@ class ProfilePublicFunc:
                         profile_results[1].click()  # 获取第一条profile [0]为No Data
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='Decryption Profile']/parent::div//input").get_attribute("value")
-                        print("result=", result)
+                        # print("result=", result)
                 elif actionParameters[0] == "TCP_Proxy_Profile":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
@@ -538,7 +538,7 @@ class ProfilePublicFunc:
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH,
                                                                 "(//div[@class='select-search-option'])[6]/li")
-                    print("len(profile_results):", len(profile_results))
+                    # print("len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH,
@@ -550,11 +550,11 @@ class ProfilePublicFunc:
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='TCP Proxy Profile']/parent::div//input").get_attribute(
                             "value")
-                        print("result=", result)
+                        # print("result=", result)
         time.sleep(2)
         # 保存策略
         if result =="No Data":
-           print("无可引用的文件,取消创建")
+        #    print("无可引用的文件,取消创建")
            self.driver.find_element(By.ID, rule_button_cancel_posId).click()
            if self.driver.find_element(By.CSS_SELECTOR, rule_button_warningSaveYes_posCss).is_displayed():
                self.driver.find_element(By.CSS_SELECTOR, rule_button_warningSaveYes_posCss).click()

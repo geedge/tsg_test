@@ -50,6 +50,6 @@ class EditRule():
             self.driver.find_element(By.ID, edit_button_position).click()
             return 200, rule_id
         except Exception as e:
-            print(e)
+            print(e, flush=True)
             traceback.print_exc()
             return 400, None

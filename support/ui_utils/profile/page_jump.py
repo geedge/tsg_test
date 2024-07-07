@@ -28,7 +28,7 @@ class PageJump():
 
     def change_vsys(self, vsys_name="", page_jump_element_position=""):
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
-        print(f"the current vsys: {current_vsys_name}")
+        # print(f"the current vsys: {current_vsys_name}")
         current_path = os.path.dirname(__file__)   # 当前文件目录
         temp_path = os.path.dirname(os.path.dirname(os.path.dirname(current_path)))
         conf_path = os.path.join(temp_path, "configuration_file.ini")
@@ -43,7 +43,7 @@ class PageJump():
             change_vsys_name = id_vsys_format
         else:     # 切换到指定vsys
             change_vsys_name = vsys_name
-        print(f"the change_vsys_name: {change_vsys_name}")
+        # print(f"the change_vsys_name: {change_vsys_name}")
         if change_vsys_name != current_vsys_name:
             self.driver.find_element(By.CSS_SELECTOR,page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
         self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
@@ -60,4 +60,4 @@ class PageJump():
                 #print(f"Change to vsys {current_vsys_name}")
                 break
         if flag_num == 0:
-            print(f"no vsys: {change_vsys_name}")
+            print(f"no vsys: {change_vsys_name}", flush=True)

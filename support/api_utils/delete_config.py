@@ -230,7 +230,7 @@ class DeleteConfig():
                         else:
                             print("Delete dns record failed.", flush=True)
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
     
     def clear_config(self, token, parameter, name_list):
         headers = {"Authorization": token}
@@ -394,7 +394,7 @@ class DeleteConfig():
             else:
                 print("No configuration needs to be deleted.", flush=True)
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
 
     def combine_delete_ids(self, template, list_data):
         temp_template = copy.deepcopy(template)
@@ -424,7 +424,7 @@ class DeleteConfig():
                 else:
                     print("Delete geolocation object failed.", flush=True)
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
             
 if __name__ == '__main__':
     print("test")

@@ -48,5 +48,5 @@ class GenerateRandomIP():
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
                         obj["item"][0]["item_value"] = new_two_ip
-        print("Config random ip for statistics and sc rule.")
+        print("Config random ip for statistics and sc rule.", flush=True)
         return data

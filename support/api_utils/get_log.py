@@ -228,7 +228,7 @@ class GetLog():
                         dimension_columns = \
                         test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
                     except Exception as e:
-                        print("Error: ", e)
+                        print("Error: ", e, flush=True)
                         dimension_columns = "no_dimensions"
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
                     return [333, "passthrough"]

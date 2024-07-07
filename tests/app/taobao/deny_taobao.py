@@ -9,7 +9,7 @@ from support.api_utils.analysis_result import *
 from support.app_utils.call_airtest import *
 
 def run(parameter):
-    print("Begin to run test case: " + parameter["test_case_name"])
+    print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         

@@ -167,7 +167,7 @@ class OrganizeConfig():
             result = response['data']['rules']
             return result
         except AssertionError as e:
-                print(f"AssertionError: {e}")
+                print(f"AssertionError: {e}", flush=True)
 
     def get_template_define(self, token, template_id, template_type, api_host, vsys_id):
         try:
@@ -180,7 +180,7 @@ class OrganizeConfig():
             result = response['data']['statistics_templates']
             return result
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
 
     def get_template_chart_metric_dimension(self, test_data):
         # 从Statistics Rule定义信息中获取流量验证所需数据格式

@@ -23,7 +23,7 @@ from support.traffic_replay.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-import support.ui_utils.env_initialization
+import support.ui_utils.env
 from support.api_utils.delete_config import *
 import traceback
 
@@ -31,16 +31,16 @@ from support.report import *
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"])
+        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         # 脚本启动时间
         start_time = time.time()
 
         # 环境初始化
-        support.ui_utils.env_initialization.initiate_selenium_request()
-        driver = support.ui_utils.env_initialization.my_driver()
-        support.ui_utils.env_initialization.setup()
+        support.ui_utils.env.initiate_selenium_request()
+        driver = support.ui_utils.env.my_driver()
+        support.ui_utils.env.setup()
 
         # 测试数据
         test_data = {
@@ -208,7 +208,7 @@ def run(parameter):
                     element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
-                        print("Create {} object successfully.".format(cond_key))
+                        print("Create {} object successfully.".format(cond_key), flush=True)
                     else:
                         result = "Fail to create {} object.".format(cond_key)
                         cond_status = 1
@@ -229,7 +229,7 @@ def run(parameter):
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
                 create_statistics_template_code = cond_code
                 if cond_code == 200:
-                    print("Create {} Profile successfully.".format("statistics_template"))
+                    print("Create {} Profile successfully.".format("statistics_template"), flush=True)
                 else:
                     result = "Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
@@ -244,7 +244,7 @@ def run(parameter):
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print("Create security rule successfully.")
+                print("Create security rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
@@ -276,9 +276,9 @@ def run(parameter):
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
             if len(result) == 0:
-                print("The test case is passed.")
+                print("The test case is passed.", flush=True)
             elif len(result) != 0:
-                print("The test case is failed. The failure reason is: ", result)
+                print("The test case is failed. The failure reason is: ", result, flush=True)
         # 避免报错：stale element not found
         time.sleep(5)
         # 删除rule
@@ -292,7 +292,7 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete Statistics rule successfully.")
+                    print("Delete Statistics rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
@@ -314,7 +314,7 @@ def run(parameter):
                             delete_prfi = DeleteProfile(driver)
                             delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
                             if delete_prfi_code == 200:
-                                print("Delete {} profile successfully.".format(prfi_key_out))
+                                print("Delete {} profile successfully.".format(prfi_key_out), flush=True)
                             else:
                                 result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
                                 break
@@ -344,7 +344,7 @@ def run(parameter):
                             delete_cond = DeleteObject(driver)
                             delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                             if delete_cond_code == 200:
-                                print("Delete {} object successfully.".format(cond_key))
+                                print("Delete {} object successfully.".format(cond_key), flush=True)
                             else:
                                 result = result + " In addition, fail to delete {} object.".format(cond_key)
                                 break
@@ -360,17 +360,17 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", duration)
+        print("Duration of running the test case: ", duration, flush=True)
 
-        print("Finish test case: " + parameter["test_case_name"])
+        print("Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e)
+        print("Error: ", e, flush=True)
         traceback.print_exc()
         return "Error: " + str(e)
     finally:
         # 清理环境
-        support.ui_utils.env_initialization.teardown()
+        support.ui_utils.env.teardown()
         # 删除配置
         erase = DeleteConfig()
         erase.clear_config(token, parameter, name_list)
