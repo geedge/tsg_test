@@ -80,7 +80,6 @@ class TrafficVerification():
                 output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
             print("Start to verify the effect of the policy rule.", flush=True)
             cmd_return = output
-            # print(output)
             
             expected_return = test_data["expected_return"]
             cmd_result = self.is_in(cmd_return, expected_return, debug_flag)
@@ -89,7 +88,7 @@ class TrafficVerification():
             is_counters, is_log_query = self.is_verify(test_data, loop_num, 'counters', 'log_query_param')
             
             log_result, metric_result = None, None
-            if is_log == 1:
+            if int(is_log) == 1:
                 if is_log_query == 1 or is_counters == 1:
                     for i in range(50):
                         print("Get log and metric for the {} time.".format(i+1), flush=True)
