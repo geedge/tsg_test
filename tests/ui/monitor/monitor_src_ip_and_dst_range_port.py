@@ -251,9 +251,9 @@ def run(parameter):
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
-                print("Create security rule successfully.", flush=True)
+                print("Create monitor rule successfully.", flush=True)
             elif create_rule_code != 200:
-                result = "Fail to create security rule."
+                result = "Fail to create monitor rule."
 
         #触发流量验证
         if create_rule_code == 200:

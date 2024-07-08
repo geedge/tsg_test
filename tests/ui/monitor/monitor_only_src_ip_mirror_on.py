@@ -214,9 +214,9 @@ def run(parameter):
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
-                print("Create security rule successfully.", flush=True)
+                print("Create monitor rule successfully.", flush=True)
             elif create_rule_code != 200:
-                result = "Fail to create security rule."
+                result = "Fail to create monitor rule."
 
         # 触发流量验证
         if create_rule_code == 200:
@@ -252,11 +252,11 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete security rule successfully.", flush=True)
+                    print("Delete monitor rule successfully.", flush=True)
                 elif delete_rule_code != 200:
-                    result = result + " In addition, fail to delete security rule."
+                    result = result + " In addition, fail to delete monitor rule."
             else:
-                result = result + " In addition, fail to search security rule."
+                result = result + " In addition, fail to search monitor rule."
 
         # 删除object
         if delete_rule_code == 200:

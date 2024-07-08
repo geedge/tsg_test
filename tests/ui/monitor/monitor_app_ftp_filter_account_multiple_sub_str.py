@@ -191,7 +191,9 @@ def run(parameter):
                     "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
                     "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
                     "objectPage_okButton_posId": accountObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath
+                    "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath,
+                    "ObjectPage_sameItem_addItem_posXpath": urlObjectPage_sameItem_addItem_posXpath,
+                    "ObjectPage_sameItem_inputItem_posXpath": urlObjectPage_sameItem_inputItem_posXpath,
                 },
                 "search": {
                     "objectListPage_searchLabel_posId": accountObjectPage_searchLabel_posId,
@@ -294,7 +296,7 @@ def run(parameter):
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
-                print("Create security rule successfully.", flush=True)
+                print("Create monitor rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create monitor rule."
 
@@ -332,7 +334,7 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete security rule successfully.", flush=True)
+                    print("Delete monitor rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete monitor rule."
             else:

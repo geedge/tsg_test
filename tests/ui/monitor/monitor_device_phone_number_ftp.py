@@ -275,7 +275,7 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete security rule successfully.", flush=True)
+                    print("Delete monitor rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete monitor rule."
             else:

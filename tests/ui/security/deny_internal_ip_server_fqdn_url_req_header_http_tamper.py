@@ -40,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_server_fqdn_url_req_header_http_reset",
+            "rule_name": "security_rule_deny_internal_ip_server_fqdn_url_req_header_http_tamper",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -157,7 +157,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_server_fqdn_http_block_403_text"
+                "name": "security_rule_deny_internal_ip_server_fqdn_url_req_header_http_tamper"
             },
             {
                 "type": "ip",

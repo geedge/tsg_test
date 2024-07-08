@@ -36,7 +36,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_server_fqdn_http_drop",
+            "rule_name": "security_rule_deny_internal_ip_server_fqdn_http_default",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -121,7 +121,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_server_fqdn_http_drop"
+                "name": "security_rule_deny_internal_ip_server_fqdn_http_default"
             },
             {
                 "type": "ip",

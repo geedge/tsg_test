@@ -40,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_allow_src_range_port_drop",
+            "rule_name": "security_rule_allow_src_range_port",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -99,11 +99,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_src_range_port_drop"
+                "name": "security_rule_allow_src_range_port"
             },
             {
                 "type": "port",
-                "name": "security_internal_port"
+                "name": "security_src_port"
             }
         ]
         
