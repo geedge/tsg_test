@@ -40,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_shunt_external_ip_server_fqdn_http",
+            "rule_name": "security_rule_deny_source_ip_ssl_no_sni_true_rate_low",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -116,15 +116,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_shunt_external_ip_server_fqdn_http"
+                "name": "security_rule_deny_source_ip_ssl_no_sni_true_rate_low"
             },
             {
                 "type": "ip",
                 "name": "security_external_ip"
-            },
-            {
-                "type": "fqdn",
-                "name": "test_example"
             }
         ]
         

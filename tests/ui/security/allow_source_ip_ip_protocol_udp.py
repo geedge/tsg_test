@@ -40,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_allow_source_ip_ip_protocol_tcp",
+            "rule_name": "security_rule_allow_source_ip_ip_protocol_udp",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -102,7 +102,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_source_ip_ip_protocol_tcp"
+                "name": "security_rule_allow_source_ip_ip_protocol_udp"
             },
             {
                 "type": "ip",

@@ -40,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_shunt_external_ip_server_fqdn_http",
+            "rule_name": "security_rule_deny_source_ip_ssl_no_sni_false_rate_high",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -100,7 +100,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "POST",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [],
+            "log_query_param_1": [{"query_field_key":"server_port", "query_value": "1443"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 https://open.node.com:1443"
@@ -116,15 +116,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_shunt_external_ip_server_fqdn_http"
+                "name": "security_rule_deny_source_ip_ssl_no_sni_false_rate_high"
             },
             {
                 "type": "ip",
                 "name": "security_external_ip"
-            },
-            {
-                "type": "fqdn",
-                "name": "test_example"
             }
         ]
         

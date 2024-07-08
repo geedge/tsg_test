@@ -40,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_external_ip",
+            "rule_name": "security_rule_deny_external_ip_drop",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -106,7 +106,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_external_ip"
+                "name": "security_rule_deny_external_ip_drop"
             },
             {
                 "type": "ip",
