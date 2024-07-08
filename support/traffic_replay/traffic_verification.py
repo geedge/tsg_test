@@ -444,6 +444,7 @@ class TrafficVerification():
             return jsonData
         else:
             type = data.get("type")
+            print("Begin to send traffic for effect verification.", flush=True)
             if type == "curl" or type == "wget" or type == "nslookup":
                 print("Execute {} operation.".format(type), flush=True)
                 command = data.get("command")
