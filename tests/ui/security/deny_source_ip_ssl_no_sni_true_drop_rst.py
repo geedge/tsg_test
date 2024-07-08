@@ -100,7 +100,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "SSL_ERROR_SYSCALL",
             "counters_1": {"hits": 1},
             "log_query_param_1": [],
             "traffic": {
@@ -331,6 +331,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
+        "debug_flag": "local",
         "env": "tsgx",
         "vsys_id": 11,
         "is_log": 1,

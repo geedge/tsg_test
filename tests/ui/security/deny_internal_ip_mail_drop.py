@@ -94,7 +94,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "SSL_ERROR_SYSCALL",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"decoded_as", "query_value": "MAIL"}],
             "traffic": {
