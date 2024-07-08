@@ -50,6 +50,10 @@ def receive_parameter():
                 "api_server": "",
                 "test_pc_ip": "",
                 "test_subcriber_id": "",
+                "test_imsi": "",
+                "test_phone_number": "",
+                "test_imei": "",
+                "test_apn": "",
                 "script_type": "",
                 "root_path": "",
                 "path": "",
@@ -86,6 +90,8 @@ def receive_parameter():
             elif tag == "ui":
                 parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_ui_with_traffic")
                 parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
+                parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
+                parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
                 parameter["is_log"] = parse.get("is_log", "ui")
