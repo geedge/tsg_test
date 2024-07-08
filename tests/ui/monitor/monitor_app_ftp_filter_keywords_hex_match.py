@@ -293,7 +293,7 @@ def run(parameter):
                 create_content_code = create_content.create(protocol_field_data[x],
                                                             test_keywords_object_element_position)
                 if create_content_code == 200:
-                    print("Create content object successfully.")
+                    print("Create content object successfully.", flush=True)
                 elif create_content_code != 200:
                     result = "Fail to create url."
                     break
