@@ -95,8 +95,8 @@ def run(parameter):
                         "profile_type": "replace",
                         "regex": "on",
                         "search_in": "HTTP Response Body",
-                        "find": r'src="\S*\.jpg"',
-                        "replace_with": '"https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"'
+                        "find": r'content="\S*\.jpg"',
+                        "replace_with": 'content="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"'
                     }
                 ]
             },

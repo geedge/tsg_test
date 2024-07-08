@@ -92,14 +92,14 @@ def run(parameter):
                     {
                         "profile_type": "edit_element",
                         "search_scope": "inside_element",
-                        "start_indicator": "excerpt",
-                        "contained_keyword": "development",
+                        "start_indicator": "widget-title",
+                        "contained_keyword": "Copyright",
                         "distance_from_anchor": "0",
                         "treatment": "remove"
                     }
                 ]
             },
-            "expected_return": "need_filter",
+            "expected_return": "CN=TSG",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "ww.python.org"}],
             "traffic": {

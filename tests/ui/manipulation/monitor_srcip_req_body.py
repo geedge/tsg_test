@@ -92,7 +92,7 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "test_request_body",
+            "expected_return": "test_request_body,CN=TSG",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "192.168.40.206:1443"}],
             "traffic": {

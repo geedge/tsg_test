@@ -99,7 +99,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "need_filter",
+            "expected_return": "CN=TSG",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "ww.python.org"}],
             "traffic": {

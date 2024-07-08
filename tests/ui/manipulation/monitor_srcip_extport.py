@@ -86,7 +86,7 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "关于百度",
+            "expected_return": "关于百度,CN=TSG",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {

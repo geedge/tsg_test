@@ -101,7 +101,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "test_case_javascript",
+            "expected_return": "background:Gray,CN=TSG",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {

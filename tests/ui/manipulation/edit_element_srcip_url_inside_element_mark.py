@@ -92,8 +92,8 @@ def run(parameter):
                     {
                         "profile_type": "edit_element",
                         "search_scope": "inside_element",
-                        "start_indicator": "excerpt",
-                        "contained_keyword": "development",
+                        "start_indicator": "widget-title",
+                        "contained_keyword": "Copyright",
                         "distance_from_anchor": "0",
                         "treatment": "mark"
                     }

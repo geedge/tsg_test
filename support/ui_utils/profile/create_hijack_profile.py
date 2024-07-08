@@ -49,7 +49,7 @@ class CreateHijackProfile():
         if file_type != no_modify:    #修改时不用修改数据直接跳过
             #点击type添加按钮
             self.driver.find_element(By.XPATH, hijackFiles_button_fileType_posXpath).click()
-            element_type_replace_name = {'gif': 'image/gif', 'jpeg': 'image/jpeg', 'png': 'image/png', 'svg+xml': 'image/svg+xml',
+            element_type_replace_name = {'gif': 'image/gif', 'jpeg': 'image/jpeg', 'png': 'image/png', 'svg+xml': 'image/svg+xml', 'svg': 'image/svg+xml',
                                          'exe': 'application/x-msdos-program', 'apk': 'application/vnd.android.package-archive', 'html': 'text/html'}
             if file_type not in element_type_replace_name.keys():
                 #raise f"文件类型错误。用例数据类型为：{file_type}, 可选择文件类型为：{list(element_type_replace_name.keys())}"

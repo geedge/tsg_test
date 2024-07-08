@@ -86,7 +86,7 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "RequestBody",
+            "expected_return": "RequestBody,CN=TSG",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "192.168.40.206:1443"}],
             "traffic": {
