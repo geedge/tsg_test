@@ -18,7 +18,7 @@ from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 import support.ui_utils.env
-
+from support.report import *
 
 def run(parameter):
     try:
@@ -64,7 +64,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "imsi",
-                                "item_value": "$110035141486424",
+                                "item_value": '$' + parameter['test_imsi'],
                             }
                         ]
                     }
@@ -292,6 +292,20 @@ def run(parameter):
         # 删除配置
         delete = DeletePolicy()
         delete.delete_policy_by_name(token, parameter, name_list)
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):  
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "Pass"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
         
 if __name__ == '__main__':
     parameter = {

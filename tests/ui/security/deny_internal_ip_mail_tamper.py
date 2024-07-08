@@ -58,7 +58,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.91",
+                                "item_value": parameter['test_pc_ip'],
                             }
                         ]
                     }
@@ -93,7 +93,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
+            "log_query_param_1": [{"query_field_key":"decoded_as", "query_value": "MAIL"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/opt/test/automation/scripts/mailTestFile/mailMessage/subjectEnglish.txt' --user 'hbn@163.com:111111'"

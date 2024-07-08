@@ -58,7 +58,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.64.91",
+                                "item_value": parameter['test_pc_ip'],
                             }
                         ]
                     }
@@ -96,7 +96,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
+            "log_query_param_1": [{"query_field_key":"security_action", "query_value": "Deny"}],
             "traffic": {
                 "type": "nslookup",
                 "command": "nslookup www.facebook.com -timeout=1 8.8.8.8"

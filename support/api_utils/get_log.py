@@ -19,7 +19,7 @@ class GetLog():
         log_schema = ",".join([field['name'] for field in log_schema])
         return log_schema
 
-    def get_log_by_condition(self, token, rule_num, start_time, end_time, test_pc_ip, create_policies_ids, test_data,
+    def get_log_by_condition(self, token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data,
                              api_host, vsys_id, script_type):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         log_condition = {
@@ -76,7 +76,7 @@ class GetLog():
             # 加script_type判断条件的原因是：ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0][
                 "attribute_name"] == "ATTR_SUBSCRIBER_ID":
-                log_filter = f"subscriber_id='test6488' AND has({log_query_rule_type},{policy_id})"
+                log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
                 log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type},{policy_id})"

@@ -83,7 +83,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "新闻",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"client_ip", "query_value": "192.168.64.91"}],
+            "log_query_param_1": [{"query_field_key":"security_action", "query_value": "Allow"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 20 -m 20 http://www.news.cn/"
