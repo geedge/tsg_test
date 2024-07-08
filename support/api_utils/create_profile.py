@@ -183,14 +183,14 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type))
+                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type))
+                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 sf_profile_id = response_dict["data"]["service_function"]["id"]
             return sf_profile_id
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
 
     # 用传入的sff数据替换模板中的数据
     def process_sff_post_data(self, sf_profile_id, sff_template_path, sff_post_data, vsys_id):
@@ -243,9 +243,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type))
+                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type))
+                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 # 处理返回数据，提取id
                 #print(response_dict)
@@ -271,9 +271,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type))
+                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type))
+                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 sff_id = response_dict["data"]["service_function_forwarder"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -291,9 +291,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type))
+                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type))
+                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["response_page"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -309,9 +309,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type))
+                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type))
+                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["hijack_file"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -327,9 +327,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type))
+                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type))
+                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["insert_script"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -345,9 +345,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type))
+                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type))
+                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["run_script"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -361,9 +361,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type))
+                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type))
+                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["dns_record"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -372,7 +372,7 @@ class CreateProfile():
             else:
                 print("to be added the other profile.")
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
     
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
         url = "{}/v1/policy/profile/{type}/{id}".format(api_host, type=profile_type, id=template_id)

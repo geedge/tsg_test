@@ -6,11 +6,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.general_ui_utils.object.ip_address import IpAddress
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.object.page_jump import PageJump
-import support.ui_utils.env_initialization
+import support.ui_utils.env
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"])
+        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -18,9 +18,9 @@ def run(parameter):
         start_time = time.time()
         
         # 环境初始化
-        support.ui_utils.env_initialization.initiate_selenium_request()
-        driver = support.ui_utils.env_initialization.my_driver()
-        support.ui_utils.env_initialization.setup()
+        support.ui_utils.env.initiate_selenium_request()
+        driver = support.ui_utils.env.my_driver()
+        support.ui_utils.env.setup()
         
         # vsys页面跳转
         page_jump_element_position = {
@@ -64,16 +64,16 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", duration)
+        print("Duration of running the test case: ", duration, flush=True)
         
-        print("Finish test case: " + parameter["test_case_name"])
+        print("Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e)
+        print("Error: ", e, flush=True)
         return "Error: " + str(e)
     finally:
         # 清理环境
-        support.ui_utils.env_initialization.teardown()
+        support.ui_utils.env.teardown()
 
 if __name__ == '__main__':
     parameter = {

@@ -23,7 +23,7 @@ class DeleteObject():
             time.sleep(3)
             return 200
         except Exception as e:
-            print(e)
+            print(e, flush=True)
             return 400
 
     def select_lock_and_referenceCount(self, rows, islock=False, referenceCount=0):

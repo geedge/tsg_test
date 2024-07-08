@@ -23,15 +23,15 @@ from support.traffic_replay.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-import support.ui_utils.env_initialization
-from support.api_utils.delete_config import *
+import support.ui_utils.env
+from support.api_utils.delete_policy import *
 import traceback
 
 from support.report import *
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"])
+        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -39,9 +39,9 @@ def run(parameter):
         start_time = time.time()
 
         # 环境初始化
-        support.ui_utils.env_initialization.initiate_selenium_request()
-        driver = support.ui_utils.env_initialization.my_driver()
-        support.ui_utils.env_initialization.setup()
+        support.ui_utils.env.initiate_selenium_request()
+        driver = support.ui_utils.env.my_driver()
+        support.ui_utils.env.setup()
 
         # 测试数据
         test_data = {
@@ -374,10 +374,10 @@ def run(parameter):
         return "!!!Error: " + str(e)
     finally:
         # 清理环境
-        support.ui_utils.env_initialization.teardown()
+        support.ui_utils.env.teardown()
         # 删除配置
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
+        delete = DeletePolicy()
+        delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
@@ -387,7 +387,7 @@ def run(parameter):
                 if False in verification_result:
                     result_flag = "Fail"
                 else:
-                    result_flag = "PASS"
+                    result_flag = "Pass"
                 report_data.append(result_flag)
                 report_data.append(result)
                 new_report = GenerateReport()

@@ -74,7 +74,7 @@ class CreateProfile():
             element_position_map = get_profile_element_position("statistics_template")
             cond_code = create_statistics_template.create(statistics_template, element_position_map)
             if cond_code == 200:
-                print("Create {} Profile successfully.".format("statistics_template"))
+                print("Create {} Profile successfully.".format("statistics_template"), flush=True)
             else:
                 result = "Fail to create {} Profile.".format("statistics_template")
                 cond_status = 1

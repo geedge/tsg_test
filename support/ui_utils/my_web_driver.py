@@ -48,7 +48,7 @@ class MyWebDriver(webdriver.Remote):
         search_time = round(search_time, 1)
         # print(f"{caller_filename}. {caller_lineno} line. find element:{value}. find method: {by}. find take time:{search_time} second.")
         if throw_assert == 1:
-            print(assert_info)
+            print(assert_info, flush=True)
             raise
         return self.element
 
@@ -65,7 +65,7 @@ class MyWebDriver(webdriver.Remote):
                 caller_filename = caller_info.filename
                 caller_line_number = caller_info.frame
                 caller_code_context = caller_info.code_context
-                print(caller_filename, caller_line_number, caller_code_context)
+                print(caller_filename, caller_line_number, caller_code_context, flush=True)
                 #print(f"find method:{by};-->>", f"find element:{value}\n")
                 throw_assert = 1
                 assert_info = traceback.format_exc()
@@ -75,7 +75,7 @@ class MyWebDriver(webdriver.Remote):
                 throw_assert = 0
                 break   #找到则退出循环
         if throw_assert == 1:
-            print(assert_info)
+            print(assert_info, flush=True)
             raise
         return self.element
 

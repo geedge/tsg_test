@@ -52,7 +52,7 @@ def my_driver():
     )
     # driver.implicitly_wait(2)
     driver.maximize_window()
-    print("Web Driver has been initialized successfully.")
+    print("Web Driver has been initialized successfully.", flush=True)
     return driver
 
 def read_config(url, value):
@@ -72,13 +72,13 @@ def teardown():
     global driver
     if driver:
         driver.quit()
-        print("Web Driver has been closed successfully.")
+        print("Web Driver has been closed successfully.", flush=True)
         time.sleep(1)
         
 def initiate_selenium_request():
     for i in range(5):
         try:
-            print("Run Selenium Server for the {} time.".format(i+1))
+            print("Run Selenium Server for the {} time.".format(i+1), flush=True)
             os_name = platform.system()
             if os_name == "Linux":
                 remote_url = get_docker_ip()
@@ -88,12 +88,12 @@ def initiate_selenium_request():
             if len(response.text) != 0:
                 break
         except:
-            print("Fail to start selenium server.")
+            print("Fail to start selenium server.", flush=True)
 
 def get_docker_ip():
     interfaces = psutil.net_if_addrs()
-    if "eth0" in interfaces:
-        for addr in interfaces["eth0"]:
+    if "docker0" in interfaces:
+        for addr in interfaces["docker0"]:
             if addr.family == 2:
                 docker_ip = addr.address
                 remote_url = "http://" + docker_ip + ":4444"

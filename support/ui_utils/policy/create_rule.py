@@ -424,7 +424,7 @@ class CreateRule():
                                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfileDorpItem_posXpath"]).click()
                         #
                     elif test_data["rule_action"] == "redirect":
-                        print(test_data["condition"]["application"][0]["name"].lower().strip())
+                        # print(test_data["condition"]["application"][0]["name"].lower().strip())
                         if test_data["condition"]["application"][0]["name"].lower().strip() == "http":
                             response_code = test_data["action_parameter"]["redirect_url"][0]["response_code"]
                             response_code_drop_position = create_element_position["policyRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath"].format(replace_code=response_code)
@@ -497,7 +497,7 @@ class CreateRule():
                         treatment =  test_data["action_parameter"]["edit_element_parameter"][0]["treatment"].lower()
                         # search scope 操作
                         if search_scope == "whole_file":
-                            print(create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"])
+                            # print(create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"]).click()
                         else:    # inside_element
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSearchScopeInsideElementRadio_posXpath"]).click()
@@ -565,7 +565,7 @@ class CreateRule():
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
-            print(e)
+            print(e, flush=True)
             traceback.print_exc()
             return 400, None
         

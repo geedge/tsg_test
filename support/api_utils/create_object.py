@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
 import json
-from support.api_utils.delete_config import DeleteConfig
+from support.api_utils.delete_policy import *
 from datetime import datetime
 
 class CreateObject():
@@ -88,8 +88,8 @@ class CreateObject():
                             if obj_template_dict["object"]["type"] == "url" and len(self.url_ids) > 0:
                                 create_url_ids.extend(self.url_ids)
                                 cfg_list["create_url_ids"] = create_url_ids
-                            erase = DeleteConfig()
-                            erase.delele_cfg(token, parameter, cfg_list)
+                            delete = DeletePolicy()
+                            delete.delele_policy_by_cfg(token, parameter, cfg_list)
         
         return timeout_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, self.geo_name_ids
     
@@ -279,15 +279,15 @@ class CreateObject():
                 response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Create {} object successfully.".format(obj_template_dict['object']['type']))
+                    print("Create {} object successfully.".format(obj_template_dict['object']['type']), flush=True)
                 else:
-                    print("Create {} object failed.".format(obj_template_dict['object']['type']))
+                    print("Create {} object failed.".format(obj_template_dict['object']['type']), flush=True)
                 time2 = datetime.now()
                 time_difference = time2 - time1
                 time_difference = time_difference.total_seconds()
                 if time_difference > 60:
                     timeout_result = False
-                    print("Creating {} object takes too long.".format(obj_template_dict['object']['type']))
+                    print("Creating {} object takes too long.".format(obj_template_dict['object']['type']), flush=True)
                 else:
                     timeout_result = True
             elif type == "import":
@@ -297,9 +297,9 @@ class CreateObject():
                 response = requests.post(import_url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file_dry"], verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Verify the imported {} object successfully.".format(obj_template_dict['object']['type']))
+                    print("Verify the imported {} object successfully.".format(obj_template_dict['object']['type']), flush=True)
                 else:
-                    print("Verify the imported {} object failed.".format(obj_template_dict['object']['type']))
+                    print("Verify the imported {} object failed.".format(obj_template_dict['object']['type']), flush=True)
                 time1 = datetime.now()
                 url = api_host + "/v1/policy/object/import"
                 response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file_import"], verify=False)
@@ -309,12 +309,12 @@ class CreateObject():
                 time_difference = time_difference.total_seconds()
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Import {} object successfully.".format(obj_template_dict['object']['type']))
+                    print("Import {} object successfully.".format(obj_template_dict['object']['type']), flush=True)
                 else:
-                    print("Import {} object failed.".format(obj_template_dict['object']['type']))
+                    print("Import {} object failed.".format(obj_template_dict['object']['type']), flush=True)
                 if time_difference > 180:
                     timeout_result = False
-                    print("Importing {} object takes too long.".format(obj_template_dict['object']['type']))
+                    print("Importing {} object takes too long.".format(obj_template_dict['object']['type']), flush=True)
                 else:
                     timeout_result = True
             
@@ -352,7 +352,7 @@ class CreateObject():
                 
             return object_ids, timeout_result
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
     
     # 获取返回结果中的objectsid
     def get_object_ids(self, response_dict, obj_type):

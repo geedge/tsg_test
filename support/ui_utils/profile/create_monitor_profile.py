@@ -59,7 +59,7 @@ class CreateProfile():
             #         return 999
             return 200
         except Exception as e:
-            print("Error: ", e)
+            print("Error: ", e, flush=True)
             traceback.print_exc()
             print(str(e))
             return 400

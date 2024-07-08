@@ -2,15 +2,15 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
-from support.api_utils.create_config import *
+from support.api_utils.create_policy import *
 from support.traffic_replay.traffic_verification import *
-from support.api_utils.delete_config import *
+from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.report import *
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"])
+        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
             
@@ -102,41 +102,41 @@ def run(parameter):
         test_data["token"] = token
         
         # 创建Object、Profile、Rule
-        config = CreateConfig()
-        cfg_list = config.create_cfg(parameter, test_data, template_path)
+        create = CreatePolicy()
+        cfg_list = create.create_policy(parameter, test_data, template_path)
         
         # 流量验证
         verify = TrafficVerification()
         verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
-        print("verification result: ", verification_result)
+        print("verification result: ", verification_result, flush=True)
         
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()
         result = analysis.analysis_result(test_data, cfg_list, verification_result)
         if len(result) == 0:
-            print("The test case is passed.")
+            print("The test case is passed.", flush=True)
         elif len(result) != 0:
-            print("The test case is failed. The failure reason is: ", result)
+            print("The test case is failed. The failure reason is: ", result, flush=True)
         # 删除配置
-        erase = DeleteConfig()
-        erase.delele_cfg(token, parameter, cfg_list)
+        delete = DeletePolicy()
+        delete.delele_policy_by_cfg(token, parameter, cfg_list)
 
-        print("Finish test case: " + parameter["test_case_name"])
+        print("Finish test case: " + parameter["test_case_name"], flush=True)
         
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", duration)
+        print("Duration of running the test case: ", duration, flush=True)
             
-        print("Finish test case: " + parameter["test_case_name"])
+        print("Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e)
+        print("Error: ", e, flush=True)
         return "Error: " + str(e)
     finally:
       name_list = []
-      erase = DeleteConfig()
-      erase.clear_config(token, parameter, name_list)
+      delete = DeletePolicy()
+      delete.delete_policy_by_name(token, parameter, name_list)
       # 生成csv报告
       file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
       if os.path.exists(file_path) and os.path.isfile(file_path):  
@@ -146,7 +146,7 @@ def run(parameter):
           if False in verification_result:
               result_flag = "Fail"
           else:
-              result_flag = "PASS"
+              result_flag = "Pass"
           report_data.append(result_flag)
           report_data.append(result)
           new_report = GenerateReport()

@@ -16,14 +16,14 @@ from support.ui_utils.element_position.object_element_position import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.api_utils.delete_config import *
-import support.ui_utils.env_initialization
+from support.api_utils.delete_policy import *
+import support.ui_utils.env
 
 from support.report import *
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"])
+        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -31,16 +31,16 @@ def run(parameter):
         start_time = time.time()
         
         # 环境初始化
-        support.ui_utils.env_initialization.initiate_selenium_request()
-        driver = support.ui_utils.env_initialization.my_driver()
-        support.ui_utils.env_initialization.setup()
+        support.ui_utils.env.initiate_selenium_request()
+        driver = support.ui_utils.env.my_driver()
+        support.ui_utils.env.setup()
         
         # 测试数据
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_shunt_external_ip_server_fqdn_http",
+            "rule_name": "security_rule_deny_source_ip_ssl_no_sni_true_rate_low",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -116,15 +116,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_shunt_external_ip_server_fqdn_http"
+                "name": "security_rule_deny_source_ip_ssl_no_sni_true_rate_low"
             },
             {
                 "type": "ip",
                 "name": "security_external_ip"
-            },
-            {
-                "type": "fqdn",
-                "name": "test_example"
             }
         ]
         
@@ -223,7 +219,7 @@ def run(parameter):
             for i in range(len(ip_data)):
                 create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
                 if create_ip_code == 200:
-                    print("Create ip object successfully.")
+                    print("Create ip object successfully.", flush=True)
                 elif create_ip_code != 200:
                     result = "Fail to create ip."
                     break
@@ -233,7 +229,7 @@ def run(parameter):
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
-                print("Create security rule successfully.")
+                print("Create security rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
             
@@ -256,9 +252,9 @@ def run(parameter):
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
             if len(result) == 0:
-                print("The test case is passed.")
+                print("The test case is passed.", flush=True)
             elif len(result) != 0:
-                print("The test case is failed. The failure reason is: ", result)
+                print("The test case is failed. The failure reason is: ", result, flush=True)
         
         # 删除rule
         if create_rule_code == 200:
@@ -268,7 +264,7 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete security rule successfully.")
+                    print("Delete security rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete security rule."
             else:
@@ -284,7 +280,7 @@ def run(parameter):
                     delete_ip = DeleteObject(driver)
                     delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
                     if delete_ip_code == 200:
-                        print("Delete ip object successfully.")
+                        print("Delete ip object successfully.", flush=True)
                     elif delete_ip_code != 200:
                         result = result + " In addition, fail to delete ip object."
                         break
@@ -295,19 +291,19 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", duration)
+        print("Duration of running the test case: ", duration, flush=True)
         
-        print("Finish test case: " + parameter["test_case_name"])
+        print("Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e)
+        print("Error: ", e, flush=True)
         return "Error: " + str(e)
     finally:
         # 清理环境
-        support.ui_utils.env_initialization.teardown()
+        support.ui_utils.env.teardown()
         # 删除配置
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
+        delete = DeletePolicy()
+        delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
@@ -317,7 +313,7 @@ def run(parameter):
                 if False in verification_result:
                     result_flag = "Fail"
                 else:
-                    result_flag = "PASS"
+                    result_flag = "Pass"
                 report_data.append(result_flag)
                 report_data.append(result)
                 new_report = GenerateReport()

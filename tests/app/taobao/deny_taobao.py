@@ -2,14 +2,14 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
-from support.api_utils.create_config import *
+from support.api_utils.create_policy import *
 from support.traffic_replay.traffic_verification import *
-from support.api_utils.delete_config import *
+from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.app_utils.call_airtest import *
 
 def run(parameter):
-    print("Begin to run test case: " + parameter["test_case_name"])
+    print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -72,9 +72,9 @@ def run(parameter):
     parameter["token"] = token
     
     # 创建Object、Profile、Rule
-    config = CreateConfig()
+    create = CreatePolicy()
     template_path = {}
-    cfg_list = config.create_cfg(parameter, test_data_json, template_path)
+    cfg_list = create.create_policy(parameter, test_data_json, template_path)
     
     result = call_airtest.run_airtest_script(device_id, parameter["app_name"])
     if result == 0:
@@ -88,8 +88,8 @@ def run(parameter):
         print("analysis result: ", result)
    
     # 删除配置
-    erase = DeleteConfig()
-    erase.delele_cfg(token, parameter, cfg_list)
+    delete = DeletePolicy()
+    delete.delele_policy_by_cfg(token, parameter, cfg_list)
             
 if __name__ == '__main__':
     parameter = {

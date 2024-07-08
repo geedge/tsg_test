@@ -16,13 +16,13 @@ from support.ui_utils.element_position.object_element_position import *
 from support.traffic_replay.traffic_verification import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.api_utils.delete_config import *
-import support.ui_utils.env_initialization
-
+from support.api_utils.delete_policy import *
+import support.ui_utils.env
+from support.report import *
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"])
+        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -30,9 +30,9 @@ def run(parameter):
         start_time = time.time()
         
         # 环境初始化
-        support.ui_utils.env_initialization.initiate_selenium_request()
-        driver = support.ui_utils.env_initialization.my_driver()
-        support.ui_utils.env_initialization.setup()
+        support.ui_utils.env.initiate_selenium_request()
+        driver = support.ui_utils.env.my_driver()
+        support.ui_utils.env.setup()
         
         # 测试数据
         test_data = {
@@ -64,7 +64,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "phone_number",
-                                "item_value": "$523335886424",
+                                "item_value": '$' + parameter['test_phone_number'],
                             }
                         ]
                     }
@@ -113,7 +113,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "SSL_ERROR_SYSCALL",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
             "traffic": {
@@ -272,7 +272,7 @@ def run(parameter):
                 if object_sub_type == 'phone_number':
                     create_device_code = create_device.create(device_data[i], test_phone_number_object_element_position)
                 if create_device_code == 200:
-                    print("Create {} object successfully.".format(object_sub_type))
+                    print("Create {} object successfully.".format(object_sub_type), flush=True)
                 elif create_device_code != 200:
                     result = "Fail to create {} object.".format(object_sub_type)
                     break
@@ -285,7 +285,7 @@ def run(parameter):
                 if object_type == 'keywords':
                     create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_keywords_object_element_position)
                 if create_protocol_filed_code == 200:
-                    print("Create {} object successfully.".format(object_type))
+                    print("Create {} object successfully.".format(object_type), flush=True)
                 elif create_protocol_filed_code != 200:
                     result = "Fail to create {}.".format(object_type)
                     break
@@ -295,7 +295,7 @@ def run(parameter):
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
-                print("Create security rule successfully.")
+                print("Create security rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
             
@@ -318,9 +318,9 @@ def run(parameter):
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
             if len(result) == 0:
-                print("The test case is passed.")
+                print("The test case is passed.", flush=True)
             elif len(result) != 0:
-                print("The test case is failed. The failure reason is: ", result)
+                print("The test case is failed. The failure reason is: ", result, flush=True)
         
         # 删除rule
         if create_rule_code == 200:
@@ -330,7 +330,7 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete security rule successfully.")
+                    print("Delete security rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete security rule."
             else:
@@ -350,7 +350,7 @@ def run(parameter):
                     if object_sub_type == 'phone_number':
                         delete_device_code = delete_device.delete(test_phone_number_object_element_position, first_row_checkbox_element, True)
                     if delete_device_code == 200:
-                        print("Delete {} object successfully.".format(object_sub_type))
+                        print("Delete {} object successfully.".format(object_sub_type), flush=True)
                     elif delete_device_code != 200:
                         result = result + " In addition, fail to delete {} object.".format(object_sub_type)
                         break
@@ -366,7 +366,7 @@ def run(parameter):
                     if object_type == 'keywords':
                         delete_protocol_filed_code = delete_protocol_filed.delete(test_keywords_object_element_position, first_row_checkbox_element, True)
                     if delete_protocol_filed_code == 200:
-                        print("Delete {} object successfully.".format(object_type))
+                        print("Delete {} object successfully.".format(object_type), flush=True)
                     elif delete_protocol_filed_code != 200:
                         result = result + " In addition, fail to delete {} object.".format(object_type)
                         break
@@ -377,19 +377,33 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", duration)
+        print("Duration of running the test case: ", duration, flush=True)
         
-        print("Finish test case: " + parameter["test_case_name"])
+        print("Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e)
+        print("Error: ", e, flush=True)
         return "Error: " + str(e)
     finally:
         # 清理环境
-        support.ui_utils.env_initialization.teardown()
+        support.ui_utils.env.teardown()
         # 删除配置
-        erase = DeleteConfig()
-        erase.clear_config(token, parameter, name_list)
+        delete = DeletePolicy()
+        delete.delete_policy_by_name(token, parameter, name_list)
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):  
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                if False in verification_result:
+                    result_flag = "Fail"
+                else:
+                    result_flag = "Pass"
+                report_data.append(result_flag)
+                report_data.append(result)
+                new_report = GenerateReport()
+                new_report.insert_data(parameter, report_data)
         
 if __name__ == '__main__':
     parameter = {

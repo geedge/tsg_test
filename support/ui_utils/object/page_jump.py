@@ -49,4 +49,4 @@ class PageJump():
                 #print(f"Change to vsys {change_vsys_name}")
                 break
         if flag_num == 0:
-            print(f"no vsys: {change_vsys_name}")
+            print(f"no vsys: {change_vsys_name}", flush=True)

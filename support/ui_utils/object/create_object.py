@@ -112,7 +112,7 @@ class CreateObject():
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
-            print(e)
+            print(e, flush=True)
             return 400
     
     def create_group(self, data, object_type, object_element_position):
@@ -171,6 +171,6 @@ class CreateObject():
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
-            print(f"捕获到异常: {e}", file=sys.stderr)
+            print(f"Exception: {e}", file=sys.stderr, flush=True)
             return 400
         

@@ -268,9 +268,9 @@ class CreatePolicyRule():
             assert response.status_code == 200
             return_json_data = json.loads(response.text)
             if response.status_code == 200:
-                print("Create {} rule successfully.".format(return_json_data['data']['rule']['type']))
+                print("Create {} rule successfully.".format(return_json_data['data']['rule']['type']), flush=True)
             else:
-                print("Create {} rule failed.".format(return_json_data['data']['rule']['type']))
+                print("Create {} rule failed.".format(return_json_data['data']['rule']['type']), flush=True)
             policy_type = return_json_data['data']['rule']['type']
             policy_id = return_json_data['data']['rule']['id']
             policy_id_dict_temp = {}
@@ -279,7 +279,7 @@ class CreatePolicyRule():
             policy_id_list_temp.append(policy_id_dict_temp)
             return policy_id_list_temp
         except AssertionError as e:
-            print(f"AssertionError: {e}")
+            print(f"AssertionError: {e}", flush=True)
 
 if __name__ == '__main__':
     print("test")

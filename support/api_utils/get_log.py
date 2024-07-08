@@ -19,7 +19,7 @@ class GetLog():
         log_schema = ",".join([field['name'] for field in log_schema])
         return log_schema
 
-    def get_log_by_condition(self, token, rule_num, start_time, end_time, test_pc_ip, create_policies_ids, test_data,
+    def get_log_by_condition(self, token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data,
                              api_host, vsys_id, script_type):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         log_condition = {
@@ -76,7 +76,7 @@ class GetLog():
             # 加script_type判断条件的原因是：ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0][
                 "attribute_name"] == "ATTR_SUBSCRIBER_ID":
-                log_filter = f"subscriber_id='test6488' AND has({log_query_rule_type},{policy_id})"
+                log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
                 log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type},{policy_id})"
@@ -84,14 +84,14 @@ class GetLog():
                 log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}",
                                                                                     f"client_ip='{test_pc_ip}'")
             url = api_host + "/v1/log/query"
-            #print("Begin to query log by condition.")
+            print("Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200
             log_list = json.loads(response.text)
             log_list = log_list['data']['result']
             log_index = i + 1
             log_query_params = test_data['log_query_param_' + str(log_index)]
-            #print("Compare log with test data.")
+            print("Compare log with test data.", flush=True)
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
                     for log_query_param in log_query_params:
@@ -125,14 +125,14 @@ class GetLog():
             hit_query_condition['start_time'] = start_time
             hit_query_condition['end_time'] = end_time
             hit_query_condition['vsys_id'] = vsys_id
-            #print("Begin to query metric by condition.")
+            print("Begin to query metric by condition.", flush=True)
             response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
             index = i + 1
             counter = test_data['counters_' + str(index)]
             result_len = len(response['data']['result'])
-           # print("Compare metric with test data.")
+            print("Compare metric with test data.", flush=True)
             # 需要hits == 0时，则验证，验证通过metric置为true
             if 'hits' in counter and counter['hits'] == 0 and result_len == 0:
                 metric_result = True
@@ -204,10 +204,10 @@ class GetLog():
         # assert response.status_code == 200
         r_dict = response.json()
         #print("statistics metric result data：")
-        print(r_dict)
+        # print(r_dict)
         #print("Get the metric information of rule id {}".format(post_data_ori_dict))
         if r_dict["code"] != 200:
-            print("statistics metric query failed.")
+            print("statistics metric query failed.", flush=True)
             return [333, "The statistics metric API query failed. Procedure"]
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
@@ -228,12 +228,12 @@ class GetLog():
                         dimension_columns = \
                         test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
                     except Exception as e:
-                        print("Error: ", e)
+                        print("Error: ", e, flush=True)
                         dimension_columns = "no_dimensions"
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
                     return [333, "passthrough"]
                 else:
-                    print("Do not query statistics metric result")
+                    print("Do not query statistics metric result.", flush=True)
                 return [333, "statistics metric no result was found"]
             else:  # 提取结果，并断言
                 metric_result = False  # 默认
@@ -248,7 +248,7 @@ class GetLog():
                             elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
                                 k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
                             else:
-                                print("The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()))
+                                print("The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
                                 #throw Exception e
                             tmp_dict[k_0] = v
                         result_list.append(tmp_dict)
@@ -272,7 +272,7 @@ class GetLog():
                                 histogram_sketch_line_flag = True
                                 break
                     if histogram_sketch_line_flag:
-                        print("The histogram Metrics Line does not statistic the results.")
+                        print("The histogram Metrics Line does not statistic the results.", flush=True)
                         metric_results = [True, ""]
                     else:
                         # print(statistics_info)
@@ -347,10 +347,10 @@ class GetLog():
                                                                               trex_ip_info)  # 判断正确调用函数
                             metric_result = metric_results[0]
                             if metric_result == False:
-                                print("Failure on assertion, the assertion is: {}".format(assert_key_list[i]))
+                                print("Failure on assertion, the assertion is: {}".format(assert_key_list[i]), flush=True)
                                 break
                 elif statistics_info["chart_type"] == "histogram":
-                    print("The histogram does not statistic the results.")
+                    print("The histogram does not statistic the results.", flush=True)
                     metric_results = [True, ""]
                 return metric_results
 
@@ -373,7 +373,7 @@ class GetLog():
                 else:
                     statistics_metircs_except_avg[k] = int(v / 1)
             if assert_key != "session_identifier_sketch" and assert_key != "client_ip_sketch" and assert_key != "server_ip_sketch":  # 除了这几个gauge，需要打印下信息
-                print(f"Average number of traffic playback in 1 second granularity: \n{statistics_metircs_except_avg}")
+                print(f"Average number of traffic playback in 1 second granularity: \n{statistics_metircs_except_avg}", flush=True)
             failure_info_2 = f"Average number of traffic playback in 1-second granularity: {statistics_metircs_except_avg}"
             #print(assert_key)
             if assert_key == "bytes":
@@ -427,10 +427,10 @@ class GetLog():
                     statistics_metircs_except_gauge["server_ip_sketch"] = unique_server_ips
                     #print(f"Gauge of traffic playback in 1-second granularity: \n{statistics_metircs_except_gauge}")
                     if -3 < statistics_value[assert_key] - statistics_metircs_except_gauge[assert_key] < 3:
-                        print("Statistics result normal.")
+                        print("Statistics result normal.", flush=True)
                         metric_result = True
             else:
-                print(f"Key for missing assertion: {assert_key}")
+                print(f"Key for missing assertion: {assert_key}", flush=True)
                 metric_result = False
         elif chart_type == "histogram":
             metric_result = True
@@ -474,11 +474,11 @@ class GetLog():
                         #print(success_result)
                         metric_result = True
             else:
-                print(f"Key for missing assertion: {assert_key}")
+                print(f"Key for missing assertion: {assert_key}", flush=True)
                 failure_info_3 = f"key for missing assertions:{assert_key}"
                 metric_result = False
         if metric_result == False:
-            print(failure_reason)
+            # print(failure_reason)
             actual_result = f"Total actual results: {statistics_value}"
             failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
         return metric_result, failure_reason_info
@@ -512,11 +512,11 @@ class GetLog():
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         if r_dict["code"] != 200:
-            print("Service chaining metric query failed.")
+            print("Service chaining metric query failed.", flush=True)
             return 444
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
-                print("Service chaining metric is empty.")
+                print("Service chaining metric is empty.", flush=True)
                 return 333
             else:  # metric不为空时，验证返回结果
                 metric_result = False  # 默认
@@ -542,7 +542,7 @@ class GetLog():
                 if sc_info["type"] == 1:
                     if sc_value["sent_bytes"] == sc_value["received_bytes"] == sc_expected_metric["total_bytes"] and \
                             sc_value["sent_packets"] == sc_value["received_packets"] == pkt_value:
-                        print(success_result)
+                        # print(success_result)
                         metric_result = True
                     else:
                         metric_result = False
@@ -550,7 +550,7 @@ class GetLog():
                     if sc_value["sent_bytes"] == sc_expected_metric["total_bytes"] and sc_value[
                         "sent_packets"] == pkt_value and sc_value["received_bytes"] == sc_value[
                         "received_packets"] == 0:
-                        print(success_result)
+                        # print(success_result)
                         metric_result = True
                     else:
                         metric_result = False
@@ -565,7 +565,7 @@ class GetLog():
                     if sc_value["sent_bytes"] == sc_expected_metric["total_bytes"] and sc_value[
                         "sent_packets"] == pkt_value and sc_value["received_bytes"] == sc_value[
                         "received_packets"] == 0:
-                        print(success_result)
+                        # print(success_result)
                         metric_result = True
                     else:
                         metric_result = False
@@ -576,14 +576,14 @@ class GetLog():
                 if sc_info["type"] == 1:
                     if sc_value["sent_bytes"] == sc_value["received_bytes"] and sc_value["sent_packets"] == sc_value[
                         "received_packets"]:
-                        print(success_result)
+                        # print(success_result)
                         metric_result = True
                     else:
                         metric_result = False
                 elif sc_info["type"] == 2:
                     if sc_value["sent_bytes"] != 0 and sc_value["sent_packets"] != 0 and sc_value["received_bytes"] == \
                             sc_value["received_packets"] == 0:
-                        print(success_result)
+                        # print(success_result)
                         metric_result = True
                     else:
                         metric_result = False
@@ -593,14 +593,14 @@ class GetLog():
                 if sc_info["type"] == 2 and len(sc_value) != 0:
                     if sc_value["sent_bytes"] != 0 and sc_value["sent_packets"] != 0 and sc_value["received_bytes"] == \
                             sc_value["received_packets"] == 0:
-                        print(success_result)
+                        # print(success_result)
                         metric_result = True
                     else:
                         metric_result = False
                 else:
                     metric_result = False
-        if metric_result == False:
-            print(failure_reason)
+        # if metric_result == False:
+        #     print(failure_reason)
         return metric_result
 
     def diff_ip_count(self, start_ip, end_ip):

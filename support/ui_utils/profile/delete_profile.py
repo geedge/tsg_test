@@ -24,7 +24,7 @@ class DeleteProfile():
             time.sleep(2)
             return 200
         except Exception as e:
-            print(e)
+            print(e, flush=True)
             traceback.print_exc()
             self.driver.find_element(By.XPATH, delete_element_position["profileListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(0.5)

@@ -923,7 +923,7 @@ def create_pre_policy(data, driver):
     security_rule_element_position = get_element_position("security")
     intercept_rule_element_position = get_element_position("pxy_intercept")
     #create_rule.create(security_temp_deny_quic, security_rule_element_position)
-    #print("Create security rule successfully.")
+    #print("Create security rule successfully.", flush=True)
     create_rule.create(intercept_temp, intercept_rule_element_position)
     print("Create intercept rule successfully.")
     tmp_list = [

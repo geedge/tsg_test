@@ -6,8 +6,8 @@ from support.api_utils.create_object import CreateObject
 from support.api_utils.create_rule import CreatePolicyRule
 from support.api_utils.create_profile import CreateProfile
 
-class CreateConfig():
-    def create_cfg(self, parameter, test_data, template_path):
+class CreatePolicy():
+    def create_policy(self, parameter, test_data, template_path):
         # 变量初始化
         api_server = parameter["api_server"]
         run_env = parameter["env"]
@@ -182,7 +182,7 @@ class CreateConfig():
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
                         obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
-        print("Config random ip for statistics and sc rule.")
+        print("Config random ip for statistics and sc rule.", flush=True)
         return config
 
 if __name__ == "__main__":
