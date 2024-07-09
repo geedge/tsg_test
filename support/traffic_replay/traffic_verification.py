@@ -393,7 +393,7 @@ class TrafficVerification():
 
     def is_in(self, full_str, sub_str, debug_flag):
         if debug_flag == "local":
-            temp = full_str["result"]
+            temp = full_str
         else:
             temp = full_str
         sub_str = sub_str.split(',')
@@ -436,10 +436,11 @@ class TrafficVerification():
             url = traffic_server + ":" + port + "/v1/traffic"
             headers = {"Content-Type": "application/json"}
             print("Begin to send traffic for effect verification.", flush=True)
+            #print(url, data)
             response = requests.post(url, data=data, headers=headers)
+            #print(response.text)
             if response.status_code == 200: 
-                jsonData = json.loads(response.text)
-                jsonData = response.json()
+                jsonData = response.text
             return jsonData
         else:
             type = data.get("type")
