@@ -349,7 +349,9 @@ class DeletePolicy():
     def query_and_delete_by_name(self, url, template, headers):
         try:
             response = requests.get(url, headers=headers, params=template, verify=False)
-            assert response.status_code == 200
+            if response.status_code != 200:
+                print("search {} failed, please check".format(template['type']))
+                return 0
             return_json_data = json.loads(response.text)
             if '/policy/rule' in url or '/policy/object' in url:
                 tmp_type = template['type']
@@ -386,11 +388,14 @@ class DeletePolicy():
             elif 'traffic_mirror' in url:
                 data_list = return_json_data['data']['traffic_mirrors']
                 delete_info = 'traffic_mirror'.replace("_", " ")
+
             if len(data_list) > 0:
                 delete_data = self.combine_delete_ids(template, data_list)
                 response = requests.delete(url, headers=headers, params=delete_data, verify=False)
-                assert response.status_code == 200
-                print("Delete {} successfully.".format(delete_info), flush=True)
+                if response.status_code == 200:
+                    print("Delete {} successfully.".format(delete_info), flush=True)
+                else:
+                    print("Delete {} failed, please check {}".format(delete_info, delete_data))
             else:
                 print("No configuration needs to be deleted.", flush=True)
         except AssertionError as e:
