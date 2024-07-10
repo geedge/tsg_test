@@ -92,7 +92,7 @@ class CreateProfile():
                     else:
                         if int(vlan_ids_create[j]) < 3 or int(vlan_ids_create[j]) > 66:  # vlan id 不在正确范围内
                             # element_vlan_id.find_element(By.XPATH, "/ancestor::div[@class='el-form-item__content']/div[@class='el-form-item__error']")
-                            # assert element_vlan_id.element_isExist(By.XPATH, "/ancestor::div[@class='el-form-item__content']/div[@class='el-form-item__error']")
+                            # assert element_vlan_id.is_exist_element_by_value(By.XPATH, "/ancestor::div[@class='el-form-item__content']/div[@class='el-form-item__error']")
                             error_content = self.driver.find_element(By.XPATH,
                                                                      f"//input[@id='{element_pos_by_id}']//ancestor::div[@class='el-form-item__content']/div[@class='el-form-item__error']").text.strip()
                             pytest_check.equal(error_content, "Range:3-66",
@@ -127,7 +127,7 @@ class CreateProfile():
             # 如果名称长度小于4，检查错误消息并取消操作
             if len(name) < 4:
                 error_message = "The length of the name is at most 128 characters and cannot be less than 4 characters"
-                if self.driver.element_isExist(By.XPATH,
+                if self.driver.is_exist_element_by_value(By.XPATH,
                                           "//label[text()='Name']/parent::div//div[@class='el-form-item__error']"):
                     print(error_message)
                     actual_error = self.driver.find_element(By.XPATH, "//div[@class='el-form-item__error']").text.strip()
@@ -144,7 +144,7 @@ class CreateProfile():
                     return False
 
             # 检查是否未输入必填项
-            if self.driver.element_isExist(By.XPATH, "//div[contains(text(),'Please enter the content')]"):
+            if self.driver.is_exist_element_by_value(By.XPATH, "//div[contains(text(),'Please enter the content')]"):
                 error_message = self.driver.find_element(By.XPATH,"//div[contains(text(),'Please enter the content')]").text.strip()
                 #print("未输入必填项，报错：", error_message)
 
@@ -156,7 +156,7 @@ class CreateProfile():
                 return False
 
             # 如果数据正确，点击警告保存确认按钮
-            if self.driver.element_isExist(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]):
+            if self.driver.is_exist_element_by_value(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]):
                 self.driver.find_element(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]).click()
                 return True
 

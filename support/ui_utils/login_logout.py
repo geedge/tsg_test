@@ -61,11 +61,11 @@ class LogInOut:
         :return:
         """
         close_button_elem_Xpath ='(//i[@class="iconfont icon-Delete_X"])[last()]'  # 全局右上提示窗关闭按钮（最新的一个）
-        self.driver.isElementExist(close_button_elem_Xpath)
+        self.driver.is_exist_element(close_button_elem_Xpath)
         loop_count = 2
         while loop_count > 0:
             try:
-                self.driver.isElementExist(close_button_elem_Xpath)
+                self.driver.is_exist_element(close_button_elem_Xpath)
                 if self.driver.Exist:
                     self.driver.find_element(By.XPATH, close_button_elem_Xpath).click()
                 loop_count -= 1

@@ -364,7 +364,7 @@ class ProfilesPublicOperations:
             #print(f"当前系统所在vsys：{current_vsys_name}，需要切换到vsys：{change_vsys_name}")
             self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()  # 点击vsys menu
             # 如果切换vsys时弹出 Leave this page?的确认弹窗，点击确认
-            if self.driver.element_isExist(By.XPATH, leave_this_page_elem_Xpath, timeout=0.5):
+            if self.driver.is_exist_element_by_value(By.XPATH, leave_this_page_elem_Xpath, timeout=0.5):
                 try:   # 上述条件判断中，会存在会存在对应的元素，但是没有提示框情况，因此异常跳过继续执行
                     self.driver.find_element(By.XPATH, leave_this_page_ok_elem_Xpath).click()
                 except:
@@ -601,7 +601,7 @@ class ProfilesPublicOperations:
         print("disabled_class=", disabled_class)
         pytest_check.equal(disabled_class, "is-disabled", msg="所在行数{}".format(inspect.currentframe().f_lineno))
         # 校验是否带锁
-        self.driver.isElementExist("//i[@class='iconfont icon-lock']")
+        self.driver.is_exist_element("//i[@class='iconfont icon-lock']")
         assert self.driver.Exist
 
     def policy_create(self, action, profile_name, listPage_rule_create_button_posId, rule_input_Name_posXpath,
@@ -963,7 +963,7 @@ def cached_intermediate_certificates_driver():
     driver.maximize_window()
     # 需要判断，遇到https不安全时，点击高级-继续登录才可以访问https-tsg
     if "https" in login_url:
-        driver.isElementExist("//*[@id='details-button']")
+        driver.is_exist_element("//*[@id='details-button']")
         if driver.Exist:
             if "高级" in driver.find_element(By.XPATH, "//*[@id='details-button']").text.strip():
                 driver.find_element(By.XPATH, "//*[@id='details-button']").click()
