@@ -337,7 +337,7 @@ class ProfilePublicFunc:
         pytest_check.equal(disabled_class, "is-disabled", msg="所在行数{}".format(inspect.currentframe().f_lineno))
         # 校验是否带锁
         self.driver.is_exist_element("//i[@class='iconfont icon-lock']")
-        assert self.driver.Exist
+        assert self.driver.is_exist
 
     def policy_create(self, action, profile_name, listPage_rule_create_button_posId, rule_input_Name_posXpath,
                       rule_action_posId, rule_source_add_posXpath, rule_button_oK_posId, rule_button_cancel_posId, rule_button_warningSaveYes_posCss,
