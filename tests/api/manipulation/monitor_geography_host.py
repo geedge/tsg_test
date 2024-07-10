@@ -70,7 +70,7 @@ def run(parameter):
             "app_name_1": ["http"],
             "expected_return": "POST",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com:180"}],
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
             "traffic": {
                 "type": "wget",
                 "command": "wget --debug  -q -O- --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://open.node.com:180"

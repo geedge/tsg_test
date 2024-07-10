@@ -65,7 +65,7 @@ def run(parameter):
             "log_query_param_1": [],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.facebook.com -timeout=1"
+                "command": "nslookup www.facebook.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }

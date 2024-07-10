@@ -96,7 +96,7 @@ def run(parameter):
             "app_name_1": ["http"],
             "expected_return": "303",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com:180"}],
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 20 --max-time 20 http://open.node.com:180"
