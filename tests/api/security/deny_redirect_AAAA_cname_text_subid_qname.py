@@ -79,7 +79,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup www.example.com -timeout=1"
+                "command": "nslookup www.example.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }
