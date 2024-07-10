@@ -42,13 +42,13 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ip_src"],
+            "app_name_1": ["ip_dst"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],
             "traffic": {
-                "type": "nslookup",
-                "command": "nslookup www.youtube.com -timeout=1 8.8.8.8"
+                "type": "curl",
+                "command": "curl --connect-timeout 5 -m 5 -kv https://open.node.com:1443"
             },
             "token": ""
         }

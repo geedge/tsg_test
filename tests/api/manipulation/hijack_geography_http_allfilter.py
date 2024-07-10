@@ -133,7 +133,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.yumi.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://www.yumi.com"
+                "command": "curl -kv --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://www.yumi.com"
             },
             "token": ""
         }
