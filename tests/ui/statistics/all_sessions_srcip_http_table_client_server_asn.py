@@ -52,7 +52,9 @@ def run(parameter):
             "rule_name": "all_sessions_srcip_http_table_client_server_asn",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ui",
+            "debug_flag": "local",
+        "test_subcriber_id": "test6489",
+        "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
@@ -414,6 +416,8 @@ if __name__ == '__main__':
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
         "test_case_name": "all_sessions_srcip_http_table_client_server_asn",
+        "debug_flag": "local",
+        "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
     }
