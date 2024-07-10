@@ -393,7 +393,7 @@ class TrafficVerification():
 
     def is_in(self, full_str, sub_str, debug_flag):
         if debug_flag == "local":
-            temp = full_str
+            temp = full_str["result"]
         else:
             temp = full_str
         sub_str = sub_str.split(',')
@@ -439,8 +439,15 @@ class TrafficVerification():
             #print(url, data)
             response = requests.post(url, data=data, headers=headers)
             #print(response.text)
-            if response.status_code == 200: 
-                jsonData = response.text
+            if response.status_code == 200:
+                try:
+                    jsonData = json.loads(response.text)
+                except:    # json解析失败，直接返回json原文
+                    jsonData = {}
+                    print("json loads failed:", flush=True)
+                    print("{} {} \n{}".format(url, data, response.text), flush=True)
+                    jsonData["result"] = response.text
+
             return jsonData
         else:
             type = data.get("type")
