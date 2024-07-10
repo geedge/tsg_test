@@ -79,20 +79,20 @@ class MyWebDriver(webdriver.Remote):
             raise
         return self.element
 
-    def isElementExist(self,Element, timeout=3):
+    def is_exist_element(self, Element, timeout=3):
         try:
             WebDriverWait(super(), timeout).until(EC.presence_of_element_located((By.XPATH, Element)))
-            self.Exist = True                # 找到==》True
+            self.is_exist = True                # 找到==》True
         except:
-            self.Exist = False               # 找不到===》Flase
+            self.is_exist = False               # 找不到===》Flase
 
-    def element_isExist(self, by=By.ID, value: Optional[str] = None, timeout=3):
+    def is_exist_element_by_value(self, by=By.ID, value: Optional[str] = None, timeout=3):
         try:
             WebDriverWait(super(), timeout).until(EC.presence_of_element_located((by, value)))
-            isExist = True                # 找到==》True
+            is_exist = True                # 找到==》True
         except:
-            isExist = False               # 找不到===》Flase
-        return isExist
+            is_exist = False               # 找不到===》Flase
+        return is_exist
 
 if __name__ == '__main__':
     print("test")

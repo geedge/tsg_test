@@ -70,7 +70,7 @@ def run(parameter):
             "app_name_1": ["http"],
             "expected_return": "404",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"security_action","query_value":"deny"}],
+            "log_query_param_1": [{"query_field_key":"security_action","query_value":"Deny"}],
             "traffic": {
                 "type": "wget",
                 "command": "wget -q -O- -d http://open.node.com:180"

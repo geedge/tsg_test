@@ -22,8 +22,8 @@ class LogInOut:
         self.driver.get(self.tsglogin_url)
         # 需要判断，遇到https不安全时，点击高级-继续登录才可以访问https-tsg
         if "https" in self.tsglogin_url:
-            self.driver.isElementExist("//*[@id='details-button']")
-            if self.driver.Exist:
+            self.driver.is_exist_element("//*[@id='details-button']")
+            if self.driver.is_exist:
                 if "高级" in self.driver.find_element(By.XPATH, "//*[@id='details-button']").text.strip():
                     self.driver.find_element(By.XPATH, "//*[@id='details-button']").click()
                     self.driver.find_element(By.XPATH, "//*[@id='proceed-link']").click()
@@ -32,7 +32,7 @@ class LogInOut:
         self.driver.find_element(By.NAME, loginPage_passwd_posName).send_keys(self.loginout_parse.get("ui_account_1", "passwd"))
         self.driver.find_element(By.ID, loginPage_signIn_posId).click()
         # 消除右上角弹框
-        self.dismiss_rightTopTips()
+        self.dismiss_right_top_tips()
         # 切换至默认ui_vsys
         self._check_ui_vsys()
         # 默认更改为英语
@@ -43,8 +43,8 @@ class LogInOut:
         self.driver.get(url)
         # 需要判断，遇到https不安全时，点击高级-继续登录才可以访问https-tsg
         if "https" in url:
-            self.driver.isElementExist("//*[@id='details-button']")
-            if self.driver.Exist:
+            self.driver.is_exist_element("//*[@id='details-button']")
+            if self.driver.is_exist:
                 if "高级" in self.driver.find_element(By.XPATH, "//*[@id='details-button']").text.strip():
                     self.driver.find_element(By.XPATH, "//*[@id='details-button']").click()
                     self.driver.find_element(By.XPATH, "//*[@id='proceed-link']").click()
@@ -53,7 +53,7 @@ class LogInOut:
         self.driver.find_element(By.NAME, loginPage_passwd_posName).send_keys(passwd)
         self.driver.find_element(By.ID, loginPage_signIn_posId).click()
         # 消除右上角弹框
-        self.dismiss_rightTopTips()
+        self.dismiss_right_top_tips()
         # 切换至默认ui_vsys
         #self._check_ui_vsys()
         # 默认更改为英语
@@ -80,33 +80,33 @@ class LogInOut:
         #     self.driver.find_element(By.XPATH,'//span/button/span[contains(text(),"Menu")]').click() # 打开Menu
         #     self.driver.find_element(By.XPATH,'//li[@class="infinite-list-item"]/div[2]/ul/li[2]/div/div[2]/div/div[contains(text(),"UIAutoTestVsys")]').click() # 默认切换至UIAutoTestVsys
 
-    def dismiss_rightTopTips(self):
+    def dismiss_right_top_tips(self):
         # 消除弹框
         """
         :param close_button_elem_Xpath:
         :return:
         """
         # try:
-        #     self.driver.isElementExist(Element="//div/div[1]/div[2]/div/div[2]/div[3]/i", timeout=0.5)
-        #     if self.driver.Exist:
+        #     self.driver.is_exist_element(Element="//div/div[1]/div[2]/div/div[2]/div[3]/i", timeout=0.5)
+        #     if self.driver.is_exist:
         #         self.driver.find_element(By.XPATH,'//div/div[1]/div[2]/div/div[2]/div[3]/i').click()
         # except:
         #     pass
         # try:
-        #     self.driver.isElementExist(Element="//div/div[1]/div[2]/div/div/div[3]/i", timeout=0.5)
-        #     if self.driver.Exist:
+        #     self.driver.is_exist_element(Element="//div/div[1]/div[2]/div/div/div[3]/i", timeout=0.5)
+        #     if self.driver.is_exist:
         #         self.driver.find_element(By.XPATH,'//div/div[1]/div[2]/div/div/div[3]/i').click()
         # except:
         #     pass
 
         # time.sleep(3)
         close_button_elem_Xpath ='(//i[@class="iconfont icon-Delete_X"])[last()]'  # 全局右上提示窗关闭按钮（最新的一个）
-        self.driver.isElementExist(close_button_elem_Xpath)
+        self.driver.is_exist_element(close_button_elem_Xpath)
         loop_count = 2
         while loop_count > 0:
             try:
-                self.driver.isElementExist(close_button_elem_Xpath)
-                if self.driver.Exist:
+                self.driver.is_exist_element(close_button_elem_Xpath)
+                if self.driver.is_exist:
                     self.driver.find_element(By.XPATH, close_button_elem_Xpath).click()
                 loop_count -= 1
             except:

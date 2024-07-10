@@ -61,7 +61,7 @@ class Tunnel:
 
     def input_verify(self,data):
         # 调用消除右上提示弹窗
-       # self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
+       # self.objects_po.dismiss_right_top_tips(mainPage_rightTopTips_closeButton_posXpath)
         # 跳转到Tunnel列表页
         self._goto_subObjectPage()
         # Create Tunnel Object
@@ -107,8 +107,8 @@ class Tunnel:
     def pop_cancel_export_num(self):
         self.driver.find_element(By.XPATH, listPage_object_Tunnels_exportButton_posXPATH).click()
         self.driver.find_element(By.XPATH, tunnel_export_pop_window_master_select_button_xpath).click()#取消选中导出
-        self.driver.isElementExist(Element=listPage_object_urls_exportPopYes_posXpath)
-        assert self.driver.Exist, "断言导出按钮是否置灰不展示"
+        self.driver.is_exist_element(Element=listPage_object_urls_exportPopYes_posXpath)
+        assert self.driver.is_exist, "断言导出按钮是否置灰不展示"
         self.driver.find_element(By.XPATH,tunnel_export_pop_no).click()
         self.driver.refresh()
 
@@ -181,11 +181,11 @@ class Tunnel:
         self.select_first_row_data_and_edit(data)
         #Audit Logs校验
         self.driver.find_element(By.XPATH, url_ObjectDetailPage_auditLogs_posXpath).click()
-        self.driver.isElementExist(Element='//table/tbody/tr')
-        assert self.driver.Exist == True, "断言新建object是否存在创建日志"
+        self.driver.is_exist_element(Element='//table/tbody/tr')
+        assert self.driver.is_exist == True, "断言新建object是否存在创建日志"
         print("断言成功，存在创建记录，测试 === Success")
-        self.driver.isElementExist(Element='(//table/tbody/tr)[2]')
-        assert self.driver.Exist == False, "断言新建object是否存在编辑日志"
+        self.driver.is_exist_element(Element='(//table/tbody/tr)[2]')
+        assert self.driver.is_exist == False, "断言新建object是否存在编辑日志"
         print("断言成功，不存在编辑记录，测试 === Success")
         self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_firstRowLog_checkBox_posXpath).click()  # 勾选第一行log CheckBox
         self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_compareButton_posXpath).click()  # 点击compare 按钮
@@ -199,11 +199,11 @@ class Tunnel:
         self._modify(data)
         self.select_first_row_data_and_edit(data)
         self.driver.find_element(By.XPATH, url_ObjectDetailPage_auditLogs_posXpath).click()
-        self.driver.isElementExist(Element='//table/tbody/tr')
-        assert self.driver.Exist, "断言新建object是否存在创建日志"
+        self.driver.is_exist_element(Element='//table/tbody/tr')
+        assert self.driver.is_exist, "断言新建object是否存在创建日志"
         print("断言成功，存在创建记录，测试 === Success")
-        self.driver.isElementExist(Element='(//table/tbody/tr)[2]')
-        assert self.driver.Exist, "断言新建object是否存在编辑日志"
+        self.driver.is_exist_element(Element='(//table/tbody/tr)[2]')
+        assert self.driver.is_exist, "断言新建object是否存在编辑日志"
         print("断言成功，存在编辑记录，测试 === Success")
         self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_firstRowLog_checkBox_posXpath).click()  # 勾选第一行log CheckBox
         self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_compareButton_posXpath).click()  # 点击compare 按钮
@@ -227,7 +227,7 @@ class Tunnel:
 
     def _verify_not_checkbox_export(self,data):
         # 调用消除右上提示弹窗
-       #self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
+       #self.objects_po.dismiss_right_top_tips(mainPage_rightTopTips_closeButton_posXpath)
         self._goto_subObjectPage()
         #未选中导出
         #self.driver.find_element(By.XPATH,listPage_objectSearch_Tunnels_AllButton_posxpath).click()
@@ -285,7 +285,7 @@ class Tunnel:
 
     def _list_check(self):
         # 调用消除右上提示弹窗
-        #self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
+        #self.objects_po.dismiss_right_top_tips(mainPage_rightTopTips_closeButton_posXpath)
         self._goto_subObjectPage()
         #选中All后，除create外其余置灰 ;翻页、创建操作后清除选中状态；列表所有数据前均增加复选框
         #一、All按钮选中所有复选框，所选数据存在无权操作数据时除Create按扭外其余按钮置灰
@@ -298,22 +298,22 @@ class Tunnel:
         self.driver.find_element(By.XPATH,listPage_objectSearch_Tunnels_AllButton_posxpath).click()
         # 1、导出按钮置灰
         try:
-            self.driver.isElementExist(Element=listPage_object_Tunnels_exportButton_posXPATH) # 导出按钮置灰
-            assert self.driver.Exist,"导出按钮置灰"
+            self.driver.is_exist_element(Element=listPage_object_Tunnels_exportButton_posXPATH) # 导出按钮置灰
+            assert self.driver.is_exist,"导出按钮置灰"
             print("导出按钮置灰，测试 == Success")
         except:
             print("导出按钮置灰，测试 == Fail")
         # 2、编辑按钮置灰
         try:
-            self.driver.isElementExist(Element=listPage_object_Tunnels_editButton_posXPATH) # 编辑按钮置灰
-            assert self.driver.Exist,"编辑按钮置灰"
+            self.driver.is_exist_element(Element=listPage_object_Tunnels_editButton_posXPATH) # 编辑按钮置灰
+            assert self.driver.is_exist,"编辑按钮置灰"
             print("编辑按钮置灰，测试 == Success")
         except:
             print("编辑按钮置灰，测试 == Fail")
         # 3、删除按钮置灰
         try:
-            self.driver.isElementExist(Element=listPage_object_Tunnels_delButton_posXPATH) # 删除按钮置灰
-            assert self.driver.Exist,"删除按钮置灰"
+            self.driver.is_exist_element(Element=listPage_object_Tunnels_delButton_posXPATH) # 删除按钮置灰
+            assert self.driver.is_exist,"删除按钮置灰"
             print("删除按钮置灰，测试 == Success")
         except:
             print("删除按钮置灰，测试 == Fail")
@@ -323,16 +323,16 @@ class Tunnel:
             self.driver.find_element(By.XPATH,listPage_objectSearch_Tunnels_AllButton_posxpath).click() # 选择all
             time.sleep(5)
             self.driver.refresh()#刷新
-            self.driver.isElementExist(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
+            self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
             time.sleep(5)
-            assert self.driver.Exist,"刷新导致元素不勾选"
+            assert self.driver.is_exist,"刷新导致元素不勾选"
             print("刷新后元素不勾选，测试 == Success")
             time.sleep(5)
             self.driver.find_element(By.XPATH, listPage_objectSearch_Tunnels_AllButton_posxpath).click()  # 选择all
             self.driver.find_element(By.XPATH,'//*[@id="pagination-_pagination_Objects_tunnel_Home_App_anonymousComponent"]/div[1]/button[2]').click() # 第二页
-            self.driver.isElementExist(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
+            self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
             time.sleep(5)
-            assert self.driver.Exist,"翻页导致元素不勾选"
+            assert self.driver.is_exist,"翻页导致元素不勾选"
             print("翻页后元素不勾选，测试 == Success")
         except:
             print("翻页后元素不勾选，测试 == Fail")
@@ -354,7 +354,7 @@ class Tunnel:
 
     def _create(self, data):
         # 调用消除右上提示弹窗
-        #self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
+        #self.objects_po.dismiss_right_top_tips(mainPage_rightTopTips_closeButton_posXpath)
         # 跳转到Tunnel列表页
         self._goto_subObjectPage()
         # 创建Tunnel
@@ -420,7 +420,7 @@ class Tunnel:
     def create_tunnel(self,data):
         #使用create_tunnel时需要data传递Name
         # 调用消除右上提示弹窗
-        # self.objects_po.dismiss_rightTopTips(mainPage_rightTopTips_closeButton_posXpath)
+        # self.objects_po.dismiss_right_top_tips(mainPage_rightTopTips_closeButton_posXpath)
         # 跳转到Tunnel列表页
         self._goto_subObjectPage()
         # 创建Tunnel
@@ -578,13 +578,13 @@ class Tunnel:
         time.sleep(3)
 
     def extract_ele_tunnel(self):
-        self.driver.isElementExist(
+        self.driver.is_exist_element(
             Element='((//div[@class!="itemDetails cursor"]//table[@class="el-table__body"])[1]//tr)[1]')  # 查看第一行是否存在数据
-        if self.driver.Exist:
+        if self.driver.is_exist:
             # 展示所有列
             self.driver.find_element(By.XPATH, mainPage_ObjectSearch_Column_settings_posXpath).click()  # 点击列设置
             all_checked_xpath = '//*[@class="all-btn"]//*[@class="el-checkbox__input is-checked"]'
-            if self.driver.element_isExist(By.XPATH, all_checked_xpath):  # 如果全选被选中
+            if self.driver.is_exist_element_by_value(By.XPATH, all_checked_xpath):  # 如果全选被选中
                 self.driver.find_element(By.XPATH,
                                          mainPage_ObjectSearch_Column_settings_click_Cancel_Button_posXpath).click()  # 点击Cancel按钮
             else:
@@ -642,16 +642,16 @@ class Tunnel:
         #     self.random_name + Keys.ENTER)
         # 如tunnel存在则创建
         time.sleep(3)
-        self.driver.isElementExist(Element=security_first_tunnel_inlist_click_PosXpath) #直接选择第一个最新的，不用搜索
-        if self.driver.Exist:  # 如果存在，就进行创建
-            assert self.driver.Exist == True
+        self.driver.is_exist_element(Element=security_first_tunnel_inlist_click_PosXpath) #直接选择第一个最新的，不用搜索
+        if self.driver.is_exist:  # 如果存在，就进行创建
+            assert self.driver.is_exist == True
             print('正常找到Object，正常进行引用创建')
 
             self.driver.find_element(By.XPATH, security_first_tunnel_inlist_click_PosXpath).click()
             self.driver.find_element(By.XPATH, security_create_ok_click_posXpath).click()
             self.driver.find_element(By.XPATH, security_create_Warn_ok_click_posXpath).click()
         else:  # 不存在就跳过
-            assert self.driver.Exist == False  # 未找到元素
+            assert self.driver.is_exist == False  # 未找到元素
             print('未找到Object，无法进行引用创建')
             pass
 
@@ -753,8 +753,8 @@ class Tunnel:
         try:
             self._just_goto_tunnelPage()  # 页面跳转
             self.driver.implicitly_wait(5)
-            #is_firstObjectGroup_exist = self.driver.element_isExist(By.XPATH,acc_listPage_object_tableCheckbox_firstObjectGroup_posXpath)
-            is_firstSingleObject_exist = self.driver.element_isExist(By.XPATH,acc_listPage_object_tableCheckbox_firstSingleObject_posXpath)
+            #is_firstObjectGroup_exist = self.driver.is_exist_element_by_value(By.XPATH,acc_listPage_object_tableCheckbox_firstObjectGroup_posXpath)
+            is_firstSingleObject_exist = self.driver.is_exist_element_by_value(By.XPATH,acc_listPage_object_tableCheckbox_firstSingleObject_posXpath)
             #if is_firstObjectGroup_exist == False or is_firstSingleObject_exist == False:
             if is_firstSingleObject_exist == False:
                 # 创建测试数据
@@ -823,7 +823,7 @@ class Tunnel:
 
         else:  # etail_type=2--非本Vsys的Object详情页
             # 判断当前页有无非本Vsys的对象
-            is_firstNotLocalVsys_exist = self.driver.element_isExist(By.XPATH,
+            is_firstNotLocalVsys_exist = self.driver.is_exist_element_by_value(By.XPATH,
                                                                      acc_listPage_object_tableCheckbox_firstNotLocalVsys_objectOrGroup_posXpath)
             try:
                 if is_firstNotLocalVsys_exist == True:
@@ -1028,7 +1028,7 @@ class Tunnel:
                 # 点击Clear Counter按钮
                 self.driver.find_element(By.XPATH, listPage_object_pages_clearCounter_button_poxXpath).click()
                 if self.verify_selected_objects_number0 == 1:  # 未选择任何数据
-                    error_message_elem_isExist = self.driver.element_isExist(By.XPATH,
+                    error_message_elem_isExist = self.driver.is_exist_element_by_value(By.XPATH,
                                                                              '//div[@role="alert" and contains(@class,"el-message el-message--error")]')
                     assert error_message_elem_isExist == True, "校验失败！无错误提示"
                 else:

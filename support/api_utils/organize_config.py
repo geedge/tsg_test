@@ -148,7 +148,7 @@ class OrganizeConfig():
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
                         config["condition"]["source_ip"][0]["item"][0]["item_value"] = new_two_ip
-        print("Config random ip for statistics and sc rule.", flush=True)
+        print("Setrandom ip for statistics or sc rule.", flush=True)
         return config
 
     def get_policy_define(self, token, rule_id, rule_type, api_host, vsys_id):

@@ -66,11 +66,11 @@ class IpAddress:
         self.driver.find_element(By.ID, listPage_object_ip_address_editButton_posId).click()
         # 点击audit Logs
         self.driver.find_element(By.XPATH,main_button_audit_button_posXpath).click()
-        self.driver.isElementExist(Element='//table/tbody/tr[1]') # 编辑记录第一行是否有数据
-        assert self.driver.Exist,"断言存在创建记录"
+        self.driver.is_exist_element(Element='//table/tbody/tr[1]') # 编辑记录第一行是否有数据
+        assert self.driver.is_exist,"断言存在创建记录"
         print("断言成功，存在创建记录")
-        self.driver.isElementExist(Element='//table/tbody/tr[2]')  # 编辑记录第二行是否存在编辑记录
-        assert self.driver.Exist == False,"断言不存在编辑记录"
+        self.driver.is_exist_element(Element='//table/tbody/tr[2]')  # 编辑记录第二行是否存在编辑记录
+        assert self.driver.is_exist == False,"断言不存在编辑记录"
         print("断言成功，不存在编辑记录")
         self.driver.find_element(By.ID, mainPage_secondLevelMenu_ipAddress_posId).click()
         self._delete(data)
@@ -219,8 +219,8 @@ class IpAddress:
                         # 确认创建
                         self.driver.find_element(By.XPATH, ip_addressObjectPage_button_SaveYes_posXpath).click()
                         try:
-                            self.driver.isElementExist(Element=ip_addressObjectPage_button_warningSaveYes_posXpath)
-                            if self.driver.Exist:
+                            self.driver.is_exist_element(Element=ip_addressObjectPage_button_warningSaveYes_posXpath)
+                            if self.driver.is_exist:
                                 self.driver.find_element(By.XPATH, ip_addressObjectPage_button_warningSaveYes_posXpath).click()
                             else:
                                 pass
@@ -242,8 +242,8 @@ class IpAddress:
                 # 确认创建
                 self.driver.find_element(By.XPATH, ip_addressObjectPage_button_OK_posXpath).click()
                 self.driver.find_element(By.XPATH, ip_addressObjectPage_button_warningSaveYes_posXpath).click()
-                self.driver.isElementExist(Element=main_Import_Mobile_Identity_files_error_type_posXpath)
-                if self.driver.Exist:
+                self.driver.is_exist_element(Element=main_Import_Mobile_Identity_files_error_type_posXpath)
+                if self.driver.is_exist:
                     self.alert_tip =self.driver.find_element(By.XPATH, main_Import_Mobile_Identity_files_error_type_posXpath).text
                     assert self.alert_tip=="INVALID REQUEST:Object's member[items/subordinate object] is mandatory."
     
@@ -259,8 +259,8 @@ class IpAddress:
                         self.driver.find_element(By.XPATH, ip_addressObjectPage_button_inputItem_posXpath).send_keys(item)
                         self.driver.find_element(By.XPATH, ip_addressObjectPage_button_Save_Item_posXpath).click()
                         if data['Subtype'] == "error_item":
-                            self.driver.isElementExist(Element=ip_addressObjectPage_addItem_error_tips_posXpath)
-                            if self.driver.Exist:
+                            self.driver.is_exist_element(Element=ip_addressObjectPage_addItem_error_tips_posXpath)
+                            if self.driver.is_exist:
                                 self.error_item_tips = self.driver.find_element(By.XPATH, ip_addressObjectPage_addItem_error_tips_posXpath).text
                                 assert self.error_item_tips == "IP format error","错误item的提示"
                                 data['Create']['model'] ="2"
@@ -313,8 +313,8 @@ class IpAddress:
                     self.driver.find_element(By.XPATH, ip_addressObjectPage_button_Input_Learned_IP_Limits_posXpath).send_keys(data['Create']['Learned IP Limits'])
                     self.driver.find_element(By.XPATH, '//div/span[contains(text(),"seconds")]').click()
                     if data['Subtype'] == "error_item":
-                        self.driver.isElementExist(Element=ip_addressObjectPage_addItem_error_tips_posXpath)
-                        if self.driver.Exist:
+                        self.driver.is_exist_element(Element=ip_addressObjectPage_addItem_error_tips_posXpath)
+                        if self.driver.is_exist:
                             self.error_item_tips = self.driver.find_element(By.XPATH, ip_addressObjectPage_addItem_error_tips_posXpath).text
                             assert self.error_item_tips == "Format error", "错误item的提示"
                             data['Create']['model'] = "2"
@@ -511,17 +511,17 @@ class IpAddress:
             self._search(data)
             # 1、点击第二个对象 2、校验删除按钮是否置灰
             self.driver.find_element(By.XPATH, main_listPage_object_select_Second_object_posXpath).click()
-            self.driver.isElementExist(Element=listPage_object_ip_address_delButton_disable_posXpath)
-            assert  self.driver.Exist,"断言删除按钮状态为置灰状态"
+            self.driver.is_exist_element(Element=listPage_object_ip_address_delButton_disable_posXpath)
+            assert  self.driver.is_exist,"断言删除按钮状态为置灰状态"
             self.driver.find_element(By.XPATH, main_listPage_object_select_Second_object_posXpath).click()
             self.quote_count = self.driver.find_element(By.XPATH, list_quote_content_object_HTTP_Signatures_posXpath).text
             # 3、提取引用个数 4、点击引用框，断言第一行存在引用，第二行不存在引用
             assert int(self.quote_count) == 1,"断言引用计数为1"
             self.driver.find_element(By.XPATH, list_quote_content_object_HTTP_Signatures_posXpath).click()
-            self.driver.isElementExist(Element=list_quote_first_row_object_HTTP_Signatures_posXpath)
-            assert self.driver.Exist,"断言第一行引用计数存在"
-            self.driver.isElementExist(Element=list_quote_second_row_object_HTTP_Signatures_posXpath)
-            assert self.driver.Exist ==False ,"断言第二行引用不存在"
+            self.driver.is_exist_element(Element=list_quote_first_row_object_HTTP_Signatures_posXpath)
+            assert self.driver.is_exist,"断言第一行引用计数存在"
+            self.driver.is_exist_element(Element=list_quote_second_row_object_HTTP_Signatures_posXpath)
+            assert self.driver.is_exist ==False ,"断言第二行引用不存在"
             for i in range(5):
                 time.sleep(1)
                 self.driver.find_element(By.XPATH, listPage_object_ip_address_select_First_object_posXpath).click()  # 选择第一个对象
@@ -616,8 +616,8 @@ class IpAddress:
         try:
             self._goto_subObjectPage()  # 页面跳转
             self.driver.implicitly_wait(5)
-            is_firstObjectGroup_exist = self.driver.element_isExist(By.XPATH, acc_listPage_object_tableCheckbox_firstObjectGroup_posXpath)
-            is_firstSingleObject_exist = self.driver.element_isExist(By.XPATH,acc_listPage_object_tableCheckbox_firstSingleObject_posXpath)
+            is_firstObjectGroup_exist = self.driver.is_exist_element_by_value(By.XPATH, acc_listPage_object_tableCheckbox_firstObjectGroup_posXpath)
+            is_firstSingleObject_exist = self.driver.is_exist_element_by_value(By.XPATH,acc_listPage_object_tableCheckbox_firstSingleObject_posXpath)
             if is_firstObjectGroup_exist == False or is_firstSingleObject_exist == False:
                 # 创建测试数据
                 self._create(data=obj_data)
@@ -828,7 +828,7 @@ class IpAddress:
                 # 点击Clear Counter按钮
                 self.driver.find_element(By.XPATH, listPage_object_pages_clearCounter_button_poxXpath).click()
                 if self.verify_selected_objects_number0 == 1:  # 未选择任何数据
-                    error_message_elem_isExist = self.driver.element_isExist(By.XPATH,
+                    error_message_elem_isExist = self.driver.is_exist_element_by_value(By.XPATH,
                                                                              '//div[@role="alert" and contains(@class,"el-message el-message--error")]')
                     assert error_message_elem_isExist == True, "校验失败！无错误提示"
                 else:
@@ -915,7 +915,7 @@ class IpAddress:
 
         else:  # etail_type=2--非本Vsys的Object详情页
             # 判断当前页有无非本Vsys的对象
-            is_firstNotLocalVsys_exist = self.driver.element_isExist(By.XPATH,
+            is_firstNotLocalVsys_exist = self.driver.is_exist_element_by_value(By.XPATH,
                                                                      acc_listPage_object_tableCheckbox_firstNotLocalVsys_objectOrGroup_posXpath)
             try:
                 if is_firstNotLocalVsys_exist == True:

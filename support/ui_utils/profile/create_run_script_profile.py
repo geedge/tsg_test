@@ -17,7 +17,7 @@ class CreateRunScriptProfile():
         self._operate_page(data, operation_type="create")
         #点击OK
         self.driver.find_element(By.CSS_SELECTOR, tsgProxyScripts_button_oK_posCss).click()
-        if self.driver.element_isExist(By.CSS_SELECTOR,tsgProxyScripts_button_warningSaveYes_posCss):
+        if self.driver.is_exist_element_by_value(By.CSS_SELECTOR,tsgProxyScripts_button_warningSaveYes_posCss):
             self.driver.find_element(By.CSS_SELECTOR, tsgProxyScripts_button_warningSaveYes_posCss).click()
 
     def _operate_page(self, data, operation_type="create"):

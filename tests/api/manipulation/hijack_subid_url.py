@@ -50,7 +50,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "*yumi.com"
+                            "*yumi.com/"
                         ]
                         }
                     ]
@@ -74,7 +74,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.yumi.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://www.yumi.com"
+                "command": "curl -kv --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://www.yumi.com"
             },
             "token": ""
         }
@@ -147,14 +147,15 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.88",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
+        "test_subcriber_id": "test6488",
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "vsys_id": 1,
+        "is_log": 1,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }

@@ -68,7 +68,7 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["ssl"],
-            "expected_return": "TSG CA",
+            "expected_return": "tfe",
             "counters_1": {},
             "log_query_param_1": [],
             "traffic": {

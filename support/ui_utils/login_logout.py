@@ -29,7 +29,7 @@ class LogInOut:
         self.driver.find_element(By.ID, loginPage_signIn_posId).click()
         print("Login to TSG successfully.", flush=True)
         # 消除右上角弹框
-        self.dismiss_rightTopTips()
+        self.dismiss_right_top_tips()
         # 切换至默认ui_vsys
         # self._check_ui_vsys()
         # 默认更改为英语
@@ -54,19 +54,19 @@ class LogInOut:
         profile_pub = ProfilePublicFunc(self.driver)
         profile_pub.change_vsys(vsys_name=vsys_name)
         
-    def dismiss_rightTopTips(self):
+    def dismiss_right_top_tips(self):
         # 消除弹框
         """
         :param close_button_elem_Xpath:
         :return:
         """
         close_button_elem_Xpath ='(//i[@class="iconfont icon-Delete_X"])[last()]'  # 全局右上提示窗关闭按钮（最新的一个）
-        self.driver.isElementExist(close_button_elem_Xpath)
+        self.driver.is_exist_element(close_button_elem_Xpath)
         loop_count = 2
         while loop_count > 0:
             try:
-                self.driver.isElementExist(close_button_elem_Xpath)
-                if self.driver.Exist:
+                self.driver.is_exist_element(close_button_elem_Xpath)
+                if self.driver.is_exist:
                     self.driver.find_element(By.XPATH, close_button_elem_Xpath).click()
                 loop_count -= 1
             except:

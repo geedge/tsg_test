@@ -141,13 +141,13 @@ if __name__ == "__main__":
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.88",
         "api_server": "http://192.168.44.72",
-        "test_subcriber_id": "test6488",
         "script_type": "api",
+        "test_subcriber_id": "test6488",
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/python_engine/tsg_test",
-        "path": "D:/python_engine/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }

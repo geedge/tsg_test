@@ -50,8 +50,8 @@ def download_files():
     # 需要判断，遇到https不安全时，点击高级-继续登录才可以访问https-tsg
     if "https" in tsglogin_url:
         print(2)
-        driver.isElementExist("//*[@id='details-button']")
-        if driver.Exist:
+        driver.is_exist_element("//*[@id='details-button']")
+        if driver.is_exist:
             print(3)
             if "高级" in driver.find_element(By.XPATH, "//*[@id='details-button']").text.strip():
                 print(4)
@@ -64,12 +64,12 @@ def download_files():
     myloginout = LogInOut
     # 消除右上角弹框
     close_button_elem_Xpath = '(//i[@class="iconfont icon-Delete_X"])[last()]'  # 全局右上提示窗关闭按钮（最新的一个）
-    driver.isElementExist(close_button_elem_Xpath)
+    driver.is_exist_element(close_button_elem_Xpath)
     loop_count = 2
     while loop_count > 0:
         try:
-            driver.isElementExist(close_button_elem_Xpath)
-            if driver.Exist:
+            driver.is_exist_element(close_button_elem_Xpath)
+            if driver.is_exist:
                 driver.find_element(By.XPATH, close_button_elem_Xpath).click()
             loop_count -= 1
         except:
@@ -106,7 +106,7 @@ def _vsys_account():
         loginout_parse.get("ui_vsys_Case_1", "passwd"))
     driver.find_element(By.ID, "login").click()
     login = loginout()
-    login.dismiss_rightTopTips()
+    login.dismiss_right_top_tips()
     return driver
 
 
@@ -170,14 +170,14 @@ class ObjectsPublicOperations:
         :param need_exclude: 是否需要获取exclude，默认1则获取，不为1则略过
         :return:
         """
-        # self.driver.isElementExist(Element='//div/div[3]/table/tbody/tr[1]')  # 查看第一行是否存在数据
-        self.driver.isElementExist(
+        # self.driver.is_exist_element(Element='//div/div[3]/table/tbody/tr[1]')  # 查看第一行是否存在数据
+        self.driver.is_exist_element(
             Element='((//div[@class!="itemDetails cursor"]//table[@class="el-table__body"])[1]//tr)[1]')  # 查看第一行是否存在数据
-        if self.driver.Exist:
+        if self.driver.is_exist:
             # 展示所有列
             self.driver.find_element(By.XPATH, mainPage_ObjectSearch_Column_settings_posXpath).click()  # 点击列设置
             all_checked_xpath = '//*[@class="all-btn"]//*[@class="el-checkbox__input is-checked"]'
-            if self.driver.element_isExist(By.XPATH, all_checked_xpath):  # 如果全选被选中
+            if self.driver.is_exist_element_by_value(By.XPATH, all_checked_xpath):  # 如果全选被选中
                 self.driver.find_element(By.XPATH,
                                          mainPage_ObjectSearch_Column_settings_click_Cancel_Button_posXpath).click()  # 点击Cancel按钮
             else:
@@ -241,12 +241,12 @@ class ObjectsPublicOperations:
             print("extract_ele TEST:{}".format(self.table_dict))
 
         #     try:
-        #         self.driver.isElementExist(Element=list_second_row_sixth_column_posXpath)
-        #         if self.driver.Exist:
+        #         self.driver.is_exist_element(Element=list_second_row_sixth_column_posXpath)
+        #         if self.driver.is_exist:
         #             self.value26 = self.driver.find_element(By.XPATH, list_second_row_sixth_column_posXpath).text
         #         else:
-        #             self.driver.isElementExist(Element='//table/tbody/tr[1]/td[6]/div/span')
-        #             if self.driver.Exist:
+        #             self.driver.is_exist_element(Element='//table/tbody/tr[1]/td[6]/div/span')
+        #             if self.driver.is_exist:
         #                 self.value26 = self.driver.find_element(By.XPATH, '//table/tbody/tr[1]/td[6]/div/span').text
         #             else:
         #                 self.value26 = "null"
@@ -255,12 +255,12 @@ class ObjectsPublicOperations:
         #     self.table_dict = {self.key11: self.value12, self.key12: self.value22, self.key13: self.value23,
         #                        "Datails": "null", self.key15: self.value25, self.key16: self.value26}
         # else:
-        #     assert self.driver.Exist
+        #     assert self.driver.is_exist
 
     # def extract_ele(self):
-    #     # self.driver.isElementExist(Element='//div/div[3]/table/tbody/tr[1]')  # 查看第一行是否存在数据
-    #     self.driver.isElementExist(Element='((//div[@class!="itemDetails cursor"]//table[@class="el-table__body"])[1]//tr)[1]')  # 查看第一行是否存在数据
-    #     if self.driver.Exist:
+    #     # self.driver.is_exist_element(Element='//div/div[3]/table/tbody/tr[1]')  # 查看第一行是否存在数据
+    #     self.driver.is_exist_element(Element='((//div[@class!="itemDetails cursor"]//table[@class="el-table__body"])[1]//tr)[1]')  # 查看第一行是否存在数据
+    #     if self.driver.is_exist:
     #         # 公共方法 Detail特殊，需要使用时特殊提取
     #         # ID
     #         self.key11 = self.driver.find_element(By.XPATH, list_first_row_first_column_posXpath).text
@@ -277,12 +277,12 @@ class ObjectsPublicOperations:
     #         # Description
     #         self.key16 = self.driver.find_element(By.XPATH, list_first_row_sixth_column_posXpath).text
     #         try:
-    #             self.driver.isElementExist(Element=list_second_row_sixth_column_posXpath)
-    #             if self.driver.Exist:
+    #             self.driver.is_exist_element(Element=list_second_row_sixth_column_posXpath)
+    #             if self.driver.is_exist:
     #                 self.value26 = self.driver.find_element(By.XPATH, list_second_row_sixth_column_posXpath).text
     #             else:
-    #                 self.driver.isElementExist(Element='//table/tbody/tr[1]/td[6]/div/span')
-    #                 if self.driver.Exist:
+    #                 self.driver.is_exist_element(Element='//table/tbody/tr[1]/td[6]/div/span')
+    #                 if self.driver.is_exist:
     #                     self.value26 = self.driver.find_element(By.XPATH, '//table/tbody/tr[1]/td[6]/div/span').text
     #                 else:
     #                     self.value26 = "null"
@@ -291,7 +291,7 @@ class ObjectsPublicOperations:
     #         self.table_dict = {self.key11: self.value12, self.key12: self.value22, self.key13: self.value23,
     #                            "Datails": "null", self.key15: self.value25, self.key16: self.value26}
     #     else:
-    #         assert self.driver.Exist
+    #         assert self.driver.is_exist
 
     # print(self.table_dict)
 
@@ -303,8 +303,8 @@ class ObjectsPublicOperations:
 
     def licenese_Check(self):
         try:
-            self.driver.isElementExist(Element='//div/div[1]/div[2]/div/div/div[3]/i')
-            if self.driver.Exist:
+            self.driver.is_exist_element(Element='//div/div[1]/div[2]/div/div/div[3]/i')
+            if self.driver.is_exist:
                 self.driver.find_element(By.XPATH, '//div/div[1]/div[2]/div/div/div[3]/i').click()
             else:
                 pass
@@ -313,8 +313,8 @@ class ObjectsPublicOperations:
 
     # 修改后元素===》断言
     def assert_ele(self):
-        self.driver.isElementExist(Element='//div/div[3]/table/tbody/tr[1]')  # 查看第一行是否存在数据
-        if self.driver.Exist:
+        self.driver.is_exist_element(Element='//div/div[3]/table/tbody/tr[1]')  # 查看第一行是否存在数据
+        if self.driver.is_exist:
             # ID
             self.key11 = self.driver.find_element(By.XPATH, list_first_row_first_column_posXpath).text
             self.value12 = self.driver.find_element(By.XPATH, list_second_row_first_column_posXpath).text
@@ -331,12 +331,12 @@ class ObjectsPublicOperations:
             # Description
             self.key16 = self.driver.find_element(By.XPATH, list_first_row_sixth_column_posXpath).text
             try:
-                self.driver.isElementExist(Element=list_second_row_sixth_column_posXpath)
-                if self.driver.Exist:
+                self.driver.is_exist_element(Element=list_second_row_sixth_column_posXpath)
+                if self.driver.is_exist:
                     self.value26 = self.driver.find_element(By.XPATH, list_second_row_sixth_column_posXpath).text
                 else:
-                    self.driver.isElementExist(Element='//table/tbody/tr/td[6]/div//span')
-                    if self.driver.Exist:
+                    self.driver.is_exist_element(Element='//table/tbody/tr/td[6]/div//span')
+                    if self.driver.is_exist:
                         self.value26 = self.driver.find_element(By.XPATH, '//table/tbody/tr/td[6]/div//span').text
             except:
                 self.value26 = "null"
@@ -344,7 +344,7 @@ class ObjectsPublicOperations:
             self.edit_table_dict = {self.key11: self.value12, self.key12: self.value22, self.key13: self.value23,
                                     "Datails": "null", self.key15: self.value25, self.key16: self.value26}
         else:
-            assert self.driver.Exist
+            assert self.driver.is_exist
 
     #   根据"->"进行分割，进行修改
     def Modify_object(self, data):
@@ -410,19 +410,19 @@ class ObjectsPublicOperations:
     def View_statistics(self, edit_element):
         # 主界面View验证
         self.driver.find_element(By.XPATH, main_listPage_object_statistics_view_postXpath).click()
-        self.driver.isElementExist(Element="(//div[@class='ObjectStatisticSlider'])[1]")
-        assert self.driver.Exist, "Statistics界面打开"
+        self.driver.is_exist_element(Element="(//div[@class='ObjectStatisticSlider'])[1]")
+        assert self.driver.is_exist, "Statistics界面打开"
         self.driver.find_element(By.XPATH, "(//div[@class='ObjectStatisticSlider']//span[text()='Cancel'])[2]").click()
         # 详情界面Statistics验证
         self.driver.find_element(By.XPATH, listPage_object_ip_address_select_First_object_posXpath).click()
         self.driver.find_element(By.ID, edit_element).click()
         self.driver.find_element(By.XPATH, "//div[@class='paper-grid-right']//span[text()='Statistics']").click()
-        self.driver.isElementExist(Element="(//div[@class='ObjectStatisticSlider'])[1]")
-        assert self.driver.Exist, "Statistics界面打开"
+        self.driver.is_exist_element(Element="(//div[@class='ObjectStatisticSlider'])[1]")
+        assert self.driver.is_exist, "Statistics界面打开"
 
     def Duplicate_check(self, data):
-        self.driver.isElementExist(Element=listPage_object_reprtition_check_postXpath)
-        assert self.driver.Exist, "重复ip"
+        self.driver.is_exist_element(Element=listPage_object_reprtition_check_postXpath)
+        assert self.driver.is_exist, "重复ip"
         if data["Search_type"] == "Name":
             self.driver.find_element(By.XPATH, listPage_object_reprtition_check_postXpath).click()
             self.total_count = self.driver.find_element(By.XPATH,
@@ -477,9 +477,9 @@ class ObjectsPublicOperations:
         destination_page_number = data["destination_page"]  # data中目标页码
         self.turn_page_falg = 1
 
-        listPage_max_page_elem_is_exist = self.driver.element_isExist(By.XPATH,
+        listPage_max_page_elem_is_exist = self.driver.is_exist_element_by_value(By.XPATH,
                                                                       listPage_object_pages_maxPageNumber_posXpath)
-        DrawerlistPage_max_page_elem_is_exist = self.driver.element_isExist(By.XPATH,
+        DrawerlistPage_max_page_elem_is_exist = self.driver.is_exist_element_by_value(By.XPATH,
                                                                             DrawerlistPage_object_pages_maxPageNumber_posXpath)
         if listPage_max_page_elem_is_exist or DrawerlistPage_max_page_elem_is_exist:  # 存在页码
             if page_flag == 1:  # 1-Object列表页
@@ -737,11 +737,11 @@ class ObjectsPublicOperations:
             goTo_input.send_keys(Keys.ENTER)  # 输入框中执行回车
         while True:  # 判断目标页码元素是否存在
             print("----------------In while")
-            self.driver.isElementExist(Element=destination_page_elem_Xpath)
-            # print("isElementExist:{}".format(self.driver.Exist))
+            self.driver.is_exist_element(Element=destination_page_elem_Xpath)
+            # print("is_exist_element:{}".format(self.driver.is_exist))
             current_page_number = self.driver.find_element(By.XPATH,
                                                            currentPageNumber_posXpath).text
-            if not self.driver.Exist:
+            if not self.driver.is_exist:
                 print("-----------quick exist!!!!")
 
                 if int(destination_page) > int(current_page_number):
@@ -783,8 +783,8 @@ class ObjectsPublicOperations:
     #         assert int(self.max_page / 2 + 1) == int(self.driver.find_element(By.XPATH,
     #                                                                           listPage_object_pages_currentPageNumber_posXpath).text), "断言所翻页码处于当前页"
     #     # 4、点击第五页进行翻页
-    #     self.driver.isElementExist(Element=listPage_object_pages_currentPageAreaMaxNumber_posXpath)
-    #     if self.driver.Exist:
+    #     self.driver.is_exist_element(Element=listPage_object_pages_currentPageAreaMaxNumber_posXpath)
+    #     if self.driver.is_exist:
     #         self.last_page = int(
     #             self.driver.find_element(By.XPATH, listPage_object_pages_currentPageAreaMaxNumber_posXpath).text)
     #         self.driver.find_element(By.XPATH, listPage_object_pages_currentPageAreaMaxNumber_posXpath).click()
@@ -823,19 +823,19 @@ class ObjectsPublicOperations:
             return False
 
     # 消除右上提示弹窗
-    def dismiss_rightTopTips(self, close_button_elem_Xpath=mainPage_rightTopTips_closeButton_posXpath):
+    def dismiss_right_top_tips(self, close_button_elem_Xpath=mainPage_rightTopTips_closeButton_posXpath):
         """
         :param close_button_elem_Xpath:
         :return:
         """
         # print("消除弹窗")
         # time.sleep(3)
-        self.driver.isElementExist(close_button_elem_Xpath)
+        self.driver.is_exist_element(close_button_elem_Xpath)
         loop_count = 2
         while loop_count > 0:
             try:
-                self.driver.isElementExist(close_button_elem_Xpath)
-                if self.driver.Exist:
+                self.driver.is_exist_element(close_button_elem_Xpath)
+                if self.driver.is_exist:
                     self.driver.find_element(By.XPATH, close_button_elem_Xpath).click()
                 loop_count -= 1
             except:
@@ -843,26 +843,26 @@ class ObjectsPublicOperations:
                 pass
 
         # try:
-        #     self.driver.isElementExist(Element="//div/div[1]/div[2]/div/div[2]/div[3]/i")
-        #     if self.driver.Exist:
+        #     self.driver.is_exist_element(Element="//div/div[1]/div[2]/div/div[2]/div[3]/i")
+        #     if self.driver.is_exist:
         #         self.driver.find_element(By.XPATH,'//div/div[1]/div[2]/div/div[2]/div[3]/i').click()
         # except:
         #     pass
         # try:
-        #     self.driver.isElementExist(Element="//div/div[1]/div[2]/div/div/div[3]/i")
-        #     if self.driver.Exist:
+        #     self.driver.is_exist_element(Element="//div/div[1]/div[2]/div/div/div[3]/i")
+        #     if self.driver.is_exist:
         #         self.driver.find_element(By.XPATH,'//div/div[1]/div[2]/div/div/div[3]/i').click()
         # except:
         #     pass
 
         # self.driver.implicitly_wait(5)
-        # self.driver.isElementExist(close_button_elem_Xpath)
-        # flag = self.driver.Exist
+        # self.driver.is_exist_element(close_button_elem_Xpath)
+        # flag = self.driver.is_exist
         # loop_count = 2
         # while flag and loop_count > 0:
         #     try:
-        #         self.driver.isElementExist(close_button_elem_Xpath)
-        #         flag = self.driver.Exist
+        #         self.driver.is_exist_element(close_button_elem_Xpath)
+        #         flag = self.driver.is_exist
         #         # close_button_elem = self.driver.find_element(By.XPATH, close_button_elem_Xpath)
         #         if flag:
         #             # 1
@@ -926,7 +926,7 @@ class ObjectsPublicOperations:
     def extract_ele_userdefinedAttributesAndSignatures(self):
         self.driver.find_element(By.XPATH, mainPage_ObjectSearch_Column_settings_posXpath).click()  # 点击列设置
         all_checked_xpath = '//*[@class="all-btn"]//*[@class="el-checkbox__input is-checked"]'
-        if self.driver.element_isExist(By.XPATH, all_checked_xpath):  # 如果全选被选中
+        if self.driver.is_exist_element_by_value(By.XPATH, all_checked_xpath):  # 如果全选被选中
             self.driver.find_element(By.XPATH,
                                      mainPage_ObjectSearch_Column_settings_click_Cancel_Button_posXpath).click()  # 点击Cancel按钮
         else:
@@ -969,13 +969,13 @@ class ObjectsPublicOperations:
             time.sleep(3)
             self.driver.find_element(By.XPATH,
                                      mobileIdentitiesObjectPage_Export_Mobile_Identity_files_OK_Button_posXpath).click()
-            self.driver.isElementExist(Element=mobileIdentitiesObjectPage_Export_Mobile_type_imsi_posXpath)  # imsi导出展示
-            assert self.driver.Exist
-            self.driver.isElementExist(
+            self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_Export_Mobile_type_imsi_posXpath)  # imsi导出展示
+            assert self.driver.is_exist
+            self.driver.is_exist_element(
                 Element=mobileIdentitiesObjectPage_Export_Mobile_type_phone_number_posXpath)  # imsi导出展示
-            assert self.driver.Exist
-            self.driver.isElementExist(Element=mobileIdentitiesObjectPage_Export_Mobile_type_imei_posXpath)  # imsi导出展示
-            assert self.driver.Exist
+            assert self.driver.is_exist
+            self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_Export_Mobile_type_imei_posXpath)  # imsi导出展示
+            assert self.driver.is_exist
             self.driver.find_element(By.XPATH, '//div/div[3]/span/button[2]').click()
             print("点击导出按钮，断言可以导出多个不同type类型 == Sucess")
         except:
@@ -992,9 +992,9 @@ class ObjectsPublicOperations:
         time.sleep(2)
         self.driver.find_element(By.XPATH, objects_element_position.mainPage_navigationBar_Menu_posXpath).click()
         try:
-            self.driver.isElementExist(Element=mobile_Identities_Group_confirm_leave_posXpath)
+            self.driver.is_exist_element(Element=mobile_Identities_Group_confirm_leave_posXpath)
             time.sleep(2)
-            if self.driver.Exist:
+            if self.driver.is_exist:
                 time.sleep(3)
                 self.driver.find_element(By.XPATH, mobile_Identities_Group_confirm_leave_posXpath).click()
         except:
@@ -1038,8 +1038,8 @@ class ObjectsPublicOperations:
 
     def assert_del(self):
         time.sleep(3)
-        self.driver.isElementExist(Element=listPage_object_mobileIdentities_select_First_object_posXpath)
-        if self.driver.Exist == False:
+        self.driver.is_exist_element(Element=listPage_object_mobileIdentities_select_First_object_posXpath)
+        if self.driver.is_exist == False:
             self.Page_Tips = self.driver.find_element(By.XPATH,
                                                       listPage_object_mobileIdentities_del_after_ele_posXpath).text
             try:
@@ -1079,25 +1079,25 @@ class ObjectsPublicOperations:
         self.driver.find_element(By.XPATH, listPage_object_mobileIdentities_allButton_posId).click()
         # 1、导出按钮置灰
         try:
-            self.driver.isElementExist(
+            self.driver.is_exist_element(
                 Element=mobileIdentitiesObjectPage_Export_Mobile_Identity_Button_posXpath)  # 导出按钮置灰
-            assert self.driver.Exist, "导出按钮置灰"
+            assert self.driver.is_exist, "导出按钮置灰"
             print("导出按钮置灰，测试 == Success")
         except:
             print("导出按钮置灰，测试 == Fail")
         # 2、编辑按钮置灰
         try:
-            self.driver.isElementExist(
+            self.driver.is_exist_element(
                 Element=mobileIdentitiesObjectPage_Edit_Mobile_Identity_Button_posXpath)  # 编辑按钮置灰
-            assert self.driver.Exist, "编辑按钮置灰"
+            assert self.driver.is_exist, "编辑按钮置灰"
             print("编辑按钮置灰，测试 == Success")
         except:
             print("编辑按钮置灰，测试 == Fail")
         # 3、删除按钮置灰
         try:
-            self.driver.isElementExist(
+            self.driver.is_exist_element(
                 Element=mobileIdentitiesObjectPage_Delete_Mobile_Identity_Button_posXpath)  # 删除按钮置灰
-            assert self.driver.Exist, "删除按钮置灰"
+            assert self.driver.is_exist, "删除按钮置灰"
             print("删除按钮置灰，测试 == Success")
         except:
             print("删除按钮置灰，测试 == Fail")
@@ -1108,16 +1108,16 @@ class ObjectsPublicOperations:
             self.driver.find_element(By.XPATH, listPage_object_mobileIdentities_allButton_posId).click()  # 选择all
             time.sleep(5)
             self.driver.find_element(By.ID, mainPage_secondLevelMenu_Mobile_Identities_posId).click()  # 刷新
-            self.driver.isElementExist(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
+            self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
             time.sleep(5)
-            assert self.driver.Exist, "刷新导致元素不勾选"
+            assert self.driver.is_exist, "刷新导致元素不勾选"
             print("刷新后元素不勾选，测试 == Success")
             time.sleep(5)
             self.driver.find_element(By.XPATH, listPage_object_mobileIdentities_allButton_posId).click()  # 选择all
             self.driver.find_element(By.XPATH, listPage_object_pages_nextPage_button_poxXpath).click()  # 第二页
-            self.driver.isElementExist(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
+            self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
             time.sleep(5)
-            assert self.driver.Exist, "翻页导致元素不勾选"
+            assert self.driver.is_exist, "翻页导致元素不勾选"
             print("翻页后元素不勾选，测试 == Success")
         except:
             print("翻页后元素不勾选，测试 == Fail")
@@ -1130,8 +1130,8 @@ class ObjectsPublicOperations:
                                      listPage_object_mobileIdentities_create_Mobile_Identity_Button_posId).click()
             self.driver.find_element(By.ID, mainPage_ObjectSearch_buttonAddItem_posId).click()
             time.sleep(3)
-            self.driver.isElementExist(Element=mobileIdentitiesObjectPage_import_files_Mobile_Identity_Button_posXpath)
-            assert self.driver.Exist
+            self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_import_files_Mobile_Identity_Button_posXpath)
+            assert self.driver.is_exist
             print("导入按钮置灰，测试 == Success")
         except:
             print("导入按钮未置灰，测试 == Fail")
@@ -1150,11 +1150,11 @@ class ObjectsPublicOperations:
                 self.my_files._obj_files_path(file_name=data["files_name"]))
             self.driver.find_element(By.XPATH,
                                      mobileIdentitiesObjectPage_Import_Mobile_Identity_files_OK_Button_posXpath).click()
-            self.driver.isElementExist(Element='//li/i[@class="iconfont icon-DownNormal fontsize16"]')
-            assert self.driver.Exist
+            self.driver.is_exist_element(Element='//li/i[@class="iconfont icon-DownNormal fontsize16"]')
+            assert self.driver.is_exist
             print("存在下载按钮，测试 == Success")
-            self.driver.isElementExist(Element='//li/i[@class="el-icon-close fontsize18"]')
-            assert self.driver.Exist
+            self.driver.is_exist_element(Element='//li/i[@class="el-icon-close fontsize18"]')
+            assert self.driver.is_exist
             print("存在删除按钮，测试 == Success")
         except:
             print("测试失败，不存在下载、删除按钮")
@@ -1165,18 +1165,18 @@ class ObjectsPublicOperations:
         self.driver.find_element(By.ID,
                                  listPage_object_mobileIdentities_create_Mobile_Identity_Group_Button_posId).click()
         # 查看可以开启Exclude/Include开关
-        self.driver.isElementExist(
+        self.driver.is_exist_element(
             Element=mobileIdentitiesObjectPage_Exclude_Objects_close_Mobile_Identity_Button_posXpath)
-        if self.driver.Exist:
+        if self.driver.is_exist:
             print("Exclude_Objects按钮开关为关，测试 == Success")
         else:
             print("Exclude_Objects按钮开关为开，测试 == Fail")
         # 查看可以开启Exclude/Include开关
         self.driver.find_element(By.XPATH,
                                  mobileIdentitiesObjectPage_Exclude_Objects_operation_Mobile_Identity_Button_posXpath).click()
-        self.driver.isElementExist(
+        self.driver.is_exist_element(
             Element=mobileIdentitiesObjectPage_Exclude_Objects_open_Mobile_Identity_Button_posXpath)
-        if self.driver.Exist:
+        if self.driver.is_exist:
             print("Exclude_Objects按钮开关为关，测试 == Success")
         else:
             print("Exclude_Objects按钮开关为开，测试 == Fail")

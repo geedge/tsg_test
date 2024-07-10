@@ -26,7 +26,7 @@ class CreateResponsePage():
         # print(resposne_file_abs)
         self.driver.find_element(By.XPATH, responsePage_input_file_posXpath).send_keys(file_abs)
         self.driver.find_element(By.CSS_SELECTOR, responsePage_button_oK_posCss).click()
-        if self.driver.element_isExist(By.CSS_SELECTOR, responsePage_button_warningSaveYes_posCss):
+        if self.driver.is_exist_element_by_value(By.CSS_SELECTOR, responsePage_button_warningSaveYes_posCss):
             self.driver.find_element(By.CSS_SELECTOR, responsePage_button_warningSaveYes_posCss).click()
         time.sleep(3)
         return profile_name
