@@ -51,7 +51,9 @@ def run(parameter):
             "rule_name": "packets_with_srcip_http",
             "rule_action": "statistics",
             "rule_type": "create",
-            "script_type": "ui",
+            "debug_flag": "local",
+        "test_subcriber_id": "test6489",
+        "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
@@ -409,6 +411,8 @@ if __name__ == '__main__':
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
         "test_case_name": "packets_srcip_http",
+        "debug_flag": "local",
+        "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
     }

@@ -82,7 +82,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "1111"
+                            "hbn@163.com"
                         ]
                         }
                     ]
