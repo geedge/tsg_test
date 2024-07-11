@@ -46,7 +46,7 @@ def run(parameter):
                         "latitude": "0",
                         "longitude": "0",
                         "addr_type": 4,
-                        "ip_address": "93.184.215.14"
+                        "ip_address": "192.168.40.206"
                         }
                     ]
                     }
@@ -61,7 +61,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -77,7 +77,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -92,7 +92,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -106,7 +106,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 https://www.example.com"
+                "command": "curl -kv --tlsv1.2 --connect-timeout 10 -m 10 https://open.node.com:1443"
             },
             "token": ""
         }

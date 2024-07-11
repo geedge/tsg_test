@@ -50,7 +50,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -66,7 +66,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -82,7 +82,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -91,12 +91,12 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["ssl"],
-            "expected_return": "invalid",
+            "expected_return": "timed out",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
+            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"open.node.com"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 20 -m 20 https://www.example.com"
+                "command": "curl -kv --tlsv1.2 --connect-timeout 10 -m 10 https://open.node.com:1443"
             },
             "token": ""
         }

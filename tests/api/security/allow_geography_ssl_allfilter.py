@@ -43,7 +43,7 @@ def run(parameter):
                         "latitude": "0",
                         "longitude": "0",
                         "addr_type": 4,
-                        "ip_address": "93.184.215.14"
+                        "ip_address": "192.168.40.206"
                         }
                     ]
                     }
@@ -58,7 +58,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -74,7 +74,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -89,7 +89,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "example"
+                            "node"
                         ]
                         }
                     ]
@@ -98,12 +98,12 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["ssl"],
-            "expected_return": "Example Domain",
+            "expected_return": "POST",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
+            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"open.node.com"}],
             "traffic": {
                 "type": "wget",
-                "command": "wget --debug  -q -O- https://www.example.com"
+                "command": "wget --debug  -q -O- https://open.node.com:1443"
             },
             "token": ""
         }
