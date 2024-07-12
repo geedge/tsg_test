@@ -68,7 +68,7 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["ftp"],
-            "expected_return": "SSL_ERROR_SYSCALL",
+            "expected_return": "reset",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],
             "traffic": {
@@ -140,18 +140,18 @@ def run(parameter):
       
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.88",
-        "test_subcriber_id": "test6488",
-        "api_server": "http://192.168.44.72",
-        "script_type": "api",
-        "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 0,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/api",
-        "module_name": "security",
-        "test_case_name": "allow_http_fqdn"
+      "script_type": "api",
+      "username": "hebingning",
+      "password": "hbn66AAA",
+      "test_pc_ip": "192.168.64.89",
+      "api_server": "http://192.168.44.72",
+      "test_subcriber_id": "test6488",
+      "is_log": 1,
+      "env": "tsgx",
+      "vsys_id": 11,
+      "root_path": "D:/python_script/tsg_test",
+      "path": "D:/python_script/tsg_test/tests/api",
+      "module_name": "security",
+      "test_case_name": "allow_app-deny_app"
     }
     run(parameter)

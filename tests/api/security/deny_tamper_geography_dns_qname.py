@@ -69,7 +69,7 @@ def run(parameter):
             ],
             "app_name_1": ["dns"],
             "expected_return": "SERVFAIL",
-            "counters_1": {"hits": 2},
+            "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",

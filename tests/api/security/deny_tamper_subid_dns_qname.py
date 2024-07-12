@@ -60,7 +60,7 @@ def run(parameter):
             ],
             "app_name_1": ["dns"],
             "expected_return": "SERVFAIL",
-            "counters_1": {"hits": 2},
+            "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
@@ -131,17 +131,18 @@ def run(parameter):
       
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
-        "api_server": "http://192.168.44.72",
-        "script_type": "api",
-        "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
-        "module_name": "security",
-        "test_case_name": "allow_http_fqdn"
+      "script_type": "api",
+      "username": "hebingning",
+      "password": "hbn66AAA",
+      "test_pc_ip": "192.168.64.89",
+      "api_server": "http://192.168.44.72",
+      "test_subcriber_id": "test6490",
+      "is_log": 1,
+      "env": "tsgx",
+      "vsys_id": 11,
+      "root_path": "D:/python_script/tsg_test",
+      "path": "D:/python_script/tsg_test/tests/api",
+      "module_name": "security",
+      "test_case_name": "allow_app-deny_app"
     }
     run(parameter)
