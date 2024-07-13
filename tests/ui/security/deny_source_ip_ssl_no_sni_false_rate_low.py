@@ -100,7 +100,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "timed out",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"server_port", "query_value": "1443"}],
+            "log_query_param_1": [{"query_field_key":"server_port", "query_value": 1443}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 https://open.node.com:1443"

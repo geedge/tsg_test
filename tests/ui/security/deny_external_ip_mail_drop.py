@@ -94,7 +94,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "SSL_ERROR_SYSCALL",
+            "expected_return": "reset",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {

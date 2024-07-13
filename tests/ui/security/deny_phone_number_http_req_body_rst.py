@@ -113,7 +113,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "SSL_ERROR_SYSCALL",
+            "expected_return": "reset",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
             "traffic": {
