@@ -1,14 +1,10 @@
 # -*- coding: UTF-8 -*-
-import time
 import os
 import sys
-import os
-import sys
-
-from support.api_utils.delete_policy import *
-from support.ui_utils.profile.search_profile import SearchProfile
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from support.api_utils.delete_policy import *
+from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
