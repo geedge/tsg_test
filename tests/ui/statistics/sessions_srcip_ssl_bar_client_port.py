@@ -26,10 +26,11 @@ from support.api_utils.delete_policy import *
 import traceback
 
 from support.report import *
+from datetime import datetime
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -217,7 +218,7 @@ def run(parameter):
                     element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
-                        print("Create {} object successfully.".format(cond_key), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key), flush=True)
                     else:
                         result = "Fail to create {} object.".format(cond_key)
                         cond_status = 1
@@ -238,7 +239,7 @@ def run(parameter):
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
                 create_statistics_template_code = cond_code
                 if cond_code == 200:
-                    print("Create {} Profile successfully.".format("statistics_template"), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} Profile successfully.".format("statistics_template"), flush=True)
                 else:
                     result = "Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
@@ -262,7 +263,7 @@ def run(parameter):
             # if search_rule_code == 200:
             # policies_ids = first_row_id
             if create_rule_code == 200:
-                print("Create {} rule successfully.".format(test_data["policy_type"]))
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"]))
             elif create_rule_code != 200:
                 result = "Fail to create {} rule.".format(test_data["policy_type"])
 
@@ -295,9 +296,9 @@ def run(parameter):
                 analysis = AnalysisResult()
                 result = analysis.analysis_result(test_data, [], verification_result)
                 if len(result) == 0:
-                    print("The test case is passed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                 elif len(result) != 0:
-                    print("The test case is failed. The failure reason is: ", result, flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
 
         # 避免报错：stale element not found
         time.sleep(5)
@@ -311,7 +312,7 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete Statistics rule successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete Statistics rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
@@ -333,7 +334,7 @@ def run(parameter):
                             delete_prfi = DeleteProfile(driver)
                             delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
                             if delete_prfi_code == 200:
-                                print("Delete {} profile successfully.".format(prfi_key_out), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
                             else:
                                 result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
                                 break
@@ -363,7 +364,7 @@ def run(parameter):
                             delete_cond = DeleteObject(driver)
                             delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                             if delete_cond_code == 200:
-                                print("Delete {} object successfully.".format(cond_key), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(cond_key), flush=True)
                             else:
                                 result = result + " In addition, fail to delete {} object.".format(cond_key)
                                 break
@@ -379,12 +380,12 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
 
-        print("Finish test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e, flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         traceback.print_exc()
         return "Error: " + str(e)
     finally:

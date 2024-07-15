@@ -61,7 +61,7 @@ class ProfilePublicFunc:
         headers = element_header.find_elements(By.XPATH, "th")     # table header
         rows = element_tbody.find_elements(By.XPATH, "tr")     # table body
         if len(rows) == 0:
-            #print(f"没有查询到数据：查询条件：{kwargs}")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"没有查询到数据：查询条件：{kwargs}")
             return [0, 0]
         map_header_className = {}  # 表头名称和th.class的映射，为了从表body中取对应列的值{"ID":"33"}
         for th in headers:
@@ -125,17 +125,17 @@ class ProfilePublicFunc:
         """
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
         if vsys_name.lower() == current_vsys_name:
-            # print(f"the current vsys: {current_vsys_name}")
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the current vsys: {current_vsys_name}")
             return 0
         else:    # 空为切换默认   剩下为指定切换
             if vsys_name == "":     # 空，切换到默认vsys
                 change_vsys_name = "UIAutoTestVsys"
                 if change_vsys_name.lower() == current_vsys_name:    # 如果默认系统和当前一直，也不用点击
-                    # print(f"the current vsys: {current_vsys_name}")
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the current vsys: {current_vsys_name}")
                     return 0
             else:     # 切换到指定vsys
                 change_vsys_name = vsys_name
-            # print(f"the current vsys: {current_vsys_name}, switch to vsys: {change_vsys_name}")
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the current vsys: {current_vsys_name}, switch to vsys: {change_vsys_name}")
             self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
             vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
             flag_num = 0
@@ -146,7 +146,7 @@ class ProfilePublicFunc:
                     el_vsys_item.click()
                     break
             if flag_num == 0:
-                # print(f"no vsys: {change_vsys_name}")
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"no vsys: {change_vsys_name}")
                 raise ValueError(f"no vsys: {change_vsys_name}")
 
     def column_setting(self, mainPage_profileColumn_columnSetting_posId,listPage_profileColumn_button_columnAll_posId,
@@ -176,7 +176,7 @@ class ProfilePublicFunc:
             self.driver.find_element(By.ID, listPage_profileColumn_button_ok_posId).click()  # 点击ok按钮
         else:
             for name in column:
-                # print("name=", name)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "name=", name)
                 self.driver.find_element(By.XPATH, f"//*[@id='dropColRes-_ElementSet_{Profiles}_Home_App_anonymousComponent']/span[text()='{name}']").click()  # 选择指定列按钮
             self.driver.find_element(By.ID, listPage_profileColumn_button_ok_posId).click()  # 点击ok按钮
         element_header = self.driver.find_element(By.XPATH, "//div[contains(@class,'ly-table1')]//table[@class='el-table__header']//thead//tr")  # 查询table的header
@@ -185,7 +185,7 @@ class ProfilePublicFunc:
         for th in headers:
             self.driver.execute_script("arguments[0].scrollIntoView();", th)
             header_content = th.text.strip()
-            # print("header_content=", header_content)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "header_content=", header_content)
             if header_content != "":
                 headers_content.append(header_content)
         return headers_content
@@ -209,7 +209,7 @@ class ProfilePublicFunc:
             # 当前页XPATH
             current_page = f"//*[@id='pagination-_pagination_{profiles}_Home_App_anonymousComponent']//li[contains(@class, 'active')]"
             current_page_content = self.driver.find_element(By.XPATH, current_page).text.strip()
-            # print("current_page_content=", current_page_content)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_content=", current_page_content)
             flag = str(number + 1)
             pytest_check.equal(current_page_content, flag, msg="所在行数{}".format(inspect.currentframe().f_lineno))
             time.sleep(0.5)
@@ -228,7 +228,7 @@ class ProfilePublicFunc:
         # Go to
         for _ in range(3):
             random_page = random.sample(range(1, pages+1), 1)[0]
-            # print("random_page=", random_page)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "random_page=", random_page)
             self.driver.find_element(By.XPATH, "//span[text()='Go to']//input").send_keys(Keys.CONTROL + "a")
             self.driver.find_element(By.XPATH, "//span[text()='Go to']//input").send_keys(Keys.BACKSPACE)
             self.driver.find_element(By.XPATH, "//span[text()='Go to']//input").send_keys(random_page)
@@ -245,14 +245,14 @@ class ProfilePublicFunc:
             enview_pages = []
             if pages < 8:
                 random_page = random.sample(range(1, pages+1), 1)[0]
-                # print("random_page=", random_page)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "random_page=", random_page)
                 self.driver.find_element(By.XPATH, f"//li[text()='{random_page}']").click()
             if pages >= 8:
                 for i in range(len(enview_pages_element)):
-                    # print("1=", enview_pages_element[i].text)
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "1=", enview_pages_element[i].text)
                     if enview_pages_element[i].text != "":
                         enview_pages.append(enview_pages_element[i].text)
-                # print(enview_pages)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], enview_pages)
                 random_page = random.sample(range(1, len(enview_pages) + 1), 1)[0]
                 random_page = int(enview_pages[random_page-1])
                 self.driver.find_element(By.XPATH, f"//li[text()='{random_page}']").click()
@@ -326,14 +326,14 @@ class ProfilePublicFunc:
         """校验数据是否只有查看权限"""
         # 校验当前数据是否为只能查看
         text_view = self.driver.find_element(By.ID, listPage_profile_profiles_editButton_posId).text.strip()
-        # print("text_view=", text_view)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "text_view=", text_view)
         pytest_check.equal(self.driver.find_element(By.ID, listPage_profile_profiles_editButton_posId).text.strip(), "View", msg="所在行数{}".format(inspect.currentframe().f_lineno))
         # 校验删除按钮是否置灰
         text_del = self.driver.find_element(By.ID,
                                             listPage_profile_profiles_delButton_posId).get_attribute("class")
-        # print("text_del=", text_del)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "text_del=", text_del)
         disabled_class = text_del.split(" ")[-1].strip()
-        # print("disabled_class=", disabled_class)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "disabled_class=", disabled_class)
         pytest_check.equal(disabled_class, "is-disabled", msg="所在行数{}".format(inspect.currentframe().f_lineno))
         # 校验是否带锁
         self.driver.is_exist_element("//i[@class='iconfont icon-lock']")
@@ -370,7 +370,7 @@ class ProfilePublicFunc:
             self.driver.find_element(By.XPATH, rule_application_search_posXpath).send_keys(Keys.ENTER)
             self.driver.find_element(By.XPATH, "//div[@class='AppList list-box']//div[@class='CommonListDetail list-detail']//ul[contains(@class, 'tableList')]/li[1]").click()
         # Action Parameters
-        # print("actionParameters=", actionParameters)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "actionParameters=", actionParameters)
         if action == "Security_Deny":
             if application == "dns":
                 # 勾选Override Application Deny Action
@@ -484,7 +484,7 @@ class ProfilePublicFunc:
                     self.driver.find_element(By.XPATH, actionParameters[4]).send_keys(Keys.ENTER)
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH, "(//div[@class='select-search-option'])[6]/li")
-                    # print("len(profile_results):", len(profile_results))
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH, "(//div[@class='select-search-option'])[6]/li").text.strip(),
@@ -495,7 +495,7 @@ class ProfilePublicFunc:
                         # result = self.driver.find_element(By.XPATH, "(//div[@class='select-search-option'])[6]/li[2]").get_attribute("value")
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='Traffic Mirror Profile']/parent::div//input").get_attribute("value")
-                        # print("result=", result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "result=", result)
                 elif actionParameters[0] == "SSL_Decryption_Keyring":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
@@ -503,7 +503,7 @@ class ProfilePublicFunc:
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH,
                                                                 "(//div[@class='select-search-option'])[6]/li")
-                    # print("len(profile_results):", len(profile_results))
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH,
@@ -513,14 +513,14 @@ class ProfilePublicFunc:
                     elif len(profile_results) > 1:
                         profile_results[1].click()   # 获取第一条profile [0]为No Data
                         result = self.driver.find_element(By.XPATH, f"//label[text()='{actionParameters[3]}']/parent::div//input").get_attribute("value")
-                        # print("result=", result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "result=", result)
                 elif actionParameters[0] == "SSL_Decryption_Profile":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(Keys.ENTER)
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH, "(//div[@class='select-search-option'])[6]/li")
-                    # print("len(profile_results):", len(profile_results))
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH, "(//div[@class='select-search-option'])[6]/li").text.strip(),
@@ -530,7 +530,7 @@ class ProfilePublicFunc:
                         profile_results[1].click()  # 获取第一条profile [0]为No Data
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='Decryption Profile']/parent::div//input").get_attribute("value")
-                        # print("result=", result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "result=", result)
                 elif actionParameters[0] == "TCP_Proxy_Profile":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
@@ -538,7 +538,7 @@ class ProfilePublicFunc:
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH,
                                                                 "(//div[@class='select-search-option'])[6]/li")
-                    # print("len(profile_results):", len(profile_results))
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH,
@@ -550,11 +550,11 @@ class ProfilePublicFunc:
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='TCP Proxy Profile']/parent::div//input").get_attribute(
                             "value")
-                        # print("result=", result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "result=", result)
         time.sleep(2)
         # 保存策略
         if result =="No Data":
-        #    print("无可引用的文件,取消创建")
+        #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "无可引用的文件,取消创建")
            self.driver.find_element(By.ID, rule_button_cancel_posId).click()
            if self.driver.find_element(By.CSS_SELECTOR, rule_button_warningSaveYes_posCss).is_displayed():
                self.driver.find_element(By.CSS_SELECTOR, rule_button_warningSaveYes_posCss).click()
@@ -595,7 +595,7 @@ class ProfilePublicFunc:
         headers = element_header.find_elements(By.XPATH, "th")     # table header
         rows = element_tbody.find_elements(By.XPATH, "tr")     # table body
         if len(rows) == 0:
-            #print(f"没有查询到数据：查询条件：{kwargs}")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"没有查询到数据：查询条件：{kwargs}")
             return 0
         map_header_className = {}  # 表头名称和th.class的映射，为了从表body中取对应列的值{"ID":"33"}
         for th in headers:

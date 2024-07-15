@@ -66,7 +66,7 @@ class ProfilesPublicOperations:
         headers = element_header.find_elements(By.XPATH, "th")  # table header
         rows = element_tbody.find_elements(By.XPATH, "tr")  # table body
         if len(rows) == 0:
-            #print(f"没有查询到数据：查询条件：{kwargs}")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"没有查询到数据：查询条件：{kwargs}")
             return [0, 0]
         map_header_className = {}  # 表头名称和th.class的映射，为了从表body中取对应列的值{"ID":"33"}
         for th in headers:
@@ -101,7 +101,7 @@ class ProfilesPublicOperations:
         table_rows = self.getListPageTableContents(el_body=el_body)  # 获得到<tbody>的所有<tr>行元素集合
         id_checkbox_dict = {}
         if len(table_rows) == 0:
-            print("列表页中没有数据...")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "列表页中没有数据...")
         else:  # 取出每个行数据
             for tr_s in table_rows:  # 取出每一个行
                 el_first_data = tr_s.find_element(By.XPATH, "./td[1]")  # 只取第一单元格数据
@@ -109,13 +109,13 @@ class ProfilesPublicOperations:
                     first_data_checkbox_class = el_first_data.find_element(By.XPATH, ".//div[@class='table-status-box']//label[contains(@class, 'checkbox')]").get_attribute("class")
                     first_data_id = el_first_data.find_element(By.XPATH, ".//div[@class='table-status-box']//div[contains(@class, 'table-status-item-id')]//span").text.strip()
                 elif sublevel_path_model == 1:   # 适用于profiles--ssl fingerprints模块的class和id取用
-                    #print(el_first_data.get_attribute('outerHTML'))
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], el_first_data.get_attribute('outerHTML'))
                     first_data_checkbox_class = el_first_data.find_element(By.XPATH, ".//*[contains(@class, 'el-checkbox__input')]").get_attribute("class")
                     first_data_id = el_first_data.find_element(By.XPATH, ".//*[contains(@class, 'el-checkbox__original')]").get_attribute("value")
                 else:
-                    print("sublevel_path_model传入的参数不准确，请检查...")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "sublevel_path_model传入的参数不准确，请检查...")
                 id_checkbox_dict[first_data_id] = first_data_checkbox_class
-            #print(id_checkbox_dict)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_checkbox_dict)
             return id_checkbox_dict
 
     def linkdata(self, link_list_dict, listPage_profile_dnsRecords_linkButton_posId, listPage_linkTips_dnsRecords_button_save_posXpath,
@@ -163,10 +163,10 @@ class ProfilesPublicOperations:
         # 状态断言
         status_info = "color: rgb(141, 203, 75);"
         rows = self.driver.find_element(By.XPATH, listPage_profilTable_dnsRecords_tableTbody_posXpath).find_elements(By.XPATH, "./tr")
-        print(len(rows))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], len(rows))
         for row_0 in rows:
             status_style = row_0.find_element(By.XPATH, "./td[7]//i").get_attribute("style")
-            print(status_style)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], status_style)
             pytest_check.is_in(status_info, status_style, msg="所在行数{}".format(inspect.currentframe().f_lineno))
 
     def select_lock_and_referenceCount(self, rows, islock=False, referenceCount=0):
@@ -185,7 +185,7 @@ class ProfilesPublicOperations:
             child_class_list = []
             el_child_list = el_td_1.find_elements(By.XPATH, ".//*")
             for el_child_item in el_child_list:
-                # print(el_child_item.get_attribute("class"))
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], el_child_item.get_attribute("class"))
                 child_class_list.append(el_child_item.get_attribute("class"))
             # 如果没有 icon-lock 属性，则需要点击选择框
             child_class_list = list(set(child_class_list))  # 去重
@@ -196,7 +196,7 @@ class ProfilesPublicOperations:
                 if "icon-lock" in _:
                     lock_flag = 1  # 有锁 则变成1
                     break
-                    # print(child_class_list)
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], child_class_list)
             # 再次查找元素是引用是否不为0
             el_td_list = row_item.find_elements(By.XPATH, "./td")  # 每一列操作
             # 判断一下，是否存在 Reference Count 列，如果存在，则需要进一步操作
@@ -206,12 +206,12 @@ class ProfilesPublicOperations:
                 for td_child in td_item_childs:
                     td_item_id_list.append(td_child.get_attribute("id"))
                 td_item_id_list = list(set(td_item_id_list))  # 去重
-                # print(td_item_id_list)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], td_item_id_list)
                 refer_except = "ReferenceData-"  # ReferenceData-_DNSRecordProfile_Home_App_anonymousComponent  id中存在预期值即可
                 for td_id_item in td_item_id_list:
                     if refer_except in td_id_item:  # 存在这个部分id属性即可
                         refer_counter_actual = el_td_item.find_element(By.XPATH, f".//*[@id='{td_id_item}']").text.strip()
-                        print(td_id_item, ">>>", refer_counter_actual)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], td_id_item, ">>>", refer_counter_actual)
                         if refer_counter_actual != "0":    #
                             refer_count = 1  # 引用数不为 0
 
@@ -248,12 +248,12 @@ class ProfilesPublicOperations:
         :return:
         """
         id_checkbox_dict = self.getListPage_firstTableData_checkBoxClass_and_ID(el_body=el_body, sublevel_path_model=sublevel_path_model)
-        print(id_checkbox_dict)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_checkbox_dict)
         if id_checkbox_dict == {}:
             return 0
         # 点击all前属性判断，此时无is-checked 属性
         first_data_checkbox_class_except = "is-checked"
-        print("all button 点击前属性验证...")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "all button 点击前属性验证...")
         for k,v in id_checkbox_dict.items():
             pytest_check.is_not_in(first_data_checkbox_class_except, v, msg="所在行数{}".format(inspect.currentframe().f_lineno))
 
@@ -261,21 +261,21 @@ class ProfilesPublicOperations:
         self.driver.find_element(By.XPATH, el_all_btn).click()
         time.sleep(1)
         id_checkbox_dict = self.getListPage_firstTableData_checkBoxClass_and_ID(el_body=el_body)
-        print(id_checkbox_dict)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_checkbox_dict)
         if id_checkbox_dict == {}:
             return 0
-        print("all button 点击后属性验证...")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "all button 点击后属性验证...")
         for k,v in id_checkbox_dict.items():
             pytest_check.is_in(first_data_checkbox_class_except, v, msg="所在行数{}".format(inspect.currentframe().f_lineno))
 
         # 再点击all，取消点击后，属性判断，此时没有is-checked 属性
         self.driver.find_element(By.XPATH, el_all_btn).click()
         id_checkbox_dict = self.getListPage_firstTableData_checkBoxClass_and_ID(el_body=el_body)
-        print(id_checkbox_dict)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_checkbox_dict)
         if id_checkbox_dict == {}:
             return 0
         # 取消all点击后判断，此时无is-checked 属性
-        print("all button 取消点击后属性验证...")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "all button 取消点击后属性验证...")
         for k,v in id_checkbox_dict.items():
             pytest_check.is_not_in(first_data_checkbox_class_except, v, msg="所在行数{}".format(inspect.currentframe().f_lineno))
 
@@ -317,13 +317,13 @@ class ProfilesPublicOperations:
             ip = ipaddress.ip_address(ip_str)
             # 检查地址类型
             if isinstance(ip, ipaddress.IPv4Address):
-                print(f"{ip_str} 是一个有效的 IPv4 地址")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"{ip_str} 是一个有效的 IPv4 地址")
                 return "ipv4"
             elif isinstance(ip, ipaddress.IPv6Address):
-                print("{ip_str} 是一个有效的 IPv6 地址")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{ip_str} 是一个有效的 IPv6 地址")
                 return "ipv6"
         except ValueError:
-            print(f"{ip_str} 不是一个有效的 IP 地址")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"{ip_str} 不是一个有效的 IP 地址")
             return "not_ip"
 
     def get_name_from_data(self, data):
@@ -347,7 +347,7 @@ class ProfilesPublicOperations:
         """
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath, find_before_wait_time=0.6, ).text.strip().lower()
         if vsys_name.lower() == current_vsys_name:
-            #print(f"当前系统所在vsys：{current_vsys_name}")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"当前系统所在vsys：{current_vsys_name}")
             return 0
         else:  # 空为切换默认   剩下为指定切换
             if vsys_name == "":  # 空，切换到默认vsys
@@ -357,18 +357,18 @@ class ProfilesPublicOperations:
                 change_vsys_name = config_content.get("vsys", "vsys_name")
                 # change_vsys_name = "UIAutoTestVsys"
                 if change_vsys_name.lower() == current_vsys_name:  # 如果默认系统和当前一直，也不用点击
-                    #print(f"当前系统所在vsys：{current_vsys_name}")
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"当前系统所在vsys：{current_vsys_name}")
                     return 0
             else:  # 切换到指定vsys
                 change_vsys_name = vsys_name
-            #print(f"当前系统所在vsys：{current_vsys_name}，需要切换到vsys：{change_vsys_name}")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"当前系统所在vsys：{current_vsys_name}，需要切换到vsys：{change_vsys_name}")
             self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()  # 点击vsys menu
             # 如果切换vsys时弹出 Leave this page?的确认弹窗，点击确认
             if self.driver.is_exist_element_by_value(By.XPATH, leave_this_page_elem_Xpath, timeout=0.5):
                 try:   # 上述条件判断中，会存在会存在对应的元素，但是没有提示框情况，因此异常跳过继续执行
                     self.driver.find_element(By.XPATH, leave_this_page_ok_elem_Xpath).click()
                 except:
-                    print("上述点击步骤存在异常，跳过继续执行...")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "上述点击步骤存在异常，跳过继续执行...")
                     pass
             else:
                 pass
@@ -381,7 +381,7 @@ class ProfilesPublicOperations:
                     el_vsys_item.click()
                     break
             if flag_num == 0:
-                #print(f"测试用户没有vsys：{change_vsys_name}")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"测试用户没有vsys：{change_vsys_name}")
                 raise ValueError(f"user vsys:{change_vsys_name}")
 
     def column_setting(self, mainPage_profileColumn_columnSetting_posId,
@@ -404,7 +404,7 @@ class ProfilesPublicOperations:
         columnAll_class = self.driver.find_element(By.XPATH,
                                                    listPage_profileColumn_button_columnAll_posXpath).get_attribute(
             "class").split()
-        print("columnAll_class=", columnAll_class)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "columnAll_class=", columnAll_class)
         if column_flags == 0:  # 保持当前状态
             self.driver.find_element(By.ID, listPage_profileColumn_button_cancel_posId).click()  # 点击cancel按钮
         elif column_flags == 1:  # 仅显示默认列
@@ -425,20 +425,20 @@ class ProfilesPublicOperations:
                 self.driver.find_element(By.ID, listPage_profileColumn_button_ok_posId).click()  # 点击ok按钮
         else:
             for name in column:
-                # print("name=", name)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "name=", name)
                 self.driver.find_element(By.XPATH,
                                          f"//*[@id='dropColRes-_ElementSet_{Profiles}_Home_App_anonymousComponent']//span[contains(text(),'{name}')]").click()  # 选择指定列按钮
             self.driver.find_element(By.ID, listPage_profileColumn_button_ok_posId).click()  # 点击ok按钮
         element_header = self.driver.find_element(By.XPATH,
                                                   "//div[contains(@class,'ly-table1')]//table[@class='el-table__header']//thead//tr")  # 查询table的header
         headers = element_header.find_elements(By.XPATH, "//th[@colspan='1']")  # table header
-        # print("headers=", headers)
-        # print("headers_len=", len(headers))
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "headers=", headers)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "headers_len=", len(headers))
         headers_content = []
         for th in headers:
             self.driver.execute_script("arguments[0].scrollIntoView();", th)
             header_content = th.text.strip()
-            # print("header_content=", header_content)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "header_content=", header_content)
             if header_content != "":
                 headers_content.append(header_content)
         return headers_content
@@ -464,7 +464,7 @@ class ProfilesPublicOperations:
             # 当前页XPATH
             current_page = f"//*[@id='pagination-_pagination_{profiles}_Home_App_anonymousComponent']//li[contains(@class, 'active')]"
             current_page_content = self.driver.find_element(By.XPATH, current_page).text.strip()
-            # print("current_page_content=", current_page_content)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_content=", current_page_content)
             flag = str(number + 1)
             pytest_check.equal(current_page_content, flag, msg="所在行数{}".format(inspect.currentframe().f_lineno))
             time.sleep(0.5)
@@ -483,7 +483,7 @@ class ProfilesPublicOperations:
         # Go to
         for _ in range(3):
             random_page = random.sample(range(1, pages + 1), 1)[0]
-            print("random_page=", random_page)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "random_page=", random_page)
             self.driver.find_element(By.XPATH, "//div[@class='pagination']//span[text()='Go to']//input").send_keys(Keys.CONTROL + "a")
             self.driver.find_element(By.XPATH, "//div[@class='pagination']//span[text()='Go to']//input").send_keys(Keys.BACKSPACE)
             self.driver.find_element(By.XPATH, "//div[@class='pagination']//span[text()='Go to']//input").send_keys(random_page)
@@ -501,15 +501,15 @@ class ProfilesPublicOperations:
             enview_pages = []
             if pages < 8:
                 random_page = random.sample(range(1, pages + 1), 1)[0]
-                print("random_page=", random_page)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "random_page=", random_page)
                 btn = self.driver.find_element(By.XPATH, f"//li[text()='{random_page}']")
                 self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             if pages >= 8:
                 for i in range(len(enview_pages_element)):
-                    print("1=", enview_pages_element[i].text)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "1=", enview_pages_element[i].text)
                     if enview_pages_element[i].text != "":
                         enview_pages.append(enview_pages_element[i].text)
-                # print(enview_pages)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], enview_pages)
                 random_page = random.sample(range(1, len(enview_pages) + 1), 1)[0]
                 random_page = int(enview_pages[random_page - 1])
                 btn2 = self.driver.find_element(By.XPATH, f"//li[text()='{random_page}']")
@@ -544,7 +544,7 @@ class ProfilesPublicOperations:
             # 当前页XPATH
             current_page = f"//*[@id='pagination-_pagination_{profiles}_Home_App_anonymousComponent']//li[contains(@class, 'active')]"
             current_page_content = int(self.driver.find_element(By.XPATH, current_page).text.strip())
-            # print("current_page_content=", current_page_content)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_content=", current_page_content)
             pages = pages - 1
             pytest_check.equal(current_page_content, pages, msg="所在行数{}".format(inspect.currentframe().f_lineno))
             time.sleep(0.5)
@@ -575,13 +575,13 @@ class ProfilesPublicOperations:
         element_header = self.driver.find_element(By.XPATH,
                                                   "//div[contains(@class,'ly-table1')]//table[@class='el-table__header']//thead//tr")  # 查询table的header
         headers = element_header.find_elements(By.XPATH, "//th[@colspan='1']")  # table header
-        # print("headers=", headers)
-        # print("headers_len=", len(headers))
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "headers=", headers)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "headers_len=", len(headers))
         headers_content = []
         for th in headers:
             self.driver.execute_script("arguments[0].scrollIntoView();", th)
             header_content = th.text.strip()
-            # print("header_content=", header_content)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "header_content=", header_content)
             if header_content != "":
                 headers_content.append(header_content)
         return headers_content
@@ -590,15 +590,15 @@ class ProfilesPublicOperations:
         """校验数据是否只有查看权限"""
         # 校验当前数据是否为只能查看
         text_view = self.driver.find_element(By.ID, listPage_profile_profiles_editButton_posId).text.strip()
-        print("text_view=", text_view)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "text_view=", text_view)
         pytest_check.equal(self.driver.find_element(By.ID, listPage_profile_profiles_editButton_posId).text.strip(),
                            "View", msg="所在行数{}".format(inspect.currentframe().f_lineno))
         # 校验删除按钮是否置灰
         text_del = self.driver.find_element(By.ID,
                                             listPage_profile_profiles_delButton_posId).get_attribute("class")
-        print("text_del=", text_del)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "text_del=", text_del)
         disabled_class = text_del.split(" ")[-1].strip()
-        print("disabled_class=", disabled_class)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "disabled_class=", disabled_class)
         pytest_check.equal(disabled_class, "is-disabled", msg="所在行数{}".format(inspect.currentframe().f_lineno))
         # 校验是否带锁
         self.driver.is_exist_element("//i[@class='iconfont icon-lock']")
@@ -642,7 +642,7 @@ class ProfilesPublicOperations:
             self.driver.find_element(By.XPATH,
                                      "//div[@class='AppList list-box']//div[@class='CommonListDetail list-detail']//ul[contains(@class, 'tableList')]/li[1]").click()
         # Action Parameters
-        print("actionParameters=", actionParameters)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "actionParameters=", actionParameters)
         if action == "Security_Deny":
             if application == "dns":
                 # 勾选Override Application Deny Action
@@ -780,7 +780,7 @@ class ProfilesPublicOperations:
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH,
                                                                 "(//div[@class='select-search-option'])[6]/li")
-                    print("len(profile_results):", len(profile_results))
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH,
@@ -793,7 +793,7 @@ class ProfilesPublicOperations:
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='Traffic Mirror Profile']/parent::div//input").get_attribute(
                             "value")
-                        print("result=", result)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "result=", result)
                 elif actionParameters[0] == "SSL_Decryption_Keyring":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
@@ -801,7 +801,7 @@ class ProfilesPublicOperations:
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH,
                                                                 "(//div[@class='select-search-option'])[6]/li")
-                    print("len(profile_results):", len(profile_results))
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH,
@@ -813,7 +813,7 @@ class ProfilesPublicOperations:
                         result = self.driver.find_element(By.XPATH,
                                                           f"//label[text()='{actionParameters[3]}']/parent::div//input").get_attribute(
                             "value")
-                        print("result=", result)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "result=", result)
                 elif actionParameters[0] == "SSL_Decryption_Profile":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
@@ -821,7 +821,7 @@ class ProfilesPublicOperations:
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH,
                                                                 "(//div[@class='select-search-option'])[6]/li")
-                    print("len(profile_results):", len(profile_results))
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH,
@@ -834,7 +834,7 @@ class ProfilesPublicOperations:
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='Decryption Profile']/parent::div//input").get_attribute(
                             "value")
-                        print("result=", result)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "result=", result)
                 elif actionParameters[0] == "TCP_Proxy_Profile":
                     self.driver.find_element(By.XPATH, actionParameters[1]).click()
                     self.driver.find_element(By.XPATH, actionParameters[2]).send_keys(profile_name)
@@ -842,7 +842,7 @@ class ProfilesPublicOperations:
                     time.sleep(1)
                     profile_results = self.driver.find_elements(By.XPATH,
                                                                 "(//div[@class='select-search-option'])[6]/li")
-                    print("len(profile_results):", len(profile_results))
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "len(profile_results):", len(profile_results))
                     if len(profile_results) == 1:
                         pytest_check.equal(
                             self.driver.find_element(By.XPATH,
@@ -855,11 +855,11 @@ class ProfilesPublicOperations:
                         result = self.driver.find_element(By.XPATH,
                                                           "//label[text()='TCP Proxy Profile']/parent::div//input").get_attribute(
                             "value")
-                        print("result=", result)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "result=", result)
         time.sleep(2)
         # 保存策略
         if result == "No Data":
-            print("无可引用的文件,取消创建")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "无可引用的文件,取消创建")
             self.driver.find_element(By.ID, rule_button_cancel_posId).click()
             if self.driver.find_element(By.CSS_SELECTOR, rule_button_warningSaveYes_posCss).is_displayed():
                 self.driver.find_element(By.CSS_SELECTOR, rule_button_warningSaveYes_posCss).click()
@@ -902,7 +902,7 @@ class ProfilesPublicOperations:
         headers = element_header.find_elements(By.XPATH, "th")  # table header
         rows = element_tbody.find_elements(By.XPATH, "tr")  # table body
         if len(rows) == 0:
-            #print(f"没有查询到数据：查询条件：{kwargs}")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"没有查询到数据：查询条件：{kwargs}")
             return 0
         map_header_className = {}  # 表头名称和th.class的映射，为了从表body中取对应列的值{"ID":"33"}
         for th in headers:

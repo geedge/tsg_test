@@ -2,6 +2,7 @@ import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.object.page_jump import PageJump
+from datetime import datetime 
 
 class EditObject():
     def __init__(self, driver):
@@ -22,8 +23,8 @@ class EditObject():
             self.driver.find_element(By.XPATH, all_button_position).click()
             edit_button_position = "appEdit-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent"
             self.driver.find_element(By.ID, edit_button_position).click()
-            print("to be added")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added")
             return 200
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             return 400

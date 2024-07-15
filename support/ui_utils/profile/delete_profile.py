@@ -3,7 +3,7 @@ import time
 import traceback
 from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.common.by import By
-
+from datetime import datetime 
 
 class DeleteProfile():
     def __init__(self, driver):
@@ -24,7 +24,7 @@ class DeleteProfile():
             time.sleep(2)
             return 200
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             traceback.print_exc()
             self.driver.find_element(By.XPATH, delete_element_position["profileListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(0.5)
@@ -46,7 +46,7 @@ class DeleteProfile():
             child_class_list = []
             el_child_list = el_td_1.find_elements(By.XPATH, ".//*")
             for el_child_item in el_child_list:
-                # print(el_child_item.get_attribute("class"))
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], el_child_item.get_attribute("class"))
                 child_class_list.append(el_child_item.get_attribute("class"))
             # 如果没有 icon-lock 属性，则需要点击选择框
             child_class_list = list(set(child_class_list))  # 去重
@@ -57,7 +57,7 @@ class DeleteProfile():
                 if "icon-lock" in _:
                     lock_flag = 1  # 有锁 则变成1
                     break
-                    # print(child_class_list)
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], child_class_list)
             # 再次查找元素是引用是否不为0
             el_td_list = row_item.find_elements(By.XPATH, "./td")  # 每一列操作
             # 判断一下，是否存在 Reference Count 列，如果存在，则需要进一步操作
@@ -67,12 +67,12 @@ class DeleteProfile():
                 for td_child in td_item_childs:
                     td_item_id_list.append(td_child.get_attribute("id"))
                 td_item_id_list = list(set(td_item_id_list))  # 去重
-                # print(td_item_id_list)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], td_item_id_list)
                 refer_except = "ReferenceData-"  # ReferenceData-_DNSRecordProfile_Home_App_anonymousComponent  id中存在预期值即可
                 for td_id_item in td_item_id_list:
                     if refer_except in td_id_item:  # 存在这个部分id属性即可
                         refer_counter_actual = el_td_item.find_element(By.XPATH, f".//*[@id='{td_id_item}']").text.strip()
-                        #print(td_id_item, ">>>", refer_counter_actual)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], td_id_item, ">>>", refer_counter_actual)
                         if refer_counter_actual != "0":    #
                             refer_count = 1  # 引用数不为 0
 

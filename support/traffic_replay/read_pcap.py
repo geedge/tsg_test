@@ -45,5 +45,5 @@ class ReadPcap():
                 pcap_info_dict["total_packets_received"] += 1
                 pcap_info_dict["total_bytes"] += pkt_length
                 pcap_info_dict["total_bytes_received"] += pkt_length
-        # print(pcap_info_dict)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], pcap_info_dict)
         return pcap_info_dict

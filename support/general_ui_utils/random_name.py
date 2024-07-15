@@ -61,7 +61,7 @@ class RandomName:
         for i in range(count):
             temp_list.append(random.choice(string.ascii_letters))
         r_letter = "".join(temp_list)
-        # print(r_letter)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_letter)
         return r_letter
 
     def random_geo_name_id(self,count):
@@ -72,7 +72,7 @@ class RandomName:
             else:
                 temp_list.append(random.choice(string.digits))
         r_number = "".join(temp_list)
-        # print(r_number)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_number)
         return r_number
 
     def random_number(self, count=8):
@@ -80,7 +80,7 @@ class RandomName:
         for i in range(count):
             temp_list.append(random.choice(string.digits))
         r_number = "".join(temp_list)
-        # print(r_number)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_number)
         return r_number
 
     def random_phone(self, count=8):
@@ -88,7 +88,7 @@ class RandomName:
         for i in range(count):
             temp_list.append(random.choice(string.digits))
         r_number = "".join(temp_list) + "*"
-        # print(r_number)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_number)
         return r_number
 
     def random_ipv4(self):
@@ -216,9 +216,9 @@ class RandomName:
 
     # r = RandomName()
     # c = r.random_url()
-    # print(c)
-    # # print(c)
-    # # print(c)
+    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], c)
+    # # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], c)
+    # # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], c)
 
     def ip_to_int(self, ip):
         parts = [int(part) for part in ip.split('.')]

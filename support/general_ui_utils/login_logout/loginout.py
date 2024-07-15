@@ -69,7 +69,7 @@ class LogInOut:
     def _check_ui_vsys(self):
         # 切换UI自动化使用vsys
         vsys_name = self.loginout_parse.get("vsys", "vsys_name")   # 登录后vsys切换为UIAutoTestVsys
-        print(vsys_name)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], vsys_name)
         profile_pub = ProfilesPublicOperations(self.driver)
         profile_pub.change_vsys(vsys_name=vsys_name)
         # 提取当前vsys信息

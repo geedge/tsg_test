@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 import subprocess
+from datetime import datetime 
 
 def update_tsg_ca():
     try:
@@ -18,12 +19,12 @@ def update_tsg_ca():
         #         ca_bundle.write('\n')
         #     # 更新证书信任库
         #     # subprocess.run(['sudo', 'update-ca-trust', 'extract'])
-        #     print("Update TSG CA successfully.")
+        #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Update TSG CA successfully.")
         # else:
-        #     print("TSG CA was found in ca-bundle.crt, so no content was appended.")
-        print("Update TSG CA successfully.")
+        #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "TSG CA was found in ca-bundle.crt, so no content was appended.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Update TSG CA successfully.")
     except:
-        print("Fail to update TSG CA.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to update TSG CA.")
         
 if __name__ == '__main__':
     update_tsg_ca()

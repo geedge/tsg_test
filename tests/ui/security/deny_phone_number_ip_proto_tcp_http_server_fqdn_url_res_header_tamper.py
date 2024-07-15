@@ -20,10 +20,11 @@ from support.api_utils.delete_policy import *
 import support.ui_utils.env
 from support.report import *
 
+from datetime import datetime
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -381,7 +382,7 @@ def run(parameter):
                 if object_sub_type == 'phone_number':
                     create_device_code = create_device.create(device_data[i], test_phone_number_object_element_position)
                 if create_device_code == 200:
-                    print("Create {} object successfully.".format(object_sub_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_sub_type), flush=True)
                 elif create_device_code != 200:
                     result = "Fail to create {} object.".format(object_sub_type)
                     break
@@ -391,7 +392,7 @@ def run(parameter):
             for i in range(len(fqdn_data)):
                 create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
                 if create_fqdn_code == 200:
-                    print("Create fqdn object successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create fqdn object successfully.", flush=True)
                 elif create_fqdn_code != 200:
                     result = "Fail to create fqdn."
                     break
@@ -406,7 +407,7 @@ def run(parameter):
                 elif object_type == 'http_signature':
                     create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_http_signature_object_element_position)
                 if create_protocol_filed_code == 200:
-                    print("Create {} object successfully.".format(object_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
                 elif create_protocol_filed_code != 200:
                     result = "Fail to create {}.".format(object_type)
                     break
@@ -415,7 +416,7 @@ def run(parameter):
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
-                print("Create security rule successfully.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
             
@@ -438,9 +439,9 @@ def run(parameter):
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
             if len(result) == 0:
-                print("The test case is passed.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             elif len(result) != 0:
-                print("The test case is failed. The failure reason is: ", result, flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
         
         # 删除rule
         if create_rule_code == 200:
@@ -450,7 +451,7 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print("Delete security rule successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete security rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete security rule."
             else:
@@ -469,7 +470,7 @@ def run(parameter):
                     if object_sub_type == 'phone_number':
                         delete_device_code = delete_device.delete(test_phone_number_object_element_position, first_row_checkbox_element, True)
                     if delete_device_code == 200:
-                        print("Delete {} object successfully.".format(object_sub_type), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_sub_type), flush=True)
                     elif delete_device_code != 200:
                         result = result + " In addition, fail to delete {} object.".format(object_sub_type)
                         break
@@ -483,7 +484,7 @@ def run(parameter):
                     delete_fqdn = DeleteObject(driver)
                     delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
                     if delete_fqdn_code == 200:
-                        print("Delete fqdn object successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn object successfully.", flush=True)
                     elif delete_fqdn_code != 200:
                         result = result + " In addition, fail to delete fqdn object."
                         break
@@ -506,7 +507,7 @@ def run(parameter):
                     elif object_type == 'http_signature':
                         delete_protocol_filed_code = delete_protocol_filed.delete(test_http_signature_object_element_position, first_row_checkbox_element, True)
                     if delete_protocol_filed_code == 200:
-                        print("Delete {} object successfully.".format(object_type), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
                     elif delete_protocol_filed_code != 200:
                         result = result + " In addition, fail to delete {} object.".format(object_type)
                         break
@@ -518,12 +519,12 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         
-        print("Finish test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e, flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         return "Error: " + str(e)
     finally:
         # 清理环境

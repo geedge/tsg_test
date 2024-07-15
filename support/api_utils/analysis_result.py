@@ -1,3 +1,4 @@
+from datetime import datetime 
 class AnalysisResult():
     def analysis_result(self, condition, cfg_list, verification_result):
         if len(cfg_list) != 0:
@@ -57,4 +58,4 @@ class AnalysisResult():
         return failure_reason
 
 if __name__ == "__main__":
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

@@ -3,6 +3,7 @@ import sys
 import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
+from datetime import datetime 
 
 class CreateInsertProfile():
     def __init__(self, driver):
@@ -82,7 +83,7 @@ class CreateInsertProfile():
         try:
             switch_value: str = data[key].split("->")[data_index].strip().lower()    #用例数据
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
         return switch_value
 
 

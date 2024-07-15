@@ -5,7 +5,7 @@ import time
 import requests
 import json
 import ipaddress
-
+from datetime import datetime
 
 class GetLog():
     def get_log_schema(self, token, log_type, api_host, vsys_id):
@@ -84,14 +84,14 @@ class GetLog():
                 log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}",
                                                                                     f"client_ip='{test_pc_ip}'")
             url = api_host + "/v1/log/query"
-            print("Begin to query log by condition.", flush=True)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200
             log_list = json.loads(response.text)
             log_list = log_list['data']['result']
             log_index = i + 1
             log_query_params = test_data['log_query_param_' + str(log_index)]
-            print("Compare log with test data.", flush=True)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare log with test data.", flush=True)
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
                     for log_query_param in log_query_params:
@@ -125,14 +125,14 @@ class GetLog():
             hit_query_condition['start_time'] = start_time
             hit_query_condition['end_time'] = end_time
             hit_query_condition['vsys_id'] = vsys_id
-            print("Begin to query metric by condition.", flush=True)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query metric by condition.", flush=True)
             response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
             index = i + 1
             counter = test_data['counters_' + str(index)]
             result_len = len(response['data']['result'])
-            print("Compare metric with test data.", flush=True)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare metric with test data.", flush=True)
             # 需要hits == 0时，则验证，验证通过metric置为true
             if 'hits' in counter and counter['hits'] == 0 and result_len == 0:
                 metric_result = True
@@ -203,12 +203,12 @@ class GetLog():
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         # assert response.status_code == 200
         r_dict = response.json()
-        #print("statistics metric result data：")
-        # print(r_dict)
-        #print("Get the metric information of rule id {}".format(post_data_ori_dict))
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric result data：")
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_dict)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get the metric information of rule id {}".format(post_data_ori_dict))
         if r_dict["code"] != 200:
-            print("statistics metric query failed.", flush=True)
-            return [333, "The statistics metric API query failed. Procedure"]
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric query failed.", flush=True)
+            return [333, "The statistics metric API query failed."]
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
                 # 对应session方式和fqdn category需要另行处理
@@ -219,7 +219,6 @@ class GetLog():
                     test_data["profile_condition_1"][0]["chart_list"][0]["dimensions"][0]["source_columns"][0].lower()
                 except:
                     dimension_columns = "no_dimensions"
-
                 if dimension_columns == "no_dimensions":
                     # API和UI因数据格式不一致，所以API方式获取不到按UI方式获取
                     try:
@@ -228,13 +227,13 @@ class GetLog():
                         dimension_columns = \
                         test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
                     except Exception as e:
-                        print("Error: ", e, flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
                         dimension_columns = "no_dimensions"
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
                     return [333, "passthrough"]
                 else:
-                    print("Do not query statistics metric result.", flush=True)
-                return [333, "statistics metric no result was found"]
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
+                return [333, "statistics metric no result was found."]
             else:  # 提取结果，并断言
                 metric_result = False  # 默认
                 result_list_source = r_dict["data"]["result"]
@@ -248,7 +247,7 @@ class GetLog():
                             elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
                                 k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
                             else:
-                                print("The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
                                 #throw Exception e
                             tmp_dict[k_0] = v
                         result_list.append(tmp_dict)
@@ -262,7 +261,7 @@ class GetLog():
                 statistics_value = 0
                 if statistics_info["chart_type"] == "line" or statistics_info["chart_type"] == "table" or \
                         statistics_info["chart_type"] == "bar":
-                    # print(f'{statistics_info["chart_type"]}>>断言对比...')
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f'{statistics_info["chart_type"]}>>断言对比...')
                     histogram_sketch_line_flag = False
                     histogram_sketch_temp ={"in_latency_ms_sketch","out_latency_ms_sketch","latency_ms_sketch",
                                   "in_pkt_length_sketch","out_pkt_length_sketch","pkt_length_sketch"}
@@ -272,10 +271,10 @@ class GetLog():
                                 histogram_sketch_line_flag = True
                                 break
                     if histogram_sketch_line_flag:
-                        print("The histogram Metrics Line does not statistic the results.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The histogram Metrics Line does not statistic the results.", flush=True)
                         metric_results = [True, ""]
                     else:
-                        # print(statistics_info)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], statistics_info)
                         statistics_value = copy.deepcopy(result_list[0])
                         # 将列表中metric值设置为0
                         for k, v in statistics_value.items():
@@ -312,7 +311,7 @@ class GetLog():
                             for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
                                 if isinstance(v, int):
                                     statistics_value[k] = avg_1
-                        #print("The actual query result data from TSG: \n{}".format(statistics_value))
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: \n{}".format(statistics_value))
                         # 重组需要断言使用的key列表
                         assert_key_list = []
                         dimension_list = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
@@ -339,7 +338,7 @@ class GetLog():
                             else:
                                 assert_key_list.append(k)
                         # 开始判断key的正确性
-                        #print("Determine the correctness of the Key:{}".format(str(assert_key_list)))
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Determine the correctness of the Key:{}".format(str(assert_key_list)))
                         for i in range(len(assert_key_list)):
                             metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
                                                                               assert_key_list[i], statistics_value,
@@ -347,10 +346,12 @@ class GetLog():
                                                                               trex_ip_info)  # 判断正确调用函数
                             metric_result = metric_results[0]
                             if metric_result == False:
-                                print("Failure on assertion, the assertion is: {}".format(assert_key_list[i]), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Failure on assertion, the assertion is: {}".format(assert_key_list[i]), flush=True)
                                 break
+                            else:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "statistics metric query success.", flush=True)
                 elif statistics_info["chart_type"] == "histogram":
-                    print("The histogram does not statistic the results.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The histogram does not statistic the results.", flush=True)
                     metric_results = [True, ""]
                 return metric_results
 
@@ -364,7 +365,7 @@ class GetLog():
         failure_info_2 = ""
         failure_info_3 = ""
         if chart_type == "line":
-            #print(f"Total number of expected results for traffic replay: \n{statistics_metircs_except}")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Total number of expected results for traffic replay: \n{statistics_metircs_except}")
             failure_info_1 = f"Total expected results for traffic playback:{statistics_metircs_except}"
             statistics_metircs_except_avg = {}  # 重组预期1秒粒度结果
             for k, v in statistics_metircs_except.items():
@@ -372,44 +373,44 @@ class GetLog():
                     statistics_metircs_except_avg[k] = int((v) / 1)  # 统计平均字节数
                 else:
                     statistics_metircs_except_avg[k] = int(v / 1)
-            if assert_key != "session_identifier_sketch" and assert_key != "client_ip_sketch" and assert_key != "server_ip_sketch":  # 除了这几个gauge，需要打印下信息
-                print(f"Average number of traffic playback in 1 second granularity: \n{statistics_metircs_except_avg}", flush=True)
+            # if assert_key != "session_identifier_sketch" and assert_key != "client_ip_sketch" and assert_key != "server_ip_sketch":  # 除了这几个gauge，需要打印下信息
+            #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Average number of traffic playback in 1 second granularity: \n{statistics_metircs_except_avg}", flush=True)
             failure_info_2 = f"Average number of traffic playback in 1-second granularity: {statistics_metircs_except_avg}"
-            #print(assert_key)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], assert_key)
             if assert_key == "bytes":
                 if statistics_value[assert_key] > (
                         statistics_metircs_except_avg["total_bytes"] - 10):  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
-                    #print(success_result)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "in_bytes" or assert_key == "out_bytes":
-               # print(assert_key)
+               # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], assert_key)
                 if (statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_sent"] - 10)) or (
                         statistics_value[assert_key] > (statistics_metircs_except_avg["total_bytes_received"] - 10)):
-                    #print(success_result)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "pkts":
                 if statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets"]):  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
-                    #print(success_result)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "in_pkts" or assert_key == "out_pkts":
-               # print(assert_key)
+               # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], assert_key)
                 if (statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets_sent"])) or (
                         statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets_received"])):
-                    #print(success_result)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":
                 if assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions":  # 双向流，两个方向都是一样的
                     if statistics_value[assert_key] == statistics_metircs_except_avg["total_syn_pkt"]:
-                        #print(success_result)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                 elif assert_key == "syn_pkts":
                     if statistics_value[assert_key] == (statistics_metircs_except_avg["total_syn_pkt"] * 2):
-                        #print(success_result)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                 elif assert_key == "new_in_sessions" or assert_key == "new_out_sessions":# 区分方向
                     if statistics_value[assert_key] == statistics_metircs_except_avg["total_syn_pkt"] or \
                             statistics_value[assert_key] == 0:
-                        #print(success_result)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
             elif assert_key == "session_identifier_sketch" or assert_key == "client_ip_sketch" or assert_key == "server_ip_sketch":
                 statistics_metircs_except_gauge = {}
@@ -425,60 +426,60 @@ class GetLog():
                         unique_server_ips = sessions_count
                     statistics_metircs_except_gauge["client_ip_sketch"] = unique_client_ips
                     statistics_metircs_except_gauge["server_ip_sketch"] = unique_server_ips
-                    #print(f"Gauge of traffic playback in 1-second granularity: \n{statistics_metircs_except_gauge}")
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Gauge of traffic playback in 1-second granularity: \n{statistics_metircs_except_gauge}")
                     if -3 < statistics_value[assert_key] - statistics_metircs_except_gauge[assert_key] < 3:
-                        print("Statistics result normal.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Statistics result normal.", flush=True)
                         metric_result = True
             else:
-                print(f"Key for missing assertion: {assert_key}", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Key for missing assertion: {assert_key}", flush=True)
                 metric_result = False
         elif chart_type == "histogram":
             metric_result = True
         else:  # table bar等二维图表
-            #print(f"Total number of traffic replay: \n{statistics_metircs_except}")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Total number of traffic replay: \n{statistics_metircs_except}")
             failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
             if assert_key == "bytes":
                 # Metrics Aggregate影响核对值，临时if方式，后期优化传如Metrics Aggregate Map进行比对判断
                 if statistics_value[assert_key] == statistics_metircs_except["total_bytes"] or statistics_value[
                     assert_key] == statistics_metircs_except["total_bytes"] * 8:
-                    #print(success_result)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "in_bytes" or assert_key == "out_bytes":
                 if (statistics_value[assert_key] == statistics_metircs_except["total_bytes_sent"]) or (
                         statistics_value[assert_key] == statistics_metircs_except["total_bytes_received"]
                         or statistics_value[assert_key] == statistics_metircs_except["total_bytes_sent"] * 8) or (
                         statistics_value[assert_key] == statistics_metircs_except["total_bytes_received"] * 8):
-                    #print(success_result)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "pkts":
                 if statistics_value[assert_key] == statistics_metircs_except["total_packets"]:
-                    #print(success_result)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "in_pkts" or assert_key == "out_pkts":
                 if (statistics_value[assert_key] == statistics_metircs_except["total_packets_sent"]) or (
                         statistics_value[assert_key] == statistics_metircs_except["total_packets_received"]):
-                    #print(success_result)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":# or assert_key == "new_incoming_sessions" or assert_key == "new_outgoing_sessions":
                 if assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions":  # 双向流，两个方向都是一样的
                     if statistics_value[assert_key] == statistics_metircs_except["total_syn_pkt"]:
-                        #print(success_result)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                 elif assert_key == "syn_pkts":
                     if statistics_value[assert_key] == (statistics_metircs_except["total_syn_pkt"] * 2):
-                        #print(success_result)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                 elif assert_key == "new_in_sessions" or assert_key == "new_out_sessions":# 区分方向
                     if statistics_value[assert_key] == statistics_metircs_except["total_syn_pkt"] or statistics_value[
                         assert_key] == 0:
-                        #print(success_result)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
             else:
-                print(f"Key for missing assertion: {assert_key}", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Key for missing assertion: {assert_key}", flush=True)
                 failure_info_3 = f"key for missing assertions:{assert_key}"
                 metric_result = False
         if metric_result == False:
-            # print(failure_reason)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], failure_reason)
             actual_result = f"Total actual results: {statistics_value}"
             failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
         return metric_result, failure_reason_info
@@ -512,11 +513,11 @@ class GetLog():
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         if r_dict["code"] != 200:
-            print("Service chaining metric query failed.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric query failed.", flush=True)
             return 444
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
-                print("Service chaining metric is empty.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric is empty.", flush=True)
                 return 333
             else:  # metric不为空时，验证返回结果
                 metric_result = False  # 默认
@@ -542,7 +543,7 @@ class GetLog():
                 if sc_info["type"] == 1:
                     if sc_value["sent_bytes"] == sc_value["received_bytes"] == sc_expected_metric["total_bytes"] and \
                             sc_value["sent_packets"] == sc_value["received_packets"] == pkt_value:
-                        # print(success_result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                     else:
                         metric_result = False
@@ -550,7 +551,7 @@ class GetLog():
                     if sc_value["sent_bytes"] == sc_expected_metric["total_bytes"] and sc_value[
                         "sent_packets"] == pkt_value and sc_value["received_bytes"] == sc_value[
                         "received_packets"] == 0:
-                        # print(success_result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                     else:
                         metric_result = False
@@ -565,7 +566,7 @@ class GetLog():
                     if sc_value["sent_bytes"] == sc_expected_metric["total_bytes"] and sc_value[
                         "sent_packets"] == pkt_value and sc_value["received_bytes"] == sc_value[
                         "received_packets"] == 0:
-                        # print(success_result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                     else:
                         metric_result = False
@@ -576,14 +577,14 @@ class GetLog():
                 if sc_info["type"] == 1:
                     if sc_value["sent_bytes"] == sc_value["received_bytes"] and sc_value["sent_packets"] == sc_value[
                         "received_packets"]:
-                        # print(success_result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                     else:
                         metric_result = False
                 elif sc_info["type"] == 2:
                     if sc_value["sent_bytes"] != 0 and sc_value["sent_packets"] != 0 and sc_value["received_bytes"] == \
                             sc_value["received_packets"] == 0:
-                        # print(success_result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                     else:
                         metric_result = False
@@ -593,14 +594,14 @@ class GetLog():
                 if sc_info["type"] == 2 and len(sc_value) != 0:
                     if sc_value["sent_bytes"] != 0 and sc_value["sent_packets"] != 0 and sc_value["received_bytes"] == \
                             sc_value["received_packets"] == 0:
-                        # print(success_result)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                         metric_result = True
                     else:
                         metric_result = False
                 else:
                     metric_result = False
         # if metric_result == False:
-        #     print(failure_reason)
+        #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], failure_reason)
         return metric_result
 
     def diff_ip_count(self, start_ip, end_ip):
@@ -611,4 +612,4 @@ class GetLog():
 
 
 if __name__ == '__main__':
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

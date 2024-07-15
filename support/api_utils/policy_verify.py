@@ -4,6 +4,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import copy
 import requests
 import support.api_utils.get_application_id as get_application_id
+from datetime import datetime 
 
 class PolicyVerify():
     def policy_verify(self, condition, verify_attribute_dict, token, host_api, vsys_id):
@@ -92,4 +93,4 @@ class PolicyVerify():
         return hit_policy_list
         
 if __name__ == "__main__":
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

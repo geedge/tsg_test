@@ -1,11 +1,10 @@
 import os
 import sys
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import random
 import requests
 import json
-
+from datetime import datetime 
 
 class OrganizeConfig():
     def organize_cfg(self, parameter, test_data, template_path):
@@ -76,9 +75,8 @@ class OrganizeConfig():
                                 statistics_sc_info_list.append(statistics_info)
                                 chart_number = chart_number + 1
                             template_number = template_number + 1
-
                         else:
-                            print("The number of Template definition charts searched from the interface is inconsistent with the number of TemplateCharts parsed from the test data test_data!", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The number of Template definition charts searched from the interface is inconsistent with the number of TemplateCharts parsed from the test data test_data!", flush=True)
                         create_profile_ids.append({'profile_type': 'Statistics_Templates', 'id': template_id, 'template_info': template_temp})
                         template_info = {"profile_type": "", "id": 0, "template_info": []}
                         template_info["profile_type"] = ""
@@ -148,7 +146,7 @@ class OrganizeConfig():
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
                         config["condition"]["source_ip"][0]["item"][0]["item_value"] = new_two_ip
-        print("Setrandom ip for statistics or sc rule.", flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
         return config
 
     def get_policy_define(self, token, rule_id, rule_type, api_host, vsys_id):
@@ -167,7 +165,7 @@ class OrganizeConfig():
             result = response['data']['rules']
             return result
         except AssertionError as e:
-                print(f"AssertionError: {e}", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def get_template_define(self, token, template_id, template_type, api_host, vsys_id):
         try:
@@ -180,7 +178,7 @@ class OrganizeConfig():
             result = response['data']['statistics_templates']
             return result
         except AssertionError as e:
-            print(f"AssertionError: {e}", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def get_template_chart_metric_dimension(self, test_data):
         # 从Statistics Rule定义信息中获取流量验证所需数据格式
@@ -224,4 +222,4 @@ class OrganizeConfig():
                         statistics_template_metrics_dimension_list.append(template_metrics_dimension_list)
         return statistics_template_metrics_dimension_list
 if __name__ == "__main__":
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

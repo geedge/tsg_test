@@ -68,10 +68,10 @@ class IpAddress:
         self.driver.find_element(By.XPATH,main_button_audit_button_posXpath).click()
         self.driver.is_exist_element(Element='//table/tbody/tr[1]') # 编辑记录第一行是否有数据
         assert self.driver.is_exist,"断言存在创建记录"
-        print("断言成功，存在创建记录")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "断言成功，存在创建记录")
         self.driver.is_exist_element(Element='//table/tbody/tr[2]')  # 编辑记录第二行是否存在编辑记录
         assert self.driver.is_exist == False,"断言不存在编辑记录"
-        print("断言成功，不存在编辑记录")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "断言成功，不存在编辑记录")
         self.driver.find_element(By.ID, mainPage_secondLevelMenu_ipAddress_posId).click()
         self._delete(data)
     
@@ -320,13 +320,13 @@ class IpAddress:
                             data['Create']['model'] = "2"
                             try:
                                 assert self.driver.find_element(By.XPATH, '//form/div[4]/form/div[3]/div/div[2]').text =="It should not be 0 or empty, or exceed 2,147,483,647.","Aging Times为空断言"
-                                print("Aging Times为空断言成功")
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Aging Times为空断言成功")
                                 assert self.driver.find_element(By.XPATH, '//div/div/div[1]/div[2]/form/div[4]/form/div[4]/div/div[2]').text == "It should not be 0 or empty, or exceed 10,000.", "Vote Clients Number为空断言"
-                                print("Vote Clients Number为空断言成功")
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Vote Clients Number为空断言成功")
                                 assert self.driver.find_element(By.XPATH, '//form/div[4]/form/div[5]/div/div[2]').text == "It should not be 0 or empty, or exceed 10,000.", "Learned IP Limits为空断言"
-                                print("Learned IP Limits为空断言成功")
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Learned IP Limits为空断言成功")
                             except:
-                                print("Aging Times、Vote Clients Number、Learned IP Limits不为空")
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Aging Times、Vote Clients Number、Learned IP Limits不为空")
                                 pass
                 elif self.modify_status == "1":
                     # 提取total个数，add-item后，再次提取，断言个数为+1
@@ -541,9 +541,9 @@ class IpAddress:
             try:
                 assert str(self.item_content) in str(self.content), "断言导出内容是否在txt文件中"
                 os.remove(self.file_path)
-                print("文件删除成功")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "文件删除成功")
             except:
-                print("文件不存在")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "文件不存在")
             # 3、断言成功后，删除文件
             self.driver.find_element(By.ID, listPage_object_ip_address_delButton_posId).click()
             self.driver.find_element(By.XPATH, listPage_object_ip_address_del_yes_Button_posXpath).click()
@@ -598,7 +598,7 @@ class IpAddress:
         # 于data中获取数据
         page_flag, selected_object_type, selected_objects_number, detail_type, selected_data_number = data["page_flag"], \
             data["selected_object_type"], data["selected_objects"], data["detail_type"], data["selected_data"]
-        print(page_flag, selected_object_type, selected_objects_number, detail_type)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], page_flag, selected_object_type, selected_objects_number, detail_type)
         obj_data = {"Model": "create",
                     "Type": 1,
                     "Name": "test_ui 4 Clear Counter",
@@ -635,7 +635,7 @@ class IpAddress:
                     pass
 
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], e)
         if page_flag == 0:  # 列表页
             self._pure_operate_checkbox(selected_object_type, selected_objects_number)  # 列表页选择操作
             self._verify_clear_counter(page_flag, selected_object_type, selected_objects_number, selected_data_number,
@@ -765,14 +765,14 @@ class IpAddress:
                         break
                     else:
                         i.click()
-                        print("i.click()")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "i.click()")
                         selected_objects_number -= 1
                 for j in local_vsys_object_checkbox_elems:
                     if selected_objects_number < 1:
                         break
                     else:
                         j.click()
-                        print("j.click()")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "j.click()")
                         selected_objects_number -= 1
 
         else:  # 3则任意非本Vsys的对象
@@ -943,7 +943,7 @@ class IpAddress:
                     profile_pub.change_vsys(vsys_name=ui_vsys_name)
                     self.create_other_vsys_data_flag = 1
             except Exception as e:
-                print(e)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], e)
             # 选中第一个非本Vsys的Object Group或Object并进入其详情页
             self.driver.find_element(By.XPATH,
                                      acc_listPage_object_tableCheckbox_firstNotLocalVsys_objectOrGroup_posXpath).click()

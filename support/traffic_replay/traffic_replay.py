@@ -57,27 +57,27 @@ class TrafficReplay():
                 stdout_line = stdout_line.rstrip()
                 # 只输出最终结果数据
                 # if line_row_num <= 25:    # 输入前20行内容
-                #     print(stdout_line)
+                #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], stdout_line)
                 line_row_num += 1
                 if stdout_flag == 0:    # 不输出时需要判断
                     if "normal" in stdout_line:
                         stdout_flag = 1
-                        # print("\n", stdout_line)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "\n", stdout_line)
                 else:   # 需要打印
-                    # print(stdout_line)
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], stdout_line)
                     if "Open-flows" in stdout_line:
                         open_flows_ori = stdout_line
                         match_flows = re.search(r"Open-flows\s*:\s*(\d+)", open_flows_ori)
                         open_flows = int(match_flows.group(1))
 
         p.wait()
-        print("The statistics of a single session are as follows: ", flush=True)
-        print(pcap_info_dict, flush=True)
-        sum_count = m * d
-        print(f"Replay packet {sum_count} time, replay cps: {m}, replay duration: {d}. The expected statistical results are as follows: ", flush=True)
-        print(f"Actual replay packet {open_flows} time", flush=True)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The statistics of a single session are as follows: ", flush=True)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], pcap_info_dict, flush=True)
+        # sum_count = m * d
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Replay packet {sum_count} time, replay cps: {m}, replay duration: {d}. The expected statistical results are as follows: ", flush=True)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Actual replay packet {open_flows} time", flush=True)
         metric_info_dict = {key:(value*open_flows) for key, value in pcap_info_dict.items()}
-        print(metric_info_dict, flush=True)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], metric_info_dict, flush=True)
         return metric_info_dict
 
 if __name__ == '__main__':

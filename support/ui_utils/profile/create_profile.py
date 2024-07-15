@@ -12,6 +12,7 @@ from support.ui_utils.profile.create_hijack_profile import CreateHijackProfile
 from support.ui_utils.profile.create_insert_profile import CreateInsertProfile
 from support.ui_utils.profile.create_run_script_profile import CreateRunScriptProfile
 from support.ui_utils.profile.create_response_page import CreateResponsePage
+from datetime import datetime 
 
 class CreateProfile():
     def __init__(self, driver):
@@ -39,7 +40,7 @@ class CreateProfile():
             # 其它 profile创建
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             traceback.print_exc()
             return 400
 
@@ -74,7 +75,7 @@ class CreateProfile():
             element_position_map = get_profile_element_position("statistics_template")
             cond_code = create_statistics_template.create(statistics_template, element_position_map)
             if cond_code == 200:
-                print("Create {} Profile successfully.".format("statistics_template"), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} Profile successfully.".format("statistics_template"), flush=True)
             else:
                 result = "Fail to create {} Profile.".format("statistics_template")
                 cond_status = 1

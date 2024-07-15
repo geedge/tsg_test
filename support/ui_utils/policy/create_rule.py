@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 import traceback
+from datetime import datetime 
 
 class CreateRule():
     def __init__(self, driver):
@@ -150,16 +151,16 @@ class CreateRule():
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
                     elif device_data[t]["object_type"] == "imei":
-                        print("to be added...")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
                     elif device_data[t]["object_type"] == "apn":
-                        print("to be added...")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
 
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
                 # 点application的+
                 if test_data["policy_type"] == "pxy_manipulation":
                     if  test_data["condition"]["application"][0]["name"].lower == "doh":  # doh需要操作application
-                        print("to do doh")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to do doh")
                         pass
                     else:   # 非doh不需要操作application
                         pass
@@ -213,7 +214,7 @@ class CreateRule():
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                     elif server_fqdn_data[t]["object_type"] == "category":
-                        print("to be added...")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
 
             #添加ip_protocol
             if "ip_protocol" in test_data["condition"] and len(test_data["condition"]["ip_protocol"]) != 0:
@@ -236,7 +237,7 @@ class CreateRule():
                         elif tmp_item["item"][0]["item_type"] == "response_header":
                             tmp_response_header.append(tmp_item)
                         else:
-                            print("check..")
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
                     elif tmp_item["object_type"] == "keywords":
                         if tmp_item["item"][0]["item_type"] == "request_body":
                             tmp_request_body.append(tmp_item)
@@ -245,7 +246,7 @@ class CreateRule():
                         elif tmp_item["item"][0]["item_type"] == "ftp_content":
                             tmp_ftp_content.append(tmp_item)
                         else:
-                            print("check..")
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
                     elif tmp_item["object_type"] == "account":
                         if tmp_item["items"][0]["item_type"] == "ftp_account":
                             tmp_ftp_account.append(tmp_item)
@@ -259,9 +260,9 @@ class CreateRule():
                 if len(tmp_ftp_account) > 0: tmp_protocol_field_data_split_by_type.append(tmp_ftp_account)
                 if len(tmp_ftp_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_ftp_content)
                 if len(tmp_boolean) > 0: tmp_protocol_field_data_split_by_type.append(tmp_boolean)
-                #print(tmp_protocol_field_data_split_by_type)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], tmp_protocol_field_data_split_by_type)
                 for protocol_field_data in tmp_protocol_field_data_split_by_type:
-                    #print(protocol_field_data)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], protocol_field_data)
                     for x in range(len(protocol_field_data)):
                         temp = x + 1
                         if protocol_field_data[x]["object_type"] == "url":
@@ -273,7 +274,7 @@ class CreateRule():
                                 elif item_dict["item_type"] == "response_header":
                                     self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
                                 else:
-                                    print(f"todo {item_dict['item_type']}")
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == "keywords":
                             for item_dict in protocol_field_data[x]["item"]:
                                 if item_dict["item_type"] == "request_body":
@@ -283,13 +284,13 @@ class CreateRule():
                                 elif item_dict["item_type"] == "ftp_content":
                                     self.add_protocol_field(protocol_field_data, "FtpContent", create_element_position, temp)
                                 else:
-                                    print(f"todo {item_dict['item_type']}")
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == "account":
                             for item_dict in protocol_field_data[x]["items"]:
                                 if item_dict["item_type"] == "ftp_account":
                                     self.add_protocol_field(protocol_field_data, "FtpAccount", create_element_position, temp)
                                 else:
-                                    print(f"todo {item_dict['item_type']}")
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == 'boolean':
                             self.add_protocol_field(protocol_field_data, "Boolean", create_element_position, temp)
 
@@ -424,7 +425,7 @@ class CreateRule():
                                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_deny_searchResponseProfileDorpItem_posXpath"]).click()
                         #
                     elif test_data["rule_action"] == "redirect":
-                        # print(test_data["condition"]["application"][0]["name"].lower().strip())
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], test_data["condition"]["application"][0]["name"].lower().strip())
                         if test_data["condition"]["application"][0]["name"].lower().strip() == "http":
                             response_code = test_data["action_parameter"]["redirect_url"][0]["response_code"]
                             response_code_drop_position = create_element_position["policyRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath"].format(replace_code=response_code)
@@ -438,16 +439,16 @@ class CreateRule():
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath"]).clear()
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath"]).send_keys(redirect_url)
                         else:
-                            print("doh...")
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "doh...")
                     elif test_data["rule_action"] == "replace":
                         regex_status =  test_data["action_parameter"]["replace_parameter"][0]["regex"].lower()
                         search_in =  test_data["action_parameter"]["replace_parameter"][0]["search_in"]
                         find_text =  test_data["action_parameter"]["replace_parameter"][0]["find"]
                         replace_with_text =  test_data["action_parameter"]["replace_parameter"][0]["replace_with"]
-                        #print(regex_status, search_in, find_text, replace_with_text)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], regex_status, search_in, find_text, replace_with_text)
                         # 操作action parameter，  获取regex当前属性   is-checked 表示开
                         regex_class_status = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"]).get_attribute("class")
-                        #print(regex_class_status)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], regex_class_status)
                         if regex_status == "on":  # 开
                             if "is-checked" in regex_class_status:  # 当前状态开，不用再点击
                                 pass
@@ -497,7 +498,7 @@ class CreateRule():
                         treatment =  test_data["action_parameter"]["edit_element_parameter"][0]["treatment"].lower()
                         # search scope 操作
                         if search_scope == "whole_file":
-                            # print(create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"])
+                            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"]).click()
                         else:    # inside_element
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSearchScopeInsideElementRadio_posXpath"]).click()
@@ -525,7 +526,7 @@ class CreateRule():
                         # 选择第一个
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath"]).click()
                     else:
-                        print("to be added manipulation action parameters..")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added manipulation action parameters..")
                 elif test_data["policy_type"] == "statistics":
                     # 点击Statistics Template添加按钮打开Template侧滑列表
                     self.driver.find_element(By.XPATH, create_element_position["plicyRulePage_addStatisticsTemplate_posXpath"]).click()
@@ -565,7 +566,7 @@ class CreateRule():
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             traceback.print_exc()
             return 400, None
         

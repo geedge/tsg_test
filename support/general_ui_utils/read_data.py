@@ -179,7 +179,7 @@ class ReadData:
         :return:
         """
         ids: str = param["ids"]
-        #print(ids)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], ids)
         return ids
 
     def _admin_area_path(self, file_name):

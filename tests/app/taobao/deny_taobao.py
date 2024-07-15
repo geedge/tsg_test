@@ -9,7 +9,7 @@ from support.api_utils.analysis_result import *
 from support.app_utils.call_airtest import *
 
 def run(parameter):
-    print("Begin to run test case: " + parameter["test_case_name"], flush=True)
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
     # 参数初始化
     result = ""
         
@@ -39,7 +39,7 @@ def run(parameter):
         analysis = AnalysisResult()
         verification_result = [True, True, True]
         result = analysis.analysis_result(test_data_json, cfg_list, verification_result)
-        print("analysis result: ", result)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "analysis result: ", result)
     
     # 删除配置
     delete = DeletePolicy()

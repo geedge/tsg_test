@@ -11,7 +11,7 @@ function string_insert(str,index,insertStr, flag)
     local pre = string.sub(str, 1, index -1)
     local tail = string.sub(str, index, -1)
     local createStr = string.format("%s%s%s", pre, insertStr, tail)
-	--print(createStr)
+	--print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], createStr)
     return createStr
     end
 

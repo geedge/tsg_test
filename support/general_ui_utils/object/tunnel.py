@@ -101,7 +101,7 @@ class Tunnel:
         self.export_total = re.search(r'\d+', self.export_total_str)  # 正则表达式返回匹配的数字对象
         if self.export_total:
             self.export_number = int(self.export_total.group())  # group()方法返回正则表达式匹配的字符串
-            print(self.export_number)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.export_number)
 
         self.driver.find_element(By.XPATH, listPage_object_urls_exportPopYes_posXpath).click() #确认导出
     def pop_cancel_export_num(self):
@@ -117,14 +117,14 @@ class Tunnel:
         time.sleep(3)
         self.export_total_str = self.driver.find_element(By.XPATH,tunnel_export_pop_window_export_num_button_xpath).text
         self.driver.find_element(By.XPATH, listPage_object_urls_exportPopYes_posXpath).click()
-        print(11111)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 11111)
         self.export_total =re.search(r'\d+',self.export_total_str)  #正则表达式返回匹配的数字对象
-        print(self.export_total_str)
-        print(2222)
-        print(self.export_total)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.export_total_str)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 2222)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.export_total)
         if self.export_total:
             self.export_number = int(self.export_total.group())#group()方法返回正则表达式匹配的字符串
-            print(self.export_number)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.export_number)
 
     def _export_objects_and_verify(self,data):
         self._create(data)#新建,新建后就是查询到该条数据的状态
@@ -134,16 +134,16 @@ class Tunnel:
         self.file_name = get_txt_filenames(path=self.my_files._obj_files_dowload_path())
         self.file_path = self.my_files._obj_files_dowload_path() + "\\" + self.file_name
         self.content = open(self.file_path,"rb").read()
-        print("self.content |||self.random_item".format(self.content, self.random_item))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "self.content |||self.random_item".format(self.content, self.random_item))
         try:
             # assert str(data['Items'][0]) in str(self.content), "断言导出内容是否在txt文件中"
             assert str(self.random_item) in str(self.content), "断言导出内容是否在txt文件中"
             os.remove(self.file_path)
-            print("文件删除成功")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "文件删除成功")
         except FileNotFoundError:
-            print("文件不存在")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "文件不存在")
         except Exception as e:
-            print("发生异常:", e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "发生异常:", e)
         self._delete(data)
 
     def export_multi_condition_test(self,data):
@@ -183,36 +183,36 @@ class Tunnel:
         self.driver.find_element(By.XPATH, url_ObjectDetailPage_auditLogs_posXpath).click()
         self.driver.is_exist_element(Element='//table/tbody/tr')
         assert self.driver.is_exist == True, "断言新建object是否存在创建日志"
-        print("断言成功，存在创建记录，测试 === Success")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "断言成功，存在创建记录，测试 === Success")
         self.driver.is_exist_element(Element='(//table/tbody/tr)[2]')
         assert self.driver.is_exist == False, "断言新建object是否存在编辑日志"
-        print("断言成功，不存在编辑记录，测试 === Success")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "断言成功，不存在编辑记录，测试 === Success")
         self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_firstRowLog_checkBox_posXpath).click()  # 勾选第一行log CheckBox
         self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_compareButton_posXpath).click()  # 点击compare 按钮
         try:
             operation = self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_compareDrawer_operationText_posXpath).text
             assert operation == "Create", "最新一条audit log 非 Create log！！！！"
-            print("校验成功，获取到 Create log")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "校验成功，获取到 Create log")
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], e)
             raise
         self._modify(data)
         self.select_first_row_data_and_edit(data)
         self.driver.find_element(By.XPATH, url_ObjectDetailPage_auditLogs_posXpath).click()
         self.driver.is_exist_element(Element='//table/tbody/tr')
         assert self.driver.is_exist, "断言新建object是否存在创建日志"
-        print("断言成功，存在创建记录，测试 === Success")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "断言成功，存在创建记录，测试 === Success")
         self.driver.is_exist_element(Element='(//table/tbody/tr)[2]')
         assert self.driver.is_exist, "断言新建object是否存在编辑日志"
-        print("断言成功，存在编辑记录，测试 === Success")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "断言成功，存在编辑记录，测试 === Success")
         self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_firstRowLog_checkBox_posXpath).click()  # 勾选第一行log CheckBox
         self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_compareButton_posXpath).click()  # 点击compare 按钮
         try:
             operation = self.driver.find_element(By.XPATH,acc_ObjectDetailPage_auditLogsDrawer_compareDrawer_operationText_posXpath).text
             assert operation == "Edit", "最新一条audit log 非 Edit log！！！！"
-            print("校验成功，获取到 Edit log")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "校验成功，获取到 Edit log")
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], e)
             raise
 
         #删除该元素
@@ -236,38 +236,38 @@ class Tunnel:
         time.sleep(3)
         # #文件有多少行
         # self.file_name = get_txt_filenames(path=self.my_files._obj_files_dowload_path())
-        # print(self.file_name)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.file_name)
         # self.file_path = self.my_files._obj_files_dowload_path() + "\\" + self.file_name
-        # print(self.file_path)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.file_path)
         # with open(self.file_path, "rb") as file:
         #     self.lines = file.readlines()
         # self.num_lines = len(self.lines)-1
-        # print(self.num_lines)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.num_lines)
         # #实际有多少行
         # total_str = self.driver.find_element(By.XPATH,listPage_objectSearch_Tunnels_Total_posxpath).text
-        # print(total_str)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], total_str)
         # total_result = total_str.split(":")[1].strip()
         # assert total_result == str(self.num_lines),  "判断在不选择All的情况下是否将全文Object导出"
         # os.remove(self.file_path)
-        # print("文件删除成功")
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "文件删除成功")
         self. _calculate_export_all_objects_quantity()
 
     def _calculate_export_all_objects_quantity(self):
         self.file_name = get_txt_filenames(path=self.my_files._obj_files_dowload_path())
-        print(self.file_name)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.file_name)
         self.file_path = self.my_files._obj_files_dowload_path() + "\\" + self.file_name
-        print(self.file_path)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.file_path)
         with open(self.file_path, "rb") as file:
             self.lines = file.readlines()
         self.num_lines = len(self.lines) - 1
-        print(self.num_lines)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.num_lines)
         # 实际有多少行
         total_str = self.driver.find_element(By.XPATH, listPage_objectSearch_Tunnels_Total_posxpath).text
-        print(total_str)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], total_str)
         total_result = total_str.split(":")[1].strip()
         assert total_result == str(self.num_lines), "判断在不选择All的情况下是否将全文Object导出"
         os.remove(self.file_path)
-        print("文件删除成功")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "文件删除成功")
 
     def _delete_quoted_object(self,data):
         self.create_tunnel(data)
@@ -278,7 +278,7 @@ class Tunnel:
         self.driver.find_element(By.XPATH,listPage_object_Tunnels_select_First_object_posXpath).click()
         del_button_elem = listPage_object_Tunnels_delButton_posId
         del_button_elem_clickable = self.objects_po.is_element_clickable(del_button_elem,"ID")
-        print("当前元素是否可点击".format(del_button_elem_clickable))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "当前元素是否可点击".format(del_button_elem_clickable))
         assert del_button_elem_clickable == False,"删除按钮不可点击"
         self.objects_po._del_policy(data)
         self._delete(data)
@@ -300,23 +300,23 @@ class Tunnel:
         try:
             self.driver.is_exist_element(Element=listPage_object_Tunnels_exportButton_posXPATH) # 导出按钮置灰
             assert self.driver.is_exist,"导出按钮置灰"
-            print("导出按钮置灰，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "导出按钮置灰，测试 == Success")
         except:
-            print("导出按钮置灰，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "导出按钮置灰，测试 == Fail")
         # 2、编辑按钮置灰
         try:
             self.driver.is_exist_element(Element=listPage_object_Tunnels_editButton_posXPATH) # 编辑按钮置灰
             assert self.driver.is_exist,"编辑按钮置灰"
-            print("编辑按钮置灰，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "编辑按钮置灰，测试 == Success")
         except:
-            print("编辑按钮置灰，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "编辑按钮置灰，测试 == Fail")
         # 3、删除按钮置灰
         try:
             self.driver.is_exist_element(Element=listPage_object_Tunnels_delButton_posXPATH) # 删除按钮置灰
             assert self.driver.is_exist,"删除按钮置灰"
-            print("删除按钮置灰，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "删除按钮置灰，测试 == Success")
         except:
-            print("删除按钮置灰，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "删除按钮置灰，测试 == Fail")
 
     def clear_selection(self):
         try:
@@ -326,16 +326,16 @@ class Tunnel:
             self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
             time.sleep(5)
             assert self.driver.is_exist,"刷新导致元素不勾选"
-            print("刷新后元素不勾选，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "刷新后元素不勾选，测试 == Success")
             time.sleep(5)
             self.driver.find_element(By.XPATH, listPage_objectSearch_Tunnels_AllButton_posxpath).click()  # 选择all
             self.driver.find_element(By.XPATH,'//*[@id="pagination-_pagination_Objects_tunnel_Home_App_anonymousComponent"]/div[1]/button[2]').click() # 第二页
             self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
             time.sleep(5)
             assert self.driver.is_exist,"翻页导致元素不勾选"
-            print("翻页后元素不勾选，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "翻页后元素不勾选，测试 == Success")
         except:
-            print("翻页后元素不勾选，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "翻页后元素不勾选，测试 == Fail")
     def _search(self, data):
         self._goto_subObjectPage()
         if data["Search_type"] == "ID":
@@ -409,12 +409,12 @@ class Tunnel:
         #通过Name查询，查看内容是否和新建时一致
         self.extract_ele_tunnel()## 提取ID、Name、Description、Detail
         self.search_by_name={"Search_type": "Name"}
-        print(self.search_by_name)
-        print(data)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.search_by_name)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], data)
         self._search(self.search_by_name)
         now_name = self.driver.find_element(By.XPATH, '//table/tbody/tr[1]/td[3]/div//span').text
-        print("self.random_name[:32]:", self.random_name[:32])
-        print("now_name:", now_name)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "self.random_name[:32]:", self.random_name[:32])
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "now_name:", now_name)
         assert self.random_name[:32] == now_name, "Comparison equal"
 
     def create_tunnel(self,data):
@@ -489,7 +489,7 @@ class Tunnel:
                     self.driver.find_element(By.XPATH, listPage_object_ip_address_del_yes_Button_posXpath).click()
             except NoSuchElementException:
                 # 如果没有找到元素，打印消息并跳过删除操作
-                print("未找到第一个对象，跳过删除操作")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "未找到第一个对象，跳过删除操作")
         else:
             pass
 
@@ -530,7 +530,7 @@ class Tunnel:
         # 校验item_search的功能
         self.driver.find_element(By.XPATH, tunnel_item_search_frame).send_keys("2.2.2.3" + Keys.ENTER)
         find_content1 = self.driver.find_element(By.XPATH, tunnel_first_row_item).text
-        print(find_content1)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], find_content1)
         assert find_content1 == '2.2.2.3', f"Expected '2.2.2.3', but got '{find_content1}'"
 
         self.objects_po.clear_Name(path=tunnel_item_search_frame)  # 清除name
@@ -540,7 +540,7 @@ class Tunnel:
             find_content2 = self.driver.find_element(By.XPATH, tunnel_first_row_item).text
         except NoSuchElementException:
             find_content2 = "null"
-        print("what0"+find_content2)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "what0"+find_content2)
         assert find_content2 == '', f"Expected '', but got '{find_content2}'"
 
         self.driver.find_element(By.XPATH,'//*[@id="Cancel-_tunnelAdd_Home_App_anonymousComponent"]/span').click()#Cancel
@@ -608,7 +608,7 @@ class Tunnel:
                                                 '(//*[@id="multilineItemDetails-_MultilineTableCell_ElTableBody_ElTable_Objects_tunnel_Home_App_anonymousComponent"]/div/span/div/div/div)[2]').text
         #字典
         self.table_dict = {self.key11: self.value12, self.key12: self.value22, self.key13: self.value23,self.key14:self.value24}
-        print(self.table_dict)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.table_dict)
 
         # 修改tunnel后元素===》断言
 
@@ -624,7 +624,7 @@ class Tunnel:
         self.value23 = self.driver.find_element(By.XPATH, '//table/tbody/tr[1]/td[3]/div//span').text
         # 字典
         self.edit_table_dict = {self.key11: self.value12, self.key12: self.value22, self.key13: self.value23}
-        print(self.edit_table_dict)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.edit_table_dict)
 
     def new_security_policy_tunnel(self, data):
         # 跳转到安全策略创建页面
@@ -645,14 +645,14 @@ class Tunnel:
         self.driver.is_exist_element(Element=security_first_tunnel_inlist_click_PosXpath) #直接选择第一个最新的，不用搜索
         if self.driver.is_exist:  # 如果存在，就进行创建
             assert self.driver.is_exist == True
-            print('正常找到Object，正常进行引用创建')
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '正常找到Object，正常进行引用创建')
 
             self.driver.find_element(By.XPATH, security_first_tunnel_inlist_click_PosXpath).click()
             self.driver.find_element(By.XPATH, security_create_ok_click_posXpath).click()
             self.driver.find_element(By.XPATH, security_create_Warn_ok_click_posXpath).click()
         else:  # 不存在就跳过
             assert self.driver.is_exist == False  # 未找到元素
-            print('未找到Object，无法进行引用创建')
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '未找到Object，无法进行引用创建')
             pass
 
     def _vsys_case(self,data):
@@ -735,7 +735,7 @@ class Tunnel:
         # 于data中获取数据
         page_flag, selected_object_type, selected_objects_number, detail_type, selected_data_number = data["page_flag"], \
             data["selected_object_type"], data["selected_objects"], data["detail_type"], data["selected_data"]
-        print(page_flag, selected_object_type, selected_objects_number, detail_type)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], page_flag, selected_object_type, selected_objects_number, detail_type)
         obj_data = {"Model": "create",
                     "Type": 1,
                     "Name": "test_ui 4 Clear Counter",
@@ -774,7 +774,7 @@ class Tunnel:
                 pass
 
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], e)
         if page_flag == 0:  # 列表页
             self._pure_operate_checkbox(selected_object_type, selected_objects_number)  # 列表页选择操作
             self._verify_clear_counter(page_flag, selected_object_type, selected_objects_number, selected_data_number,
@@ -851,7 +851,7 @@ class Tunnel:
                     self.profile_pub.change_vsys(vsys_name=ui_vsys_name)
                     self.create_other_vsys_data_flag = 1
             except Exception as e:
-                print(e)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], e)
             # 选中第一个非本Vsys的Object Group或Object并进入其详情页
             self.driver.find_element(By.XPATH,
                                      acc_listPage_object_tableCheckbox_firstNotLocalVsys_objectOrGroup_posXpath).click()
@@ -962,14 +962,14 @@ class Tunnel:
                         break
                     else:
                         i.click()
-                        print("i.click()")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "i.click()")
                         selected_objects_number -= 1
                 for j in local_vsys_object_checkbox_elems:
                     if selected_objects_number < 1:
                         break
                     else:
                         j.click()
-                        print("j.click()")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "j.click()")
                         selected_objects_number -= 1
 
         else:  # 3则任意非本Vsys的对象

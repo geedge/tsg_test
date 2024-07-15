@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 import random
 import time
+from datetime import datetime 
 
 class DeleteRule():
     def __init__(self, driver):
@@ -26,5 +27,5 @@ class DeleteRule():
             time.sleep(3)
             return 200
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             return 400

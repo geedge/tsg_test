@@ -8,10 +8,11 @@ from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 import traceback
 from support.report import *
+from datetime import datetime
 
 def run(parameter):
     try:
-        print("Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result = ""
         
@@ -137,15 +138,15 @@ def run(parameter):
         # 流量验证
         verify = TrafficVerification()
         verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
-        # print("verification result: ", verification_result, flush=True)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "verification result: ", verification_result, flush=True)
         
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()
         result = analysis.analysis_result(test_data, cfg_list, verification_result)
         if len(result) == 0:
-            print("The test case is passed.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
         elif len(result) != 0:
-            print("The test case is failed. The failure reason is: ", result, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
     
         # 删除配置
         delete = DeletePolicy()
@@ -155,12 +156,12 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print("Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
 
-        print("Finish test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
-        print("Error: ", e, flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         traceback.print_exc()
         return "Error: " + str(e)
     finally:

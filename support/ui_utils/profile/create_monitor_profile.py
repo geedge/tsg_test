@@ -16,7 +16,7 @@ import random
 import copy
 
 from support.ui_utils.random_name import RandomName
-
+from datetime import datetime 
 
 class CreateProfile():
     def __init__(self, driver, monitor_profile_element_position):
@@ -54,14 +54,14 @@ class CreateProfile():
             #     if data["reverse_case"] == "other_chars":
             #         execpt_info = "Please enter the integer"
             #         actual_info = self.driver.find_element(By.XPATH, "//div[@class='el-form-item__error']").text.strip()
-            #         print(actual_info)
+            #         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], actual_info)
             #         pytest_check.equal(execpt_info, actual_info,msg="所在行数{}".format(inspect.currentframe().f_lineno))
             #         return 999
             return 200
         except Exception as e:
-            print("Error: ", e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
             traceback.print_exc()
-            print(str(e))
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], str(e))
             return 400
 
 
@@ -76,7 +76,7 @@ class CreateProfile():
                 vlan_ids_create.append(i.strip().split("->")[0])
         # 循环输入vlan id
         if len(vlan_ids_create) > 32:
-            #print("vlan id 数据超出32个，仅保留前32个")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "vlan id 数据超出32个，仅保留前32个")
             vlan_ids_create = vlan_ids_create[:32]
         for j in range(len(vlan_ids_create)):
             # 输入ipnut
@@ -111,10 +111,10 @@ class CreateProfile():
                 self.driver.find_element(By.CSS_SELECTOR,
                                          trafficMirroringProfiles_button_vlanIdAdd_posCss).click()  # 点击add添加
             if error_vlan_id != "":
-                print("error_vlan_id=", error_vlan_id)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "error_vlan_id=", error_vlan_id)
                 element_vlan_del = self.driver.find_element(By.XPATH,
                                                             f"//input[@id='{error_vlan_id}']/ancestor::div[@class='el-form-item__content']/i")
-                # print("element_vlan_del_style=", element_vlan_del.get_attribute("style"))
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "element_vlan_del_style=", element_vlan_del.get_attribute("style"))
                 if element_vlan_del.get_attribute("style") != "display: none;":
                     element_vlan_del.click()
                 elif element_vlan_del.get_attribute("style") == "display: none;":
@@ -129,7 +129,7 @@ class CreateProfile():
                 error_message = "The length of the name is at most 128 characters and cannot be less than 4 characters"
                 if self.driver.is_exist_element_by_value(By.XPATH,
                                           "//label[text()='Name']/parent::div//div[@class='el-form-item__error']"):
-                    print(error_message)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], error_message)
                     actual_error = self.driver.find_element(By.XPATH, "//div[@class='el-form-item__error']").text.strip()
                     assert error_message == actual_error, "Error message does not match expected"
 
@@ -140,13 +140,13 @@ class CreateProfile():
                     self.driver.find_element(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]).click()
                     return False
                 else:
-                    print("name less than 4，no error message")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "name less than 4, no error message")
                     return False
 
             # 检查是否未输入必填项
             if self.driver.is_exist_element_by_value(By.XPATH, "//div[contains(text(),'Please enter the content')]"):
                 error_message = self.driver.find_element(By.XPATH,"//div[contains(text(),'Please enter the content')]").text.strip()
-                #print("未输入必填项，报错：", error_message)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "未输入必填项，报错：", error_message)
 
                 # 点击取消
                 self.driver.find_element(By.CSS_SELECTOR, self.create_element_position[ "profilePage_button_oK_posCss"]).click()
@@ -161,7 +161,7 @@ class CreateProfile():
                 return True
 
         except Exception as e:
-            print("Element not found: ", e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Element not found: ", e)
             return False
 
 

@@ -14,6 +14,7 @@ from support.ui_utils.workpath import workdir
 from selenium import webdriver
 from support.ui_utils.my_web_driver import MyWebDriver
 from support.ui_utils.login_logout import LogInOut
+from datetime import datetime 
 
 driver = None  # 全局变量用户保存webdirver实例
 
@@ -52,7 +53,7 @@ def my_driver():
     )
     # driver.implicitly_wait(2)
     driver.maximize_window()
-    print("Web Driver has been initialized successfully.", flush=True)
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been initialized successfully.", flush=True)
     return driver
 
 def read_config(url, value):
@@ -72,13 +73,13 @@ def teardown():
     global driver
     if driver:
         driver.quit()
-        print("Web Driver has been closed successfully.", flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been closed successfully.", flush=True)
         time.sleep(1)
         
 def initiate_selenium_request():
     for i in range(5):
         try:
-            print("Run Selenium Server for the {} time.".format(i+1), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Run Selenium Server for the {} time.".format(i+1), flush=True)
             os_name = platform.system()
             if os_name == "Linux":
                 remote_url = get_docker_ip()
@@ -88,7 +89,7 @@ def initiate_selenium_request():
             if len(response.text) != 0:
                 break
         except:
-            print("Fail to start selenium server.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to start selenium server.", flush=True)
 
 def get_docker_ip():
     interfaces = psutil.net_if_addrs()
@@ -102,7 +103,7 @@ def get_docker_ip():
 # 处理ctrl+c中断
 def handle_interrupt(sinnum, frame):
     global driver
-    print(driver, "主动中断")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], driver, "主动中断")
     time.sleep(1)
     if driver:
         driver.close()

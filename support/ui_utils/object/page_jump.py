@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from support.ui_utils.element_position.object_element_position import *
 from selenium.webdriver.common.by import By
 import configparser
+from datetime import datetime 
 
 class PageJump():
     def __init__(self, driver):
@@ -20,16 +21,16 @@ class PageJump():
         
     def change_vsys(self, vsys_name=""):
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
-        #print(f"the current vsys: {current_vsys_name}")
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the current vsys: {current_vsys_name}")
         current_path = os.path.dirname(__file__)   # 当前文件目录
         temp_path = os.path.dirname(os.path.dirname(os.path.dirname(current_path)))
         conf_path = os.path.join(temp_path, "configuration_file.ini")
-        #print(conf_path)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], conf_path)
         conf = configparser.ConfigParser()
         conf.read(conf_path, encoding="utf-8")
         id_for_ui = conf.get("vsys", "id_for_ui")
         id_vsys_format = "vsys{}".format(id_for_ui)   # 使用配置变量值
-        #print(id_vsys_format)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_vsys_format)
         # 传入vsys_name值区分
         if vsys_name == "":     # 空，vsys值来自配置文件
             change_vsys_name = id_vsys_format
@@ -42,11 +43,11 @@ class PageJump():
         for el_vsys_item in vsys_tree_name_list:
             vsys_item_name = el_vsys_item.text.strip().lower()
             vsys_item_name_list = vsys_item_name.split("\n")
-            #print(vsys_item_name_list)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], vsys_item_name_list)
             if change_vsys_name.lower() in vsys_item_name_list:
                 flag_num = 1
                 el_vsys_item.find_element(By.XPATH, ".//div[@class='menu-title']").click()
-                #print(f"Change to vsys {change_vsys_name}")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Change to vsys {change_vsys_name}")
                 break
         if flag_num == 0:
-            print(f"no vsys: {change_vsys_name}", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"no vsys: {change_vsys_name}", flush=True)

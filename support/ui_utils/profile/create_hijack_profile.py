@@ -3,6 +3,7 @@ import sys
 import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
+from datetime import datetime 
 
 class CreateHijackProfile():
     def __init__(self, driver):
@@ -35,12 +36,12 @@ class CreateHijackProfile():
         #解析输入data数据的数据
         #File文件上传操作
         file = self._get_value_from_data(data, key="file", data_index=data_index)   #解析file文件名称
-        # print(file)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], file)
         if file != no_modify:      #判断修改时不修改时跳过操作。
             create_file = data["file"].split("->")[data_index]  # 提取上传文件绝对路径
             profile_path = os.path.dirname(os.path.abspath(__file__))  # ...support\ui_utils\profile
             file_abs = os.path.join(profile_path, "profile_file", "hijack_file", create_file)
-            #print(file_abs)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], file_abs)
             self.driver.find_element(By.XPATH, hijackFiles_input_fileUpLoad_posXpath).send_keys(file_abs)
         #download name 下载文件名称操作
         self._operate_switch(data, data_index=data_index, no_modify=no_modify, switch_name="download_name", element_position=hijackFiles_switch_downLoadName_posXpath)
@@ -53,7 +54,7 @@ class CreateHijackProfile():
                                          'exe': 'application/x-msdos-program', 'apk': 'application/vnd.android.package-archive', 'html': 'text/html'}
             if file_type not in element_type_replace_name.keys():
                 #raise f"文件类型错误。用例数据类型为：{file_type}, 可选择文件类型为：{list(element_type_replace_name.keys())}"
-                print("please check")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "please check")
                 return 0
             element_tablist_type = self.driver.find_element(By.XPATH, hijackFiles_tablist_fileType_posXpath.format(replaceName=element_type_replace_name[file_type]))
             self.driver.execute_script("arguments[0].click()", element_tablist_type)  # 强制点击
@@ -94,7 +95,7 @@ class CreateHijackProfile():
         try:
             switch_value: str = data[key].split("->")[data_index].strip().lower()    #用例数据
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
         return switch_value
 
 
