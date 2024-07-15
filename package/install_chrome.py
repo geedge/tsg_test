@@ -2,6 +2,7 @@
 import os
 import platform
 import subprocess
+from datetime import datetime 
 
 def install_package():
     try:
@@ -12,9 +13,9 @@ def install_package():
         subprocess.check_call(["unzip", "chromedriver-linux64.zip"])
         subprocess.check_call(["mv", "chromedriver-linux64/chromedriver", "/usr/local/bin"])
         subprocess.check_call(["chmod", "777", "/usr/local/bin/chromedriver"])
-        print("Install chrome and chromedriver successfully.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Install chrome and chromedriver successfully.")
     except:
-        print("Fail to install chrome and chromedriver.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to install chrome and chromedriver.")
         
 if __name__ == '__main__':
     install_package()

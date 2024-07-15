@@ -9,6 +9,7 @@ from support.ui_utils.element_position.profile_element_position import *
 import re
 import random
 import copy
+from datetime import datetime 
 
 class CreateProfile():
     def __init__(self, driver):
@@ -37,7 +38,7 @@ class CreateProfile():
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_warningYes_posXpath"]).click()
             return 200,sc_info
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             return 400
     def operate_sff_page(self, data,sc_info,sf_name_list,sff_profile_element_position):
         create_element_position = sff_profile_element_position["create"]

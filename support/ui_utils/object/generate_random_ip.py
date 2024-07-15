@@ -1,4 +1,5 @@
 import random
+from datetime import datetime 
 class GenerateRandomIP():
     def __init__(self,driver):
         self.driver = driver
@@ -48,5 +49,5 @@ class GenerateRandomIP():
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
                         obj["item"][0]["item_value"] = new_two_ip
-        print("Setrandom ip for statistics or sc rule.", flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
         return data

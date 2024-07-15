@@ -5,6 +5,7 @@ import random
 from support.api_utils.create_object import CreateObject
 from support.api_utils.create_rule import CreatePolicyRule
 from support.api_utils.create_profile import CreateProfile
+from datetime import datetime 
 
 class CreatePolicy():
     def create_policy(self, parameter, test_data, template_path):
@@ -182,8 +183,8 @@ class CreatePolicy():
                         new_two_ip_list.append(new_ip_2)
                         new_two_ip = "-".join(new_two_ip_list)
                         obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
-        print("Setrandom ip for statistics or sc rule.", flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
         return config
 
 if __name__ == "__main__":
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

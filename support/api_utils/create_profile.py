@@ -114,7 +114,7 @@ class CreateProfile():
                     if post_statistics_data["chart_list"][chart_idex]["metrics"][_]["source_columns"].lower().strip() == post_order_by.lower().strip():
                         function_name = post_statistics_data["chart_list"][chart_idex]["metrics"][_]["function"]
                         break
-                    #print("order_by参数错误：{}".format(post_order_by))
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "order_by参数错误：{}".format(post_order_by))
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
             # 重组 limit、 drilldown_limit
             f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = str(post_statistics_data["chart_list"][chart_idex]["limit"])
@@ -183,14 +183,14 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 sf_profile_id = response_dict["data"]["service_function"]["id"]
             return sf_profile_id
         except AssertionError as e:
-            print(f"AssertionError: {e}", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     # 用传入的sff数据替换模板中的数据
     def process_sff_post_data(self, sf_profile_id, sff_template_path, sff_post_data, vsys_id):
@@ -238,17 +238,17 @@ class CreateProfile():
                 process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
                 url = "{}/v1/policy/profile/statistics_template".format(api_host)
                 headers["Content-Type"] = "application/json"
-                #print(process_post_data)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], process_post_data)
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 # 处理返回数据，提取id
-                #print(response_dict)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], response_dict)
                 profile_id = response_dict["data"]["statistics_template"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["id"] = profile_id
@@ -271,9 +271,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 sff_id = response_dict["data"]["service_function_forwarder"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -291,9 +291,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["response_page"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -309,9 +309,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["hijack_file"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -327,9 +327,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["insert_script"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -345,9 +345,9 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["run_script"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
@@ -361,18 +361,18 @@ class CreateProfile():
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
-                    print("Create {} profile successfully.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
                 else:
-                    print("Create {} profile failed.".format(temp_profile_type), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["dns_record"]["id"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["id"] = profile_id
                 return create_profile_id_dict
             else:
-                print("to be added the other profile.")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added the other profile.")
         except AssertionError as e:
-            print(f"AssertionError: {e}", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
     
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
         url = "{}/v1/policy/profile/{type}/{id}".format(api_host, type=profile_type, id=template_id)
@@ -431,4 +431,4 @@ class CreateProfile():
         return sf_info
 
 if __name__ == '__main__':
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

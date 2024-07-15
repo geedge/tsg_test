@@ -2,6 +2,7 @@
 import os
 import subprocess
 import configparser
+from datetime import datetime 
 
 def install_trex():
     try:
@@ -12,7 +13,7 @@ def install_trex():
         else:
             is_trex = False
         if len(output) > 0 and is_trex:
-            print("TRex has been installed.")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "TRex has been installed.")
         else:
             parse = configparser.ConfigParser()
             parse_dir = os.path.join("trex_intf.ini")
@@ -38,9 +39,9 @@ def install_trex():
             intf_list.append(eth2)
             file_path = "/etc/trex_cfg.yaml"
             file_overwrite(file_path, intf_list)
-            print("Install TRex successfully.")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Install TRex successfully.")
     except:
-        print("Fail to install TRex.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to install TRex.")
 
 def search(output, list):
     try:
@@ -52,10 +53,10 @@ def search(output, list):
                     temp = line.split()
                     if temp:
                         temp_list.append(temp[0])
-        print("Search successfully.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Search successfully.")
         return temp_list
     except:
-        print("Fail to search.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to search.")
         return temp_list
     
 def file_overwrite(file_path, replacement_value):
@@ -69,9 +70,9 @@ def file_overwrite(file_path, replacement_value):
             lines[3] = "  " + target_value + ": " + temp + "\n"
         with open(file_path, 'w') as file:  
             file.writelines(lines) 
-        print("Overwrite successfully.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Overwrite successfully.")
     except:
-        print("Fail to overwrite.")
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to overwrite.")
         
 if __name__ == '__main__':
     install_trex()

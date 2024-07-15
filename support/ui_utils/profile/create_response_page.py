@@ -21,9 +21,9 @@ class CreateResponsePage():
         profile_path = os.path.dirname(os.path.abspath(__file__))  # ...support\ui_utils\profile
         file_abs = os.path.join(profile_path, "profile_file", "response_pages", create_file)
         # 打印出文件路径
-        # print(create_file)
-        # print(profile_path)
-        # print(resposne_file_abs)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], create_file)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], profile_path)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], resposne_file_abs)
         self.driver.find_element(By.XPATH, responsePage_input_file_posXpath).send_keys(file_abs)
         self.driver.find_element(By.CSS_SELECTOR, responsePage_button_oK_posCss).click()
         if self.driver.is_exist_element_by_value(By.CSS_SELECTOR, responsePage_button_warningSaveYes_posCss):

@@ -10,7 +10,7 @@ class OverwriteYaml():
         # 组织yaml路径、pcap路径
         yaml_abs_path = os.path.join(self.data_path, yaml_name)
         pcap_abs_path = os.path.join(self.data_path, pcap_name)
-        #print(yaml_abs_path, pcap_abs_path)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], yaml_abs_path, pcap_abs_path)
         with open(yaml_abs_path, "r", encoding="utf-8") as f:
             result = yaml.load(f.read(), Loader=yaml.FullLoader)
         # 修改pcap文件路径
@@ -22,4 +22,4 @@ class OverwriteYaml():
         # 修改后重写数据
         with open(yaml_abs_path, "w", encoding="utf-8") as f:
             yaml.dump(result, f)
-        # print(result)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], result)

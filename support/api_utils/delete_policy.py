@@ -3,6 +3,7 @@
 import copy
 import requests
 import json
+from datetime import datetime 
 
 class DeletePolicy():    
     def delele_policy_by_cfg(self, token, parameter, cfg_list):
@@ -34,9 +35,9 @@ class DeletePolicy():
                     response = requests.delete(url, headers=headers, params=delete_rule_template, verify=False)
                     assert response.status_code == 200
                     if response.status_code == 200:
-                        print("Delete rule successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete rule successfully.", flush=True)
                     else:
-                        print("Delete rule failed.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete rule failed.", flush=True)
             if len(create_ip_ids) > 0:
                 delete_object_template['type'] = "ip"
                 delete_object_template['ids'] = create_ip_ids
@@ -45,9 +46,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete ip successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip successfully.", flush=True)
                 else:
-                    print("Delete ip failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip failed.", flush=True)
             if len(create_subid_ids) > 0:
                 delete_object_template['type'] = "subscriberid"
                 delete_object_template['ids'] = create_subid_ids
@@ -56,9 +57,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete sub id successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sub id successfully.", flush=True)
                 else:
-                    print("Delete sub id failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sub id failed.", flush=True)
             if len(create_fqdn_ids) > 0:
                 delete_object_template['type'] = "fqdn"
                 delete_object_template['ids'] = create_fqdn_ids
@@ -67,9 +68,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete fqdn successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn successfully.", flush=True)
                 else:
-                    print("Delete fqdn failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn failed.", flush=True)
             if len(create_url_ids) > 0:
                 delete_object_template['type'] = "url"
                 delete_object_template['ids'] = create_url_ids
@@ -78,9 +79,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete url successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete url successfully.", flush=True)
                 else:
-                    print("Delete url failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete url failed.", flush=True)
             if len(create_flag_ids) > 0:
                 delete_object_template['type'] = "flag"
                 delete_object_template['ids'] = create_flag_ids
@@ -89,9 +90,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete flag successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete flag successfully.", flush=True)
                 else:
-                    print("Delete flag failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete flag failed.", flush=True)
             if len(create_keywords_ids) > 0:
                 delete_object_template['type'] = "keywords"
                 delete_object_template['ids'] = create_keywords_ids
@@ -100,9 +101,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete keyword successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete keyword successfully.", flush=True)
                 else:
-                    print("Delete keyword failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete keyword failed.", flush=True)
             if len(create_account_ids) > 0:
                 delete_object_template['type'] = "account"
                 delete_object_template['ids'] = create_account_ids
@@ -111,9 +112,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete account successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete account successfully.", flush=True)
                 else:
-                    print("Delete account failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete account failed.", flush=True)
             if len(create_http_signature_ids) > 0:
                 delete_object_template['type'] = "http_signature"
                 delete_object_template['ids'] = create_http_signature_ids
@@ -122,9 +123,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete http signature successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete http signature successfully.", flush=True)
                 else:
-                    print("Delete http signature failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete http signature failed.", flush=True)
             if len(create_geo_name_ids) > 0:
                 del delete_object_template["type"]
                 del delete_object_template["ids"]
@@ -135,9 +136,9 @@ class DeletePolicy():
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete geolocation successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete geolocation successfully.", flush=True)
                 else:
-                    print("Delete geolocation failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete geolocation failed.", flush=True)
             if len(create_profile_ids) > 0:
                 for del_porfile_index in range(len(create_profile_ids)):
                     if create_profile_ids[del_porfile_index]["profile_type"] == "Statistics_Templates":    # 删除逻辑
@@ -147,9 +148,9 @@ class DeletePolicy():
                         response = requests.delete(url, headers=headers, params=del_profile_template, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print("Delete statistics template successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete statistics template successfully.", flush=True)
                         else:
-                            print("Delete statistics template failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete statistics template failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "service_function_forwarder":    # 删除SFF和SF
                         profile_id = create_profile_ids[del_porfile_index]["id"]
                         del_profile_sff = {"ids": str(profile_id),"vsys_id":vsys_id}
@@ -157,18 +158,18 @@ class DeletePolicy():
                         response = requests.delete(url, headers=headers, params=del_profile_sff, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print("Delete service function forwarder successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function forwarder successfully.", flush=True)
                             profile_id = create_profile_ids[del_porfile_index]["sff_info"]["sf_info"][0]["id"]
                             del_profile_sf = {"ids": str(profile_id),"vsys_id":vsys_id}
                             url = "{}/v1/policy/profile/service_function".format(api_server)
                             response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                             assert response.status_code == 200
                             if response.status_code == 200:
-                                print("Delete service function successfully.", flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function successfully.", flush=True)
                             else:
-                                print("Delete service function failed.", flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function failed.", flush=True)
                         else:
-                            print("Delete service function forwarder failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function forwarder failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "response_page": # 删除response_page
                         profile_id = create_profile_ids[del_porfile_index]["id"]
                         url = "{}/v1/policy/profile/response_page".format(api_server)
@@ -176,9 +177,9 @@ class DeletePolicy():
                         response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print("Delete response page successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete response page successfully.", flush=True)
                         else:
-                            print("Delete response page failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete response page failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "hijack_files": # 删除hijack_files
                         profile_id = create_profile_ids[del_porfile_index]["id"]
                         url = "{}/v1/policy/profile/hijack_file".format(api_server)
@@ -186,9 +187,9 @@ class DeletePolicy():
                         response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print("Delete hijack files successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete hijack files successfully.", flush=True)
                         else:
-                            print("Delete hijack files failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete hijack files failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "insert_profile": # 删除insert
                         profile_id = create_profile_ids[del_porfile_index]["id"]
                         url = "{}/v1/policy/profile/insert_script".format(api_server)
@@ -196,9 +197,9 @@ class DeletePolicy():
                         response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print("Delete insert profile successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete insert profile successfully.", flush=True)
                         else:
-                            print("Delete insert profile failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete insert profile failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "run_script": # 删除run_script
                         profile_id = create_profile_ids[del_porfile_index]["id"]
                         url = "{}/v1/policy/profile/run_script".format(api_server)
@@ -206,9 +207,9 @@ class DeletePolicy():
                         response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print("Delete run script successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete run script successfully.", flush=True)
                         else:
-                            print("Delete run script failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete run script failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "dns_record": # 删除dns_record
                         profile_id = create_profile_ids[del_porfile_index]["id"]
                         url = "{}/v1/policy/profile/run_script".format(api_server)
@@ -216,9 +217,9 @@ class DeletePolicy():
                         response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print("Delete dns record successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record successfully.", flush=True)
                         else:
-                            print("Delete dns record failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "traffic_mirror": # 删除dns_record
                         profile_id = create_profile_ids[del_porfile_index]["id"]
                         url = "{}/v1/policy/profile/traffic_mirror".format(api_server)
@@ -226,11 +227,11 @@ class DeletePolicy():
                         response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print("Delete dns record successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record successfully.", flush=True)
                         else:
-                            print("Delete dns record failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
         except AssertionError as e:
-            print(f"AssertionError: {e}", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
     
     def delete_policy_by_name(self, token, parameter, name_list):
         headers = {"Authorization": token}
@@ -342,15 +343,15 @@ class DeletePolicy():
                             del template["type"]
                         template['name'] = name_item["name"]
                         profile_url = api_server + "/v1/policy/profile/" + name_item["type"]
-                        # print(profile_url)
-                        # print(template)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], profile_url)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], template)
                         self.query_and_delete_by_name(profile_url, template, headers)
                                               
     def query_and_delete_by_name(self, url, template, headers):
         try:
             response = requests.get(url, headers=headers, params=template, verify=False)
             if response.status_code != 200:
-                print("search {} failed, please check".format(template['type']))
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "search {} failed, please check".format(template['type']))
                 return 0
             return_json_data = json.loads(response.text)
             if '/policy/rule' in url or '/policy/object' in url:
@@ -393,13 +394,13 @@ class DeletePolicy():
                 delete_data = self.combine_delete_ids(template, data_list)
                 response = requests.delete(url, headers=headers, params=delete_data, verify=False)
                 if response.status_code == 200:
-                    print("Delete {} successfully.".format(delete_info), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(delete_info), flush=True)
                 else:
-                    print("Delete {} failed, please check {}".format(delete_info, delete_data))
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} failed, please check {}".format(delete_info, delete_data))
             else:
-                print("No configuration needs to be deleted.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "No configuration needs to be deleted.", flush=True)
         except AssertionError as e:
-            print(f"AssertionError: {e}", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def combine_delete_ids(self, template, list_data):
         temp_template = copy.deepcopy(template)
@@ -425,11 +426,11 @@ class DeletePolicy():
                 response = requests.delete(geolocation_url, headers=headers, params=delete_data, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
-                    print("Delete geolocation object successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete geolocation object successfully.", flush=True)
                 else:
-                    print("Delete geolocation object failed.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete geolocation object failed.", flush=True)
         except AssertionError as e:
-            print(f"AssertionError: {e}", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
             
 if __name__ == '__main__':
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

@@ -773,7 +773,7 @@ def get_profile_element_position(key_name):
     if key_name == "statistics_template":
         element_position_map = test_statistics_template_element_position
     else:
-        print("{} no element position map".format(key_name))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} no element position map".format(key_name))
         element_position_map = {}
     return element_position_map
 
@@ -812,7 +812,7 @@ def get_name_list(test_data):
                     tmp_name_dict["type"] = value[i]["profile_type"]
                     tmp_name_dict["name"] = value[i]["profile_file"]["name"]
                     name_list.append(copy.deepcopy(tmp_name_dict))
-    #print(name_list)
+    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], name_list)
     return name_list
 
 def create_pre_policy(data, driver):
@@ -923,9 +923,9 @@ def create_pre_policy(data, driver):
     security_rule_element_position = get_element_position("security")
     intercept_rule_element_position = get_element_position("pxy_intercept")
     #create_rule.create(security_temp_deny_quic, security_rule_element_position)
-    #print("Create security rule successfully.", flush=True)
+    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
     create_rule.create(intercept_temp, intercept_rule_element_position)
-    print("Create intercept rule successfully.")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create intercept rule successfully.")
     tmp_list = [
         # {
         #     "type": "security",
@@ -950,10 +950,10 @@ def delete_pre_policy(name_list, driver):
         if policy_type == "pxy_intercept":
             policy_type = "intercept"
         if delete_rule_code == 200:
-            print("Delete {} rule successfully.".format(policy_type))
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} rule successfully.".format(policy_type))
         elif delete_rule_code != 200:
             result = " In addition, fail to delete {} rule.".format(policy_type)
-            print(result)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], result)
         time.sleep(2)
         return delete_rule_code
 
@@ -1006,7 +1006,7 @@ def get_element_position(key_name):
     elif key_name == "statistics":
         element_position_map = test_statistics_rule_element_position
     else:
-        print("{} no element position map".format(key_name))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} no element position map".format(key_name))
         element_position_map = {}
     return element_position_map
 

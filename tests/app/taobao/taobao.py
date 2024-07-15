@@ -20,9 +20,9 @@ def open():
     try:
         snapshot(msg="taobao_open")
         assert_equal(poco(text="订阅").exists(), True, "taobao_open succeeded")
-        return print('taobao_open succeeded', flush=True)
+        return print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'taobao_open succeeded', flush=True)
     except AssertionError:
-        return print('taobao_open failed', flush=True)
+        return print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'taobao_open failed', flush=True)
 
 def close():
     stop_app("com.taobao.taobao")

@@ -10,42 +10,42 @@ class CallAirtest():
     def start_airtest(self):
         # adb devices
         adb_devices = subprocess.Popen("adb devices", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print("------>>>>>>", adb_devices.communicate()[0].decode().strip())
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------>>>>>>", adb_devices.communicate()[0].decode().strip())
         subprocess.Popen("adb kill-server", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         subprocess.Popen("adb start-server", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         # adb root
         for i in range(100):
             time.sleep(int(2))
-            print("尝试adb root ----{}".format(i))
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "尝试adb root ----{}".format(i))
             adb_root = subprocess.Popen("adb root", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             res_root = adb_root.communicate()[0].decode().strip()
-            print("------>>>>>>", adb_root.communicate()[0].decode().strip())
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------>>>>>>", adb_root.communicate()[0].decode().strip())
             time.sleep(2)
             if res_root:
                 adb_devices = subprocess.Popen("adb devices", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 break
             time.sleep(1)
             if i == 4:
-                print("adb root 失败")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "adb root 失败")
                 exit(1)
 
         # adb devices
         for i in range(10):
             adb_devices = subprocess.Popen("adb devices", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             device_i = adb_devices.communicate()[0].decode().strip()
-            print("------>>>>>>", device_i)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------>>>>>>", device_i)
             if "device" in device_i.split()[-1]:
                 self.setDeviceId(device_i.split()[-2])
                 break
             time.sleep(4)
             if i == 4:
-                print("adb devices offline")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "adb devices offline")
                 exit(1)
         
         # adb remount，若fail且用的是雷电9，需要在设置中使能system.vmdk可写入
         adb_remount = subprocess.Popen("adb remount", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print("------>>>>>>", adb_remount.communicate()[0].decode().strip())
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------>>>>>>", adb_remount.communicate()[0].decode().strip())
         time.sleep(1)
 
     def stop_airtest(self):
@@ -66,7 +66,7 @@ class CallAirtest():
 
     def verifyResult(self):
         # 待补充
-        print(111)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 111)
 
 if __name__ == '__main__':
     # ms传给airtest信息：启动验证的状态（status=1是run，status=0是stop）、待验证的app名

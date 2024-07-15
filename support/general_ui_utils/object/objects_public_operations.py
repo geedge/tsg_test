@@ -49,12 +49,12 @@ def download_files():
     # Login
     # 需要判断，遇到https不安全时，点击高级-继续登录才可以访问https-tsg
     if "https" in tsglogin_url:
-        print(2)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 2)
         driver.is_exist_element("//*[@id='details-button']")
         if driver.is_exist:
-            print(3)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 3)
             if "高级" in driver.find_element(By.XPATH, "//*[@id='details-button']").text.strip():
-                print(4)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 4)
                 driver.find_element(By.XPATH, "//*[@id='details-button']").click()
                 driver.find_element(By.XPATH, "//*[@id='proceed-link']").click()
     # 输入账户和密码
@@ -81,7 +81,7 @@ def download_files():
     loginout_parse.read(loginout_parse_dir, encoding="utf-8")
     # 切换UI自动化使用vsys
     vsys_name = loginout_parse.get("vsys", "vsys_name")  # 登录后vsys切换为UIAutoTestVsys
-    # print(vsys_name)
+    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], vsys_name)
     profile_pub = ProfilesPublicOperations(driver)
     profile_pub.change_vsys(vsys_name=vsys_name)
     # 默认更改为英语
@@ -144,7 +144,7 @@ class ObjectsPublicOperations:
         :param path: path 也可是Selenium元素 XD
         :return:
         """
-        # print("goTo_input {}".format(pathOrElement), type(pathOrElement))
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "goTo_input {}".format(pathOrElement), type(pathOrElement))
         if isinstance(path, WebElement):  # 变量是WebElement类型
             element = path
         else:  # path
@@ -238,7 +238,7 @@ class ObjectsPublicOperations:
                 self.table_dict = {self.key_id: self.value_id, self.key_vsys_id: self.value_vsys_id,
                                    self.key_name: self.value_name, self.key_des: self.value_des,
                                    "Datails": "null", self.key_refer_count: self.value_refer_count}
-            print("extract_ele TEST:{}".format(self.table_dict))
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "extract_ele TEST:{}".format(self.table_dict))
 
         #     try:
         #         self.driver.is_exist_element(Element=list_second_row_sixth_column_posXpath)
@@ -293,7 +293,7 @@ class ObjectsPublicOperations:
     #     else:
     #         assert self.driver.is_exist
 
-    # print(self.table_dict)
+    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.table_dict)
 
     # if data["Createmodel"] == "0" and data["Createtype"] != "IP_Learnig":
     #     self.Details = self.driver.find_element(By.XPATH,listPage_object_mobileIdentities_new_Details_extract_posXpath).text
@@ -385,7 +385,7 @@ class ObjectsPublicOperations:
         # 全不选,选择展示Column并确认
         self.driver.find_element(By.XPATH, mainPage_ObjectSearch_Column_settings_posXpath).click()
         self.Column_text = self.driver.find_element(By.XPATH, Column).text
-        # print(self.Column_text)
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.Column_text)
         self.driver.find_element(By.XPATH, Column).click()  # 选择目标Column
         self.driver.find_element(By.XPATH,
                                  mainPage_ObjectSearch_Column_settings_click_OK_Button_posXpath).click()  # 点击OK按钮
@@ -428,7 +428,7 @@ class ObjectsPublicOperations:
             self.total_count = self.driver.find_element(By.XPATH,
                                                         "//div[@class='tab-content floatleft height100 width100']/p").text
             self.count = self.total_count.split("Total:")
-            print(self.count[1])
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.count[1])
             assert self.count[1] == '1'
 
     # 判断列元素
@@ -487,7 +487,7 @@ class ObjectsPublicOperations:
                 # 获取页面中最大页码
                 max_page_elem_Xpath = listPage_object_pages_maxPageNumber_posXpath
                 max_page_number = self.driver.find_element(By.XPATH, max_page_elem_Xpath).text
-                # print("max_page_number:{}".format(max_page_number))
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "max_page_number:{}".format(max_page_number))
                 # 前一页按钮
                 previousPage_button = self.driver.find_element(By.XPATH,
                                                                listPage_object_pages_previousPage_button_poxXpath)
@@ -507,7 +507,7 @@ class ObjectsPublicOperations:
                 # 获取页面中最大页码
                 max_page_elem_Xpath = DrawerlistPage_object_pages_maxPageNumber_posXpath
                 max_page_number = self.driver.find_element(By.XPATH, max_page_elem_Xpath).text
-                # print("max_page_number:{}".format(max_page_number))
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "max_page_number:{}".format(max_page_number))
                 # 前一页按钮
                 previousPage_button = self.driver.find_element(By.XPATH,
                                                                DrawerlistPage_object_pages_previousPage_button_poxXpath)
@@ -550,13 +550,13 @@ class ObjectsPublicOperations:
                                         nextPage_button,
                                         goTo_input, currentPageNumber_posXpath, destination_page_elem_XpathTemple)
                 except Exception as e:
-                    print(e)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], e)
             else:
                 self._turn_page(turn_mode, destination_page_number, max_page_number, previousPage_button,
                                 nextPage_button,
                                 goTo_input, currentPageNumber_posXpath, destination_page_elem_XpathTemple)
         else:
-            print(" 无页码元素，无法进行翻页操作--跳过")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], " 无页码元素，无法进行翻页操作--跳过")
             pass
 
     def _turn_page(self, turn_mode, destination_page_number, max_page_number, previousPage_button, nextPage_button,
@@ -575,19 +575,19 @@ class ObjectsPublicOperations:
                 else:
                     random_list = [(lambda a, b: random.randrange(a, b + 1))(1, int(max_page_number)) for i in
                                    range(list_lenth)]
-                    print("--------------------------------random_list:{}".format(random_list))
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "--------------------------------random_list:{}".format(random_list))
                 for i in random_list:
                     # 或取页面中目标页码元素
                     destination_page_elem_Xpath = destination_page_elem_XpathTemple.format(i)
 
-                    print("--------------------------------before _operate_turn_pages")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "--------------------------------before _operate_turn_pages")
                     self._operate_turn_pages(i, destination_page_elem_Xpath, currentPageNumber_posXpath, goTo_input)
-                    print("--------------------------------after _operate_turn_pages")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "--------------------------------after _operate_turn_pages")
                     destination_page_elem = self.driver.find_element(By.XPATH, destination_page_elem_Xpath)
                     destination_page_elem.click()
                     current_page_number = self.driver.find_element(By.XPATH,
                                                                    currentPageNumber_posXpath).text
-                    # print("current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number, b=str(i)))
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number, b=str(i)))
                     assert current_page_number == str(i), "校验页码跳转失败！！"
             else:  # 正常跳转至目标页
                 destination_page_elem_Xpath = destination_page_elem_XpathTemple.format(
@@ -599,14 +599,14 @@ class ObjectsPublicOperations:
                 assert self.driver.find_element(By.XPATH,
                                                 currentPageNumber_posXpath).text == str(
                     destination_page_number), "校验页码跳转失败！！"
-                print("翻页成功，{}".format(self.driver.find_element(By.XPATH,
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "翻页成功，{}".format(self.driver.find_element(By.XPATH,
                                                                     currentPageNumber_posXpath).text))
 
         elif turn_mode == 2:  # 使用前一页或后一页按钮进行翻页，如destination_page为0则进行随机跳转
             if destination_page_number == "0" or int(destination_page_number) > int(
                     max_page_number):  # 如destination_page为0或大于最大页码则进行随机跳转
                 random_page_number = random.randint(1, int(max_page_number))
-                # print("random_page_number:{}".format(random_page_number))
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "random_page_number:{}".format(random_page_number))
                 current_page_number = self.driver.find_element(By.XPATH,
                                                                currentPageNumber_posXpath).text
                 while int(current_page_number) != random_page_number:
@@ -620,7 +620,7 @@ class ObjectsPublicOperations:
                                                                        currentPageNumber_posXpath).text
                     else:
                         break
-                # print("current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
                 #                                                                    b=str(random_page_number)))
                 assert self.driver.find_element(By.XPATH,
                                                 currentPageNumber_posXpath).text == str(
@@ -640,7 +640,7 @@ class ObjectsPublicOperations:
                                                                        currentPageNumber_posXpath).text
                     else:
                         break
-                # print("current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
                 #                                                                    b=destination_page_number))
                 assert self.driver.find_element(By.XPATH,
                                                 currentPageNumber_posXpath).text == str(
@@ -658,7 +658,7 @@ class ObjectsPublicOperations:
                 # current_page_number = self.driver.find_element(By.XPATH,
                 #                                                currentPageNumber_posXpath).text
 
-                # print("current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
                 #                                                                    b=str(random_page_number)))
                 assert self.driver.find_element(By.XPATH,
                                                 currentPageNumber_posXpath).text == str(
@@ -673,7 +673,7 @@ class ObjectsPublicOperations:
                 # current_page_number = self.driver.find_element(By.XPATH,
                 #                                                currentPageNumber_posXpath).text
 
-                # print("current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
                 #                                                                    b=str(destination_page_number)))
                 assert self.driver.find_element(By.XPATH,
                                                 currentPageNumber_posXpath).text == str(
@@ -694,7 +694,7 @@ class ObjectsPublicOperations:
                     else:
                         random_list = [(lambda a, b: random.randrange(a, b + 1))(1, int(max_page_number)) for i in
                                        range(list_lenth)]
-                    # print("random_list:{}".format(random_list))
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "random_list:{}".format(random_list))
                     for i in random_list:
                         # 或取页面中目标页码元素
                         destination_page_elem_Xpath = destination_page_elem_XpathTemple.format(
@@ -705,7 +705,7 @@ class ObjectsPublicOperations:
                         destination_page_elem.click()
                         current_page_number = self.driver.find_element(By.XPATH,
                                                                        currentPageNumber_posXpath).text
-                        # print("current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "current_page_number:{a}|destination_page_number:{b}".format(a=current_page_number,
                         #                                                                    b=str(i)))
                         assert current_page_number == str(i), "校验页码跳转失败！！"
                 else:  # 正常跳转至目标页
@@ -730,19 +730,19 @@ class ObjectsPublicOperations:
         :return:
         """
         if int(destination_page) > 20:
-            # print(f"destination_page{destination_page}")
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"destination_page{destination_page}")
             self.clear_Name(goTo_input)
             goTo_input.send_keys(int(destination_page) - 9)
             # 确认并执行跳转
             goTo_input.send_keys(Keys.ENTER)  # 输入框中执行回车
         while True:  # 判断目标页码元素是否存在
-            print("----------------In while")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "----------------In while")
             self.driver.is_exist_element(Element=destination_page_elem_Xpath)
-            # print("is_exist_element:{}".format(self.driver.is_exist))
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "is_exist_element:{}".format(self.driver.is_exist))
             current_page_number = self.driver.find_element(By.XPATH,
                                                            currentPageNumber_posXpath).text
             if not self.driver.is_exist:
-                print("-----------quick exist!!!!")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "-----------quick exist!!!!")
 
                 if int(destination_page) > int(current_page_number):
                     # time.sleep(0.1)
@@ -751,7 +751,7 @@ class ObjectsPublicOperations:
                     # time.sleep(0.1)
                     self.driver.find_element(By.XPATH, listPage_object_pages_quickPreviousPage_button_poxXpath).click()
             else:
-                print("-----------quick not exist!!!! break")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "-----------quick not exist!!!! break")
                 break
 
     # def pages_turning_case(self):
@@ -828,7 +828,7 @@ class ObjectsPublicOperations:
         :param close_button_elem_Xpath:
         :return:
         """
-        # print("消除弹窗")
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "消除弹窗")
         # time.sleep(3)
         self.driver.is_exist_element(close_button_elem_Xpath)
         loop_count = 2
@@ -906,7 +906,7 @@ class ObjectsPublicOperations:
         # time.sleep(3)
         # 判断文件夹是否为空
         if os.listdir(folder):
-            print('不为空')
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '不为空')
             # 遍历文件夹下的所有文件和子文件夹
             for item in os.listdir(folder):
                 # 拼接完整的路径
@@ -920,7 +920,7 @@ class ObjectsPublicOperations:
                     shutil.rmtree(path)
         else:
             # 文件夹为空，不做任何操作
-            print('该目录为空')
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '该目录为空')
             pass
 
     def extract_ele_userdefinedAttributesAndSignatures(self):
@@ -946,7 +946,7 @@ class ObjectsPublicOperations:
         self.value23 = self.driver.find_element(By.XPATH, Userdefined_second_row_third_column_posXpath).text
         # 字典
         self.table_dict1 = {self.key11: self.value12, self.key12: self.value22, self.key13: self.value23}
-        print(self.table_dict1)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.table_dict1)
 
     # 提取Attributes的ID、Name
     def assert_ele_userdefined_attributes_and_signatures(self):
@@ -962,7 +962,7 @@ class ObjectsPublicOperations:
         self.value23 = self.driver.find_element(By.XPATH, Userdefined_second_row_third_column_posXpath).text
         # 字典
         self.edit_table_dict1 = {self.key11: self.value12, self.key12: self.value22, self.key13: self.value23}
-        print(self.edit_table_dict1)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.edit_table_dict1)
 
     def Export_different_types(self):
         try:
@@ -977,9 +977,9 @@ class ObjectsPublicOperations:
             self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_Export_Mobile_type_imei_posXpath)  # imsi导出展示
             assert self.driver.is_exist
             self.driver.find_element(By.XPATH, '//div/div[3]/span/button[2]').click()
-            print("点击导出按钮，断言可以导出多个不同type类型 == Sucess")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "点击导出按钮，断言可以导出多个不同type类型 == Sucess")
         except:
-            print("点击导出按钮，断言可以导出多个不同type类型 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "点击导出按钮，断言可以导出多个不同type类型 == Fail")
 
     '''
     data:{
@@ -1007,10 +1007,10 @@ class ObjectsPublicOperations:
         elif vsys_id == "Tvsys3":
             self.driver.find_element(By.XPATH, test_mainPage_navigationBar_Tvsys3_posXpath).click()
         elif vsys_id == "super_Mvsys3":
-            # print("切换为super_Mvsys3")
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "切换为super_Mvsys3")
             self.driver.find_element(By.XPATH,
                                      objects_element_position.mainPage_navigationBar_Mvsys3_Tvsys5_posXpath).click()
-            # print("切换为super_Mvsys3",objects_element_position.mainPage_navigationBar_Mvsys3_Tvsys5_posXpath)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "切换为super_Mvsys3",objects_element_position.mainPage_navigationBar_Mvsys3_Tvsys5_posXpath)
         elif vsys_id == "super_Tvsys10":
             self.driver.find_element(By.XPATH, mainPage_navigationBar_super_Tvsys10_posXpath).click()
         # elif vsys_id == "super_Tvsys3":
@@ -1044,9 +1044,9 @@ class ObjectsPublicOperations:
                                                       listPage_object_mobileIdentities_del_after_ele_posXpath).text
             try:
                 assert self.Page_Tips == "No Data", "校验是否删除成功生效"
-                print("未查询到该Object，该Object不存在，断言成功")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "未查询到该Object，该Object不存在，断言成功")
             except:
-                print("仍然可以查询到Object，断言失败")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "仍然可以查询到Object，断言失败")
         else:
             pass
 
@@ -1082,25 +1082,25 @@ class ObjectsPublicOperations:
             self.driver.is_exist_element(
                 Element=mobileIdentitiesObjectPage_Export_Mobile_Identity_Button_posXpath)  # 导出按钮置灰
             assert self.driver.is_exist, "导出按钮置灰"
-            print("导出按钮置灰，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "导出按钮置灰，测试 == Success")
         except:
-            print("导出按钮置灰，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "导出按钮置灰，测试 == Fail")
         # 2、编辑按钮置灰
         try:
             self.driver.is_exist_element(
                 Element=mobileIdentitiesObjectPage_Edit_Mobile_Identity_Button_posXpath)  # 编辑按钮置灰
             assert self.driver.is_exist, "编辑按钮置灰"
-            print("编辑按钮置灰，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "编辑按钮置灰，测试 == Success")
         except:
-            print("编辑按钮置灰，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "编辑按钮置灰，测试 == Fail")
         # 3、删除按钮置灰
         try:
             self.driver.is_exist_element(
                 Element=mobileIdentitiesObjectPage_Delete_Mobile_Identity_Button_posXpath)  # 删除按钮置灰
             assert self.driver.is_exist, "删除按钮置灰"
-            print("删除按钮置灰，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "删除按钮置灰，测试 == Success")
         except:
-            print("删除按钮置灰，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "删除按钮置灰，测试 == Fail")
 
     # 刷新、翻页后元素不为选中状态
     def Clear_selection(self):
@@ -1111,16 +1111,16 @@ class ObjectsPublicOperations:
             self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
             time.sleep(5)
             assert self.driver.is_exist, "刷新导致元素不勾选"
-            print("刷新后元素不勾选，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "刷新后元素不勾选，测试 == Success")
             time.sleep(5)
             self.driver.find_element(By.XPATH, listPage_object_mobileIdentities_allButton_posId).click()  # 选择all
             self.driver.find_element(By.XPATH, listPage_object_pages_nextPage_button_poxXpath).click()  # 第二页
             self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_selete_Mobile_Identity_Button_posXpath)
             time.sleep(5)
             assert self.driver.is_exist, "翻页导致元素不勾选"
-            print("翻页后元素不勾选，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "翻页后元素不勾选，测试 == Success")
         except:
-            print("翻页后元素不勾选，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "翻页后元素不勾选，测试 == Fail")
 
     def Unable_to_upload(self):
         try:
@@ -1132,9 +1132,9 @@ class ObjectsPublicOperations:
             time.sleep(3)
             self.driver.is_exist_element(Element=mobileIdentitiesObjectPage_import_files_Mobile_Identity_Button_posXpath)
             assert self.driver.is_exist
-            print("导入按钮置灰，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "导入按钮置灰，测试 == Success")
         except:
-            print("导入按钮未置灰，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "导入按钮未置灰，测试 == Fail")
 
     def download_delete_import_files(self, data):
         try:
@@ -1152,12 +1152,12 @@ class ObjectsPublicOperations:
                                      mobileIdentitiesObjectPage_Import_Mobile_Identity_files_OK_Button_posXpath).click()
             self.driver.is_exist_element(Element='//li/i[@class="iconfont icon-DownNormal fontsize16"]')
             assert self.driver.is_exist
-            print("存在下载按钮，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "存在下载按钮，测试 == Success")
             self.driver.is_exist_element(Element='//li/i[@class="el-icon-close fontsize18"]')
             assert self.driver.is_exist
-            print("存在删除按钮，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "存在删除按钮，测试 == Success")
         except:
-            print("测试失败，不存在下载、删除按钮")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "测试失败，不存在下载、删除按钮")
 
     def switch_checked(self):
         # 选择创建2 Group
@@ -1168,27 +1168,27 @@ class ObjectsPublicOperations:
         self.driver.is_exist_element(
             Element=mobileIdentitiesObjectPage_Exclude_Objects_close_Mobile_Identity_Button_posXpath)
         if self.driver.is_exist:
-            print("Exclude_Objects按钮开关为关，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exclude_Objects按钮开关为关，测试 == Success")
         else:
-            print("Exclude_Objects按钮开关为开，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exclude_Objects按钮开关为开，测试 == Fail")
         # 查看可以开启Exclude/Include开关
         self.driver.find_element(By.XPATH,
                                  mobileIdentitiesObjectPage_Exclude_Objects_operation_Mobile_Identity_Button_posXpath).click()
         self.driver.is_exist_element(
             Element=mobileIdentitiesObjectPage_Exclude_Objects_open_Mobile_Identity_Button_posXpath)
         if self.driver.is_exist:
-            print("Exclude_Objects按钮开关为关，测试 == Success")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exclude_Objects按钮开关为关，测试 == Success")
         else:
-            print("Exclude_Objects按钮开关为开，测试 == Fail")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exclude_Objects按钮开关为开，测试 == Fail")
 
     def random_object_statistics(self):
         random_object_statistic = random.choice(["Elaborate", "Brief", "None"])
-        print(random_object_statistic)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], random_object_statistic)
         return random_object_statistic
 
 # path = my_files._obj_files_dowload_path()  # 替换为你的路径
 # txt_filenames = get_txt_filenames(path)
-# print(txt_filenames)
+# print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], txt_filenames)
 
 if __name__ == '__main__':
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

@@ -3,6 +3,7 @@
 import time
 import pymysql.cursors
 import ast
+from datetime import datetime 
 
 def get_group_id(app, api_host):
     mysql_host = api_host[7:]
@@ -59,4 +60,4 @@ def get_app_id(app, api_host):
     return app_id_list
 
 if __name__ == '__main__':
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policy.page_jump import PageJump
 import traceback
+from datetime import datetime 
 
 class EditRule():
     def __init__(self, driver):
@@ -50,6 +51,6 @@ class EditRule():
             self.driver.find_element(By.ID, edit_button_position).click()
             return 200, rule_id
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             traceback.print_exc()
             return 400, None

@@ -78,7 +78,7 @@ class TrafficVerification():
                 output = self.call_traffic_server(temp_data, script_type, debug_flag)
             else:
                 output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
-            print("Start to verify the effect of the policy rule.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             cmd_return = output
             
             expected_return = test_data["expected_return"]
@@ -90,10 +90,11 @@ class TrafficVerification():
             log_result, metric_result = None, None
             if int(is_log) == 1:
                 if is_log_query == 1 or is_counters == 1:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric now.", flush=True)
                     for i in range(50):
-                        print("Get log and metric for the {} time.".format(i+1), flush=True)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
                         if i == 10 and script_type == "ui" and driver:
-                            print("Operate the browser to prevent timeout close.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
                             support.ui_utils.env.teardown()
                             support.ui_utils.env.initiate_selenium_request()
                             my_driver = support.ui_utils.env.my_driver()
@@ -117,18 +118,18 @@ class TrafficVerification():
                 log_result = True
             
             if metric_result == True:
-                print('The boolean of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
             elif metric_result == False:
-                print('The boolean of "metric_result" is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
             elif metric_result == None:
-                print('The boolean of "metric_result" is none. The mean is: do not get metrics.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is none. The mean is: do not get metrics.', flush=True)
             
             if log_result == True:
-                print('The boolean of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
             elif log_result == False:
-                print('The boolean of "log_result" is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
             elif log_result == None:
-                print('The boolean of "log_result" is none. The mean is: do not get logs.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is none. The mean is: do not get logs.', flush=True)
             
             return cmd_result, log_result, metric_result, my_driver
         elif policy_type == "statistics":      # statistics 使用trex流量回放验证
@@ -183,11 +184,11 @@ class TrafficVerification():
                         break
                     if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
                         # 直接调用清空策略方法
-                        print("Invalid test, end test. Policy id: {}".format(policy_id), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid test, end test. Policy id: {}".format(policy_id), flush=True)
                         return False, False, False, "The policy verification fail."
                     verify_policy_break_count += 1
                     time.sleep(20)
-                    print("Interval {} second, result of the {} policy verification: Policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             # 将原数据中使用的ip替换为随机生成ip
@@ -247,7 +248,7 @@ class TrafficVerification():
                 if  metric_results[0] == 333:     # API 查询失败时变量赋值
                     metric_result = False
                     if metric_results[1] == "passthrough":     # incoming或者outgoing的session方向
-                        #print("The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
                         metric_results[1] = ""
                         metric_result = True
             return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
@@ -346,7 +347,7 @@ class TrafficVerification():
                     output = self.call_traffic_server(temp_data, script_type, debug_flag)
                 else:
                     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
-                print("Start to verify the effect of the policy rule.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
                 cmd_return = output
                 expected_return = test_data["expected_return"]
                 # 获取结束时间
@@ -388,7 +389,7 @@ class TrafficVerification():
                         metric_result = False
             return cmd_result, metric_result, metric_result, my_driver
         elif policy_type == "shaping":
-            print("to be added.")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.")
             return True, True, True
 
     def is_in(self, full_str, sub_str, debug_flag):
@@ -400,9 +401,9 @@ class TrafficVerification():
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
         cmd_result = all(word in temp for word in sub_str)
         if cmd_result == True:
-            print('The boolean of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
         elif cmd_result == False:
-            print('The boolean of "cmd_result" is {}. The mean is: the expected value is not in the returned value from test data.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "cmd_result" is {}. The mean is: the expected value is not in the returned value from test data.'.format(cmd_result), flush=True)
         return cmd_result # 返回：True or False
 
     def is_verify(self, test_data, loop_num, counters, log_query_param):
@@ -435,31 +436,30 @@ class TrafficVerification():
             port = parse.get("traffic_port", "server_port")
             url = traffic_server + ":" + port + "/v1/traffic"
             headers = {"Content-Type": "application/json"}
-            print("Begin to send traffic for effect verification.", flush=True)
-            #print(url, data)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send traffic for effect verification.", flush=True)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], url, data)
             response = requests.post(url, data=data, headers=headers)
-            #print(response.text)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], response.text)
             if response.status_code == 200:
                 try:
                     jsonData = json.loads(response.text)
                 except:    # json解析失败，直接返回json原文
                     jsonData = {}
-                    print("json loads failed:", flush=True)
-                    print("{} {} \n{}".format(url, data, response.text), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "json loads failed:", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} {} \n{}".format(url, data, response.text), flush=True)
                     jsonData["result"] = response.text
-
             return jsonData
         else:
             type = data.get("type")
-            print("Begin to send traffic for effect verification.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send traffic for effect verification.", flush=True)
             if type == "curl" or type == "wget" or type == "nslookup":
-                print("Execute {} operation.".format(type), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Execute {} operation.".format(type), flush=True)
                 command = data.get("command")
                 p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
                 output, error = p.communicate()
                 cmd_result = output + error
             elif type == "trex":
-                print("Execute {} operation.".format(type), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Execute {} operation.".format(type), flush=True)
                 pcap_name = data.get("pcap_name") + ".pcap"
                 yaml_name = data.get("yaml_name") + ".yaml"
                 m = data.get("m")
@@ -487,4 +487,4 @@ class TrafficVerification():
             return cmd_result
 
 if __name__ == "__main__":
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

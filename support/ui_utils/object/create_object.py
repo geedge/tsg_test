@@ -7,6 +7,7 @@ from support.ui_utils.object.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.object_element_position import *
+from datetime import datetime 
 
 class CreateObject():
     def __init__(self, driver):
@@ -74,17 +75,17 @@ class CreateObject():
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
                     break
             # elif data["object_type"] == "fqdn":
-            #     print("to be added..")
+            #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added..")
             elif data["object_type"] == "tunnel":
-                print("to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             elif data["object_type"] == "flag":
-                print("to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             elif data["object_type"] == "interval":
-                print("to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             elif data["object_type"] == "application":
-                print("to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             elif data["object_type"] == "ip_learning":
-                print("to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             else:
                 for x in data["item"]:
                     if data["object_type"] == "ip":
@@ -112,7 +113,7 @@ class CreateObject():
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
-            print(e, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             return 400
     
     def create_group(self, data, object_type, object_element_position):
@@ -171,6 +172,6 @@ class CreateObject():
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
-            print(f"Exception: {e}", file=sys.stderr, flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr, flush=True)
             return 400
         

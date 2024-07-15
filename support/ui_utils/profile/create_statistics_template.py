@@ -7,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.common.action_chains import ActionChains
-
+from datetime import datetime 
 
 class CreateStatisticsTemplate():
     def __init__(self, driver):
@@ -49,18 +49,18 @@ class CreateStatisticsTemplate():
                 # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 # 内嵌页面滚动条向下滚动到最底部
                 #time.sleep(2)
-                #print("template5,scroll")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template5,scroll")
                 div_paper_grid = self.driver.find_element(By.XPATH,
                                                           create_element_position["templates_div_paperGrid_posXpath"])
                 self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_paper_grid)
                 # Visualization Type 操作
-                #print("template6,Visualization Type")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template6,Visualization Type")
                 self._operate_radio(charts[i], data_index=data_index, no_modify=no_modify,
                                     data_key="visualization_type",
                                     ep_radio=create_element_position["templates_radio_visualizationType_posXpath"],
                                     chart_id=chart_id)
                 # metrics 操作
-                #print("template7,metrics")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template7,metrics")
                 self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="metrics", chart_id=chart_id)
                 visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
@@ -69,44 +69,44 @@ class CreateStatisticsTemplate():
                 # if first_metric_temp not in{"","不修改","刪除"}:#修改数据待补充处理方式
                 if visualization_type_temp == "table" or visualization_type_temp == "bar" or visualization_type_temp == "line":  # 只有table\Bar 图的 有order by操作
                     if visualization_type_temp == "line" and ( first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
-                        print("Line No Dimensions")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Line No Dimensions")
                     else:
                         # dimensions 操作
-                        #print("template8,dimensions")
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template8,dimensions")
                         self._operate_metrics_or_dimensions_dropdown(charts[i], data_index=data_index, no_modify=no_modify,
                                                              data_key="dimensions", chart_id=chart_id)
                 # 如果有Order By，则操作
                 if visualization_type_temp == "table" or visualization_type_temp == "bar":  # 只有table\Bar 图的 有order by操作
-                    #print("template9,Order By")
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template9,Order By")
                     self._operate_order_by(charts[i], data_index=data_index, no_modify=no_modify,
                                            data_key="order_by", chart_id=chart_id)
                 else:
-                    print("No Order By")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "No Order By")
                 # Row Limit 操作
                 visualization_type_temp = charts[i]["visualization_type"].split("->")[data_index].strip().lower()
                 if visualization_type_temp == "line" or visualization_type_temp == "table"  or visualization_type_temp == "bar":  # line 图的 row limit 操作方式不一样
                     if visualization_type_temp == "line" and (
                             first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
-                        print("No Row Limit")
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "No Row Limit")
                     else:
-                        #print("template10,No Row Limit")
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template10,No Row Limit")
                         self._operate_series_limit(charts[i], data_index=data_index, no_modify=no_modify,
                                                    data_key="row_limit",
                                                    element_position=create_element_position[
                                                        "templates_input_other_posXpath"],
                                                    chart_id=chart_id)
                 else:
-                    print("No Row Limit")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "No Row Limit")
                 """
                 elif charts[i]["visualization_type"].split("->")[
                     data_index].strip().lower() == "table":  # table 图的 row limit 操作
-                    print("table---row limit")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "table---row limit")
                     self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="row_limit",
                                         element_position=create_element_position["templates_input_other_posXpath"],
                                         chart_id=chart_id)
                 """
                 # Thresholds - Minimum incoming size 操作
-                #print("template11,No Row Limit")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template11,No Row Limit")
                 self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="min_in_size",
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
@@ -115,31 +115,31 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 输入chart name
-                #print("template12,chart name")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template12,chart name")
                 self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="chart_name",
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 点击chart的OK保存按钮
-                print("Click the chart OK save button")
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Click the chart OK save button")
                 #self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
                 chart_ok_btn = self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"])
                 self.driver.execute_script("arguments[0].scrollIntoView();", chart_ok_btn)
                 self.driver.execute_script("arguments[0].click();", chart_ok_btn)
             # 确认创建，点击Template的OK保存按钮
-            #print("template14,Template OK")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template14,Template OK")
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["templates_button_oK_posCss"]).click()
 
-            #print("template14,Template warningSaveYes")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template14,Template warningSaveYes")
             #self.driver.find_element(By.CSS_SELECTOR,create_element_position["templates_button_warningSaveYes_posCss"]).click()
             warning_save_yes_btn = self.driver.find_element(By.CSS_SELECTOR,create_element_position["templates_button_warningSaveYes_posCss"])
             self.driver.execute_script("arguments[0].scrollIntoView();", warning_save_yes_btn)
             self.driver.execute_script("arguments[0].click();", warning_save_yes_btn)
-            #print(self.driver.find_element(By.CSS_SELECTOR,
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.driver.find_element(By.CSS_SELECTOR,
             #                         create_element_position["templates_button_warningSaveYes_posCss"]).is_enabled())
-            print("template14,Template warningSaveYes after")
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template14,Template warningSaveYes after")
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
 
     def _operate_radio(self, chart, data_index=0, no_modify="不修改", data_key="", ep_radio="", chart_id=""):
@@ -174,7 +174,7 @@ class CreateStatisticsTemplate():
                 self.driver.find_element(By.XPATH, ep_attackType_radio).click()
             return 200
         except Exception as e:
-            print(f"Exception: {e}", file=sys.stderr)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr)
             return 400
 
     def _get_value_from_data(self, data, key="", data_index=0):
@@ -188,7 +188,7 @@ class CreateStatisticsTemplate():
         try:
             switch_value: str = data[key].split("->")[data_index].strip() # 用例数据
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
         return switch_value
 
     def _operate_order_by(self, chart, data_index=0, no_modify="不修改", data_key="", chart_id=""):
@@ -214,7 +214,7 @@ class CreateStatisticsTemplate():
                 self.driver.execute_script("arguments[0].click();", element_dropdown_item)
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
 
     def _operate_metrics_or_dimensions_dropdown(self, chart, data_index=0, no_modify="不修改", data_key="",
@@ -274,9 +274,9 @@ class CreateStatisticsTemplate():
             metrics_or_dimensions = chart[data_key]  # dimensions 数据列表
             dropdown_item_dict = dropdown_item_dimensions_dict
             repalceLabel = "Dimensions"
-            #print(metrics_or_dimensions)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], metrics_or_dimensions)
         try:
-            # print(666)
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 666)
             for j in range(len(metrics_or_dimensions)):  # 循环操作metrics
                 # repalceLabel = "Metrics"   # 定位重组参数使用
                 dropdown_item = metrics_or_dimensions[j].strip().split("->")[data_index].lower()  # 提取数据
@@ -299,13 +299,13 @@ class CreateStatisticsTemplate():
                                                      old_value=drop_item_old, new_value=dropdown_item,
                                                      dropdown_item_dict=dropdown_item_dict)
                         else:  # 新增数据  4.5.6.3->
-                            #print("to dropdown_add")
-                            #print(dropdown_item)
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to dropdown_add")
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], dropdown_item)
                             self.dropdown_add(chart_id=chart_id, dropdown_name=repalceLabel, new_value=dropdown_item,
                                               dropdown_item_dict=dropdown_item_dict)
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
 
     def _operate_input(self, chart, data_index=0, no_modify="不修改", data_key="", element_position="",
@@ -347,8 +347,8 @@ class CreateStatisticsTemplate():
                         #                                                                    "./parent::*/parent::*//span").click()
                         element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1).find_element(By.XPATH,
                                                                                             "./parent::*/parent::*//span")
-                        #print("template12,chart name")
-                        #print(element_dropdown_item.is_enabled())
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template12,chart name")
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item.is_enabled())
                         self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                         #self.actions.move_to_element(element_dropdown_item).perform()
                         self.driver.execute_script("arguments[0].click();", element_dropdown_item)
@@ -359,12 +359,12 @@ class CreateStatisticsTemplate():
                 element_position_1 = element_position.format(replaceChart=chart_id, repalceLabel=repalceLabel)
                 # 定位元素中span换成label
                 element_position_1 = element_position_1.replace("span", "*")
-                #print(element_position_1)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_position_1)
                 self.driver.find_element(By.XPATH, element_position_1).clear()
                 self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
 
     def _operate_series_limit(self, chart, data_index=0, no_modify="不修改", data_key="", element_position="",
@@ -392,8 +392,8 @@ class CreateStatisticsTemplate():
                 element_position_1 = element_position.format(replaceChart=chart_id, repalceLabel=repalceLabel)
                 # 定位元素中span换成label
                 element_position_1 = element_position_1.replace("span", "*")
-                #print("element_position_1"+element_position_1)
-                #print(self.driver.find_element(By.XPATH, element_position_1).is_enabled())
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "element_position_1"+element_position_1)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.driver.find_element(By.XPATH, element_position_1).is_enabled())
                 #self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                 #浏览器模式下定位
@@ -406,15 +406,15 @@ class CreateStatisticsTemplate():
                 element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1). \
                     find_element(By.XPATH,
                                  f"./ancestor::*[contains(@class, 'el-form-item el-form-item--small')]//*[contains(@class, 'el-select-dropdown__list')]/li/span[normalize-space(text())='{data_value_1}']")
-                #print("template10,No Row Limit")
-                #print(element_dropdown_item.is_enabled())
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template10,No Row Limit")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item.is_enabled())
                 #self.actions.move_to_element(element_dropdown_item).perform()
                 self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                 # self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
 
     def dropdown_add(self, chart_id="", dropdown_name="", new_value="", dropdown_item_dict={}):
@@ -426,8 +426,8 @@ class CreateStatisticsTemplate():
         :param dropdown_item_dict:  下拉列表新增值item映射的字典
         :return:
         """
-        #print(5555)
-        #print(dropdown_name)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 5555)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], dropdown_name)
         dropdown_aggragate_dict = {"sum": "SUM", "rate": "RATE", "bitrate": "BITRATE",
                                    "percentiles_hdr": "PERCENTILES_HDR", "median_hdr": "MEDIAN_HDR",
                                    "p95_percentile_hdr": "P95_PERCENTILE_HDR",
@@ -439,8 +439,8 @@ class CreateStatisticsTemplate():
             # ep_metricsAndDimensionsAdd = statisticsTemplates_button_metricsAndDimensionsAdd_posXpath.format(replaceChart=chart_id, repalceLabel=dropdown_name)   #添加按钮定位
             ep_metricsAndDimensionsSelects = statisticsTemplates_input_metricsAndDimensionsSelect_posXpath.format(
                 replaceChart=chart_id, repalceLabel=dropdown_name)  # 下拉框定位，可能存在多个
-            #print(6666)
-            #print(ep_metricsAndDimensionsSelects)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 6666)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], ep_metricsAndDimensionsSelects)
             element_metricsAndDimensionsSelects = self.driver.find_elements(By.XPATH,
                                                                             ep_metricsAndDimensionsSelects)  # 下拉框元素列表
             element_metricsAndDimensionsAdd = element_metricsAndDimensionsSelects[-1].find_element(By.XPATH,
@@ -450,27 +450,27 @@ class CreateStatisticsTemplate():
             time.sleep(1)
             is_click_add = "yes_click"
             for dropdownSelect_item in element_metricsAndDimensionsSelects[1:-1]:  # 下拉框元素列表中第二个到倒数第二个为操作数据
-                #print(7777)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 7777)
                 dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,
                                                                                    "./div[1]//input").get_attribute(
                     "value")
-                # print(dropdownSelect_item_input_value)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], dropdownSelect_item_input_value)
                 if dropdownSelect_item_input_value == "":  # 有空数据时，就跳过点击添加按钮
                     is_click_add = "no_click"
                     break
             if is_click_add == "yes_click":
-                #print(8888)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 8888)
                 element_metricsAndDimensionsAdd.click()  # 全部都有数据时，需要点击添加
             # 点击空的下拉列表框选项
-            #print(9999)
-            #print(ep_metricsAndDimensionsSelects)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 9999)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], ep_metricsAndDimensionsSelects)
             element_metricsAndDimensionsSelects2 = self.driver.find_elements(By.XPATH,
                                                                              ep_metricsAndDimensionsSelects)  # 下拉框元素列表  重新获取一次
             if dropdown_name == "Metrics":
-                #print(1010)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1010)
                 create_class = element_metricsAndDimensionsSelects2[-1].find_element(By.XPATH, ".//i").get_attribute(
                     "class")
-                # print(create_class)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], create_class)
                 if ("icon-Create1" not in create_class):  # 没有添加的元素时
                     tmp_element_metricsAndDimensionsSelects2 = element_metricsAndDimensionsSelects2[1:]
                 else:  # 有添加的元素时
@@ -478,9 +478,9 @@ class CreateStatisticsTemplate():
             else:
                 tmp_element_metricsAndDimensionsSelects2 = element_metricsAndDimensionsSelects2[1:-1]
             for dropdownSelect_item in tmp_element_metricsAndDimensionsSelects2:
-                #print(1111)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1111)
                 dropdownSelect_item_list = dropdownSelect_item.find_elements(By.XPATH, "./div")  # 所有列的集合
-                # print(dropdownSelect_item_list)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], dropdownSelect_item_list)
                 dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,
                                                                                    "./div[1]//input").get_attribute(
                     "value")
@@ -494,30 +494,30 @@ class CreateStatisticsTemplate():
                         # dimension需要操作一列
                         tmp_dropdownSelect_item_list = dropdownSelect_item_list[0:1]
                     for col_dropdownSelect in tmp_dropdownSelect_item_list:  # 需要操作的每一个行中列的数量
-                        #print(1212)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1212)
                         col_dropdownSelect.find_element(By.XPATH, ".//input").click()
 
                         # 异常断言判断 "reverse_case": "....",   # 主要校验不同chart类型，可以选择不同的metrics   # 只是断言使用，无实际页面操作
                         if "reverse_case" in self.data["charts"][0].keys():
                             reverse_case_case = self.data["charts"][0]["reverse_case"].strip().lower()
                             if reverse_case_case == "table_chart_check_metrics" or reverse_case_case == "bar_chart_check_metrics":  # 校验table or bar chart 可选择 metrics类型
-                                print("Invalid Metric Verification Test Cases for Table and Bar Charts")
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid Metric Verification Test Cases for Table and Bar Charts")
                                 info_execpt = "is-disabled"
                                 is_disabled_list = ["Session IDs", "Client IPs", "Server IPs", "Incoming Latency",
                                                     "Outgoing Latency", "Latency"]
                                 el_drop_item_class_xpath = "//*[contains(@class, 'Metric')]//div[contains(@class, 'multipleSelect')]//div[@class='el-scrollbar']//li[contains(@class, 'el-select-dropdown__item')]"
-                                #print(1313)
-                                #print(el_drop_item_class_xpath)
+                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1313)
+                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], el_drop_item_class_xpath)
                                 drop_items = self.driver.find_elements(By.XPATH, el_drop_item_class_xpath)
                                 for i in drop_items:
                                     item_name = i.find_element(By.XPATH, ".//span").text.strip()
                                     item_class = i.get_attribute("class")
-                                    print(item_name, "==>>", item_class)
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], item_name, "==>>", item_class)
                                     #if item_name in is_disabled_list:
                                         #pytest_check.is_in(info_execpt, item_class,
                                         #                   msg="所在行数{}".format(inspect.currentframe().f_lineno))
                             elif reverse_case_case == "histogram_chart_check_metrics":  # 校验histogram chart 可选择 metrics类型
-                                print("Invalid Metric Verification Test Cases for Histogram Charts")
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid Metric Verification Test Cases for Histogram Charts")
                                 info_execpt = "is-disabled"
                                 is_disabled_list = ["Incoming Bytes", "Outgoing Bytes ", "Bytes",
                                                     'Outgoing Packets','Incoming Packets','Packets',"New C2S Flows",
@@ -526,13 +526,13 @@ class CreateStatisticsTemplate():
                                                     "New Unestablished Sessions",
                                                     "SYN Packets", "Session IDs", "Client IPs", "Server IPs"]
                                 el_drop_item_class_xpath = "//*[contains(@class, 'Metric')]//div[contains(@class, 'multipleSelect')]//div[@class='el-scrollbar']//li[contains(@class, 'el-select-dropdown__item')]"
-                                #print(1414)
-                                #print(el_drop_item_class_xpath)
+                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1414)
+                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], el_drop_item_class_xpath)
                                 drop_items = self.driver.find_elements(By.XPATH, el_drop_item_class_xpath)
                                 for i in drop_items:
                                     item_name = i.find_element(By.XPATH, ".//span").text.strip()
                                     item_class = i.get_attribute("class")
-                                    print(item_name, "==>>", item_class)
+                                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], item_name, "==>>", item_class)
                                     #if item_name in is_disabled_list:
                                     #    pytest_check.is_in(info_execpt, item_class,
                                     #                       msg="所在行数{}".format(inspect.currentframe().f_lineno))
@@ -548,17 +548,17 @@ class CreateStatisticsTemplate():
                             else:
                                 replaceDropdownIterm = col_name
                             if col_n == 0 or col_n == 1:
-                                #print(1515)
+                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1515)
                                 element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,
                                                                                         f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
 
-                                #print(element_dropdown_item)
+                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item)
                                 # 移动元素到页面，在执行点击
                                 #self.actions.move_to_element(element_dropdown_item).perform()
                                 self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                                 self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                             elif col_n == 2:
-                                #print(1616)
+                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1616)
                                 # 输入label值
                                 col_dropdownSelect.find_element(By.XPATH, ".//input").clear()
                                 col_dropdownSelect.find_element(By.XPATH, ".//input").send_keys(replaceDropdownIterm)
@@ -566,17 +566,17 @@ class CreateStatisticsTemplate():
                         else:  # demesions数据操作
                             col_name = new_value
                             replaceDropdownIterm = dropdown_item_dict[col_name]
-                            #print(replaceDropdownIterm)
-                            #print(1717)
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], replaceDropdownIterm)
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1717)
                             #time.sleep(3)
                             elements = col_dropdownSelect.find_elements(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
-                            #print(len(elements))
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], len(elements))
                             element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
                             #element_dropdown_item = col_dropdownSelect.find_element(By.XPATH, f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
                             #col_dropdownSelect.execute_script("window.scrollTo(0," + str(element_dropdown_item.location["y"]) + ")")
-                            #print(element_dropdown_item)
-                            #print(element_dropdown_item.is_enabled())
-                            #print(1818)
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item)
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item.is_enabled())
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1818)
                             self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                             self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                             #element_dropdown_item.click()
@@ -586,7 +586,7 @@ class CreateStatisticsTemplate():
                     break
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
 
     def dropdown_del(self, chart_id="", dropdown_name="", old_value="", dropdown_item_dict={}):
@@ -618,7 +618,7 @@ class CreateStatisticsTemplate():
                     break
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
 
     def dropdown_modify(self, chart_id="", dropdown_name="", old_value="", new_value="", dropdown_item_dict={}):
@@ -677,5 +677,5 @@ class CreateStatisticsTemplate():
                 dropdownSelect_item.find_element(By.XPATH, "./div[3]//input").send_keys(new_value_list[2])
             return 200
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400

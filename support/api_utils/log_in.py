@@ -1,5 +1,6 @@
 import requests
 import json
+from datetime import datetime 
 
 class LogIn():
     def encryptPwd(self, password, api_server):
@@ -22,4 +23,4 @@ class LogIn():
         return token
 
 if __name__ == "__main__":
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

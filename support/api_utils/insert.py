@@ -1,7 +1,8 @@
 import os
+from datetime import datetime
 
 def insert(keyword, new_content):
-    folder_path = 'D:/Document/Project-TSG/Code/git/tsg_test/tests/ui/tt'
+    folder_path = 'D:/Document/Project-TSG/Code/git/tsg_test/tests/api/intercept'
     for filename in os.listdir(folder_path):
         if filename.endswith('.py'):
             # 构造文件的完整路径
@@ -25,7 +26,7 @@ def insert(keyword, new_content):
             keyword_index = next((i for i, line in enumerate(lines) if keyword in line), None)
             # 如果关键字不存在于文件中，直接返回（或可以选择抛出异常
             if keyword_index is None:
-                print(f"Keyword '{keyword}' not found in file.")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Keyword '{keyword}' not found in file.")
                 return
             # 检查是否有足够的行在关键字前插入
             if keyword_index >= 2:
@@ -53,5 +54,5 @@ if __name__ == "__main__":
     #             new_report.insert_data(parameter, report_data)
     # """
     keyword = "def run"
-    new_content = "from support.report import *"
+    new_content = "from datetime import datetime"
     insert(keyword, new_content)
