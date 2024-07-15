@@ -242,12 +242,12 @@ class TrafficVerification():
                             if fail_count > 10:
                                 break
                             fail_count += 1
-                        elif  metric_results[0] == 333 and metric_results[1] == "passthrough":    # session的incoming outgoing,fqdn_category区分判断
+                        elif  metric_results[0] == 333 and metric_results[1] == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
                             break
                         n += 1
                 if  metric_results[0] == 333:     # API 查询失败时变量赋值
                     metric_result = False
-                    if metric_results[1] == "passthrough":     # incoming或者outgoing的session方向
+                    if metric_results[1] == "this is a pass":     # incoming或者outgoing的session方向
                         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
                         metric_results[1] = ""
                         metric_result = True
@@ -455,9 +455,11 @@ class TrafficVerification():
             if type == "curl" or type == "wget" or type == "nslookup":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Execute {} operation.".format(type), flush=True)
                 command = data.get("command")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Excute Command: {}".format(command), flush=True)
                 p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
                 output, error = p.communicate()
                 cmd_result = output + error
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Excute result: {}".format(cmd_result), flush=True)
             elif type == "trex":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Execute {} operation.".format(type), flush=True)
                 pcap_name = data.get("pcap_name") + ".pcap"

@@ -2,8 +2,6 @@
 import time
 import os
 import sys
-import os
-import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -335,7 +333,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
