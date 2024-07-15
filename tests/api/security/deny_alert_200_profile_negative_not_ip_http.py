@@ -97,11 +97,6 @@ def run(parameter):
         # 删除配置
         delete = DeletePolicy()
         delete.delele_policy_by_cfg(token, parameter, cfg_list)
-        
-        # 脚本结束时间和耗时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
             
         # 脚本结束时间和耗时
         end_time = time.time()

@@ -104,7 +104,7 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"open.node.com"}],
             "traffic": {
                 "type": "wget",
-                "command": "wget --debug  -q -O- https://open.node.com:1443"
+                "command": "curl -kv https://open.node.com:1443"
             },
             "token": ""
         }
