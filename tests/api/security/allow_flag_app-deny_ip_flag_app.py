@@ -113,7 +113,10 @@ def run(parameter):
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()
         result = analysis.analysis_result(test_data, cfg_list, verification_result)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "analysis result: ", result)
+        if len(result) == 0:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
+        elif len(result) != 0:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time

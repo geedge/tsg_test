@@ -101,6 +101,8 @@ class GetLog():
                             log_reult = True
                         else:
                             log_reult = False
+            elif len(log_query_params) == 0:
+                log_reult = True
             elif len(log_list) == 0:
                 log_reult = None
         return log_reult

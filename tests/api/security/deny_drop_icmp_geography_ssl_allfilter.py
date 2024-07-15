@@ -104,7 +104,7 @@ def run(parameter):
             "app_name_1": ["ssl"],
             "expected_return": "timed out",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
+            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"open.node.com"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --tlsv1.2 --connect-timeout 10 -m 10 https://open.node.com:1443"
