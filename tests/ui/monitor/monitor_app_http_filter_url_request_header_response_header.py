@@ -460,8 +460,8 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "lotus",
+        "password": "lotus2023",
         "test_pc_ip": "192.168.64.9",
         "api_server": "http://192.168.44.72",
         "is_log": 1,
