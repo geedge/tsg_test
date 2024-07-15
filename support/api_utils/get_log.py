@@ -101,6 +101,8 @@ class GetLog():
                             log_reult = True
                         else:
                             log_reult = False
+            elif len(log_query_params) == 0:
+                log_reult = True
             elif len(log_list) == 0:
                 log_reult = None
         return log_reult
@@ -230,7 +232,7 @@ class GetLog():
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
                         dimension_columns = "no_dimensions"
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
-                    return [333, "passthrough"]
+                    return [333, "this is a pass"]
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 return [333, "statistics metric no result was found."]

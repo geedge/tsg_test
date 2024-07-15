@@ -139,8 +139,6 @@ def run(parameter):
         delete = DeletePolicy()
         delete.delele_policy_by_cfg(token, parameter, cfg_list)
 
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
-        
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
