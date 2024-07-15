@@ -5,7 +5,7 @@ import time
 import requests
 import json
 import ipaddress
-from datetime import datetime 
+from datetime import datetime
 
 class GetLog():
     def get_log_schema(self, token, log_type, api_host, vsys_id):
@@ -219,7 +219,6 @@ class GetLog():
                     test_data["profile_condition_1"][0]["chart_list"][0]["dimensions"][0]["source_columns"][0].lower()
                 except:
                     dimension_columns = "no_dimensions"
-
                 if dimension_columns == "no_dimensions":
                     # API和UI因数据格式不一致，所以API方式获取不到按UI方式获取
                     try:
@@ -349,6 +348,8 @@ class GetLog():
                             if metric_result == False:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Failure on assertion, the assertion is: {}".format(assert_key_list[i]), flush=True)
                                 break
+                            else:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "statistics metric query success.", flush=True)
                 elif statistics_info["chart_type"] == "histogram":
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The histogram does not statistic the results.", flush=True)
                     metric_results = [True, ""]
