@@ -33,8 +33,7 @@ app = Flask(__name__)
 def receive_parameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
-        sys.stdout.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to receive request.\n")
-        sys.stdout.flush()
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to receive request.", flush=True)
         req_json = request.get_json()
         run_status = req_json.get("run_status")
         module_name = req_json.get("module_name")
@@ -43,8 +42,7 @@ def receive_parameter():
         tag = req_json.get("tag")
         
         if run_status == 1:
-            sys.stdout.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to build test parameter.\n")
-            sys.stdout.flush()
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to build test parameter.", flush=True)
             parameter = {
                 "username": "",
                 "password": "",
@@ -99,7 +97,7 @@ def receive_parameter():
             elif tag == "general_ui":
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["sub_module_name"] = sub_module_name
-                sys.stdout.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.", flush=True)
             elif tag == "app":
                 parameter["path"] = f"{project_path}/tests/app"
                 parameter["app_name"] = req_json.get("app_name")
@@ -121,8 +119,7 @@ def receive_parameter():
             path = f"{temp_folder_path}/*.py"
             files = glob.glob(path, recursive=True)
             response_result = {}
-            sys.stdout.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to match test case.\n")
-            sys.stdout.flush()
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to match test case.", flush=True)
             for file in files:
                 os_name = platform.system()
                 if os_name == "Linux":
@@ -134,8 +131,7 @@ def receive_parameter():
                     new_path = "tests." + tag + "." + module_name + "." + test_case_name
                     module = importlib.import_module(new_path)
                     result = module.run(parameter)
-                    sys.stdout.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Test caes response is: {}\n".format(result))
-                    sys.stdout.flush()
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Test caes response is: {}".format(result), flush=True)
                     # module.run()返回的结果是failure reason，如果是空，则表示测试通过。
                     if len(result) == 0:
                         response_result["code"] = 200
@@ -163,12 +159,10 @@ def receive_parameter():
             response = jsonify(response_result)
             response.status_code = response_result["code"]
         
-        sys.stdout.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Response is: {}\n".format(response))
-        sys.stdout.flush()
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Response is: {}".format(response), flush=True)
         return response
     except subprocess.CalledProcessError as e:
-        sys.stdout.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to execute the command. The return code: {}\n".format(e.returncode))
-        sys.stdout.flush()
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to execute the command. The return code: {}".format(e.returncode), flush=True)
         response_result = {}
         response_result["code"] = 419
         response_result["msg"] = "Fail to parse or build parameter."
@@ -176,8 +170,7 @@ def receive_parameter():
         response_result["success"] = False
         response = jsonify(response_result)
         response.status_code = response_result["code"]
-        sys.stdout.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Response is: {}\n".format(response))
-        sys.stdout.flush()
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Response is: {}".format(response), flush=True)
         return response
 
 if __name__ == '__main__':
