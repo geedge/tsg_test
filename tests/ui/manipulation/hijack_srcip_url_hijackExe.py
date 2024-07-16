@@ -341,7 +341,7 @@ if __name__ == '__main__':
         "script_type": "ui",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",

@@ -313,7 +313,7 @@ def run(parameter):
         support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
-        #delete.delete_policy_by_name(token, parameter, name_list)
+        delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  

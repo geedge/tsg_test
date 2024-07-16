@@ -181,6 +181,7 @@ if __name__ == "__main__":
         "test_pc_ip": "192.168.64.86",
         "test_subcriber_id": "test86",
         "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
