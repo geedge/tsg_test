@@ -94,7 +94,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "SSL_ERROR_SYSCALL",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ssl_sni", "query_value":"twitter.com"}],
             "traffic": {
