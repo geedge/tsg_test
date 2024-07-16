@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "allow_srcip",
+            "rule_name": "allow_srcip_url",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -68,6 +68,22 @@ def run(parameter):
                         "negate": False
                     }
                 ],
+                "protocol_filed": [
+                    {
+                        "name": "manipulation_url",
+                        "object_type": "url",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "url",
+                                "item_value": "baidu->"
+                            }
+                        ],
+                    }
+                ]
             },
             "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},
@@ -310,13 +326,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "allow_srcip"
+        "test_case_name": "allow_srcip_url"
     }
 
     run(parameter)
