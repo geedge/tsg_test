@@ -135,7 +135,7 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "alert",
-                        "code": "200",
+                        "code": 200,
                         "content_type": "TEXT",
                         "content": "deny200"
                     }
