@@ -84,7 +84,7 @@ def run(parameter):
             ],
             "app_name_1": ["dns"],
             "expected_return": "326b",
-            "counters_1": {"hits": 1},
+            "counters_1": {"hits": 2},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
@@ -163,7 +163,7 @@ if __name__ == "__main__":
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 1,
         "is_log": 0,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",

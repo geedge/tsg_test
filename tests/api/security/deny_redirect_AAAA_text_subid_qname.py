@@ -85,7 +85,7 @@ def run(parameter):
             ],
             "app_name_1": ["dns"],
             "expected_return": "326b",
-            "counters_1": {"hits": 1},
+            "counters_1": {"hits": 2},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",
@@ -125,6 +125,11 @@ def run(parameter):
         # 删除配置
         delete = DeletePolicy()
         delete.delele_policy_by_cfg(token, parameter, cfg_list)
+
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
