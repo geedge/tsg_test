@@ -140,7 +140,7 @@ def run(parameter):
             },
             "expected_return": "need_filter",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "ww.python.org"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
