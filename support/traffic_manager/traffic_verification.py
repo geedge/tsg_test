@@ -12,13 +12,13 @@ import configparser
 import json
 import platform
 import pytz
-import traffic_replay
-from support.traffic_replay.workpath import workdir
+import support.traffic_manager.trex_replay as trex_replay
+from support.traffic_manager.workpath import workdir
 from datetime import datetime
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from support.traffic_replay.traffic_replay import TrafficReplay
+# from support.traffic_manager.traffic_replay import TrafficReplay
 
 class TrafficVerification():
     def traffic_verification(self, driver, parameter, test_data, cfg_list):
@@ -58,7 +58,9 @@ class TrafficVerification():
             if len(cfg_list) != 0:
                 create_policies_ids = cfg_list["create_policies_ids"]
                 statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
-        policy_id = list(create_policies_ids[0].values())[0]
+        policy_id_list = []
+        for i in range(len(create_policies_ids)):
+            policy_id_list.append(list(create_policies_ids[i].values())[0])
         # 判断，如果condition中包含名为command的key，则读取command来执行，否则执行默认的
         
         log = support.api_utils.get_log.GetLog()
@@ -85,7 +87,7 @@ class TrafficVerification():
             cmd_result = self.is_in(cmd_return, expected_return, debug_flag)
             
             loop_num = test_data["rule_num"]
-            is_counters, is_log_query = self.is_verify(test_data, loop_num, 'counters', 'log_query_param')
+            is_counters, is_log_query = self.is_verify(script_type, test_data, loop_num, 'counters', 'log_query_param')
             
             log_result, metric_result = None, None
             if int(is_log) == 1:
@@ -108,7 +110,7 @@ class TrafficVerification():
                         if is_log_query == 0:
                             log_result = "no_set"
                         if is_counters == 1 and metric_result == None:
-                            metric_result = log.get_metric(token, rule_num, start_time, end_time, create_policies_ids, test_data, api_server, vsys_id)
+                            metric_result = log.get_metric(token, rule_num, start_time, end_time, create_policies_ids, test_data, api_server, vsys_id, script_type)
                         if is_counters == 0:
                             log_result = "no_set"
                         if log_result != None and metric_result != None:
@@ -177,18 +179,21 @@ class TrafficVerification():
                             servers_end = servers_start
                 verify_policy_break_count = 0
                 while True:      # 多次策略验证
-                    verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
-                    policy_verify = support.api_utils.policy_verify.PolicyVerify()
-                    hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
-                    if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
-                        break
-                    if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
-                        # 直接调用清空策略方法
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid test, end test. Policy id: {}".format(policy_id), flush=True)
-                        return False, False, False, "The policy verification fail."
-                    verify_policy_break_count += 1
-                    time.sleep(20)
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
+                    for i in range(len(policy_id_list)):
+                        policy_id = policy_id_list[i]
+                        if policy_id in hit_policy_list:
+                            verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
+                            policy_verify = support.api_utils.policy_verify.PolicyVerify()
+                            hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
+                            if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
+                                break
+                            if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
+                                # 直接调用清空策略方法
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid test, end test. Policy id: {}".format(policy_id), flush=True)
+                                return False, False, False, "The policy verification fail."
+                            verify_policy_break_count += 1
+                            time.sleep(20)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             # 将原数据中使用的ip替换为随机生成ip
@@ -302,14 +307,14 @@ class TrafficVerification():
                 cmd_return = expected_return = test_data["expected_return"]
                 # 断言判断
                 if len(statistics_sc_info_list) > 0:   # 非空
-                    for statistics_info in statistics_sc_info_list:
+                    for sc_info in statistics_sc_info_list:
                         n = 0    #自增变量
                         fail_count = 0   #失败重试变量
                         while n <= 4:
                             utc_tz = pytz.timezone('UTC')
                             current_utc_time = datetime.now(utc_tz)
                             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                            metric_result = log.get_sc_metric(token, start_time, end_time, statistics_info, sc_metircs, active_dest_ips_list, api_server, vsys_id)
+                            metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, sc_metircs, active_dest_ips_list, api_server, vsys_id)
                             if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                 break
                             elif metric_result == False:  # 查询验证失败时，再查询验证两次
@@ -319,15 +324,15 @@ class TrafficVerification():
                             time.sleep(15)
                             n += 1
                     if metric_result == 333:
-                        if statistics_info["sf_method"] == "vxlan_g":
-                            if statistics_info["sf_dest_ip"] not in active_dest_ips_list:
+                        if sc_info["sf_method"] == "vxlan_g":
+                            if sc_info["sf_dest_ip"] not in active_dest_ips_list:
                                 metric_result = True
-                            elif statistics_info["sf_dest_ip"] in active_dest_ips_list and statistics_info["admin_status"] == 0:
+                            elif sc_info["sf_dest_ip"] in active_dest_ips_list and sc_info["admin_status"] == 0:
                                 metric_result = True
                             else:
                                 metric_result = False
-                        elif statistics_info["sf_method"] == "layer2_switch":
-                            if statistics_info["admin_status"] == 0:
+                        elif sc_info["sf_method"] == "layer2_switch":
+                            if sc_info["admin_status"] == 0:
                                 metric_result = True
                             else:
                                 metric_result = False
@@ -356,14 +361,14 @@ class TrafficVerification():
                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 cmd_result = self.is_in(cmd_return, expected_return, debug_flag)
                 if len(statistics_sc_info_list) > 0:  # 非空
-                    for statistics_info in statistics_sc_info_list:
+                    for sc_info in statistics_sc_info_list:
                         n = 0  # 自增变量
                         fail_count = 0  # 失败重试变量
                         while n <= 6:
                             utc_tz = pytz.timezone('UTC')
                             current_utc_time = datetime.now(utc_tz)
                             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                            metric_result = log.get_sc_metric(token, start_time, end_time, statistics_info,"", active_dest_ips_list, api_server, vsys_id)
+                            metric_result = log.get_sc_metric(token, start_time, end_time, sc_info,"", active_dest_ips_list, api_server, vsys_id)
                             if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                 break
                             elif metric_result == False:  # 查询验证失败时，再查询验证两次
@@ -373,15 +378,15 @@ class TrafficVerification():
                             time.sleep(15)
                             n += 1
                     if metric_result == 333:
-                        if statistics_info["sf_method"] == "vxlan_g":
-                            if statistics_info["sf_dest_ip"] not in active_dest_ips_list:
+                        if sc_info["sf_method"] == "vxlan_g":
+                            if sc_info["sf_dest_ip"] not in active_dest_ips_list:
                                 metric_result = True
-                            elif statistics_info["sf_dest_ip"] in active_dest_ips_list and statistics_info["admin_status"] == 0:
+                            elif sc_info["sf_dest_ip"] in active_dest_ips_list and sc_info["admin_status"] == 0:
                                 metric_result = True
                             else:
                                 metric_result = False
-                        elif statistics_info["sf_method"] == "layer2_switch":
-                            if statistics_info["admin_status"] == 0:
+                        elif sc_info["sf_method"] == "layer2_switch":
+                            if sc_info["admin_status"] == 0:
                                 metric_result = True
                             else:
                                 metric_result = False
@@ -406,19 +411,25 @@ class TrafficVerification():
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "cmd_result" is {}. The mean is: the expected value is not in the returned value from test data.'.format(cmd_result), flush=True)
         return cmd_result # 返回：True or False
 
-    def is_verify(self, test_data, loop_num, counters, log_query_param):
+    def is_verify(self, script_type, test_data, loop_num, counters, log_query_param):
         # 判断传入了验证日志、metric相关的参数
         is_counters = 0
         is_log_query = 0
         for i in range(loop_num):
             index = i + 1
-            counters_data = test_data[counters + '_' + str(index)]
+            if script_type == "ui":
+                counters_data = test_data[counters]
+            elif script_type == "api":
+                counters_data = test_data[counters + '_' + str(index)]
             if counters_data != {}:
                 is_counters = 1
                 break
         for i in range(loop_num):
             index = i + 1
-            log_query_param_data = test_data[log_query_param + '_' + str(index)]
+            if script_type == "ui":
+                log_query_param_data = test_data[log_query_param]
+            elif script_type == "api":
+                log_query_param_data = test_data[log_query_param + '_' + str(index)]
             if len(log_query_param_data) > 0:
                 is_log_query = 1
                 break
@@ -484,7 +495,7 @@ class TrafficVerification():
                 parse_dir = os.path.join(workdir, "configuration_file.ini")
                 parse.read(parse_dir, encoding="utf-8")
                 path_dict["traffic_playback_workpath"] = parse.get("traffic_playback", "traffic_playback_workpath")
-                tr = traffic_replay.TrafficReplay(path_dict)
+                tr = trex_replay.TrafficReplay(path_dict)
                 cmd_result = tr.trex_playback(yaml_name, pcap_name, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
             return cmd_result
 

@@ -14,7 +14,7 @@ from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
-from support.traffic_replay.traffic_verification import *
+from support.traffic_manager.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -100,8 +100,8 @@ def run(parameter):
                 ]
             },
             "expected_return": "aaa-bbbbbbbb",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "www.114chn.com"}],
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.114chn.com"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl --compressed --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\"  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://www.114chn.com/tel.htm",
@@ -189,10 +189,10 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
-            edit_rule = EditRule(driver)
+            search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            if edit_rule_code == 200:
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()
                 verification_result = verify.traffic_verification(driver, parameter, test_data, [])
