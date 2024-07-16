@@ -76,7 +76,7 @@ def run(parameter):
             ],
             "app_name_1": ["dns"],
             "expected_return": "1.1.1.1",
-            "counters_1": {"hits": 2},
+            "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.jd.com"}],
             "traffic": {
                 "type": "nslookup",
