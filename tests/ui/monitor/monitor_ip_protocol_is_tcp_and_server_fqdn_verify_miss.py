@@ -11,7 +11,7 @@ from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
-from support.traffic_replay.traffic_verification import *
+from support.traffic_manager.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -95,8 +95,8 @@ def run(parameter):
             "is_mirror":"on",
             "profile": [],
             "expected_return": "www.example.com",
-            "counters_1": {"hits": 0},
-            "log_query_param_1": [],
+            "counters": {"hits": 0},
+            "log_query_param": [],
             "traffic": {
                 "type": "nslookup",
                 "command": "nslookup www.example.com -timeout=1"
@@ -204,10 +204,9 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
-            edit_rule = EditRule(driver)
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
-                                                     test_rule_element_position)
-            if edit_rule_code == 200:
+            search_rule = SearchRule(driver)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+            if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()

@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
 from support.api_utils.create_policy import *
-from support.traffic_replay.traffic_verification import *
+from support.traffic_manager.traffic_verification import *
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 import traceback
@@ -181,6 +181,8 @@ if __name__ == "__main__":
         "test_pc_ip": "192.168.64.86",
         "test_subcriber_id": "test88",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test68",
+        "debug_flag": "local",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,

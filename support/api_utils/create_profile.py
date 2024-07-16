@@ -135,7 +135,7 @@ class CreateProfile():
             for _ in range(16):
                 temp_list.append(random.choice(string.ascii_letters))
             r_letter = "".join(temp_list)
-            formatted_time = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
+            formatted_time = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
             f_template_dict["statistics_template"]["name"] = "test_statistics_api_no{}_{}".format(r_letter, formatted_time)
         else:
             f_template_dict["statistics_template"]["name"] = post_statistics_data["name"]

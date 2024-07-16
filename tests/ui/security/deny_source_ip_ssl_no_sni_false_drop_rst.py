@@ -13,7 +13,7 @@ from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
-from support.traffic_replay.traffic_verification import *
+from support.traffic_manager.traffic_verification import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
@@ -102,8 +102,8 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "reset",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"server_port", "query_value": 1443}],
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key":"server_port", "query_value": 1443}],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 https://open.node.com:1443"
@@ -240,9 +240,9 @@ def run(parameter):
             
         # 触发流量验证
         if create_rule_code == 200:
-            edit_rule = EditRule(driver)
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
-            if edit_rule_code == 200:
+            search_rule = SearchRule(driver)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+            if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = TrafficVerification()

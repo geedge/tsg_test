@@ -1,7 +1,4 @@
 # -*- coding: UTF-8 -*-
-import time
-import os
-import sys
 import os
 import sys
 
@@ -11,15 +8,10 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.policy.create_rule import CreateRule
-from support.ui_utils.policy.search_rule import SearchRule
-from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
-#from support.ui_utils.profile.create_profile import CreateProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
-from support.ui_utils.policy.edit_rule import EditRule
-from support.traffic_replay.traffic_verification import *
+from support.traffic_manager.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -131,8 +123,8 @@ def run(parameter):
                 }]
             },
             "expected_return": "reset",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
                 "type": "trex",
                 "clients_start_ip": "10.64.224.23",
@@ -244,17 +236,16 @@ def run(parameter):
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"], flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
 
         # 触发流量验证
         if create_rule_code == 200:
-            edit_rule = EditRule(driver)
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
-                                                     element_position_map)
-            if edit_rule_code == 200:
+            search_rule = SearchRule(driver)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
@@ -262,10 +253,10 @@ def run(parameter):
                 verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
 
             # 编辑修改使用
-            #edit_rule = EditRule(driver)
+            #search_rule = SearchRule(driver)
             #element_position_map = get_element_position(test_data["policy_type"])
             #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            #if edit_rule_code == 200:
+            #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
 
