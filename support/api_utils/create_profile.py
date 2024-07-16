@@ -5,7 +5,7 @@ import requests
 import json
 import random
 import string
-import datetime
+from datetime import datetime
 import copy
 
 class CreateProfile():
