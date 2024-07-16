@@ -98,12 +98,12 @@ def run(parameter):
                             #vlan的范围：应该是在3-66
                         }
              ],
-            "expected_return": "hbn",
+            "expected_return": "Ok",
              "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_replay/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_manager/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
             },
             "token": ""
         }

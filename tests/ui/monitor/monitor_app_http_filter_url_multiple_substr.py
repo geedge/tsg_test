@@ -96,9 +96,9 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "www.chinaenvironment.com/zxjh/index_59.html->"
-                                              "www.chinaenvironment.com/zxjh/index_59.html->"
-                                              "www.chinaenvironment.com/zxjh/index_59.html",
+                                "item_value": "www.moe.gov.cn/jyb_xwfb/gzdt_gzdt->"
+                                              "www.moe.gov.cn/jyb_xwfb/gzdt_gzdt->"
+                                              "www.moe.gov.cn/jyb_xwfb/gzdt_gzdt",
                                 #data["items"][i]["item_value"].split("->")[0].strip()
                                 #表达式运算的结果是english
                             }
@@ -118,12 +118,12 @@ def run(parameter):
             "profile": [
 
             ],
-            "expected_return": "china",
+            "expected_return": "Languages",
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -N -kv http://www.chinaenvironment.com/zxjh/index_59.html"
+                "command": "curl -N -kv http://www.moe.gov.cn/jyb_xwfb/gzdt_gzdt/"
             },
             "token": ""
         }

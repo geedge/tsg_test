@@ -122,12 +122,12 @@ def run(parameter):
             "profile": [
 
             ],
-            "expected_return": "china",
+            "expected_return": "Languages",
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -N -kv http://www.chinaenvironment.com/zxjh/index_59.html"
+                "command": "curl -N -kv http://www.moe.gov.cn/"
             },
             "token": ""
         }

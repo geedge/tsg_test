@@ -103,7 +103,7 @@ def run(parameter):
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv https://www.mtv.ru/"
+                "command": "curl -N -kv https://www.mtv.ru/"
             },
             "token": ""
         }
