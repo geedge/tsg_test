@@ -113,7 +113,7 @@ def run(parameter):
             },
             "expected_return": "Weekly",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "ww.python.org"}],
+            "log_query_param_1": [{"query_field_key": "http_host", "query_value": "www.python.org"}],
             "traffic": {
                 "type": "curl",
                 "command": "curl --compressed  -kv --connect-timeout 30 --max-time 60 https://www.python.org/doc/"
