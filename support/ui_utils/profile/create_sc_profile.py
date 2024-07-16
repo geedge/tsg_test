@@ -86,6 +86,7 @@ class CreateProfile():
         for name in sf_name_list:
             self.driver.find_element(By.XPATH,create_element_position["profilePage_searchSF_posXpath"]).send_keys(name)
             self.driver.find_element(By.XPATH,create_element_position["profilePage_searchSF_posXpath"]).send_keys(Keys.ENTER)
+            time.sleep(1.5)
             self.driver.find_element(By.XPATH,create_element_position["profilePage_chooseSF_posXpath"].format(replaceValue=name)).click()
         self.driver.find_element(By.XPATH,create_element_position["profilePage_closeSFProfile_posXpath"]).click()
         return sc_info

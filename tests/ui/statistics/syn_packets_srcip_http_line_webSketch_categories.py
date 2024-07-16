@@ -1,7 +1,4 @@
 # -*- coding: UTF-8 -*-
-import time
-import os
-import sys
 import os
 import sys
 
@@ -11,14 +8,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.policy.create_rule import CreateRule
-from support.ui_utils.policy.search_rule import SearchRule
-from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
-#from support.ui_utils.profile.create_profile import CreateProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
-from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
@@ -179,7 +171,8 @@ def run(parameter):
             {
                 "type": "ip",
                 "name": "statistics_syn_packets_line_source_ip"
-            },{
+            },
+            {
                 "type": "ip",
                 "name": "statistics_syn_packets_line_destination_ip"
             },
@@ -197,8 +190,9 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-                # 创建object
+        # 创建object
         # Statistics Rule使用随机IP
+        cond_code = 1
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter["env"])
         for cond_key, cond_value in (test_data["condition"].items()):
@@ -244,12 +238,13 @@ def run(parameter):
         # 创建rule
         create_rule_code = 0
         delete_rule_code = 0
+        element_position_map = []
         if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"], flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
 
