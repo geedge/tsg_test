@@ -69,7 +69,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                  "item_type": "phone_number",
-                                "item_value": "$523335886424",
+                                "item_value": '$' + parameter['test_phone_number'],
                             }
                         ]
                     }

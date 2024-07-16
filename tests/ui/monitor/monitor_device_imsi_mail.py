@@ -69,7 +69,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "imsi",
-                                "item_value": "$110035141486424",
+                                "item_value": '$' + parameter['test_imsi'],
                             }
                         ]
                     }
