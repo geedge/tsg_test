@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
 from support.api_utils.create_policy import *
-from support.traffic_replay.traffic_verification import *
+from support.traffic_manager.traffic_verification import *
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.report import *
@@ -85,7 +85,7 @@ def run(parameter):
             ],
             "app_name_1": ["dns"],
             "expected_return": "www.www.www",
-            "counters_1": {"hits": 1},
+            "counters_1": {"hits": 2},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",

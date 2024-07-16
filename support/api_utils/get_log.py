@@ -90,7 +90,10 @@ class GetLog():
             log_list = json.loads(response.text)
             log_list = log_list['data']['result']
             log_index = i + 1
-            log_query_params = test_data['log_query_param_' + str(log_index)]
+            if script_type == "ui":
+                log_query_params = test_data['log_query_param']
+            elif script_type == "api":
+                log_query_params = test_data['log_query_param_' + str(log_index)]
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare log with test data.", flush=True)
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
@@ -107,7 +110,7 @@ class GetLog():
                 log_reult = None
         return log_reult
 
-    def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id):
+    def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
         # 请求接口查询metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = api_host + "/v1/log/query"
@@ -132,7 +135,10 @@ class GetLog():
             assert response.status_code == 200
             response = json.loads(response.text)
             index = i + 1
-            counter = test_data['counters_' + str(index)]
+            if script_type == "ui":
+                counter = test_data['counters']
+            elif script_type == "api":
+                counter = test_data['counters_' + str(index)]
             result_len = len(response['data']['result'])
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare metric with test data.", flush=True)
             # 需要hits == 0时，则验证，验证通过metric置为true

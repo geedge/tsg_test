@@ -19,7 +19,7 @@ from support.ui_utils.profile.search_profile import SearchProfile
 #from support.ui_utils.profile.create_profile import CreateProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.edit_rule import EditRule
-from support.traffic_replay.traffic_verification import *
+from support.traffic_manager.traffic_verification import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -136,8 +136,8 @@ def run(parameter):
                 }]
             },
             "expected_return": "reset",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "type": "trex",
                 "clients_start_ip": "10.64.224.6",
@@ -257,11 +257,10 @@ def run(parameter):
         # 触发流量验证
         if create_rule_code == 200:
 
-            edit_rule = EditRule(driver)
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
-                                                     element_position_map)
+            search_rule = SearchRule(driver)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
             edit_rule_code = 200
-            if edit_rule_code == 200:
+            if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
@@ -273,10 +272,10 @@ def run(parameter):
                     driver = verification_result[4]
 
             # 编辑修改使用
-            #edit_rule = EditRule(driver)
+            #search_rule = SearchRule(driver)
             #element_position_map = get_element_position(test_data["policy_type"])
             #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            #if edit_rule_code == 200:
+            #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
 
