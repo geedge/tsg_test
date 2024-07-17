@@ -48,6 +48,7 @@ def run(parameter):
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.youtube.com -timeout=1 8.8.8.8"
             },

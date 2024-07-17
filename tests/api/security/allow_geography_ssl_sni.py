@@ -72,6 +72,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "wget",
                 "command": "wget --debug  -q -O- https://www.example.com"
             },
