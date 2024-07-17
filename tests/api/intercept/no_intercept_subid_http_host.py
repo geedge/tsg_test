@@ -48,6 +48,7 @@ def run(parameter):
             "counters_1": {},
             "log_query_param_1": [],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv http://www.yumi.com"
             },
