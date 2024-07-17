@@ -135,6 +135,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
+                "protocol": "http",
                 "type": "trex",
                 "clients_start_ip": "10.64.224.31",
                 "clients_end_ip": "10.64.224.31",
@@ -245,9 +246,9 @@ def run(parameter):
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"], flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
             elif create_rule_code != 200:
-                result = "Fail to create security rule."
+                result = "Fail to create {} rule.".format(test_data["policy_type"])
 
         # 触发流量验证
         if create_rule_code == 200:
