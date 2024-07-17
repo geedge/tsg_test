@@ -103,6 +103,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"server_port", "query_value": 1443}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 https://open.node.com:1443"
             },

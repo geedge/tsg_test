@@ -103,7 +103,7 @@ def run(parameter):
             "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.bport.ru"}],
             "traffic": {
                 "type": "nslookup",
-                "command": "nslookup -d www.bport.ru 8.8.8.8 -tiemout=1"
+                "command": "nslookup www.bport.ru -timeout=1 8.8.8.8"
             },
             "token": ""
         }
@@ -402,12 +402,14 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.96",
+        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
+        "debug_flag" : "local",
         "is_log": 1,
         "env": "tsgx",
         "script_type":"ui",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",

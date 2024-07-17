@@ -86,8 +86,9 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"ssl_sni", "query_value": "www.example.com"}],
             "traffic": {
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 https://www.example.com/"
+                "protocol": "ssl",
+                "type": "wget",
+                "command": "wget -q -O- --debug https://www.example.com/"
             },
             "token": ""
         }

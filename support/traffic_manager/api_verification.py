@@ -371,7 +371,7 @@ class ApiVerification():
                     for sc_info in statistics_sc_info_list:
                         n = 0  # 自增变量
                         fail_count = 0  # 失败重试变量
-                        while n <= 6:
+                        while n <= 4:
                             utc_tz = pytz.timezone('UTC')
                             current_utc_time = datetime.now(utc_tz)
                             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')

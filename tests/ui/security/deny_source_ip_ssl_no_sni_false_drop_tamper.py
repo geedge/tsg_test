@@ -102,6 +102,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"server_port", "query_value": 1443}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 https://open.node.com:1443"
             },
@@ -322,7 +323,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.93",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",

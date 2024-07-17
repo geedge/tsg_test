@@ -135,7 +135,7 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "alert",
-                        "code": "200",
+                        "code": 200,
                         "content_type": "TEXT",
                         "content": "deny200"
                     }
@@ -147,6 +147,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
             },

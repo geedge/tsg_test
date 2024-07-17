@@ -104,6 +104,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl --compressed -kv --connect-timeout 30 --max-time 60 https://www.baidu.com --output test1.1"
             },
@@ -341,7 +342,7 @@ if __name__ == '__main__':
         "script_type": "ui",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",

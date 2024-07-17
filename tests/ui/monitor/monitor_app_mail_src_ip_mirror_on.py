@@ -93,12 +93,12 @@ def run(parameter):
             "profile": [
 
              ],
-            "expected_return": "hbn",
+            "expected_return": "Ok",
              "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_replay/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_manager/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
             },
             "token": ""
         }
@@ -335,12 +335,14 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.96",
+        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
+        "debug_flag" : "local",
         "is_log": 1,
         "env": "tsgx",
         "script_type":"ui",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",

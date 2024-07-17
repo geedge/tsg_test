@@ -69,7 +69,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "imsi",
-                                "item_value": "$110035141486424",
+                                "item_value": '$' + parameter['test_imsi'],
                             }
                         ]
                     }
@@ -334,8 +334,10 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.91",
+        "test_pc_ip": "192.168.64.96",
+        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
+        "debug_flag" : "local",
         "is_log": 1,
         "env": "tsgx",
         "script_type": "ui",

@@ -98,6 +98,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 https://192.168.40.206:1443"
             },

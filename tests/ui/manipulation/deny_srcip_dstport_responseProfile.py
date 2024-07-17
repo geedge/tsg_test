@@ -100,9 +100,10 @@ def run(parameter):
                 ]
             },
             "expected_return": "https://www.daixiaorui.com",
-            "counters": {"hits": 2},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
@@ -313,7 +314,7 @@ def run(parameter):
         support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
-        #delete.delete_policy_by_name(token, parameter, name_list)
+        delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  

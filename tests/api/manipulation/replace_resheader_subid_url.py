@@ -69,6 +69,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.engadget.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "wget",
                 "command": "wget --debug  -q -O- https://www.engadget.com/gaming/"
             },

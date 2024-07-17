@@ -44,7 +44,7 @@ def run(parameter):
             ],
             "app_name_1": ["dns"],
             "expected_return": "www.example.com",
-            "counters_1": {"hits": 1},
+            "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
                 "type": "nslookup",

@@ -110,12 +110,13 @@ def run(parameter):
             }
             ],
             "app_name_1": ["http"],
-            "expected_return": "tfe",
+            "expected_return": "Example",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.example.com"}],
+            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "wget",
-                "command": "curl -kv --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36\" https://www.example.com/"
+                "command": "wget -q -O- --debug --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36\" https://www.example.com/"
             },
             "token": ""
         }
@@ -183,17 +184,18 @@ def run(parameter):
           
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
-        "api_server": "http://192.168.44.72",
         "script_type": "api",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.88",
+        "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6488",
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
+        "test_case_name": "allow_app-deny_app"
     }
     run(parameter)

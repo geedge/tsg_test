@@ -96,6 +96,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
+                "protocol": "ftp",
                 "type": "curl",
                 "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },

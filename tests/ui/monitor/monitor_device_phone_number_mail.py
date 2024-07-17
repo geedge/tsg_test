@@ -69,7 +69,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "phone_number",
-                                "item_value": "$523335886424",
+                                "item_value": '$' + parameter['test_phone_number'],
                             }
                         ]
                     }
@@ -97,7 +97,7 @@ def run(parameter):
             "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
             "traffic": {
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_replay/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_manager/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
             },
             "token": ""
         }
@@ -337,7 +337,9 @@ if __name__ == '__main__':
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.9",
+        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
+        "debug_flag" : "local",
         "is_log": 1,
         "env": "tsgx",
         "script_type": "ui",

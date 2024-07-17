@@ -119,10 +119,11 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["http"],
-            "expected_return": "tfe",
+            "expected_return": "Example",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_url","query_value":"www.example.com/"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "wget",
                 "command": "wget --debug -q -O- --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36\" https://www.example.com/"
             },

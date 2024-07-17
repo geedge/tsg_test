@@ -48,6 +48,7 @@ def run(parameter):
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.facebook.com"
             },

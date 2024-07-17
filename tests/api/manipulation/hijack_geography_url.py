@@ -79,10 +79,11 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["http"],
-            "expected_return": "玉米网",
+            "expected_return": "小蛇",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.yumi.com"}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv http://www.yumi.com"
             },
@@ -155,17 +156,18 @@ def run(parameter):
           
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
-        "api_server": "http://192.168.44.72",
-        "script_type": "api",
-        "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
-        "module_name": "security",
-        "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
+      "script_type": "api",
+      "username": "hebingning",
+      "password": "hbn66AAA",
+      "test_pc_ip": "192.168.64.89",
+      "api_server": "http://192.168.44.72",
+      "test_subcriber_id": "test6489",
+      "is_log": 1,
+      "env": "tsgx",
+      "vsys_id": 6,
+      "root_path": "D:/python_script/tsg_test",
+      "path": "D:/python_script/tsg_test/tests/api",
+      "module_name": "security",
+      "test_case_name": "allow_app-deny_app"
     }
     run(parameter)

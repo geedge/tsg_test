@@ -66,6 +66,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.vip.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://www.vip.com"
             },

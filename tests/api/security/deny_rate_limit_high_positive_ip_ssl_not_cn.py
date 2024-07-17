@@ -64,12 +64,12 @@ def run(parameter):
             }
             ],
             "app_name_1": ["ssl"],
-            "expected_return": "京东",
+            "expected_return": "POST",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],
             "traffic": {
                 "type": "curl",
-                "command": "curl --connect-timeout 35 -m 35 https://www.jd.com"
+                "command": "curl --connect-timeout 35 -m 35 --insecure https://open.node.com:1443"
             },
             "token": ""
         }

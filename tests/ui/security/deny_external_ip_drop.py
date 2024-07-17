@@ -93,6 +93,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "93.184.215.14"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 https://www.example.com/"
             },

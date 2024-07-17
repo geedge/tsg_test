@@ -1,22 +1,17 @@
 # -*- coding: UTF-8 -*-
-import time
-import os
-import sys
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.policy.create_rule import CreateRule
-from support.ui_utils.policy.search_rule import SearchRule
-from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
-#from support.ui_utils.profile.create_profile import CreateProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
+
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.api_verification import *
+
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.organize_config import *
@@ -138,6 +133,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "trex",
                 "clients_start_ip": "10.64.224.10",
                 "clients_end_ip": "10.64.224.10",

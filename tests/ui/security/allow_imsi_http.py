@@ -91,6 +91,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv -m 20 http://open.node.com:180"
             },

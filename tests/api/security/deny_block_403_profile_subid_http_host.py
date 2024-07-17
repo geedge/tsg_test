@@ -73,6 +73,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"security_action","query_value":"Deny"}],
             "traffic": {
+                "protocol": "http",
                 "type": "wget",
                 "command": "wget -q -O- --debug http://open.node.com:180"
             },
