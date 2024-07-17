@@ -98,6 +98,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ssl_sni", "query_value":"twitter.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://twitter.com/"
             },

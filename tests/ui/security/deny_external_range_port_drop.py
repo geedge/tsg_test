@@ -92,6 +92,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"server_port", "query_value": 80}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 -m 10 http://www.news.cn/"
             },

@@ -89,6 +89,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"ip_protocol", "query_value": "udp"}],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.facebook.com -timeout=1 8.8.8.8"
             },

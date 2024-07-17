@@ -105,6 +105,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 20 -m 20 https://www.youtube.com"
             },
