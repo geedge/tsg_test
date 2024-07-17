@@ -86,6 +86,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 20 -m 20 http://www.news.cn/"
             },
