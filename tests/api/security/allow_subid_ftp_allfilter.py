@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
 from support.api_utils.create_policy import *
-from support.traffic_manager.traffic_verification import *
+from support.traffic_manager.api_verification import *
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.report import *
@@ -117,8 +117,8 @@ def run(parameter):
         cfg_list = create.create_policy(parameter, test_data, template_path)
         
         # 流量验证
-        verify = TrafficVerification()
-        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
+        verify = ApiVerification()
+        verification_result = verify.api_verification("", parameter, test_data, cfg_list)
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "verification result: ", verification_result, flush=True)
         
         # 分析验证结果，并返回给flask

@@ -17,11 +17,11 @@ from support.traffic_manager.workpath import workdir
 from datetime import datetime
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # from support.traffic_manager.traffic_replay import TrafficReplay
 
-class TrafficVerification():
-    def traffic_verification(self, driver, parameter, test_data, cfg_list):
+class ApiVerification():
+    def api_verification(self, driver, parameter, test_data, traffic_result, cfg_list):
         my_driver = driver
         api_server = parameter["api_server"]
         script_type = parameter["script_type"]
@@ -75,11 +75,12 @@ class TrafficVerification():
             time.sleep(10)
             
             # 触发流量
-            if debug_flag == "local":
-                temp_data = json.dumps(test_data["traffic"])
-                output = self.call_traffic_server(temp_data, script_type, debug_flag)
-            else:
-                output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
+            # if debug_flag == "local":
+            #     temp_data = json.dumps(test_data["traffic"])
+            #     output = self.call_traffic_server(temp_data, script_type, debug_flag)
+            # else:
+            #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
+            output = traffic_result
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             cmd_return = output
             
@@ -116,8 +117,8 @@ class TrafficVerification():
                         if log_result != None and metric_result != None:
                             break
             else:
-                metric_result = True
-                log_result = True
+                metric_result = "no_set"
+                log_result = "no_set"
             
             if metric_result == True:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
@@ -125,6 +126,8 @@ class TrafficVerification():
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
             elif metric_result == None:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is none. The mean is: do not get metrics.', flush=True)
+            elif metric_result == "no_set":
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is no_set. The mean is: no need to get metrics.', flush=True)
             
             if log_result == True:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
@@ -132,6 +135,8 @@ class TrafficVerification():
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
             elif log_result == None:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is none. The mean is: do not get logs.', flush=True)
+            elif log_result == "no_set":
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is no_set. The mean is: no need to get logs.', flush=True)
             
             return cmd_result, log_result, metric_result, my_driver
         elif policy_type == "statistics":      # statistics 使用trex流量回放验证
@@ -178,22 +183,21 @@ class TrafficVerification():
                             servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                             servers_end = servers_start
                 verify_policy_break_count = 0
-                while True:      # 多次策略验证
-                    for i in range(len(policy_id_list)):
+                for i in range(len(policy_id_list)):
+                    while True:      # 多次策略验证
                         policy_id = policy_id_list[i]
-                        if policy_id in hit_policy_list:
-                            verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
-                            policy_verify = support.api_utils.policy_verify.PolicyVerify()
-                            hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
-                            if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
-                                break
-                            if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
-                                # 直接调用清空策略方法
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid test, end test. Policy id: {}".format(policy_id), flush=True)
-                                return False, False, False, "The policy verification fail."
-                            verify_policy_break_count += 1
-                            time.sleep(20)
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
+                        verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
+                        policy_verify = support.api_utils.policy_verify.PolicyVerify()
+                        hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
+                        if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
+                            break
+                        if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
+                            # 直接调用清空策略方法
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid test, end test. Policy id: {}".format(policy_id), flush=True)
+                            return False, False, False, "The policy verification fail."
+                        verify_policy_break_count += 1
+                        time.sleep(20)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             # 将原数据中使用的ip替换为随机生成ip
@@ -201,12 +205,13 @@ class TrafficVerification():
             test_data["traffic"]["clients_end_ip"] = clients_end
             test_data["traffic"]["servers_start_ip"] = servers_start
             test_data["traffic"]["servers_end_ip"] = servers_end
-            if debug_flag == "local":
-                temp_data = json.dumps(test_data["traffic"])
-                statistics_result = self.call_traffic_server(temp_data, script_type, debug_flag)
-                statistics_metircs = statistics_result["result"]
-            else:
-                statistics_metircs = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
+            # if debug_flag == "local":
+            #     temp_data = json.dumps(test_data["traffic"])
+            #     statistics_result = self.call_traffic_server(temp_data, script_type, debug_flag)
+            #     statistics_metircs = statistics_result["result"]
+            # else:
+            #     statistics_metircs = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
+            statistics_metircs = traffic_result
             time.sleep(50)
             if script_type == "ui":
                 # 点击 语言快捷切换按钮
@@ -294,12 +299,13 @@ class TrafficVerification():
                         else:
                             test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"]
                 # 执行回放命令
-                if debug_flag == "local":
-                    temp_data = json.dumps(test_data["traffic"])
-                    sc_result = self.call_traffic_server(temp_data, script_type, debug_flag)
-                    sc_metircs = sc_result["result"]
-                else:
-                    sc_metircs = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
+                # if debug_flag == "local":
+                #     temp_data = json.dumps(test_data["traffic"])
+                #     sc_result = self.call_traffic_server(temp_data, script_type, debug_flag)
+                #     sc_metircs = sc_result["result"]
+                # else:
+                #     sc_metircs = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
+                sc_metircs = traffic_result
                 time.sleep(20)
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
@@ -347,11 +353,12 @@ class TrafficVerification():
                 # 等待时间，等待策略生效
                 time.sleep(10)
                 # 触发流量
-                if debug_flag == "local":
-                    temp_data = json.dumps(test_data["traffic"])
-                    output = self.call_traffic_server(temp_data, script_type, debug_flag)
-                else:
-                    output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
+                # if debug_flag == "local":
+                #     temp_data = json.dumps(test_data["traffic"])
+                #     output = self.call_traffic_server(temp_data, script_type, debug_flag)
+                # else:
+                #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
+                output = traffic_result
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
                 cmd_return = output
                 expected_return = test_data["expected_return"]
