@@ -47,6 +47,7 @@ def run(parameter):
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.example.com -timeout=1"
             },

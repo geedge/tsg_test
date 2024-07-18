@@ -48,6 +48,7 @@ def run(parameter):
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv http://open.node.com:180"
             },

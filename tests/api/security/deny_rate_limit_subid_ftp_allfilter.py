@@ -97,6 +97,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"security_action","query_value":"Deny"}],
             "traffic": {
+                "protocol": "ftp",
                 "type": "curl",
                 "command": "curl --connect-timeout 10 -m 5 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },

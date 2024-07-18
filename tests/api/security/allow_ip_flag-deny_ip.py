@@ -81,7 +81,7 @@ def run(parameter):
           "expected_return": "百度一下",
           "counters_1": {"hits": "many"},
           "counters_2": {"hits": 0},
-          "log_query_param_1": [],
+          "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
           "log_query_param_2": [],
           "traffic": {
                     "protocol": "ssl",
@@ -153,17 +153,19 @@ def run(parameter):
       
 if __name__ == "__main__":
     parameter = {
-      "script_type": "api",
-      "username": "hebingning",
-      "password": "hbn66AAA",
-      "test_pc_ip": "192.168.64.73",
-      "api_server": "http://192.168.44.72",
-      "is_log": 1,
-      "env": "tsgx",
-      "vsys_id": 6,
-      "root_path": "D:/python_script/tsg_test",
-      "path": "D:/python_script/tsg_test/tests/api",
-      "module_name": "security",
-      "test_case_name": "allow_negate_fqdn"
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.88",
+        "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6488",
+        "script_type": "api",
+        "debug_flag": "local",
+        "env": "tsgx",
+        "vsys_id": 1,
+        "is_log": 1,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
+        "module_name": "security",
+        "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }
     run(parameter)

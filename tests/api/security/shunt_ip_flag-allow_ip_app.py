@@ -84,6 +84,7 @@ def run(parameter):
           "log_query_param_1": [],
           "log_query_param_2": [],
           "traffic": {
+                    "protocol": "ssl",
                     "type": "curl",
                     "command": "curl -kv --connect-timeout 25 -m 25 https://www.baidu.com"
                 },

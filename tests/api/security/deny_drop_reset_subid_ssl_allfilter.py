@@ -96,6 +96,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl --connect-timeout 10 -m 10 https://www.baidu.com"
             },
