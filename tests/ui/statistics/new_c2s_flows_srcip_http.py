@@ -134,7 +134,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
             "traffic": {
-                "protocol": "http",
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "10.64.224.6",
                 "clients_end_ip": "10.64.224.6",

@@ -133,7 +133,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
-                "protocol": "http",
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "10.64.224.26",
                 "clients_end_ip": "10.64.224.26",
