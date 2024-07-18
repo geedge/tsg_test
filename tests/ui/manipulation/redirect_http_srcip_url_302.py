@@ -190,7 +190,7 @@ def run(parameter):
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 verify = Verification()
-                verification_result = verify.verification(driver, parameter, test_data, [], test_rule_element_position)
+                verification_result = verify.verification(driver, parameter, test_data, [], element_position_map)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:

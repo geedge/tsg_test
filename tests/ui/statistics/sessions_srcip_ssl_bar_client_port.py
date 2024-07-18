@@ -133,7 +133,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
             "traffic": {
-                "protocol": "ssl",
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "10.64.224.10",
                 "clients_end_ip": "10.64.224.10",
@@ -272,7 +272,7 @@ def run(parameter):
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = Verification()
-                verification_result = verify.api_verification(driver, parameter, test_data, cfg_list, test_rule_element_position)
+                verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:
