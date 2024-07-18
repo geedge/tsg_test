@@ -142,7 +142,9 @@ class CreatePolicy():
                         src_ip = "10.64.77.11"
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
-                        if str(vsys_id) == "6":   #根据vsys id，确认IP范围
+                        if str(vsys_id) == "1":   #根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(1, 100))
+                        elif str(vsys_id) == "6":   #根据vsys id，确认IP范围
                             src_ip_list[2] = str(random.randint(200, 222))
                         else:
                             src_ip_list[2] = str(random.randint(224, 250))
@@ -160,6 +162,8 @@ class CreatePolicy():
                         ip_list_1 = two_ip_list[0].split(".")
                         ip_list_2 = two_ip_list[1].split(".")
                         if str(vsys_id) == "6":
+                            ip_list_1[2] = str(random.randint(1, 100))
+                        elif str(vsys_id) == "6":
                             ip_list_1[2] = str(random.randint(200, 222))
                         else:
                             ip_list_1[2] = str(random.randint(224, 250))
