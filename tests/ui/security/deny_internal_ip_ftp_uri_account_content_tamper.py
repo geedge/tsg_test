@@ -13,7 +13,7 @@ from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
-from support.traffic_manager.api_verification import *
+from support.traffic_manager.verification import Verification
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
@@ -404,8 +404,8 @@ def run(parameter):
             if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
-                verify = ApiVerification()
-                verification_result = verify.api_verification(driver, parameter, test_data, [])
+                verify = Verification()
+                verification_result = verify.verification(driver, parameter, test_data, [], test_rule_element_position)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:

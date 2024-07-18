@@ -12,7 +12,7 @@ from support.ui_utils.profile.create_statistics_template import CreateStatistics
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.edit_rule import EditRule
-from support.traffic_manager.api_verification import *
+from support.traffic_manager.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -258,8 +258,8 @@ def run(parameter):
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
-                verify = ApiVerification()
-                verification_result = verify.api_verification(driver,parameter, test_data, cfg_list)
+                verify = Verification()
+                verification_result = verify.api_verification(driver, parameter, test_data, cfg_list, test_rule_element_position)
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
