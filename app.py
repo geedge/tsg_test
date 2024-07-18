@@ -33,7 +33,7 @@ app = Flask(__name__)
 def receive_parameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to receive request.", flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "==========Receive request from Metersphere.==========", flush=True)
         req_json = request.get_json()
         run_status = req_json.get("run_status")
         module_name = req_json.get("module_name")
@@ -160,6 +160,7 @@ def receive_parameter():
             response.status_code = response_result["code"]
         
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Response is: {}".format(response), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "==========Send the result to Metersphere.==========", flush=True)
         return response
     except subprocess.CalledProcessError as e:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to execute the command. The return code: {}".format(e.returncode), flush=True)
@@ -171,6 +172,7 @@ def receive_parameter():
         response = jsonify(response_result)
         response.status_code = response_result["code"]
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Response is: {}".format(response), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "==========Send the result to Metersphere.==========", flush=True)
         return response
 
 if __name__ == '__main__':

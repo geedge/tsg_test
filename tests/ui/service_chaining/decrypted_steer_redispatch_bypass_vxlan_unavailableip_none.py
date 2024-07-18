@@ -126,6 +126,7 @@ def run(parameter):
                 }
             ],
             "traffic":{
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.facebook.com"
                 },

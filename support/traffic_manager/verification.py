@@ -43,7 +43,10 @@ class Verification():
         if script_type == "ui":
             traffic_verification = ApiVerification()
             api_verification_result = traffic_verification.api_verification(my_driver, parameter, test_data, traffic_result, cfg_list)
-            api_verification_result = [True, True, True, True]
+            if len(api_verification_result) == 4:
+                my_driver = api_verification_result[3]
+            elif len(api_verification_result) == 5:
+                my_driver = api_verification_result[4]
             policy_type = test_data["policy_type"]
             if len(api_verification_result) > 0 and policy_type != "statistics":
                 verification_result = [False for _ in range(4)]

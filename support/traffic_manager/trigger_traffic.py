@@ -44,16 +44,18 @@ class TriggerTraffic():
                     jsonData["result"] = response.text
                 result = jsonData
         else:
+            if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw":
+                test_data = self.replace_trex_ip(test_data, script_type)
             if len(test_data["traffic"]["protocol"]) > 0:
                 temp_data = test_data["traffic"]["command"]
             elif len(test_data["traffic"]["protocol"]) == 0:
                 temp_data = test_data["traffic"]
             if test_data["traffic"]["protocol"] == "http":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate http/https traffic.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate http traffic.", flush=True)
                 player = HttpPlayer()
                 result = player.send_http_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "https" or test_data["traffic"]["protocol"] == "ssl":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate http/https traffic.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate ssl traffic.", flush=True)
                 player = SslPlayer()
                 result = player.send_ssl_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "ftp":
@@ -95,6 +97,44 @@ class TriggerTraffic():
                 tr = trex_replay.TrafficReplay(path_dict)
                 result = tr.trex_playback(yaml_name, pcap_name, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
         return result
+    
+    def replace_trex_ip(self, test_data, script_type):
+        if script_type == "ui":
+            if "source_ip" in test_data["condition"].keys():
+                source_ip = test_data["condition"]["source_ip"]
+                for ip_item in source_ip:
+                    if "-" in ip_item["item"][0]["item_value"]:
+                        test_data["traffic"]["clients_start_ip"] = ip_item["item"][0]["item_value"].split("-")[0]
+                        test_data["traffic"]["clients_end_ip"] = ip_item["item"][0]["item_value"].split("-")[-1]
+                    else:
+                        test_data["traffic"]["clients_start_ip"] = ip_item["item"][0]["item_value"]
+                        test_data["traffic"]["clients_end_ip"] = test_data["traffic"]["clients_start_ip"]
+            if "destination_ip" in test_data["condition"].keys():
+                destination_ip = test_data["condition"]["destination_ip"]
+                for ip_item in destination_ip:
+                    if "-" in ip_item["item"][0]["item_value"]:
+                        test_data["traffic"]["servers_start_ip"] = ip_item["item"][0]["item_value"].split("-")[0]
+                        test_data["traffic"]["servers_end_ip"] = ip_item["item"][0]["item_value"].split("-")[-1]
+                    else:
+                        test_data["traffic"]["servers_start_ip"] = ip_item["item"][0]["item_value"]
+                        test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
+        elif script_type == "api":
+            for ip_item in test_data["obj_condition_1"]:
+                if "ATTR_SOURCE_IP" in ip_item.values():
+                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                        test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                        test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                    else:
+                        test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                        test_data["traffic"]["clients_end_ip"] = test_data["traffic"]["clients_start_ip"]
+                if "ATTR_DESTINATION_IP" in ip_item.values():
+                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                        test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                        test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                    else:
+                        test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                        test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
+        return test_data
     
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

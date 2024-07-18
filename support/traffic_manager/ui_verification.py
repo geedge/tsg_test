@@ -17,14 +17,16 @@ class UiVerification():
         is_log = parameter["is_log"]
         metric_result = False
         log_result = False
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by ui.", flush=True)
         
-        edit_rule = EditRule(driver)
+        edit_rule = EditRule(my_driver)
         edit_rule_code, _ = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
         if edit_rule_code == 200:
             if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
                 if api_verification_result[2] == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get hit count from UI detail page.", flush=True)
                     hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").text
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "hit_count:", hit_count, flush=True)
                     if int(hit_count) == test_data["counters"]["hits"] or int(hit_count) > 1 and test_data["counters"]["hits"] == "many":
                         metric_result = True
                     if int(is_log) == 1:
@@ -33,22 +35,51 @@ class UiVerification():
                         time.sleep(1)
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
                         log_number = log_number_str.split(": ")[-1]
-                        if int(hit_count) == int(log_number):
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "log_number:", log_number, flush=True)
+                        if int(hit_count) == int(log_number) == 1:
                             log_result = True
+                        elif int(hit_count) > 1 and test_data["counters"]["hits"] == "many":
+                            log_result = True
+                
+                if metric_result == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"metric_result" of ui is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
+                elif metric_result == False:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"metric_result" of ui is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
+
+                if log_result == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"log_result" of ui is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
+                elif log_result == False:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"log_result" of ui is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
+            
                 return api_verification_result[0], log_result, metric_result, my_driver
             elif policy_type == "statistics":
                 print("to be added.")
             elif policy_type == "service_chaining":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get value of sent pkts, received pkts, sent bytes, received bytes from UI detail page.", flush=True)
                 sent_pkts_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Sent Packets']/parent::tr//td[2]").text
-                sent_pkts, sent_pkts_unit = self.extract_value("packets", sent_pkts_str)
-                sent_bytes_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Sent Bytes']/parent::tr//td[2]").text
-                sent_bytes, sent_bytes_unit = self.extract_value("packets", sent_bytes_str)
-                received_pkts_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Received Packets']/parent::tr//td[2]").text
-                received_pkts, received_pkts_unit = self.extract_value("packets", received_pkts_str)
-                received_bytes_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Received Bytes']/parent::tr//td[2]").text
-                received_bytes, received_bytes_unit = self.extract_value("packets", received_bytes_str)
+                if sent_pkts_str == "-":
+                    sent_pkts = 0
+                else:
+                    sent_pkts, sent_pkts_unit = self.extract_value("packets", sent_pkts_str)
                 
+                sent_bytes_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Sent Bytes']/parent::tr//td[2]").text
+                if sent_bytes_str == "-":
+                    sent_bytes = 0
+                else:
+                    sent_bytes, sent_bytes_unit = self.extract_value("bytes", sent_bytes_str)
+
+                received_pkts_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Received Packets']/parent::tr//td[2]").text
+                if received_pkts_str == "-":
+                    received_pkts = 0
+                else:
+                    received_pkts, received_pkts_unit = self.extract_value("packets", received_pkts_str)
+
+                received_bytes_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Received Bytes']/parent::tr//td[2]").text
+                if received_bytes_str == "-":
+                    received_bytes = 0
+                else:
+                    received_bytes, received_bytes_unit = self.extract_value("bytes", received_bytes_str)
+
                 parse = configparser.ConfigParser()
                 parse_dir = os.path.join(workdir, "configuration_file.ini")
                 parse.read(parse_dir, encoding="utf-8")
@@ -83,7 +114,7 @@ class UiVerification():
                                 traffic_result["total_bytes"] = byte_value + 50 * pkt_value
                                 if 1000 <= pkt_value < 10000:
                                     pkt_value_temp = int(round(pkt_value/1000, 0))
-                                elif pkt_value < 1000: 
+                                elif pkt_value < 1000:
                                     pkt_value_temp = pkt_value
                                 if 1024 <= traffic_result["total_bytes"] < 1048576:
                                     total_bytes_temp = round(traffic_result["total_bytes"]/1024.0, 2)
@@ -148,19 +179,22 @@ class UiVerification():
     def extract_value(self, type, value):
         if type == "packets":
             if " " in value:
-                value_int = int(value.split(" ")[0])
+                value_number = int(value.split(" ")[0])
                 value_unit = value.split(" ")[-1]
             else:
-                value_int = int(value)
+                value_number = int(value)
                 value_unit = ""
         elif type == "bytes":
             if " " in value:
-                value_int = int(value.split(" ")[0])
                 value_unit = value.split(" ")[-1]
+                if value_unit == "B":
+                    value_number = int(value.split(" ")[0])
+                else:
+                    value_number = float(value.split(" ")[0])
             else:
-                value_int = int(value)
+                value_number = 0
                 value_unit = ""
-        return value_int, value_unit
+        return value_number, value_unit
     
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

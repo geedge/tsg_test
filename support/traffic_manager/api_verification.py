@@ -81,7 +81,7 @@ class ApiVerification():
             # else:
             #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
             output = traffic_result
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
             cmd_return = output
             
             expected_return = test_data["expected_return"]
@@ -93,7 +93,7 @@ class ApiVerification():
             log_result, metric_result = None, None
             if int(is_log) == 1:
                 if is_log_query == 1 or is_counters == 1:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric now.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of 'is_log' is 1. Ready to get log and metric now.", flush=True)
                     for i in range(50):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
                         if i == 10 and script_type == "ui" and driver:
@@ -121,22 +121,22 @@ class ApiVerification():
                 log_result = "no_set"
             
             if metric_result == True:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
             elif metric_result == False:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "metric_result" is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
             elif metric_result == None:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is none. The mean is: do not get metrics.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "metric_result" is none. The mean is: do not get metrics.', flush=True)
             elif metric_result == "no_set":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "metric_result" is no_set. The mean is: no need to get metrics.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "metric_result" is no_set. The mean is: no need to get metrics.', flush=True)
             
             if log_result == True:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
             elif log_result == False:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
             elif log_result == None:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is none. The mean is: do not get logs.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is none. The mean is: do not get logs.', flush=True)
             elif log_result == "no_set":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "log_result" is no_set. The mean is: no need to get logs.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is no_set. The mean is: no need to get logs.', flush=True)
             
             return cmd_result, log_result, metric_result, my_driver
         elif policy_type == "statistics":      # statistics 使用trex流量回放验证
@@ -146,47 +146,46 @@ class ApiVerification():
             current_utc_time = datetime.now(utc_tz)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             # 解析trex使用参数， 解析client server ip
-            if script_type == "ui":
-                if "source_ip" in test_data["condition"].keys():
-                    source_ip = test_data["condition"]["source_ip"]
-                    for ip_item in source_ip:
-                        if "-" in ip_item["item"][0]["item_value"]:
-                            clients_start = ip_item["item"][0]["item_value"].split("-")[0]
-                            clients_end = ip_item["item"][0]["item_value"].split("-")[-1]
-                        else:
-                            clients_start = ip_item["item"][0]["item_value"]
-                            clients_end = clients_start
-                if "destination_ip" in test_data["condition"].keys():
-                    destination_ip = test_data["condition"]["destination_ip"]
-                    for ip_item in destination_ip:
-                        if "-" in ip_item["item"][0]["item_value"]:
-                            servers_start = ip_item["item"][0]["item_value"].split("-")[0]
-                            servers_end = ip_item["item"][0]["item_value"].split("-")[-1]
-                        else:
-                            servers_start = ip_item["item"][0]["item_value"]
-                            servers_end = servers_start
-                # to do 待补充UI界面验证和清理
-            elif script_type == "api":
-                for ip_item in test_data["obj_condition_1"]:
-                    if "ATTR_SOURCE_IP" in ip_item.values():
-                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                            clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                        else:
-                            clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                            clients_end = clients_start
-                    if "ATTR_DESTINATION_IP" in ip_item.values():
-                        if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                            servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                        else:
-                            servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                            servers_end = servers_start
+            # if script_type == "ui":
+                # if "source_ip" in test_data["condition"].keys():
+                #     source_ip = test_data["condition"]["source_ip"]
+                #     for ip_item in source_ip:
+                #         if "-" in ip_item["item"][0]["item_value"]:
+                #             clients_start = ip_item["item"][0]["item_value"].split("-")[0]
+                #             clients_end = ip_item["item"][0]["item_value"].split("-")[-1]
+                #         else:
+                #             clients_start = ip_item["item"][0]["item_value"]
+                #             clients_end = clients_start
+                # if "destination_ip" in test_data["condition"].keys():
+                #     destination_ip = test_data["condition"]["destination_ip"]
+                #     for ip_item in destination_ip:
+                #         if "-" in ip_item["item"][0]["item_value"]:
+                #             servers_start = ip_item["item"][0]["item_value"].split("-")[0]
+                #             servers_end = ip_item["item"][0]["item_value"].split("-")[-1]
+                #         else:
+                #             servers_start = ip_item["item"][0]["item_value"]
+                #             servers_end = servers_start
+            if script_type == "api":
+                # for ip_item in test_data["obj_condition_1"]:
+                #     if "ATTR_SOURCE_IP" in ip_item.values():
+                #         if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                #             clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                #             clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                #         else:
+                #             clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                #             clients_end = clients_start
+                #     if "ATTR_DESTINATION_IP" in ip_item.values():
+                #         if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                #             servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                #             servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                #         else:
+                #             servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                #             servers_end = servers_start
                 verify_policy_break_count = 0
                 for i in range(len(policy_id_list)):
                     while True:      # 多次策略验证
                         policy_id = policy_id_list[i]
-                        verify_attribute_dict = {"src_ip": clients_start, "dst_ip": servers_start}
+                        verify_attribute_dict = {"src_ip": test_data["traffic"]["clients_start_ip"], "dst_ip": test_data["traffic"]["servers_start_ip"]}
                         policy_verify = support.api_utils.policy_verify.PolicyVerify()
                         hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
                         if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
@@ -201,10 +200,10 @@ class ApiVerification():
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             # 将原数据中使用的ip替换为随机生成ip
-            test_data["traffic"]["clients_start_ip"] = clients_start
-            test_data["traffic"]["clients_end_ip"] = clients_end
-            test_data["traffic"]["servers_start_ip"] = servers_start
-            test_data["traffic"]["servers_end_ip"] = servers_end
+            # test_data["traffic"]["clients_start_ip"] = clients_start
+            # test_data["traffic"]["clients_end_ip"] = clients_end
+            # test_data["traffic"]["servers_start_ip"] = servers_start
+            # test_data["traffic"]["servers_end_ip"] = servers_end
             # if debug_flag == "local":
             #     temp_data = json.dumps(test_data["traffic"])
             #     statistics_result = self.call_traffic_server(temp_data, script_type, debug_flag)
@@ -225,10 +224,10 @@ class ApiVerification():
             cmd_return = expected_return = test_data["expected_return"]
             # 断言判断
             trex_ip_info = {}
-            trex_ip_info["clients_start"] = clients_start
-            trex_ip_info["clients_end"] = clients_end
-            trex_ip_info["servers_start"] = servers_start
-            trex_ip_info["servers_end"] = servers_end
+            trex_ip_info["clients_start"] = test_data["traffic"]["clients_start_ip"]
+            trex_ip_info["clients_end"] = test_data["traffic"]["clients_end_ip"]
+            trex_ip_info["servers_start"] = test_data["traffic"]["servers_start_ip"]
+            trex_ip_info["servers_end"] = test_data["traffic"]["servers_end_ip"]
             if len(statistics_sc_info_list) > 0:  # 非空
                 for statistics_info in statistics_sc_info_list:
                     n = 1    #自增变量
@@ -244,7 +243,7 @@ class ApiVerification():
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                        metric_results = log.get_livechart_statistics(token, start_time, end_time, statistics_info, statistics_metircs, trex_ip_info, test_data, api_server, vsys_id)
+                        metric_results = log.get_livechart_statistics(token, start_time, end_time, statistics_info, statistics_metircs, trex_ip_info, test_data, api_server, vsys_id, script_type)
                         metric_result = metric_results[0]
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
@@ -271,33 +270,33 @@ class ApiVerification():
                 current_utc_time = datetime.now(utc_tz)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 解析trex使用参数， 解析client server ip
-                if script_type == "api":
-                    for ip_item in test_data["obj_condition_1"]:
-                        if "ATTR_SOURCE_IP" in ip_item.values():
-                            if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                                test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                                test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                            else:
-                                test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                        if "ATTR_DESTINATION_IP" in ip_item.values():
-                            if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                                test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                                test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                            else:
-                                test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                elif script_type == "ui":
-                    for source_ip in test_data["condition"]["source_ip"]:
-                        if "-" in source_ip["item"][0]["item_value"]:
-                            test_data["traffic"]["clients_start_ip"] = source_ip["item"][0]["item_value"].split("-")[0]
-                            test_data["traffic"]["clients_end_ip"] = source_ip["item"][0]["item_value"].split("-")[-1]
-                        else:
-                            test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = source_ip["item"][0]["item_value"]
-                    for dest_ip in test_data["condition"]["destination_ip"]:
-                        if "-" in dest_ip["item"][0]["item_value"]:
-                            test_data["traffic"]["servers_start_ip"] = dest_ip["item"][0]["item_value"].split("-")[0]
-                            test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"].split("-")[-1]
-                        else:
-                            test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"]
+                # if script_type == "api":
+                #     for ip_item in test_data["obj_condition_1"]:
+                #         if "ATTR_SOURCE_IP" in ip_item.values():
+                #             if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                #                 test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                #                 test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                #             else:
+                #                 test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                #         if "ATTR_DESTINATION_IP" in ip_item.values():
+                #             if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
+                #                 test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
+                #                 test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                #             else:
+                #                 test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                # elif script_type == "ui":
+                #     for source_ip in test_data["condition"]["source_ip"]:
+                #         if "-" in source_ip["item"][0]["item_value"]:
+                #             test_data["traffic"]["clients_start_ip"] = source_ip["item"][0]["item_value"].split("-")[0]
+                #             test_data["traffic"]["clients_end_ip"] = source_ip["item"][0]["item_value"].split("-")[-1]
+                #         else:
+                #             test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = source_ip["item"][0]["item_value"]
+                #     for dest_ip in test_data["condition"]["destination_ip"]:
+                #         if "-" in dest_ip["item"][0]["item_value"]:
+                #             test_data["traffic"]["servers_start_ip"] = dest_ip["item"][0]["item_value"].split("-")[0]
+                #             test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"].split("-")[-1]
+                #         else:
+                #             test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"]
                 # 执行回放命令
                 # if debug_flag == "local":
                 #     temp_data = json.dumps(test_data["traffic"])
@@ -359,7 +358,7 @@ class ApiVerification():
                 # else:
                 #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
                 output = traffic_result
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 cmd_return = output
                 expected_return = test_data["expected_return"]
                 # 获取结束时间
@@ -413,9 +412,9 @@ class ApiVerification():
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
         cmd_result = all(word in temp for word in sub_str)
         if cmd_result == True:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
         elif cmd_result == False:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The boolean of "cmd_result" is {}. The mean is: the expected value is not in the returned value from test data.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "cmd_result" is {}. The mean is: the expected value is not in the returned value from test data.'.format(cmd_result), flush=True)
         return cmd_result # 返回：True or False
 
     def is_verify(self, script_type, test_data, loop_num, counters, log_query_param):
@@ -440,6 +439,8 @@ class ApiVerification():
             if len(log_query_param_data) > 0:
                 is_log_query = 1
                 break
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of 'is_counters' is", is_counters, flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of 'is_log_query' is", is_log_query, flush=True)
         return is_counters, is_log_query
     
     def call_traffic_server(self, data, script_type, debug_flag):
