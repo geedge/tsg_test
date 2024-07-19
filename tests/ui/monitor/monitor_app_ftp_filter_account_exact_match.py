@@ -121,8 +121,8 @@ def run(parameter):
         # name_list汇总
         name_list = [
             {
-                "type": "monitor",
-                "name": "monitor_rule_ftp_account"
+                "type": test_data["policy_type"],
+                "name": test_data["rule_name"]
             },
             {
                 "type": "ip",

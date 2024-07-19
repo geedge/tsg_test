@@ -68,6 +68,22 @@ def run(parameter):
                         "negate": False
                     }
                 ],
+                "protocol_filed": [
+                    {
+                        "name": "manipulation_url",
+                        "object_type": "url",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "url",
+                                "item_value": "baidu->"
+                            }
+                        ],
+                    },
+                ]
             },
             "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},

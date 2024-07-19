@@ -47,6 +47,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [],
             "traffic": {
+                "protocol": "ssl",
                 "type": "wget",
                 "command": "wget --debug  -q -O- https://www.example.com"
             },

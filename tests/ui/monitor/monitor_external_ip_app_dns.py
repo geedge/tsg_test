@@ -324,7 +324,6 @@ if __name__ == '__main__':
         "password": "hbn66AAA",
         "test_pc_ip": "192.168.64.88",
         "test_subcriber_id": "test6776",
-        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag" : "local",
         "script_type": "ui",

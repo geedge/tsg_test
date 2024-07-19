@@ -104,6 +104,14 @@ phoneNumberObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon i
 phoneNumberObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
 phoneNumberObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
 
+# imei
+imeiObjectPage_imsiType_posId = "IMEIimei"
+imeiObjectPage_addItem_posId = ipObjectPage_addItem_posId  # 添加item_id
+imeiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
+imeiObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
+imeiObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
+imeiObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
+
 # port
 portObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
 portObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"

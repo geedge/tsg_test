@@ -49,6 +49,7 @@ def run(parameter):
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl --connect-timeout 15 -m 15 http://open.node.com:180"
             },

@@ -66,6 +66,7 @@ def run(parameter):
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl --connect-timeout 5 -m 5 https://www.jd.com"
             },

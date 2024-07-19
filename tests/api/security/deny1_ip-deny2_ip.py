@@ -68,8 +68,9 @@ def run(parameter):
           "counters_1": {"hits": 0},
           "counters_2": {"hits": "many"},
           "log_query_param_1": [],
-          "log_query_param_2": [],
+          "log_query_param_2": [{"query_field_key":"sent_pkts","query_value":1}],
           "traffic": {
+                    "protocol": "ssl",
                     "type": "curl",
                     "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
                 },

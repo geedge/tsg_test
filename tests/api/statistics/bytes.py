@@ -97,6 +97,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
             "traffic": {
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "192.168.64.86",
                 "clients_end_ip": "192.168.64.86",
@@ -184,8 +185,8 @@ if __name__ == "__main__":
         "debug_flag": "local",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 0,
+        "vsys_id": 11,
+        "is_log": 1,
         "root_path": "C:/zcw/tsg_test",
         "path": "C:/zcw/tsg_test/tests/api",
         "module_name": "statistics",

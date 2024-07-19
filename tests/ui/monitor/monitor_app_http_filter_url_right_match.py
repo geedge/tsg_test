@@ -116,7 +116,7 @@ def run(parameter):
             "profile": [
 
             ],
-            "expected_return": "china",
+            "expected_return": "POST",
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {

@@ -67,6 +67,9 @@ policyRulePage_closeImsi_posXpath = "//div[@class='SourceList list-box']//button
 # phone number
 policyRulePage_choosePhoneNumber_posXpath = "//*[@id='tab-phone_number' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'Phone Number')]"
 
+# imei
+policyRulePage_chooseImei_posXpath = "//*[@id='tab-imei' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'IMEI')]"
+
 policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
@@ -88,6 +91,9 @@ policyRulePage_addCondition_Boolean_posXpath = "//div[@class='SourceList list-bo
 policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
 policyRulePage_addCondition_ftpAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
 policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Content']"
+policyRulePage_addCondition_cn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='CN']"
+policyRulePage_addCondition_san_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='SAN']"
+policyRulePage_addCondition_qname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='QNAME']"
 
 policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -105,6 +111,22 @@ policyRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect Destinatio
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
 policyRulePage_selectServerFqdn_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeServerFqdn_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+# cn
+policyRulePage_addCn_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='CN']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchCn_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectCn_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeCn_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+# san
+policyRulePage_addSan_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='SAN']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchSan_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectSan_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeSan_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+# qname
+policyRulePage_addQname_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='QNAME']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchQname_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectQname_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeQname_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 policyRulePage_addUrl_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchUrl_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -208,6 +230,9 @@ securityRulePage_addCondition_externalIP_posXpath = policyRulePage_addCondition_
 securityRulePage_addCondition_internalPort_posXpath = policyRulePage_addCondition_internalPort_posXpath
 securityRulePage_addCondition_ftpAccount_posXpath = policyRulePage_addCondition_ftpAccount_posXpath
 securityRulePage_addCondition_ftpContent_posXpath = policyRulePage_addCondition_ftpContent_posXpath
+securityRulePage_addCondition_cn_posXpath = policyRulePage_addCondition_cn_posXpath
+securityRulePage_addCondition_san_posXpath = policyRulePage_addCondition_san_posXpath
+securityRulePage_addCondition_qname_posXpath = policyRulePage_addCondition_qname_posXpath
 securityRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
  
 
@@ -215,6 +240,21 @@ securityRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
 securityRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
 securityRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
 securityRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
+
+securityRulePage_addCn_posXpath = policyRulePage_addCn_posXpath
+securityRulePage_searchCn_posXpath = policyRulePage_searchCn_posXpath
+securityRulePage_selectCn_posXpath = policyRulePage_selectCn_posXpath
+securityRulePage_closeCn_posXpath = policyRulePage_closeCn_posXpath
+
+securityRulePage_addSan_posXpath = policyRulePage_addSan_posXpath
+securityRulePage_searchSan_posXpath = policyRulePage_searchSan_posXpath
+securityRulePage_selectSan_posXpath = policyRulePage_selectSan_posXpath
+securityRulePage_closeSan_posXpath = policyRulePage_closeSan_posXpath
+
+securityRulePage_addQname_posXpath = policyRulePage_addQname_posXpath
+securityRulePage_searchQname_posXpath = policyRulePage_searchQname_posXpath
+securityRulePage_selectQname_posXpath = policyRulePage_selectQname_posXpath
+securityRulePage_closeQname_posXpath = policyRulePage_closeQname_posXpath
 
 securityRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
 securityRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
@@ -244,6 +284,9 @@ securityRulePage_closeftpContent_posXpath = policyRulePage_closeFtpContent_posXp
 
 #phone number 
 securityRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath
+
+#phone number 
+securityRulePage_chooseImei_posXpath = policyRulePage_chooseImei_posXpath
 
 securityRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 securityRulePage_okButton_yes_posId = "OK-_SecurityAdd_Home_App_anonymousComponent"
@@ -543,10 +586,12 @@ monitorRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@cl
 monitorRuleListPage_searchLable_searchButton_posId = "searchQuery"
 monitorRuleListPage_selectRule_posXpath = "//div[contains(@class,'ly-table1')]//tbody//sapn[@class='el-checkbox__inner']"
 monitorRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
+monitorRulelistPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
 #monitor新建页/编辑页面按钮
 monitorRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
 monitorRulePage_mirrorTrafficButton_posXpath ='//*[text()="Mirror Traffic"]/ancestor::div[@class="el-form-item el-form-item--small"]//*[@class="el-switch__core"]'
 monitorRulePage_packetCaptureButton_posXpath = '//*[text()="Packet Capture"]/ancestor::div[@class="el-form-item el-form-item--small"]//span[@class="el-switch__core"]'
+monitorRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 monitorRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 monitorRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 monitorRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
@@ -573,11 +618,92 @@ monitorRulePage_enable_posXpath = shapingRulePage_enable_posXpath
 monitorRulePage_okButton_posId = "OK-_policy_monitor_write_Home_App_anonymousComponent"
 monitorRulePage_warningYes_posXpath =shapingRulePage_okButton_warningYes_posXpath
 monitorRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
-#add response header
+#monitor add response header
 monitorRulePage_addResponseHeader_posXpath = manipulationRulePage_addResponseHeader_posXpath
 monitorRulePage_searchResponseHeader_posXpath = manipulationRulePage_searchResponseHeader_posXpath
 monitorRulePage_selectResponseHeader_posXpath = manipulationRulePage_selectResponseHeader_posXpath
 monitorRulePage_closeResponseHeader_posXpath = manipulationRulePage_closeResponseHeader_posXpath
+#monitor add src port
+monitorRulePage_addSrcPort_posXpath = policyRulePage_addSrcPort_posXpath
+monitorRulePage_searchSrcPort_posXpath = policyRulePage_searchSrcPort_posXpath
+monitorRulePage_selectSrcPort_posXpath = policyRulePage_selectSrcPort_posXpath
+monitorRulePage_closeSrcPort_posXpath = policyRulePage_closeSrcPort_posXpath
+#monitor add internal ip
+monitorRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
+monitorRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath
+monitorRulePage_selectInternalIP_posXpath = policyRulePage_selectInternalIP_posXpath
+monitorRulePage_closeInternalIP_posXpath = policyRulePage_closeInternalIP_posXpath
+#monitor add internal port
+monitorRulePage_addInternalPort_posXpath = policyRulePage_addInternalPort_posXpath
+monitorRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
+monitorRulePage_selectInternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
+monitorRulePage_closeInternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
+#monitor add dst port
+monitorRulePage_addDstPort_posXpath = policyRulePage_addDstPort_posXpath
+monitorRulePage_searchDstPort_posXpath = policyRulePage_searchDstPort_posXpath
+monitorRulePage_selectDstPort_posXpath = policyRulePage_selectDstPort_posXpath
+monitorRulePage_closeDstPort_posXpath = policyRulePage_closeDstPort_posXpath
+#monitor add external port
+monitorRulePage_addExternalPort_posXpath = policyRulePage_addExternalPort_posXpath
+monitorRulePage_searchExternalPort_posXpath = policyRulePage_searchExternalPort_posXpath
+monitorRulePage_selectExternalPort_posXpath = policyRulePage_selectExternalPort_posXpath
+monitorRulePage_closeExternalPort_posXpath = policyRulePage_closeExternalPort_posXpath
+#monitor add external ip
+monitorRulePage_addExternalIP_posXpath = policyRulePage_addExternalIP_posXpath
+monitorRulePage_searchExternalIP_posXpath = policyRulePage_searchExternalIP_posXpath
+monitorRulePage_selectExternalIP_posXpath = policyRulePage_selectExternalIP_posXpath
+monitorRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
+#monitor add server fqdn
+monitorRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
+#monitor add ....
+monitorRulePage_addCondition_imsi_posXpath = policyRulePage_addConditionImsi_posXpath
+monitorRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
+monitorRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
+monitorRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
+monitorRulePage_addCondition_requestBody_posXpath = policyRulePage_addCondition_requestBody_posXpath
+monitorRulePage_addCondition_responseBody_posXpath = policyRulePage_addCondition_responseBody_posXpath
+monitorRulePage_addCondition_responseHeader_posXpath = policyRulePage_addCondition_responseHeader_posXpath
+monitorRulePage_addCondition_srcPort_posXpath = policyRulePage_addCondition_srcPort_posXpath
+monitorRulePage_addCondition_dstPort_posXpath = policyRulePage_addCondition_dstPort_posXpath
+monitorRulePage_addCondition_externalPort_posXpath = policyRulePage_addCondition_externalPort_posXpath
+monitorRulePage_addCondition_internalIP_posXpath = policyRulePage_addCondition_internalIP_posXpath
+monitorRulePage_addCondition_externalIP_posXpath = policyRulePage_addCondition_externalIP_posXpath
+monitorRulePage_addCondition_internalPort_posXpath = policyRulePage_addCondition_internalPort_posXpath
+monitorRulePage_addCondition_ftpAccount_posXpath = policyRulePage_addCondition_ftpAccount_posXpath
+monitorRulePage_addCondition_ftpContent_posXpath = policyRulePage_addCondition_ftpContent_posXpath
+monitorRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
+#monitor_add server fqdn
+monitorRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
+monitorRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
+monitorRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
+monitorRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
+#monitor add url
+monitorRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
+monitorRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
+monitorRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
+monitorRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
+#monitor add requset header
+monitorRulePage_addRequestHeader_posXpath = policyRulePage_addRequestHeader_posXpath
+monitorRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
+monitorRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
+monitorRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
+#monitor add imsi
+monitorRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
+monitorRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
+monitorRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
+monitorRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
+#monitor add ftp account
+monitorRulePage_addftpAccount_posXpath = policyRulePage_addFtpAccount_posXpath
+monitorRulePage_searchftpAccount_posXpath = policyRulePage_searchFtpAccount_posXpath
+monitorRulePage_selectftpAccount_posXpath = policyRulePage_selectFtpAccount_posXpath
+monitorRulePage_closeftpAccount_posXpath = policyRulePage_closeFtpAccount_posXpath
+#monitor add  ftp content
+monitorRulePage_addftpContent_posXpath = policyRulePage_addFtpContent_posXpath
+monitorRulePage_searchftpContent_posXpath = policyRulePage_searchFtpContent_posXpath
+monitorRulePage_selectftpContent_posXpath = policyRulePage_selectFtpContent_posXpath
+monitorRulePage_closeftpContent_posXpath = policyRulePage_closeFtpContent_posXpath
+#monitor add  phone number
+monitorRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath
 
 
 
