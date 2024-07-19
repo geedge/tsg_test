@@ -131,9 +131,9 @@ def run(parameter):
                       ]
                 }]
             },
-            "expected_return": "reset",
+            "expected_return": "",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
