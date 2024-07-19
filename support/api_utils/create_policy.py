@@ -17,8 +17,8 @@ class CreatePolicy():
         create_ip_ids, create_subid_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
         
-        # statistics和sc需要随机ip
-        if test_data["policy_type"] == "statistics" or (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw"):
+        # sc需要随机ip
+        if  (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw"):
             test_data = self.generate_random_ip(test_data, run_env, vsys_id)
         
         # 指定循环次数
@@ -189,6 +189,88 @@ class CreatePolicy():
                         obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
         return config
+
+def generate_testdata(parameter, test_data):
+    # statistics中将ip改为随机
+    config = test_data
+    vsys_id = str(parameter["vsys_id"])
+    run_env = str(parameter["env"])
+    if "obj_condition_1" in config.keys():
+        for obj in config["obj_condition_1"]:
+            if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
+                src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
+                traffic_replace_ip = 0
+                if "default" in src_ip:
+                    traffic_replace_ip = 1
+                    src_ip = "10.64.77.11"
+                if "-" not in src_ip and "/" not in src_ip:
+                    src_ip_list = src_ip.split(".")
+                    if str(vsys_id) == "1":   #根据vsys id，确认IP范围
+                        src_ip_list[2] = str(random.randint(1, 100))
+                    elif str(vsys_id) == "6":   #根据vsys id，确认IP范围
+                        src_ip_list[2] = str(random.randint(200, 222))
+                    else:
+                        src_ip_list[2] = str(random.randint(224, 250))
+                    src_ip_list[3] = str(random.randint(100, 250))
+                    if run_env == "9140":
+                        src_ip_list[0] = "172"
+                        src_ip_list[1] = "56"
+                    elif run_env == "tsgx":
+                        src_ip_list[0] = "10"
+                        src_ip_list[1] = "64"
+                    new_src_ip = ".".join(src_ip_list)
+                    start_ip = new_src_ip
+                    stop_ip = new_src_ip
+                    obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
+                elif "-" in src_ip and "/" not in src_ip:
+                    two_ip_list = src_ip.split("-")
+                    ip_list_1 = two_ip_list[0].split(".")
+                    ip_list_2 = two_ip_list[1].split(".")
+                    if str(vsys_id) == "6":
+                        ip_list_1[2] = str(random.randint(1, 100))
+                    elif str(vsys_id) == "6":
+                        ip_list_1[2] = str(random.randint(200, 222))
+                    else:
+                        ip_list_1[2] = str(random.randint(224, 250))
+                    ip_list_1[3] = str(random.randint(1, 50))
+                    ip_list_2[2] = ip_list_1[2]
+                    ip_list_2[3] = str(int(ip_list_1[3]) + 200)
+                    new_ip_1 = ".".join(ip_list_1)
+                    new_ip_2 = ".".join(ip_list_2)
+                    if run_env == "9140":
+                        ip_list_1[0] = "172"
+                        ip_list_1[1] = "56"
+                        ip_list_2[0] = "172"
+                        ip_list_2[1] = "56"
+                    elif run_env == "tsgx":
+                        ip_list_1[0] = "10"
+                        ip_list_1[1] = "64"
+                        ip_list_2[0] = "10"
+                        ip_list_2[1] = "64"
+                    new_two_ip_list = []
+                    new_two_ip_list.append(new_ip_1)
+                    new_two_ip_list.append(new_ip_2)
+                    start_ip = new_ip_1
+                    stop_ip = new_ip_2
+                    new_two_ip = "-".join(new_two_ip_list)
+                    obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
+                else:
+                    start_ip = stop_ip = "1.1.1.1"
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
+
+                # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
+                if obj["attribute_name"] == "ATTR_SOURCE_IP" and traffic_replace_ip == 1:
+                    config["traffic"]["clients_start_ip"] = start_ip
+                    config["traffic"]["clients_end_ip"] = stop_ip
+                elif obj["attribute_name"] == "ATTR_DESTINATION_IP" and traffic_replace_ip == 1:
+                    config["traffic"]["servers_start_ip"] = start_ip
+                    config["traffic"]["servers_end_ip"] = stop_ip
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
+                    pass
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
+    test_data = config
+    return test_data
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

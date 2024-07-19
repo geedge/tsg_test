@@ -106,6 +106,9 @@ def run(parameter):
             "token": ""
         }
 
+        # 重新改造test_data数据，包括trex使用的随机ip
+        test_data = generate_testdata(parameter, test_data)
+
         # 添加测试过程中涉及的template
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"

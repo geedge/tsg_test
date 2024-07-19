@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "allow_srcip_req_header_user_agent",
+            "rule_name": "allow_srcip_substr_resheader_by_ct",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -70,21 +70,21 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_http_signature",
+                        "name": "manipulation_res_header_http_signature",
                         "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus" : False,
+                        "plus": False,
                         "Statistics": "None",
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
+                                "item_type": "response_header",
+                                "item_key": "Content-Type",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "curl"
+                                    "text/html"
                                 ]
                             }
                         ],
@@ -339,7 +339,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "allow_srcip_req_header_user_agent"
+        "test_case_name": "allow_srcip_substr_resheader_by_ct"
     }
 
     run(parameter)

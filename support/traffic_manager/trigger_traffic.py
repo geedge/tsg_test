@@ -42,6 +42,8 @@ class TriggerTraffic():
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "json loads failed:", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} {} \n{}".format(url, temp_data, response.text), flush=True)
                     jsonData["result"] = response.text
+                if test_data["policy_type"] == "statistics":
+                    jsonData = jsonData["result"]
                 result = jsonData
         else:
             if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw":
