@@ -11,7 +11,7 @@ from support.app_utils.call_airtest import *
 def run(parameter):
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
     # 参数初始化
-    result = ""
+    result, exception_result = "", ""
         
     # 测试数据
     test_data_json = {
