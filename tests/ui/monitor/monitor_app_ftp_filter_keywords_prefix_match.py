@@ -129,7 +129,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_rule_ftp_content"
+                "name": test_data["rule_name"]
             },
             {
                 "type": "ip",
