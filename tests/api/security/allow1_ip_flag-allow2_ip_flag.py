@@ -96,7 +96,7 @@ def run(parameter):
           "expected_return": "百度一下",
           "counters_1": {"hits": 0},
           "counters_2": {},
-          "log_query_param_1": [],
+          "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
           "log_query_param_2": [],
           "traffic": {
                     "protocol": "ssl",

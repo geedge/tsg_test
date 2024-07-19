@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_ftp_drop_uri",
+            "rule_name": "secy_deny_intip_ftp_drop_substr_uri",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -51,7 +51,7 @@ def run(parameter):
                 "destination_port": [],
                 "internal_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "secy_intip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -84,7 +84,7 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "security_ftp_url",
+                        "name": "secy_ftp_url",
                         "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
@@ -129,11 +129,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_ftp_drop_uri"
+                "name": "secy_deny_intip_ftp_drop_substr_uri"
             },
             {
                 "type": "ip",
-                "name": "security_internal_ip"
+                "name": "secy_intip"
+            },
+            {
+                "type": "url",
+                "name": "secy_ftp_url"
             }
         ]
         

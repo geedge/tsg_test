@@ -41,13 +41,19 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_source_ip_ssl_no_sni_false_drop_rst",
-            "rule_action": "deny",
+            "rule_name": "secy_allow_extip_http",
+            "rule_action": "allow",
             "rule_type": "create",
             "condition": {
-                "source_ip": [
+                "source_ip": [],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [
                     {
-                        "name": "security_source_ip",
+                        "name": "secy_extip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -55,17 +61,11 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter['test_pc_ip'],
+                                "item_value": "93.184.215.14",
                             }
                         ]
                     }
                 ],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [],
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
@@ -76,38 +76,25 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "ssl", #
+                        "name": "http", #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
                 "server_fqdn": [],
-                "protocol_filed": [
-                        {
-                            "name": "False",  #
-                            "object_type": "boolean",
-                            "boolean_type": "NO SNI"
-                        }
-                ],
+                "protocol_filed": [],
                 "sub_action_override": True,
-                "sub_action": [
-                    {
-                        "type": "drop",
-                        "drop_packet": 0,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
-                    }
-                ],
+                "sub_action": [],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "SSL_ERROR_SYSCALL",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"server_port", "query_value": 1443}],
+            "expected_return": "Example Domain",
+            "counters": {"hits": "many"},
+            "log_query_param": [{"query_field_key":"server_fqdn", "query_value": "www.example.com"}],
             "traffic": {
-                "protocol": "ssl",
+                "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 https://open.node.com:1443"
+                "command": "curl -kv --connect-timeout 10 -m 10 http://www.example.com/"
             },
             "token": ""
         }
@@ -120,14 +107,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_source_ip_ssl_no_sni_false_drop_rst"
+                "name": "secy_allow_extip_http"
             },
             {
                 "type": "ip",
-                "name": "security_source_ip"
+                "name": "secy_extip"
             }
         ]
         
+        # 添加定位库集合
         test_rule_element_position = {}
         if test_data["policy_type"] == "security":
             test_ip_object_element_position = {
@@ -173,11 +161,12 @@ def run(parameter):
                 "create": {
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                    "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
-                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
-                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
-                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
+                    "policyRulePage_selectAction_posId": securityRulePage_selectAllow_posId,
+                    "policyRulePage_addConditionExternalIP_posXpath": securityRulePage_addCondition_externalIP_posXpath,
+                    "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
+                    "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
+                    "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
+                    "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -186,13 +175,10 @@ def run(parameter):
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
                     "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    #add ssl no sni
-                    "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
-                    "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
-                    "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
-                    "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
-                    "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
-                    "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
+                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
+                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
+                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
+                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
@@ -219,19 +205,19 @@ def run(parameter):
             }
         
         # 创建object
-        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
-            ip_data = test_data["condition"]["source_ip"]
-            create_ip = CreateObject(driver)
+        if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
+            ip_data = test_data["condition"]["external_ip"]
+            create_port = CreateObject(driver)
             for i in range(len(ip_data)):
-                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
-                if create_ip_code == 200:
+                create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
+                if create_port_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
-                elif create_ip_code != 200:
+                elif create_port_code != 200:
                     result = "Fail to create ip."
                     break
         
         # 创建rule
-        if create_ip_code == 200:
+        if create_port_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -294,6 +280,8 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
         
+                # 脚本结束时间和耗时
+        
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -329,12 +317,13 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.93",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

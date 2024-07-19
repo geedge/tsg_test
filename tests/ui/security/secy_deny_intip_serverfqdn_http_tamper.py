@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_server_fqdn_http_tamper",
+            "rule_name": "secy_deny_intip_serverfqdn_http_tamper",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -51,7 +51,7 @@ def run(parameter):
                 "destination_port": [],
                 "internal_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "secy_intip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -83,7 +83,7 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "test_node",
+                        "name": "secy_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -124,15 +124,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_server_fqdn_http_tamper"
+                "name": "secy_deny_intip_serverfqdn_http_tamper"
             },
             {
                 "type": "ip",
-                "name": "security_internal_ip"
+                "name": "secy_intip"
             },
             {
                 "type": "fqdn",
-                "name": "test_node"
+                "name": "secy_fqdn"
             }
         ]
         
