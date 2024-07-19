@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
 from support.api_utils.create_policy import *
-from support.traffic_manager.traffic_verification import *
+from support.traffic_manager.api_verification import *
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.report import *
@@ -116,6 +116,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.yumi.com"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "wget",
                 "command": "curl -kv https://www.yumi.com"
             },
@@ -139,8 +140,8 @@ def run(parameter):
         cfg_list = create.create_policy(parameter, test_data, template_path)
         
         # 流量验证
-        verify = TrafficVerification()
-        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
+        verify = ApiVerification()
+        verification_result = verify.api_verification("", parameter, test_data, cfg_list)
         
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()

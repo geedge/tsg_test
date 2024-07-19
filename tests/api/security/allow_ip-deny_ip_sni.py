@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
 from support.api_utils.create_policy import *
-from support.traffic_manager.traffic_verification import *
+from support.traffic_manager.api_verification import *
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.report import *
@@ -19,77 +19,78 @@ def run(parameter):
         start_time = time.time()
         # 测试数据
         test_data = {
-          "is_multi_priority": True,
-          "rule_num": 2,
-          "policy_type": "security",
-          "rule_action_1": "allow",
-          "rule_action_2": "deny",
-          "method_2": "drop",
-          "do_log_1": 2,
-          "do_log_2": 2,
-          "obj_condition_1": [
-            {
-              "attribute_name": "ATTR_SOURCE_IP",
-              "object_type": "ip",
-              "object_sub_type": "ip",
-              "object_list": [
+            "is_multi_priority": True,
+            "rule_num": 2,
+            "policy_type": "security",
+            "rule_action_1": "allow",
+            "rule_action_2": "deny",
+            "method_2": "drop",
+            "do_log_1": 2,
+            "do_log_2": 2,
+            "obj_condition_1": [
                 {
-                  "add_item_list": [
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
                     {
-                      "ip_address": "default",
-                      "port_range": "0-65535"
+                    "add_item_list": [
+                        {
+                        "ip_address": "default",
+                        "port_range": "0-65535"
+                        }
+                    ]
                     }
-                  ]
+                ]
                 }
-              ]
-            }
-          ],
-          "obj_condition_2": [
-            {
-              "attribute_name": "ATTR_SOURCE_IP",
-              "object_type": "ip",
-              "object_sub_type": "ip",
-              "object_list": [
+            ],
+            "obj_condition_2": [
                 {
-                  "add_item_list": [
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
                     {
-                      "ip_address": "default",
-                      "port_range": "0-65535"
+                    "add_item_list": [
+                        {
+                        "ip_address": "default",
+                        "port_range": "0-65535"
+                        }
+                    ]
                     }
-                  ]
-                }
-              ]
-            },
-            {
-              "attribute_name": "ATTR_SERVER_FQDN",
-              "object_type": "fqdn",
-              "object_sub_type": "fqdn",
-              "object_list": [
+                ]
+                },
                 {
-                  "add_item_list": [
+                "attribute_name": "ATTR_SERVER_FQDN",
+                "object_type": "fqdn",
+                "object_sub_type": "fqdn",
+                "object_list": [
                     {
-                      "keyword_array": [
-                        "www.baidu.com"
-                      ]
+                    "add_item_list": [
+                        {
+                        "keyword_array": [
+                            "www.baidu.com"
+                        ]
+                        }
+                    ]
                     }
-                  ]
+                ]
                 }
-              ]
-            }
-          ],
-          "app_name_1": [],
-          "app_name_2": ["ssl"],
-          "expected_return": "百度一下",
-          "counters_1": {"hits": "many"},
-          "counters_2": {"hits": 0},
-          "log_query_param_1": [],
-          "log_query_param_2": [],
-          "traffic": {
+            ],
+            "app_name_1": [],
+            "app_name_2": ["ssl"],
+            "expected_return": "百度一下",
+            "counters_1": {"hits": "many"},
+            "counters_2": {"hits": 0},
+            "log_query_param_1": [],
+            "log_query_param_2": [],
+            "traffic": {
+                    "protocol": "ssl",
                     "type": "curl",
                     "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-                },
-          "token": ""
-        }
+            },
+            "token": ""
+            }
         
         # 添加测试过程中涉及的template
         template_path = {}
@@ -107,8 +108,8 @@ def run(parameter):
         cfg_list = create.create_policy(parameter, test_data, template_path)
         
         # 流量验证
-        verify = TrafficVerification()
-        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
+        verify = ApiVerification()
+        verification_result = verify.api_verification("", parameter, test_data, cfg_list)
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "verification result: ", verification_result, flush=True)
         
         # 分析验证结果，并返回给flask

@@ -17,7 +17,7 @@ from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.element_position.profile_element_position import *
-from support.traffic_manager.traffic_verification import *
+from support.traffic_manager.verification import Verification
 from support.api_utils.analysis_result import *
 import support.ui_utils.env
 from support.api_utils.log_in import *
@@ -139,15 +139,16 @@ def run(parameter):
                 }
             ],
             "traffic":{
-                    "type": "trex",
-                    "clients_start_ip": "192.168.64.86",
-                    "clients_end_ip": "192.168.64.86",
-                    "servers_start_ip": "2.1.1.1",
-                    "servers_end_ip": "2.1.1.2",
-                    "m": 1,
-                    "d": 1,
-                    "yaml_name": "test_https",
-                    "pcap_name": "test_https"
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "192.168.64.86",
+                "clients_end_ip": "192.168.64.86",
+                "servers_start_ip": "2.1.1.1",
+                "servers_end_ip": "2.1.1.2",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "test_https"
                 },
             "expected_return":"",
             "token": ""
@@ -438,8 +439,8 @@ def run(parameter):
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
-                verify = TrafficVerification()
-                verification_result = verify.traffic_verification(driver, parameter, test_data, sc_info)
+                verify = Verification()
+                verification_result = verify.verification(driver, parameter, test_data, sc_info, test_rule_element_position)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:

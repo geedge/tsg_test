@@ -13,7 +13,7 @@ from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
-from support.traffic_manager.traffic_verification import *
+from support.traffic_manager.verification import Verification
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
@@ -92,6 +92,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"decoded_as", "query_value": "MAIL"}],
             "traffic": {
+                "protocol": "mail",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_manager/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
             },
@@ -231,8 +232,8 @@ def run(parameter):
             if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
-                verify = TrafficVerification()
-                verification_result = verify.traffic_verification(driver, parameter, test_data, [])
+                verify = Verification()
+                verification_result = verify.verification(driver, parameter, test_data, [], test_rule_element_position)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:

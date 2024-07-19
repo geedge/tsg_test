@@ -8,6 +8,7 @@ class AnalysisResult():
         cmd_result = verification_result[0]
         log_result = verification_result[1]
         metric_result = verification_result[2]
+        fail_reason_template = "The verification result of policy effect is failed, the failure reasons are: "
         failure_reason = ""
         if condition["policy_type"] == "statistics" and len(verification_result) == 5:
             failure_reason = verification_result[3]
@@ -15,46 +16,24 @@ class AnalysisResult():
             if cmd_result == False or log_result == False or metric_result == False:
                 failure_reason = failure_reason + "The verification result of metrics is failed, the failure reason is: the metrics do not match the expectation value."
         elif condition["policy_type"] == "security" or condition["policy_type"] == "monitor" or condition["policy_type"] == "pxy_manipulation":
-            if cmd_result == False and log_result == True and metric_result == True and timeout_result == True:
-                failure_reason = failure_reason + "The verification result of policy effect is failed, the failure reason is: the contents returned by the command do not contain the expected value."
-            elif cmd_result == False and log_result == None and metric_result == None and timeout_result == True:
-                failure_reason = failure_reason + "The verification result of policy effect is failed, the failure reason are: the contents returned by the command do not contain the expected value, the metrics do not match the expectation value, the expected value is not queried in the logs"
-            elif cmd_result == True and log_result == None and metric_result == None and timeout_result == True:
-                failure_reason = failure_reason + "The verification result of policy effect is failed, the failure reason are: the metrics do not match the expectation value, the expected value is not queried in the logs"    
-            elif cmd_result == False and log_result == True and metric_result == True and timeout_result == False:
-                failure_reason = failure_reason + "The verification result of policy effect and creating time are failed, the failure reason is: the contents returned by the command do not contain the expected value, the creating time is over 60s"
-            elif cmd_result == False and log_result == False and metric_result == True and timeout_result == True:
-                failure_reason = failure_reason + "The verification results of policy effect and logs are failed, the failure reasons are: the contents returned by the command do not contain the expected value; the expected value is not queried in the logs."
-            elif cmd_result == False and log_result == False and metric_result == True and timeout_result == False:
-                failure_reason = failure_reason + "The verification results of policy effect, logs and creating time are failed, the failure reasons are: the contents returned by the command do not contain the expected value; the expected value is not queried in the logs, the creating time is over 60s"
-            elif cmd_result == False and log_result == True and metric_result == False and timeout_result == True:
-                failure_reason = failure_reason + "The verification results of policy effect and metrics are failed, the failure reasons are: the contents returned by the command did not contain the expected value; the metrics do not match the expectation value."
-            elif cmd_result == False and log_result == True and metric_result == False and timeout_result == False:
-                failure_reason = failure_reason + "The verification results of policy effect, metrics and creating time are failed, the failure reasons are: the contents returned by the command did not contain the expected value; the metrics do not match the expectation value, the creating time is over 60s"
-            elif cmd_result == True and log_result == False and metric_result == True and timeout_result == True:
-                failure_reason = failure_reason + "The verification result of logs is failed, the failure reason is: the expected value is not queried in the logs."
-            elif cmd_result == True and log_result == False and metric_result == True and timeout_result == False:
-                failure_reason = failure_reason + "The verification result of logs and creating time are failed, the failure reasons are: the expected value is not queried in the logs, the creating time is over 60s"
-            elif cmd_result == True and log_result == True and metric_result == False and timeout_result == True:
-                failure_reason = failure_reason + "The verification result of metrics is failed, the failure reason is: the metrics do not match the expectation value."
-            elif cmd_result == True and log_result == True and metric_result == False and timeout_result == False:
-                failure_reason = failure_reason + "The verification result of metrics and creating time are failed, the failure reasos are: the metrics do not match the expectation value, the creating time is over 60s"
-            elif cmd_result == True and log_result == True and metric_result == True and timeout_result == False:
-                failure_reason = failure_reason + "The verification result of creating time is failed, the failure reason is: the creating time is over 60s."
-            elif cmd_result == True and log_result == False and metric_result == False and timeout_result == True:
-                failure_reason = failure_reason + "The verification results of logs and metrics are failed, the failure reasons are: the expected value is not queried in the logs; the metrics do not match the expectation value."
-            elif cmd_result == True and log_result == False and metric_result == False and timeout_result == False:
-                failure_reason = failure_reason + "The verification results of logs, metrics and creating time are failed, the failure reasons are: the expected value is not queried in the logs; the metrics do not match the expectation value, the creating time is over 60s"
-            elif cmd_result == False and log_result == False and metric_result == False and timeout_result == True:
-                failure_reason = failure_reason + "The verification results of effect, logs and metrics are failed, the failure reasons are: the contents returned by the command do not contain the expected value; the expected value is not queried in the logs; the metrics do not match the expectation value."
-            elif cmd_result == False and log_result == False and metric_result == False and timeout_result == False:
-                failure_reason = failure_reason + "The verification results of effect, logs, metrics  and creating time are failed, the failure reasons are: the contents returned by the command do not contain the expected value; the expected value is not queried in the logs; the metrics do not match the expectation value, the creating time is over 60s"
-            elif cmd_result == True and log_result == True and metric_result == None and timeout_result == False or cmd_result == True and log_result == None and metric_result == True and timeout_result == False or cmd_result == True and log_result == None and metric_result == None and timeout_result == False:
-                failure_reason = failure_reason + "The verification result of creating time are failed, the failure reasos are: the creating time is over 60s"
-            elif cmd_result == False and log_result == True and metric_result == None and timeout_result == True or cmd_result == False and log_result == None and metric_result == True and timeout_result == True or cmd_result == False and log_result == None and metric_result == None and timeout_result == True:
-                failure_reason = failure_reason + "The verification result of policy effect is failed, the failure reason is: the contents returned by the command do not contain the expected value."
-            elif cmd_result == False and log_result == True and metric_result == None and timeout_result == False or cmd_result == False and log_result == None and metric_result == True and timeout_result == False or cmd_result == False and log_result == None and metric_result == None and timeout_result == False:
-                failure_reason = failure_reason + "The verification result of policy effect and creating time are failed, the failure reason is: the contents returned by the command do not contain the expected value, the creating time is over 60s"
+            if cmd_result == False:
+                failure_reason = failure_reason + "the contents returned by the command do not contain the expected value, "
+            if metric_result == False:
+                failure_reason = failure_reason + "the metrics do not match the expectation value, "
+            if metric_result == None:
+                failure_reason = failure_reason + "the metrics query result is empty, "
+            if log_result == False:
+                failure_reason = failure_reason + "the expected value is not queried in the logs, "
+            if log_result == None:
+                failure_reason = failure_reason + "the log query result is empty, "
+            if timeout_result == False:
+                failure_reason = failure_reason + "the creating time is over 60s, "
+            if len(failure_reason) != 0:
+                failure_reason = fail_reason_template + failure_reason
+                # 把最后一个逗号改成句号
+                failure_reason = failure_reason[:failure_reason.rindex(',')] + '.' + failure_reason[failure_reason.rindex(',')+1:]
+
+        
         return failure_reason
 
 if __name__ == "__main__":

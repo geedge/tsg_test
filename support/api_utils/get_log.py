@@ -165,7 +165,7 @@ class GetLog():
             return metric_result
 
     def get_livechart_statistics(self, token, start_time, end_time, statistics_info, statistics_metircs_except,
-                                 trex_ip_info, test_data, host_api, vsys_id, alignment_period="PT1S"):
+                                 trex_ip_info, test_data, host_api, vsys_id, script_type, alignment_period="PT1S"):
         """
         :param token:
         :param start_time:
@@ -220,23 +220,18 @@ class GetLog():
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
                 # 对应session方式和fqdn category需要另行处理
-                try:
+                if script_type == "api":
                     metrics_columns = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0][
                         "source_columns"].lower()
                     dimension_columns = \
                     test_data["profile_condition_1"][0]["chart_list"][0]["dimensions"][0]["source_columns"][0].lower()
-                except:
-                    dimension_columns = "no_dimensions"
-                if dimension_columns == "no_dimensions":
-                    # API和UI因数据格式不一致，所以API方式获取不到按UI方式获取
-                    try:
-                        metrics_columns = \
-                        test_data["action_parameter"]["statistics_template"][0]["charts"][0]["metrics"][0].split(":")[0].lower()
-                        dimension_columns = \
-                        test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
-                    except Exception as e:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
-                        dimension_columns = "no_dimensions"
+                elif script_type == "ui":
+                    metrics_columns = \
+                    test_data["action_parameter"]["statistics_template"][0]["charts"][0]["metrics"][0].split(":")[0].lower()
+                    
+                    dimension_columns = \
+                    test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
+                # api返回值为空，不判断方向，直接返回重新查找
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
                     return [333, "this is a pass"]
                 else:
