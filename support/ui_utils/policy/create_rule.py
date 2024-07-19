@@ -150,8 +150,25 @@ class CreateRule():
                         time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
-                    elif device_data[t]["object_type"] == "imei":
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+                    elif device_data[t]['item'][0]["item_type"] ==  "imei":
+                        # 点add condition的+
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        # 都属于device，所以调用imsi的定位即可
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                        # 点device的+
+                        temp_element_position = create_element_position["policyRulePage_addImsi_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 选中phone number
+                        temp_element_position = create_element_position["policyRulePage_chooseImei_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 通过phone number搜索并选中(与imsi共用)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(device_data[t]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"]).send_keys(Keys.ENTER)
+                        time.sleep(3)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
+
                     elif device_data[t]["object_type"] == "apn":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
 
@@ -225,12 +242,21 @@ class CreateRule():
             if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
                 protocol_field_datas = test_data["condition"]["protocol_filed"]
                 tmp_protocol_field_data_split_by_type = []   # 将 protocol_filed 分类临时存储
-                tmp_url, tmp_request_header, tmp_response_header, tmp_request_body, tmp_response_body, tmp_ftp_account, tmp_ftp_content = [], [], [], [], [], [], []
+                tmp_url, tmp_request_header, tmp_response_header, tmp_request_body, tmp_response_body, tmp_ftp_account, tmp_ftp_content, tmp_cn, tmp_san, tmp_qname = [], [], [], [], [], [], [], [], [], []
                 tmp_boolean= []
                 for _ in range(len(protocol_field_datas)):   # 将 rul、request_header等数据分类处理
                     tmp_item = protocol_field_datas[_]
                     if tmp_item["object_type"] == "url":
                         tmp_url.append(tmp_item)
+                    elif tmp_item["object_type"] == "fqdn":
+                        if tmp_item["items"][0]["item_type"] == "cn":
+                            tmp_cn.append(tmp_item)
+                        elif tmp_item["items"][0]["item_type"] == "san":
+                            tmp_san.append(tmp_item)
+                        elif tmp_item["items"][0]["item_type"] == "qname":
+                            tmp_qname.append(tmp_item)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
                     elif tmp_item["object_type"] == "http_signature":
                         if tmp_item["item"][0]["item_type"] == "request_header":
                             tmp_request_header.append(tmp_item)
@@ -260,6 +286,9 @@ class CreateRule():
                 if len(tmp_ftp_account) > 0: tmp_protocol_field_data_split_by_type.append(tmp_ftp_account)
                 if len(tmp_ftp_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_ftp_content)
                 if len(tmp_boolean) > 0: tmp_protocol_field_data_split_by_type.append(tmp_boolean)
+                if len(tmp_cn) > 0: tmp_protocol_field_data_split_by_type.append(tmp_cn)
+                if len(tmp_san) > 0: tmp_protocol_field_data_split_by_type.append(tmp_san)
+                if len(tmp_qname) > 0: tmp_protocol_field_data_split_by_type.append(tmp_qname)
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], tmp_protocol_field_data_split_by_type)
                 for protocol_field_data in tmp_protocol_field_data_split_by_type:
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], protocol_field_data)
@@ -267,6 +296,16 @@ class CreateRule():
                         temp = x + 1
                         if protocol_field_data[x]["object_type"] == "url":
                             self.add_protocol_field(protocol_field_data, "Url", create_element_position, temp)
+                        elif protocol_field_data[x]["object_type"] == "fqdn":
+                            for item_dict in protocol_field_data[x]["items"]:
+                                if item_dict["item_type"] == "cn":
+                                    self.add_protocol_field(protocol_field_data, "Cn", create_element_position, temp)
+                                elif item_dict["item_type"] == "san":
+                                    self.add_protocol_field(protocol_field_data, "San", create_element_position, temp)
+                                elif item_dict["item_type"] == "qname":
+                                    self.add_protocol_field(protocol_field_data, "Qname", create_element_position, temp)
+                                else:
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == "http_signature":
                             for item_dict in protocol_field_data[x]["item"]:
                                 if item_dict["item_type"] == "request_header":

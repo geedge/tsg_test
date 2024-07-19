@@ -67,6 +67,9 @@ policyRulePage_closeImsi_posXpath = "//div[@class='SourceList list-box']//button
 # phone number
 policyRulePage_choosePhoneNumber_posXpath = "//*[@id='tab-phone_number' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'Phone Number')]"
 
+# imei
+policyRulePage_chooseImei_posXpath = "//*[@id='tab-imei' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'IMEI')]"
+
 policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
@@ -88,6 +91,9 @@ policyRulePage_addCondition_Boolean_posXpath = "//div[@class='SourceList list-bo
 policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
 policyRulePage_addCondition_ftpAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
 policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Content']"
+policyRulePage_addCondition_cn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='CN']"
+policyRulePage_addCondition_san_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='SAN']"
+policyRulePage_addCondition_qname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='QNAME']"
 
 policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -105,6 +111,22 @@ policyRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect Destinatio
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
 policyRulePage_selectServerFqdn_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeServerFqdn_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+# cn
+policyRulePage_addCn_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='CN']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchCn_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectCn_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeCn_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+# san
+policyRulePage_addSan_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='SAN']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchSan_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectSan_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeSan_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+# qname
+policyRulePage_addQname_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='QNAME']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchQname_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectQname_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeQname_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 policyRulePage_addUrl_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchUrl_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -208,6 +230,9 @@ securityRulePage_addCondition_externalIP_posXpath = policyRulePage_addCondition_
 securityRulePage_addCondition_internalPort_posXpath = policyRulePage_addCondition_internalPort_posXpath
 securityRulePage_addCondition_ftpAccount_posXpath = policyRulePage_addCondition_ftpAccount_posXpath
 securityRulePage_addCondition_ftpContent_posXpath = policyRulePage_addCondition_ftpContent_posXpath
+securityRulePage_addCondition_cn_posXpath = policyRulePage_addCondition_cn_posXpath
+securityRulePage_addCondition_san_posXpath = policyRulePage_addCondition_san_posXpath
+securityRulePage_addCondition_qname_posXpath = policyRulePage_addCondition_qname_posXpath
 securityRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
  
 
@@ -215,6 +240,21 @@ securityRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
 securityRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
 securityRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
 securityRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
+
+securityRulePage_addCn_posXpath = policyRulePage_addCn_posXpath
+securityRulePage_searchCn_posXpath = policyRulePage_searchCn_posXpath
+securityRulePage_selectCn_posXpath = policyRulePage_selectCn_posXpath
+securityRulePage_closeCn_posXpath = policyRulePage_closeCn_posXpath
+
+securityRulePage_addSan_posXpath = policyRulePage_addSan_posXpath
+securityRulePage_searchSan_posXpath = policyRulePage_searchSan_posXpath
+securityRulePage_selectSan_posXpath = policyRulePage_selectSan_posXpath
+securityRulePage_closeSan_posXpath = policyRulePage_closeSan_posXpath
+
+securityRulePage_addQname_posXpath = policyRulePage_addQname_posXpath
+securityRulePage_searchQname_posXpath = policyRulePage_searchQname_posXpath
+securityRulePage_selectQname_posXpath = policyRulePage_selectQname_posXpath
+securityRulePage_closeQname_posXpath = policyRulePage_closeQname_posXpath
 
 securityRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
 securityRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
@@ -244,6 +284,9 @@ securityRulePage_closeftpContent_posXpath = policyRulePage_closeFtpContent_posXp
 
 #phone number 
 securityRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath
+
+#phone number 
+securityRulePage_chooseImei_posXpath = policyRulePage_chooseImei_posXpath
 
 securityRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 securityRulePage_okButton_yes_posId = "OK-_SecurityAdd_Home_App_anonymousComponent"

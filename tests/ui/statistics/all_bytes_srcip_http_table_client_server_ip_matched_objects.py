@@ -11,7 +11,8 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
-from support.traffic_manager.traffic_verification import *
+from support.ui_utils.policy.edit_rule import EditRule
+from support.traffic_manager.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -136,7 +137,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
-                "protocol": "http",
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "10.64.224.31",
                 "clients_end_ip": "10.64.224.31",
@@ -260,8 +261,8 @@ def run(parameter):
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
-                verify = TrafficVerification()
-                verification_result = verify.traffic_verification(driver, parameter, test_data, cfg_list)
+                verify = Verification()
+                verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:

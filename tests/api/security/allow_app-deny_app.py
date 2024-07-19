@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
 from support.api_utils.create_policy import *
-from support.traffic_manager.traffic_verification import *
+from support.traffic_manager.api_verification import *
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.report import *
@@ -37,8 +37,9 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
             "log_query_param_2": [],
             "traffic": {
-                    "type": "curl",
-                    "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                "protocol": "ssl",
+                "type": "curl",
+                "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
                 },
             "token": ""
         }
@@ -59,8 +60,8 @@ def run(parameter):
         cfg_list = create.create_policy(parameter, test_data, template_path)
         
         # 流量验证
-        verify = TrafficVerification()
-        verification_result = verify.traffic_verification("", parameter, test_data, cfg_list)
+        verify = ApiVerification()
+        verification_result = verify.api_verification("", parameter, test_data, cfg_list)
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "verification result: ", verification_result, flush=True)
         
         # 分析验证结果，并返回给flask
@@ -105,18 +106,19 @@ def run(parameter):
       
 if __name__ == "__main__":
     parameter = {
-      "script_type": "api",
-      "username": "hebingning",
-      "password": "hbn66AAA",
-      "test_pc_ip": "192.168.64.88",
-      "api_server": "http://192.168.44.72",
-      "test_subcriber_id": "test6488",
-      "is_log": 1,
-      "env": "tsgx",
-      "vsys_id": 6,
-      "root_path": "D:/python_script/tsg_test",
-      "path": "D:/python_script/tsg_test/tests/api",
-      "module_name": "security",
-      "test_case_name": "allow_app-deny_app"
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.88",
+        "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6488",
+        "script_type": "api",
+        "debug_flag": "local",
+        "env": "tsgx",
+        "vsys_id": 1,
+        "is_log": 1,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
+        "module_name": "security",
+        "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }
     run(parameter)
