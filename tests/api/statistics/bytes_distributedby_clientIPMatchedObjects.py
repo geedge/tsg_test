@@ -97,6 +97,7 @@ def run(parameter):
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],
             "traffic": {
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "192.168.64.86",
                 "clients_end_ip": "192.168.64.86",
