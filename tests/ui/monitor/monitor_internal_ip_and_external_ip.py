@@ -99,7 +99,7 @@ def run(parameter):
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"}],
             "traffic": {
                 "type": "wget",
-                "command": "wget -q -O- --debug https://www.example.com/"
+                "command": "wget -q -O- --debug http://www.example.com/"
             },
         }
         log_in = LogIn()
