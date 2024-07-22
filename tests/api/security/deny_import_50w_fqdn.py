@@ -24,7 +24,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_action_1": "allow",
+            "rule_action_1": "deny",
+            "method_1": "drop",
             "do_log_1": 2,
             "obj_condition_1": [
                 {
@@ -46,9 +47,9 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["http"],
-            "expected_return": "POST",
-            "counters_1": {"hits": 0},
-            "log_query_param_1": [],
+            "expected_return": "reset",
+            "counters_1": {"hits": 1},
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",

@@ -100,7 +100,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 5 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl --connect-timeout 25 -m 25 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },
             "token": ""
         }
