@@ -26,13 +26,13 @@ class DnsPlayer():
             result = [str(rdata) for rdata in answers]  
             return result  
         except dns.resolver.NXDOMAIN:
-            return "域名不存在"
+            return "Domain name does not exist."
         except dns.resolver.NoAnswer:
-            return "没有找到记录"
+            return "No record found."
         except dns.resolver.NoNameservers:
-            return "无法找到DNS服务器"
+            return "The DNS server cannot be found."
         except Exception as e:
-            return f"查询出错: {e}"
+            return f"Exception: {e}"
     
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
