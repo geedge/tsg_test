@@ -133,6 +133,7 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
+        exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         return "Error: " + str(e)
     finally:
@@ -151,7 +152,20 @@ def run(parameter):
                 result_flag = "Pass"
             report_data.append(result_flag)
             report_data.append(result)
+            elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
+                report_data = []
+                report_data.append("test_case_name")
+                result_flag = "Fail"
+                report_data.append(result_flag)
+                report_data.append(exception_result)
+            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
+                report_data = []
+                report_data.append("test_case_name")
+                result_flag = "Pass"
+                report_data.append(result_flag)
+                report_data.append("")
             new_report = GenerateReport()
+            new_report.insert_data(parameter, report_data)            new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
       
 if __name__ == "__main__":
