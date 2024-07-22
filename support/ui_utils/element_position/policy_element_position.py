@@ -94,6 +94,12 @@ policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='SourceList list
 policyRulePage_addCondition_cn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='CN']"
 policyRulePage_addCondition_san_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='SAN']"
 policyRulePage_addCondition_qname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='QNAME']"
+policyRulePage_addCondition_mailSubject_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Subject']"
+policyRulePage_addCondition_mailContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Content']"
+policyRulePage_addCondition_mailFrom_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='From']"
+policyRulePage_addCondition_mailTo_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='To']"
+policyRulePage_addCondition_mailAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
+
 
 policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -150,6 +156,27 @@ policyRulePage_addFtpContent_posXpath = "//div[@zs-label='FilterItem']//p[normal
 policyRulePage_searchFtpContent_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
 policyRulePage_selectFtpContent_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeFtpContent_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+#mail from
+policyRulePage_addMailFrom_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='From']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchMailFrom_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectMailFrom_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeMailFrom_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+#mail to
+policyRulePage_addMailTo_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='To']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchMailTo_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectMailTo_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeMailTo_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+#mail account
+policyRulePage_addMailAccount_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Account']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchMailAccount_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectMailAccount_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeMailAccount_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+#mail subject
+policyRulePage_addMailSubject_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Subject']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchMailSubject_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectMailSubject_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeMailSubject_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 # security
 securityRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
@@ -587,6 +614,8 @@ monitorRuleListPage_searchLable_searchButton_posId = "searchQuery"
 monitorRuleListPage_selectRule_posXpath = "//div[contains(@class,'ly-table1')]//tbody//sapn[@class='el-checkbox__inner']"
 monitorRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
 monitorRulelistPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
+monitorRuleListpage_okButton_warningYes_posXpath= "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+monitorRuleListpage_okButton_warningNo_posXpath= "//button[@class='el-button delComponents-close el-button--info el-button--small']"
 #monitor新建页/编辑页面按钮
 monitorRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
 monitorRulePage_mirrorTrafficButton_posXpath ='//*[text()="Mirror Traffic"]/ancestor::div[@class="el-form-item el-form-item--small"]//*[@class="el-switch__core"]'
@@ -602,6 +631,9 @@ monitorRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posX
 monitorRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
 monitorRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
 monitorRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
+monitorRulePage_packetCapture_posXpath = "//form[@class='el-form policy_edit el-form--label-left']//div[17]//span"
+monitorRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labelStyle padding-left20 el-form-item--small']//input[@class='el-input__inner']"
+monitorRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 ##monitor 添加profile的按钮
 monitorRulePage_addVLANIDButton_posXpath = '//*[text()="Add VLAN ID"]/ancestor::div[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//div[@class="el-switch"]'
 monitorRulePage_firstSelectMirrorProfile_posXpath='//*[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//input[@class="el-input__inner"]'
@@ -704,7 +736,7 @@ monitorRulePage_selectftpContent_posXpath = policyRulePage_selectFtpContent_posX
 monitorRulePage_closeftpContent_posXpath = policyRulePage_closeFtpContent_posXpath
 #monitor add  phone number
 monitorRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath
-
+#monitor add mail filter
 
 
 #### statistics
