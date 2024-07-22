@@ -107,7 +107,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 https://www.example.com/"
+                "command": "wget -q -O- --debug https://www.example.com/"
             },
             "token": ""
         }
