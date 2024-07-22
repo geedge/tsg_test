@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_srcip_http_table_c2s_s2c_link_id",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_app_appcategory",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -51,7 +51,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_table_source_ip",
+                        "name": "stats_srcip_http_table_all_bytes_dim_app_appcategory",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -67,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_table_destination_ip",
+                        "name": "stats_dstip_http_table_all_bytes_dim_app_appcategory",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -108,7 +108,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Table Distributed by C2S and S2C Link ID",
+                    "name": "stats_http_table_all_bytes_dim_app_appcategory",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -120,8 +120,8 @@ def run(parameter):
                             "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "c2s_link_id",
-                            "s2c_link_id"
+                            "application",
+                            "fqdn_category"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
@@ -171,18 +171,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_srcip_http_table_c2s_s2c_link_id"
+                "name": "stats_srcip_dstip_http_table_all_bytes_dim_app_appcategory"
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_table_source_ip"
+                "name": "stats_srcip_http_table_all_bytes_dim_app_appcategory"
             },{
                 "type": "ip",
-                "name": "statistics_bytes_table_destination_ip"
+                "name": "stats_dstip_http_table_all_bytes_dim_app_appcategory"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Table Distributed by C2S and S2C Link ID"
+                "name": "stats_http_table_all_bytes_dim_app_appcategory"
             },
         ]
         log_in = LogIn()
@@ -407,7 +407,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_srcip_http_table_c2s_s2c_link_id",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_app_appcategory",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

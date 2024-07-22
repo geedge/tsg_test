@@ -11,10 +11,8 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
-
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.verification import Verification
-
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -44,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_flows_srcip_http_table_client_server_asn",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_link_id",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +51,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_flows_table_source_ip",
+                        "name": "stats_srcip_http_table_all_bytes_dim_c2s_link_id",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_flows_table_destination_ip",
+                        "name": "stats_dstip_http_table_all_bytes_dim_c2s_link_id",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -110,22 +108,22 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Flows Table Distributed by Client and Server ASN",
+                    "name": "stats_http_table_all_bytes_dim_c2s_link_idD",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
+                          "chart_name": "stats_http_table_all_bytes_dim_c2s_link_id",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_c2s_flows:SUM:new c2s flows",
-                            "new_s2c_flows:SUM:new s2c flows"
+                            "in_bytes:SUM:in bytes",
+                            "out_bytes:SUM:out bytes",
+                            "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "client_asn",
-                            "server_asn"
+                            "c2s_link_id"
                           ],
-                          "order_by": "new c2s flows",
-                          "row_limit": "100",
+                          "order_by": "bytes",
+                          "row_limit": "20",
                           "min_in_size": "0",
                           "max_out_size": "0"
                         }
@@ -172,18 +170,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_flows_srcip_http_table_client_server_asn"
+                "name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_link_id"
             },
             {
                 "type": "ip",
-                "name": "statistics_flows_table_source_ip"
+                "name": "stats_srcip_http_table_all_bytes_dim_c2s_link_id"
             },{
                 "type": "ip",
-                "name": "statistics_flows_table_destination_ip"
+                "name": "stats_dstip_http_table_all_bytes_dim_c2s_link_id"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Flows Table Distributed by Client and Server ASN"
+                "name": "stats_http_table_all_bytes_dim_c2s_link_id"
             },
         ]
         log_in = LogIn()
@@ -387,7 +385,7 @@ def run(parameter):
                 if False in verification_result:
                     result_flag = "Fail"
                 else:
-                    result_flag = "Pass"
+                    result_flag = "PASS"
                 report_data.append(result_flag)
                 report_data.append(result)
                 new_report = GenerateReport()
@@ -408,7 +406,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_flows_srcip_http_bar_client_server_asn",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_link_id",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

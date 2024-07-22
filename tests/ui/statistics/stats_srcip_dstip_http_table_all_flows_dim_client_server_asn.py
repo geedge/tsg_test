@@ -11,8 +11,10 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
+
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.verification import Verification
+
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -42,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_srcip_ftp_table_client_server_ip",
+            "rule_name": "stats_srcip_dstip_http_table_all_flows_dim_client_server_asn",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -51,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_table_source_ip",
+                        "name": "stats_srcip_http_table_all_flows_dim_client_server_asn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -59,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.3",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -67,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_table_destination_ip",
+                        "name": "stats_dstip_http_table_all_flows_dim_client_server_asn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -75,7 +77,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.3",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -93,7 +95,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "ftp",  #
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -108,22 +110,21 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Bytes Dimensions Client and Server IP",
+                    "name": "stats_table_all_flows_dim_client_server_asn",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "All Bytes Dimensions Client and Server IP",
+                          "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:incoming bytes",
-                            "out_bytes:SUM:outgoing bytes",
-                            "bytes:BITRATE:all bytes"
+                            "new_c2s_flows:SUM:new c2s flows",
+                            "new_s2c_flows:SUM:new s2c flows"
                           ],
                           "dimensions": [
-                            "client_ip",
-                            "server_ip"
+                            "client_asn",
+                            "server_asn"
                           ],
-                          "order_by": "all bytes",
+                          "order_by": "new c2s flows",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "max_out_size": "0"
@@ -131,20 +132,20 @@ def run(parameter):
                       ]
                 }]
             },
-            "expected_return": "",
+            "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
-                "servers_start_ip": "2.1.1.3",
-                "servers_end_ip": "2.1.1.3",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "ftp_login_ftpuser"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",
@@ -171,18 +172,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_srcip_ftp_table_client_server_ip",
+                "name": "stats_srcip_dstip_http_table_all_flows_dim_client_server_asn"
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_table_source_ip",
+                "name": "stats_srcip_http_table_all_flows_dim_client_server_asn"
             },{
                 "type": "ip",
-                "name": "statistics_bytes_table_destination_ip",
+                "name": "stats_dstip_http_table_all_flows_dim_client_server_asn"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Bytes Dimensions Client and Server IP",
+                "name": "stats_table_all_flows_dim_client_server_asn"
             },
         ]
         log_in = LogIn()
@@ -401,13 +402,13 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 11,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_srcip_ftp_table_client_server_ip",
+        "test_case_name": "stats_srcip_dstip_http_table_all_flows_dim_client_server_asn",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",
