@@ -19,6 +19,7 @@ class GenerateReport():
     
     def insert_data(self, parameter, report_data):
         report_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        # report_path = "D:/Document/Project-TSG/Code/git/tsg_test/report/temp_report.csv"
         row_count = 0
         with open(report_path, mode='r', newline='', encoding='utf-8') as file:
             reader = csv.reader(file)
