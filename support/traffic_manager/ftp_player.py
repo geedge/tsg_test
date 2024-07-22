@@ -16,7 +16,7 @@ class FtpPlayer():
         ftp = FTP(host)
         ftp.login(user, password)
         return ftp
-  
+    
     def list_directory(ftp, path='.'):
         """列出FTP服务器上的目录内容"""
         ftp.cwd(path)  # 切换到指定目录

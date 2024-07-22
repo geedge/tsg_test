@@ -13,12 +13,12 @@ class DnsPlayer():
         return cmd_result
     
     def query_dns(domain_name, record_type):  
-        """  
-        查询指定域名的DNS记录。  
-        :param domain_name: 要查询的域名  
-        :param record_type: DNS记录类型，默认为'A'（IPv4地址）  
-        :return: 记录的列表  
-        """  
+        """
+        查询指定域名的DNS记录
+        :param domain_name: 要查询的域名
+        :param record_type: DNS记录类型，默认为'A'（IPv4地址）
+        :return: 记录的列表
+        """
         try:
             # 发送DNS查询请求
             answers = dns.resolver.resolve(domain_name, record_type)  
