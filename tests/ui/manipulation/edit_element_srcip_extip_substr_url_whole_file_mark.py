@@ -43,8 +43,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "hijack_srcip_dstport_url",
-            "rule_action": "hijack",
+            "rule_name": "edit_element_srcip_extip_substr_url_whole_file_mark",
+            "rule_action": "edit_element",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -62,18 +62,18 @@ def run(parameter):
                         ]
                     }
                 ],
-                "destination_port": [
+                "external_ip": [
                     {
-                        "name": "manipulation_destination_port",
-                        "object_type": "port",
+                        "name": "manipulation_external_ip",
+                        "object_type": "ip",
                         "select_type": False,
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "port",
-                                "item_value": "443",
-                            },
+                                "item_type": "ipv4",
+                                "item_value": "192.168.40.206",
+                            }
                         ]
                     }
                 ],
@@ -95,33 +95,31 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "baidu->"
+                                "item_value": "192.168->"
                             }
                         ],
-                    }
+                    },
                 ],
             },
             "action_parameter": {
-                "hijack_file": [
+                "edit_element_parameter": [
                     {
-                        "profile_type": "hijack_file",
-                        "profile_file": {
-                            "name": "manipulation_hijack_profile",
-                            "model": "create",
-                            "file": "test_html_1.html->",
-                            "download_name": "test_html_1.html->",
-                            "file_type": "html->"
-                        }
+                        "profile_type": "edit_element",
+                        "search_scope": "whole_file",
+                        "start_indicator": "test_keywork",
+                        "contained_keyword": "test_request_body",
+                        "distance_from_anchor": "1",
+                        "treatment": "mark"
                     }
                 ]
             },
-            "expected_return": "this.piece.style",
+            "expected_return": "need_filter",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
+                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443/go"
             },
             "token": ""
         }
@@ -346,6 +344,7 @@ def run(parameter):
                 new_report = GenerateReport()
                 new_report.insert_data(parameter, report_data)
     
+
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -361,7 +360,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "hijack_srcip_dstport_url"
+        "test_case_name": "edit_element_srcip_extip_substr_url_whole_file_mark"
     }
     run(parameter)
     """

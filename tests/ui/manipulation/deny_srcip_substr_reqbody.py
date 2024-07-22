@@ -20,7 +20,6 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
-
 from support.report import *
 from datetime import datetime
 
@@ -43,8 +42,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "hijack_srcip_intip_url",
-            "rule_action": "hijack",
+            "rule_name": "deny_srcip_substr_reqbody",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -57,23 +56,8 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
+                                "item_value": parameter["test_pc_ip"]
                             },
-                        ]
-                    }
-                ],
-                "internal_ip": [
-                    {
-                        "name": "manipulation_internal_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
-                            }
                         ]
                     }
                 ],
@@ -82,46 +66,44 @@ def run(parameter):
                         "name": "http",  #
                         "object_type": "application",
                         "negate": False
-                    }
+                    },
                 ],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_url",
-                        "object_type": "url",
+                        "name": "manipulation_keywords_request_body",
+                        "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "items": [
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "192.168->"
+                                "item_type": "request_body",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "test_request_body"
+                                ]
                             }
                         ],
                     }
-                ],
-            },
-            "action_parameter": {
-                "hijack_file": [
-                    {
-                        "profile_type": "hijack_file",
-                        "profile_file": {
-                            "name": "manipulation_hijack_profile",
-                            "model": "create",
-                            "file": "test_html_1.html->",
-                            "download_name": "test_html_1.html->",
-                            "file_type": "html->"
-                        }
-                    }
                 ]
             },
-            "expected_return": "this.piece.style",
+            "action_parameter": {
+                "deny_response_block":[
+                    {
+                        "Manipulation_block": "close_connection"
+                    }
+                ],
+            },
+            "expected_return": "Connected",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 30 -m 60  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443"
+                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443/go"
             },
             "token": ""
         }
@@ -143,7 +125,7 @@ def run(parameter):
         if "condition" in test_data.keys():
             for cond_key, cond_value in (test_data["condition"].items()):
                 if cond_key in manipulation_object_no_create_list:
-                    continue   # 直接跳过
+                    continue  # 直接跳过
                 cond_status = 0
                 cond_key_out = cond_key.replace("_", " ")
                 if len(cond_value) != 0:  # 不为空
@@ -163,21 +145,21 @@ def run(parameter):
                             result = "Fail to create {} object.".format(cond_key_out)
                             cond_status = 1
                             break
-                if cond_status == 1:   # 创建失败，退出遍历创建
+                if cond_status == 1:  # 创建失败，退出遍历创建
                     break
 
         # 创建profile
         prfi_code = 200
         if "action_parameter" in test_data.keys():
-            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
+            for prfi_key, prfi_value in (test_data["action_parameter"]).items():
                 if prfi_key in manipulation_profile_no_create_list:
                     continue  # 直接跳过
                 prfi_status = 0
                 prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:   # 需要创建profile数据
+                if len(prfi_value) != 0:  # 需要创建profile数据
                     prfi_data = prfi_value
                     prfi = CreateProfile(driver)
-                    for i in range(len(prfi_data)): # 遍历创建所有 profile
+                    for i in range(len(prfi_data)):  # 遍历创建所有 profile
                         element_position_map = get_element_position(prfi_key)
                         prfi_code = prfi.create(prfi_data[i], element_position_map)
                         if prfi_code == 200:
@@ -333,7 +315,7 @@ def run(parameter):
         delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
+        if os.path.exists(file_path) and os.path.isfile(file_path):
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
                 report_data.append(parameter["test_case_name"])
@@ -345,7 +327,9 @@ def run(parameter):
                 report_data.append(result)
                 new_report = GenerateReport()
                 new_report.insert_data(parameter, report_data)
-    
+
+
+
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -361,7 +345,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "hijack_srcip_intip_url"
+        "test_case_name": "deny_srcip_substr_reqbody"
     }
     run(parameter)
     """

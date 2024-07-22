@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "hijack_srcip_dstip_url",
+            "rule_name": "hijack_srcip_intport_substr_url",
             "rule_action": "hijack",
             "rule_type": "create",
             "condition": {
@@ -62,17 +62,17 @@ def run(parameter):
                         ]
                     }
                 ],
-                "destination_ip": [
+                "internal_port": [
                     {
-                        "name": "manipulation_destination_ip",
-                        "object_type": "ip",
+                        "name": "manipulation_internal_port",
+                        "object_type": "port",
                         "select_type": False,
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "192.168.40.206",
+                                "item_type": "port",
+                                "item_value": "1000-65530",
                             },
                         ]
                     }
@@ -361,7 +361,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "hijack_srcip_dstip_url"
+        "test_case_name": "hijack_srcip_intport_substr_url"
     }
     run(parameter)
     """

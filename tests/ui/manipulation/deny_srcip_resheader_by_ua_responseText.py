@@ -20,7 +20,6 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
-
 from support.report import *
 from datetime import datetime
 
@@ -43,8 +42,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_url_whole_file_remove",
-            "rule_action": "edit_element",
+            "rule_name": "deny_srcip_resheader_by_ua_responseText",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -57,7 +56,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
+                                "item_value": parameter["test_pc_ip"]
                             },
                         ]
                     }
@@ -71,40 +70,43 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_url",
-                        "object_type": "url",
+                        "name": "manipulation_res_header_http_signature",
+                        "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "items": [
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "python->"
+                                "item_type": "response_header",
+                                "item_key": "Content-Type",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "text/html"
+                                ]
                             }
                         ],
                     }
                 ],
             },
             "action_parameter": {
-                "edit_element_parameter": [
+                "deny_response_text":[
                     {
-                        "profile_type": "edit_element",
-                        "search_scope": "whole_file",
-                        "start_indicator": "test_keywork",
-                        "contained_keyword": "Python",
-                        "distance_from_anchor": "1",
-                        "treatment": "remove"
+                        "response_code": 403,
+                        "response_content_type": "TEXT",
+                        "response_content": "test_response_code",
                     }
                 ]
             },
-            "expected_return": "CN=TSG",
+            "expected_return": "test_response_code",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }
@@ -126,7 +128,7 @@ def run(parameter):
         if "condition" in test_data.keys():
             for cond_key, cond_value in (test_data["condition"].items()):
                 if cond_key in manipulation_object_no_create_list:
-                    continue   # 直接跳过
+                    continue  # 直接跳过
                 cond_status = 0
                 cond_key_out = cond_key.replace("_", " ")
                 if len(cond_value) != 0:  # 不为空
@@ -146,21 +148,21 @@ def run(parameter):
                             result = "Fail to create {} object.".format(cond_key_out)
                             cond_status = 1
                             break
-                if cond_status == 1:   # 创建失败，退出遍历创建
+                if cond_status == 1:  # 创建失败，退出遍历创建
                     break
 
         # 创建profile
         prfi_code = 200
         if "action_parameter" in test_data.keys():
-            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
+            for prfi_key, prfi_value in (test_data["action_parameter"]).items():
                 if prfi_key in manipulation_profile_no_create_list:
                     continue  # 直接跳过
                 prfi_status = 0
                 prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:   # 需要创建profile数据
+                if len(prfi_value) != 0:  # 需要创建profile数据
                     prfi_data = prfi_value
                     prfi = CreateProfile(driver)
-                    for i in range(len(prfi_data)): # 遍历创建所有 profile
+                    for i in range(len(prfi_data)):  # 遍历创建所有 profile
                         element_position_map = get_element_position(prfi_key)
                         prfi_code = prfi.create(prfi_data[i], element_position_map)
                         if prfi_code == 200:
@@ -330,6 +332,7 @@ def run(parameter):
                 new_report.insert_data(parameter, report_data)
     
 
+
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -339,13 +342,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_url_whole_file_remove"
+        "test_case_name": "deny_srcip_resheader_by_ua_responseText"
     }
     run(parameter)
     """

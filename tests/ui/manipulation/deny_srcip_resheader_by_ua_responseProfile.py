@@ -43,8 +43,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_url_fqdn_whole_file_mark",
-            "rule_action": "edit_element",
+            "rule_name": "deny_srcip_resheader_by_ua_responseProfile",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -69,56 +69,50 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
-                    {
-                        "name": "manipulation_fqdn_node",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "items": [
-                            {
-                                "item_value": "python.org",
-                            }
-                        ]
-                    }
-                ],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_url",
-                        "object_type": "url",
+                        "name": "manipulation_res_header_http_signature",
+                        "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "items": [
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "python->"
+                                "item_type": "response_header",
+                                "item_key": "Content-Type",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "text/html"
+                                ]
                             }
                         ],
                     }
                 ],
             },
             "action_parameter": {
-                "edit_element_parameter": [
+                "response_page": [
                     {
-                        "profile_type": "edit_element",
-                        "search_scope": "whole_file",
-                        "start_indicator": "test_keywork",
-                        "contained_keyword": "Python",
-                        "distance_from_anchor": "1",
-                        "treatment": "mark"
+                        "profile_type": "response_page",
+                        "response_code": 404,
+                        "response_content_type": "Profile",
+                        "profile_file": {
+                            "name": "manipulation_profile_page",
+                            "model": "create",
+                            "file": "testa.html->"
+                        },
                     }
                 ]
             },
-            "expected_return": "need_filter",
+            "expected_return": "https://www.daixiaorui.com",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }
@@ -344,6 +338,8 @@ def run(parameter):
                 new_report.insert_data(parameter, report_data)
     
 
+
+
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -359,7 +355,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_url_fqdn_whole_file_mark"
+        "test_case_name": "deny_srcip_resheader_by_ua_responseProfile"
     }
     run(parameter)
     """

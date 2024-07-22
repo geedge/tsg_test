@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_url_req_header_user_agent_whole_file_mark",
+            "rule_name": "edit_element_srcip_substr_url_substr_reqbody_whole_file_mark",
             "rule_action": "edit_element",
             "rule_type": "create",
             "condition": {
@@ -80,13 +80,13 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "python->"
+                                "item_value": "192.168->"
                             }
                         ],
                     },
                     {
-                        "name": "manipulation_http_signature",
-                        "object_type": "http_signature",
+                        "name": "manipulation_keywords_request_body",
+                        "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
@@ -95,15 +95,14 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
+                                "item_type": "request_body",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "curl"
+                                    "test_request_body"
                                 ]
                             }
                         ],
-                    }
+                    },
                 ],
             },
             "action_parameter": {
@@ -112,7 +111,7 @@ def run(parameter):
                         "profile_type": "edit_element",
                         "search_scope": "whole_file",
                         "start_indicator": "test_keywork",
-                        "contained_keyword": "Python",
+                        "contained_keyword": "test_request_body",
                         "distance_from_anchor": "1",
                         "treatment": "mark"
                     }
@@ -120,11 +119,11 @@ def run(parameter):
             },
             "expected_return": "need_filter",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
+                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443/go"
             },
             "token": ""
         }
@@ -365,7 +364,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_url_req_header_user_agent_whole_file_mark"
+        "test_case_name": "edit_element_srcip_substr_url_substr_reqbody_whole_file_mark"
     }
     run(parameter)
     """

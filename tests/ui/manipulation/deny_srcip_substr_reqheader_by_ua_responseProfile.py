@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "deny_srcip_res_header_user_agent_responseProfile",
+            "rule_name": "deny_srcip_substr_reqheader_by_ua_responseProfile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -71,7 +71,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_res_header_http_signature",
+                        "name": "manipulation_http_signature",
                         "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
@@ -81,11 +81,11 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
+                                "item_type": "request_header",
+                                "item_key": "User-Agent",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "text/html"
+                                    "curl"
                                 ]
                             }
                         ],
@@ -355,7 +355,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "deny_srcip_res_header_user_agent_responseProfile"
+        "test_case_name": "deny_srcip_substr_reqheader_by_ua_responseProfile"
     }
     run(parameter)
     """

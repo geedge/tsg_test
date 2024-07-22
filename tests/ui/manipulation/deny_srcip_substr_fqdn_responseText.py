@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "deny_srcip_req_header_user_agent_responseText",
+            "rule_name": "deny_srcip_substr_fqdn_responseText",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -68,28 +68,20 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "protocol_filed": [
+                "server_fqdn": [
                     {
-                        "name": "manipulation_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
+                        "name": "manipulation_fqdn_node",
+                        "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
                         "plus": False,
-                        "Statistics": "None",
-                        "item": [
+                        "items": [
                             {
-                                "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "curl"
-                                ]
+                                "item_value": "baidu.com",
                             }
-                        ],
+                        ]
                     }
-                ],
+                ]
             },
             "action_parameter": {
                 "deny_response_text":[
@@ -342,13 +334,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "deny_srcip_req_header_user_agent_responseText"
+        "test_case_name": "deny_srcip_substr_fqdn_responseText"
     }
     run(parameter)
     """
