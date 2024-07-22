@@ -43,8 +43,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_url_inside_element_mark",
-            "rule_action": "edit_element",
+            "rule_name": "hijack_srcip_extip_substr_url",
+            "rule_action": "hijack",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -59,6 +59,21 @@ def run(parameter):
                                 "item_type": "ipv4",
                                 "item_value": parameter["test_pc_ip"],
                             },
+                        ]
+                    }
+                ],
+                "external_ip": [
+                    {
+                        "name": "manipulation_external_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.40.206",
+                            }
                         ]
                     }
                 ],
@@ -80,31 +95,33 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "python->"
+                                "item_value": "192.168->"
                             }
                         ],
                     }
                 ],
             },
             "action_parameter": {
-                "edit_element_parameter": [
+                "hijack_file": [
                     {
-                        "profile_type": "edit_element",
-                        "search_scope": "inside_element",
-                        "start_indicator": "widget-title",
-                        "contained_keyword": "Copyright",
-                        "distance_from_anchor": "0",
-                        "treatment": "mark"
+                        "profile_type": "hijack_file",
+                        "profile_file": {
+                            "name": "manipulation_hijack_profile",
+                            "model": "create",
+                            "file": "test_html_1.html->",
+                            "download_name": "test_html_1.html->",
+                            "file_type": "html->"
+                        }
                     }
                 ]
             },
-            "expected_return": "need_filter",
+            "expected_return": "this.piece.style",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
+                "command": "curl --connect-timeout 30 -m 60  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443"
             },
             "token": ""
         }
@@ -329,7 +346,6 @@ def run(parameter):
                 new_report = GenerateReport()
                 new_report.insert_data(parameter, report_data)
     
-
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -339,13 +355,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_url_inside_element_mark"
+        "test_case_name": "hijack_srcip_extip_substr_url"
     }
     run(parameter)
     """

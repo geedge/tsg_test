@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_url_inside_element_remove",
+            "rule_name": "edit_element_srcip_substr_url_inside_element_remove",
             "rule_action": "edit_element",
             "rule_type": "create",
             "condition": {
@@ -345,7 +345,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_url_inside_element_remove"
+        "test_case_name": "edit_element_srcip_substr_url_inside_element_remove"
     }
     run(parameter)
     """

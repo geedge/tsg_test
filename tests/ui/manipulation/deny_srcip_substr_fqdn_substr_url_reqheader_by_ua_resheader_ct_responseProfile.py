@@ -43,8 +43,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_dstip_url_whole_file_mark",
-            "rule_action": "edit_element",
+            "rule_name": "deny_srcip_substr_fqdn_substr_url_reqheader_by_ua_resheader_ct_responseProfile",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -62,26 +62,25 @@ def run(parameter):
                         ]
                     }
                 ],
-                "destination_ip": [
-                    {
-                        "name": "manipulation_destination_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "192.168.40.206",
-                            },
-                        ]
-                    }
-                ],
                 "application": [
                     {
                         "name": "http",  #
                         "object_type": "application",
                         "negate": False
+                    }
+                ],
+                "server_fqdn": [
+                    {
+                        "name": "manipulation_fqdn_node",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_value": "baidu.com",
+                            }
+                        ]
                     }
                 ],
                 "protocol_filed": [
@@ -95,31 +94,73 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "192.168->"
+                                "item_value": "baidu->"
+                            }
+                        ],
+                    },
+                    {
+                        "name": "manipulation_http_signature",
+                        "object_type": "http_signature",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "request_header",
+                                "item_key": "User-Agent",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "Chrome"
+                                ]
+                            }
+                        ],
+                    },
+                    {
+                        "name": "manipulation_res_header_http_signature",
+                        "object_type": "http_signature",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "response_header",
+                                "item_key": "Content-Type",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "text/html"
+                                ]
                             }
                         ],
                     },
                 ],
             },
             "action_parameter": {
-                "edit_element_parameter": [
+                "response_page": [
                     {
-                        "profile_type": "edit_element",
-                        "search_scope": "whole_file",
-                        "start_indicator": "test_keywork",
-                        "contained_keyword": "test_request_body",
-                        "distance_from_anchor": "1",
-                        "treatment": "mark"
+                        "profile_type": "response_page",
+                        "response_code": 404,
+                        "response_content_type": "Profile",
+                        "profile_file": {
+                            "name": "manipulation_profile_page",
+                            "model": "create",
+                            "file": "testa.html->"
+                        },
                     }
                 ]
             },
-            "expected_return": "need_filter",
+            "expected_return": "https://www.daixiaorui.com",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443/go"
+                "command": "curl --compressed -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.baidu.com"
             },
             "token": ""
         }
@@ -345,6 +386,8 @@ def run(parameter):
                 new_report.insert_data(parameter, report_data)
     
 
+
+
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -354,13 +397,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 6,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_dstip_url_whole_file_mark"
+        "test_case_name": "deny_srcip_substr_fqdn_substr_url_reqheader_by_ua_resheader_ct_responseProfile"
     }
     run(parameter)
     """

@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_url_whole_file_mark",
+            "rule_name": "edit_element_srcip_substr_url_substr_resheader_by_ua_whole_file_mark",
             "rule_action": "edit_element",
             "rule_type": "create",
             "condition": {
@@ -81,6 +81,46 @@ def run(parameter):
                                 "item_operation": "add",
                                 "item_type": "url",
                                 "item_value": "python->"
+                            }
+                        ],
+                    },
+                    {
+                        "name": "manipulation_http_signature",
+                        "object_type": "http_signature",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "request_header",
+                                "item_key": "User-Agent",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "curl"
+                                ]
+                            }
+                        ],
+                    },
+                    {
+                        "name": "manipulation_res_header_http_signature",
+                        "object_type": "http_signature",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "response_header",
+                                "item_key": "Content-Type",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "text/html"
+                                ]
                             }
                         ],
                     }
@@ -339,13 +379,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_url_whole_file_mark"
+        "test_case_name": "edit_element_srcip_substr_url_substr_resheader_by_ua_whole_file_mark"
     }
     run(parameter)
     """

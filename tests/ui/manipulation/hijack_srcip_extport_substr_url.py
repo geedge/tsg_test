@@ -43,8 +43,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "deny_srcip_url_req_header_user_agent_res_header_user_agent_responseProfile",
-            "rule_action": "deny",
+            "rule_name": "hijack_srcip_extport_substr_url",
+            "rule_action": "hijack",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -62,25 +62,26 @@ def run(parameter):
                         ]
                     }
                 ],
+                "destination_port": [
+                    {
+                        "name": "manipulation_destination_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "443",
+                            },
+                        ]
+                    }
+                ],
                 "application": [
                     {
                         "name": "http",  #
                         "object_type": "application",
                         "negate": False
-                    }
-                ],
-                "server_fqdn": [
-                    {
-                        "name": "manipulation_fqdn_node",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "items": [
-                            {
-                                "item_value": "baidu.com",
-                            }
-                        ]
                     }
                 ],
                 "protocol_filed": [
@@ -97,70 +98,30 @@ def run(parameter):
                                 "item_value": "baidu->"
                             }
                         ],
-                    },
-                    {
-                        "name": "manipulation_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "Chrome"
-                                ]
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_res_header_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "text/html"
-                                ]
-                            }
-                        ],
-                    },
+                    }
                 ],
             },
             "action_parameter": {
-                "response_page": [
+                "hijack_file": [
                     {
-                        "profile_type": "response_page",
-                        "response_code": 404,
-                        "response_content_type": "Profile",
+                        "profile_type": "hijack_file",
                         "profile_file": {
-                            "name": "manipulation_profile_page",
+                            "name": "manipulation_hijack_profile",
                             "model": "create",
-                            "file": "testa.html->"
-                        },
+                            "file": "test_html_1.html->",
+                            "download_name": "test_html_1.html->",
+                            "file_type": "html->"
+                        }
                     }
                 ]
             },
-            "expected_return": "https://www.daixiaorui.com",
+            "expected_return": "this.piece.style",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --compressed -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }
@@ -385,9 +346,6 @@ def run(parameter):
                 new_report = GenerateReport()
                 new_report.insert_data(parameter, report_data)
     
-
-
-
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -397,13 +355,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "deny_srcip_url_req_header_user_agent_res_header_user_agent_responseProfile"
+        "test_case_name": "hijack_srcip_extport_substr_url"
     }
     run(parameter)
     """

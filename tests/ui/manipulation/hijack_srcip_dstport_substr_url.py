@@ -43,8 +43,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "edit_element_srcip_url_res_header_user_agent_whole_file_mark",
-            "rule_action": "edit_element",
+            "rule_name": "hijack_srcip_dstport_substr_url",
+            "rule_action": "hijack",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -58,6 +58,21 @@ def run(parameter):
                                 "item_operation": "add",
                                 "item_type": "ipv4",
                                 "item_value": parameter["test_pc_ip"],
+                            },
+                        ]
+                    }
+                ],
+                "destination_port": [
+                    {
+                        "name": "manipulation_destination_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "443",
                             },
                         ]
                     }
@@ -80,71 +95,33 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "python->"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "curl"
-                                ]
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_res_header_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "text/html"
-                                ]
+                                "item_value": "baidu->"
                             }
                         ],
                     }
                 ],
             },
             "action_parameter": {
-                "edit_element_parameter": [
+                "hijack_file": [
                     {
-                        "profile_type": "edit_element",
-                        "search_scope": "whole_file",
-                        "start_indicator": "test_keywork",
-                        "contained_keyword": "Python",
-                        "distance_from_anchor": "1",
-                        "treatment": "mark"
+                        "profile_type": "hijack_file",
+                        "profile_file": {
+                            "name": "manipulation_hijack_profile",
+                            "model": "create",
+                            "file": "test_html_1.html->",
+                            "download_name": "test_html_1.html->",
+                            "file_type": "html->"
+                        }
                     }
                 ]
             },
-            "expected_return": "need_filter",
+            "expected_return": "this.piece.style",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }
@@ -369,7 +346,6 @@ def run(parameter):
                 new_report = GenerateReport()
                 new_report.insert_data(parameter, report_data)
     
-
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -385,7 +361,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "edit_element_srcip_url_res_header_user_agent_whole_file_mark"
+        "test_case_name": "hijack_srcip_dstport_substr_url"
     }
     run(parameter)
     """
