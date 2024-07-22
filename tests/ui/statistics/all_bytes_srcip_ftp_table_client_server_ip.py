@@ -27,7 +27,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -131,9 +131,9 @@ def run(parameter):
                       ]
                 }]
             },
-            "expected_return": "reset",
+            "expected_return": "",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",

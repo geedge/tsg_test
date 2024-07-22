@@ -10,7 +10,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -29,7 +29,7 @@ def run(parameter):
 
         t = Tunnel(driver)
         t.tunnel_case(test_data)
-        result = ""
+        result, exception_result = "", ""
 
         # 脚本结束时间和耗时
         end_time = time.time()

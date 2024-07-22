@@ -27,7 +27,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -266,7 +266,7 @@ def run(parameter):
         # 触发流量验证
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],element_position_map)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],element_position_map)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()

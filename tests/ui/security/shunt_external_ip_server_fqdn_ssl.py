@@ -26,7 +26,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -107,7 +107,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 https://www.example.com/"
+                "command": "wget -q -O- --debug https://www.example.com/"
             },
             "token": ""
         }

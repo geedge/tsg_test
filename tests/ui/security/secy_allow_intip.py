@@ -26,7 +26,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -41,8 +41,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_drop",
-            "rule_action": "deny",
+            "rule_name": "secy_allow_intip",
+            "rule_action": "allow",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],
@@ -51,7 +51,7 @@ def run(parameter):
                 "destination_port": [],
                 "internal_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "secy_intip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -78,20 +78,13 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
-                "sub_action": [
-                    {
-                        "type": "drop",
-                        "drop_packet": 0,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
-                    }
-                ],
+                "sub_action": [],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "Failed",
+            "expected_return": "POST",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"}],
+            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
@@ -108,11 +101,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_drop"
+                "name": "secy_allow_intip"
             },
             {
                 "type": "ip",
-                "name": "security_internal_ip"
+                "name": "secy_intip"
             }
         ]
         
@@ -162,7 +155,7 @@ def run(parameter):
                 "create": {
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                    "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
+                    "policyRulePage_selectAction_posId": securityRulePage_selectAllow_posId,
                     "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
                     "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
                     "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,

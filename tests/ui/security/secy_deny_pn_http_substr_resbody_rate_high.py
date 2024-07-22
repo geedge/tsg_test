@@ -7,23 +7,17 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.profile.create_profile import CreateProfile
-from support.ui_utils.profile.search_profile import SearchProfile
-from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
-from support.ui_utils.element_position.profile_element_position import *
 from support.traffic_manager.verification import Verification
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 import support.ui_utils.env
-from support.ui_utils.element_position.map_element_position_library import *
-
 from support.report import *
 from datetime import datetime
 
@@ -31,7 +25,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -46,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "deny_phone_number_server_fqdn_url_req_header_http_block_403_profile",
+            "rule_name": "secy_deny_pn_http_substr_resbody_rate_high",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -63,7 +57,7 @@ def run(parameter):
                 "sub_id": [],
                 "device": [
                     {
-                        "name": "security_phone_number",
+                        "name": "secy_pn",
                         "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,
@@ -86,38 +80,11 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
-                    {
-                        "name": "test_node",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "items": [
-                            {
-                                "item_value": "open.node.com",
-                            }
-                        ]
-                    }
-                ],
+                "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "security_url",
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "open.node->"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "security_http_signature",
-                        "object_type": "http_signature",
+                        "name": "secy_keywords_resbody",
+                        "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
@@ -126,11 +93,10 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
+                                "item_type": "response_body",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "curl"
+                                    "test_resbody"
                                 ]
                             }
                         ],
@@ -139,35 +105,20 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "block",
-                        "code": 403,
-                        "content_type": "Profile",
-                        "content": "test_tsg_ui_profile_page"
+                        "type": "rate_limit",
+                        "rate_value": "1000000",
                     }
                 ],
                 "packet_capture": []
             },
-            "action_parameter": {
-                "response_page": [
-                    {
-                        "profile_type": "response_page",
-                        "response_code": 403,
-                        "response_content_type": "Profile",
-                        "profile_file": {
-                            "name": "test_tsg_ui_profile_page",
-                            "model": "create",
-                            "file": "testa.html->"
-                        },
-                    }
-                ]
-            },
-            "expected_return": "403",
+            "profile": [],
+            "expected_return": "test_resbody",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
+            "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "command": "curl --connect-timeout 10 -m 10 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"helloSecurity\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://192.168.40.206:180/go"
             },
             "token": ""
         }
@@ -180,23 +131,15 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "deny_phone_number_server_fqdn_url_req_header_http_block_403_profile"
+                "name": "secy_deny_pn_http_substr_resbody_rate_high"
             },
             {
-                "type": "ip",
-                "name": "security_internal_ip"
+                "type": "mobile_identity",
+                "name": "secy_pn"
             },
             {
-                "type": "fqdn",
-                "name": "test_node"
-            },
-            {
-                "type": "url",
-                "name": "security_url"
-            },
-            {
-                "type": "http_signature",
-                "name": "security_http_signature"
+                "type": "keywords",
+                "name": "secy_keywords_resbody"
             }
         ]
         
@@ -234,100 +177,36 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-            test_fqdn_object_element_position = {
-                "page_jump":{
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_fqdn_posId
-                },
-                "create": {
-                    "objectListPage_createButton_posId": fqdnObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": fqdnObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": fqdnObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": fqdnObjectPage_addItem_posId,
-                    "objectPage_inputItem_posXpath": fqdnObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": fqdnObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": fqdnObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": fqdnObjectPage_okButton_warningYes_posXpath
-                },
-                "search": {
-                    "objectListPage_searchLabel_posId": fqdnObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": fqdnObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": fqdnObjectListPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "objectListPage_allSelect_posXpath": fqdnObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": fqdnObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
-                }
-            }
-
-            test_url_object_element_position = {
+            test_keywords_object_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                     "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
                 },
                 "create": {
-                    "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": urlObjectPage_addItem_posId,
-                    # item简单定位
-                    "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
-                    "objectPage_okButton_posId": urlObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
+                    "objectListPage_createButton_posId": keywordsObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": keywordsObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": keywordsObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": keywordsObjectPage_addItem_posId,
+                    "objectPage_item_value_select_posXpath": keywordsObjectPage_item_value_select_posXpath,
+                    "objectPage_inputItem_posXpath": keywordsObjectPage_inputItem_posXpath,
+                    "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
+                    "objectPage_button_saveItem_posXpath": keywordsObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": keywordsObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath
                 },
                 "search": {
-                    "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
+                    "objectListPage_searchLabel_posId": keywordsObjectListPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": keywordsObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": keywordsObjectListPage_tableTbody_posXpath
                 },
                 "delete": {
-                    "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
-                }
-            }
-            test_http_signature_object_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_httpSignature_posId
-                },
-                "create": {
-                    "objectListPage_createButton_posId": httpSignatureObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": httpSignatureObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": httpSignatureObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": httpSignatureObjectPage_addItem_posId,
-                    "objectPage_item_key_dropDown_posXpath": httpSignatureObjectPage_item_key_dropDown_posXpath,
-                    "objectPage_item_key_dropDown_select_posXpath": httpSignatureObjectPage_item_key_dropDown_select_posXpath,
-                    "objectPage_item_value_select_posXpath": httpSignatureObjectPage_item_value_select_posXpath,
-                    "objectPage_inputItem_posXpath": httpSignatureObjectPage_inputItem_posXpath,
-                    "objectPage_item_value_plus_posXpath": httpSignatureObjectPage_item_value_plus_posXpath,
-                    "objectPage_button_saveItem_posXpath": httpSignatureObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": httpSignatureObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": httpSignatureObjectPage_okButton_warningYes_posXpath
-                },
-                "search": {
-                    "objectListPage_searchLabel_posId": httpSignatureObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": httpSignatureObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": httpSignatureObjectListPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "objectListPage_allSelect_posXpath": httpSignatureObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": httpSignatureObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+                    "objectListPage_allSelect_posXpath": keywordsObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": keywordsObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": keywordsObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
             test_rule_element_position = {
@@ -343,50 +222,30 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
-                    # phone number
-                    "policyRulePage_addConditionImsi_posXpath": securityRulePage_addCondition_imsi_posXpath,
-                    "policyRulePage_addImsi_posXpath": securityRulePage_addImsi_posXpath,
-                    "policyRulePage_choosePhoneNumber_posXpath": securityRulePage_choosePhoneNumber_posXpath,
-                    "policyRulePage_searchImsi_posXpath": policyRulePage_searchImsi_posXpath,
-                    "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
-                    "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
+                    "policyRulePage_addConditionImsi_posXpath": securityRulePage_addCondition_imsi_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    # fqdn
-                    "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
-                    # url
-                    "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_url_posXpath,
-                    "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
-                    "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
-                    "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
-                    "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
-                    # req header
-                    "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
-                    "policyRulePage_addRequestHeader_posXpath": manipulationRulePage_addRequestHeader_posXpath,
-                    "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
-                    "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
-                    "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+                    "policyRulePage_addImsi_posXpath": securityRulePage_addImsi_posXpath,
+                    "policyRulePage_choosePhoneNumber_posXpath": securityRulePage_choosePhoneNumber_posXpath,
+                    "policyRulePage_searchImsi_posXpath": policyRulePage_searchImsi_posXpath,
+                    "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
+                    "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+                    # response body
+                    "policyRulePage_addConditionResponseBody_posXpath": securityRulePage_addCondition_responseBody_posXpath,
+                    "policyRulePage_addResponseBody_posXpath": manipulationRulePage_addResponseBody_posXpath,
+                    "policyRulePage_searchResponseBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
+                    "policyRulePage_selectResponseBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
+                    "policyRulePage_closeResponseBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
+                    # sub action
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    # block动作
-                    "policyRulePage_subAction_block_posXpath": securityRulePage_subAction_block_posXpath,
-                    "policyRulePage_subAction_block_responseCode_posXpath": securityRulePage_subAction_block_responseCode_posXpath,
-                    "policyRulePage_subAction_block_responseCode_change_posXpath": securityRulePage_subAction_block_responseCode_change_posXpath,
-                    "policyRulePage_subAction_block_responseContent_posXpath": securityRulePage_subAction_block_responseContent_posXpath,
-                    "policyRulePage_subAction_block_responseContent_change_posXpath": securityRulePage_subAction_block_responseContent_change_posXpath,
-                    "policyRulePage_subAction_block_responseContent_clickProfile_posXpath": securityRulePage_subAction_block_responseContent_clickProfile_posXpath,
-                    "policyRulePage_subAction_block_responseContent_searchProfile_posXpath": securityRulePage_subAction_block_responseContent_searchProfile_posXpath,
-                    "policyRulePage_subAction_block_responseContent_selectProfile_posId": securityRulePage_subAction_block_responseContent_selectProfile_posId,
+                    "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
+                    "policyRulePage_subAction_drop_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -405,6 +264,7 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath":securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
+        
         # 创建phone number
         if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
             device_data = test_data["condition"]["device"]
@@ -418,62 +278,29 @@ def run(parameter):
                 elif create_device_code != 200:
                     result = "Fail to create {} object.".format(object_sub_type)
                     break
-        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
-            fqdn_data = test_data["condition"]["server_fqdn"]
-            create_fqdn = CreateObject(driver)
-            for i in range(len(fqdn_data)):
-                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
-                if create_fqdn_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create fqdn object successfully.", flush=True)
-                elif create_fqdn_code != 200:
-                    result = "Fail to create fqdn."
-                    break
-        # 创建url+req header       
+        # 创建keywords      
         if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
             protocol_field_data = test_data["condition"]["protocol_filed"]
             create_protocol_filed = CreateObject(driver)
             for x in range(len(protocol_field_data)):
                 object_type = protocol_field_data[x]['object_type']
-                if object_type == 'url':
-                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_url_object_element_position)
-                elif object_type == 'http_signature':
-                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_http_signature_object_element_position)
+                if object_type == 'keywords':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_keywords_object_element_position)
                 if create_protocol_filed_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
                 elif create_protocol_filed_code != 200:
                     result = "Fail to create {}.".format(object_type)
                     break
-        # 创建profile
-        prfi_code = 200
-        if "action_parameter" in test_data.keys():
-            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
-                prfi_status = 0
-                prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:   # 需要创建profile数据
-                    prfi_data = prfi_value
-                    prfi = CreateProfile(driver)
-                    for i in range(len(prfi_data)): # 遍历创建所有 profile
-                        element_position_map = get_element_position(prfi_key)
-                        prfi_code = prfi.create(prfi_data[i], element_position_map)
-                        if prfi_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(prfi_key_out), flush=True)
-                        else:
-                            result = "Fail to create {} profile.".format(prfi_key_out)
-                            prfi_status = 1
-                            break
-                if prfi_status == 1:  # 创建失败，退出遍历创建
-                    break
+
         # 创建rule
-        if prfi_code == 200:
+        if create_device_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-
-        
-
+            
         # 触发流量验证
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -510,6 +337,7 @@ def run(parameter):
                     result = result + " In addition, fail to delete security rule."
             else:
                 result = result + " In addition, fail to search security rule."
+            
         
         # 删除object
         if delete_rule_code == 200:
@@ -530,35 +358,15 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search {} object.".format(object_sub_type)
-        # 删除fqdn
-            for x in range(len(fqdn_data)):
-                search_fqdn = SearchObject(driver)
-                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"], test_fqdn_object_element_position)
-                if search_fqdn_code == 200:
-                    delete_fqdn = DeleteObject(driver)
-                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
-                    if delete_fqdn_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn object successfully.", flush=True)
-                    elif delete_fqdn_code != 200:
-                        result = result + " In addition, fail to delete fqdn object."
-                        break
-                else:
-                    result = result + " In addition, fail to search fqdn object."
-                    break
-        # 删除protocol_filed
             for q in range(len(protocol_field_data)):
                 search_protocol_filed = SearchObject(driver)
                 object_type = protocol_field_data[q]['object_type']
-                if object_type == 'url':
-                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_url_object_element_position)
-                elif object_type == 'http_signature':
-                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_http_signature_object_element_position)
+                if object_type == 'keywords':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_keywords_object_element_position)
                 if search_protocol_filed_code == 200:
                     delete_protocol_filed = DeleteObject(driver)
-                    if object_type == 'url':
-                        delete_protocol_filed_code = delete_protocol_filed.delete(test_url_object_element_position, first_row_checkbox_element, True)
-                    elif object_type == 'http_signature':
-                        delete_protocol_filed_code = delete_protocol_filed.delete(test_http_signature_object_element_position, first_row_checkbox_element, True)
+                    if object_type == 'keywords':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_keywords_object_element_position, first_row_checkbox_element, True)
                     if delete_protocol_filed_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
                     elif delete_protocol_filed_code != 200:
@@ -566,37 +374,6 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search {} object.".format(object_type)
-                    break
-        # 删除profile
-        if delete_rule_code == 200 and "action_parameter" in test_data.keys():
-            # 删除
-            for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
-                if prfi_key in manipulation_profile_no_create_list:
-                    continue  # 直接跳过
-                prfi_status = 0
-                prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:  # 不为空
-                    for i in range(len(prfi_value)):  # 遍历查询所有profile
-                        search_prfi = SearchProfile(driver)
-                        element_position_map = get_element_position(prfi_key)
-                        prfi_name = prfi_value[i]["profile_file"]["name"].strip()
-                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
-                        if search_prfi_code == 200:
-                            delete_prfi = DeleteProfile(driver)
-                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element, True)
-                            if delete_prfi_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
-                            else:
-                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
-                                break
-                        else:
-                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
-                            break
-                        # 退出遍历标志
-                        if prfi_status == 1:  # 失败，退出遍历创建
-                            break
-                # 退出遍历标志
-                if prfi_status == 1:  # 失败，退出遍历创建
                     break
         
         # 脚本结束时间和耗时
@@ -629,20 +406,20 @@ def run(parameter):
                 report_data.append(result)
                 new_report = GenerateReport()
                 new_report.insert_data(parameter, report_data)
-            
+        
 if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
         "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6491",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 11,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/ui",
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "security",
         "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
     }

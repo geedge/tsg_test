@@ -26,7 +26,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_server_fqdn_http_tamper",
+            "rule_name": "secy_deny_intip_ftp_uri_substr_account_substr_content_tamper",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -51,7 +51,7 @@ def run(parameter):
                 "destination_port": [],
                 "internal_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "secy_intip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -76,42 +76,77 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http", #
+                        "name": "ftp", #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
+                "server_fqdn": [],
+                "protocol_filed": [
                     {
-                        "name": "test_node",
-                        "object_type": "fqdn",
+                        "name": "secy_ftp_url",
+                        "object_type": "url",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "url",
+                                "item_value": "english->"
+                            }
+                        ],
+                    },
+                    {
+                        "name": "secy_keywords_ftp_content",
+                        "object_type": "keywords",
+                        "item_operation": "add",
                         "select_type": False,
                         "negate": False,
                         "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ftp_content",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "autotest"
+                                ]
+                            }
+                        ],
+                    },
+                    {
+                        "name": "secy_ftp_account",
+                        "object_type": "account",
+                        "select_type": False,
+                        "item_operation": "add",
+                        "negate": False,
                         "items": [
                             {
-                                "item_value": "open.node.com",
+                                "item_operation": "add",
+                                "item_type": "ftp_account",
+                                "item_value": "ftpuser->"
                             }
-                        ]
+                        ],
                     }
                 ],
-                "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "tamper"
+                        "type": "tamper",
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "reset",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
+            "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"}],
             "traffic": {
-                "protocol": "http",
+                "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },
             "token": ""
         }
@@ -124,15 +159,19 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_server_fqdn_http_tamper"
+                "name": "secy_deny_intip_ftp_uri_substr_account_substr_content_tamper"
             },
             {
                 "type": "ip",
-                "name": "security_internal_ip"
+                "name": "secy_intip"
             },
             {
-                "type": "fqdn",
-                "name": "test_node"
+                "type": "keywords",
+                "name": "secy_keywords_ftp_content"
+            },
+            {
+                "type": "account",
+                "name": "secy_ftp_account"
             }
         ]
         
@@ -170,34 +209,98 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-            test_fqdn_object_element_position = {
-                "page_jump":{
+            test_url_object_element_position = {
+                "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                     "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_fqdn_posId
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
                 },
                 "create": {
-                    "objectListPage_createButton_posId": fqdnObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": fqdnObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": fqdnObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": fqdnObjectPage_addItem_posId,
-                    "objectPage_inputItem_posXpath": fqdnObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": fqdnObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": fqdnObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": fqdnObjectPage_okButton_warningYes_posXpath
+                    "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": urlObjectPage_addItem_posId,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
+                    "objectPage_okButton_posId": urlObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
                 },
                 "search": {
-                    "objectListPage_searchLabel_posId": fqdnObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": fqdnObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": fqdnObjectListPage_tableTbody_posXpath
+                    "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
                 },
                 "delete": {
-                    "objectListPage_allSelect_posXpath": fqdnObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": fqdnObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
+                    "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
+            test_account_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_account_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": accountObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": accountObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": accountObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": accountObjectPage_addItem_posId,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": accountObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": accountObjectPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": accountObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": accountObjectPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": accountObjectPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
+            test_keywords_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": keywordsObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": keywordsObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": keywordsObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": keywordsObjectPage_addItem_posId,
+                    "objectPage_item_value_select_posXpath": keywordsObjectPage_item_value_select_posXpath,
+                    "objectPage_inputItem_posXpath": keywordsObjectPage_inputItem_posXpath,
+                    "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
+                    "objectPage_button_saveItem_posXpath": keywordsObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": keywordsObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": keywordsObjectListPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": keywordsObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": keywordsObjectListPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": keywordsObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": keywordsObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": keywordsObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
             test_rule_element_position = {
@@ -223,13 +326,25 @@ def run(parameter):
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
+                    # url
+                    "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_uri_posXpath,
+                    "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
+                    "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
+                    "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
+                    "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
+                    # ftp account
+                    "policyRulePage_addConditionFtpAccount_posXpath": securityRulePage_addCondition_ftpAccount_posXpath,
+                    "policyRulePage_addFtpAccount_posXpath": securityRulePage_addftpAccount_posXpath,
+                    "policyRulePage_searchFtpAccount_posXpath": securityRulePage_searchftpAccount_posXpath,
+                    "policyRulePage_selectFtpAccount_posXpath": securityRulePage_selectftpAccount_posXpath,
+                    "policyRulePage_closeFtpAccount_posXpath": securityRulePage_closeftpAccount_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                    "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
+                    # ftp content
+                    "policyRulePage_addConditionFtpContent_posXpath": securityRulePage_addCondition_ftpContent_posXpath,
+                    "policyRulePage_addFtpContent_posXpath": securityRulePage_addftpContent_posXpath,
+                    "policyRulePage_searchFtpContent_posXpath": securityRulePage_searchftpContent_posXpath,
+                    "policyRulePage_selectFtpContent_posXpath": securityRulePage_selectftpContent_posXpath,
+                    "policyRulePage_closeFtpContent_posXpath": securityRulePage_closeftpContent_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_subAction_tamper_posXpath": securityRulePage_subAction_tamper_posXpath,
@@ -252,30 +367,37 @@ def run(parameter):
                 }
             }
         
-        # 创建object
+        # # 创建ip
         if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
             ip_data = test_data["condition"]["internal_ip"]
-            create_port = CreateObject(driver)
+            create_ip = CreateObject(driver)
             for i in range(len(ip_data)):
-                create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
-                if create_port_code == 200:
+                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+                if create_ip_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
-                elif create_port_code != 200:
+                elif create_ip_code != 200:
                     result = "Fail to create ip object."
                     break
-        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
-            fqdn_data = test_data["condition"]["server_fqdn"]
-            create_fqdn = CreateObject(driver)
-            for i in range(len(fqdn_data)):
-                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
-                if create_fqdn_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create fqdn object successfully.", flush=True)
-                elif create_fqdn_code != 200:
-                    result = "Fail to create fqdn."
+        # 创建protocol_filed        
+        if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+            protocol_field_data = test_data["condition"]["protocol_filed"]
+            create_protocol_filed = CreateObject(driver)
+            for x in range(len(protocol_field_data)):
+                object_type = protocol_field_data[x]['object_type']
+                if object_type == 'url':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_url_object_element_position)
+                elif object_type == 'account':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_account_object_element_position)
+                elif object_type == 'keywords':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_keywords_object_element_position)
+                if create_protocol_filed_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                elif create_protocol_filed_code != 200:
+                    result = "Fail to create {}.".format(object_type)
                     break
         
         # 创建rule
-        if create_port_code == 200:
+        if create_ip_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -337,24 +459,32 @@ def run(parameter):
                 else:
                     result = result + " In addition, fail to search ip object."
                     break
-        # 删除fqdn
-            for x in range(len(fqdn_data)):
-                search_fqdn = SearchObject(driver)
-                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"], test_fqdn_object_element_position)
-                if search_fqdn_code == 200:
-                    delete_fqdn = DeleteObject(driver)
-                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
-                    if delete_fqdn_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
-                    elif delete_fqdn_code != 200:
-                        result = result + " In addition, fail to delete fqdn object."
+            # 删除protocol_filed
+            for q in range(len(protocol_field_data)):
+                search_protocol_filed = SearchObject(driver)
+                object_type = protocol_field_data[q]['object_type']
+                if object_type == 'url':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_url_object_element_position)
+                elif object_type == 'account':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_account_object_element_position)
+                elif object_type == 'keywords':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_keywords_object_element_position)
+                if search_protocol_filed_code == 200:
+                    delete_protocol_filed = DeleteObject(driver)
+                    if object_type == 'url':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_url_object_element_position, first_row_checkbox_element, True)
+                    elif object_type == 'account':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_account_object_element_position, first_row_checkbox_element, True)
+                    elif object_type == 'keywords':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_keywords_object_element_position, first_row_checkbox_element, True)
+                    if delete_protocol_filed_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
+                    elif delete_protocol_filed_code != 200:
+                        result = result + " In addition, fail to delete {} object.".format(object_type)
                         break
                 else:
-                    result = result + " In addition, fail to search fqdn object."
+                    result = result + " In addition, fail to search {} object.".format(object_type)
                     break
-        
-                # 脚本结束时间和耗时
-        
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -390,17 +520,17 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.100",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/ui",
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "security",
-        "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+        "test_case_name": "deny_internal_ip_ftp_drop_uri"
     }
     run(parameter)
     """

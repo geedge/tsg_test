@@ -27,7 +27,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "allow_srcip_fqdn_url_req_header_user_agent_res_header_content_type",
+            "rule_name": "allow_srcip_substr_fqdn",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -81,62 +81,6 @@ def run(parameter):
                             }
                         ]
                     }
-                ],
-                "protocol_filed": [
-                    {
-                        "name": "manipulation_url",
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "baidu->"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "Chrome"
-                                ]
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_res_header_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "text/html"
-                                ]
-                            }
-                        ],
-                    },
                 ]
             },
             "expected_return": "关于百度,CN=TSG",
@@ -145,7 +89,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --compressed -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }
@@ -381,13 +325,13 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "allow_srcip_fqdn_url_req_header_user_agent_res_header_content_type"
+        "test_case_name": "allow_srcip_substr_fqdn"
     }
 
     run(parameter)

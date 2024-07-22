@@ -27,7 +27,7 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result = ""
+        result, exception_result = "", ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "allow_srcip_url",
+            "rule_name": "allow_srcip",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -68,22 +68,6 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "protocol_filed": [
-                    {
-                        "name": "manipulation_url",
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "baidu->"
-                            }
-                        ],
-                    }
-                ]
             },
             "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},
@@ -333,7 +317,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "allow_srcip_url"
+        "test_case_name": "allow_srcip"
     }
 
     run(parameter)
