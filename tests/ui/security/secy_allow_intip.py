@@ -41,8 +41,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_internal_ip_server_fqdn_http_tamper",
-            "rule_action": "deny",
+            "rule_name": "secy_allow_intip",
+            "rule_action": "allow",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],
@@ -51,7 +51,7 @@ def run(parameter):
                 "destination_port": [],
                 "internal_ip": [
                     {
-                        "name": "security_internal_ip",
+                        "name": "secy_intip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -74,44 +74,21 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [
-                    {
-                        "name": "http", #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
-                "server_fqdn": [
-                    {
-                        "name": "test_node",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "items": [
-                            {
-                                "item_value": "open.node.com",
-                            }
-                        ]
-                    }
-                ],
+                "application": [],
+                "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
-                "sub_action": [
-                    {
-                        "type": "tamper"
-                    }
-                ],
+                "sub_action": [],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "POST",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
+            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "command": "curl -kv --connect-timeout 5 -m 10 http://open.node.com:180"
             },
             "token": ""
         }
@@ -124,15 +101,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_internal_ip_server_fqdn_http_tamper"
+                "name": "secy_allow_intip"
             },
             {
                 "type": "ip",
-                "name": "security_internal_ip"
-            },
-            {
-                "type": "fqdn",
-                "name": "test_node"
+                "name": "secy_intip"
             }
         ]
         
@@ -170,36 +143,6 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-            test_fqdn_object_element_position = {
-                "page_jump":{
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_fqdn_posId
-                },
-                "create": {
-                    "objectListPage_createButton_posId": fqdnObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": fqdnObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": fqdnObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": fqdnObjectPage_addItem_posId,
-                    "objectPage_inputItem_posXpath": fqdnObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": fqdnObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": fqdnObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": fqdnObjectPage_okButton_warningYes_posXpath
-                },
-                "search": {
-                    "objectListPage_searchLabel_posId": fqdnObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": fqdnObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": fqdnObjectListPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "objectListPage_allSelect_posXpath": fqdnObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": fqdnObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
-                }
-            }
             test_rule_element_position = {
                 "page_jump":{
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -212,7 +155,7 @@ def run(parameter):
                 "create": {
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                    "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
+                    "policyRulePage_selectAction_posId": securityRulePage_selectAllow_posId,
                     "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
                     "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
                     "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
@@ -232,7 +175,10 @@ def run(parameter):
                     "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    "policyRulePage_subAction_tamper_posXpath": securityRulePage_subAction_tamper_posXpath,
+                    "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
+                    "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
+                    "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
+                    "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -255,27 +201,17 @@ def run(parameter):
         # 创建object
         if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
             ip_data = test_data["condition"]["internal_ip"]
-            create_port = CreateObject(driver)
+            create_ip = CreateObject(driver)
             for i in range(len(ip_data)):
-                create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
-                if create_port_code == 200:
+                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+                if create_ip_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
-                elif create_port_code != 200:
+                elif create_ip_code != 200:
                     result = "Fail to create ip object."
-                    break
-        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
-            fqdn_data = test_data["condition"]["server_fqdn"]
-            create_fqdn = CreateObject(driver)
-            for i in range(len(fqdn_data)):
-                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
-                if create_fqdn_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create fqdn object successfully.", flush=True)
-                elif create_fqdn_code != 200:
-                    result = "Fail to create fqdn."
                     break
         
         # 创建rule
-        if create_port_code == 200:
+        if create_ip_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -337,21 +273,6 @@ def run(parameter):
                 else:
                     result = result + " In addition, fail to search ip object."
                     break
-        # 删除fqdn
-            for x in range(len(fqdn_data)):
-                search_fqdn = SearchObject(driver)
-                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"], test_fqdn_object_element_position)
-                if search_fqdn_code == 200:
-                    delete_fqdn = DeleteObject(driver)
-                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
-                    if delete_fqdn_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
-                    elif delete_fqdn_code != 200:
-                        result = result + " In addition, fail to delete fqdn object."
-                        break
-                else:
-                    result = result + " In addition, fail to search fqdn object."
-                    break
         
                 # 脚本结束时间和耗时
         
@@ -391,14 +312,14 @@ if __name__ == '__main__':
         "username": "hebingning",
         "password": "hbn66AAA",
         "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6491",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 10,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/ui",
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "security",
         "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
     }

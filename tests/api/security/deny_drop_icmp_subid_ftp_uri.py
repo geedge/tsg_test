@@ -69,7 +69,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -m 5 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 25 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },
             "token": ""
         }
@@ -136,17 +136,19 @@ def run(parameter):
       
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.88",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test6488",
         "script_type": "api",
+        "debug_flag": "local",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "allow_http_fqdn"
+        "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }
     run(parameter)

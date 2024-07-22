@@ -41,13 +41,13 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_source_ip_ssl_no_sni_true_drop",
+            "rule_name": "secy_deny_srcip_ssl_no_sni_true_drop",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "security_source_ip",
+                        "name": "secy_srcip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -120,11 +120,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_source_ip_ssl_no_sni_true_drop"
+                "name": "secy_deny_srcip_ssl_no_sni_true_drop"
             },
             {
                 "type": "ip",
-                "name": "security_source_ip"
+                "name": "secy_srcip"
             }
         ]
         

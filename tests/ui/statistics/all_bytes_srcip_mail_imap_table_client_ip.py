@@ -134,7 +134,7 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "app", "query_value": "imap"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",

@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "allow_srcip_fqdn",
+            "rule_name": "allow_srcip_substr_reqheader_by_ua",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -68,20 +68,28 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
+                "protocol_filed": [
                     {
-                        "name": "manipulation_fqdn_node",
-                        "object_type": "fqdn",
+                        "name": "manipulation_http_signature",
+                        "object_type": "http_signature",
+                        "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "items": [
+                        "plus" : False,
+                        "Statistics": "None",
+                        "item": [
                             {
-                                "item_value": "baidu.com",
+                                "item_operation": "add",
+                                "item_type": "request_header",
+                                "item_key": "User-Agent",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "curl"
+                                ]
                             }
-                        ]
+                        ],
                     }
-                ]
+                ],
             },
             "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},
@@ -331,7 +339,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "allow_srcip_fqdn"
+        "test_case_name": "allow_srcip_substr_reqheader_by_ua"
     }
 
     run(parameter)

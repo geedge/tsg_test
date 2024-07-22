@@ -266,7 +266,7 @@ def run(parameter):
         # 触发流量验证
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
-            edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],element_position_map)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],element_position_map)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()

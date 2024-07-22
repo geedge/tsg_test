@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "allow_srcip_fqdn_url_req_header_user_agent_res_header_content_type",
+            "rule_name": "allow_srcip_substr_fqdn_substr_url_substr_reqheader_by_ua__substr_resheader_by_ct",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -387,7 +387,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "allow_srcip_fqdn_url_req_header_user_agent_res_header_content_type"
+        "test_case_name": "allow_srcip_substr_fqdn_substr_url_substr_reqheader_by_ua__substr_resheader_by_ct"
     }
 
     run(parameter)

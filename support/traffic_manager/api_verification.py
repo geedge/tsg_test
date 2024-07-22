@@ -14,7 +14,7 @@ import platform
 import pytz
 import support.traffic_manager.trex_replay as trex_replay
 from support.traffic_manager.workpath import workdir
-from datetime import datetime
+from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -144,7 +144,9 @@ class ApiVerification():
             time.sleep(5)
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
-            start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            # 将时间向前推迟 8 分钟，因为trex流量先发送。
+            new_time = current_utc_time - timedelta(minutes=8)
+            start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             # 解析trex使用参数， 解析client server ip
             # if script_type == "ui":
                 # if "source_ip" in test_data["condition"].keys():
@@ -190,12 +192,12 @@ class ApiVerification():
                         hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
                         if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
                             break
-                        if verify_policy_break_count > 40:    # 预计验证10分钟，仍然不生效，则结束执行，报异常。
+                        if verify_policy_break_count > 40:    # 预计验证200秒，仍然不生效，则结束执行，报异常。
                             # 直接调用清空策略方法
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid test, end test. Policy id: {}".format(policy_id), flush=True)
                             return False, False, False, "The policy verification fail."
                         verify_policy_break_count += 1
-                        time.sleep(20)
+                        time.sleep(5)
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令

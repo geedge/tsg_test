@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "allow_srcip_res_header_content_type",
+            "rule_name": "allow_srcip_substr_url",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -70,26 +70,20 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_res_header_http_signature",
-                        "object_type": "http_signature",
+                        "name": "manipulation_url",
+                        "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
+                        "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "text/html"
-                                ]
+                                "item_type": "url",
+                                "item_value": "baidu->"
                             }
                         ],
-                    }
-                ],
+                    },
+                ]
             },
             "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},
@@ -339,7 +333,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "allow_srcip_res_header_content_type"
+        "test_case_name": "allow_srcip_substr_url"
     }
 
     run(parameter)

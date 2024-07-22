@@ -40,7 +40,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_allow_imsi_dns",
+            "rule_name": "secy_allow_imsi_dns",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -57,7 +57,7 @@ def run(parameter):
                 "sub_id": [],
                 "device": [
                     {
-                        "name": "security_imsi",
+                        "name": "secy_imsi",
                         "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,
@@ -106,11 +106,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_allow_imsi_dns"
+                "name": "secy_allow_imsi_dns"
             },
             {
                 "type": "mobile_identity",
-                "name": "security_imsi"
+                "name": "secy_imsi"
             }
         ]
         

@@ -112,6 +112,9 @@ def run(parameter):
             "token": ""
         }
 
+        # 重新改造test_data数据，包括trex使用的随机ip
+        test_data = generate_testdata(parameter, test_data)
+
         # 添加测试过程中涉及的template
         template_path = {}
         template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
@@ -186,7 +189,7 @@ if __name__ == "__main__":
         "debug_flag": "local",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 1,
         "is_log": 0,
         "root_path": "C:/zcw/tsg_test",
         "path": "C:/zcw/tsg_test/tests/api",

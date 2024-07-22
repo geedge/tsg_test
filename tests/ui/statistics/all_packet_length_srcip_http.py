@@ -132,7 +132,7 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
@@ -244,7 +244,7 @@ def run(parameter):
             # 触发流量验证
             if create_rule_code == 200:
                 search_rule = SearchRule(driver)
-                edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"],
+                search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],
                                                          element_position_map)
                 edit_rule_code = 200
                 if search_rule_code == 200:
