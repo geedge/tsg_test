@@ -194,6 +194,7 @@ def run(parameter):
                     "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
                     "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+                    # drop
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
                     "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,

@@ -17,6 +17,8 @@ class OrganizeConfig():
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
         policy_define = self.get_policy_define(token, test_data["rule_id"], test_data["policy_type"], api_server,
                                                vsys_id)
+        statistics_template_metrics_dict = {}
+        statistics_template_dimensions_dict = {}
         if test_data["policy_type"] == "statistics":
             # 从Statistics Rule定义信息中获取流量验证所需数据格式
             statistics_template_metrics_dimension_list = self.get_template_chart_metric_dimension(test_data)
@@ -25,24 +27,26 @@ class OrganizeConfig():
                 # 从Test Data中解析Metrics Key和Label、Dimensions Key和界面显示之间的字典关系
                 statistics_template_metrics_dict = {}
                 statistics_template_dimensions_dict = {}
-                for source in policy["source"]:
-                    if source["attribute_name"] == "ATTR_SOURCE_IP":
-                        for object in source["objects"]:
-                            if object["object_type"] == "ip" and object["object_sub_type"] == "ip":
-                                for id in object["object_ids"]:
-                                    create_ip_ids.append(id)
+                if policy["source"] != None:
+                    for source in policy["source"]:
+                        if source["attribute_name"] == "ATTR_SOURCE_IP":
+                            for object in source["objects"]:
+                                if object["object_type"] == "ip" and object["object_sub_type"] == "ip":
+                                    for id in object["object_ids"]:
+                                        create_ip_ids.append(id)
                     for source in policy["source"]:
                         if source["attribute_name"] == "ATTR_SOURCE_IP":
                             for object in source["objects"]:
                                 if object["object_type"] == "ip" and object["object_sub_type"] == "ip_learning":
                                     for id in object["object_ids"]:
                                         create_ip_ids.append(id)
-                for destination in policy["destination"]:
-                    if destination["attribute_name"] == "ATTR_DESTINATION_IP":
-                        for object in destination["objects"]:
-                            if object["object_type"] == "ip" and object["object_sub_type"] == "ip":
-                                for id in object["object_ids"]:
-                                    create_ip_ids.append(id)
+                if policy["destination"] != None:
+                    for destination in policy["destination"]:
+                        if destination["attribute_name"] == "ATTR_DESTINATION_IP":
+                            for object in destination["objects"]:
+                                if object["object_type"] == "ip" and object["object_sub_type"] == "ip":
+                                    for id in object["object_ids"]:
+                                        create_ip_ids.append(id)
                 user_region = policy["user_region"]
                 if user_region != {}:
                     template_id = user_region["template_id"]
@@ -101,17 +105,24 @@ class OrganizeConfig():
         cfg_list["statistics_template_dimensions_dict"] = statistics_template_dimensions_dict
         return cfg_list
 
-    def generate_random_ip(self, config, run_env):
+    def generate_random_ip(self, config, parameter):
+        vsys_id = parameter["vsys_id"]
+        run_env = parameter["env"]
         # statistics中将ip改为随机
         if "condition" in config.keys():
             for obj in config["condition"]:
-                if "source_ip" == obj or "destination_ip" in obj:
+                if "source_ip" == obj:# or "destination_ip" in obj:
                     src_ip = config["condition"]["source_ip"][0]["item"][0]["item_value"]
+                    traffic_replace_ip = 0
                     if "default" in src_ip:
                         src_ip = "10.64.77.11"
+                        traffic_replace_ip = 1
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
-                        src_ip_list[2] = str(random.randint(224, 224))
+                        if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(1, 25))
+                        elif str(vsys_id) == "11":  # 根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(224, 224))
                         src_ip_list[3] = str(random.randint(100, 250))
                         if run_env == "9140":
                             src_ip_list[0] = "172"
@@ -120,13 +131,19 @@ class OrganizeConfig():
                             src_ip_list[0] = "10"
                             src_ip_list[1] = "64"
                         new_src_ip = ".".join(src_ip_list)
-                        config["condition"]["source_ip"][0]["item"][0]["item_value"] = new_src_ip
+                        start_ip = new_src_ip
+                        stop_ip = new_src_ip
+                        config["condition"][obj][0]["item"][0]["item_value"] = new_src_ip
                     elif "-" in src_ip and "/" not in src_ip:
                         two_ip_list = src_ip.split("-")
                         ip_list_1 = two_ip_list[0].split(".")
                         ip_list_2 = two_ip_list[1].split(".")
-                        ip_list_1[2] = str(random.randint(200, 250))
-                        ip_list_1[3] = str(random.randint(1, 50))
+                        if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
+                            ip_list_1[2] = str(random.randint(1, 25))
+                        elif str(vsys_id) == "11":  # 根据vsys id，确认IP范围
+                            ip_list_1[2] = str(random.randint(224, 224))
+                        else:
+                            ip_list_1[3] = str(random.randint(1, 50))
                         ip_list_2[2] = ip_list_1[2]
                         ip_list_2[3] = str(int(ip_list_1[3]) + 200)
                         new_ip_1 = ".".join(ip_list_1)
@@ -144,9 +161,26 @@ class OrganizeConfig():
                         new_two_ip_list = []
                         new_two_ip_list.append(new_ip_1)
                         new_two_ip_list.append(new_ip_2)
+                        start_ip = new_ip_1
+                        stop_ip = new_ip_2
                         new_two_ip = "-".join(new_two_ip_list)
-                        config["condition"]["source_ip"][0]["item"][0]["item_value"] = new_two_ip
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
+                        config["condition"][obj][0]["item"][0]["item_value"] = new_two_ip
+                    else:
+                        start_ip = stop_ip = "1.1.1.1"
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
+
+                    # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
+                    if obj == "source_ip":# and traffic_replace_ip == 1:
+                        config["traffic"]["clients_start_ip"] = start_ip
+                        config["traffic"]["clients_end_ip"] = stop_ip
+                    #elif obj == "destination_ip":# and traffic_replace_ip == 1:
+                    #    config["traffic"]["servers_start_ip"] = start_ip
+                    #    config["traffic"]["servers_end_ip"] = stop_ip
+                    else:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Setrandom ip error.", flush=True)
+                        pass
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
 
     def get_policy_define(self, token, rule_id, rule_type, api_host, vsys_id):
@@ -213,7 +247,7 @@ class OrganizeConfig():
                             chart_temp_dict = {}
                             for dimension in chart["dimensions"]:
                                 chart_temp_dict[dimensions_dict[dimension]] = dimension
-                            if chart["visualization_type"] == "Line":
+                            if chart["visualization_type"] == "Line" and len(chart_temp_dict) == 0:
                                 #因Line的Time Dimension仅有一个选项为默认必选，所以测试参数未带有此选项需要特殊处理
                                 chart_temp_dict["Time"] = "time"
                             chart_dict["dimensions"] = chart_temp_dict
