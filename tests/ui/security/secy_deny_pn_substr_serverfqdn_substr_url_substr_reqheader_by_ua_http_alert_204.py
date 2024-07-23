@@ -7,19 +7,24 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
+from support.ui_utils.profile.create_profile import CreateProfile
+from support.ui_utils.profile.search_profile import SearchProfile
+from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
+from support.ui_utils.element_position.profile_element_position import *
 from support.traffic_manager.verification import Verification
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 import support.ui_utils.env
-from support.report import *
+from support.ui_utils.element_position.map_element_position_library import *
 
+from support.report import *
 from datetime import datetime
 
 def run(parameter):
@@ -41,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "deny_phone_number_ip_proto_tcp_http_server_fqdn_url_res_header_tamper",
+            "rule_name": "secy_deny_pn_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_alert_204",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -58,7 +63,7 @@ def run(parameter):
                 "sub_id": [],
                 "device": [
                     {
-                        "name": "security_phone_number",
+                        "name": "secy_pn",
                         "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,
@@ -81,12 +86,9 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "ip_protocol":[
-                    "TCP"
-                ],
                 "server_fqdn": [
                     {
-                        "name": "test_node",
+                        "name": "secy_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -100,7 +102,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "security_url",
+                        "name": "secy_url",
                         "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
@@ -114,7 +116,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "security_res_header_http_signature",
+                        "name": "secy_httpsig",
                         "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
@@ -124,11 +126,11 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
+                                "item_type": "request_header",
+                                "item_key": "User-Agent",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "text/html"
+                                    "curl"
                                 ]
                             }
                         ],
@@ -137,19 +139,21 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "tamper",
+                        "type": "alert",
+                        "code": 204,
+                        "content_type": "Profile",
+                        "content": "test_tsg_ui_profile_page"
                     }
                 ],
                 "packet_capture": []
             },
-            "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "204",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
+            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"helloSecurity\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://open.node.com:180/go"
+                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
             },
             "token": ""
         }
@@ -162,11 +166,23 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "deny_phone_number_ip_proto_tcp_http_server_fqdn_url_res_header_tamper"
+                "name": "secy_deny_pn_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_alert_204"
             },
             {
                 "type": "mobile_identity",
-                "name": "security_phone_number"
+                "name": "secy_pn"
+            },
+            {
+                "type": "fqdn",
+                "name": "secy_fqdn"
+            },
+            {
+                "type": "url",
+                "name": "secy_url"
+            },
+            {
+                "type": "http_signature",
+                "name": "secy_httpsig"
             }
         ]
         
@@ -313,19 +329,21 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
+                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
+                    # phone number
+                    "policyRulePage_addConditionImsi_posXpath": securityRulePage_addCondition_imsi_posXpath,
+                    "policyRulePage_addImsi_posXpath": securityRulePage_addImsi_posXpath,
+                    "policyRulePage_choosePhoneNumber_posXpath": securityRulePage_choosePhoneNumber_posXpath,
+                    "policyRulePage_searchImsi_posXpath": policyRulePage_searchImsi_posXpath,
+                    "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
+                    "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                    "policyRulePage_addConditionImsi_posXpath": securityRulePage_addCondition_imsi_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    "policyRulePage_addImsi_posXpath": securityRulePage_addImsi_posXpath,
-                    "policyRulePage_choosePhoneNumber_posXpath": securityRulePage_choosePhoneNumber_posXpath,
-                    "policyRulePage_searchImsi_posXpath": policyRulePage_searchImsi_posXpath,
-                    "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
-                    "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
                     # fqdn
                     "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
                     "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
@@ -338,23 +356,23 @@ def run(parameter):
                     "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
                     "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
                     "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
-                    # res header
-                    "policyRulePage_addConditionResponseHeader_posXpath": securityRulePage_addCondition_responseHeader_posXpath,
-                    "policyRulePage_addResponseHeader_posXpath": manipulationRulePage_addResponseHeader_posXpath,
-                    "policyRulePage_searchResponseHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
-                    "policyRulePage_selectResponseHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
-                    "policyRulePage_closeResponseHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
-                    # ip protocol
-                    "policyRulePage_addConditionIpProtocol_posXpath": policyRulePage_addCondition_IpProtocol_posXpath,
-                    "policyRulePage_addIpProtocol_posXpath": policyRulePage_addIpProtocol_posXpath,
-                    "policyRulePage_searchIpProtocol_posXpath": policyRulePage_searchIpProtocol_posXpath,
-                    "policyRulePage_selectIpProtocol_posXpath": policyRulePage_selectIpProtocol_posXpath,
-                    "policyRulePage_closeIpProtocol_posXpath": policyRulePage_closeIpProtocol_posXpath,
-                    # 关闭add condition
+                    # req header
+                    "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
+                    "policyRulePage_addRequestHeader_posXpath": manipulationRulePage_addRequestHeader_posXpath,
+                    "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
+                    "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
+                    "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    # sub action
-                    "policyRulePage_subAction_tamper_posXpath": securityRulePage_subAction_tamper_posXpath,
+                    # alert动作
+                    "policyRulePage_subAction_alert_posXpath": securityRulePage_subAction_alert_posXpath,
+                    "policyRulePage_subAction_alert_responseCode_posXpath": securityRulePage_subAction_alert_responseCode_posXpath,
+                    "policyRulePage_subAction_alert_responseCode_change_posXpath": securityRulePage_subAction_alert_responseCode_change_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_posXpath": securityRulePage_subAction_alert_responseContent_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_change_posXpath": securityRulePage_subAction_alert_responseContent_change_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_clickProfile_posXpath": securityRulePage_subAction_alert_responseContent_clickProfile_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_searchProfile_posXpath": securityRulePage_subAction_alert_responseContent_searchProfile_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_selectProfile_posId": securityRulePage_subAction_alert_responseContent_selectProfile_posId,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -373,7 +391,6 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath":securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
-        
         # 创建phone number
         if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
             device_data = test_data["condition"]["device"]
@@ -413,14 +430,16 @@ def run(parameter):
                     result = "Fail to create {}.".format(object_type)
                     break
         # 创建rule
-        if create_device_code == 200:
+        if create_protocol_filed_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-            
+
+        
+
         # 触发流量验证
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -477,7 +496,7 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search {} object.".format(object_sub_type)
-            # 删除fqdn
+        # 删除fqdn
             for x in range(len(fqdn_data)):
                 search_fqdn = SearchObject(driver)
                 search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"], test_fqdn_object_element_position)
@@ -492,7 +511,6 @@ def run(parameter):
                 else:
                     result = result + " In addition, fail to search fqdn object."
                     break
-        
         # 删除protocol_filed
             for q in range(len(protocol_field_data)):
                 search_protocol_filed = SearchObject(driver)
@@ -515,7 +533,6 @@ def run(parameter):
                 else:
                     result = result + " In addition, fail to search {} object.".format(object_type)
                     break
-                # 脚本结束时间和耗时
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -557,20 +574,20 @@ def run(parameter):
                 report_data.append("")
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
-
+            
 if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.100",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.91",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 11,
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/ui",
         "module_name": "security",
         "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
     }

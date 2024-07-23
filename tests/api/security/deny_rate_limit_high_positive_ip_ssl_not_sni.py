@@ -67,7 +67,7 @@ def run(parameter):
             "app_name_1": ["ssl"],
             "expected_return": "youtube",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [],
+            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"www.youtube.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

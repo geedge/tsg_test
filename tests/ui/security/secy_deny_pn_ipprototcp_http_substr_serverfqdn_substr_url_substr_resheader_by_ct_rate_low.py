@@ -164,7 +164,7 @@ def run(parameter):
                 "type": "security",
                 "name": "secy_deny_pn_ipprototcp_http_substr_serverfqdn_substr_url_substr_resheader_by_ct_rate_low"
             },
-{
+            {
                 "type": "mobile_identity",
                 "name": "secy_pn"
             },
