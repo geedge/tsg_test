@@ -416,7 +416,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 11,#6
+        "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",

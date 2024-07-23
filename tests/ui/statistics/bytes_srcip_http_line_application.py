@@ -48,8 +48,8 @@ def run(parameter):
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
@@ -95,7 +95,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "http",
                         "object_type": "application",
                         "negate": False
                     }
@@ -143,6 +143,9 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [#如果Bytes Aggregate为：BITRATE则Bytes*8
+                {"applicatoin": "2407TCP","bytes": 754864}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -410,7 +413,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 11,#6
+        "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
