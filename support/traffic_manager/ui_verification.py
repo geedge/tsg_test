@@ -36,8 +36,31 @@ class UiVerification():
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
                         log_number = log_number_str.split(": ")[-1]
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "log_number:", log_number, flush=True)
-                        if int(hit_count) == int(log_number) == 1:
-                            log_result = True
+                        if int(hit_count) == int(log_number):
+                            # 以Server IP为例，在log_query_list.ini中通过log api查找log ui的值
+                            parse = configparser.ConfigParser()
+                            parse_dir = os.path.join(workdir, "log_query_list.ini")
+                            parse.read(parse_dir, encoding="utf-8")
+                            temp_log_result_list = []
+                            # 点击展开
+                            my_driver.find_element("//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
+                            for t in range(len(test_data["log_query_param"])):
+                                log_query_key = test_data["log_query_param"][t]["query_field_key"]
+                                log_str = parse.get("log", log_query_key)
+                                if log_query_key == "server_ip":
+                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/parent::div//span[@class='el-dropdown-link popover-click color262626 el-dropdown-selfdefine']".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(log_item_posXpath).text
+                                    if temp_value == test_data["log_query_param"][t]["query_field_key"]:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                    temp_log_result_list.append(temp_log_result)
+                                elif log_query_key == "server_port":
+                                    print("to be added.")
+                            if False not in temp_log_result_list:
+                                log_result = True
+                            else:
+                                log_result = False
                         elif int(hit_count) > 1 and test_data["counters"]["hits"] == "many":
                             log_result = True
                 
