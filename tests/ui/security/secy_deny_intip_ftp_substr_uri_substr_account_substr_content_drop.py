@@ -144,7 +144,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "timed out",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"}],
             "traffic": {
                 "protocol": "ftp",
