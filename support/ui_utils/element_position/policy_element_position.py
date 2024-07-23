@@ -607,7 +607,7 @@ shapingRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-bu
 mainPage_policySecondLevelMenu_monitor_posId = "policy_monitor"
 monitorRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
 monitorRuleListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
-monitorRuleListPage_searchLable_posId = shapingRuleListPage_searchLable_posId
+monitorRuleListPage_searchLable_posId = securityRuleListPage_searchLable_posId
 monitorRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
 monitorRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
 monitorRuleListPage_searchLable_searchButton_posId = "searchQuery"
@@ -646,7 +646,7 @@ monitorRulePage_addProfile_addVLANID_plusButton_posXpath='//*[@id="addrTypeAdd"]
 monitorRulePage_saveProile_ok_posXpath='//*[@id="trafficMirrorProfile_ok"]'
 monitorRulePage_saveProile_warningYes_posXpath='//button[@class="el-button el-button--default el-button--small el-button--primary operation-confirm"]'
 #monitor新建页/编辑页按钮
-monitorRulePage_enable_posXpath = shapingRulePage_enable_posXpath
+monitorRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 monitorRulePage_okButton_posId = "OK-_policy_monitor_write_Home_App_anonymousComponent"
 monitorRulePage_warningYes_posXpath =shapingRulePage_okButton_warningYes_posXpath
 monitorRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
@@ -736,8 +736,26 @@ monitorRulePage_selectftpContent_posXpath = policyRulePage_selectFtpContent_posX
 monitorRulePage_closeftpContent_posXpath = policyRulePage_closeFtpContent_posXpath
 #monitor add  phone number
 monitorRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath
-#monitor add mail filter
-
+#monitor add mail account
+monitorRulePage_addmailAccount_posXpath = policyRulePage_addMailAccount_posXpath
+monitorRulePage_searchmailAccount_posXpath = policyRulePage_searchMailAccount_posXpath
+monitorRulePage_selectmailAccount_posXpath = policyRulePage_selectMailAccount_posXpath
+monitorRulePage_closemailAccount_posXpath = policyRulePage_closeMailAccount_posXpath
+#monitor add mail from
+monitorRulePage_addmailFrom_posXpath = policyRulePage_addMailFrom_posXpath
+monitorRulePage_searchmailFrom_posXpath = policyRulePage_searchMailFrom_posXpath
+monitorRulePage_selectmailFrom_posXpath = policyRulePage_selectMailFrom_posXpath
+monitorRulePage_closemailFrom_posXpath = policyRulePage_closeMailFrom_posXpath
+#monitor add mail to
+monitorRulePage_addmailTo_posXpath = policyRulePage_addMailTo_posXpath
+monitorRulePage_searchmailTo_posXpath = policyRulePage_searchMailTo_posXpath
+monitorRulePage_selectmailTo_posXpath = policyRulePage_selectMailTo_posXpath
+monitorRulePage_closemailTo_posXpath = policyRulePage_closeMailTo_posXpath
+#monitor add mail subject
+monitorRulePage_addmailSubject_posXpath = policyRulePage_addMailSubject_posXpath
+monitorRulePage_searchmailSubject_posXpath = policyRulePage_searchMailSubject_posXpath
+monitorRulePage_selectmailSubject_posXpath = policyRulePage_selectMailSubject_posXpath
+monitorRulePage_closemailSubject_posXpath = policyRulePage_closeMailSubject_posXpath
 
 #### statistics
 statisticsRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_statistics_Home_App_anonymousComponent"
