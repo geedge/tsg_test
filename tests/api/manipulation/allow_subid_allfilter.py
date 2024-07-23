@@ -113,7 +113,7 @@ def run(parameter):
             "app_name_1": ["http"],
             "expected_return": "Example",
             "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.example.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "wget",

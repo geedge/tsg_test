@@ -47,7 +47,7 @@ def run(parameter):
             "app_name_1": ["dns_qry_name"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [],
+            "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.youtube.com"}],
             "traffic": {
                 "protocol": "dns",
                 "type": "nslookup",

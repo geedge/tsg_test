@@ -135,6 +135,10 @@ def run(parameter):
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         return "Error: " + str(e)
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
+        return "Error: " + str(e)
     finally:
         name_list = []
         delete = DeletePolicy()
@@ -142,15 +146,12 @@ def run(parameter):
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
-          if result is not None and result != "" and len(result) != 0:
-            report_data = []
-            report_data.append(parameter["test_case_name"])
-            if False in verification_result:
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
                 result_flag = "Fail"
-            else:
-                result_flag = "Pass"
-            report_data.append(result_flag)
-            report_data.append(result)
+                report_data.append(result_flag)
+                report_data.append(result)
             elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
                 report_data = []
                 report_data.append("test_case_name")
@@ -164,7 +165,6 @@ def run(parameter):
                 report_data.append(result_flag)
                 report_data.append("")
             new_report = GenerateReport()
-            new_report.insert_data(parameter, report_data)            new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
       
 if __name__ == "__main__":

@@ -710,12 +710,12 @@ monitorRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posX
 monitorRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
 monitorRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 #monitor add url
-monitorRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
+monitorRulePage_addUrl_posXpath = "//p[normalize-space(text())='URL']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
 monitorRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
 monitorRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
 monitorRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
 #monitor add requset header
-monitorRulePage_addRequestHeader_posXpath = policyRulePage_addRequestHeader_posXpath
+monitorRulePage_addRequestHeader_posXpath =  "//p[normalize-space(text())='Request Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
 monitorRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 monitorRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 monitorRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath

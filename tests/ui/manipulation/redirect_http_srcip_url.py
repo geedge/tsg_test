@@ -61,21 +61,6 @@ def run(parameter):
                         ]
                     }
                 ],
-                "destination_port": [
-                    {
-                        "name": "manipulation_destination_port",
-                        "object_type": "port",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "port",
-                                "item_value": "443",
-                            },
-                        ]
-                    }
-                ],
                 "application": [
                     {
                         "name": "http",  #

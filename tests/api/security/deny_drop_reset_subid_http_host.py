@@ -61,13 +61,13 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["http"],
-            "expected_return": "SSL_ERROR_SYSCALL",
+            "expected_return": "reset",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv http://open.node.com:180/go"
+                "command": "curl -kv http://open.node.com:180"
             },
             "token": ""
         }

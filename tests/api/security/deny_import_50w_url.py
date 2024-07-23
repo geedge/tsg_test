@@ -24,7 +24,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_action_1": "allow",
+            "rule_action_1": "deny",
+            "method_1": "drop",
             "do_log_1": 2,
             "obj_condition_1": [
                 {
@@ -62,9 +63,9 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["http"],
-            "expected_return": "POST",
-            "counters_1": {"hits": 0},
-            "log_query_param_1": [],
+            "expected_return": "reset",
+            "counters_1": {"hits": 1},
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
@@ -147,12 +148,13 @@ if __name__ == "__main__":
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.88",
+        "test_pc_ip": "192.168.64.100",
         "test_subcriber_id": "test6488",
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 1,
+        "debug_flag": "local",
         "is_log": 0,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/api",

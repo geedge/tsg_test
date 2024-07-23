@@ -102,13 +102,13 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["ftp"],
-            "expected_return": "timed out",
+            "expected_return": "reset",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -m 5 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 25 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },
             "token": ""
         }
