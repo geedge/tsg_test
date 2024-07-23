@@ -46,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_extip_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_alert_200_profile",
+            "rule_name": "secy_deny_extip_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_block_403_profile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -102,7 +102,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "secy_url",
+                        "name": "secy_fqdn",
                         "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
@@ -139,8 +139,8 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "alert",
-                        "code": 200,
+                        "type": "block",
+                        "code": 403,
                         "content_type": "Profile",
                         "content": "secy_respage"
                     }
@@ -151,7 +151,7 @@ def run(parameter):
                 "response_page": [
                     {
                         "profile_type": "response_page",
-                        "response_code": 200,
+                        "response_code": 403,
                         "response_content_type": "Profile",
                         "profile_file": {
                             "name": "secy_respage",
@@ -161,13 +161,13 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "200",
+            "expected_return": "403",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv http://open.node.com:180"
+                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
             },
             "token": ""
         }
@@ -180,7 +180,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_extip_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_alert_200_profile"
+                "name": "secy_deny_extip_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_block_403_profile"
             },
             {
                 "type": "ip",

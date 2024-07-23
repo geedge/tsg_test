@@ -46,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_extip_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_block_403_profile",
+            "rule_name": "secy_deny_pn_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_block_404_profile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -56,26 +56,26 @@ def run(parameter):
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
-                "external_ip": [
+                "external_ip": [],
+                "external_port": [],
+                "source_geography": [],
+                "destination_geography": [],
+                "sub_id": [],
+                "device": [
                     {
-                        "name": "secy_extip",
-                        "object_type": "ip",
+                        "name": "secy_pn",
+                        "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "192.168.40.206",
+                                "item_type": "phone_number",
+                                "item_value": '$' + parameter['test_phone_number'],
                             }
                         ]
                     }
                 ],
-                "external_port": [],
-                "source_geography": [],
-                "destination_geography": [],
-                "sub_id": [],
-                "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
@@ -102,7 +102,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "secy_fqdn",
+                        "name": "secy_url",
                         "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
@@ -140,9 +140,9 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "block",
-                        "code": 403,
+                        "code": 404,
                         "content_type": "Profile",
-                        "content": "secy_respage"
+                        "content": "secy_res"
                     }
                 ],
                 "packet_capture": []
@@ -151,17 +151,17 @@ def run(parameter):
                 "response_page": [
                     {
                         "profile_type": "response_page",
-                        "response_code": 403,
+                        "response_code": 404,
                         "response_content_type": "Profile",
                         "profile_file": {
-                            "name": "secy_respage",
+                            "name": "secy_res",
                             "model": "create",
                             "file": "testa.html->"
                         },
                     }
                 ]
             },
-            "expected_return": "403",
+            "expected_return": "404",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
@@ -180,11 +180,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_extip_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_block_403_profile"
+                "name": "secy_deny_pn_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_block_404_profile"
             },
             {
-                "type": "ip",
-                "name": "secy_extip"
+                "type": "mobile_identity",
+                "name": "secy_pn"
             },
             {
                 "type": "fqdn",
@@ -200,42 +200,42 @@ def run(parameter):
             },
             {
                 "type": "response_page",
-                "name": "secy_respage"
+                "name": "secy_res"
             }
         ]
         
         # 添加定位库集合
         test_rule_element_position = {}
         if test_data["policy_type"] == "security":
-            test_ip_object_element_position = {
+            test_phone_number_object_element_position = {
                 "page_jump":{
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                     "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
                 },
                 "create": {
-                    "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
-                    "objectPage_ipType_posId": ipObjectPage_ipType_posId,
-                    "objectPage_addItem_posId": ipObjectPage_addItem_posId,
-                    "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": ipObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath
+                    "objectListPage_createButton_posId": mobile_identitiesObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": mobile_identitiesObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": mobile_identitiesObjectPage_inputName_posXpath,
+                    "objectPage_phnoeNumberType_posId": phoneNumberObjectPage_phoneNumberType_posId,
+                    "objectPage_addItem_posId": phoneNumberObjectPage_addItem_posId,
+                    "objectPage_inputItem_posXpath": phoneNumberObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": phoneNumberObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": phoneNumberObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": phoneNumberObjectPage_okButton_warningYes_posXpath
                 },
                 "search": {
-                    "objectListPage_searchLabel_posId": ipObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_searchLabel_posId": imsiObjectListPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": imsiObjectListPage_searchLabel_selectName_posXpath,
                     "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath
                 },
                 "delete": {
-                    "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": ipObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
+                    "objectListPage_allSelect_posXpath": imsiObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": imsiObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
             test_fqdn_object_element_position = {
@@ -348,11 +348,13 @@ def run(parameter):
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
                     "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
-                    "policyRulePage_addConditionExternalIP_posXpath": securityRulePage_addCondition_externalIP_posXpath,
-                    "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
-                    "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
-                    "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
-                    "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
+                    # phone number
+                    "policyRulePage_addConditionImsi_posXpath": securityRulePage_addCondition_imsi_posXpath,
+                    "policyRulePage_addImsi_posXpath": securityRulePage_addImsi_posXpath,
+                    "policyRulePage_choosePhoneNumber_posXpath": securityRulePage_choosePhoneNumber_posXpath,
+                    "policyRulePage_searchImsi_posXpath": policyRulePage_searchImsi_posXpath,
+                    "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
+                    "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -389,14 +391,6 @@ def run(parameter):
                     "policyRulePage_subAction_block_responseContent_clickProfile_posXpath": securityRulePage_subAction_block_responseContent_clickProfile_posXpath,
                     "policyRulePage_subAction_block_responseContent_searchProfile_posXpath": securityRulePage_subAction_block_responseContent_searchProfile_posXpath,
                     "policyRulePage_subAction_block_responseContent_selectProfile_posId": securityRulePage_subAction_block_responseContent_selectProfile_posId,
-                    "policyRulePage_subAction_alert_posXpath": securityRulePage_subAction_alert_posXpath,
-                    "policyRulePage_subAction_alert_responseCode_posXpath": securityRulePage_subAction_alert_responseCode_posXpath,
-                    "policyRulePage_subAction_alert_responseCode_change_posXpath": securityRulePage_subAction_alert_responseCode_change_posXpath,
-                    "policyRulePage_subAction_alert_responseContent_posXpath": securityRulePage_subAction_alert_responseContent_posXpath,
-                    "policyRulePage_subAction_alert_responseContent_change_posXpath": securityRulePage_subAction_alert_responseContent_change_posXpath,
-                    "policyRulePage_subAction_alert_responseContent_clickProfile_posXpath": securityRulePage_subAction_alert_responseContent_clickProfile_posXpath,
-                    "policyRulePage_subAction_alert_responseContent_searchProfile_posXpath": securityRulePage_subAction_alert_responseContent_searchProfile_posXpath,
-                    "policyRulePage_subAction_alert_responseContent_selectProfile_posId": securityRulePage_subAction_alert_responseContent_selectProfile_posId,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -415,17 +409,18 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath":securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
-        
-        # 创建object
-        if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
-            ip_data = test_data["condition"]["external_ip"]
-            create_port = CreateObject(driver)
-            for i in range(len(ip_data)):
-                create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
-                if create_port_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
-                elif create_port_code != 200:
-                    result = "Fail to create ip."
+        # 创建phone number
+        if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
+            device_data = test_data["condition"]["device"]
+            create_device = CreateObject(driver)
+            for i in range(len(device_data)):
+                object_sub_type = device_data[i]['item'][0]['item_type']
+                if object_sub_type == 'phone_number':
+                    create_device_code = create_device.create(device_data[i], test_phone_number_object_element_position)
+                if create_device_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_sub_type), flush=True)
+                elif create_device_code != 200:
+                    result = "Fail to create {} object.".format(object_sub_type)
                     break
         if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
             fqdn_data = test_data["condition"]["server_fqdn"]
@@ -473,7 +468,7 @@ def run(parameter):
                 if prfi_status == 1:  # 创建失败，退出遍历创建
                     break
         # 创建rule
-        if create_port_code == 200:
+        if prfi_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -522,21 +517,23 @@ def run(parameter):
         
         # 删除object
         if delete_rule_code == 200:
-            # 删除ip
-            for x in range(len(ip_data)):
-                search_ip = SearchObject(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
-                if search_ip_code == 200:
-                    delete_ip = DeleteObject(driver)
-                    delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
-                    if delete_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
-                    elif delete_ip_code != 200:
-                        result = result + " In addition, fail to delete ip object."
+            # 删除device相关的object
+            for y in range(len(device_data)):
+                search_device = SearchObject(driver)
+                object_sub_type = device_data[i]['item'][0]['item_type']
+                if object_sub_type == 'phone_number':
+                    search_device_code, first_row_checkbox_element = search_device.search(device_data[y]["name"], test_phone_number_object_element_position)
+                if search_device_code == 200:
+                    delete_device = DeleteObject(driver)
+                    if object_sub_type == 'phone_number':
+                        delete_device_code = delete_device.delete(test_phone_number_object_element_position, first_row_checkbox_element, True)
+                    if delete_device_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_sub_type), flush=True)
+                    elif delete_device_code != 200:
+                        result = result + " In addition, fail to delete {} object.".format(object_sub_type)
                         break
                 else:
-                    result = result + " In addition, fail to search ip object."
-                    break
+                    result = result + " In addition, fail to search {} object.".format(object_sub_type)
         # 删除fqdn
             for x in range(len(fqdn_data)):
                 search_fqdn = SearchObject(driver)
@@ -651,12 +648,12 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.100",
+        "test_pc_ip": "192.168.64.91",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 11,
         "is_log": 1,
         "root_path": "D:/python_script/tsg_test",
         "path": "D:/python_script/tsg_test/tests/ui",

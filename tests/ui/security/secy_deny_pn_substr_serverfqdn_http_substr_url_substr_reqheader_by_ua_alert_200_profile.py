@@ -46,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_pn_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_block_403_profile",
+            "rule_name": "secy_deny_pn_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_alert_200_profile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -130,7 +130,7 @@ def run(parameter):
                                 "item_key": "User-Agent",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "curl"
+                                    "wget"
                                 ]
                             }
                         ],
@@ -139,10 +139,10 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "block",
-                        "code": 403,
+                        "type": "alert",
+                        "code": 200,
                         "content_type": "Profile",
-                        "content": "secy_res"
+                        "content": "secy_respage"
                     }
                 ],
                 "packet_capture": []
@@ -151,23 +151,23 @@ def run(parameter):
                 "response_page": [
                     {
                         "profile_type": "response_page",
-                        "response_code": 403,
+                        "response_code": 200,
                         "response_content_type": "Profile",
                         "profile_file": {
-                            "name": "secy_res",
+                            "name": "secy_respage",
                             "model": "create",
                             "file": "testa.html->"
                         },
                     }
                 ]
             },
-            "expected_return": "403",
+            "expected_return": "200",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "http",
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "type": "wget",
+                "command": "wget -q -O- --debug http://open.node.com:180"
             },
             "token": ""
         }
@@ -180,7 +180,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_pn_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_block_403_profile"
+                "name": "secy_deny_pn_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_alert_200_profile"
             },
             {
                 "type": "mobile_identity",
@@ -200,7 +200,7 @@ def run(parameter):
             },
             {
                 "type": "response_page",
-                "name": "secy_res"
+                "name": "secy_respage"
             }
         ]
         
@@ -382,15 +382,15 @@ def run(parameter):
                     "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    # block动作
-                    "policyRulePage_subAction_block_posXpath": securityRulePage_subAction_block_posXpath,
-                    "policyRulePage_subAction_block_responseCode_posXpath": securityRulePage_subAction_block_responseCode_posXpath,
-                    "policyRulePage_subAction_block_responseCode_change_posXpath": securityRulePage_subAction_block_responseCode_change_posXpath,
-                    "policyRulePage_subAction_block_responseContent_posXpath": securityRulePage_subAction_block_responseContent_posXpath,
-                    "policyRulePage_subAction_block_responseContent_change_posXpath": securityRulePage_subAction_block_responseContent_change_posXpath,
-                    "policyRulePage_subAction_block_responseContent_clickProfile_posXpath": securityRulePage_subAction_block_responseContent_clickProfile_posXpath,
-                    "policyRulePage_subAction_block_responseContent_searchProfile_posXpath": securityRulePage_subAction_block_responseContent_searchProfile_posXpath,
-                    "policyRulePage_subAction_block_responseContent_selectProfile_posId": securityRulePage_subAction_block_responseContent_selectProfile_posId,
+                    # alert动作
+                    "policyRulePage_subAction_alert_posXpath": securityRulePage_subAction_alert_posXpath,
+                    "policyRulePage_subAction_alert_responseCode_posXpath": securityRulePage_subAction_alert_responseCode_posXpath,
+                    "policyRulePage_subAction_alert_responseCode_change_posXpath": securityRulePage_subAction_alert_responseCode_change_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_posXpath": securityRulePage_subAction_alert_responseContent_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_change_posXpath": securityRulePage_subAction_alert_responseContent_change_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_clickProfile_posXpath": securityRulePage_subAction_alert_responseContent_clickProfile_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_searchProfile_posXpath": securityRulePage_subAction_alert_responseContent_searchProfile_posXpath,
+                    "policyRulePage_subAction_alert_responseContent_selectProfile_posId": securityRulePage_subAction_alert_responseContent_selectProfile_posId,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath

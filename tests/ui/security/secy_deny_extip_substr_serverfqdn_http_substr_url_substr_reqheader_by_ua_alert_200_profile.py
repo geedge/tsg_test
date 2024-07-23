@@ -46,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_extip_substr_serverfqdn_substr_url_substr_req_header_by_ua_http_alert_204",
+            "rule_name": "secy_deny_extip_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_alert_200_profile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -140,20 +140,34 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "alert",
-                        "code": 204,
+                        "code": 200,
                         "content_type": "Profile",
                         "content": "secy_respage"
                     }
                 ],
                 "packet_capture": []
             },
-            "expected_return": "204",
+            "action_parameter": {
+                "response_page": [
+                    {
+                        "profile_type": "response_page",
+                        "response_code": 200,
+                        "response_content_type": "Profile",
+                        "profile_file": {
+                            "name": "secy_respage",
+                            "model": "create",
+                            "file": "testa.html->"
+                        },
+                    }
+                ]
+            },
+            "expected_return": "200",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "command": "curl -kv http://open.node.com:180"
             },
             "token": ""
         }
@@ -166,7 +180,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_extip_substr_serverfqdn_substr_url_substr_req_header_by_ua_http_alert_204"
+                "name": "secy_deny_extip_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_alert_200_profile"
             },
             {
                 "type": "ip",
@@ -183,6 +197,10 @@ def run(parameter):
             {
                 "type": "http_signature",
                 "name": "secy_httpsig"
+            },
+            {
+                "type": "response_page",
+                "name": "secy_respage"
             }
         ]
         
@@ -329,7 +347,7 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    # external ip
+                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
                     "policyRulePage_addConditionExternalIP_posXpath": securityRulePage_addCondition_externalIP_posXpath,
                     "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
                     "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
@@ -362,7 +380,15 @@ def run(parameter):
                     "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    # alert动作
+                    # block动作
+                    "policyRulePage_subAction_block_posXpath": securityRulePage_subAction_block_posXpath,
+                    "policyRulePage_subAction_block_responseCode_posXpath": securityRulePage_subAction_block_responseCode_posXpath,
+                    "policyRulePage_subAction_block_responseCode_change_posXpath": securityRulePage_subAction_block_responseCode_change_posXpath,
+                    "policyRulePage_subAction_block_responseContent_posXpath": securityRulePage_subAction_block_responseContent_posXpath,
+                    "policyRulePage_subAction_block_responseContent_change_posXpath": securityRulePage_subAction_block_responseContent_change_posXpath,
+                    "policyRulePage_subAction_block_responseContent_clickProfile_posXpath": securityRulePage_subAction_block_responseContent_clickProfile_posXpath,
+                    "policyRulePage_subAction_block_responseContent_searchProfile_posXpath": securityRulePage_subAction_block_responseContent_searchProfile_posXpath,
+                    "policyRulePage_subAction_block_responseContent_selectProfile_posId": securityRulePage_subAction_block_responseContent_selectProfile_posId,
                     "policyRulePage_subAction_alert_posXpath": securityRulePage_subAction_alert_posXpath,
                     "policyRulePage_subAction_alert_responseCode_posXpath": securityRulePage_subAction_alert_responseCode_posXpath,
                     "policyRulePage_subAction_alert_responseCode_change_posXpath": securityRulePage_subAction_alert_responseCode_change_posXpath,
@@ -389,6 +415,7 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath":securityRuleListpage_okButton_warningNo_posXpath
                 }
             }
+        
         # 创建object
         if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
             ip_data = test_data["condition"]["external_ip"]
@@ -425,8 +452,28 @@ def run(parameter):
                 elif create_protocol_filed_code != 200:
                     result = "Fail to create {}.".format(object_type)
                     break
+        # 创建profile
+        prfi_code = 200
+        if "action_parameter" in test_data.keys():
+            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:   # 需要创建profile数据
+                    prfi_data = prfi_value
+                    prfi = CreateProfile(driver)
+                    for i in range(len(prfi_data)): # 遍历创建所有 profile
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_code = prfi.create(prfi_data[i], element_position_map)
+                        if prfi_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(prfi_key_out), flush=True)
+                        else:
+                            result = "Fail to create {} profile.".format(prfi_key_out)
+                            prfi_status = 1
+                            break
+                if prfi_status == 1:  # 创建失败，退出遍历创建
+                    break
         # 创建rule
-        if create_protocol_filed_code == 200:
+        if create_port_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -526,6 +573,37 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search {} object.".format(object_type)
+                    break
+        # 删除profile
+        if delete_rule_code == 200 and "action_parameter" in test_data.keys():
+            # 删除
+            for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
+                if prfi_key in manipulation_profile_no_create_list:
+                    continue  # 直接跳过
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:  # 不为空
+                    for i in range(len(prfi_value)):  # 遍历查询所有profile
+                        search_prfi = SearchProfile(driver)
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_name = prfi_value[i]["profile_file"]["name"].strip()
+                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
+                        if search_prfi_code == 200:
+                            delete_prfi = DeleteProfile(driver)
+                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element, True)
+                            if delete_prfi_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
+                            else:
+                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+                            break
+                        # 退出遍历标志
+                        if prfi_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if prfi_status == 1:  # 失败，退出遍历创建
                     break
         
         # 脚本结束时间和耗时
