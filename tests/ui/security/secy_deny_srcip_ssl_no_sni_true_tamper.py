@@ -192,6 +192,7 @@ def run(parameter):
                     "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
+                    # tamper
                     "policyRulePage_subAction_tamper_posXpath": securityRulePage_subAction_tamper_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
