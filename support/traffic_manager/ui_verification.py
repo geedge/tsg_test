@@ -14,6 +14,7 @@ class UiVerification():
     def ui_verification(self, driver, parameter, test_data, api_verification_result, test_rule_element_position, traffic_result, cfg_list):
         my_driver = driver
         policy_type = test_data["policy_type"]
+        rule_action = test_data["rule_action"]
         is_log = parameter["is_log"]
         metric_result = False
         log_result = False
@@ -22,7 +23,7 @@ class UiVerification():
         edit_rule = EditRule(my_driver)
         edit_rule_code, _ = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
         if edit_rule_code == 200:
-            if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
+            if policy_type == "security" and rule_action != "shunt" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
                 if api_verification_result[2] == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get hit count from UI detail page.", flush=True)
                     hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").text
