@@ -88,7 +88,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "POST",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
             "traffic": {
                 "protocol": "http",

@@ -244,6 +244,7 @@ class CreateRule():
                 tmp_protocol_field_data_split_by_type = []   # 将 protocol_filed 分类临时存储
                 tmp_url, tmp_request_header, tmp_response_header, tmp_request_body, tmp_response_body, tmp_ftp_account, tmp_ftp_content, tmp_cn, tmp_san, tmp_qname = [], [], [], [], [], [], [], [], [], []
                 tmp_boolean= []
+                tmp_mail_account, tmp_mail_from, tmp_mail_to,tmp_mail_subject= [],[],[],[]
                 for _ in range(len(protocol_field_datas)):   # 将 rul、request_header等数据分类处理
                     tmp_item = protocol_field_datas[_]
                     if tmp_item["object_type"] == "url":
@@ -271,11 +272,21 @@ class CreateRule():
                             tmp_response_body.append(tmp_item)
                         elif tmp_item["item"][0]["item_type"] == "ftp_content":
                             tmp_ftp_content.append(tmp_item)
+                        elif tmp_item["item"][0]["item_type"] == "mail_content":
+                            tmp_mail_subject.append(tmp_item)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
                     elif tmp_item["object_type"] == "account":
                         if tmp_item["items"][0]["item_type"] == "ftp_account":
                             tmp_ftp_account.append(tmp_item)
+                        elif tmp_item["items"][0]["item_type"] == "mail_account":
+                            tmp_mail_account.append(tmp_item)
+                        elif tmp_item["items"][0]["item_type"] == "mail_from":
+                            tmp_mail_from.append(tmp_item)
+                        elif tmp_item["items"][0]["item_type"] == "mail_to":
+                            tmp_mail_to.append(tmp_item)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
                     elif tmp_item["object_type"] == "boolean":
                         tmp_boolean.append(tmp_item)
                 if len(tmp_url) > 0: tmp_protocol_field_data_split_by_type.append(tmp_url)
@@ -289,6 +300,10 @@ class CreateRule():
                 if len(tmp_cn) > 0: tmp_protocol_field_data_split_by_type.append(tmp_cn)
                 if len(tmp_san) > 0: tmp_protocol_field_data_split_by_type.append(tmp_san)
                 if len(tmp_qname) > 0: tmp_protocol_field_data_split_by_type.append(tmp_qname)
+                if len(tmp_mail_to) > 0:tmp_protocol_field_data_split_by_type.append(tmp_mail_to)
+                if len(tmp_mail_from) > 0:tmp_protocol_field_data_split_by_type.append(tmp_mail_from)
+                if len(tmp_mail_account) > 0:tmp_protocol_field_data_split_by_type.append(tmp_mail_account)
+                if len(tmp_mail_subject) > 0:tmp_protocol_field_data_split_by_type.append(tmp_mail_subject)
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], tmp_protocol_field_data_split_by_type)
                 for protocol_field_data in tmp_protocol_field_data_split_by_type:
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], protocol_field_data)
@@ -322,12 +337,20 @@ class CreateRule():
                                     self.add_protocol_field(protocol_field_data, "ResponseBody", create_element_position, temp)
                                 elif item_dict["item_type"] == "ftp_content":
                                     self.add_protocol_field(protocol_field_data, "FtpContent", create_element_position, temp)
+                                elif item_dict["item_type"] == "mail_subject":
+                                    self.add_protocol_field(protocol_field_data, "MailSubject", create_element_position, temp)
                                 else:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == "account":
                             for item_dict in protocol_field_data[x]["items"]:
                                 if item_dict["item_type"] == "ftp_account":
                                     self.add_protocol_field(protocol_field_data, "FtpAccount", create_element_position, temp)
+                                elif item_dict["item_type"] == "mail_account":
+                                    self.add_protocol_field(protocol_field_data, "MailAccount",create_element_position, temp)
+                                elif item_dict["item_type"] == "mail_from":
+                                    self.add_protocol_field(protocol_field_data, "MailFrom", create_element_position,temp)
+                                elif item_dict["item_type"] == "mail_to":
+                                    self.add_protocol_field(protocol_field_data, "MailTo", create_element_position,temp)
                                 else:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == 'boolean':

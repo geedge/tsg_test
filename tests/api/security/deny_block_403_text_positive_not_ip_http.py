@@ -50,7 +50,7 @@ def run(parameter):
             "app_name_1": ["http"],
             "expected_return": "403 Forbidden",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [],
+            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "wget",

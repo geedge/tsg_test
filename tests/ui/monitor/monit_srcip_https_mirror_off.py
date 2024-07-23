@@ -202,27 +202,26 @@ def run(parameter):
                 },
                 "create": {
                     "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
-                    "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
-                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
-                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
-                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
-                    "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
-                    "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
-                    "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
-                    "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
-                    "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
-                    "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                    "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
-                    "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
+                    "policyRulePage_inputName_posXpath": monitorRulePage_inputName_posXpath,
+                    "policyRulePage_addSrcIP_posXpath": monitorRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
+                    "policyRulePage_addApplication_posXpath": monitorRulePage_addApplication_posXpath,
+                    "policyRulePage_searchApplication_posXpath": monitorRulePage_searchApplication_posXpath,
+                    "policyRulePage_selectApplication_posXpath": monitorRulePage_selectApplication_posXpath,
+                    "policyRulePage_closeApplication_posXpath": monitorRulePage_closeApplication_posXpath,
+                    "policyRulePage_selectApplicationLabel_posXpath": monitorRulePage_selectApplicationLabel_posXpath,
+                    "policyRulePage_addCondition_posXpath": monitorRulePage_addCondition_posXpath,
+                    "policyRulePage_addConditionServerFqdn_posXpath": monitorRulePage_addCondition_serverFqdn_posXpath,
+                    "policyRulePage_addCondition_close_posXpath": monitorRulePage_addCondition_close_posXpath,
+                    "policyRulePage_addServerFqdn_posXpath": monitorRulePage_addServerFqdn_posXpath,
+                    "policyRulePage_searchServerFqdn_posXpath": monitorRulePage_searchServerFqdn_posXpath,
+                    "policyRulePage_selectServerFqdn_posXpath": monitorRulePage_selectServerFqdn_posXpath,
+                   "policyRulePage_closeServerFqdn_posXpath": monitorRulePage_closeServerFqdn_posXpath,
+                    "policyRulePage_enable_posXpath": monitorRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
-                    "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath,
+                    "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,
                     # profile
                     "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
                     "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
@@ -240,17 +239,17 @@ def run(parameter):
                     "policyRulePage_little_button_addBoolean_posXpath": policyRulePage_little_button_addBoolean_posXpath
                 },
                 "search": {
-                    "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-                    "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-                    "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
-                    "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+                    "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
+                    "policyRuleListPage_searchLable_dropDown_item_posXpath": monitorRuleListPage_searchLable_dropDown_item_posXpath,
+                    "policyRuleListPage_searchLable_input_itemContent_posXpath": monitorRuleListPage_searchLable_input_itemContent_posXpath,
+                    "policyRuleListPage_searchLable_searchButton_posId": monitorRuleListPage_searchLable_searchButton_posId,
+                    "policyRuleListPage_tableTbody_posXpath": monitorRuleListPage_tableTbody_posXpath
                 },
                 "delete": {
-                    "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+                    "policyRuleListPage_allSelect_posXpath": monitorRulelistPage_allSelect_posXpath,
                     "policyRuleListPage_deleteButton_posId": monitorRuleListPage_deleteButton_posId,
-                    "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-                    "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+                    "policyRuleListPage_okButton_warningYes_posXpath": monitorRuleListpage_okButton_warningYes_posXpath,
+                    "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
                 }
             }
         # 创建object

@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "deny_phone_number_ip_proto_tcp_http_server_fqdn_url_res_header_rst",
+            "rule_name": "secy_deny_pn_ipprototcp_http_substr_serverfqdn_substr_url_substr_resheader_by_ct_rst",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -58,7 +58,7 @@ def run(parameter):
                 "sub_id": [],
                 "device": [
                     {
-                        "name": "security_phone_number",
+                        "name": "secy_pn",
                         "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,
@@ -86,7 +86,7 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "test_node",
+                        "name": "secy_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -100,7 +100,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "security_url",
+                        "name": "secy_url",
                         "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
@@ -114,7 +114,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "security_res_header_http_signature",
+                        "name": "secy_httpsig",
                         "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
@@ -165,11 +165,23 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "deny_phone_number_ip_proto_tcp_http_server_fqdn_url_res_header_rst"
+                "name": "secy_deny_pn_ipprototcp_http_substr_serverfqdn_substr_url_substr_resheader_by_ct_rst"
             },
             {
                 "type": "mobile_identity",
-                "name": "security_phone_number"
+                "name": "secy_pn"
+            },
+            {
+                "type": "fqdn",
+                "name": "secy_fqdn"
+            },
+            {
+                "type": "url",
+                "name": "secy_url"
+            },
+            {
+                "type": "http_signature",
+                "name": "secy_httpsig"
             }
         ]
         

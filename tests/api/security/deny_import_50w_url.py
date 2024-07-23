@@ -54,7 +54,7 @@ def run(parameter):
                             "add_item_list": [
                                 {
                                     "keyword_array": [
-                                        "D:/python_script/tsg_test/tests/api/profile_used_to_create_rule/url_import.txt"
+                                        "/app/tests/api/profile_used_to_create_rule/url_import.txt"
                                     ]
                                 }
                             ]
