@@ -68,8 +68,9 @@ class ApiVerification():
         if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
             # 获取开始时间
             utc_tz = pytz.timezone('UTC')
-            current_utc_time = datetime.now(utc_tz)
+            current_utc_time = datetime.now(utc_tz) - timedelta(minutes=8)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            print(start_time)
             
             # 等待时间，等待策略生效
             time.sleep(10)
