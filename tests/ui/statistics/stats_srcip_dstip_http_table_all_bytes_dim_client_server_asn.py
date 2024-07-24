@@ -42,16 +42,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_srcip_http_table_client_server_asn",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_client_server_asn",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_table_source_ip",
+                        "name": "stats_srcip_http_table_all_bytes_dim_client_server_asn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -67,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_table_destination_ip",
+                        "name": "stats_dstip_http_table_all_bytes_dim_client_server_asn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -108,7 +108,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Table Distributed by Client and Server ASN",
+                    "name": "stats_http_table_all_bytes_dim_client_server_asn",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -146,6 +146,9 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"client_country": "IN", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -171,18 +174,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_srcip_http_table_client_server_asn"
+                "name": "stats_srcip_dstip_http_table_all_bytes_dim_client_server_asn"
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_table_source_ip"
+                "name": "stats_srcip_http_table_all_bytes_dim_client_server_asn"
             },{
                 "type": "ip",
-                "name": "statistics_bytes_table_destination_ip"
+                "name": "stats_dstip_http_table_all_bytes_dim_client_server_asn"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Table Distributed by Client and Server ASN"
+                "name": "stats_http_table_all_bytes_dim_client_server_asn"
             },
         ]
         log_in = LogIn()
@@ -417,7 +420,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_srcip_http_bar_client_server_asn",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_client_server_asn",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

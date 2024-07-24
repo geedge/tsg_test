@@ -42,20 +42,19 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_srcip_http_table_client_server_ip_matched_objects",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_s2c_ttl",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_table_source_ip",
+                        "name": "stats_srcip_http_table_all_bytes_dim_c2s_s2c_ttl",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
-                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -68,11 +67,10 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_table_destination_ip",
+                        "name": "stats_dstip_http_table_all_bytes_dim_c2s_s2c_ttl",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
-                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -110,7 +108,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Bytes Table Distributed by Client and Server IP Matched Objects",
+                    "name": "stats_table_all_bytes_dim_c2s_s2c_ttl",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -122,8 +120,8 @@ def run(parameter):
                             "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "client_ip_object",
-                            "server_ip_object"
+                            "c2s_ttl",
+                            "s2c_ttl"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
@@ -148,6 +146,9 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"c2s_ttl": 64, "s2c_ttl": 40, "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -173,18 +174,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_srcip_http_table_client_server_ip_matched_objects"
+                "name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_s2c_ttl"
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_table_source_ip"
+                "name": "stats_srcip_http_table_all_bytes_dim_c2s_s2c_ttl"
             },{
                 "type": "ip",
-                "name": "statistics_bytes_table_destination_ip"
+                "name": "stats_dstip_http_table_all_bytes_dim_c2s_s2c_ttl"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Bytes Table Distributed by Client and Server IP Matched Objects"
+                "name": "stats_table_all_bytes_dim_c2s_s2c_ttl"
             },
         ]
         log_in = LogIn()
@@ -196,7 +197,7 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-        # 创建object
+                # 创建object
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
@@ -419,7 +420,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_srcip_http_table_client_server_ip_matched_objects",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_s2c_ttl",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",
