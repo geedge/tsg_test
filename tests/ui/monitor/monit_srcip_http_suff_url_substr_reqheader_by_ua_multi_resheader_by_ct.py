@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_app_http_url_request_heaser_response_header",
+            "rule_name": "monit_srcip_http_suff_url_substr_reqheader_by_ua_multi_resheader_by_ct",
             "rule_action": "",
             "rule_type": "create",
             "condition": {
