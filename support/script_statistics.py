@@ -209,34 +209,44 @@ class ScriptStatistics():
 if __name__ == '__main__':
     print("Start test")
     statistics = ScriptStatistics()
-    # policy_rule和script_type中字符串可以有多个，用逗号隔开；protocol中字符串只能有一个
+    # policy_rule和script_type中字符串可以有多个，用逗号隔开；protocol中字符串只能有一个协议
+    # policy_rule = ""
+    # protocol = ""
+    # script_type = ""
+    # statistics.script_statistics(policy_rule, protocol, script_type)
+    
+    # policy_rule = "security,monitor"
+    # protocol = ""
+    # script_type = ""
+    # statistics.script_statistics(policy_rule, protocol, script_type)
+    
+    # policy_rule = "security,monitor"
+    # protocol = "http"
+    # script_type = ""
+    # statistics.script_statistics(policy_rule, protocol, script_type)
+    
+    # policy_rule = "security"
+    # protocol = "http"
+    # script_type = ""
+    # statistics.script_statistics(policy_rule, protocol, script_type)
+    
+    # policy_rule = "security,monitor"
+    # protocol = "http"
+    # script_type = "ui,api"
+    # statistics.script_statistics(policy_rule, protocol, script_type)
+    
+    # policy_rule = "security,monitor"
+    # protocol = "http"
+    # script_type = "ui"
+    # statistics.script_statistics(policy_rule, protocol, script_type)
+    
+    # policy_rule = "security,monitor"
+    # protocol = ""
+    # script_type = "api"
+    # statistics.script_statistics(policy_rule, protocol, script_type)
+    
     policy_rule = ""
-    protocol = ""
-    script_type = ""
-    statistics.script_statistics(policy_rule, protocol, script_type)
-    
-    policy_rule = "security,monitor"
-    protocol = ""
-    script_type = ""
-    statistics.script_statistics(policy_rule, protocol, script_type)
-    
-    policy_rule = "security,monitor"
     protocol = "http"
     script_type = ""
-    statistics.script_statistics(policy_rule, protocol, script_type)
-    
-    policy_rule = "security"
-    protocol = "http"
-    script_type = ""
-    statistics.script_statistics(policy_rule, protocol, script_type)
-    
-    policy_rule = "security,monitor"
-    protocol = "http"
-    script_type = "ui,api"
-    statistics.script_statistics(policy_rule, protocol, script_type)
-    
-    policy_rule = "security,monitor"
-    protocol = "http"
-    script_type = "ui"
     statistics.script_statistics(policy_rule, protocol, script_type)
     print("End test")

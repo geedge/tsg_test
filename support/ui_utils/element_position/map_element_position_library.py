@@ -579,6 +579,106 @@ test_security_rule_element_position = {
         "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
     }
 }
+
+test_monitor_rule_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_monitor_posId
+                },
+                "create": {
+                    "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
+                    "policyRulePage_inputName_posXpath": monitorRulePage_inputName_posXpath,
+                    #add Condition,close Condition
+                    "policyRulePage_addCondition_posXpath": monitorRulePage_addCondition_posXpath,
+                    "policyRulePage_addCondition_close_posXpath": monitorRulePage_addCondition_close_posXpath,
+                    #end button
+                    "policyRulePage_enable_posXpath": monitorRulePage_enable_posXpath,
+                    "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
+                    "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,
+                    #add profile/mirror
+                    "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
+                    "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
+                    "policyRulePage_firstSelectMirrorProfile_posXpath": monitorRulePage_firstSelectMirrorProfile_posXpath,
+                    "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
+                    "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
+                    #add DstPort
+                    "policyRulePage_addConditionDstPort_posXpath": monitorRulePage_addCondition_dstPort_posXpath,
+                    "policyRulePage_addDstPort_posXpath": monitorRulePage_addDstPort_posXpath,
+                    "policyRulePage_searchDstPort_posXpath": monitorRulePage_searchDstPort_posXpath,
+                    "policyRulePage_selectDstPort_posXpath": monitorRulePage_selectDstPort_posXpath,
+                    "policyRulePage_closeDstPort_posXpath": monitorRulePage_closeDstPort_posXpath,
+                    #add Application
+                    "policyRulePage_searchApplication_posXpath": monitorRulePage_searchApplication_posXpath,
+                    "policyRulePage_selectApplication_posXpath": monitorRulePage_selectApplication_posXpath,
+                    "policyRulePage_closeApplication_posXpath": monitorRulePage_closeApplication_posXpath,
+                    "policyRulePage_selectApplicationLabel_posXpath": monitorRulePage_selectApplicationLabel_posXpath,
+                    "policyRulePage_addApplication_posXpath": monitorRulePage_addApplication_posXpath,
+                    #add Src ip
+                    "policyRulePage_addSrcIP_posXpath": monitorRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
+                    #add Server FQDN
+                    "policyRulePage_addConditionServerFqdn_posXpath": policyRulePage_addCondition_serverFqdn_posXpath,
+                    "policyRulePage_addServerFqdn_posXpath": policyRulePage_addServerFqdn_posXpath,
+                    "policyRulePage_searchServerFqdn_posXpath": policyRulePage_searchServerFqdn_posXpath,
+                    "policyRulePage_selectServerFqdn_posXpath": policyRulePage_selectServerFqdn_posXpath,
+                    "policyRulePage_closeServerFqdn_posXpath": policyRulePage_closeServerFqdn_posXpath,
+                    #add request header
+                    "policyRulePage_addConditionRequestHeader_posXpath": monitorRulePage_addCondition_requestHeader_posXpath,
+                    "policyRulePage_addRequestHeader_posXpath": monitorRulePage_addRequestHeader_posXpath,
+                    "policyRulePage_searchRequestHeader_posXpath": monitorRulePage_searchRequestHeader_posXpath,
+                    "policyRulePage_selectRequestHeader_posXpath": monitorRulePage_selectRequestHeader_posXpath,
+                    "policyRulePage_closeRequestHeader_posXpath": monitorRulePage_closeRequestHeader_posXpath,
+                    #add response header
+                    "policyRulePage_addConditionResponseHeader_posXpath": policyRulePage_addCondition_responseHeader_posXpath,
+                    "policyRulePage_addResponseHeader_posXpath": monitorRulePage_addResponseHeader_posXpath,
+                    "policyRulePage_searchResponseHeader_posXpath": monitorRulePage_searchResponseHeader_posXpath,
+                    "policyRulePage_selectResponseHeader_posXpath": monitorRulePage_selectResponseHeader_posXpath,
+                    "policyRulePage_closeResponseHeader_posXpath": monitorRulePage_closeResponseHeader_posXpath,
+                    #add request body
+                    "policyRulePage_addConditionRequestBody_posXpath": monitorRulePage_addCondition_requestBody_posXpath,
+                    "policyRulePage_addRequestBody_posXpath": manipulationRulePage_addRequestBody_posXpath,
+                    "policyRulePage_searchRequestBody_posXpath": monitorRulePage_searchRequestHeader_posXpath,
+                    "policyRulePage_selectRequestBody_posXpath": monitorRulePage_selectRequestHeader_posXpath,
+                    "policyRulePage_closeRequestBody_posXpath": monitorRulePage_closeRequestHeader_posXpath,
+                    #add response body
+                    "policyRulePage_addConditionResponseBody_posXpath": monitorRulePage_addCondition_responseBody_posXpath,
+                    "policyRulePage_addResponseBody_posXpath": manipulationRulePage_addResponseBody_posXpath,
+                    "policyRulePage_searchResponseBody_posXpath": monitorRulePage_searchRequestHeader_posXpath,
+                    "policyRulePage_selectResponseBody_posXpath": monitorRulePage_selectRequestHeader_posXpath,
+                    "policyRulePage_closeResponseBody_posXpath": monitorRulePage_closeRequestHeader_posXpath,
+                    # san
+                    "policyRulePage_addConditionSan_posXpath": monitorRulePage_addCondition_san_posXpath,
+                    "policyRulePage_addSan_posXpath": monitorRulePage_addSan_posXpath,
+                    "policyRulePage_searchSan_posXpath": monitorRulePage_searchSan_posXpath,
+                    "policyRulePage_selectSan_posXpath": monitorRulePage_selectSan_posXpath,
+                    "policyRulePage_closeSan_posXpath": monitorRulePage_closeSan_posXpath,
+                    # cn
+                    "policyRulePage_addConditionCn_posXpath": monitorRulePage_addCondition_cn_posXpath,
+                    "policyRulePage_addCn_posXpath": monitorRulePage_addCn_posXpath,
+                    "policyRulePage_searchCn_posXpath": monitorRulePage_searchCn_posXpath,
+                    "policyRulePage_selectCn_posXpath": monitorRulePage_selectCn_posXpath,
+                    "policyRulePage_closeCn_posXpath": monitorRulePage_closeCn_posXpath,
+                },
+                "search": {
+                    "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
+                    "policyRuleListPage_searchLable_dropDown_item_posXpath": monitorRuleListPage_searchLable_dropDown_item_posXpath,
+                    "policyRuleListPage_searchLable_input_itemContent_posXpath": monitorRuleListPage_searchLable_input_itemContent_posXpath,
+                    "policyRuleListPage_searchLable_searchButton_posId": monitorRuleListPage_searchLable_searchButton_posId,
+                    "policyRuleListPage_tableTbody_posXpath": monitorRuleListPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "policyRuleListPage_allSelect_posXpath": monitorRulelistPage_allSelect_posXpath,
+                    "policyRuleListPage_deleteButton_posId": monitorRuleListPage_deleteButton_posId,
+                    "policyRuleListPage_okButton_warningYes_posXpath": monitorRuleListpage_okButton_warningYes_posXpath,
+                    "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
+                }
+            }
+
 test_intercept_rule_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -973,6 +1073,7 @@ test_insert_script_element_position = test_insert_script_element_position
 test_manipulation_rule_element_position = test_manipulation_rule_element_position
 test_security_rule_element_position = test_security_rule_element_position
 test_intercept_rule_element_position = test_intercept_rule_element_position
+test_monitor_rule_element_position = test_monitor_rule_element_position
 
 def get_element_position(key_name):
     # object
@@ -984,7 +1085,7 @@ def get_element_position(key_name):
         element_position_map = test_http_signature_object_element_position
     elif key_name == "keywords":
         element_position_map = test_keywords_object_element_position
-    elif key_name == "server_fqdn":
+    elif key_name == "server_fqdn" or key_name == "fqdn":
         element_position_map = test_fqdn_object_element_position
     elif key_name == "url":
         element_position_map = test_http_url_object_element_position
@@ -1004,6 +1105,8 @@ def get_element_position(key_name):
         element_position_map = test_manipulation_rule_element_position
     elif key_name == "security":
         element_position_map = test_security_rule_element_position
+    elif key_name == "monitor":
+        element_position_map = test_monitor_rule_element_position
     elif key_name == "pxy_intercept":
         element_position_map = test_intercept_rule_element_position
     elif key_name == "statistics":

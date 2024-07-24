@@ -377,7 +377,7 @@ class CreateRule():
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendIcmp_posXpath"]).click()
                 elif sub_action_data[0]["type"] == "rate_limit":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_rateLimit_posXpath"]).click()
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_rateLimit_rate_posXpath"]).send_keys(sub_action_data[0]["rate_value"])
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_rateLimit_rate_posXpath"]).send_keys(sub_action_data[0]["rate_value"])
                 elif sub_action_data[0]["type"] == "tamper":
                     time.sleep(1)
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_tamper_posXpath"]).click()

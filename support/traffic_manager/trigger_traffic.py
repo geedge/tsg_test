@@ -11,6 +11,7 @@ from support.traffic_manager.ftp_player import FtpPlayer
 from support.traffic_manager.dns_player import DnsPlayer
 from support.traffic_manager.mail_player import MailPlayer
 from support.traffic_manager import trex_replay
+from support.traffic_manager.doh_player import DohPlayer
 from support.traffic_manager.workpath import workdir
 from datetime import datetime
 
@@ -67,11 +68,15 @@ class TriggerTraffic():
             elif test_data["traffic"]["protocol"] == "dns":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate nslookup traffic.", flush=True)
                 player = DnsPlayer()
-                result = player.send_dns_traffic(temp_data, script_type, debug_flag)
+                result = player.send_dns_query(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "mail":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate mail traffic.", flush=True)
                 player = MailPlayer()
                 result = player.send_mail_traffic(temp_data, script_type, debug_flag)
+            elif test_data["traffic"]["protocol"] == "doh":
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate mail traffic.", flush=True)
+                player = DohPlayer()
+                result = player.send_doh_query(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use trex to replay traffic.", flush=True)
                 pcap_name = temp_data.get("pcap_name") + ".pcap"

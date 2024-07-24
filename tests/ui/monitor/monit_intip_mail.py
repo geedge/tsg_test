@@ -88,7 +88,7 @@ def run(parameter):
             "is_mirror": "on",
             "profile": [],
              "expected_return": "Ok",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"client_ip", "query_value":parameter['test_pc_ip']}],
             "traffic": {
                 "type": "curl",

@@ -99,7 +99,7 @@ def run(parameter):
             "is_mirror":"on",
             "profile": [],
             "expected_return": "douban",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.douban.com"}],
             "traffic": {
                 "type": "curl",

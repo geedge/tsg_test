@@ -40,7 +40,7 @@ class UiVerification():
                         if int(hit_count) == int(log_number):
                             # 以Server IP为例，在log_query_list.ini中通过log api查找log ui的值
                             parse = configparser.ConfigParser()
-                            parse_dir = os.path.join(workdir, "log_query_list.ini")
+                            parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
                             parse.read(parse_dir, encoding="utf-8")
                             temp_log_result_list = []
                             # 点击展开
@@ -49,16 +49,32 @@ class UiVerification():
                             for t in range(len(test_data["log_query_param"])):
                                 log_query_key = test_data["log_query_param"][t]["query_field_key"]
                                 log_str = parse.get("log", log_query_key)
-                                if log_query_key == "server_ip":
+                                if log_query_key == "server_ip" or log_query_key == "decoded_as":
                                     log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/parent::div//span[@class='el-dropdown-link popover-click color262626 el-dropdown-selfdefine']".format(replaceValue=log_str)
-                                    temp_value = my_driver.find_element(log_item_posXpath).text
-                                    if temp_value == test_data["log_query_param"][t]["query_field_key"]:
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                                    if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                    temp_log_result_list.append(temp_log_result)
+                                elif log_query_key == "ssl_cn" or log_query_key == "ssl_san":
+                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                                    if temp_value == test_data["log_query_param"][t]["query_value"]:
                                         temp_log_result = True
                                     else:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
                                 elif log_query_key == "server_port":
                                     print("to be added.")
+                                elif log_query_key == "http_host":
+                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text.strip()
+                                    if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                    temp_log_result_list.append(temp_log_result)
                             if False not in temp_log_result_list:
                                 log_result = True
                             else:
