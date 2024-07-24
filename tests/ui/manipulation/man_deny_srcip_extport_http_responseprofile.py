@@ -353,7 +353,7 @@ if __name__ == '__main__':
         "debug_flag": "local",
         "script_type": "ui",
         "script_type": "ui",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
