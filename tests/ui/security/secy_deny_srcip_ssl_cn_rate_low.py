@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_ssl_suff_cn_rate_limit_low",
+            "rule_name": "secy_deny_srcip_ssl_cn_rate_low",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -93,7 +93,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "cn",
-                                "item_value": "*.node.com->"
+                                "item_value": "$open.node.com->"
                             }
                         ],
                     }
@@ -127,7 +127,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_srcip_ssl_suff_cn_rate_limit_low"
+                "name": "secy_deny_srcip_ssl_cn_rate_low"
             },
             {
                 "type": "ip",
@@ -246,7 +246,7 @@ def run(parameter):
                     "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
                     "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    # rate limit
+                    # drop
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
                     "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
@@ -421,7 +421,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.88",
+        "test_pc_ip": "192.168.64.100",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",

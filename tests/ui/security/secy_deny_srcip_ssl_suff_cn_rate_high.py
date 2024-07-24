@@ -41,8 +41,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_ssl_substr_san_rate_limit_high",
-            "rule_action": "allow",
+            "rule_name": "secy_deny_srcip_ssl_suff_cn_rate_high",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -65,7 +65,7 @@ def run(parameter):
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
-                "external_ip": [],
+                "external_ip":[],
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
@@ -92,8 +92,8 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "san",
-                                "item_value": "node->"
+                                "item_type": "cn",
+                                "item_value": "*node.com->"
                             }
                         ],
                     }
@@ -108,9 +108,9 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "POST",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"ssl_san", "query_value": "*.node.com;*.node.cn"},{"query_field_key":"decoded_as", "query_value": "SSL"}],
+            "log_query_param": [{"query_field_key":"ssl_cn", "query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
@@ -127,7 +127,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_srcip_ssl_substr_san_rate_limit_high"
+                "name": "secy_deny_srcip_ssl_suff_cn_rate_high"
             },
             {
                 "type": "ip",
@@ -136,7 +136,7 @@ def run(parameter):
             {
                 "type": "fqdn",
                 "name": "secy_fqdn"
-            },
+            }
         ]
         
         # 添加定位库集合
@@ -246,6 +246,7 @@ def run(parameter):
                     "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
                     "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+                    # drop
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
                     "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
@@ -279,6 +280,7 @@ def run(parameter):
                 elif create_ip_code != 200:
                     result = "Fail to create ip."
                     break
+        
          # 创建protocol_filed        
         if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
             protocol_field_data = test_data["condition"]["protocol_filed"]
@@ -292,9 +294,8 @@ def run(parameter):
                 elif create_protocol_filed_code != 200:
                     result = "Fail to create {}.".format(object_type)
                     break
-
         # 创建rule
-        if create_protocol_filed_code == 200:
+        if create_ip_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -420,12 +421,12 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.88",
+        "test_pc_ip": "192.168.64.100",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
-        "env": "tsgx",
         "debug_flag": "local",
+        "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",

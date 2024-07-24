@@ -41,19 +41,13 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_shunt_external_ip_server_fqdn_http",
-            "rule_action": "shunt",
+            "rule_name": "secy_deny_srcip_ssl_substr_cn_rate_high",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [
+                "source_ip": [
                     {
-                        "name": "security_external_ip",
+                        "name": "secy_srcip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,11 +55,17 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "93.184.215.14",
+                                "item_value": parameter['test_pc_ip'],
                             }
                         ]
                     }
                 ],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip":[],
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
@@ -81,33 +81,40 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
+                "server_fqdn": [],
+                "protocol_filed": [
                     {
-                        "name": "test_example",
+                        "name": "secy_fqdn",
                         "object_type": "fqdn",
+                        "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
                         "items": [
                             {
-                                "item_value": "*example.com",
+                                "item_operation": "add",
+                                "item_type": "cn",
+                                "item_value": "open.node->"
                             }
-                        ]
+                        ],
                     }
                 ],
-                "protocol_filed": [],
                 "sub_action_override": True,
-                "sub_action": [],
+                "sub_action": [
+                    {
+                        "type": "rate_limit",
+                        "rate_value": "100000",
+                    }
+                ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "Example Domain",
+            "expected_return": "POST",
             "counters": {"hits": 1},
-            "log_query_param": [],
+            "log_query_param": [{"query_field_key":"ssl_cn", "query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "wget -q -O- --debug https://www.example.com/"
+                "command": "curl -kv --connect-timeout 20 -m 20 https://open.node.com:1443"
             },
             "token": ""
         }
@@ -120,18 +127,19 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_shunt_external_ip_server_fqdn_http"
+                "name": "secy_deny_srcip_ssl_substr_cn_rate_high"
             },
             {
                 "type": "ip",
-                "name": "security_external_ip"
+                "name": "secy_srcip"
             },
             {
                 "type": "fqdn",
-                "name": "test_example"
+                "name": "secy_fqdn"
             }
         ]
         
+        # 添加定位库集合
         test_rule_element_position = {}
         if test_data["policy_type"] == "security":
             test_ip_object_element_position = {
@@ -207,12 +215,24 @@ def run(parameter):
                 "create": {
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                    "policyRulePage_selectAction_posId": securityRulePage_selectShunt_posId,
-                    "policyRulePage_addConditionExternalIP_posXpath": securityRulePage_addCondition_externalIP_posXpath,
-                    "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
-                    "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
-                    "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
-                    "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
+                    "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
+                    # srcip
+                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
+                    # cn
+                    "policyRulePage_addConditionCn_posXpath": securityRulePage_addCondition_cn_posXpath,
+                    "policyRulePage_addCn_posXpath": securityRulePage_addCn_posXpath,
+                    "policyRulePage_searchCn_posXpath": securityRulePage_searchCn_posXpath,
+                    "policyRulePage_selectCn_posXpath": securityRulePage_selectCn_posXpath,
+                    "policyRulePage_closeCn_posXpath": securityRulePage_closeCn_posXpath,
+                    # san
+                    "policyRulePage_addConditionSan_posXpath": securityRulePage_addCondition_san_posXpath,
+                    "policyRulePage_addSan_posXpath": securityRulePage_addSan_posXpath,
+                    "policyRulePage_searchSan_posXpath": securityRulePage_searchSan_posXpath,
+                    "policyRulePage_selectSan_posXpath": securityRulePage_selectSan_posXpath,
+                    "policyRulePage_closeSan_posXpath": securityRulePage_closeSan_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -226,11 +246,10 @@ def run(parameter):
                     "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
                     "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+                    # rate limit
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
-                    "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
-                    "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
-                    "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+                    "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
+                    "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -251,29 +270,32 @@ def run(parameter):
             }
         
         # 创建object
-        if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
-            ip_data = test_data["condition"]["external_ip"]
-            create_port = CreateObject(driver)
+        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+            ip_data = test_data["condition"]["source_ip"]
+            create_ip = CreateObject(driver)
             for i in range(len(ip_data)):
-                create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
-                if create_port_code == 200:
+                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+                if create_ip_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
-                elif create_port_code != 200:
+                elif create_ip_code != 200:
                     result = "Fail to create ip."
                     break
-        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
-            fqdn_data = test_data["condition"]["server_fqdn"]
-            create_fqdn = CreateObject(driver)
-            for i in range(len(fqdn_data)):
-                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
-                if create_fqdn_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create fqdn object successfully.", flush=True)
-                elif create_fqdn_code != 200:
-                    result = "Fail to create fqdn."
-                    break
         
+         # 创建protocol_filed        
+        if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+            protocol_field_data = test_data["condition"]["protocol_filed"]
+            create_protocol_filed = CreateObject(driver)
+            for x in range(len(protocol_field_data)):
+                object_type = protocol_field_data[x]['object_type']
+                if object_type == 'fqdn':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_fqdn_object_element_position)
+                if create_protocol_filed_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                elif create_protocol_filed_code != 200:
+                    result = "Fail to create {}.".format(object_type)
+                    break
         # 创建rule
-        if create_port_code == 200:
+        if create_ip_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -335,23 +357,24 @@ def run(parameter):
                 else:
                     result = result + " In addition, fail to search ip object."
                     break
-            # 删除fqdn
-            for x in range(len(fqdn_data)):
-                search_fqdn = SearchObject(driver)
-                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"], test_fqdn_object_element_position)
-                if search_fqdn_code == 200:
-                    delete_fqdn = DeleteObject(driver)
-                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
-                    if delete_fqdn_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
-                    elif delete_fqdn_code != 200:
-                        result = result + " In addition, fail to delete fqdn object."
+            # 删除protocol_filed
+            for q in range(len(protocol_field_data)):
+                search_protocol_filed = SearchObject(driver)
+                object_type = protocol_field_data[q]['object_type']
+                if object_type == 'fqdn':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_fqdn_object_element_position)
+                if search_protocol_filed_code == 200:
+                    delete_protocol_filed = DeleteObject(driver)
+                    if object_type == 'fqdn':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
+                    if delete_protocol_filed_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
+                    elif delete_protocol_filed_code != 200:
+                        result = result + " In addition, fail to delete {} object.".format(object_type)
                         break
                 else:
-                    result = result + " In addition, fail to search fqdn object."
+                    result = result + " In addition, fail to search {} object.".format(object_type)
                     break
-        
-                # 脚本结束时间和耗时
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -398,12 +421,13 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.100",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
+        "debug_flag": "local",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
