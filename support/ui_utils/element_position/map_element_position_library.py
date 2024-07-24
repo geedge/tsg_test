@@ -639,6 +639,18 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchResponseHeader_posXpath": monitorRulePage_searchResponseHeader_posXpath,
                     "policyRulePage_selectResponseHeader_posXpath": monitorRulePage_selectResponseHeader_posXpath,
                     "policyRulePage_closeResponseHeader_posXpath": monitorRulePage_closeResponseHeader_posXpath,
+                    #add request body
+                    "policyRulePage_addConditionRequestBody_posXpath": monitorRulePage_addCondition_requestBody_posXpath,
+                    "policyRulePage_addRequestBody_posXpath": manipulationRulePage_addRequestBody_posXpath,
+                    "policyRulePage_searchRequestBody_posXpath": monitorRulePage_searchRequestHeader_posXpath,
+                    "policyRulePage_selectRequestBody_posXpath": monitorRulePage_selectRequestHeader_posXpath,
+                    "policyRulePage_closeRequestBody_posXpath": monitorRulePage_closeRequestHeader_posXpath,
+                    #add response body
+                    "policyRulePage_addConditionResponseBody_posXpath": monitorRulePage_addCondition_responseBody_posXpath,
+                    "policyRulePage_addResponseBody_posXpath": manipulationRulePage_addResponseBody_posXpath,
+                    "policyRulePage_searchResponseBody_posXpath": monitorRulePage_searchRequestHeader_posXpath,
+                    "policyRulePage_selectResponseBody_posXpath": monitorRulePage_selectRequestHeader_posXpath,
+                    "policyRulePage_closeResponseBody_posXpath": monitorRulePage_closeRequestHeader_posXpath,
                     # san
                     "policyRulePage_addConditionSan_posXpath": monitorRulePage_addCondition_san_posXpath,
                     "policyRulePage_addSan_posXpath": monitorRulePage_addSan_posXpath,
