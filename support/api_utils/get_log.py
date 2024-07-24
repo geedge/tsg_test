@@ -377,12 +377,14 @@ class GetLog():
                             else:
                                 assert_key_list.append(k)
                         # 开始判断key的正确性
+                        if "statists_metric_results" in test_data.keys():
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statists_metric_results: {}".format(test_data["statists_metric_results"]), flush=True)
                         for i in range(len(assert_key_list)):
                             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Determine the correctness of the Key:{}".format(str(assert_key_list)))
                             # 因目前功能端版本：tsg-os-v24.07-rc3-c3f7112只要带有非首包可命中且符合Dimensions的流量均不能全部统计*pkts和*bytes，所以需要从Test_data传入期望统计结果："statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
                             # 如果有期望值就比对期望值
                             if "statists_metric_results" in test_data.keys():
-                                metric_result = self.expected_value_vs_statistics_metric(statistics_info["chart_type"],
+                                metric_results = self.expected_value_vs_statistics_metric(statistics_info["chart_type"],
                                                                                          assert_key_list[i],
                                                                                          statistics_value,
                                                                                          statistics_metircs_except,
@@ -667,26 +669,45 @@ class GetLog():
         "statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
         """
         metric_result = False
+        failure_reason_info = ""
         assert_key_in_expected = False
         assert_key_equal_expected = False
         tmp_expected = ""
-        for statists_metric_result in statists_metric_results:
-            if assert_key in statists_metric_result.keys():
-                assert_key_in_expected = True
-                tmp_expected = statists_metric_result[assert_key]
-                if statistics_value[assert_key] == tmp_expected:
-                    #和原始流量对比需转换，暂未对比，因已经和期望值对比，此处不比较也没有影响 and statists_metric_result[assert_key] <= statistics_metircs_except["total_packets"]:
-                    metric_result = True
-                    assert_key_equal_expected = True
-                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"pass：expected_value_vs_statistics_metric",flush=True)
-                    break
-        if  assert_key_in_expected == False:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Key:{assert_key} for missing expected: {statists_metric_results}", flush=True)
-            metric_result = False
-        elif assert_key_equal_expected == False:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"statistics_value[{assert_key}]:{statistics_value[assert_key]} is inconsistent with the expected value: {tmp_expected}", flush=True)
-            metric_result = False
-
+        failure_reason_info = ""
+        failure_info_1 = ""
+        failure_info_2 = ""
+        failure_info_3 = ""
+        try:
+            for statists_metric_result in statists_metric_results:
+                if assert_key in statists_metric_result.keys():
+                    assert_key_in_expected = True
+                    tmp_expected = statists_metric_result[assert_key]
+                    if statistics_value[assert_key] == tmp_expected:
+                        #和原始流量对比需转换，暂未对比，因已经和期望值对比，此处不比较也没有影响 and statists_metric_result[assert_key] <= statistics_metircs_except["total_packets"]:
+                        metric_result = True
+                        assert_key_equal_expected = True
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"pass：expected_value_vs_statistics_metric",flush=True)
+                        break
+            if  assert_key_in_expected == False:
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Key:{assert_key} for missing expected: {statists_metric_results}", flush=True)
+                failure_info_1 = f"Key:{assert_key} for missing expected: {statists_metric_results}"
+                actual_result = f"Total actual results: {statistics_value}"
+                failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
+                metric_result = False
+            elif assert_key_equal_expected == False:
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"statistics_value[{assert_key}]:{statistics_value[assert_key]} is inconsistent with the expected value: {tmp_expected}", flush=True)
+                failure_info_2 = f"statistics_value[{assert_key}]:{statistics_value[assert_key]} is inconsistent with the expected value: {tmp_expected}"
+                actual_result = f"Total actual results: {statistics_value}"
+                failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
+                metric_result = False
+        except Exception as e:
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+            #      f"get_log.py:Exception occurred in expected_value_vs_statistics_metric:{e}")
+            actual_result = f"Total actual results: {statistics_value}"
+            failure_info_3 = f"get_log.py:Exception occurred in expected_value_vs_statistics_metric:{e}"
+            failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
+        finally:
+            return metric_result, failure_reason_info
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
