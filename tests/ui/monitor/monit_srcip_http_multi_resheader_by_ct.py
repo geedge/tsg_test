@@ -125,7 +125,7 @@ def run(parameter):
 
             ],
             "expected_return": "Travel",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "slope.ru"}],
             "traffic": {
                 "type": "curl",

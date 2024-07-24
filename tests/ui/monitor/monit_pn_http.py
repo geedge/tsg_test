@@ -93,7 +93,7 @@ def run(parameter):
             "is_mirror": "on",
             "profile": [],
             "expected_return": "yumi",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "www.yumi.com"}],
             "traffic": {
                 "type": "curl",

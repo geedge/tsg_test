@@ -83,7 +83,7 @@ def run(parameter):
             "is_mirror":"on",
             "profile": [],
             "expected_return": "Example Domain",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.example.com"}],
             "traffic": {
                 "type": "wget",
@@ -153,7 +153,7 @@ def run(parameter):
                 "create": {
                     "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": monitorRulePage_inputName_posXpath,
-              
+
                     "policyRulePage_searchApplication_posXpath": monitorRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": monitorRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": monitorRulePage_closeApplication_posXpath,
@@ -161,8 +161,7 @@ def run(parameter):
                     "policyRulePage_selectApplicationLabel_posXpath": monitorRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addApplication_posXpath": monitorRulePage_addApplication_posXpath,
                     "policyRulePage_addCondition_close_posXpath": monitorRulePage_addCondition_close_posXpath,
-
-                    monitor
+                    # other button
                     "policyRulePage_enable_posXpath": monitorRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
                     "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,

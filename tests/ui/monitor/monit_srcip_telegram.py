@@ -92,7 +92,7 @@ def run(parameter):
             "is_mirror":"off",
             "profile": [],
             "expected_return": "telegram",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.telegram.org"}],
             "traffic": {
                 "type": "curl",
