@@ -271,7 +271,7 @@ class ApiVerification():
                 # 获取开始时间
                 time.sleep(5)
                 utc_tz = pytz.timezone('UTC')
-                current_utc_time = datetime.now(utc_tz)
+                current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 解析trex使用参数， 解析client server ip
                 # if script_type == "api":
@@ -351,7 +351,7 @@ class ApiVerification():
             elif test_data["targeted_traffic"] == "decrypted":
                 # 获取开始时间
                 utc_tz = pytz.timezone('UTC')
-                current_utc_time = datetime.now(utc_tz)
+                current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 等待时间，等待策略生效
                 time.sleep(10)
