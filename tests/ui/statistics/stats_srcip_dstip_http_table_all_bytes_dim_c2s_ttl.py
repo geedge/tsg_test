@@ -42,16 +42,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_with_src_ip_http_table_devicegroup",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_ttl",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_all_bytes_source_ip",
+                        "name": "stats_srcip_http_table_all_bytes_dim_c2s_ttl",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.13",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -67,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_all_bytes_destination_ip",
+                        "name": "stats_dstip_http_table_all_bytes_dim_c2s_ttl",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -75,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.13",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -108,7 +108,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Bytes Distributed by Device Group",
+                    "name": "stats_table_all_bytes_dim_c2s_ttl",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -120,12 +120,12 @@ def run(parameter):
                             "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "device_group"
+                            "c2s_ttl"
                           ],
                           "order_by": "bytes",
-                          "row_limit": "100",
-                          "min_in_size": "1",
-                          "max_out_size": "1"
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "max_out_size": "0"
                         }
                       ]
                 }]
@@ -136,15 +136,18 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.13",
-                "clients_end_ip": "10.64.224.13",
-                "servers_start_ip": "2.1.1.13",
-                "servers_end_ip": "2.1.1.13",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"c2s_ttl": 64, "s2c_ttl": 40, "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -170,18 +173,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_with_src_ip_http_table_devicegroup",
+                "name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_ttl"
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_source_ip",
+                "name": "stats_srcip_http_table_all_bytes_dim_c2s_ttl"
             },{
                 "type": "ip",
-                "name": "statistics_bytes_destination_ip",
+                "name": "stats_dstip_http_table_all_bytes_dim_c2s_ttl"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Bytes Distributed by Device Group",
+                "name": "stats_table_all_bytes_dim_c2s_ttl"
             },
         ]
         log_in = LogIn()
@@ -260,6 +263,10 @@ def run(parameter):
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
@@ -268,6 +275,7 @@ def run(parameter):
             #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
+
 
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -280,7 +288,6 @@ def run(parameter):
 
         # 避免报错：stale element not found
         time.sleep(5)
-
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -406,13 +413,13 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_with_srcip_http_table_devicegroup",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_c2s_ttl",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",
