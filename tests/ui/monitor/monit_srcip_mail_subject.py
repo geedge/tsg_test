@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_app_mail_filter_subject",
+            "rule_name": "monit_srcip_mail_subject",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -88,16 +88,21 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "monitor_mail_account",
-                        "object_type": "account",
+                        "name": "monit_mail_subject_by_keywords",
+                        "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "items": [
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_account",
-                                "item_value": "->"
+                                "item_type": "mail_subject",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "$Bestman"
+                                ]
                             }
                         ],
                     }
@@ -176,6 +181,39 @@ def run(parameter):
                 }
             }
 
+            test_keywords_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": keywordsObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": keywordsObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": keywordsObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": keywordsObjectPage_addItem_posId,
+                    "objectPage_item_value_select_posXpath": keywordsObjectPage_item_value_select_posXpath,
+                    "objectPage_inputItem_posXpath": keywordsObjectPage_inputItem_posXpath,
+                    "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
+                    "objectPage_button_saveItem_posXpath": keywordsObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": keywordsObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": keywordsObjectListPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": keywordsObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": keywordsObjectListPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": keywordsObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": keywordsObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": keywordsObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
+
             test_rule_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -186,27 +224,26 @@ def run(parameter):
                 },
                 "create": {
                     "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
-                    "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
-                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
-                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
-                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
-                    "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
-                    "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
-                    "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
-                    "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
-                    "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
-                    "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                    "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
-                    "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
+                    "policyRulePage_inputName_posXpath": monitorRulePage_inputName_posXpath,
+                    "policyRulePage_addSrcIP_posXpath": monitorRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
+                    "policyRulePage_addApplication_posXpath": monitorRulePage_addApplication_posXpath,
+                    "policyRulePage_searchApplication_posXpath": monitorRulePage_searchApplication_posXpath,
+                    "policyRulePage_selectApplication_posXpath": monitorRulePage_selectApplication_posXpath,
+                    "policyRulePage_closeApplication_posXpath": monitorRulePage_closeApplication_posXpath,
+                    "policyRulePage_selectApplicationLabel_posXpath": monitorRulePage_selectApplicationLabel_posXpath,
+                    "policyRulePage_addCondition_posXpath": monitorRulePage_addCondition_posXpath,
+                    "policyRulePage_addConditionServerFqdn_posXpath": monitorRulePage_addCondition_serverFqdn_posXpath,
+                    "policyRulePage_addCondition_close_posXpath": monitorRulePage_addCondition_close_posXpath,
+                    "policyRulePage_addServerFqdn_posXpath": monitorRulePage_addServerFqdn_posXpath,
+                    "policyRulePage_searchServerFqdn_posXpath": monitorRulePage_searchServerFqdn_posXpath,
+                    "policyRulePage_selectServerFqdn_posXpath": monitorRulePage_selectServerFqdn_posXpath,
+                    "policyRulePage_closeServerFqdn_posXpath": monitorRulePage_closeServerFqdn_posXpath,
+                    "policyRulePage_enable_posXpath": monitorRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
-                    "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath,
+                    "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,
                     # profile
                     "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
                     "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
@@ -215,26 +252,25 @@ def run(parameter):
                     "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
                     "policyRulePage_saveProile_ok_posXpath": monitorRulePage_saveProile_ok_posXpath,
                     "policyRulePage_saveProile_warningYes_posXpath": monitorRulePage_saveProile_warningYes_posXpath,
-                    # add ssl sni
-                    "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
-                    "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
-                    "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
-                    "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
-                    "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
-                    "policyRulePage_little_button_addBoolean_posXpath": policyRulePage_little_button_addBoolean_posXpath
+                    # add mail subject
+                    "policyRulePage_addConditionMailSubject_posXpath": policyRulePage_addCondition_mailSubject_posXpath,
+                    "policyRulePage_addMailSubject_posXpath": monitorRulePage_addmailSubject_posXpath,
+                    "policyRulePage_searchMailSubject_posXpath": monitorRulePage_searchmailSubject_posXpath,
+                    "policyRulePage_selectMailSubject_posXpath": monitorRulePage_selectmailSubject_posXpath,
+                    "policyRulePage_closeMailSubject_posXpath": monitorRulePage_closemailSubject_posXpath,
                 },
                 "search": {
-                    "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-                    "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-                    "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
-                    "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+                    "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
+                    "policyRuleListPage_searchLable_dropDown_item_posXpath": monitorRuleListPage_searchLable_dropDown_item_posXpath,
+                    "policyRuleListPage_searchLable_input_itemContent_posXpath": monitorRuleListPage_searchLable_input_itemContent_posXpath,
+                    "policyRuleListPage_searchLable_searchButton_posId": monitorRuleListPage_searchLable_searchButton_posId,
+                    "policyRuleListPage_tableTbody_posXpath": monitorRuleListPage_tableTbody_posXpath
                 },
                 "delete": {
-                    "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+                    "policyRuleListPage_allSelect_posXpath": monitorRulelistPage_allSelect_posXpath,
                     "policyRuleListPage_deleteButton_posId": monitorRuleListPage_deleteButton_posId,
-                    "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-                    "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+                    "policyRuleListPage_okButton_warningYes_posXpath": monitorRuleListpage_okButton_warningYes_posXpath,
+                    "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
                 }
             }
         # 创建object
@@ -248,6 +284,19 @@ def run(parameter):
                           "Create ip object successfully.", flush=True)
                 elif create_ip_code != 200:
                     result = "Fail to create ip object."
+                    break
+
+        # 创建keywords
+        if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+            protocol_field_data = test_data["condition"]["protocol_filed"]
+            create_content = CreateObject(driver)
+            for x in range(len(protocol_field_data)):
+                create_content_code = create_content.create(protocol_field_data[x],test_keywords_object_element_position)
+                if create_content_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create keywords object successfully.", flush=True)
+                elif create_content_code != 200:
+                    result = "Fail to create keywords."
                     break
 
         # 创建rule
@@ -322,6 +371,24 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
 
+            # 删除filter
+            for y in range(len(protocol_field_data)):
+                search_content = SearchObject(driver)
+                search_content_code, first_row_checkbox_element = search_content.search(
+                    protocol_field_data[y]["name"], test_keywords_object_element_position)
+                if search_content_code == 200:
+                    delete_content = DeleteObject(driver)
+                    delete_content_code = delete_content.delete(test_keywords_object_element_position,
+                                                                first_row_checkbox_element, True)
+                    if delete_content_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Delete url object successfully.", flush=True)
+                    elif delete_content_code != 200:
+                        result = result + " In addition, fail to delete keywords object."
+                        break
+                else:
+                    result = result + " In addition, fail to search keywords object."
+
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -365,7 +432,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "script_type": "ui",
         "vsys_id": 1,

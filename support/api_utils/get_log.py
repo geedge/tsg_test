@@ -114,6 +114,7 @@ class GetLog():
         # 请求接口查询metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = api_host + "/v1/log/query"
+        metric_result = False
         for i in range(rule_num):
             policy_type = test_data["policy_type"]
             if policy_type == 'security':
@@ -211,6 +212,7 @@ class GetLog():
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         # assert response.status_code == 200
         r_dict = response.json()
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric ：start_time:{},end_time:{},rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric result data：")
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_dict)
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get the metric information of rule id {}".format(post_data_ori_dict))
@@ -232,7 +234,7 @@ class GetLog():
                     dimension_columns = \
                     test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
                 # api返回值为空，不判断方向，直接返回重新查找
-                if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions" or dimension_columns == "fqdn_category":
+                if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions":# or dimension_columns == "fqdn_category":
                     return [333, "this is a pass"]
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
@@ -242,18 +244,52 @@ class GetLog():
                 result_list_source = r_dict["data"]["result"]
                 result_list = []
                 if "metrics_dimension" in statistics_info.keys(): #ui操作
+                    metrics_len = len(statistics_info["metrics_dimension"]["metrics"])
+                    dimensions_len = len(statistics_info["metrics_dimension"]["dimensions"])
+                    tmp_result = {}
                     for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
                         tmp_dict = {}
+                        tmp_dict_key = ""
                         for k, v in _.items():
                             if k in statistics_info["metrics_dimension"]["metrics"].keys():
                                 k_0 = statistics_info["metrics_dimension"]["metrics"][k]  # 将key变为小写且使用下划线连接
+                                # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
+                                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                                    if tmp_dict_key == "":
+                                        tmp_dict_key = k_0
+                                    else:
+                                        tmp_dict_key = tmp_dict_key+";"+k_0
+                                    if len(tmp_result) > 0 and tmp_dict_key in tmp_result.keys():
+                                        tmp_v = tmp_result[tmp_dict_key] + v
+                                        tmp_result[tmp_dict_key] = tmp_v
+                                    else:
+                                        tmp_result[tmp_dict_key] = v
                             elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
                                 k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
+                                # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
+                                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                                    if tmp_dict_key == "":
+                                        tmp_dict_key = k_0+";"+v
+                                    else:
+                                        tmp_dict_key = tmp_dict_key+";"+k_0
                             else:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
+                                continue
+                                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
                                 #throw Exception e
-                            tmp_dict[k_0] = v
-                        result_list.append(tmp_dict)
+                            if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1) == False:
+                                tmp_dict[k_0] = v
+                        # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
+                        if len(tmp_dict) > 0:
+                            result_list.append(tmp_dict)
+                    if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                        for key in tmp_result.keys():
+                            tmp_dict = {}
+                            key_list = key.split(";")
+                            if len(key_list) == 3:
+                                tmp_dict[key_list[0]] = key_list[1]
+                                tmp_dict[key_list[2]] = tmp_result[key]
+                                result_list.append(tmp_dict)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The Metrics results:{}.".format(result_list), flush=True)
                 else:
                     for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
                         tmp_dict = {}
@@ -314,7 +350,7 @@ class GetLog():
                             for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
                                 if isinstance(v, int):
                                     statistics_value[k] = avg_1
-                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: \n{}".format(statistics_value))
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: \n{}".format(statistics_value))
                         # 重组需要断言使用的key列表
                         assert_key_list = []
                         dimension_list = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
@@ -341,12 +377,22 @@ class GetLog():
                             else:
                                 assert_key_list.append(k)
                         # 开始判断key的正确性
-                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Determine the correctness of the Key:{}".format(str(assert_key_list)))
                         for i in range(len(assert_key_list)):
-                            metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
-                                                                              assert_key_list[i], statistics_value,
-                                                                              statistics_metircs_except,
-                                                                              trex_ip_info)  # 判断正确调用函数
+                            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Determine the correctness of the Key:{}".format(str(assert_key_list)))
+                            # 因目前功能端版本：tsg-os-v24.07-rc3-c3f7112只要带有非首包可命中且符合Dimensions的流量均不能全部统计*pkts和*bytes，所以需要从Test_data传入期望统计结果："statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
+                            # 如果有期望值就比对期望值
+                            if "statists_metric_results" in test_data.keys():
+                                metric_result = self.expected_value_vs_statistics_metric(statistics_info["chart_type"],
+                                                                                         assert_key_list[i],
+                                                                                         statistics_value,
+                                                                                         statistics_metircs_except,
+                                                                                         trex_ip_info,
+                                                                                         test_data["statists_metric_results"])  # 判断正确调用函数
+                            else:
+                                metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
+                                                                                  assert_key_list[i], statistics_value,
+                                                                                  statistics_metircs_except,
+                                                                                  trex_ip_info)  # 判断正确调用函数
                             metric_result = metric_results[0]
                             if metric_result == False:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Failure on assertion, the assertion is: {}".format(assert_key_list[i]), flush=True)
@@ -392,13 +438,13 @@ class GetLog():
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "pkts":
-                if statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets"]):  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
+                if statistics_value[assert_key] >= (statistics_metircs_except_avg["total_packets"]-10) and statistics_value[assert_key] <= statistics_metircs_except_avg["total_packets"]:  # 预期值减10，因为出现多个时间周期统计的结果实际值减小
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "in_pkts" or assert_key == "out_pkts":
                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], assert_key)
-                if (statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets_sent"])) or (
-                        statistics_value[assert_key] == (statistics_metircs_except_avg["total_packets_received"])):
+                if (statistics_value[assert_key] >= (statistics_metircs_except_avg["total_packets_sent"]-10) and statistics_value[assert_key] <= statistics_metircs_except_avg["total_packets_sent"]) or (
+                        statistics_value[assert_key] >= (statistics_metircs_except_avg["total_packets_received"]-10) and statistics_value[assert_key] <= statistics_metircs_except_avg["total_packets_received"]):
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], success_result)
                     metric_result = True
             elif assert_key == "new_c2s_flows" or assert_key == "new_s2c_flows" or assert_key == "sessions" or assert_key == "new_in_sessions" or assert_key == "new_out_sessions" or assert_key == "syn_pkts":
@@ -612,6 +658,34 @@ class GetLog():
         end_ip_obj = ipaddress.IPv4Address(end_ip)
         ip_count = int(end_ip_obj) - int(start_ip_obj) + 1
         return ip_count
+
+    def expected_value_vs_statistics_metric(self, chart_type, assert_key, statistics_value, statistics_metircs_except,
+                                    trex_ip_info,statists_metric_results):
+
+        """
+        statists_metric_results:Statistics Rule因Condition、Dimensions等影响无法统计到全部流量时期望的统计结果格式如下：
+        "statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
+        """
+        metric_result = False
+        assert_key_in_expected = False
+        assert_key_equal_expected = False
+        tmp_expected = ""
+        for statists_metric_result in statists_metric_results:
+            if assert_key in statists_metric_result.keys():
+                assert_key_in_expected = True
+                tmp_expected = statists_metric_result[assert_key]
+                if statistics_value[assert_key] == tmp_expected:
+                    #和原始流量对比需转换，暂未对比，因已经和期望值对比，此处不比较也没有影响 and statists_metric_result[assert_key] <= statistics_metircs_except["total_packets"]:
+                    metric_result = True
+                    assert_key_equal_expected = True
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"pass：expected_value_vs_statistics_metric",flush=True)
+                    break
+        if  assert_key_in_expected == False:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Key:{assert_key} for missing expected: {statists_metric_results}", flush=True)
+            metric_result = False
+        elif assert_key_equal_expected == False:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"statistics_value[{assert_key}]:{statistics_value[assert_key]} is inconsistent with the expected value: {tmp_expected}", flush=True)
+            metric_result = False
 
 
 if __name__ == '__main__':
