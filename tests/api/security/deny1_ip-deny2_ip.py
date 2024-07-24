@@ -30,38 +30,38 @@ def run(parameter):
             "do_log_1": 2,
             "do_log_2": 2,
             "obj_condition_1": [
-              {
+                {
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "ip_address": "default",
                         "port_range": "0-65535"
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
-              }
+                }
             ],
             "obj_condition_2": [
-              {
+                {
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "ip_address": "default",
                         "port_range": "0-65535"
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
-              }
+                }
             ],
             "app_name_1": [],
             "app_name_2": [],
@@ -74,7 +74,7 @@ def run(parameter):
                     "protocol": "ssl",
                     "type": "curl",
                     "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-                  },
+                    },
             "token": ""
         }
         

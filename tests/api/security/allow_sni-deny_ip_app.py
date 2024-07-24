@@ -34,15 +34,15 @@ def run(parameter):
                 "object_type": "fqdn",
                 "object_sub_type": "fqdn",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "keyword_array": [
-                          "www.baidu.com"
+                            "www.baidu.com"
                         ]
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
             }
             ],
@@ -52,14 +52,14 @@ def run(parameter):
                 "object_type": "ip",
                 "object_sub_type": "ip",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "ip_address": "default",
                         "port_range": "0-65535"
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
             }
             ],
@@ -74,7 +74,7 @@ def run(parameter):
                     "protocol": "ssl",
                     "type": "curl",
                     "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-                  },
+                    },
             "token": ""
         }
         

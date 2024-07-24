@@ -29,55 +29,55 @@ def run(parameter):
             "do_log_1": 2,
             "do_log_2": 2,
             "obj_condition_1": [
-              {
+                {
                 "attribute_name": "ATTR_FLAG",
                 "object_type": "flag",
                 "object_sub_type": "flag",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "flag": 8,
                         "mask": 8
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
-              },
-              {
+                },
+                {
                 "attribute_name": "ATTR_SERVER_FQDN",
                 "object_type": "fqdn",
                 "object_sub_type": "fqdn",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "keyword_array": [
-                          "www.baidu.com"
+                            "www.baidu.com"
                         ]
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
-              }
+                }
             ],
             "obj_condition_2": [
-              {
+                {
                 "attribute_name": "ATTR_SERVER_FQDN",
                 "object_type": "fqdn",
                 "object_sub_type": "fqdn",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "keyword_array": [
-                          "www.baidu.com"
+                            "www.baidu.com"
                         ]
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
-              }
+                }
             ],
             "app_name_1": ["ssl"],
             "app_name_2": ["ssl"],
@@ -87,10 +87,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
             "log_query_param_2": [],
             "traffic": {
-                      "protocol": "ssl",
-                      "type": "curl",
-                      "command": "curl -kv --connect-timeout 20 -m 20 https://www.baidu.com"
-                  },
+                        "protocol": "ssl",
+                        "type": "curl",
+                        "command": "curl -kv --connect-timeout 20 -m 20 https://www.baidu.com"
+                    },
             "token": ""
         }
         

@@ -29,21 +29,21 @@ def run(parameter):
             "do_log_1": 2,
             "do_log_2": 2,
             "obj_condition_1": [
-              {
+                {
                 "attribute_name": "ATTR_FLAG",
                 "object_type": "flag",
                 "object_sub_type": "flag",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "flag": 8,
                         "mask": 8
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
-              }
+                }
             ],
             "obj_condition_2": [],
             "app_name_1": [],
@@ -54,10 +54,10 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
             "log_query_param_2": [],
             "traffic": {
-                      "protocol": "ssl",
-                      "type": "curl",
-                      "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-                  },
+                        "protocol": "ssl",
+                        "type": "curl",
+                        "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                    },
             "token": ""
         }
         

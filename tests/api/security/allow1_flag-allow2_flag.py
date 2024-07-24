@@ -33,14 +33,14 @@ def run(parameter):
                 "object_type": "flag",
                 "object_sub_type": "flag",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "flag": 8,
                         "mask": 8
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
                 }
             ],
@@ -50,14 +50,14 @@ def run(parameter):
                 "object_type": "flag",
                 "object_sub_type": "flag",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "flag": 8,
                         "mask": 8
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
                 }
             ],

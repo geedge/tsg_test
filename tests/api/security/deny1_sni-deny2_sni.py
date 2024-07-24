@@ -30,40 +30,40 @@ def run(parameter):
             "do_log_1": 2,
             "do_log_2": 2,
             "obj_condition_1": [
-              {
+                {
                 "attribute_name": "ATTR_SERVER_FQDN",
                 "object_type": "fqdn",
                 "object_sub_type": "fqdn",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "keyword_array": [
-                          "www.baidu.com"
+                            "www.baidu.com"
                         ]
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
-              }
+                }
             ],
             "obj_condition_2": [
-              {
+                {
                 "attribute_name": "ATTR_SERVER_FQDN",
                 "object_type": "fqdn",
                 "object_sub_type": "fqdn",
                 "object_list": [
-                  {
+                    {
                     "add_item_list": [
-                      {
+                        {
                         "keyword_array": [
-                          "www.baidu.com"
+                            "www.baidu.com"
                         ]
-                      }
+                        }
                     ]
-                  }
+                    }
                 ]
-              }
+                }
             ],
             "app_name_1": ["ssl"],
             "app_name_2": ["ssl"],
@@ -72,11 +72,11 @@ def run(parameter):
             "counters_2": {"hits": 1},
             "log_query_param_1": [],
             "log_query_param_2": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
-                  "traffic": {
-                      "protocol": "ssl",
-                      "type": "curl",
-                      "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-                  },
+                    "traffic": {
+                        "protocol": "ssl",
+                        "type": "curl",
+                        "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                    },
             "token": ""
         }
         
