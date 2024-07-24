@@ -39,18 +39,18 @@ class MailPlayer():
         # msg.attach(part)
         # try:
         #     if mail_type == "gamail":
-        #         smtpObj = smtplib.SMTP_SSL('smtp.gmail.com', mail_port)
+        #         smtp_obj = smtplib.SMTP_SSL('smtp.gmail.com', mail_port)
         #     else:
-        #         smtpObj = smtplib.SMTP('smtp.example.com', mail_port)
+        #         smtp_obj = smtplib.SMTP('smtp.example.com', mail_port)
         #     # 如果服务器不支持STARTTLS，需注释掉下面这行
-        #     smtpObj.starttls()
-        #     smtpObj.login(sender, password)
-        #     smtpObj.sendmail(sender, [receiver], msg.as_string())
+        #     smtp_obj.starttls()
+        #     smtp_obj.login(sender, password)
+        #     smtp_obj.sendmail(sender, [receiver], msg.as_string())
         #     return "Email sent successfully"
-        # except smtplib.SMTPException as e:  
+        # except smtplib.SMTPException as e:
         #     return f"SMTPException: {e}"
-        # finally:  
-        #     smtpObj.quit()
+        # finally:
+        #     smtp_obj.quit()
             
         return result
     
