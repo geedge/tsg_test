@@ -129,7 +129,7 @@ class UiVerification():
                 
                 # traffic_result = {'total_packets': 175, 'total_packets_sent': 45, 'total_packets_received': 130, 'total_bytes': 180025, 'total_bytes_sent': 5799, 'total_bytes_received': 174226, 'total_syn_pkt': 1}
                 if len(traffic_result) > 0:
-                    if len(sent_pkts_str) == 0 or len(received_pkts_str) == 0:
+                    if sent_pkts == 0 and received_pkts == 0:
                         if cfg_list["sf_method"] == "vxlan_g":
                             if cfg_list["sf_dest_ip"] not in sc_active_ip_list:
                                 metric_result = True

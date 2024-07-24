@@ -550,6 +550,7 @@ class GetLog():
             "end_time": "2023-11-30T07:39:49Z",
             "vsys_id": 1,
             "interval": 1,
+            "duration":1,
             "limit": 10000,
             "output_mode": "json"
         }
