@@ -41,13 +41,13 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_source_ip_ssl_no_sni_true_rate_high",
+            "rule_name": "secy_deny_srcip_ssl_nosni_true_rate_low",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "security_source_ip",
+                        "name": "secy_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -93,13 +93,13 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "rate_limit",
-                        "rate_value": "100000",
+                        "rate_value": "0.1",
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "POST",
+            "expected_return": "timed out",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"server_port", "query_value": 1443}],
             "traffic": {
@@ -118,11 +118,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_source_ip_ssl_no_sni_true_rate_high"
+                "name": "secy_deny_srcip_ssl_nosni_true_rate_low"
             },
             {
                 "type": "ip",
-                "name": "security_external_ip"
+                "name": "secy_ip"
             }
         ]
         

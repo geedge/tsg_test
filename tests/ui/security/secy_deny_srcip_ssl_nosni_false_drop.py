@@ -41,13 +41,13 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "security_rule_deny_source_ip_ssl_no_sni_false_rate_low",
+            "rule_name": "secy_deny_srcip_ssl_nosni_false_drop",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "security_source_ip",
+                        "name": "secy_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -92,8 +92,10 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "rate_limit",
-                        "rate_value": "0.1",
+                        "type": "drop",
+                        "drop_packet": 0,
+                        "send_tcp_rst": False,
+                        "send_icmp_unreachable": True
                     }
                 ],
                 "packet_capture": []
@@ -118,11 +120,11 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "security_rule_deny_source_ip_ssl_no_sni_false_rate_low"
+                "name": "secy_deny_srcip_ssl_nosni_false_drop"
             },
             {
                 "type": "ip",
-                "name": "security_external_ip"
+                "name": "secy_ip"
             }
         ]
         
@@ -193,8 +195,10 @@ def run(parameter):
                     "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
-                    "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
+                    "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
+                    "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
+                    "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
+                    "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
