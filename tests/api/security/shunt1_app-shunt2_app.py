@@ -13,78 +13,78 @@ from datetime import datetime
 
 def run(parameter):
     try:
-      print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
-      # 参数初始化
-      result, exception_result = "", ""
-          
-      # 脚本启动时间
-      start_time = time.time()
-      # 测试数据
-      test_data = {
-        "is_multi_priority": True,
-        "rule_num": 2,
-        "policy_type": "security",
-        "rule_action_1": "shunt",
-        "rule_action_2": "shunt",
-        "do_log_1": 0,
-        "do_log_2": 0,
-        "obj_condition_1": [],
-        "obj_condition_2": [],
-        "app_name_1": ["ssl"],
-        "app_name_2": ["ssl"],
-        "expected_return": "百度一下",
-        "counters_1": {},
-        "counters_2": {"hits": 0},
-        "log_query_param_1": [],
-        "log_query_param_2": [],
-        "traffic": {
-                  "protocol": "ssl",
-                  "type": "curl",
-                  "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-              },
-        "token": ""
-      }
-      
-      # 添加测试过程中涉及的template
-      template_path = {}
-      template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-      template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-      
-      # 获取token
-      log_in = LogIn()
-      pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-      token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-      test_data["token"] = token
-      
-      # 创建Object、Profile、Rule
-      create = CreatePolicy()
-      cfg_list = create.create_policy(parameter, test_data, template_path)
-      
-      # 流量验证
-      verify = Verification()
-      verification_result = verify.verification("", parameter, test_data, cfg_list, "")
-      # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "verification result: ", verification_result, flush=True)
-      
-      # 分析验证结果，并返回给flask
-      analysis = AnalysisResult()
-      result = analysis.analysis_result(test_data, cfg_list, verification_result)
-      if len(result) == 0:
-          print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
-      elif len(result) != 0:
-          print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
-      # 删除配置
-      delete = DeletePolicy()
-      delete.delele_policy_by_cfg(token, parameter, cfg_list)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        # 参数初始化
+        result, exception_result = "", ""
+            
+        # 脚本启动时间
+        start_time = time.time()
+        # 测试数据
+        test_data = {
+            "is_multi_priority": True,
+            "rule_num": 2,
+            "policy_type": "security",
+            "rule_action_1": "shunt",
+            "rule_action_2": "shunt",
+            "do_log_1": 0,
+            "do_log_2": 0,
+            "obj_condition_1": [],
+            "obj_condition_2": [],
+            "app_name_1": ["ssl"],
+            "app_name_2": ["ssl"],
+            "expected_return": "百度一下",
+            "counters_1": {},
+            "counters_2": {"hits": 0},
+            "log_query_param_1": [],
+            "log_query_param_2": [],
+            "traffic": {
+                    "protocol": "ssl",
+                    "type": "curl",
+                    "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                },
+            "token": ""
+        }
+        
+        # 添加测试过程中涉及的template
+        template_path = {}
+        template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
+        template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+        
+        # 获取token
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        test_data["token"] = token
+        
+        # 创建Object、Profile、Rule
+        create = CreatePolicy()
+        cfg_list = create.create_policy(parameter, test_data, template_path)
+        
+        # 流量验证
+        verify = Verification()
+        verification_result = verify.verification("", parameter, test_data, cfg_list, "")
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "verification result: ", verification_result, flush=True)
+        
+        # 分析验证结果，并返回给flask
+        analysis = AnalysisResult()
+        result = analysis.analysis_result(test_data, cfg_list, verification_result)
+        if len(result) == 0:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
+        elif len(result) != 0:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
+        # 删除配置
+        delete = DeletePolicy()
+        delete.delele_policy_by_cfg(token, parameter, cfg_list)
 
-      
-      
-      # 脚本结束时间和耗时
-      end_time = time.time()
-      duration = end_time - start_time
-      print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-          
-      print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
-      return result
+        
+        
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+            
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
+        return result
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)

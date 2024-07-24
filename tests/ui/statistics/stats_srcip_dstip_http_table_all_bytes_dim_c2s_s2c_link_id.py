@@ -146,6 +146,9 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"c2s_link_id": 720, "s2c_link_id": 720, "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",

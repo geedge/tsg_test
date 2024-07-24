@@ -133,7 +133,8 @@ def run(parameter):
                 },
                 "create": {
                     "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
-                    monitor
+                    "policyRulePage_inputName_posXpath": monitorRulePage_inputName_posXpath,
+                    "policyRulePage_searchApplication_posXpath": monitorRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": monitorRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": monitorRulePage_closeApplication_posXpath,
                     "policyRulePage_addCondition_posXpath": monitorRulePage_addCondition_posXpath,

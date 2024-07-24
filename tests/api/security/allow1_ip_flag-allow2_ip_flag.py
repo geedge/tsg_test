@@ -20,90 +20,90 @@ def run(parameter):
         start_time = time.time()
         # 测试数据
         test_data = {
-          "is_multi_priority": True,
-          "rule_num": 2,
-          "policy_type": "security",
-          "rule_action_1": "allow",
-          "rule_action_2": "allow",
-          "do_log_1": 2,
-          "do_log_2": 2,
-          "obj_condition_1": [
-            {
-              "attribute_name": "ATTR_SOURCE_IP",
-              "object_type": "ip",
-              "object_sub_type": "ip",
-              "object_list": [
+            "is_multi_priority": True,
+            "rule_num": 2,
+            "policy_type": "security",
+            "rule_action_1": "allow",
+            "rule_action_2": "allow",
+            "do_log_1": 2,
+            "do_log_2": 2,
+            "obj_condition_1": [
                 {
-                  "add_item_list": [
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
                     {
-                      "ip_address": "default",
-                      "port_range": "0-65535"
+                    "add_item_list": [
+                        {
+                        "ip_address": "default",
+                        "port_range": "0-65535"
+                        }
+                    ]
                     }
-                  ]
-                }
-              ]
-            },
-            {
-              "attribute_name": "ATTR_FLAG",
-              "object_type": "flag",
-              "object_sub_type": "flag",
-              "object_list": [
+                ]
+                },
                 {
-                  "add_item_list": [
+                "attribute_name": "ATTR_FLAG",
+                "object_type": "flag",
+                "object_sub_type": "flag",
+                "object_list": [
                     {
-                      "flag": 8,
-                      "mask": 8
+                    "add_item_list": [
+                        {
+                        "flag": 8,
+                        "mask": 8
+                        }
+                    ]
                     }
-                  ]
+                ]
                 }
-              ]
-            }
-          ],
-          "obj_condition_2": [
-            {
-              "attribute_name": "ATTR_SOURCE_IP",
-              "object_type": "ip",
-              "object_sub_type": "ip",
-              "object_list": [
+            ],
+            "obj_condition_2": [
                 {
-                  "add_item_list": [
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
                     {
-                      "ip_address": "default",
-                      "port_range": "0-65535"
+                    "add_item_list": [
+                        {
+                        "ip_address": "default",
+                        "port_range": "0-65535"
+                        }
+                    ]
                     }
-                  ]
-                }
-              ]
-            },
-            {
-              "attribute_name": "ATTR_FLAG",
-              "object_type": "flag",
-              "object_sub_type": "flag",
-              "object_list": [
+                ]
+                },
                 {
-                  "add_item_list": [
+                "attribute_name": "ATTR_FLAG",
+                "object_type": "flag",
+                "object_sub_type": "flag",
+                "object_list": [
                     {
-                      "flag": 8,
-                      "mask": 8
+                    "add_item_list": [
+                        {
+                        "flag": 8,
+                        "mask": 8
+                        }
+                    ]
                     }
-                  ]
+                ]
                 }
-              ]
-            }
-          ],
-          "app_name_1": ["ssl"],
-          "app_name_2": ["ssl"],
-          "expected_return": "百度一下",
-          "counters_1": {"hits": 0},
-          "counters_2": {},
-          "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
-          "log_query_param_2": [],
-          "traffic": {
+            ],
+            "app_name_1": ["ssl"],
+            "app_name_2": ["ssl"],
+            "expected_return": "百度一下",
+            "counters_1": {"hits": 0},
+            "counters_2": {},
+            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
+            "log_query_param_2": [],
+            "traffic": {
                     "protocol": "ssl",
                     "type": "curl",
                     "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
                 },
-          "token": ""
+            "token": ""
         }
         
         # 添加测试过程中涉及的template

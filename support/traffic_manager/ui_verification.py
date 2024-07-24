@@ -44,7 +44,8 @@ class UiVerification():
                             parse.read(parse_dir, encoding="utf-8")
                             temp_log_result_list = []
                             # 点击展开
-                            my_driver.find_element("//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
+                            time.sleep(3)
+                            my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                             for t in range(len(test_data["log_query_param"])):
                                 log_query_key = test_data["log_query_param"][t]["query_field_key"]
                                 log_str = parse.get("log", log_query_key)
