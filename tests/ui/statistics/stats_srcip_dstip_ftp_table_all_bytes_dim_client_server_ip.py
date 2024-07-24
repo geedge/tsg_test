@@ -146,6 +146,9 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "ftp_login_ftpuser"
             },
+            "statists_metric_results": [
+                {"client_ip": "10.64.4.192", "server_ip": "2.1.1.3", "in_bytes": 678, "out_bytes": 982, "bytes": 13280}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",

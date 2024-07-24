@@ -68,8 +68,9 @@ class ApiVerification():
         if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
             # 获取开始时间
             utc_tz = pytz.timezone('UTC')
-            current_utc_time = datetime.now(utc_tz)
+            current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            print(start_time)
             
             # 等待时间，等待策略生效
             time.sleep(10)
@@ -145,8 +146,9 @@ class ApiVerification():
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             # 将时间向前推迟 8 分钟，因为trex流量先发送。
-            new_time = current_utc_time - timedelta(minutes=8)
+            new_time = current_utc_time - timedelta(seconds=30)
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],'start_time', flush=True)
             # 解析trex使用参数， 解析client server ip
             # if script_type == "ui":
                 # if "source_ip" in test_data["condition"].keys():

@@ -451,6 +451,9 @@ class CreateRule():
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addProfile_plus_posXpath"]).click()
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
+                    # 页面滚动到最底部
+                    div_container = self.driver.find_element(By.XPATH, "//div[@class='VEditPanel']/div[@class='panel-container']")
+                    self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_container)  # 移动到页面最底部
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
                         if "deny_response_block" in test_data["action_parameter"].keys():    # action为 close connection
@@ -558,8 +561,7 @@ class CreateRule():
                         contained_keyword =  test_data["action_parameter"]["edit_element_parameter"][0]["contained_keyword"].lower()
                         distance_from_anchor =  test_data["action_parameter"]["edit_element_parameter"][0]["distance_from_anchor"].lower()
                         treatment =  test_data["action_parameter"]["edit_element_parameter"][0]["treatment"].lower()
-                        # search scope 操作
-                        if search_scope == "whole_file":
+                        if search_scope == "whole_file":  # search scope 操作
                             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath"]).click()
                         else:    # inside_element

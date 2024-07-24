@@ -20,45 +20,45 @@ def run(parameter):
         start_time = time.time()
         # 测试数据
         test_data = {
-          "is_multi_priority": True,
-          "rule_num": 2,
-          "policy_type": "security",
-          "rule_action_1": "allow",
-          "rule_action_2": "allow",
-          "do_log_1": 2,
-          "do_log_2": 2,
-          "obj_condition_1": [
+            "is_multi_priority": True,
+            "rule_num": 2,
+            "policy_type": "security",
+            "rule_action_1": "allow",
+            "rule_action_2": "allow",
+            "do_log_1": 2,
+            "do_log_2": 2,
+            "obj_condition_1": [
             {
-              "attribute_name": "ATTR_SERVER_FQDN",
-              "object_type": "fqdn",
-              "object_sub_type": "",
-              "object_list": [
-                {
-                  "add_item_list": [
+                "attribute_name": "ATTR_SERVER_FQDN",
+                "object_type": "fqdn",
+                "object_sub_type": "",
+                "object_list": [
                     {
-                      "keyword_array": [
-                        "www.baidu.com"
-                      ]
+                    "add_item_list": [
+                        {
+                        "keyword_array": [
+                            "www.baidu.com"
+                        ]
+                        }
+                    ]
                     }
-                  ]
-                }
-              ]
+                ]
             }
-          ],
-          "obj_condition_2": [],
-          "app_name_1": ["ssl"],
-          "app_name_2": ["ssl"],
-          "expected_return": "百度一下",
-          "counters_1": {"hits": 0},
-          "counters_2": {"hits": 1},
-          "log_query_param_1": [],
-          "log_query_param_2": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
-          "traffic": {
+            ],
+            "obj_condition_2": [],
+            "app_name_1": ["ssl"],
+            "app_name_2": ["ssl"],
+            "expected_return": "百度一下",
+            "counters_1": {"hits": 0},
+            "counters_2": {"hits": 1},
+            "log_query_param_1": [],
+            "log_query_param_2": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
+            "traffic": {
                     "protocol": "ssl",
                     "type": "curl",
                     "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-                },
-          "token": ""
+                    },
+            "token": ""
         }
         
         # 添加测试过程中涉及的template

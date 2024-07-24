@@ -39,8 +39,8 @@ class Verification():
             # else:
             trigger_traffic = TriggerTraffic()
             traffic_result = trigger_traffic.trigger_traffic(parameter, test_data)
-            
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Start to verify the effect of the policy rule.traffic_result:{}.".format(traffic_result), flush=True)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             if script_type == "ui":
                 traffic_verification = ApiVerification()
                 api_verification_result = traffic_verification.api_verification(my_driver, parameter, test_data, traffic_result, cfg_list)
@@ -70,13 +70,18 @@ class Verification():
                         verification_result[3] = ui_verification_result[3]
                         return verification_result
                 else:
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"testapi_verification_result:{api_verification_result}")
                     return api_verification_result
             elif script_type == "api":
                 traffic_verification = ApiVerification()
                 verification_result = traffic_verification.api_verification("", parameter, test_data, traffic_result, cfg_list)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"verification_result:{verification_result}")
                 return verification_result
         except Exception as e:
-            return f"Exception: {e}"
+            # 返回此异常有时导致执行结果为成功，本地参数和配置文件参数中的vsys修改为不一致可复现
+            #return f"Exception: {e}"
+            # 所以修改为如下返回
+            return (False, False, False, f"Exception: {e}", f"Exception: {e}")
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
