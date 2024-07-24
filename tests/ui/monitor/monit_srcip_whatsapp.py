@@ -92,7 +92,7 @@ def run(parameter):
             "is_mirror":"on",
             "profile": [],
             "expected_return": "whatsapp",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.whatsapp.com"}],
             "traffic": {
                 "type": "curl",

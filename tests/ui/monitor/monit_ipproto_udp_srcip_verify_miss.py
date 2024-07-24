@@ -168,7 +168,7 @@ def run(parameter):
                     "policyRulePage_selectApplicationLabel_posXpath": monitorRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addApplication_posXpath": monitorRulePage_addApplication_posXpath,
                     "policyRulePage_addCondition_close_posXpath": monitorRulePage_addCondition_close_posXpath,
-                   #other button
+                    #other button
                     "policyRulePage_enable_posXpath": monitorRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
                     "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,

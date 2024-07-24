@@ -111,7 +111,7 @@ def run(parameter):
 
             ],
             "expected_return": "Ok",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
                 "type": "curl",

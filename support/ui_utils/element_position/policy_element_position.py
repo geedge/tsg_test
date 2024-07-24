@@ -607,11 +607,10 @@ shapingRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-bu
 mainPage_policySecondLevelMenu_monitor_posId = "policy_monitor"
 monitorRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
 monitorRuleListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
-monitorRuleListPage_searchLable_posId = securityRuleListPage_searchLable_posId
+monitorRuleListPage_searchLable_posId = "select-label"
 monitorRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
 monitorRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
 monitorRuleListPage_searchLable_searchButton_posId = "searchQuery"
-monitorRuleListPage_selectRule_posXpath = "//div[contains(@class,'ly-table1')]//tbody//sapn[@class='el-checkbox__inner']"
 monitorRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
 monitorRulelistPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
 monitorRuleListpage_okButton_warningYes_posXpath= "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
@@ -703,6 +702,9 @@ monitorRulePage_addCondition_externalIP_posXpath = policyRulePage_addCondition_e
 monitorRulePage_addCondition_internalPort_posXpath = policyRulePage_addCondition_internalPort_posXpath
 monitorRulePage_addCondition_ftpAccount_posXpath = policyRulePage_addCondition_ftpAccount_posXpath
 monitorRulePage_addCondition_ftpContent_posXpath = policyRulePage_addCondition_ftpContent_posXpath
+monitorRulePage_addCondition_cn_posXpath = policyRulePage_addCondition_cn_posXpath
+monitorRulePage_addCondition_san_posXpath = policyRulePage_addCondition_san_posXpath
+monitorRulePage_addCondition_qname_posXpath = policyRulePage_addCondition_qname_posXpath
 monitorRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 #monitor_add server fqdn
 monitorRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
@@ -756,6 +758,21 @@ monitorRulePage_addmailSubject_posXpath = policyRulePage_addMailSubject_posXpath
 monitorRulePage_searchmailSubject_posXpath = policyRulePage_searchMailSubject_posXpath
 monitorRulePage_selectmailSubject_posXpath = policyRulePage_selectMailSubject_posXpath
 monitorRulePage_closemailSubject_posXpath = policyRulePage_closeMailSubject_posXpath
+#monit add cn
+monitorRulePage_addCn_posXpath = policyRulePage_addCn_posXpath
+monitorRulePage_searchCn_posXpath = policyRulePage_searchCn_posXpath
+monitorRulePage_selectCn_posXpath = policyRulePage_selectCn_posXpath
+monitorRulePage_closeCn_posXpath = policyRulePage_closeCn_posXpath
+#monit add san
+monitorRulePage_addSan_posXpath = policyRulePage_addSan_posXpath
+monitorRulePage_searchSan_posXpath = policyRulePage_searchSan_posXpath
+monitorRulePage_selectSan_posXpath = policyRulePage_selectSan_posXpath
+monitorRulePage_closeSan_posXpath = policyRulePage_closeSan_posXpath
+#monit add qname
+monitorRulePage_addQname_posXpath = policyRulePage_addQname_posXpath
+monitorRulePage_searchQname_posXpath = policyRulePage_searchQname_posXpath
+monitorRulePage_selectQname_posXpath = policyRulePage_selectQname_posXpath
+monitorRulePage_closeQname_posXpath = policyRulePage_closeQname_posXpath
 
 #### statistics
 statisticsRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_statistics_Home_App_anonymousComponent"
