@@ -369,9 +369,7 @@ def run(parameter):
         # 删除rule
         if create_rule_code == 200:
             # 删除intercept策略
-            delete_rule_code = delete_pre_policy(intercept_name_list, driver)
-            if delete_rule_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete intercept rule successfully.", flush=True)
+            delete_pre_policy(intercept_name_list, driver)
             search_rule = SearchRule(driver)
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
             if search_rule_code == 200:

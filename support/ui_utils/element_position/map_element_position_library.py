@@ -1058,7 +1058,6 @@ def delete_pre_policy(name_list, driver):
             result = " In addition, fail to delete {} rule.".format(policy_type)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], result)
         time.sleep(2)
-        return delete_rule_code
 
 test_ip_object_element_position = test_ip_object_element_position
 test_ip_group_object_element_position = test_ip_group_object_element_position

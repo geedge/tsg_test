@@ -22,6 +22,8 @@ class TriggerTraffic():
         if "debug_flag" in parameter.keys():
             debug_flag = parameter["debug_flag"]
         if debug_flag == "local":
+            if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw":
+                test_data = self.replace_trex_ip(test_data, script_type)
             temp_data = json.dumps(test_data["traffic"])
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
@@ -43,7 +45,7 @@ class TriggerTraffic():
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "json loads failed:", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} {} \n{}".format(url, temp_data, response.text), flush=True)
                     jsonData["result"] = response.text
-                if test_data["policy_type"] == "statistics":
+                if test_data["policy_type"] == "statistics" or (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw"):
                     jsonData = jsonData["result"]
                 result = jsonData
         else:

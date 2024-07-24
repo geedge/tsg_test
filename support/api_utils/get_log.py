@@ -332,7 +332,7 @@ class GetLog():
                                     if isinstance(v, int):
                                         statistics_value[k] += v
                                 break_flag = 0     # 默认外层循环累加，累加标志
-                                tmp_break_list = ["client_ip_sketch", "server_ip_ip_sketch", "fqdn_category", "client_ip_matched_objects", "server_ip_matched_objects", "websketch_categories"]   #兼容UI API，所以三组值
+                                tmp_break_list = ["client_ip_sketch", "server_ip_ip_sketch", "fqdn_category", "client_ip_object", "server_ip_objects", "websketch_categories"]   #兼容UI API，所以三组值
                                 for item in tmp_break_list:    #遍历判断是否符合上述条件，获取退出累加标志1。"client_ip_sketch", "server_ip_ip_sketch", "fqdn_category"
                                     if item in result_list[0].keys():
                                         break_flag = 1    # 退出外层累加标志
@@ -378,23 +378,23 @@ class GetLog():
                                 assert_key_list.append(k)
                         # 开始判断key的正确性
                         if "statists_metric_results" in test_data.keys():
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statists_metric_results: {}".format(test_data["statists_metric_results"]), flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statists_metric_results: \n{}".format(test_data["statists_metric_results"]), flush=True)
                         for i in range(len(assert_key_list)):
                             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Determine the correctness of the Key:{}".format(str(assert_key_list)))
                             # 因目前功能端版本：tsg-os-v24.07-rc3-c3f7112只要带有非首包可命中且符合Dimensions的流量均不能全部统计*pkts和*bytes，所以需要从Test_data传入期望统计结果："statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
                             # 如果有期望值就比对期望值
-                            if "statists_metric_results" in test_data.keys():
-                                metric_results = self.expected_value_vs_statistics_metric(statistics_info["chart_type"],
-                                                                                         assert_key_list[i],
-                                                                                         statistics_value,
-                                                                                         statistics_metircs_except,
-                                                                                         trex_ip_info,
-                                                                                         test_data["statists_metric_results"])  # 判断正确调用函数
-                            else:
-                                metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
-                                                                                  assert_key_list[i], statistics_value,
-                                                                                  statistics_metircs_except,
-                                                                                  trex_ip_info)  # 判断正确调用函数
+                            #if "statists_metric_results" in test_data.keys():
+                            #    metric_results = self.expected_value_vs_statistics_metric(statistics_info["chart_type"],
+                            #                                                             assert_key_list[i],
+                            #                                                             statistics_value,
+                            #                                                             statistics_metircs_except,
+                            #                                                             trex_ip_info,
+                            #                                                             test_data["statists_metric_results"])  # 判断正确调用函数
+                            #else:
+                            metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
+                                                                              assert_key_list[i], statistics_value,
+                                                                              statistics_metircs_except,
+                                                                              trex_ip_info)  # 判断正确调用函数
                             metric_result = metric_results[0]
                             if metric_result == False:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Failure on assertion, the assertion is: {}".format(assert_key_list[i]), flush=True)
@@ -550,6 +550,7 @@ class GetLog():
             "end_time": "2023-11-30T07:39:49Z",
             "vsys_id": 1,
             "interval": 1,
+            "duration":1,
             "limit": 10000,
             "output_mode": "json"
         }
