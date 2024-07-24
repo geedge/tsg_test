@@ -21,91 +21,91 @@ def run(parameter):
         start_time = time.time()
         # 测试数据
         test_data = {
-          "is_multi_priority": True,
-          "rule_num": 2,
-          "policy_type": "security",
-          "rule_action_1": "shunt",
-          "rule_action_2": "allow",
-          "do_log_1": 0,
-          "do_log_2": 2,
-          "obj_condition_1": [
-            {
-              "attribute_name": "ATTR_SOURCE_IP",
-              "object_type": "ip",
-              "object_sub_type": "ip",
-              "object_list": [
+            "is_multi_priority": True,
+            "rule_num": 2,
+            "policy_type": "security",
+            "rule_action_1": "shunt",
+            "rule_action_2": "allow",
+            "do_log_1": 0,
+            "do_log_2": 2,
+            "obj_condition_1": [
                 {
-                  "add_item_list": [
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
                     {
-                      "ip_address": "default",
-                      "port_range": "0-65535"
+                    "add_item_list": [
+                        {
+                        "ip_address": "default",
+                        "port_range": "0-65535"
+                        }
+                    ]
                     }
-                  ]
-                }
-              ]
-            },
-            {
-              "attribute_name": "ATTR_FLAG",
-              "object_type": "flag",
-              "object_sub_type": "flag",
-              "object_list": [
-                {
-                  "add_item_list": [
-                    {
-                      "flag": 8,
-                      "mask": 8
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "obj_condition_2": [
-            {
-              "attribute_name": "ATTR_SOURCE_IP",
-              "object_type": "ip",
-              "object_sub_type": "ip",
-              "object_list": [
-                {
-                  "add_item_list": [
-                    {
-                      "ip_address": "default",
-                      "port_range": "0-65535"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "attribute_name": "ATTR_SERVER_FQDN",
-              "object_type": "fqdn",
-              "object_sub_type": "fqdn",
-              "object_list": [
-                {
-                  "add_item_list": [
-                    {
-                      "keyword_array": [
-                        "www.baidu.com"
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "app_name_1": ["ssl"],
-          "app_name_2": ["ssl"],
-          "expected_return": "百度一下",
-          "counters_1": {"hits": "many"},
-          "counters_2": {"hits": 0},
-          "log_query_param_1": [],
-          "log_query_param_2": [],
-          "traffic": {
-                    "protocol": "ssl",
-                    "type": "curl",
-                    "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                ]
                 },
-          "token": ""
+                {
+                "attribute_name": "ATTR_FLAG",
+                "object_type": "flag",
+                "object_sub_type": "flag",
+                "object_list": [
+                    {
+                    "add_item_list": [
+                        {
+                        "flag": 8,
+                        "mask": 8
+                        }
+                    ]
+                    }
+                ]
+                }
+            ],
+            "obj_condition_2": [
+                {
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
+                    {
+                    "add_item_list": [
+                        {
+                        "ip_address": "default",
+                        "port_range": "0-65535"
+                        }
+                    ]
+                    }
+                ]
+                },
+                {
+                "attribute_name": "ATTR_SERVER_FQDN",
+                "object_type": "fqdn",
+                "object_sub_type": "fqdn",
+                "object_list": [
+                    {
+                    "add_item_list": [
+                        {
+                        "keyword_array": [
+                            "www.baidu.com"
+                        ]
+                        }
+                    ]
+                    }
+                ]
+                }
+            ],
+            "app_name_1": ["ssl"],
+            "app_name_2": ["ssl"],
+            "expected_return": "百度一下",
+            "counters_1": {"hits": "many"},
+            "counters_2": {"hits": 0},
+            "log_query_param_1": [],
+            "log_query_param_2": [],
+            "traffic": {
+                        "protocol": "ssl",
+                        "type": "curl",
+                        "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                    },
+            "token": ""
         }
         
         # 添加测试过程中涉及的template

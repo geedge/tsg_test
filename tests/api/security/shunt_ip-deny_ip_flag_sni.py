@@ -47,7 +47,7 @@ def run(parameter):
               }
             ],
             "obj_condition_2": [
-              {
+            {
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",
@@ -67,7 +67,7 @@ def run(parameter):
                 "object_type": "flag",
                 "object_sub_type": "flag",
                 "object_list": [
-                  {
+                {
                     "add_item_list": [
                       {
                         "flag": 8,
@@ -102,9 +102,9 @@ def run(parameter):
             "log_query_param_1": [],
             "log_query_param_2": [],
             "traffic": {
-                      "protocol": "ssl",
-                      "type": "curl",
-                      "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                    "protocol": "ssl",
+                    "type": "curl",
+                    "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
                   },
             "token": ""
         }

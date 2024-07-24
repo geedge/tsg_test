@@ -28,7 +28,7 @@ def run(parameter):
             "do_log_1": 2,
             "do_log_2": 2,
             "obj_condition_1": [
-              {
+                {
                 "attribute_name": "ATTR_FLAG",
                 "object_type": "flag",
                 "object_sub_type": "flag",
@@ -42,10 +42,10 @@ def run(parameter):
                     ]
                   }
                 ]
-              }
+                }
             ],
             "obj_condition_2": [
-              {
+                {
                 "attribute_name": "ATTR_FLAG",
                 "object_type": "flag",
                 "object_sub_type": "flag",
@@ -59,7 +59,7 @@ def run(parameter):
                     ]
                   }
                 ]
-              }
+                }
             ],
             "app_name_1": ["ssl"],
             "app_name_2": ["ssl"],

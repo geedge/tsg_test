@@ -20,62 +20,62 @@ def run(parameter):
         start_time = time.time()
         # 测试数据
         test_data = {
-          "is_multi_priority": True,
-          "rule_num": 2,
-          "policy_type": "security",
-          "rule_action_1": "deny",
-          "method_1": "drop",
-          "rule_action_2": "deny",
-          "method_2": "drop",
-          "do_log_1": 2,
-          "do_log_2": 2,
-          "obj_condition_1": [
-            {
-              "attribute_name": "ATTR_SOURCE_IP",
-              "object_type": "ip",
-              "object_sub_type": "ip",
-              "object_list": [
-                {
-                  "add_item_list": [
-                    {
-                      "ip_address": "default",
-                      "port_range": "0-65535"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "obj_condition_2": [
-            {
-              "attribute_name": "ATTR_SOURCE_IP",
-              "object_type": "ip",
-              "object_sub_type": "ip",
-              "object_list": [
-                {
-                  "add_item_list": [
-                    {
-                      "ip_address": "default",
-                      "port_range": "0-65535"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "app_name_1": [],
-          "app_name_2": [],
-          "expected_return": "timed out",
-          "counters_1": {"hits": 0},
-          "counters_2": {"hits": "many"},
-          "log_query_param_1": [],
-          "log_query_param_2": [{"query_field_key":"sent_pkts","query_value":1}],
-          "traffic": {
+            "is_multi_priority": True,
+            "rule_num": 2,
+            "policy_type": "security",
+            "rule_action_1": "deny",
+            "method_1": "drop",
+            "rule_action_2": "deny",
+            "method_2": "drop",
+            "do_log_1": 2,
+            "do_log_2": 2,
+            "obj_condition_1": [
+              {
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
+                  {
+                    "add_item_list": [
+                      {
+                        "ip_address": "default",
+                        "port_range": "0-65535"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "obj_condition_2": [
+              {
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
+                  {
+                    "add_item_list": [
+                      {
+                        "ip_address": "default",
+                        "port_range": "0-65535"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "app_name_1": [],
+            "app_name_2": [],
+            "expected_return": "timed out",
+            "counters_1": {"hits": 0},
+            "counters_2": {"hits": "many"},
+            "log_query_param_1": [],
+            "log_query_param_2": [{"query_field_key":"sent_pkts","query_value":1}],
+            "traffic": {
                     "protocol": "ssl",
                     "type": "curl",
                     "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
-                },
-          "token": ""
+                  },
+            "token": ""
         }
         
         # 添加测试过程中涉及的template

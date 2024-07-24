@@ -29,7 +29,7 @@ def run(parameter):
             "do_log_1": 2,
             "do_log_2": 2,
             "obj_condition_1": [
-              {
+            {
                 "attribute_name": "ATTR_SERVER_FQDN",
                 "object_type": "fqdn",
                 "object_sub_type": "fqdn",
@@ -44,10 +44,10 @@ def run(parameter):
                     ]
                   }
                 ]
-              }
+            }
             ],
             "obj_condition_2": [
-              {
+            {
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",
@@ -61,7 +61,7 @@ def run(parameter):
                     ]
                   }
                 ]
-              }
+            }
             ],
             "app_name_1": ["ssl"],
             "app_name_2": ["ssl"],
@@ -71,9 +71,9 @@ def run(parameter):
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
             "log_query_param_2": [],
             "traffic": {
-                      "protocol": "ssl",
-                      "type": "curl",
-                      "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+                    "protocol": "ssl",
+                    "type": "curl",
+                    "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
                   },
             "token": ""
         }
@@ -150,17 +150,17 @@ def run(parameter):
       
 if __name__ == "__main__":
     parameter = {
-      "script_type": "api",
-      "username": "hebingning",
-      "password": "hbn66AAA",
-      "test_pc_ip": "192.168.64.73",
-      "api_server": "http://192.168.44.72",
-      "is_log": 1,
-      "env": "tsgx",
-      "vsys_id": 6,
-      "root_path": "D:/python_script/tsg_test",
-      "path": "D:/python_script/tsg_test/tests/api",
-      "module_name": "security",
-      "test_case_name": "allow_negate_fqdn"
+        "script_type": "api",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.73",
+        "api_server": "http://192.168.44.72",
+        "is_log": 1,
+        "env": "tsgx",
+        "vsys_id": 6,
+        "root_path": "D:/python_script/tsg_test",
+        "path": "D:/python_script/tsg_test/tests/api",
+        "module_name": "security",
+        "test_case_name": "allow_negate_fqdn"
     }
     run(parameter)
