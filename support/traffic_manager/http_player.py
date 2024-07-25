@@ -6,7 +6,6 @@ import requests
 class HttpPlayer():
     def send_http_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send http traffic for effect verification.", flush=True)
-        # command = "curl -kv --connect-timeout {} -m {} {}".format(command_dict["connect_timeout"], command_dict["timeout"], command_dict["url"])
         p = subprocess.Popen(traffic_data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
         output, error = p.communicate()
         result = output + error
@@ -46,9 +45,9 @@ if __name__ == "__main__":
         "traffic": {
             "protocol": "http",
             "type": "get", # get/post
-            "url": "http://192.168.40.206:1443/go"
+            "url": "http://www.yumi.com"
         }
     }
     traffic_data = test_data["traffic"]
-    http = HttpPlayer()
-    http.send_http_traffic(traffic_data, "ui", False)
+    http_player = HttpPlayer()
+    http_player.send_http_traffic(traffic_data, "ui", False)

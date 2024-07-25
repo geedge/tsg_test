@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_srcip_http_table_server_fqdn_domain",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_server_fqdn",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_table_source_ip",
+                        "name": "stats_srcip_http_table_all_bytes_dim_server_fqdn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_table_destination_ip",
+                        "name": "stats_dstip_http_table_all_bytes_dim_server_fqdn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -110,7 +110,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Bytes Table Distributed by Server FQDN and Domain",
+                    "name": "stats_http_table_all_bytes_dim_server_fqdn",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -122,8 +122,7 @@ def run(parameter):
                             "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "server_fqdn",
-                            "server_domain"
+                            "server_fqdn"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
@@ -148,6 +147,9 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [#如果Bytes Aggregate为：BITRATE则Bytes*8
+                {"server_fqdn": "www.yumi.com","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -173,18 +175,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_srcip_http_table_server_fqdn_domain"
+                "name": "stats_srcip_dstip_http_table_all_bytes_dim_server_fqdn"
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_table_source_ip"
+                "name": "stats_srcip_http_table_all_bytes_dim_server_fqdn"
             },{
                 "type": "ip",
-                "name": "statistics_bytes_table_destination_ip"
+                "name": "stats_dstip_http_table_all_bytes_dim_server_fqdn"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Bytes Table Distributed by Server FQDN and Domain"
+                "name": "stats_http_table_all_bytes_dim_server_fqdn"
             },
         ]
         log_in = LogIn()
@@ -419,7 +421,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_srcip_http_table_server_fqdn_domain",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_server_fqdn",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_srcip_http_table_s2c_link_id",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_server_asn",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -51,7 +51,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_table_source_ip",
+                        "name": "stats_srcip_http_table_all_bytes_dim_server_asn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.31",
+                                "item_value": "10.64.224.16",
                             },
                         ]
                     }
@@ -67,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_table_destination_ip",
+                        "name": "stats_dstip_http_table_all_bytes_dim_server_asn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -75,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.31",
+                                "item_value": "2.1.1.16",
                             },
                         ]
                     }],
@@ -108,7 +108,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Bytes Table Distributed by S2C Link ID",
+                    "name": "stats_http_table_all_bytes_dim_server_asn",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -120,12 +120,12 @@ def run(parameter):
                             "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "s2c_link_id"
+                            "server_asn"
                           ],
                           "order_by": "bytes",
-                          "row_limit": "20",
-                          "min_in_size": "0",
-                          "max_out_size": "0"
+                          "row_limit": "100",
+                          "min_in_size": "1",
+                          "max_out_size": "1"
                         }
                       ]
                 }]
@@ -136,15 +136,18 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.31",
-                "clients_end_ip": "10.64.224.31",
-                "servers_start_ip": "2.1.1.31",
-                "servers_end_ip": "2.1.1.31",
+                "clients_start_ip": "10.64.224.16",
+                "clients_end_ip": "10.64.224.16",
+                "servers_start_ip": "2.1.1.16",
+                "servers_end_ip": "2.1.1.16",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [#如果Bytes Aggregate为：BITRATE则Bytes*8
+                {"s2c_ttl": "255","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -170,18 +173,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_srcip_http_table_s2c_link_id"
+                "name": "stats_srcip_dstip_http_table_all_bytes_dim_server_asn",
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_table_source_ip"
+                "name": "stats_srcip_http_table_all_bytes_dim_server_asn",
             },{
                 "type": "ip",
-                "name": "statistics_bytes_table_destination_ip"
+                "name": "stats_dstip_http_table_all_bytes_dim_server_asn",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Bytes Table Distributed by S2C Link ID"
+                "name": "stats_http_table_all_bytes_dim_server_asn",
             },
         ]
         log_in = LogIn()
@@ -260,10 +263,6 @@ def run(parameter):
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
@@ -272,8 +271,6 @@ def run(parameter):
             #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
-
-
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
@@ -282,9 +279,9 @@ def run(parameter):
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
-
         # 避免报错：stale element not found
         time.sleep(5)
+
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -410,13 +407,13 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_srcip_http_table_s2c_link_id",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_server_asn",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

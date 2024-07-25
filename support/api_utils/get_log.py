@@ -377,8 +377,8 @@ class GetLog():
                             else:
                                 assert_key_list.append(k)
                         # 开始判断key的正确性
-                        if "statists_metric_results" in test_data.keys():
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statists_metric_results: \n{}".format(test_data["statists_metric_results"]), flush=True)
+                        #if "statists_metric_results" in test_data.keys():
+                        #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statists_metric_results: \n{}".format(test_data["statists_metric_results"]), flush=True)
                         for i in range(len(assert_key_list)):
                             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Determine the correctness of the Key:{}".format(str(assert_key_list)))
                             # 因目前功能端版本：tsg-os-v24.07-rc3-c3f7112只要带有非首包可命中且符合Dimensions的流量均不能全部统计*pkts和*bytes，所以需要从Test_data传入期望统计结果："statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
