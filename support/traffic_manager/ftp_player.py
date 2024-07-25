@@ -6,7 +6,6 @@ from ftplib import FTP
 class FtpPlayer():
     def send_ftp_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send ftp traffic for effect verification.", flush=True)
-        # command = "curl -kv --connect-timeout {} -m {} {}".format(command_dict["connect_timeout"], command_dict["timeout"], command_dict["url"])
         p = subprocess.Popen(traffic_data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
         output, error = p.communicate()
         result = output + error
@@ -18,8 +17,10 @@ class FtpPlayer():
         #     password = traffic_data["password"]
         #     action = traffic_data["action"]
         #     path = traffic_data["path"]
-        #     local_file = traffic_data["local_file"]
-        #     remote_file = traffic_data["remote_file"]
+        #     if len(traffic_data["local_file"]) > 0:
+        #         local_file = traffic_data["local_file"]
+        #     if len(traffic_data["remote_file"]) > 0:
+        #         remote_file = traffic_data["remote_file"]
         #     ftp = self.ftp_connect(ftp_server, user, password)
         #     if action == "list":
         #         self.list_directory(ftp, path)
@@ -62,15 +63,15 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "ftp",
-            "host": "1.1.1.1",
-            "user": "123",
-            "password": "123",
-            "action": "upload", # "list", "upload" or "download"
-            "path": "/opt",
+            "host": "192.168.40.206",
+            "user": "ftpuser",
+            "password": "111111",
+            "action": "list", # "list", "upload" or "download"
+            "path": "/autoFtp",
             "local_file": "test.py",
             "remote_file": "test.txt"
         }
     }
     traffic_data = test_data["traffic"]
-    ftp = FtpPlayer()
-    ftp.send_ftp_traffic(traffic_data, "ui", False)
+    ftp_player = FtpPlayer()
+    ftp_player.send_ftp_traffic(traffic_data, "ui", False)

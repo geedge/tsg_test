@@ -35,11 +35,11 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "doh",
-            "domain": "example.com",
+            "domain": "www.baidu.com",
             "query_type": "A",
-            "doh_server_url": "https://dns.quad9.net/dns-query"
+            "doh_server_url": "https://dns9.quad9.net"
         }
     }
     traffic_data = test_data["traffic"]
-    doh = DohPlayer()
-    doh.send_doh_query(traffic_data, "ui", False)
+    doh_player = DohPlayer()
+    doh_player.send_doh_query(traffic_data, "ui", False)

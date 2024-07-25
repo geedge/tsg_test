@@ -11,7 +11,6 @@ from email import encoders
 class MailPlayer():
     def send_mail_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send mail traffic for effect verification.", flush=True)
-        # command = "curl -kv --connect-timeout {} -m {} {}".format(command_dict["connect_timeout"], command_dict["timeout"], command_dict["url"])
         p = subprocess.Popen(traffic_data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
         output, error = p.communicate()
         result = output + error
@@ -28,6 +27,7 @@ class MailPlayer():
         # msg['From'] = Header(sender, 'utf-8')
         # msg['To'] = Header(receiver, 'utf-8')
         # msg['Subject'] = Header(subject, 'utf-8')
+        # msg['Date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         # # 邮件正文内容，MIMEText是纯文本
         # msg.attach(MIMEText(body, 'plain', 'utf-8'))
         # # 附件
@@ -38,14 +38,14 @@ class MailPlayer():
         #     part.add_header("Content-Disposition", f"attachment; filename= {attach}")
         # msg.attach(part)
         # try:
-        #     if mail_type == "gamail":
-        #         smtp_obj = smtplib.SMTP_SSL('smtp.gmail.com', mail_port)
+        #     if mail_type == "gmail":
+        #         smtp_obj = smtplib.SMTP_SSL("smtp.gmail.com", mail_port)
         #     else:
-        #         smtp_obj = smtplib.SMTP('smtp.example.com', mail_port)
+        #         smtp_obj = smtplib.SMTP_SSL("192.168.40.206", mail_port)
         #     # 如果服务器不支持STARTTLS，需注释掉下面这行
-        #     smtp_obj.starttls()
+        #     # smtp_obj.starttls()
         #     smtp_obj.login(sender, password)
-        #     smtp_obj.sendmail(sender, [receiver], msg.as_string())
+        #     smtp_obj.sendmail(sender, receiver, msg.as_string())
         #     return "Email sent successfully"
         # except smtplib.SMTPException as e:
         #     return f"SMTPException: {e}"
@@ -59,16 +59,16 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "mail",
-            "mail_type": "gmail", # gmail or other smtp
-            "mail_port": 587,
-            "sender": "abc.com",
-            "password": "123",
-            "receiver": "def.com", 
-            "subject": "aaa", 
-            "body": "1111111",
-            "attach": "test.txt"
+            "mail_type": "other", # gmail or other smtp
+            "mail_port": 465, # gmail：465（用于SSL）、587（用于启动TLS）。smtp默认：25
+            "sender": "hbn@163.com",
+            "password": "111111",
+            "receiver": "autotest@163.com",
+            "subject": "aaa",
+            "body": "123",
+            "attach": "d:/test.txt"
         }
     }
     traffic_data = test_data["traffic"]
-    mail = MailPlayer()
-    mail.send_mail_traffic(traffic_data, "ui", False)
+    mail_player = MailPlayer()
+    mail_player.send_mail_traffic(traffic_data, "ui", False)
