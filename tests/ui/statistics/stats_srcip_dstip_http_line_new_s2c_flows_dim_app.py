@@ -44,16 +44,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packet_length_with_srcip_http",
+            "rule_name": "stats_srcip_dstip_http_line_new_s2c_flows_dim_app",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
-            "condition": {
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
+                "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packet_length_source_ip",
+                        "name": "stats_srcip_http_line_new_s2c_flows_dim_app",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.7",
+                                "item_value": "10.64.224.12",
                             },
                         ]
                     }
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_packet_length_destination_ip",
+                        "name": "stats_dstip_http_line_new_s2c_flows_dim_app",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -77,7 +77,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.7",
+                                "item_value": "2.1.1.12",
                             },
                         ]
                     }],
@@ -110,20 +110,22 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Packet Length",
+                    "name": "stats_http_line_new_s2c_flows_dim_app",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "Latency",
-                          "visualization_type": "Histogram",
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
                           "metrics": [
-                            "pkt_length_sketch:PERCENTILES_HDR:packet length sketch"
+                            "new_s2c_flows:Rate:new s2c flows"
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
-                          "min_in_size": "0",
-                          "max_out_size": "0"
+                          "dimensions": [
+                            "application"
+                          ],
+                          "order_by": "new s2c flows",
+                          "row_limit": "10",
+                          "min_in_size": "1",
+                          "max_out_size": "1"
                         }
                       ]
                 }]
@@ -134,10 +136,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.7",
-                "clients_end_ip": "10.64.224.7",
-                "servers_start_ip": "2.1.1.7",
-                "servers_end_ip": "2.1.1.7",
+                "clients_start_ip": "10.64.224.12",
+                "clients_end_ip": "10.64.224.12",
+                "servers_start_ip": "2.1.1.12",
+                "servers_end_ip": "2.1.1.12",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -168,18 +170,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packet_length_with_srcip_http",
+                "name": "stats_srcip_dstip_http_line_new_s2c_flows_dim_app",
             },
             {
                 "type": "ip",
-                "name": "statistics_packet_length_source_ip",
+                "name": "stats_srcip_http_line_new_s2c_flows_dim_app",
             },{
                 "type": "ip",
-                "name": "statistics_packet_length_destination_ip",
+                "name": "stats_dstip_http_line_new_s2c_flows_dim_app",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Latency",
+                "name": "stats_http_line_new_s2c_flows_dim_app",
             },
         ]
         log_in = LogIn()
@@ -250,6 +252,7 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
+
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
             edit_rule_code = 200
@@ -271,7 +274,8 @@ def run(parameter):
             #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
-
+        # 避免报错：stale element not found
+        time.sleep(5)
 
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -282,8 +286,6 @@ def run(parameter):
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
 
-        # 避免报错：stale element not found
-        time.sleep(5)
 
         # 删除rule
         if create_rule_code == 200:
@@ -408,7 +410,7 @@ if __name__ == '__main__':
 
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
+        "test_pc_ip": "192.168.64.38",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
@@ -416,7 +418,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packet_length_srcip_http",
+        "test_case_name": "stats_srcip_dstip_http_line_new_s2c_flows_dim_app",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

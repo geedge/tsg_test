@@ -41,19 +41,20 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_srcip_http_line_s2c_ttl",
+            "rule_name": "stats_srcip_dstip_http_line_pkts_dim_client_ip_object",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packets_line_source_ip",
+                        "name": "stats_srcip_http_line_pkts_dim_client_ip_object",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -66,10 +67,11 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_packets_line_destination_ip",
+                        "name": "stats_dstip_http_line_pkts_dim_client_ip_object",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -107,7 +109,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Packets Line Dimension S2C TTL",
+                    "name": "stats_http_line_pkts_dim_client_ip_object",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -116,7 +118,7 @@ def run(parameter):
                           "metrics": [
                             "pkts:RATE:pkts"
                           ],
-                          "dimensions": ["s2c_ttl"],
+                          "dimensions": ["client_ip_object"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",
@@ -165,18 +167,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packets_srcip_http_line_s2c_ttl",
+                "name": "stats_srcip_dstip_http_line_pkts_dim_client_ip_object",
             },
             {
                 "type": "ip",
-                "name": "statistics_packets_line_source_ip",
+                "name": "stats_srcip_http_line_pkts_dim_client_ip_object",
             },{
                 "type": "ip",
-                "name": "statistics_packets_line_destination_ip",
+                "name": "stats_dstip_http_line_pkts_dim_client_ip_object",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Packets Line Dimension S2C TTL",
+                "name": "stats_http_line_pkts_dim_client_ip_object",
             },
         ]
         log_in = LogIn()
@@ -188,7 +190,7 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-                # 创建object
+        # 创建object
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
@@ -408,7 +410,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_srcip_http_line_s2c_ttl",
+        "test_case_name": "stats_srcip_dstip_http_line_pkts_dim_client_ip_object",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

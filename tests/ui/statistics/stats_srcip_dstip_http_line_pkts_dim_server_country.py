@@ -28,9 +28,6 @@ from datetime import datetime
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
-        # 参数初始化
-        result, exception_result = "", ""
-        
         # 脚本启动时间
         start_time = time.time()
 
@@ -44,16 +41,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_with_srcip_http",
+            "rule_name": "stats_srcip_dstip_http_line_pkts_dim_server_country",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packets_source_ip",
+                        "name": "stats_srcip_http_line_pkts_dim_server_country",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,7 +58,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.8",
+                                "item_value": "10.64.224.23",
                             },
                         ]
                     }
@@ -69,7 +66,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_sessons_destination_ip",
+                        "name": "stats_dstip_http_line_pkts_dim_server_country",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -77,7 +74,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.8",
+                                "item_value": "2.1.1.23",
                             },
                         ]
                     }],
@@ -110,22 +107,20 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Packets Distributed by Application",
+                    "name": "stats_http_line_pkts_dim_server_country",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Table",
+                          "visualization_type": "Line",
                           "metrics": [
-                            "pkts:SUM:pkts"
+                            "pkts:RATE:pkts"
                           ],
-                          "dimensions": [
-                            "application"
-                          ],
+                          "dimensions": ["server_country"],
                           "order_by": "pkts",
-                          "row_limit": "50",
-                          "min_in_size": "0",
-                          "max_out_size": "0"
+                          "row_limit": "10",
+                          "min_in_size": "1",
+                          "max_out_size": "1"
                         }
                       ]
                 }]
@@ -136,10 +131,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.8",
-                "clients_end_ip": "10.64.224.8",
-                "servers_start_ip": "2.1.1.8",
-                "servers_end_ip": "2.1.1.8",
+                "clients_start_ip": "10.64.224.23",
+                "clients_end_ip": "10.64.224.23",
+                "servers_start_ip": "2.1.1.23",
+                "servers_end_ip": "2.1.1.23",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -170,19 +165,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packets_with_srcip_http",
+                "name": "stats_srcip_dstip_http_line_pkts_dim_server_country",
             },
             {
                 "type": "ip",
-                "name": "statistics_packets_source_ip",
-            },
-            {
+                "name": "stats_srcip_http_line_pkts_dim_server_country",
+            },{
                 "type": "ip",
-                "name": "statistics_packets_destination_ip",
+                "name": "stats_dstip_http_line_pkts_dim_server_country",
             },
             {
                 "type": "statistics_template",
-                "name": "AAuto Packets Distributed by Application",
+                "name": "stats_http_line_pkts_dim_server_country",
             },
         ]
         log_in = LogIn()
@@ -209,9 +203,9 @@ def run(parameter):
                     element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------Create {} object successfully.".format(cond_key))
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key), flush=True)
                     else:
-                        result = "!!!Fail to create {} object.".format(cond_key)
+                        result = "Fail to create {} object.".format(cond_key)
                         cond_status = 1
                         break
             if cond_status == 1:   # 创建失败，退出遍历创建
@@ -230,9 +224,9 @@ def run(parameter):
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
                 create_statistics_template_code = cond_code
                 if cond_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------Create {} Profile successfully.".format("statistics_template"))
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} Profile successfully.".format("statistics_template"), flush=True)
                 else:
-                    result = "!!!Fail to create {} Profile.".format("statistics_template")
+                    result = "Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
                     break
                 if cond_status == 1:   # 创建失败，退出遍历创建
@@ -241,29 +235,26 @@ def run(parameter):
         # 创建rule
         create_rule_code = 0
         delete_rule_code = 0
-        if cond_code == 200 and create_statistics_template_code == 200:
+        if cond_code == 200:
             create_rule = CreateRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------Create security rule successfully.")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
             elif create_rule_code != 200:
-                result = "!!!Fail to create security rule."
+                result = "Fail to create {} rule.".format(test_data["policy_type"])
+
+
         # 触发流量验证
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            edit_rule_code = 200
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
@@ -273,14 +264,15 @@ def run(parameter):
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
 
+
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
             if len(result) == 0:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------The test case is passed.")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             elif len(result) != 0:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "!!!The test case is failed. The failure reason is: ", result)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
 
         # 避免报错：stale element not found
         time.sleep(5)
@@ -294,11 +286,11 @@ def run(parameter):
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------Delete Statistics rule successfully.")
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete Statistics rule successfully.", flush=True)
                 elif delete_rule_code != 200:
-                    result = result + "!!!In addition, fail to delete {} rule.".format(test_data["policy_type"])
+                    result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
-                result = result + "!!! In addition, fail to search {} rule.".format(test_data["policy_type"])
+                result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
         # 删除Statistics Tesmplate
         if create_statistics_template_code == 200 and delete_rule_code == 200:
@@ -316,12 +308,12 @@ def run(parameter):
                             delete_prfi = DeleteProfile(driver)
                             delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
                             if delete_prfi_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------Delete {} profile successfully.".format(prfi_key_out))
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
                             else:
-                                result = result + "!!! In addition, fail to delete {} profile.".format(prfi_key_out)
+                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
                                 break
                         else:
-                            result = result + " !!!In addition, fail to search {} profile.".format(prfi_key_out)
+                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
                             break
                         # 退出遍历标志
                         if prfi_status == 1:  # 失败，退出遍历创建
@@ -330,7 +322,7 @@ def run(parameter):
                 if prfi_status == 1:  # 失败，退出遍历创建
                     break
         # 删除object
-        if delete_rule_code == 200 and "condition" in test_data.keys():
+        if delete_rule_code == 200:
             # 删除
             for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
                 if cond_key == "application" or cond_key == "sub_action_override":
@@ -346,12 +338,12 @@ def run(parameter):
                             delete_cond = DeleteObject(driver)
                             delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                             if delete_cond_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------Delete {} object successfully.".format(cond_key))
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(cond_key), flush=True)
                             else:
-                                result = result + "!!! In addition, fail to delete {} object.".format(cond_key)
+                                result = result + " In addition, fail to delete {} object.".format(cond_key)
                                 break
                         else:
-                            result = result + "!!! In addition, fail to search {} object.".format(cond_key)
+                            result = result + " In addition, fail to search {} object.".format(cond_key)
                             break
                         # 退出遍历标志
                         if cond_status == 1:  # 失败，退出遍历创建
@@ -362,15 +354,15 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------Duration of running the test case: ", duration)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
 
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------Finish test case: " + parameter["test_case_name"])
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "!!!Error: ", e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         traceback.print_exc()
-        return "!!!Error: " + str(e)
+        return "Error: " + str(e)
     finally:
         # 清理环境
         support.ui_utils.env.teardown()
@@ -416,7 +408,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_srcip_http",
+        "test_case_name": "stats_srcip_dstip_http_line_pkts_dim_server_country",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

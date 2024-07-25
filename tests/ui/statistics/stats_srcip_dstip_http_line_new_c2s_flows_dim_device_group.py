@@ -44,16 +44,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "new_c2s_flows_with_srcip_http",
+            "rule_name": "stats_srcip_dstip_http_line_new_c2s_flows_dim_device_group",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_new_c2s_flows_source_ip",
+                        "name": "stats_srcip_http_line_new_c2s_flows_dim_device_group",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_new_c2s_flows_destination_ip",
+                        "name": "stats_dstip_http_line_new_c2s_flows_dim_device_group",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -110,20 +110,20 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto New C2S Flows Dimensions Client Port",
+                    "name": "stats_http_line_new_c2s_flows_dim_device_group",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
-                          "visualization_type": "Table",
+                          "chart_name": "stats_http_line_new_c2s_flows_dim_device_group",
+                          "visualization_type": "Line",
                           "metrics": [
-                            "new_c2s_flows:Rate:new c2s flows"
+                            "new_c2s_flows:RATE:new c2s flows"
                           ],
                           "dimensions": [
-                            "client_port"
+                              "device_group"
                           ],
                           "order_by": "new c2s flows",
-                          "row_limit": "1000",
+                          "row_limit": "5",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }
@@ -170,18 +170,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "new_c2s_flows_with_srcip_http"
+                "name": "stats_srcip_dstip_http_line_new_c2s_flows_dim_device_group"
             },
             {
                 "type": "ip",
-                "name": "statistics_new_c2s_flows_source_ip"
+                "name": "stats_srcip_http_line_new_c2s_flows_dim_device_group"
             },{
                 "type": "ip",
-                "name": "statistics_new_c2s_flows_destination_ip"
+                "name": "stats_dstip_http_line_new_c2s_flows_dim_device_group"
             },
             {
                 "type": "statistics_template",
-                "name": "Auto New C2S Flows Dimensions Client Port"
+                "name": "stats_http_line_new_c2s_flows_dim_device_group"
             },
         ]
         log_in = LogIn()
@@ -418,7 +418,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "new_c2s_flows_srcip_http",
+        "test_case_name": "stats_srcip_dstip_http_line_new_c2s_flows_dim_device_group",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

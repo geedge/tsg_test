@@ -41,19 +41,18 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_srcip_http_line_server_ip_object",
+            "rule_name": "stats_srcip_dstip_http_line_pkts_dim_appcategory",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packets_line_source_ip",
+                        "name": "stats_srcip_http_line_pkts_dim_appcategory",
                         "object_type": "ip",
                         "select_type": False,
-                        "statistics_option":"Brief",
                         "negate": False,
                         "item": [
                             {
@@ -67,10 +66,9 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_packets_line_destination_ip",
+                        "name": "stats_dstip_http_line_pkts_dim_appcategory",
                         "object_type": "ip",
                         "select_type": False,
-                        "statistics_option":"Brief",
                         "negate": False,
                         "item": [
                             {
@@ -109,7 +107,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Packets Line Dimension Server IP Matched Objects",
+                    "name": "stats_http_line_pkts_dim_appcategory",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -118,7 +116,7 @@ def run(parameter):
                           "metrics": [
                             "pkts:RATE:pkts"
                           ],
-                          "dimensions": ["server_ip_object"],
+                          "dimensions": ["fqdn_category"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",
@@ -142,6 +140,9 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"fqdn_category": "4", "pkts": 83}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -167,18 +168,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packets_srcip_http_line_server_ip_object",
+                "name": "stats_srcip_dstip_http_line_pkts_dim_appcategory",
             },
             {
                 "type": "ip",
-                "name": "statistics_packets_line_source_ip",
+                "name": "stats_srcip_http_line_pkts_dim_appcategory",
             },{
                 "type": "ip",
-                "name": "statistics_packets_line_destination_ip",
+                "name": "stats_dstip_http_line_pkts_dim_appcategory",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Packets Line Dimension Server IP Matched Objects",
+                "name": "stats_http_line_pkts_dim_appcategory",
             },
         ]
         log_in = LogIn()
@@ -410,7 +411,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_srcip_http_line_ip_object",
+        "test_case_name": "stats_srcip_dstip_http_line_pkts_dim_appcategory",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

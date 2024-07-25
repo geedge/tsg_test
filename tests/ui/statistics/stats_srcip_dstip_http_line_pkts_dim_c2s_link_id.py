@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_srcip_http_line_fqdn_category",
+            "rule_name": "stats_srcip_dstip_http_line_pkts_dim_c2s_link_id",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -50,7 +50,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packets_line_source_ip",
+                        "name": "stats_srcip_http_line_pkts_dim_c2s_link_id",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -66,7 +66,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_packets_line_destination_ip",
+                        "name": "stats_dstip_http_line_pkts_dim_c2s_link_id",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -107,7 +107,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Packets Line Dimension WebSketch Categories",
+                    "name": "stats_http_line_pkts_dim_c2s_link_id",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -116,7 +116,7 @@ def run(parameter):
                           "metrics": [
                             "pkts:RATE:pkts"
                           ],
-                          "dimensions": ["fqdn_category"],
+                          "dimensions": ["c2s_link_id"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",
@@ -140,9 +140,6 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [
-                {"fqdn_category": "4", "pkts": 83}
-            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -168,18 +165,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packets_srcip_http_line_fqdn_category",
+                "name": "stats_srcip_dstip_http_line_pkts_dim_c2s_link_id",
             },
             {
                 "type": "ip",
-                "name": "statistics_packets_line_source_ip",
+                "name": "stats_srcip_http_line_pkts_dim_c2s_link_id",
             },{
                 "type": "ip",
-                "name": "statistics_packets_line_destination_ip",
+                "name": "stats_dstip_http_line_pkts_dim_c2s_link_id",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Packets Line Dimension WebSketch Categories",
+                "name": "stats_http_line_pkts_dim_c2s_link_id",
             },
         ]
         log_in = LogIn()
@@ -411,7 +408,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_srcip_http_line_fqdn_category",
+        "test_case_name": "stats_srcip_dstip_http_line_pkts_dim_c2s_link_id",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

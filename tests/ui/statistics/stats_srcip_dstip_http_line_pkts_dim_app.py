@@ -41,16 +41,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_srcip_http_line_client_port",
+            "rule_name": "stats_srcip_dstip_http_line_pkts_dim_app",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packets_line_source_ip",
+                        "name": "stats_srcip_http_line_pkts_dim_app",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -58,7 +58,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.23",
+                                "item_value": "10.64.224.22",
                             },
                         ]
                     }
@@ -66,7 +66,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_packets_line_destination_ip",
+                        "name": "stats_srcip_http_line_pkts_dim_app",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -74,7 +74,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.23",
+                                "item_value": "2.1.1.22",
                             },
                         ]
                     }],
@@ -107,7 +107,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Packets Line Dimension Client Port",
+                    "name": "stats_http_line_pkts_dim_app",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -116,7 +116,7 @@ def run(parameter):
                           "metrics": [
                             "pkts:RATE:pkts"
                           ],
-                          "dimensions": ["client_port"],
+                          "dimensions": ["application"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",
@@ -131,10 +131,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.23",
-                "clients_end_ip": "10.64.224.23",
-                "servers_start_ip": "2.1.1.23",
-                "servers_end_ip": "2.1.1.23",
+                "clients_start_ip": "10.64.224.22",
+                "clients_end_ip": "10.64.224.22",
+                "servers_start_ip": "2.1.1.22",
+                "servers_end_ip": "2.1.1.22",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -165,18 +165,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packets_srcip_http_line_client_port",
+                "name": "stats_srcip_dstip_http_line_pkts_dim_app",
             },
             {
                 "type": "ip",
-                "name": "statistics_packets_line_source_ip",
+                "name": "stats_srcip_http_line_pkts_dim_app",
             },{
                 "type": "ip",
-                "name": "statistics_packets_line_destination_ip",
+                "name": "stats_dstip_http_line_pkts_dim_app",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Packets Line Dimension Client Port",
+                "name": "stats_http_line_pkts_dim_app",
             },
         ]
         log_in = LogIn()
@@ -247,6 +247,7 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
+
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
@@ -408,7 +409,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_srcip_http_line_client_port",
+        "test_case_name": "stats_srcip_dstip_http_line_pkts_dim_app",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

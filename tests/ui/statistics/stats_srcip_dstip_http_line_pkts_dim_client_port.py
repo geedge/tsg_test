@@ -28,9 +28,6 @@ from datetime import datetime
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
-        # 参数初始化
-        result, exception_result = "", ""
-        
         # 脚本启动时间
         start_time = time.time()
 
@@ -44,16 +41,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "new_c2s_flows_with_srcip_http",
+            "rule_name": "stats_srcip_dstip_http_line_pkts_dim_client_port",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_new_c2s_flows_source_ip",
+                        "name": "stats_srcip_http_line_pkts_dim_client_port",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,7 +58,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.12",
+                                "item_value": "10.64.224.23",
                             },
                         ]
                     }
@@ -69,7 +66,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_new_c2s_flows_destination_ip",
+                        "name": "stats_dstip_http_line_pkts_dim_client_port",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -77,7 +74,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.12",
+                                "item_value": "2.1.1.23",
                             },
                         ]
                     }],
@@ -110,21 +107,18 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto Sessions Distributed by Client Port",
+                    "name": "stats_http_line_pkts_dim_client_port",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Table",
+                          "visualization_type": "Line",
                           "metrics": [
-                            "new_c2s_flows:Rate:new c2s flows",
-                            "new_s2c_flows:Rate:new s2c flows"
+                            "pkts:RATE:pkts"
                           ],
-                          "dimensions": [
-                            "client_port"
-                          ],
-                          "order_by": "new c2s flows",
-                          "row_limit": "1000",
+                          "dimensions": ["client_port"],
+                          "order_by": "pkts",
+                          "row_limit": "10",
                           "min_in_size": "1",
                           "max_out_size": "1"
                         }
@@ -137,10 +131,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.12",
-                "clients_end_ip": "10.64.224.12",
-                "servers_start_ip": "2.1.1.12",
-                "servers_end_ip": "2.1.1.12",
+                "clients_start_ip": "10.64.224.23",
+                "clients_end_ip": "10.64.224.23",
+                "servers_start_ip": "2.1.1.23",
+                "servers_end_ip": "2.1.1.23",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -171,18 +165,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "new_c2s_flows_with_srcip_http",
+                "name": "stats_srcip_dstip_http_line_pkts_dim_client_port",
             },
             {
                 "type": "ip",
-                "name": "statistics_new_c2s_flows_source_ip",
+                "name": "stats_srcip_http_line_pkts_dim_client_port",
             },{
                 "type": "ip",
-                "name": "statistics_new_c2s_flows_destination_ip",
+                "name": "stats_dstip_http_line_pkts_dim_client_port",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto Sessions Distributed by Client Port",
+                "name": "stats_http_line_pkts_dim_client_port",
             },
         ]
         log_in = LogIn()
@@ -253,20 +247,14 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
-
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            edit_rule_code = 200
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
@@ -275,8 +263,7 @@ def run(parameter):
             #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
-        # 避免报错：stale element not found
-        time.sleep(5)
+
 
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -287,6 +274,8 @@ def run(parameter):
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
 
+        # 避免报错：stale element not found
+        time.sleep(5)
 
         # 删除rule
         if create_rule_code == 200:
@@ -411,7 +400,7 @@ if __name__ == '__main__':
 
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.38",
+        "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
@@ -419,7 +408,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "new_c2s_s2c_flows_srcip_http",
+        "test_case_name": "stats_srcip_dstip_http_line_pkts_dim_client_port",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

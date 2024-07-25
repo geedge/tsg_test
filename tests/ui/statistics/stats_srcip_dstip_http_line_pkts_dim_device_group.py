@@ -41,16 +41,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_srcip_http_line_c2s_ttl",
+            "rule_name": "stats_srcip_dstip_http_line_pkts_dim_device_group",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_packets_line_source_ip",
+                        "name": "stats_srcip_http_line_pkts_dim_device_group",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -66,7 +66,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_packets_line_destination_ip",
+                        "name": "stats_dstip_http_line_pkts_dim_device_group",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -107,7 +107,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Packets Line Dimension C2S TTL",
+                    "name": "stats_srcip_dstip_http_line_pkts_dim_device_group",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -116,7 +116,7 @@ def run(parameter):
                           "metrics": [
                             "pkts:RATE:pkts"
                           ],
-                          "dimensions": ["c2s_ttl"],
+                          "dimensions": ["device_group"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",
@@ -165,18 +165,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "packets_srcip_http_line_c2s_ttl",
+                "name": "stats_srcip_dstip_http_line_pkts_dim_device_group",
             },
             {
                 "type": "ip",
-                "name": "statistics_packets_line_source_ip",
+                "name": "stats_srcip_http_line_pkts_dim_device_group",
             },{
                 "type": "ip",
-                "name": "statistics_packets_line_destination_ip",
+                "name": "stats_dstip_http_line_pkts_dim_device_group",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Packets Line Dimension C2S TTL",
+                "name": "stats_http_line_pkts_dim_device_group",
             },
         ]
         log_in = LogIn()
@@ -408,7 +408,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "packets_srcip_http_line_c2s_ttl",
+        "test_case_name": "stats_srcip_dstip_http_line_pkts_dim_device_group",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",
