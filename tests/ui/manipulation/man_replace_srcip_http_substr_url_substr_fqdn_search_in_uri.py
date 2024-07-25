@@ -94,7 +94,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "python->"
+                                "item_value": "python"
                             }
                         ],
                     }

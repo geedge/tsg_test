@@ -79,7 +79,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "baidu->"
+                                "item_value": "baidu"
                             }
                         ],
                     },

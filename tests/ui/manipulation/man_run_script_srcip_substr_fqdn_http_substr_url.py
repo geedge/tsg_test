@@ -80,7 +80,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "baidu->"
+                                "item_value": "baidu"
                             }
                         ],
                     }
@@ -93,8 +93,8 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_run_script_profile",
                             "model": "create",
-                            "script": "run_script_insert.lua->",
-                            "max_exec_time": "1000->"
+                            "script": "run_script_insert.lua",
+                            "max_exec_time": "1000"
                             }
                     }
                 ]
