@@ -237,7 +237,7 @@ class ApiVerification():
                     n = 1    #自增变量
                     fail_count = 1   #失败重试变量
                     while n < 20:
-                        time.sleep(7)
+                        #time.sleep(7)
                         if script_type == "ui":
                             # 点击 语言快捷切换按钮
                             element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
@@ -252,7 +252,11 @@ class ApiVerification():
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
                         elif metric_result == False:  # 查询验证失败时，再查询验证一次
-                            if fail_count > 10:
+                            if fail_count < 2:
+                                time.sleep(50)
+                            else:
+                                time.sleep(7)
+                            if fail_count > 5:
                                 break
                             fail_count += 1
                         elif  metric_results[0] == 333 and metric_results[1] == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
@@ -266,7 +270,11 @@ class ApiVerification():
                         metric_result = True
             return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
         elif policy_type == "service_chaining":
-            active_dest_ips_list = ["2.2.2.53", "2.2.2.56", "2.2.2.57"] # vxlan时判断dest_ip是否在bfd探测为active的ip里
+            #从配置文件中获取active ip list
+            conf_path = os.path.join(workdir,"configuration_file.ini")
+            conf = configparser.ConfigParser()
+            conf.read(conf_path, encoding="utf-8")
+            active_dest_ips_list = conf.get("sc_active_dst_ip","ip_list")
             if test_data["targeted_traffic"] == "raw":
                 # 获取开始时间
                 time.sleep(5)
@@ -309,7 +317,6 @@ class ApiVerification():
                 # else:
                 #     sc_metircs = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
                 sc_metircs = traffic_result
-                time.sleep(20)
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')

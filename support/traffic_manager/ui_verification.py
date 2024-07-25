@@ -49,7 +49,7 @@ class UiVerification():
                             for t in range(len(test_data["log_query_param"])):
                                 log_query_key = test_data["log_query_param"][t]["query_field_key"]
                                 log_str = parse.get("log", log_query_key)
-                                if log_query_key == "server_ip" or log_query_key == "decoded_as":
+                                if log_query_key == "server_ip" or log_query_key == "decoded_as" or log_query_key == "client_ip":
                                     log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/parent::div//span[@class='el-dropdown-link popover-click color262626 el-dropdown-selfdefine']".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
@@ -57,7 +57,7 @@ class UiVerification():
                                     else:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
-                                elif log_query_key == "ssl_cn" or log_query_key == "ssl_san":
+                                elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni":
                                     log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
@@ -129,7 +129,7 @@ class UiVerification():
                 
                 # traffic_result = {'total_packets': 175, 'total_packets_sent': 45, 'total_packets_received': 130, 'total_bytes': 180025, 'total_bytes_sent': 5799, 'total_bytes_received': 174226, 'total_syn_pkt': 1}
                 if len(traffic_result) > 0:
-                    if len(sent_pkts_str) == 0 or len(received_pkts_str) == 0:
+                    if sent_pkts == 0 and received_pkts == 0:
                         if cfg_list["sf_method"] == "vxlan_g":
                             if cfg_list["sf_dest_ip"] not in sc_active_ip_list:
                                 metric_result = True
