@@ -11,10 +11,8 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
-
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.verification import Verification
-
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -44,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "all_bytes_srcip_http_table_server_fqdn",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_server_country",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +51,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "statistics_bytes_table_source_ip",
+                        "name": "stats_srcip_http_table_all_bytes_dim_server_country",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.31",
+                                "item_value": "10.64.224.16",
                             },
                         ]
                     }
@@ -69,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "statistics_bytes_table_destination_ip",
+                        "name": "stats_dstip_http_table_all_bytes_dim_server_country",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -77,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.31",
+                                "item_value": "2.1.1.16",
                             },
                         ]
                     }],
@@ -110,11 +108,11 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "Auto All Bytes Table Distributed by Server FQDN",
+                    "name": "stats_http_table_all_bytes_dim_server_country",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
+                          "chart_name": "stats_http_table_all_bytes_dim_server_country",
                           "visualization_type": "Table",
                           "metrics": [
                             "in_bytes:SUM:in bytes",
@@ -122,12 +120,12 @@ def run(parameter):
                             "bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "server_fqdn"
+                            "server_country"
                           ],
                           "order_by": "bytes",
-                          "row_limit": "20",
-                          "min_in_size": "0",
-                          "max_out_size": "0"
+                          "row_limit": "100",
+                          "min_in_size": "1",
+                          "max_out_size": "1"
                         }
                       ]
                 }]
@@ -138,15 +136,18 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.31",
-                "clients_end_ip": "10.64.224.31",
-                "servers_start_ip": "2.1.1.31",
-                "servers_end_ip": "2.1.1.31",
+                "clients_start_ip": "10.64.224.16",
+                "clients_end_ip": "10.64.224.16",
+                "servers_start_ip": "2.1.1.16",
+                "servers_end_ip": "2.1.1.16",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [#如果Bytes Aggregate为：BITRATE则Bytes*8
+                {"s2c_ttl": "255","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -172,18 +173,18 @@ def run(parameter):
         name_list = [
             {
                 "type": "statistics",
-                "name": "all_bytes_srcip_http_table_server_fqdn"
+                "name": "stats_srcip_dstip_http_table_all_bytes_dim_server_country",
             },
             {
                 "type": "ip",
-                "name": "statistics_bytes_table_source_ip"
+                "name": "stats_srcip_http_table_all_bytes_dim_server_country",
             },{
                 "type": "ip",
-                "name": "statistics_bytes_table_destination_ip"
+                "name": "stats_dstip_http_table_all_bytes_dim_server_country",
             },
             {
                 "type": "statistics_template",
-                "name": "Auto All Bytes Table Distributed by Server FQDN"
+                "name": "stats_http_table_all_bytes_dim_server_country",
             },
         ]
         log_in = LogIn()
@@ -262,10 +263,6 @@ def run(parameter):
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
@@ -274,8 +271,6 @@ def run(parameter):
             #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
-
-
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
@@ -284,9 +279,9 @@ def run(parameter):
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
-
         # 避免报错：stale element not found
         time.sleep(5)
+
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -412,13 +407,13 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "all_bytes_srcip_http_table_server_fqdn",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_server_country",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",
