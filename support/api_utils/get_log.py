@@ -230,9 +230,12 @@ class GetLog():
                 elif script_type == "ui":
                     metrics_columns = \
                     test_data["action_parameter"]["statistics_template"][0]["charts"][0]["metrics"][0].split(":")[0].lower()
-                    
-                    dimension_columns = \
-                    test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
+
+                    if len(test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"]) > 0:
+                        dimension_columns = \
+                        test_data["action_parameter"]["statistics_template"][0]["charts"][0]["dimensions"][0]
+                    else:
+                        dimension_columns = "No Dimensions!"
                 # api返回值为空，不判断方向，直接返回重新查找
                 if metrics_columns == "new_in_sessions" or metrics_columns == "new_out_sessions":# or dimension_columns == "fqdn_category":
                     return [333, "this is a pass"]
@@ -252,13 +255,15 @@ class GetLog():
                         tmp_dict_key = ""
                         for k, v in _.items():
                             if k in statistics_info["metrics_dimension"]["metrics"].keys():
+                                if v == None:  # Metric结果返回中包括None值处理
+                                    v = 0
                                 k_0 = statistics_info["metrics_dimension"]["metrics"][k]  # 将key变为小写且使用下划线连接
                                 # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
                                 if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
                                     if tmp_dict_key == "":
-                                        tmp_dict_key = k_0
+                                        tmp_dict_key = f"{k_0}"
                                     else:
-                                        tmp_dict_key = tmp_dict_key+";"+k_0
+                                        tmp_dict_key = f"{tmp_dict_key};{k_0}"
                                     if len(tmp_result) > 0 and tmp_dict_key in tmp_result.keys():
                                         tmp_v = tmp_result[tmp_dict_key] + v
                                         tmp_result[tmp_dict_key] = tmp_v
@@ -269,9 +274,9 @@ class GetLog():
                                 # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
                                 if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
                                     if tmp_dict_key == "":
-                                        tmp_dict_key = k_0+";"+v
+                                        tmp_dict_key = f"{k_0};{v}"
                                     else:
-                                        tmp_dict_key = tmp_dict_key+";"+k_0
+                                        tmp_dict_key = f"{tmp_dict_key};{k_0}"
                             else:
                                 continue
                                 # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
@@ -332,7 +337,7 @@ class GetLog():
                                     if isinstance(v, int):
                                         statistics_value[k] += v
                                 break_flag = 0     # 默认外层循环累加，累加标志
-                                tmp_break_list = ["client_ip_sketch", "server_ip_ip_sketch", "fqdn_category", "client_ip_object", "server_ip_objects", "websketch_categories"]   #兼容UI API，所以三组值
+                                tmp_break_list = ["client_ip_sketch", "server_ip_ip_sketch", "fqdn_category", "client_ip_object", "server_ip_object", "websketch_categories"]   #兼容UI API，所以三组值
                                 for item in tmp_break_list:    #遍历判断是否符合上述条件，获取退出累加标志1。"client_ip_sketch", "server_ip_ip_sketch", "fqdn_category"
                                     if item in result_list[0].keys():
                                         break_flag = 1    # 退出外层累加标志
