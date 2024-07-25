@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "man_edit_element_srcip_http_substr_url_substr_resheader_by_ct_whole_file_mark",
+            "rule_name": "man_edit_element_srcip_http_substr_url_suff_resheader_by_ct_whole_file_mark",
             "rule_action": "edit_element",
             "rule_type": "create",
             "condition": {
@@ -80,27 +80,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "python->"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "curl"
-                                ]
+                                "item_value": "python"
                             }
                         ],
                     },
@@ -144,7 +124,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
+                "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.python.org/blogs/"
             },
             "token": ""
         }
@@ -395,7 +375,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "man_edit_element_srcip_http_substr_url_substr_resheader_by_ct_whole_file_mark"
+        "test_case_name": "man_edit_element_srcip_http_substr_url_suff_resheader_by_ct_whole_file_mark"
     }
     run(parameter)
     """

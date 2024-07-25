@@ -80,7 +80,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "baidu->"
+                                "item_value": "baidu"
                             }
                         ],
                     }
@@ -93,9 +93,9 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_hijack_profile",
                             "model": "create",
-                            "file": "test_exe_1.exe->",
-                            "download_name": "test_exe_1.exe->",
-                            "file_type": "exe->"
+                            "file": "test_exe_1.exe",
+                            "download_name": "test_exe_1.exe",
+                            "file_type": "exe"
                         }
                     }
                 ]

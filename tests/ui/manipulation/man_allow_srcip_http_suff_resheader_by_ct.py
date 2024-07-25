@@ -93,7 +93,7 @@ def run(parameter):
             },
             "expected_return": "test_resbody,CN=TSG",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"},{"query_field_key": "http_response_content_type", "query_value": "application/json;charset=UTF-8"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

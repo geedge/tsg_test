@@ -94,7 +94,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "baidu->"
+                                "item_value": "baidu"
                             }
                         ],
                     },
@@ -149,7 +149,7 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_profile_page",
                             "model": "create",
-                            "file": "testa.html->"
+                            "file": "testa.html"
                         },
                     }
                 ]
