@@ -16,6 +16,7 @@ class CreateProfile():
         self.driver = driver
     def create_sff_profile(self, data, sff_profile_element_position,sf_profile_element_position):
         sc_info = {}
+        sc_info["sf_id_list"] = []
         page_jump_element_position = sff_profile_element_position["page_jump"]
         create_element_position = sff_profile_element_position["create"]
         try:
@@ -152,6 +153,14 @@ class CreateProfile():
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_posCss"]).click()
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_warningYes_posCss"]).click()
         time.sleep(2)
+        # 在列表页以name搜索sf 获取sf id
+        self.driver.find_element(By.ID,"select-label").click()
+        self.driver.find_element(By.ID,"2-_FilteredSearch_ElRow_Profile_Functions_Home_App_anonymousComponent").click()
+        self.driver.find_element(By.XPATH,"//div[@class='rel-input v-input input el-input el-input--mini']//input").send_keys(sf_name)
+        self.driver.find_element(By.ID,"searchQuery").click()
+        sf_id = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']//span").text
+        time.sleep(2)
+        result_info["sf_id_list"].append(sf_id)
         return sf_name,result_info
     
     def operate_sf_page(self,data,create_element_position,sc_info):

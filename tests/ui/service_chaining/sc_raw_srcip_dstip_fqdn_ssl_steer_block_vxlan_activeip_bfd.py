@@ -138,6 +138,12 @@ def run(parameter):
                     ]
                 }
             ],
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key": "sc_rsp_raw", "query_value": ""},
+                                {"query_field_key": "sent_pkts", "query_value": ""},
+                                {"query_field_key": "received_pkts", "query_value": ""},
+                                {"query_field_key": "sent_bytes", "query_value": ""},
+                                {"query_field_key": "received_bytes", "query_value": ""}],
             "traffic":{
                 "protocol": "",
                 "type": "trex",
@@ -424,6 +430,10 @@ def run(parameter):
                         break
                 sc_info["targeted_traffic"] = test_data["targeted_traffic"]
                 sc_info["app_name_1"] = test_data["condition"]["application"]
+                for n in range(len(test_data["log_query_param"])):
+                    log_query_key = test_data["log_query_param"][n]["query_field_key"]
+                    if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
+                        test_data["log_query_param"][n]["query_value"] = sc_info["sf_id_list"]
         # 创建rule
         if create_ip_code == 200 and create_profile_code == 200:
             create_rule = CreateRule(driver)
