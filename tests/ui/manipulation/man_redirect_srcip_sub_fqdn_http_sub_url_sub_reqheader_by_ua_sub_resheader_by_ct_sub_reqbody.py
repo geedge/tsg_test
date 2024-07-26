@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "man_redirect_srcip_sub_fqdn_http_sub_url_sub_reqheader_by_ua_sub_resheader_by_ct_sub_reqbody",
+            "rule_name": parameter["test_case_name"],
             "rule_action": "redirect",
             "rule_type": "create",
             "condition": {
@@ -426,8 +426,9 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "man_redirect_srcip_sub_fqdn_http_sub_url_sub_reqheader_by_ua_sub_resheader_by_ct_sub_reqbody"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

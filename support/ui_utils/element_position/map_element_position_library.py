@@ -7,6 +7,9 @@ from support.ui_utils.element_position.profile_element_position import *
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
+from support.traffic_manager.workpath import workdir
+import configparser
+import os
 
 
 test_ip_object_element_position = {
@@ -628,7 +631,7 @@ test_monitor_rule_element_position = {
                     "policyRulePage_selectServerFqdn_posXpath": policyRulePage_selectServerFqdn_posXpath,
                     "policyRulePage_closeServerFqdn_posXpath": policyRulePage_closeServerFqdn_posXpath,
                     #add url
-                    "policyRulePage_addConditionUrl_posXpath": monitorRulePage_addCondition_url_posXpath,
+                    "policyRulePage_addConditionUrl_posXpath": globals().get('monitorRulePage_addCondition_url_posXpath', globals().get('monitorRulePage_addCondition_uri_posXpath')),
                     "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
                     "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
                     "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
@@ -1128,6 +1131,27 @@ def get_element_position(key_name):
         element_position_map = {}
     return element_position_map
 
+
+def replace_paras(parameter):
+    #print(workdir)
+    conf_path = os.path.join(workdir, "configuration_file.ini")
+    parse = configparser.ConfigParser()
+    parse.read(conf_path, encoding="utf-8")
+
+    parameter["username"] = parse.get("account", "username")
+    parameter["password"] = parse.get("account", "password")
+    parameter["api_server"] = parse.get("tsg_url", "login_url")
+    parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_ui_with_traffic")
+    parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
+    parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
+    parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
+    parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
+    parameter["is_log"] = parse.get("is_log", "ui")
+
+    #project_path = parse.get("root_path", "path")
+    #parameter["root_path"] = project_path
+    #print(parameter)
+    return parameter
 
 # 勿删 zcw make
 manipulation_object_no_create_list = ["application", "sub_action_override"]
