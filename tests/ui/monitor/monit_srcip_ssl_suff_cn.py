@@ -46,7 +46,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monit_srcip_ssl_suff_cn",
-            "rule_action": "allow",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -73,7 +73,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monit_fqdn",
+                        "name": "monit_fqdn_cn",
                         "object_type": "fqdn",
                         "item_operation": "add",
                         "select_type": False,

@@ -108,7 +108,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "POST",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ssl_san", "query_value": "*.node.com;*.node.cn"},{"query_field_key":"decoded_as", "query_value": "SSL"}],
             "traffic": {

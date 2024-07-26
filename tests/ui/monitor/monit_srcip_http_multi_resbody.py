@@ -45,6 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
+            "rule_action": "monitor",
             "rule_name": "monit_srcip_http_multi_resbody",
             "rule_type": "create",
             "condition": {

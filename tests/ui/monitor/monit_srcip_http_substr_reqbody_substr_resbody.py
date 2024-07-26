@@ -141,6 +141,10 @@ def run(parameter):
             {
                 "type": test_data["condition"]["protocol_filed"][0]['object_type'],
                 "name": test_data["condition"]["protocol_filed"][0]['name']
+            },
+            {
+                "type": test_data["condition"]["protocol_filed"][1]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][1]['name']
             }
         ]
 

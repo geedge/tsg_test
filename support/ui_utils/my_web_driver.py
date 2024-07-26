@@ -86,6 +86,7 @@ class MyWebDriver(webdriver.Remote):
             self.is_exist = True                # 找到==》True
         except:
             self.is_exist = False               # 找不到===》Flase
+        return self.is_exist
 
     def is_exist_element_by_value(self, by=By.ID, value: Optional[str] = None, timeout=3):
         try:
