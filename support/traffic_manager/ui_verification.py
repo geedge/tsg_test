@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+# from typing import KeysView
+# from selenium.webdriver.common.action_chains import ActionChains
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import configparser
@@ -44,7 +46,7 @@ class UiVerification():
                             parse.read(parse_dir, encoding="utf-8")
                             temp_log_result_list = []
                             # 点击展开
-                            time.sleep(3)
+                            time.sleep(2)
                             my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                             for t in range(len(test_data["log_query_param"])):
                                 log_query_key = test_data["log_query_param"][t]["query_field_key"]
@@ -57,7 +59,7 @@ class UiVerification():
                                     else:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
-                                elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni":
+                                elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action":
                                     log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
@@ -65,6 +67,42 @@ class UiVerification():
                                     else:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
+                                elif log_query_key == "packet_capture_file":
+                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    element_exist_flag = my_driver.is_exist_element(log_item_posXpath)
+                                    # 验证开关开启
+                                    if test_data["log_query_param"][t]["query_value"] == True:
+                                        # 有下载按钮，点击下载按钮，验证是否报错
+                                        if element_exist_flag == True:
+                                            # 连续点击下载按钮5次（防止下载异常的时候异常信息消失的太快）
+                                            for _ in range(5):
+                                                log_item_element = my_driver.find_element_by_xpath(log_item_posXpath)
+                                                my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
+                                                my_driver.find_element(By.XPATH, log_item_posXpath).click()
+                                                time.sleep(1)
+                                            log_item_element = my_driver.find_element_by_xpath(log_item_posXpath)
+                                            my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
+                                            print("had scroll")
+                                            my_driver.find_element(By.XPATH, log_item_posXpath).click()
+                                            time.sleep(1)
+                                            # 只有下载失败的时候界面才有此定位
+                                            error_text_posXpath = "//div[contains(@class, 'el-message el-message--error')]"
+                                            error_text_is_exist = my_driver.is_exist_element(error_text_posXpath)
+                                            # 有错误提示，下载失败
+                                            if error_text_is_exist == True:
+                                                temp_log_result = False
+                                            # 下载成功时无错误提示
+                                            else:
+                                                temp_log_result = True
+                                        else:
+                                            # 没有下载按钮，false
+                                            temp_log_result = False
+                                    # 验证开关不开启
+                                    elif test_data["log_query_param"][t]["query_value"] == False:
+                                        if element_exist_flag == False:
+                                            temp_log_result = True
+                                        else:
+                                            temp_log_result = False
                                 elif log_query_key == "server_port":
                                     print("to be added.")
                                 elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent"]:

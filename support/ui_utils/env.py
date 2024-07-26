@@ -23,6 +23,10 @@ def my_driver():
     # 初始化
     chrome_option = webdriver.ChromeOptions()
     os_name = platform.system()
+    prefs = {
+    "download.default_directory": workdir  # 设置下载路径
+    }
+    chrome_option.add_experimental_option("prefs", prefs)
     if os_name == "Linux":
         remote_url = get_docker_ip()
         # 启用无窗口模式
