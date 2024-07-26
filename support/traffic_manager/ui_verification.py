@@ -70,8 +70,8 @@ class UiVerification():
                                 elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent"]:
                                     log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text.strip()
-                                    print(temp_value)
-                                    print(test_data["log_query_param"][t]["query_value"])
+                                    #print(temp_value)
+                                    #print(test_data["log_query_param"][t]["query_value"])
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
                                         temp_log_result = True
                                     else:
