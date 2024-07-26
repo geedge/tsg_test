@@ -172,20 +172,21 @@ def run(parameter):
         # name_list汇总
         name_list = [
             {
-                "type": "statistics",
-                "name": "bytes_with_src_ip",
+                "type": test_data["policy_type"],
+                "name": test_data["rule_name"]
             },
             {
-                "type": "ip",
-                "name": "statistics_bytes_source_ip",
-            },{
-                "type": "ip",
-                "name": "statistics_bytes_destination_ip",
+                "type": test_data["condition"]["source_ip"][0]['object_type'],
+                "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": "statistics_template",
-                "name": "Auto Bytes Distributed by Client IP",
+                "type": test_data["condition"]["destination_ip"][0]['object_type'],
+                "name": test_data["condition"]["destination_ip"][0]['name']
             },
+            {
+                "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
+                "name": test_data["action_parameter"]["statistics_template"][0]['name']
+            }
         ]
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
