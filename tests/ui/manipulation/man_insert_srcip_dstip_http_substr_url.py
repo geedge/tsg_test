@@ -95,7 +95,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "192.168->"
+                                "item_value": "192.168"
                             }
                         ],
                     }
@@ -108,9 +108,9 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_insert_profile",
                             "model": "create",
-                            "script": "test_js_1.js->",
-                            "script_type":  "js->",
-                            "insert_position": "Before Page Load->"
+                            "script": "test_js_1.js",
+                            "script_type":  "js",
+                            "insert_position": "Before Page Load"
                             }
                     }
                 ]

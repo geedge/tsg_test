@@ -86,7 +86,7 @@ def run(parameter):
             },
             "expected_return": "test_resbody",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"},{"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

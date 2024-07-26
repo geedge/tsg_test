@@ -146,7 +146,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [#如果Bytes Aggregate为：BITRATE则Bytes*8
-                {"s2c_ttl": "255","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+                {"s2c_ttl": "40","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",

@@ -82,7 +82,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "www.114chn.com->"
+                                "item_value": "www.114chn.com"
                             }
                         ],
                     },

@@ -93,7 +93,7 @@ def run(parameter):
             },
             "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"},{"query_field_key": "http_response_content_type", "query_value": "text/html"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
