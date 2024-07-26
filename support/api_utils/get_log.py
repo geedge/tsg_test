@@ -624,6 +624,7 @@ class GetLog():
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 50 * pkt_value
+                sc_expected_metric["total_packets"] = pkt_value
                 if sc_info["type"] == 1:
                     if sc_value["sent_bytes"] == sc_value["received_bytes"] == sc_expected_metric["total_bytes"] and \
                             sc_value["sent_packets"] == sc_value["received_packets"] == pkt_value:
@@ -646,6 +647,7 @@ class GetLog():
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 4 * pkt_value
+                sc_expected_metric["total_packets"] = pkt_value
                 if sc_info["type"] == 2:
                     if sc_value["sent_bytes"] == sc_expected_metric["total_bytes"] and sc_value[
                         "sent_packets"] == pkt_value and sc_value["received_bytes"] == sc_value[

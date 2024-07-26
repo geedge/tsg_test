@@ -186,21 +186,15 @@ class UiVerification():
                         if cfg_list["targeted_traffic"] == "raw":
                             byte_value = traffic_result["total_bytes"]
                             pkt_value = traffic_result["total_packets"]
-                            lost_pkt = 3
-                            lost_byte = 192
                             if cfg_list["sf_method"] == "vxlan_g" and cfg_list["sf_dest_ip"] in sc_active_ip_list:
-                                if cfg_list["app_name_1"]:
-                                    pkt_value -= lost_pkt
-                                    byte_value -= lost_byte
-                                traffic_result["total_bytes"] = byte_value + 50 * pkt_value
                                 if 1000 <= pkt_value < 10000:
                                     pkt_value_temp = int(round(pkt_value/1000, 0))
                                 elif pkt_value < 1000:
                                     pkt_value_temp = pkt_value
-                                if 1024 <= traffic_result["total_bytes"] < 1048576:
-                                    total_bytes_temp = round(traffic_result["total_bytes"]/1024.0, 2)
-                                elif traffic_result["total_bytes"] < 1024:
-                                    total_bytes_temp = traffic_result["total_bytes"]
+                                if 1024 <= byte_value < 1048576:
+                                    total_bytes_temp = round(byte_value/1024.0, 2)
+                                elif byte_value < 1024:
+                                    total_bytes_temp = byte_value
                                 if cfg_list["type"] == 1:
                                     if sent_bytes == received_bytes == total_bytes_temp and sent_pkts == received_pkts == pkt_value_temp:
                                         metric_result = True
@@ -214,18 +208,14 @@ class UiVerification():
                                 else:
                                     metric_result = False
                             elif cfg_list["sf_method"] == "layer2_switch":
-                                if cfg_list["app_name_1"]:
-                                    pkt_value -= lost_pkt
-                                    byte_value -= lost_byte
-                                traffic_result["total_bytes"] = byte_value + 4 * pkt_value
                                 if 1000 <= pkt_value < 10000:
                                     pkt_value_temp = int(round(pkt_value/1000, 0))
                                 elif pkt_value < 1000: 
                                     pkt_value_temp = pkt_value
-                                if 1024 <= traffic_result["total_bytes"] < 1048576:
-                                    total_bytes_temp = round(traffic_result["total_bytes"]/1024.0, 2)
-                                elif traffic_result["total_bytes"] < 1024:
-                                    total_bytes_temp = traffic_result["total_bytes"]
+                                if 1024 <= byte_value < 1048576:
+                                    total_bytes_temp = round(byte_value/1024.0, 2)
+                                elif byte_value < 1024:
+                                    total_bytes_temp = byte_value
                                 if cfg_list["type"] == 2:
                                     if sent_bytes == total_bytes_temp and sent_pkts == pkt_value_temp and received_bytes == received_pkts == 0:
                                         metric_result = True
@@ -255,6 +245,59 @@ class UiVerification():
                                         metric_result = False
                                 else:
                                     metric_result = False
+                if int(is_log) == 1:
+                    # 跳转至session record路径
+                    sc_rule_id = test_data["rule_id"]
+                    my_driver.find_element(By.ID,"Log").click()
+                    my_driver.find_element(By.ID,"Log_SesssionRecords").click()
+                    # 以policy id作为filter查找命中策略的session
+                    my_driver.find_element(By.ID,"addFilter").click()
+                    my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").click()
+                    my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").send_keys("service")
+                    my_driver.find_element(By.ID,"Service Chaining Rule List26-_Label_UnrecognizedExp_Expression_groupItem_TagsSearch_FacedtedSearch_Search_VPanel_SessionLog_Home_App_anonymousComponent").click()
+                    my_driver.find_element(By.ID,"operatorhas").click()
+                    my_driver.find_element(By.XPATH,"//div[@class='el-tooltip el-input el-input--mini']//input").send_keys(sc_rule_id)
+                    my_driver.find_element(By.ID,"facedQuery").click()
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
+                    for time in range(50) :
+                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
+                        log_number = log_number_str.split(": ")[-1]
+                        if int(log_number) == 0:
+                            time += 1
+                            my_driver.find_element(By.ID,"facedQuery").click()
+                            time.sleep(7)
+                        elif int(log_number) > 0:
+                            break
+                    # 以Server IP为例，在log_query_list.ini中通过log api查找log ui的值
+                    parse = configparser.ConfigParser()
+                    parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
+                    parse.read(parse_dir, encoding="utf-8")
+                    temp_log_result_list = []
+                    # 点击展开
+                    time.sleep(3)
+                    my_driver.find_element(By.XPATH, "//span[@class='vxe-table--expanded']").click()
+                    for t in range(len(test_data["log_query_param"])):
+                        log_query_key = test_data["log_query_param"][t]["query_field_key"]
+                        log_str = parse.get("log", log_query_key)
+                        if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
+                            log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                            if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                temp_log_result = True
+                            else:
+                                temp_log_result = False
+                        elif log_query_key == "sent_pkts" or log_query_key == "sent_bytes" or log_query_key == "received_pkts" or log_query_key == "received_bytes":
+                            log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                            if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                temp_log_result = True
+                            else:
+                                temp_log_result = False
+                            temp_log_result_list.append(temp_log_result)
+                    if False not in temp_log_result_list:
+                            log_result = True
+                    else:
+                            log_result = False
                 return api_verification_result[0], metric_result, metric_result, my_driver
     
     def extract_value(self, type, value):
