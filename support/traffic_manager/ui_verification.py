@@ -250,6 +250,7 @@ class UiVerification():
                     sc_rule_id = test_data["rule_id"]
                     my_driver.find_element(By.ID,"Log").click()
                     my_driver.find_element(By.ID,"Log_SesssionRecords").click()
+                    time.sleep(3)
                     # 以policy id作为filter查找命中策略的session
                     my_driver.find_element(By.ID,"addFilter").click()
                     my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").click()
@@ -259,11 +260,11 @@ class UiVerification():
                     my_driver.find_element(By.XPATH,"//div[@class='el-tooltip el-input el-input--mini']//input").send_keys(sc_rule_id)
                     my_driver.find_element(By.ID,"facedQuery").click()
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
-                    for time in range(50) :
+                    for i in range(50) :
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
                         log_number = log_number_str.split(": ")[-1]
                         if int(log_number) == 0:
-                            time += 1
+                            i += 1
                             my_driver.find_element(By.ID,"facedQuery").click()
                             time.sleep(7)
                         elif int(log_number) > 0:
@@ -275,7 +276,7 @@ class UiVerification():
                     temp_log_result_list = []
                     # 点击展开
                     time.sleep(3)
-                    my_driver.find_element(By.XPATH, "//span[@class='vxe-table--expanded']").click()
+                    my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                     for t in range(len(test_data["log_query_param"])):
                         log_query_key = test_data["log_query_param"][t]["query_field_key"]
                         log_str = parse.get("log", log_query_key)
