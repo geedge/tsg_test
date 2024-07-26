@@ -77,6 +77,17 @@ class UiVerification():
                                     else:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
+                                elif log_query_key in ["monitor_mirrored_bytes", "monitor_mirrored_pkts"]:
+                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
+                                        replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text.strip()
+                                    print(temp_value)
+                                    print(test_data["log_query_param"][t]["query_value"])
+                                    if temp_value == str(test_data["log_query_param"][t]["query_value"]):
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                    temp_log_result_list.append(temp_log_result)
                             if False not in temp_log_result_list:
                                 log_result = True
                             else:

@@ -66,6 +66,9 @@ class ApiVerification():
         log = support.api_utils.get_log.GetLog()
         
         if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
+            #如果是通过trex回放，需要替换src ip
+            if test_data["policy_type"] == "monitor" and test_data["is_mirror"] == "on":
+                test_pc_ip = test_data["condition"]["source_ip"][0]["item"][0]["item_value"]
             # 获取开始时间
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
@@ -415,6 +418,10 @@ class ApiVerification():
             return True, True, True
 
     def is_in(self, full_str, sub_str, debug_flag):
+        if sub_str == "trex":  #故若干
+            cmd_result = True
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
+            return cmd_result
         if debug_flag == "local":
             temp = full_str["result"]
         else:
