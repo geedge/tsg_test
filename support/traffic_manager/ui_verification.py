@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-# from typing import KeysView
-# from selenium.webdriver.common.action_chains import ActionChains
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import configparser
@@ -59,7 +57,7 @@ class UiVerification():
                                     else:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
-                                elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action":
+                                elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action" or log_query_key == "ftp_url":
                                     log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
