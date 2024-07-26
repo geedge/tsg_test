@@ -46,6 +46,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monit_srcip_http_multi_reqbody",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [

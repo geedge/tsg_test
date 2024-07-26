@@ -1,3 +1,4 @@
+
 # -*- coding: UTF-8 -*-
 import time
 import os
@@ -45,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monit_srcip_ssl_substr_cn",
+            "rule_name":os.path.splitext(os.path.basename(__file__))[0],
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
@@ -73,7 +74,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monit_fqdn",
+                        "name": "monit_fqdn_cn",
                         "object_type": "fqdn",
                         "item_operation": "add",
                         "select_type": False,
@@ -85,12 +86,32 @@ def run(parameter):
                                 "item_value": "node->"
                             }
                         ],
+                    },
+                    {
+                        "name": "monit_fqdn_san",
+                        "object_type": "fqdn",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "san",
+                                "item_value": "node->"
+                            }
+                        ],
+                    },
+                    {
+                        "name": "False",  #
+                        "object_type": "boolean",
+                        "boolean_type": "NO SNI"
                     }
                 ],
             },
             "expected_return": "node",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_cn", "query_value": "open.node.com"}],
+            "log_query_param": [{"query_field_key": "ssl_cn", "query_value": "open.node.com"},
+                                {"query_field_key": "ssl_san", "query_value": "*.node.com;*.node.cn"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
@@ -117,6 +138,10 @@ def run(parameter):
             {
                 "type": test_data["condition"]["protocol_filed"][0]['object_type'],
                 "name": test_data["condition"]["protocol_filed"][0]['name']
+            },
+            {
+                "type": test_data["condition"]["protocol_filed"][0]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][0]['name']
             }
         ]
 
@@ -137,7 +162,10 @@ def run(parameter):
                             element_position_map = get_element_position(tmp_key)
                         else:
                             element_position_map = get_element_position(cond_key)
-                        cond_code = create_ip.create(cond_data[i], element_position_map)
+                        if cond_data[i]["object_type"] == "boolean":
+                            continue  # boolean类型无需创建
+                        else:
+                            cond_code = create_ip.create(cond_data[i], element_position_map)
                         if cond_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                                   "Create {} object successfully.".format(cond_key_out), flush=True)
@@ -224,8 +252,11 @@ def run(parameter):
                             element_position_map = get_element_position(tmp_key)
                         else:
                             element_position_map = get_element_position(cond_key)
-                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"],
-                                                                                          element_position_map)
+                        if cond_data[i]["object_type"] == "boolean":
+                            continue  # boolean类型无需创建
+                        else:
+                            search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"],
+                                                                                              element_position_map)
                         if search_cond_code == 200:
                             delete_cond = DeleteObject(driver)
                             delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element,

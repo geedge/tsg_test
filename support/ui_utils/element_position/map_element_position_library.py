@@ -627,6 +627,12 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchServerFqdn_posXpath": policyRulePage_searchServerFqdn_posXpath,
                     "policyRulePage_selectServerFqdn_posXpath": policyRulePage_selectServerFqdn_posXpath,
                     "policyRulePage_closeServerFqdn_posXpath": policyRulePage_closeServerFqdn_posXpath,
+                    #add url
+                    "policyRulePage_addConditionUrl_posXpath": monitorRulePage_addCondition_url_posXpath,
+                    "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
+                    "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
+                    "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
+                    "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
                     #add request header
                     "policyRulePage_addConditionRequestHeader_posXpath": monitorRulePage_addCondition_requestHeader_posXpath,
                     "policyRulePage_addRequestHeader_posXpath": monitorRulePage_addRequestHeader_posXpath,
@@ -651,6 +657,13 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchResponseBody_posXpath": monitorRulePage_searchRequestHeader_posXpath,
                     "policyRulePage_selectResponseBody_posXpath": monitorRulePage_selectRequestHeader_posXpath,
                     "policyRulePage_closeResponseBody_posXpath": monitorRulePage_closeRequestHeader_posXpath,
+                    #add ssl sni
+                    "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
+                    "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
+                    "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
+                    "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
+                    "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
+                    "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
                     # san
                     "policyRulePage_addConditionSan_posXpath": monitorRulePage_addCondition_san_posXpath,
                     "policyRulePage_addSan_posXpath": monitorRulePage_addSan_posXpath,
