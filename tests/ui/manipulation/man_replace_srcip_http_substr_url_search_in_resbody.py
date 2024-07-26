@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "replace_srcip_substr_url_search_in_resbody",
+            "rule_name": parameter["test_case_name"],
             "rule_action": "replace",
             "rule_type": "create",
             "condition": {
@@ -355,8 +355,9 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "replace_srcip_substr_url_search_in_resbody"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

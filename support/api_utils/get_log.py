@@ -100,8 +100,35 @@ class GetLog():
                     for log_query_param in log_query_params:
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
-                        if query_field_key in log and log[query_field_key] == query_value:
+                        # 传入值与日志的值相等时验证
+                        if query_field_key in log and query_field_key != "packet_capture_file" and log[query_field_key] == query_value:
                             log_reult = True
+                        
+                        # 验证packet capture
+                        elif query_field_key == "packet_capture_file":
+                            # 验证开关开启状态
+                            if query_value == True:
+                                # 查询结果中packet_capture_file长度大于0，走下一步骤
+                                if len(log[query_field_key]) > 0:
+                                    packet_capture_url = log[query_field_key]
+                                    download_parameter = {'url': packet_capture_url, 'exportObj': True}
+                                    url = api_host + "/v1/util/download_file" + "?vsys_id=" + str(vsys_id)
+                                    response = requests.get(url, headers=headers, params=download_parameter, verify=False)
+                                    if response.status_code == 200:
+                                        log_reult = True
+                                    else:
+                                        log_reult = False
+                                # 开关开启， packet_capture_file长度小于0，结果失败       
+                                else:
+                                    log_reult = False
+                            # 验证开关关闭状态
+                            elif query_value == False:
+                                # 查询结果中packet_capture_file不为空，进下一步骤
+                                if len(log[query_field_key]) > 0 :
+                                    log_reult = False
+                                else:
+                                    log_reult = True
+                        # 传入值不相等，而且非packet capture验证为false
                         else:
                             log_reult = False
             elif len(log_query_params) == 0:
@@ -597,6 +624,7 @@ class GetLog():
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 50 * pkt_value
+                sc_expected_metric["total_packets"] = pkt_value
                 if sc_info["type"] == 1:
                     if sc_value["sent_bytes"] == sc_value["received_bytes"] == sc_expected_metric["total_bytes"] and \
                             sc_value["sent_packets"] == sc_value["received_packets"] == pkt_value:
@@ -619,6 +647,7 @@ class GetLog():
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 4 * pkt_value
+                sc_expected_metric["total_packets"] = pkt_value
                 if sc_info["type"] == 2:
                     if sc_value["sent_bytes"] == sc_expected_metric["total_bytes"] and sc_value[
                         "sent_packets"] == pkt_value and sc_value["received_bytes"] == sc_value[

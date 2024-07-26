@@ -110,11 +110,11 @@ def run(parameter):
             "profile": [],
             "expected_return": "autotest",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"}],
+            "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
             },
             "token": ""
         }
@@ -217,11 +217,11 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
-                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
-                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
-                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
-                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    # srcip
+                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,

@@ -20,6 +20,7 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
+
 from support.report import *
 from datetime import datetime
 
@@ -42,8 +43,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
-            "rule_name": "man_redirect_srcip_http_url",
-            "rule_action": "redirect",
+            "rule_name": parameter["test_case_name"],
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -68,39 +69,28 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "protocol_filed": [
+                "server_fqdn": [
                     {
-                        "name": "manipulation_url",
-                        "object_type": "url",
-                        "item_operation": "add",
+                        "name": "manipulation_fqdn_node",
+                        "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
+                        "plus": False,
                         "items": [
                             {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "baidu"
+                                "item_value": "*.baidu.com",
                             }
-                        ],
+                        ]
                     }
                 ],
             },
-            "action_parameter": {
-                "redirect_url": [
-                    {
-                        "profile_type": "redirect_response",
-                        "response_code": 301,
-                        "redirect_url": "https://www.jd.com"
-                    }
-                ]
-            },
-            "expected_return": "https://www.jd.com,301",
+            "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "http_url", "query_value": "www.baidu.com/"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }
@@ -336,7 +326,6 @@ def run(parameter):
             new_report.insert_data(parameter, report_data)
     
 
-
 if __name__ == '__main__':
     parameter = {
         "username": "zcw3",
@@ -352,8 +341,9 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "manipulation",
-        "test_case_name": "man_redirect_srcip_http_url"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：
