@@ -120,6 +120,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -N -kv http://www.moe.gov.cn/jyb_xwfb/gzdt_gzdt/"
             },

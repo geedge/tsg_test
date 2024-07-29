@@ -106,6 +106,7 @@ def run(parameter):
                                 {"query_field_key":"server_fqdn", "query_value": "www.yumi.com"}
                              ],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv http://www.yumi.com"
             },

@@ -98,6 +98,7 @@ def run(parameter):
                                 {"query_field_key": "phone_number", "query_value": parameter['test_phone_number']}
                                 ],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://www.xiaohongshu.com"
             },

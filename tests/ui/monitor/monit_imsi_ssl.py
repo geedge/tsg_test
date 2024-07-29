@@ -98,6 +98,7 @@ def run(parameter):
                                 {"query_field_key":"decoded_as", "query_value": "MAIL"}
                                 ],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://www.xiaohongshu.com"
             },

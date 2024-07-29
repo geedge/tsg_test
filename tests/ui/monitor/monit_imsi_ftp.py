@@ -98,6 +98,7 @@ def run(parameter):
                                 {"query_field_key": "imsi", "query_value": parameter['test_imsi']}
                             ],
             "traffic": {
+                "protocol": "ftp",
                 "type": "curl",
                 "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },

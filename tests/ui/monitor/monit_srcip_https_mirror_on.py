@@ -100,6 +100,7 @@ def run(parameter):
                                     {"query_field_key": "monitor_mirrored_pkts", "query_value": 172},
                                ],
             "traffic": {
+                "protocol": " ",
                 "type": "trex",
                 "clients_start_ip": "192.168.64.86",
                 "clients_end_ip": "192.168.64.86",

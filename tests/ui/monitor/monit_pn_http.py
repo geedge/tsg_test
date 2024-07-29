@@ -99,6 +99,7 @@ def run(parameter):
                                 {"query_field_key": "phone_number", "query_value": parameter['test_phone_number']}
                                 ],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv http://www.yumi.com"
             },

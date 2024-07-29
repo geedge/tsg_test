@@ -110,6 +110,7 @@ def run(parameter):
                                 {"query_field_key": "ssl_sni", "query_value": "www.douban.com"}
                               ],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://www.douban.com"
             },

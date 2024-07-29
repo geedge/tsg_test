@@ -101,6 +101,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "slope.ru"}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -N -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
             },

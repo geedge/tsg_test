@@ -99,6 +99,7 @@ def run(parameter):
                                 {"query_field_key": "imsi", "query_value": parameter['test_imsi']}
                             ],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.skype.com -timeout=1 8.8.8.8"
             },

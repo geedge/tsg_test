@@ -99,6 +99,7 @@ def run(parameter):
                                 {"query_field_key": "imsi", "query_value": parameter['test_imsi']}
                             ],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv http://www.yumi.com"
             },

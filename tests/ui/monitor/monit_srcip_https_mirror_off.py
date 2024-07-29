@@ -95,6 +95,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"}],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -N -kv https://www.mtv.ru/"
             },

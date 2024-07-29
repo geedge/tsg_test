@@ -99,6 +99,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv http://www.example.com"
             },

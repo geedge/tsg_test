@@ -100,6 +100,7 @@ def run(parameter):
                                 {"query_field_key": "ip_protocol", "query_value": "udp"}
                                 ],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.example.com -timeout=1"
             },

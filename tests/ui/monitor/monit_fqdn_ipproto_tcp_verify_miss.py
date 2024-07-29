@@ -98,6 +98,7 @@ def run(parameter):
             "counters": {"hits": 0},
             "log_query_param": [],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.example.com -timeout=1"
             },

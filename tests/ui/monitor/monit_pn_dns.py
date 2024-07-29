@@ -96,6 +96,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "decoded_as", "query_value": "DNS"}],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.skype.com -timeout=1 8.8.8.8"
             },
