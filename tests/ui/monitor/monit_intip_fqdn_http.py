@@ -101,7 +101,10 @@ def run(parameter):
             "profile": [],
             "expected_return": "baidu",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.yumi.com"}],
+            "log_query_param": [
+                                {"query_field_key": "http_host", "query_value": "www.yumi.com"},
+                                {"query_field_key":"server_fqdn", "query_value": "www.yumi.com"}
+                             ],
             "traffic": {
                 "type": "curl",
                 "command": "curl -kv http://www.yumi.com"

@@ -96,7 +96,9 @@ def run(parameter):
             "profile": [],
             "expected_return": "www.example.com",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.example.com"}],
+            "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.example.com"},
+                                {"query_field_key": "ip_protocol", "query_value": "udp"}
+                                ],
             "traffic": {
                 "type": "nslookup",
                 "command": "nslookup www.example.com -timeout=1"

@@ -94,7 +94,10 @@ def run(parameter):
             "profile": [],
             "expected_return": "skype",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "DNS"}],
+            "log_query_param":[
+                                {"query_field_key": "decoded_as", "query_value": "DNS"},
+                                {"query_field_key": "imsi", "query_value": parameter['test_imsi']}
+                            ],
             "traffic": {
                 "type": "nslookup",
                 "command": "nslookup www.skype.com -timeout=1 8.8.8.8"
