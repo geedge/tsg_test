@@ -255,6 +255,11 @@ class UiVerification():
                                 else:
                                     metric_result = False
                 if int(is_log) == 1:
+                    test_data["log_query_param"][0]["query_value"] = cfg_list["sf_id_list"]
+                    test_data["log_query_param"][1]["query_value"] = traffic_result["total_packets_sent"]
+                    test_data["log_query_param"][2]["query_value"] = traffic_result["total_packets_received"]
+                    test_data["log_query_param"][3]["query_value"] = traffic_result["total_bytes_sent"]
+                    test_data["log_query_param"][4]["query_value"] = traffic_result["total_bytes_received"]    
                     # 跳转至session record路径
                     sc_rule_id = test_data["rule_id"]
                     my_driver.find_element(By.ID,"Log").click()
@@ -278,37 +283,53 @@ class UiVerification():
                             time.sleep(7)
                         elif int(log_number) > 0:
                             break
-                    # 以Server IP为例，在log_query_list.ini中通过log api查找log ui的值
+                    # 点击展开
+                    time.sleep(3)
+                    my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                     parse = configparser.ConfigParser()
                     parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
                     parse.read(parse_dir, encoding="utf-8")
                     temp_log_result_list = []
-                    # 点击展开
-                    time.sleep(3)
-                    my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                     for t in range(len(test_data["log_query_param"])):
                         log_query_key = test_data["log_query_param"][t]["query_field_key"]
                         log_str = parse.get("log", log_query_key)
                         if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
                             log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
-                            if temp_value == test_data["log_query_param"][t]["query_value"]:
+                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text.strip("[] ")
+                            temp_value_list = temp_value.split(',')
+                            log_value_list = []
+                            for item in temp_value_list:
+                                log_value_list.append(int(item))
+                            if log_value_list == test_data["log_query_param"][t]["query_value"]:
                                 temp_log_result = True
                             else:
                                 temp_log_result = False
-                        elif log_query_key == "sent_pkts" or log_query_key == "sent_bytes" or log_query_key == "received_pkts" or log_query_key == "received_bytes":
+                        elif log_query_key == "sent_pkts" or log_query_key == "received_pkts":
+                            log_pkt_value = test_data["log_query_param"][t]["query_value"]
+                            log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                            temp_value = int(my_driver.find_element(By.XPATH, log_item_posXpath).text)
+                            if temp_value == log_pkt_value:
+                                temp_log_result = True
+                            else:
+                                temp_log_result = False
+                        elif log_query_key == "sent_bytes" or log_query_key == "received_bytes":
+                            log_byte_value = test_data["log_query_param"][t]["query_value"]
+                            if 1024 <= log_byte_value < 1048576:
+                                log_bytes_temp = str(round(log_byte_value/1024.0, 2)) + " KB"
+                            elif byte_value < 1024:
+                                log_bytes_temp = str(log_byte_value) + " B"
                             log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                             temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
-                            if temp_value == test_data["log_query_param"][t]["query_value"]:
+                            if temp_value == log_bytes_temp:
                                 temp_log_result = True
                             else:
                                 temp_log_result = False
-                            temp_log_result_list.append(temp_log_result)
+                        temp_log_result_list.append(temp_log_result)
                     if False not in temp_log_result_list:
                             log_result = True
                     else:
                             log_result = False
-                return api_verification_result[0], metric_result, metric_result, my_driver
+                return api_verification_result[0], log_result, metric_result, my_driver
     
     def extract_value(self, type, value):
         if type == "packets":
