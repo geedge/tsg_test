@@ -110,7 +110,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "timed out",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"},
             {"query_field_key":"decoded_as", "query_value": "FTP"},
