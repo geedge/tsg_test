@@ -95,6 +95,7 @@ def run(parameter):
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.bport.ru"}],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.bport.ru -timeout=1 8.8.8.8"
             },

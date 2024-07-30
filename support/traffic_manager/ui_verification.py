@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+
+from support.ui_utils.log.search_log import SearchLog
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import configparser
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.workpath import workdir
-from support.ui_utils.element_position.policy_element_position import *
+from support.ui_utils.element_position.log_element_position import *
+from support.ui_utils.element_position.map_element_position_library import *
 from selenium.webdriver.common.by import By
 from datetime import datetime
 
@@ -23,19 +27,32 @@ class UiVerification():
         edit_rule = EditRule(my_driver)
         edit_rule_code, _ = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
         if edit_rule_code == 200:
-            if policy_type == "security" and rule_action != "shunt" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
+            if policy_type == "security" and rule_action != "shunt" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor" or policy_type == "statistics":
                 if api_verification_result[2] == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get hit count from UI detail page.", flush=True)
-                    hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").text
+                    hit_count = -1
+                    if policy_type == "statistics":  # 如果为Statistics Rule无对应的Log类型，则从Session Records查找
+                        hit_count = my_driver.find_element(By.XPATH,statisticsRulePage_rightInfo_72hoursHitCount_posXpath).text
+                    else:
+                        hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").text
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "hit_count:", hit_count, flush=True)
-                    if int(hit_count) == test_data["counters"]["hits"] or int(hit_count) > 1 and test_data["counters"]["hits"] == "many":
+                    if int(hit_count) == test_data["counters"]["hits"] or (int(hit_count) > 1 and test_data["counters"]["hits"] == "many"):
                         metric_result = True
-                    if int(is_log) == 1:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
-                        my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").click()
-                        time.sleep(1)
-                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
-                        log_number = log_number_str.split(": ")[-1]
+                    if int(is_log) == 1 and policy_type != "statistics":
+                        if policy_type == "statistics":  # 如果为Statistics Rule无对应的Log类型，则从Session Records查找
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get Logs from UI Session Records page.", flush=True)
+                            element_position_map = get_element_position("session_log")
+                            search_log = SearchLog(driver)
+                            sql = "has(statistics_rule_list,{})".format(test_data["rule_id"])
+                            search_rule_code, total = search_log.search(sql, element_position_map)
+                            if search_rule_code == 200:
+                                log_number = total
+                        else: # 如果为有对应的Rule Logs类型则点击72小时hit数量打开对应的日志查找列表
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
+                            my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").click()
+                            time.sleep(1)
+                            log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
+                            log_number = log_number_str.split(": ")[-1]
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "log_number:", log_number, flush=True)
                         if int(hit_count) == int(log_number):
                             # 以Server IP为例，在log_query_list.ini中通过log api查找log ui的值
@@ -255,6 +272,11 @@ class UiVerification():
                                 else:
                                     metric_result = False
                 if int(is_log) == 1:
+                    test_data["log_query_param"][0]["query_value"] = cfg_list["sf_id_list"]
+                    test_data["log_query_param"][1]["query_value"] = traffic_result["total_packets_sent"]
+                    test_data["log_query_param"][2]["query_value"] = traffic_result["total_packets_received"]
+                    test_data["log_query_param"][3]["query_value"] = traffic_result["total_bytes_sent"]
+                    test_data["log_query_param"][4]["query_value"] = traffic_result["total_bytes_received"]    
                     # 跳转至session record路径
                     sc_rule_id = test_data["rule_id"]
                     my_driver.find_element(By.ID,"Log").click()
@@ -278,37 +300,53 @@ class UiVerification():
                             time.sleep(7)
                         elif int(log_number) > 0:
                             break
-                    # 以Server IP为例，在log_query_list.ini中通过log api查找log ui的值
+                    # 点击展开
+                    time.sleep(3)
+                    my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                     parse = configparser.ConfigParser()
                     parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
                     parse.read(parse_dir, encoding="utf-8")
                     temp_log_result_list = []
-                    # 点击展开
-                    time.sleep(3)
-                    my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                     for t in range(len(test_data["log_query_param"])):
                         log_query_key = test_data["log_query_param"][t]["query_field_key"]
                         log_str = parse.get("log", log_query_key)
                         if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
                             log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
-                            if temp_value == test_data["log_query_param"][t]["query_value"]:
+                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text.strip("[] ")
+                            temp_value_list = temp_value.split(',')
+                            log_value_list = []
+                            for item in temp_value_list:
+                                log_value_list.append(int(item))
+                            if log_value_list == test_data["log_query_param"][t]["query_value"]:
                                 temp_log_result = True
                             else:
                                 temp_log_result = False
-                        elif log_query_key == "sent_pkts" or log_query_key == "sent_bytes" or log_query_key == "received_pkts" or log_query_key == "received_bytes":
+                        elif log_query_key == "sent_pkts" or log_query_key == "received_pkts":
+                            log_pkt_value = test_data["log_query_param"][t]["query_value"]
+                            log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                            temp_value = int(my_driver.find_element(By.XPATH, log_item_posXpath).text)
+                            if temp_value == log_pkt_value:
+                                temp_log_result = True
+                            else:
+                                temp_log_result = False
+                        elif log_query_key == "sent_bytes" or log_query_key == "received_bytes":
+                            log_byte_value = test_data["log_query_param"][t]["query_value"]
+                            if 1024 <= log_byte_value < 1048576:
+                                log_bytes_temp = str(round(log_byte_value/1024.0, 2)) + " KB"
+                            elif byte_value < 1024:
+                                log_bytes_temp = str(log_byte_value) + " B"
                             log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                             temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
-                            if temp_value == test_data["log_query_param"][t]["query_value"]:
+                            if temp_value == log_bytes_temp:
                                 temp_log_result = True
                             else:
                                 temp_log_result = False
-                            temp_log_result_list.append(temp_log_result)
+                        temp_log_result_list.append(temp_log_result)
                     if False not in temp_log_result_list:
                             log_result = True
                     else:
                             log_result = False
-                return api_verification_result[0], metric_result, metric_result, my_driver
+                return api_verification_result[0], log_result, metric_result, my_driver
     
     def extract_value(self, type, value):
         if type == "packets":

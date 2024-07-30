@@ -46,6 +46,7 @@ class ApiVerification():
                 statistics_sc_info_list = []
                 cfg_list["rule_id"] = test_data["rule_id"]
                 statistics_sc_info_list.append(cfg_list)
+                sc_expected_metric = traffic_result
             elif policy_type == "statistics":
                 statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
                 #cfg_list["rule_id"] = test_data["rule_id"]
@@ -282,7 +283,7 @@ class ApiVerification():
                 # 获取开始时间
                 time.sleep(5)
                 utc_tz = pytz.timezone('UTC')
-                current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
+                current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 解析trex使用参数， 解析client server ip
                 # if script_type == "api":
@@ -319,7 +320,6 @@ class ApiVerification():
                 #     sc_metircs = sc_result["result"]
                 # else:
                 #     sc_metircs = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
-                sc_metircs = traffic_result
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -333,7 +333,7 @@ class ApiVerification():
                             utc_tz = pytz.timezone('UTC')
                             current_utc_time = datetime.now(utc_tz)
                             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                            metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, sc_metircs, active_dest_ips_list, api_server, vsys_id)
+                            metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, api_server, vsys_id)
                             if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                 break
                             elif metric_result == False:  # 查询验证失败时，再查询验证两次

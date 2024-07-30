@@ -94,8 +94,11 @@ def run(parameter):
             "profile": [],
             "expected_return": "xiaohongshu",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.xiaohongshu.com"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.xiaohongshu.com"},
+                                {"query_field_key":"decoded_as", "query_value": "MAIL"}
+                                ],
             "traffic": {
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://www.xiaohongshu.com"
             },

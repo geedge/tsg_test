@@ -120,6 +120,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -N -kv curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
             },

@@ -94,8 +94,11 @@ def run(parameter):
             "profile": [],
             "expected_return": "auto",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter['test_pc_ip']}],
+            "log_query_param": [
+                                {"query_field_key": "imsi", "query_value": parameter['test_imsi']}
+                            ],
             "traffic": {
+                "protocol": "ftp",
                 "type": "curl",
                 "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
             },

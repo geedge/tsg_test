@@ -4,6 +4,7 @@ from datetime import datetime
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.element_position.profile_element_position import *
+from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
@@ -884,6 +885,27 @@ test_statistics_rule_element_position = {
     }
 }
 
+test_session_log_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        "mainPage_logFirstLevelMenu_posId": mainPage_firstLevelMenu_logs_posId,
+        "mainPage_logSecondLevelMenu_posId": mainPage_secondLevelMenu_sessionRecords_posId
+    },
+    "search": {
+        "logListPage_addFilterButton_posId": logListPage_addFilterButton_posId,
+        "logListPage_enterModelButton_posId": logListPage_enterModelButton_posId,
+        "logListPage_clearButton_posId": logListPage_clearButton_posId,
+        "logListPage_queryButton_posId": logListPage_queryButton_posId,
+        "logListPage_enterModel_posXpath": logListPage_enterModel_posXpath,
+        "logListPage_totalText_posXpath": logListPage_totalText_posXpath,
+        "logListPage_searchField_input_posXpath": logListPage_searchField_input_posXpath,
+        "logListPage_searchRuleList_operation_posXpath": logListPage_searchRuleList_operation_posXpath,
+        "logListPage_search_text_area_posXpath": logListPage_search_text_area_posXpath
+    }
+}
+
 
 def get_profile_element_position(key_name):
     if key_name == "statistics_template":
@@ -1128,6 +1150,8 @@ def get_element_position(key_name):
         element_position_map = test_intercept_rule_element_position
     elif key_name == "statistics":
         element_position_map = test_statistics_rule_element_position
+    elif key_name == "session_log":
+        element_position_map = test_session_log_element_position
     else:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} no element position map".format(key_name))
         element_position_map = {}

@@ -14,15 +14,15 @@ from datetime import datetime
 class CreateProfile():
     def __init__(self, driver):
         self.driver = driver
+        self.sc_info = {}
     def create_sff_profile(self, data, sff_profile_element_position,sf_profile_element_position):
-        sc_info = {}
         page_jump_element_position = sff_profile_element_position["page_jump"]
         create_element_position = sff_profile_element_position["create"]
         try:
             # 新建sf
             if "service_functions" in data.keys():   # 判断是否需要创建sf
                 service_functions = data["service_functions"]
-                sf_name_list,sc_info= self.get_sf_info(service_functions,sf_profile_element_position,sc_info)
+                sf_name_list= self.get_sf_info(service_functions,sf_profile_element_position)
             # 页面跳转
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_profile_page(page_jump_element_position)
@@ -32,15 +32,15 @@ class CreateProfile():
             sff_name = data["name"]
             self.driver.find_element(By.ID, create_element_position["profilePge_inputName_posId"]).send_keys(sff_name)
             #页面除name外其他选项的操作
-            sc_info= self.operate_sff_page(data,sc_info,sf_name_list,sff_profile_element_position)
+            self.operate_sff_page(data,sf_name_list,sff_profile_element_position)
             # 确认创建
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_posXCss"]).click()
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_warningYes_posXpath"]).click()
-            return 200,sc_info
+            return 200,self.sc_info
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             return 400
-    def operate_sff_page(self, data,sc_info,sf_name_list,sff_profile_element_position):
+    def operate_sff_page(self, data,sf_name_list,sff_profile_element_position):
         create_element_position = sff_profile_element_position["create"]
         """
         除name的其它选项操作，共创建、修改逻辑调用
@@ -57,9 +57,9 @@ class CreateProfile():
         # Type 操作
         sff_type = self.format_from_data_lower_and_underline(data, key="type")  
         if sff_type == "steering":
-            sc_info["type"] = 1
+            self.sc_info["type"] = 1
         elif sff_type == "mirroring":
-            sc_info["type"] = 2
+            self.sc_info["type"] = 2
         self.sff_operate_radio(create_element_position, key="type", value=sff_type, label_dict=label_dict, radio_name_dict=radio_name_dict)
         # Load Balance Method 操作
         load_balance_method = self.format_from_data_lower_and_underline(data, key="load_balance_method")
@@ -89,7 +89,6 @@ class CreateProfile():
             time.sleep(1.5)
             self.driver.find_element(By.XPATH,create_element_position["profilePage_chooseSF_posXpath"].format(replaceValue=name)).click()
         self.driver.find_element(By.XPATH,create_element_position["profilePage_closeSFProfile_posXpath"]).click()
-        return sc_info
 
     def sff_operate_radio(self,create_element_position,key="", value="", label_dict=None, radio_name_dict=None):
         """Type  Load Balance Method  Load Balance Localization  Failure Action  单选按钮操作
@@ -120,7 +119,7 @@ class CreateProfile():
         value = self.format_lower_and_underline(value)
         return value  
 
-    def get_sf_info(self, service_functions,sf_profile_element_position,sc_info):
+    def get_sf_info(self, service_functions,sf_profile_element_position):
         """
         可以创建多个sf对象
         :param service_functions:    sf所需数据列表
@@ -129,13 +128,14 @@ class CreateProfile():
         sf_name_list = []    #sf的name的列表
         for sf in range(len(service_functions)):
             try:
-                serviceFunctions_name,sc_info= self.create_sf_profile(service_functions[sf],sf_profile_element_position,sc_info)
+                serviceFunctions_name= self.create_sf_profile(service_functions[sf],sf_profile_element_position)
                 sf_name_list.append(serviceFunctions_name)
             except:   # 给一次概率一样的机会
-                serviceFunctions_name = self.create_sf_profile(service_functions[sf],sf_profile_element_position,sc_info)
-        return sf_name_list,sc_info
+                serviceFunctions_name = self.create_sf_profile(service_functions[sf],sf_profile_element_position)
+        return sf_name_list
     
-    def create_sf_profile(self,data, profile_element_position, sc_info):
+    def create_sf_profile(self,data, profile_element_position):
+        self.sc_info["sf_id_list"] = []
         page_jump_element_position = profile_element_position["page_jump"]
         create_element_position = profile_element_position["create"]
         #页面跳转
@@ -147,14 +147,22 @@ class CreateProfile():
         sf_name = data["name"]
         self.driver.find_element(By.ID,create_element_position["profileListPage_inputName_posId"]).send_keys(sf_name)
         #页面其它选项操作
-        result_info = self.operate_sf_page(data,create_element_position,sc_info)
+        self.operate_sf_page(data,create_element_position)
         #点击OK
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_posCss"]).click()
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_warningYes_posCss"]).click()
         time.sleep(2)
-        return sf_name,result_info
+        # 在列表页以name搜索sf 获取sf id
+        self.driver.find_element(By.ID,"select-label").click()
+        self.driver.find_element(By.ID,"2-_FilteredSearch_ElRow_Profile_Functions_Home_App_anonymousComponent").click()
+        self.driver.find_element(By.XPATH,"//div[@class='rel-input v-input input el-input el-input--mini']//input").send_keys(sf_name)
+        self.driver.find_element(By.ID,"searchQuery").click()
+        sf_id = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']//span").text
+        time.sleep(2)
+        self.sc_info["sf_id_list"].append(int(sf_id))
+        return sf_name
     
-    def operate_sf_page(self,data,create_element_position,sc_info):
+    def operate_sf_page(self,data,create_element_position):
         # Device Group 操作
         device_group = self.format_from_data_lower_and_underline(data, key="device_group")
         device_group_list = device_group.split(":")
@@ -176,7 +184,7 @@ class CreateProfile():
         data_internal_vlan = data_external_vlan = ""
         connectivity_list = connectivity.split(":")
         if "layer" in connectivity:   # Layer 2 Switch 定位
-            sc_info["sf_method"] = "layer2_switch"
+            self.sc_info["sf_method"] = "layer2_switch"
             self.driver.find_element(By.XPATH,create_element_position["profilePage_layer2Switch_posXpath"]).click()
             data_internal_vlan = connectivity_list[1]
             if data_internal_vlan == "random":   #随机生成
@@ -187,10 +195,10 @@ class CreateProfile():
                 data_external_vlan = random.randint(2048, 4000)
                 self.driver.find_element(By.XPATH,create_element_position["profilePage_intExternalVlan_posXpath"]).send_keys(data_external_vlan)
         else:     # vxlan定位
-            sc_info["sf_method"] = "vxlan_g"
+            self.sc_info["sf_method"] = "vxlan_g"
             self.driver.find_element(By.XPATH,create_element_position["profilePage_Vxlan_G_posXpath"]).click()
             sf_dest_ip = connectivity_list[1]
-            sc_info["sf_dest_ip"] = sf_dest_ip
+            self.sc_info["sf_dest_ip"] = sf_dest_ip
             self.operate_input(sf_dest_ip,create_element_position["profilePage_inputDestIP_posXpath"],True)
         # Health Check 操作
         health_check = self.format_from_data_lower_and_underline(data, key="health_check")
@@ -209,10 +217,9 @@ class CreateProfile():
             self.operate_input(data_retries,create_element_position["profilePage_inputRetries_posXpath"],True)
         if data["enable"] == "off":
             self.driver.find_element(By.XPATH,create_element_position["profilePage_switch_enableButton_posXpath"]).click()
-            sc_info["admin_status"] = 0
+            self.sc_info["admin_status"] = 0
         else:
-            sc_info["admin_status"] = 1
-        return sc_info
+            self.sc_info["admin_status"] = 1
     def operate_input(self, data_input="", ep_input="", is_clear=True):
         """
         页面中输入框类型操作
