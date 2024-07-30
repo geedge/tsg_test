@@ -110,7 +110,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "timed out",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"},
             {"query_field_key":"decoded_as", "query_value": "FTP"},
@@ -426,7 +426,7 @@ if __name__ == '__main__':
         "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

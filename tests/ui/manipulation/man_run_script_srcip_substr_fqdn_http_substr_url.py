@@ -69,6 +69,20 @@ def run(parameter):
                         "negate": False
                     }
                 ],
+                "server_fqdn": [
+                    {
+                        "name": "manipulation_fqdn_node",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_value": "baidu.com",
+                            }
+                        ]
+                    }
+                ],
                 "protocol_filed": [
                     {
                         "name": "manipulation_url",

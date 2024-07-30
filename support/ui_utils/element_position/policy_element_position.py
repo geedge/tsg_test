@@ -867,4 +867,4 @@ statisticsRulePage_rightInfo_lastHitTime_posXpath = "//form[@class='el-form pape
 statisticsRulePage_rightInfo_firstHitTime_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[2]//td[2]"
 statisticsRulePage_rightInfo_throughput_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[3]//td[2]"
 statisticsRulePage_rightInfo_hitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[4]//td[2]"
-statisticsRulePage_rightInfo_72hoursHitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[5]//td[2]"
+statisticsRulePage_rightInfo_72hoursHitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[5]//td[2]"#//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr/td[2]
