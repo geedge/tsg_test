@@ -1043,8 +1043,11 @@ def create_pre_policy(data, driver):
     intercept_rule_element_position = get_element_position("pxy_intercept")
     #create_rule.create(security_temp_deny_quic, security_rule_element_position)
     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
-    create_rule.create(intercept_temp, intercept_rule_element_position)
-    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create intercept rule successfully.")
+    result_info = create_rule.create(intercept_temp, intercept_rule_element_position)
+    if result_info == 200:
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create intercept rule successfully.", flush=True)
+    else:
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create intercept rule failed.", flush=True)
     tmp_list = [
         # {
         #     "type": "security",
@@ -1071,8 +1074,7 @@ def delete_pre_policy(name_list, driver):
         if delete_rule_code == 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} rule successfully.".format(policy_type))
         elif delete_rule_code != 200:
-            result = " In addition, fail to delete {} rule.".format(policy_type)
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], result)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} rule failed.".format(policy_type))
         time.sleep(2)
 
 test_ip_object_element_position = test_ip_object_element_position
