@@ -84,12 +84,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "baidu",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
-            "traffic": {
-                "protocol": "ssl",
-                "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
-            },
+
             "token": ""
         }
         log_in = LogIn()

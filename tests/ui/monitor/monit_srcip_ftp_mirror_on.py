@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.ui_utils.object.generate_random_ip import GenerateRandomIP
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
@@ -91,13 +93,22 @@ def run(parameter):
             },
             "is_mirror":"on",
             "profile": [],
-             "expected_return": "auto",
+             "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
+            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"},
+                                {"query_field_key": "monitor_mirrored_pkts", "query_value": 25}
+                                ],
             "traffic": {
-                "protocol": "ftp",
-                "type": "curl",
-                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "ftp_login_ftpuser"
             },
             "token":""
         }
@@ -122,6 +133,10 @@ def run(parameter):
             }
 
         ]
+
+        # 将测试数据中的ip替换为随机ip
+        random_ip = GenerateRandomIP(driver)
+        test_data = random_ip.generate_random_ip(test_data, run_env=parameter["env"])
 
         # 添加定位库集合
         test_rule_element_position = {}

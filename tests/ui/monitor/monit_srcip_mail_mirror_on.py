@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.ui_utils.object.generate_random_ip import GenerateRandomIP
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
@@ -93,13 +95,23 @@ def run(parameter):
             "profile": [
 
              ],
-            "expected_return": "Ok",
-             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
+            "expected_return": "trex",
+            "counters": {"hits": 1},
+            "log_query_param": [
+                {"query_field_key": "decoded_as", "query_value": "MAIL"},
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": 1086},
+            ],
             "traffic": {
-                "protocol": "mail",
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_manager/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "mail_imap"
             },
             "token": ""
         }
@@ -124,6 +136,10 @@ def run(parameter):
             }
 
         ]
+
+        # 将测试数据中的ip替换为随机ip
+        random_ip = GenerateRandomIP(driver)
+        test_data = random_ip.generate_random_ip(test_data, run_env=parameter["env"])
 
         # 添加定位库集合
         test_rule_element_position = {}

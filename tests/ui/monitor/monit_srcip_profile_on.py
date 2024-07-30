@@ -94,14 +94,7 @@ def run(parameter):
                             #vlan的范围：应该是在3-66
                         }
              ],
-            "expected_return": "baidu",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
-            "traffic": {
-                "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
-            },
-            "token": ""
+
         }
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])

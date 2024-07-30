@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.ui_utils.object.generate_random_ip import GenerateRandomIP
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
@@ -94,17 +96,33 @@ def run(parameter):
 
                         {
                             "name":"profile1",
-                            "vlan_id":"60"
+                            "vlan_id":[
+                                "14",
+                                "15",
+                                "16",
+                                "17",
+                                "18"
+                            ]
                             #vlan的范围：应该是在3-66
                         }
              ],
-            "expected_return": "mtv",
+             "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"}],
+            "log_query_param": [
+                                {"query_field_key": "ssl_sni", "query_value": "www.bbc.com"},
+                                {"query_field_key": "monitor_mirrored_pkts", "query_value": 2740}
+                            ],
             "traffic": {
-                "protocol": "ssl",
-                "type": "curl",
-                "command": "curl -kv https://www.mtv.ru/"
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "ssl_tls13"
             },
             "token": ""
         }
@@ -129,6 +147,10 @@ def run(parameter):
             }
 
         ]
+
+        # 将测试数据中的ip替换为随机ip
+        random_ip = GenerateRandomIP(driver)
+        test_data = random_ip.generate_random_ip(test_data, run_env=parameter["env"])
 
         # 添加定位库集合
         test_rule_element_position = {}

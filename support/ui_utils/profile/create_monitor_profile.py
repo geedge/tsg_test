@@ -41,10 +41,10 @@ class CreateProfile():
                 self.random_name = self.my_random.random_name()
                 self.driver.find_element(By.ID,create_element_position["profilePage_inputName_posId"] ).send_keys(self.random_name)
             # 解析输入的vlan id数据
-            #self.process_vlan_ids(data)
-            elements_vlan_ids_input = self.driver.find_element(By.XPATH, self.create_element_position["trafficMirroringProfiles_input_vlanIdsInput_posXpath"])
-            var = data["vlan_id"]
-            elements_vlan_ids_input.send_keys(int(var))
+            self.process_vlan_ids(data)
+            # elements_vlan_ids_input = self.driver.find_element(By.XPATH, self.create_element_position["trafficMirroringProfiles_input_vlanIdsInput_posXpath"])
+            # var = data["vlan_id"]
+            # elements_vlan_ids_input.send_keys(int(var))
             # 点击OK
             self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_button_oK_posCss"]).click()
             self.driver.find_element(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]).click()

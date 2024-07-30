@@ -112,7 +112,10 @@ def run(parameter):
             "profile": [],
             "expected_return": "Ok",
              "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
+            "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"},
+                                {"query_field_key": "decoded_as", "query_value": "MAIL"},
+                                {"query_field_key": "packet_capture_file", "query_value": True}
+                                ],
             "traffic": {
                 "protocol": "mail",
                 "type": "curl",

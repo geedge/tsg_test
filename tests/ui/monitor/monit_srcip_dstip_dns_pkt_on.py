@@ -111,7 +111,11 @@ def run(parameter):
             "profile": [],
              "expected_return": "bport",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.bport.ru"}],
+            "log_query_param": [
+                                {"query_field_key": "dns_qname", "query_value": "www.bport.ru"},
+                                {"query_field_key": "decoded_as", "query_value": "DNS"},
+                                {"query_field_key": "packet_capture_file", "query_value": True}
+                                ],
             "traffic": {
                 "protocol": "dns",
                 "type": "nslookup",

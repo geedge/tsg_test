@@ -109,7 +109,10 @@ def run(parameter):
             "profile": [],
             "expected_return": "mtv",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"},
+                                {"query_field_key": "decoded_as", "query_value": "SSL"},
+                                {"query_field_key": "packet_capture_file", "query_value": True}
+                                ],
             "traffic": {
 
 
