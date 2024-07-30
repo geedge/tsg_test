@@ -125,7 +125,9 @@ def run(parameter):
                     ]
                 }
             ],
+            "log_query_param": [{"query_field_key": "sc_rsp_raw", "query_value": ""}],
             "traffic":{
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv --connect-timeout 10 --max-time 30 https://www.baidu.com"
                 },

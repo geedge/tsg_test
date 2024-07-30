@@ -144,7 +144,7 @@ def run(parameter):
                                 {"query_field_key": "sent_bytes", "query_value": ""},
                                 {"query_field_key": "received_bytes", "query_value": ""}],
             "traffic":{
-                "protocol": "",
+                "protocol": "ssl",
                 "type": "trex",
                 "clients_start_ip": "192.168.64.86",
                 "clients_end_ip": "192.168.64.86",
@@ -590,13 +590,12 @@ if __name__ == '__main__':
     parameter = {
         "username": "lytest",
         "password": "123456ly",
-        "debug_flag":"local",
         "test_pc_ip": "192.168.50.88",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 11,
         "is_log": 1,
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",

@@ -125,7 +125,9 @@ def run(parameter):
                     ]
                 }
             ],
+            "log_query_param": [{"query_field_key": "sc_rsp_raw", "query_value": ""}],
             "traffic":{
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.facebook.com"
                 },

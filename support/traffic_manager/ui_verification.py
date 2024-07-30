@@ -272,12 +272,7 @@ class UiVerification():
                                         metric_result = False
                                 else:
                                     metric_result = False
-                if int(is_log) == 1:
-                    test_data["log_query_param"][0]["query_value"] = cfg_list["sf_id_list"]
-                    test_data["log_query_param"][1]["query_value"] = traffic_result["total_packets_sent"]
-                    test_data["log_query_param"][2]["query_value"] = traffic_result["total_packets_received"]
-                    test_data["log_query_param"][3]["query_value"] = traffic_result["total_bytes_sent"]
-                    test_data["log_query_param"][4]["query_value"] = traffic_result["total_bytes_received"]    
+                if int(is_log) == 1:               
                     # 跳转至session record路径
                     sc_rule_id = test_data["rule_id"]
                     my_driver.find_element(By.ID,"Log").click()
@@ -310,18 +305,43 @@ class UiVerification():
                     temp_log_result_list = []
                     for t in range(len(test_data["log_query_param"])):
                         log_query_key = test_data["log_query_param"][t]["query_field_key"]
+                        if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_raw":
+                            test_data["log_query_param"][t]["query_value"] = cfg_list["sf_id_list"]
+                        elif log_query_key == "sent_pkts":
+                            test_data["log_query_param"][t]["query_value"] = traffic_result["total_packets_sent"]
+                        elif log_query_key == "received_pkts":
+                            test_data["log_query_param"][t]["query_value"] = traffic_result["total_packets_received"]
+                        elif log_query_key == "sent_bytes":
+                            test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_sent"]
+                        elif log_query_key == "received_bytes":
+                            test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_received"] 
                         log_str = parse.get("log", log_query_key)
                         if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
                             log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text.strip("[] ")
-                            temp_value_list = temp_value.split(',')
-                            log_value_list = []
-                            for item in temp_value_list:
-                                log_value_list.append(int(item))
-                            if log_value_list == test_data["log_query_param"][t]["query_value"]:
-                                temp_log_result = True
+                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                            if temp_value == []:
+                                if cfg_list["sf_method"] == "vxlan_g":
+                                    if cfg_list["sf_dest_ip"] not in sc_active_ip_list:
+                                        temp_log_result = True
+                                    elif cfg_list["sf_dest_ip"] in sc_active_ip_list and cfg_list["admin_status"] == 0:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                elif cfg_list["sf_method"] == "layer2_switch":
+                                    if cfg_list["admin_status"] == 0:
+                                        metric_result = True
+                                    else:
+                                        metric_result = False 
                             else:
-                                temp_log_result = False
+                                temp_value = temp_value.strip('[] ')   
+                                temp_value_list = temp_value.split(',')
+                                log_value_list = []
+                                for item in temp_value_list:
+                                    log_value_list.append(int(item))
+                                if log_value_list == test_data["log_query_param"][t]["query_value"]:
+                                    temp_log_result = True
+                                else:
+                                    temp_log_result = False
                         elif log_query_key == "sent_pkts" or log_query_key == "received_pkts":
                             log_pkt_value = test_data["log_query_param"][t]["query_value"]
                             log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
@@ -343,10 +363,10 @@ class UiVerification():
                             else:
                                 temp_log_result = False
                         temp_log_result_list.append(temp_log_result)
-                    if False not in temp_log_result_list:
-                            log_result = True
-                    else:
-                            log_result = False
+                        if False not in temp_log_result_list:
+                                log_result = True
+                        else:
+                                log_result = False
                 return api_verification_result[0], log_result, metric_result, my_driver
     
     def extract_value(self, type, value):
