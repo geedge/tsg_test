@@ -67,8 +67,8 @@ class UiVerification():
                                 log_query_key = test_data["log_query_param"][t]["query_field_key"]
                                 log_str = parse.get("log", log_query_key)
                                 if log_query_key == "server_ip" or log_query_key == "decoded_as" or log_query_key == "client_ip":
-                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/parent::div//span[@class='el-dropdown-link popover-click color262626 el-dropdown-selfdefine']".format(replaceValue=log_str)
-                                    temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/parent::div//span[@class='el-dropdown-link popover-click color262626 el-dropdown-selfdefine']".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
                                         temp_log_result = True
                                     else:
@@ -76,30 +76,30 @@ class UiVerification():
                                     temp_log_result_list.append(temp_log_result)
                                 # elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action" or log_query_key == "ftp_url" or log_query_key == "ftp_link_type":
                                 elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from"]:
-                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                    temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
                                         temp_log_result = True
                                     else:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
                                 elif log_query_key == "packet_capture_file":
-                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                    element_exist_flag = my_driver.is_exist_element(log_item_posXpath)
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    element_exist_flag = my_driver.is_exist_element(log_item_pos_xpath)
                                     # 验证开关开启
                                     if test_data["log_query_param"][t]["query_value"] == True:
                                         # 有下载按钮，点击下载按钮，验证是否报错
                                         if element_exist_flag == True:
                                             # 连续点击下载按钮5次（防止下载异常的时候异常信息消失的太快）
                                             for _ in range(5):
-                                                log_item_element = my_driver.find_element_by_xpath(log_item_posXpath)
+                                                log_item_element = my_driver.find_element_by_xpath(log_item_pos_xpath)
                                                 my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
-                                                my_driver.find_element(By.XPATH, log_item_posXpath).click()
+                                                my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
                                                 time.sleep(1)
-                                            log_item_element = my_driver.find_element_by_xpath(log_item_posXpath)
+                                            log_item_element = my_driver.find_element_by_xpath(log_item_pos_xpath)
                                             my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
                                             print("had scroll")
-                                            my_driver.find_element(By.XPATH, log_item_posXpath).click()
+                                            my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
                                             time.sleep(1)
                                             # 只有下载失败的时候界面才有此定位
                                             error_text_posXpath = "//div[contains(@class, 'el-message el-message--error')]"
@@ -122,8 +122,8 @@ class UiVerification():
                                 elif log_query_key == "server_port":
                                     print("to be added.")
                                 elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent"]:
-                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                    temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text.strip()
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
                                     #print(temp_value)
                                     #print(test_data["log_query_param"][t]["query_value"])
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
@@ -132,9 +132,9 @@ class UiVerification():
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
                                 elif log_query_key in ["monitor_mirrored_bytes", "monitor_mirrored_pkts"]:
-                                    log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
                                         replaceValue=log_str)
-                                    temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text.strip()
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
                                     print(temp_value)
                                     print(test_data["log_query_param"][t]["query_value"])
                                     if temp_value == str(test_data["log_query_param"][t]["query_value"]):
@@ -317,8 +317,8 @@ class UiVerification():
                             test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_received"] 
                         log_str = parse.get("log", log_query_key)
                         if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
-                            log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                            log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                            temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                             if temp_value == []:
                                 if cfg_list["sf_method"] == "vxlan_g":
                                     if cfg_list["sf_dest_ip"] not in sc_active_ip_list:
@@ -344,8 +344,8 @@ class UiVerification():
                                     temp_log_result = False
                         elif log_query_key == "sent_pkts" or log_query_key == "received_pkts":
                             log_pkt_value = test_data["log_query_param"][t]["query_value"]
-                            log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                            temp_value = int(my_driver.find_element(By.XPATH, log_item_posXpath).text)
+                            log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                            temp_value = int(my_driver.find_element(By.XPATH, log_item_pos_xpath).text)
                             if temp_value == log_pkt_value:
                                 temp_log_result = True
                             else:
@@ -356,8 +356,8 @@ class UiVerification():
                                 log_bytes_temp = str(round(log_byte_value/1024.0, 2)) + " KB"
                             elif byte_value < 1024:
                                 log_bytes_temp = str(log_byte_value) + " B"
-                            log_item_posXpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                            temp_value = my_driver.find_element(By.XPATH, log_item_posXpath).text
+                            log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                            temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                             if temp_value == log_bytes_temp:
                                 temp_log_result = True
                             else:
