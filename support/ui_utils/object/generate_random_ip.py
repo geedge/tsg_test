@@ -1,6 +1,6 @@
 import random
 from datetime import datetime 
-class GenerateRandomIP():
+class GenerateRandomIP:
     def __init__(self,driver):
         self.driver = driver
 

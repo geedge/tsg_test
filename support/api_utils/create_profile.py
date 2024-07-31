@@ -8,7 +8,7 @@ import string
 from datetime import datetime
 import copy
 
-class CreateProfile():
+class CreateProfile:
     """
     创建profile接口api
     """

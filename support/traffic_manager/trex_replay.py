@@ -16,7 +16,7 @@ from read_pcap import ReadPcap
 # traffic_playback_workpath = "/opt/tsg_policy_api/traffic_replay"
 # traffic_pcap = "traffic_pcap"
 
-class TrafficReplay():
+class TrafficReplay:
     def __init__(self, path_dict):
         """
         :param path_dict: 路径dict，里面包含项目路径和trex的路径

@@ -6,7 +6,7 @@ import requests
 from scapy.all import *
 from scapy.layers.inet import TCP
 
-class SslPlayer():
+class SSLPlayer:
     def send_ssl_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send ssl traffic for effect verification.", flush=True)
         p = subprocess.Popen(traffic_data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
@@ -71,6 +71,6 @@ if __name__ == "__main__":
         }
     }
     traffic_data = test_data["traffic"]
-    ssl_player = SslPlayer()
+    ssl_player = SSLPlayer()
     ssl_player.send_ssl_traffic(traffic_data, "ui", False)
     # ssl_player.get_http_method()

@@ -8,7 +8,7 @@ import requests
 import support.api_utils.get_application_id as get_application_id
 from datetime import datetime 
 
-class CreatePolicyRule():       
+class CreatePolicyRule:       
     # 拼接json数据，拼接完成后请求创建策略接口
     def create_rule_from_template(self, token, source_list, dst_list, filter_list, flag_list, condition, create_number, path_dict, api_host, vsys_id, create_profile_ids=[]):
         headers = {"Content-Type": "application/json", "Authorization": token}

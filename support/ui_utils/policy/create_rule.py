@@ -9,7 +9,7 @@ from support.ui_utils.element_position.policy_element_position import *
 import traceback
 from datetime import datetime 
 
-class CreateRule():
+class CreateRule:
     def __init__(self, driver):
         self.driver = driver
         
@@ -399,11 +399,44 @@ class CreateRule():
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_block_responseContent_searchProfile_posXpath"]).send_keys(Keys.ENTER)
                             self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_block_responseContent_selectProfile_posId"]).click()
                 elif sub_action_data[0]["type"] == "redirect":
-                    #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).clear()
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).click()
-                    redirect_url = sub_action_data[0]["to_url"]
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_redirect_input_posId"]).clear()
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_redirect_input_posId"]).send_keys(redirect_url)
+                    if 'application' in  test_data["condition"] and len(test_data["condition"])>0:
+                        application_data = test_data["condition"]["application"]
+                        if application_data[0]['name'] == 'http':
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).click()
+                            redirect_url = sub_action_data[0]["to_url"]
+                            self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_redirect_input_posId"]).clear()
+                            self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_redirect_input_posId"]).send_keys(redirect_url)
+                        elif application_data[0]['name'] == 'dns':
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_redirect_posXpath"]).click()
+                            resolution_len = len(sub_action_data[0]['resolution'])
+                            for detail in sub_action_data[0]['resolution']:
+                                answer0_len = len(detail['answer'])
+                                qtype = detail['qtype']
+                                if len(sub_action_data[0]['resolution']) == 1 and answer0_len == 1:
+                                    answer_value_type = detail['answer'][0]['answer_value_type']
+                                    
+                                    ttl = detail['answer'][0]['ttl']
+                                    # 点击切换qtype,默认即会选中qtype A
+                                    if qtype == "AAAA":
+                                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_dnsAnswerqTypeAAAA_posXpath"]).click()
+                                    # 点击切换answer的返回方式
+                                    self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0ValueType_posId"]).click()
+                                    choose_answer_type_posXpath = create_element_position["policyRulePage_dnsAnswer0ValueTypeChoose_posXpath"].format(replaceValue=answer_value_type)
+                                    self.driver.find_element(By.XPATH, choose_answer_type_posXpath).click()
+                                    if answer_value_type == "Profile":
+                                        dns_records_profile_name = detail['answer'][0]['profile_name']
+                                        self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueSelectPlaceholder_posId"]).click()
+                                        self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueNameSearch_posId"]).send_keys(dns_records_profile_name)
+                                        self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueNameSearch_posId"]).send_keys(Keys.ENTER)
+                                        self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueNameSelect_posId"]).click()
+                                    else:
+                                        dns_text_value = detail['answer'][0]['answer_value']
+                                        if qtype == "A":
+                                            self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0ATextPlaceholder_posId"]).send_keys(dns_text_value)
+                                        elif qtype == "AAAA":
+                                            self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0AAAATextPlaceholder_posId"]).send_keys(dns_text_value)   
+                                    self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueTTL0_posId"]).send_keys(ttl)
+
                 elif sub_action_data[0]["type"] == "alert":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseCode_posXpath"]).click()

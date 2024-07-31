@@ -338,6 +338,17 @@ securityRulePage_subAction_block_responseContent_searchProfile_posXpath = "//inp
 securityRulePage_subAction_block_responseContent_selectProfile_posId = "filelist_select0"
 securityRulePage_subAction_redirect_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Redirect']"
 securityRulePage_subAction_redirect_input_posXpath = "myEditor1"
+# redirect- dns
+securityRulePage_subAction_redirect_answer0ValueType_posId = "blockselect00"
+securityRulePage_subAction_redirect_qtypeAAAA_posXpath = "//span[contains(@class, 'el-radio-button__inner') and normalize-space(text())='AAAA']"
+securityRulePage_subAction_redirect_answer0ValueTypeChoose_posXpath="//div[@class='el-select-dropdown el-popper']//ul[@class='el-scrollbar__view el-select-dropdown__list']/li/span[normalize-space(text())='{replaceValue}']"
+securityRulePage_subAction_redirect_dnsAnswerValueSelectPlaceholder_posId = "html_profile"
+securityRulePage_subAction_redirect_dnsAnswerValueNameSearch_posId = "filedata_profileName"
+securityRulePage_subAction_redirect_dnsAnswerValueNameSelect_posId = "filelist_select0"
+securityRulePage_subAction_redirect_dnsAnswerValueTTL0_posId = "ttl00"
+securityRulePage_subAction_redirect_dnsAnswer0ATextPlaceholder_posId = "A001"
+securityRulePage_subAction_redirect_dnsAnswer0AAAATextPlaceholder_posId = "AAAA001"
+#alert
 securityRulePage_subAction_alert_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Alert']"
 securityRulePage_subAction_alert_responseCode_posXpath = "//div[contains(@zs-label, '应答码')]//input[@class='el-input__inner']"
 securityRulePage_subAction_alert_responseCode_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"

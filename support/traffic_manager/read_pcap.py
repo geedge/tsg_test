@@ -2,7 +2,7 @@ import os
 from scapy.all import *
 from scapy.layers.inet import IP
 
-class ReadPcap():
+class ReadPcap:
     def __init__(self, path_dict):
         self.traffic_playback_workpath = path_dict["traffic_playback_workpath"]
         self.pcap_path = os.path.join(self.traffic_playback_workpath, "traffic_pcap")

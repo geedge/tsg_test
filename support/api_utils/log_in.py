@@ -2,7 +2,7 @@ import requests
 import json
 from datetime import datetime 
 
-class LogIn():
+class LogIn:
     def encryptPwd(self, password, api_server):
         url = api_server + "/v1/user/encryptpwd"
         pwJson = {"password": ""}

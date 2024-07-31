@@ -4,7 +4,7 @@ from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.object.page_jump import PageJump
 from datetime import datetime 
 
-class EditObject():
+class EditObject:
     def __init__(self, driver):
         self.driver = driver
         

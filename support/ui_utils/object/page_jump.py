@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 import configparser
 from datetime import datetime 
 
-class PageJump():
+class PageJump:
     def __init__(self, driver):
         self.driver = driver
         
