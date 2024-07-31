@@ -6,7 +6,7 @@ import json
 import requests
 import configparser
 from support.traffic_manager.http_player import HttpPlayer
-from support.traffic_manager.ssl_player import SslPlayer
+from support.traffic_manager.ssl_player import SSLPlayer
 from support.traffic_manager.ftp_player import FtpPlayer
 from support.traffic_manager.dns_player import DnsPlayer
 from support.traffic_manager.mail_player import MailPlayer
@@ -61,7 +61,7 @@ class TriggerTraffic:
                 result = player.send_http_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "https" or test_data["traffic"]["protocol"] == "ssl":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate ssl traffic.", flush=True)
-                player = SslPlayer()
+                player = SSLPlayer()
                 result = player.send_ssl_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "ftp":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate ftp traffic.", flush=True)
