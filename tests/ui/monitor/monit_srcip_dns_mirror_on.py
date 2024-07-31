@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.ui_utils.object.generate_random_ip import GenerateRandomIP
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
@@ -91,13 +93,23 @@ def run(parameter):
             },
             "is_mirror":"on",
             "profile": [],
-            "expected_return": "bport",
-            "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.bport.ru"}],
+            "expected_return": "trex",
+            "counters": {"hits": 1},
+            "log_query_param": [
+                                {"query_field_key": "decoded_as", "query_value": "DNS"},
+                                {"query_field_key": "monitor_mirrored_pkts", "query_value": 2}
+                            ],
             "traffic": {
-                "protocol": "dns",
-                "type": "nslookup",
-                "command": "nslookup www.bport.ru -timeout=1 8.8.8.8"
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "dns"
             },
             "token": ""
         }
@@ -122,6 +134,10 @@ def run(parameter):
             }
 
         ]
+
+        # 将测试数据中的ip替换为随机ip
+        random_ip = GenerateRandomIP(driver)
+        test_data = random_ip.generate_random_ip(test_data, run_env=parameter["env"])
 
         # 添加定位库集合
         test_rule_element_position = {}

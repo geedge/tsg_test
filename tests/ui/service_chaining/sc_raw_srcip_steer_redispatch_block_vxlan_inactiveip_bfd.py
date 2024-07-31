@@ -105,7 +105,13 @@ def run(parameter):
                     ]
                 }
             ],
+            "log_query_param": [{"query_field_key": "sc_rsp_raw", "query_value": ""},
+                                {"query_field_key": "sent_pkts", "query_value": ""},
+                                {"query_field_key": "received_pkts", "query_value": ""},
+                                {"query_field_key": "sent_bytes", "query_value": ""},
+                                {"query_field_key": "received_bytes", "query_value": ""}],
             "traffic":{
+                    "protocol": "ssl",
                     "type": "trex",
                     "clients_start_ip": "192.168.64.86",
                     "clients_end_ip": "192.168.64.86",
