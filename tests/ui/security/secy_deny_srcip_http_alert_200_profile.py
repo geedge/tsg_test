@@ -187,11 +187,11 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
-                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
-                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
-                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
-                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    # srcip
+                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -266,6 +266,24 @@ def run(parameter):
                 elif create_ip_code != 200:
                     result = "Fail to create ip."
                     break
+        if "action_parameter" in test_data.keys():
+            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:   # 需要创建profile数据
+                    prfi_data = prfi_value
+                    prfi = CreateProfile(driver)
+                    for i in range(len(prfi_data)): # 遍历创建所有 profile
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_code = prfi.create(prfi_data[i], element_position_map)
+                        if prfi_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(prfi_key_out), flush=True)
+                        else:
+                            result = "Fail to create {} profile.".format(prfi_key_out)
+                            prfi_status = 1
+                            break
+                if prfi_status == 1:  # 创建失败，退出遍历创建
+                    break
         # 创建rule
         if create_ip_code == 200:
             create_rule = CreateRule(driver)
@@ -311,7 +329,38 @@ def run(parameter):
                     result = result + " In addition, fail to delete security rule."
             else:
                 result = result + " In addition, fail to search security rule."
-        
+        # 删除profile
+        if delete_rule_code == 200 and "action_parameter" in test_data.keys():
+            # 删除
+            for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
+                if prfi_key in manipulation_profile_no_create_list:
+                    continue  # 直接跳过
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:  # 不为空
+                    for i in range(len(prfi_value)):  # 遍历查询所有profile
+                        search_prfi = SearchProfile(driver)
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_name = prfi_value[i]["profile_file"]["name"].strip()
+                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
+                        if search_prfi_code == 200:
+                            delete_prfi = DeleteProfile(driver)
+                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element, True)
+                            if delete_prfi_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
+                            else:
+                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+                            break
+                        # 退出遍历标志
+                        if prfi_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if prfi_status == 1:  # 失败，退出遍历创建
+                    break
+                
         # 删除object
         if delete_rule_code == 200:
             # 删除ip
@@ -375,15 +424,16 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.100",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/ui",
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "security",
         "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
     }
