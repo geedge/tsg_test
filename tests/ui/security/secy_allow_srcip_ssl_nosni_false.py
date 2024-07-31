@@ -96,7 +96,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "POST",
             "counters": {"hits": 1},
-            "log_query_param": [],
+            "log_query_param": [{"query_field_key":"server_fqdn", "query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

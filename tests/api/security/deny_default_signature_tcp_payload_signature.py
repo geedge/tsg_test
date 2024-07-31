@@ -46,12 +46,12 @@ def run(parameter):
             ],
             "app_name_1": ["tcp_payload_signature"],
             "expected_return": "timed out",
-            "counters_1": {"hits": "many"},
+            "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 5 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\"requestbody\":\"reqbody\",\"setcook\":\"asdf\",\"contenttype\": \"charset\",\"responsebody\": \"resbody\"}\" -kv --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://open.node.com:180/go | iconv -f utf-8 -t gbk"
+                "command": "curl --connect-timeout 15 -m 15 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\"requestbody\":\"reqbody\",\"setcook\":\"asdf\",\"contenttype\": \"charset\",\"responsebody\": \"resbody\"}\" -kv --user-agent \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://open.node.com:180/go | iconv -f utf-8 -t gbk"
             },
             "token": ""
         }

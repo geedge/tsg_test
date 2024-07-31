@@ -153,6 +153,97 @@ class UiVerification:
                                     log_result = True
                                 else:
                                     log_result = False
+                            # 以Server IP为例，在log_query_list.ini中通过log api查找log ui的值
+                            parse = configparser.ConfigParser()
+                            parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
+                            parse.read(parse_dir, encoding="utf-8")
+                            temp_log_result_list = []
+                            # 点击展开
+                            time.sleep(2)
+                            my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
+                            for t in range(len(test_data["log_query_param"])):
+                                log_query_key = test_data["log_query_param"][t]["query_field_key"]
+                                log_str = parse.get("log", log_query_key)
+                                if log_query_key == "server_ip" or log_query_key == "decoded_as" or log_query_key == "client_ip":
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/parent::div//span[@class='el-dropdown-link popover-click color262626 el-dropdown-selfdefine']".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                    if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                    temp_log_result_list.append(temp_log_result)
+                                # elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action" or log_query_key == "ftp_url" or log_query_key == "ftp_link_type":
+                                elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from", "server_fqdn", "imsi"]:
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                    if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                    temp_log_result_list.append(temp_log_result)
+                                elif log_query_key == "packet_capture_file":
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    element_exist_flag = my_driver.is_exist_element(log_item_pos_xpath)
+                                    # 验证开关开启
+                                    if test_data["log_query_param"][t]["query_value"] == True:
+                                        # 有下载按钮，点击下载按钮，验证是否报错
+                                        if element_exist_flag == True:
+                                            # 连续点击下载按钮5次（防止下载异常的时候异常信息消失的太快）
+                                            for _ in range(5):
+                                                log_item_element = my_driver.find_element_by_xpath(log_item_pos_xpath)
+                                                my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
+                                                my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
+                                                time.sleep(1)
+                                            log_item_element = my_driver.find_element_by_xpath(log_item_pos_xpath)
+                                            my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
+                                            print("had scroll")
+                                            my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
+                                            time.sleep(1)
+                                            # 只有下载失败的时候界面才有此定位
+                                            error_text_posXpath = "//div[contains(@class, 'el-message el-message--error')]"
+                                            error_text_is_exist = my_driver.is_exist_element(error_text_posXpath)
+                                            # 有错误提示，下载失败
+                                            if error_text_is_exist == True:
+                                                temp_log_result = False
+                                            # 下载成功时无错误提示
+                                            else:
+                                                temp_log_result = True
+                                        else:
+                                            # 没有下载按钮，false
+                                            temp_log_result = False
+                                    # 验证开关不开启
+                                    elif test_data["log_query_param"][t]["query_value"] == False:
+                                        if element_exist_flag == False:
+                                            temp_log_result = True
+                                        else:
+                                            temp_log_result = False
+                                elif log_query_key == "server_port":
+                                    print("to be added.")
+                                elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent", "http_version", "http_request_line", "http_response_line"]:
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
+                                    #print(temp_value)
+                                    #print(test_data["log_query_param"][t]["query_value"])
+                                    if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                    temp_log_result_list.append(temp_log_result)
+                                elif log_query_key in ["monitor_mirrored_bytes", "monitor_mirrored_pkts"]:
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
+                                        replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
+                                    print(temp_value)
+                                    print(test_data["log_query_param"][t]["query_value"])
+                                    if temp_value == str(test_data["log_query_param"][t]["query_value"]):
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                    temp_log_result_list.append(temp_log_result)
+                            if False not in temp_log_result_list:
+                                log_result = True
+                            else:
+                                log_result = False
                         elif int(hit_count) > 1 and test_data["counters"]["hits"] == "many":
                             log_result = True
                 
