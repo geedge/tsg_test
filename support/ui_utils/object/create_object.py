@@ -46,9 +46,6 @@ class CreateObject:
             elif data["object_type"] == "keywords":
                 for i in data["item"]:
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
-                    #self.driver.find_element(By.XPATH, create_element_position["objectPage_item_key_dropDown_posXpath"]).click()
-                    #temp_element_position = create_element_position["objectPage_item_key_dropDown_select_posXpath"].format(replaceValue=i["item_key"])
-                    #self.driver.find_element(By.XPATH, temp_element_position).click()
                     temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=i["item_value"])
                     self.driver.find_element(By.XPATH, temp_element_position).click()
                     num = 0
@@ -62,11 +59,21 @@ class CreateObject:
             elif data["object_type"] == "url" or data["object_type"] == "account" or data["object_type"] == "phone_number" or data["object_type"] == "fqdn":
                 for i in range(len(data["items"])):   # 只是简单的添加了一个item，后期优化
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
-                    item_values = data["items"][i]["item_value"].split("->")
-                    for j,item_value in enumerate(item_values): #同一item中添加数据时为else路径
+                    if data["items"][i]["item_operation"] == "add":   # 直接 新增 模式
+                        if "->" in data["items"][i]["item_value"]:   # -> 存在，需要拆分
+                            item_value_str = data["items"][i]["item_value"].split("->")[0].strip()
+                        else:    # -> 不存在，直接取值
+                            item_value_str = data["items"][i]["item_value"].strip()
+                        # 匹配多个multiple substrings 类型
+                        if "&" in item_value_str:   # & 含有多个 and multiple substrings
+                            item_values = item_value_str.split("&")
+                        else:
+                            item_values = [item_value_str]
+                    else:    # 修改模式，未完成
+                        print("todo modify moudle ...")
+                        item_values = [data["items"][i]["item_value"]]
+                    for j,item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
-                        if item_value == '':
-                            continue
                         if j == 0:
                             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(item_value)
                         else:

@@ -230,7 +230,9 @@ test_http_url_object_element_position = {
         "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
         "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
         "objectPage_okButton_posId": urlObjectPage_okButton_posId,
-        "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
+        "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath,
+        "ObjectPage_sameItem_addItem_posXpath":urlObjectPage_sameItem_addItem_posXpath,
+        "ObjectPage_sameItem_inputItem_posXpath": urlObjectPage_sameItem_inputItem_posXpath,
     },
     "search": {
         "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,

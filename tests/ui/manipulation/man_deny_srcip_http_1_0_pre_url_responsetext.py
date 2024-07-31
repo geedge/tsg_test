@@ -96,7 +96,7 @@ def run(parameter):
             },
             "expected_return": "test_response_code, HTTP/1.0",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "http_response_line", "query_value": "GET www.baidu.com/ HTTP/1.0"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "http_request_line", "query_value": "GET www.baidu.com/ HTTP/1.0"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

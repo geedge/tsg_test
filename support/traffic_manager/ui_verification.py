@@ -105,7 +105,8 @@ class UiVerification:
                                             # 有错误提示，下载失败
                                             if error_text_is_exist == True:
                                                 temp_log_result = False
-                                            # 下载成功时无错误提示
+                                            # 下载成功时无错误提示.
+
                                             else:
                                                 temp_log_result = True
                                         else:
@@ -122,8 +123,8 @@ class UiVerification:
                                 elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent", "http_version", "http_request_line", "http_response_line"]:
                                     log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
-                                    #print(temp_value)
-                                    #print(test_data["log_query_param"][t]["query_value"])
+                                    print(temp_value)
+                                    print(test_data["log_query_param"][t]["query_value"])
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
                                         temp_log_result = True
                                     else:
