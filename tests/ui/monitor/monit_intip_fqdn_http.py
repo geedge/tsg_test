@@ -103,7 +103,8 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                                 {"query_field_key": "http_host", "query_value": "www.yumi.com"},
-                                {"query_field_key":"server_fqdn", "query_value": "www.yumi.com"}
+                                {"query_field_key":"server_fqdn", "query_value": "www.yumi.com"},
+                                {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
                              ],
             "traffic": {
                 "protocol": "http",

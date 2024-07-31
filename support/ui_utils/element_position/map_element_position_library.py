@@ -634,7 +634,7 @@ test_monitor_rule_element_position = {
                     "policyRulePage_selectServerFqdn_posXpath": policyRulePage_selectServerFqdn_posXpath,
                     "policyRulePage_closeServerFqdn_posXpath": policyRulePage_closeServerFqdn_posXpath,
                     #add url
-                    "policyRulePage_addConditionUrl_posXpath": globals().get('monitorRulePage_addCondition_url_posXpath', globals().get('monitorRulePage_addCondition_uri_posXpath')),
+                    "policyRulePage_addConditionUrl_posXpath": monitorRulePage_addCondition_url_posXpath,
                     "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
                     "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
                     "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,

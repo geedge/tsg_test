@@ -103,6 +103,8 @@ dnsRecordsProfilePage_radioButton_typeAAAA_posId = "objectAdd_ip1-_DNSRecordPrfi
 dnsRecordsProfilePage_radioButton_typeCNAME_posId = "objectAdd_ip2-_DNSRecordPrfileadd_Home_App_anonymousComponent"  # CNAME单选按钮id
 dnsRecordsProfilePage_input_searchFor_posXpath = "//*[@id='object_ip_search']"  # search for 输入框id  Xpath定位
 dnsRecordsProfilePage_button_addItem_posId = "temporary_form"  # 添加item按钮id
+dnsRecordsProfilePage_input_addItem_posXpath = "//div[contains(@class, 'item-input')]//input[contains(@class, 'el-input__inner')]"
+dnsRecordsProfilePage_button_saveItemByIndex_posXpath = "editForm{replaceName}-_DNSRecordPrfileadd_Home_App_anonymousComponent"
 dnsRecordsProfilePage_Values_divItem_posXpath = "//div[@class='list-container']/div/div"  # Values列表中每一个item的div容器定位 xpath
 dnsRecordsProfilePage_input_inputItemName_posXpath = "//span[normalize-space(text())='replaceName' and contains(@class,'content-show')]/ancestor::div[@class='item-row']//input[@class='el-input__inner']"  # item的输入框xpath, replaceNamew为替换内容
 dnsRecordsProfilePage_button_saveItemByName_posXpath = "//span[normalize-space(text())='replaceName' and contains(@class, 'content-show')]/ancestor::div[@class='item-row']//i[contains(@class, 'icon-save')]"  # item的保存xpath, replaceNamew为替换内容

@@ -97,7 +97,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "Example Domain",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"},
+                                ],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",

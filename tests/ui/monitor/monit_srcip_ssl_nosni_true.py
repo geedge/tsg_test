@@ -16,7 +16,7 @@ from support.traffic_manager.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.ui_utils.profile.create_monitor_profile import CreateProfile
+from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env
 import traceback
@@ -282,12 +282,12 @@ def run(parameter):
 
         if "profile" in test_data  and len(test_data["profile"]) != 0:
             profile_data = test_data["profile"]
-            mirror_traffic_profile = CreateProfile(driver,test_monitor_profile_element_position)
+            mirror_traffic_profile = CreateMonitorProfile(driver,test_monitor_profile_element_position)
             for i in range(len(profile_data)):
-                create_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position,test_data["profile"][i]["name"])
-                if create_profile_code == 200:
+                create_monitor_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position,test_data["profile"][i]["name"])
+                if create_monitor_profile_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create traffic mirroring profile successfully.", flush=True)
-                elif create_profile_code != 200:
+                elif create_monitor_profile_code != 200:
                     result = "Fail to create Traffic Mirroring Profiles profile."
                     break
 

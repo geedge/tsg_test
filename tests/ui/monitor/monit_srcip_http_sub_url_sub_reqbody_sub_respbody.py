@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.profile.create_profile import CreateProfile
+from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
@@ -51,6 +51,7 @@ def run(parameter):
             "rule_name": script_file_name,
             "rule_action": "monitor",
             "rule_type": "create",
+            "is_mirror": "off",
             "condition": {
                 "source_ip": [
                     {

@@ -16,7 +16,7 @@ from support.traffic_manager.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.ui_utils.profile.create_monitor_profile import CreateProfile
+from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env
 import traceback
@@ -127,7 +127,9 @@ def run(parameter):
             "profile": [],
             "expected_return": "auto",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
+            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"},
+                                {"query_field_key": "ftp_url","query_value": "ftp://192.168.40.206/autoFtp/english_big.txt"}
+                                ],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",

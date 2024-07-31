@@ -59,7 +59,7 @@ class Verification:
                             verification_result[0] = True
                         else :
                             verification_result[0] = False
-                        if api_verification_result[1] == True and ui_verification_result[1] == True:
+                        if api_verification_result[1] == True and ui_verification_result[1] == True or (api_verification_result[1] == "no_set" and ui_verification_result[1] == "no_set"):
                             verification_result[1] = True
                         else :
                             verification_result[1] = False
