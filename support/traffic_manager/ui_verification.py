@@ -121,8 +121,8 @@ class UiVerification():
                                             temp_log_result = False
                                 elif log_query_key == "server_port":
                                     print("to be added.")
-                                elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent", "http_version", "http_response_line"]:
-                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent", "http_version", "http_request_line", "http_response_line"]:
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
                                     #print(temp_value)
                                     #print(test_data["log_query_param"][t]["query_value"])
