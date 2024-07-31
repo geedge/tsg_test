@@ -98,7 +98,7 @@ def run(parameter):
                 "sub_action": [],
                 "packet_capture": []
             },
-            "is_mirror":"on",
+            "is_mirror":"off",
             "profile": [],
             "expected_return": "skype",
             "counters": {"hits": 1},
@@ -106,7 +106,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv https://www.skype.com/"
+                "command": "curl -L https://www.skype.com/"
             },
             "token": ""
         }

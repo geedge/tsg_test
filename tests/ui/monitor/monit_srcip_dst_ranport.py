@@ -97,7 +97,7 @@ def run(parameter):
                 ],
                 "packet_capture": []
             },
-            "is_mirror":"on",
+            "is_mirror":"off",
             "profile": [],
             "expected_return": "douban",
             "counters": {"hits": 1},

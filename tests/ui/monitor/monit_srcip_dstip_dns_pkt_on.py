@@ -107,7 +107,7 @@ def run(parameter):
                      }
                 ]
             },
-            "is_mirror":"on",
+            "is_mirror":"off",
             "profile": [],
              "expected_return": "bport",
             "counters": {"hits": "many"},

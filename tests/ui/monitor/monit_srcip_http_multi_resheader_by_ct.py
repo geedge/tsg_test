@@ -120,7 +120,7 @@ def run(parameter):
                     }
                 ]
             },
-            "is_mirror": "on",
+            "is_mirror": "off",
             "profile": [
 
             ],
