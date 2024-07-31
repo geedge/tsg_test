@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.profile.create_profile import CreateProfile
+from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
@@ -48,6 +48,7 @@ def run(parameter):
             "rule_name": "monit_srcip_ssl_pre_cn",
             "rule_action": "allow",
             "rule_type": "create",
+            "is_mirror": "off",
             "condition": {
                 "source_ip": [
                     {
@@ -158,7 +159,7 @@ def run(parameter):
                 prfi_key_out = prfi_key.replace("_", " ")
                 if len(prfi_value) != 0:  # 需要创建profile数据
                     prfi_data = prfi_value
-                    prfi = CreateProfile(driver)
+                    prfi = CreateMonitorProfile(driver)
                     for i in range(len(prfi_data)):  # 遍历创建所有 profile
                         element_position_map = get_element_position(prfi_key)
                         prfi_code = prfi.create(prfi_data[i], element_position_map)

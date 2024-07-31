@@ -89,7 +89,9 @@ def run(parameter):
             "profile": [],
             "expected_return": "youtube",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key":"server_ip", "query_value": "8.8.8.8"}],
+            "log_query_param": [{"query_field_key":"server_ip", "query_value": "8.8.8.8"},
+                                {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
+                                ],
             "traffic": {
                 "protocol": "dns",
                 "type": "nslookup",

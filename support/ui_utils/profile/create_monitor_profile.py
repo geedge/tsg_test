@@ -18,7 +18,7 @@ import copy
 from support.ui_utils.random_name import RandomName
 from datetime import datetime 
 
-class CreateProfile():
+class CreateMonitorProfile():
     def __init__(self, driver, monitor_profile_element_position):
         self.driver = driver
         self.page_jump_element_position = monitor_profile_element_position["page_jump"]

@@ -96,7 +96,9 @@ def run(parameter):
             "profile": [],
             "expected_return": "Example Domain",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"},
+                                {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
+                                ],
             "traffic": {
                 "protocol": "http",
                 "type": "wget",

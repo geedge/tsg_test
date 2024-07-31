@@ -688,7 +688,7 @@ monitorRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpa
 monitorRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
 #monitor add ....
 monitorRulePage_addCondition_imsi_posXpath = policyRulePage_addConditionImsi_posXpath
-monitorRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
+monitorRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']  |  //div[@class='SourceList list-box']//div[normalize-space(text())='URI']"
 monitorRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
 monitorRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
 monitorRulePage_addCondition_requestBody_posXpath = policyRulePage_addCondition_requestBody_posXpath

@@ -18,7 +18,7 @@ from support.traffic_manager.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.ui_utils.profile.create_monitor_profile import CreateProfile
+from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env
 import traceback
