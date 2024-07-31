@@ -14,7 +14,7 @@ from support.ui_utils.profile.create_run_script_profile import CreateRunScriptPr
 from support.ui_utils.profile.create_response_page import CreateResponsePage
 from datetime import datetime 
 
-class CreateProfile():
+class CreateProfile:
     def __init__(self, driver):
         self.driver = driver
 

@@ -1,7 +1,7 @@
 import os
 import yaml
 
-class OverwriteYaml():
+class OverwriteYaml:
     def __init__(self, path_dict):
         self.traffic_playback_workpath = path_dict["traffic_playback_workpath"]
         self.data_path = os.path.join(self.traffic_playback_workpath, "traffic_pcap")

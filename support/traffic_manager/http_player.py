@@ -3,7 +3,7 @@ import subprocess
 from datetime import datetime
 import requests
 
-class HttpPlayer():
+class HttpPlayer:
     def send_http_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send http traffic for effect verification.", flush=True)
         p = subprocess.Popen(traffic_data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")

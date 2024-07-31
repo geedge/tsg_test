@@ -1,5 +1,5 @@
 from datetime import datetime 
-class AnalysisResult():
+class AnalysisResult:
     def analysis_result(self, condition, cfg_list, verification_result):
         if len(cfg_list) != 0:
             timeout_result = cfg_list["timeout_result"]

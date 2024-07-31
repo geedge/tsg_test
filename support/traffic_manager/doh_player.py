@@ -2,7 +2,7 @@
 from datetime import datetime
 import requests
 
-class DohPlayer():
+class DohPlayer:
     def send_doh_query(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send doh query for effect verification.", flush=True)
         

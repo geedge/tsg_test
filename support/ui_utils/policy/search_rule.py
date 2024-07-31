@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policy.page_jump import PageJump
 
-class SearchRule():
+class SearchRule:
     def __init__(self, driver):
         self.driver = driver
         

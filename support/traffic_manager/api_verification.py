@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import support.api_utils.get_log
 import support.api_utils.policy_verify
 import support.ui_utils.env
@@ -20,7 +20,7 @@ from support.ui_utils.element_position.policy_element_position import *
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # from support.traffic_manager.traffic_replay import TrafficReplay
 
-class ApiVerification():
+class ApiVerification:
     def api_verification(self, driver, parameter, test_data, traffic_result, cfg_list):
         my_driver = driver
         api_server = parameter["api_server"]

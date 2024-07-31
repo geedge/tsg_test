@@ -9,7 +9,7 @@ from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.common.action_chains import ActionChains
 from datetime import datetime 
 
-class CreateStatisticsTemplate():
+class CreateStatisticsTemplate:
     def __init__(self, driver):
         self.driver = driver
         self.actions = ActionChains(self.driver)

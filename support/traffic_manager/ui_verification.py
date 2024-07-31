@@ -12,7 +12,7 @@ from support.ui_utils.log.search_log import SearchLog
 from selenium.webdriver.common.by import By
 from datetime import datetime
 
-class UiVerification():
+class UiVerification:
     def ui_verification(self, driver, parameter, test_data, api_verification_result, test_rule_element_position, traffic_result, cfg_list):
         my_driver = driver
         policy_type = test_data["policy_type"]

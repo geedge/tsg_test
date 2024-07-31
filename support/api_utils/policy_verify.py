@@ -6,7 +6,7 @@ import requests
 import support.api_utils.get_application_id as get_application_id
 from datetime import datetime 
 
-class PolicyVerify():
+class PolicyVerify:
     def policy_verify(self, condition, verify_attribute_dict, token, host_api, vsys_id):
         """
         :param condition:

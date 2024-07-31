@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.object.page_jump import PageJump
 
-class SearchObject():
+class SearchObject:
     def __init__(self, driver):
         self.driver = driver
         

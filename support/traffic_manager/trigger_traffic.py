@@ -15,7 +15,7 @@ from support.traffic_manager.doh_player import DohPlayer
 from support.traffic_manager.workpath import workdir
 from datetime import datetime
 
-class TriggerTraffic():
+class TriggerTraffic:
     def trigger_traffic(self, parameter, test_data):
         script_type = parameter["script_type"]
         debug_flag = ""

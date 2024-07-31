@@ -7,7 +7,7 @@ from support.api_utils.create_rule import CreatePolicyRule
 from support.api_utils.create_profile import CreateProfile
 from datetime import datetime 
 
-class CreatePolicy():
+class CreatePolicy:
     def create_policy(self, parameter, test_data, template_path):
         # 变量初始化
         api_server = parameter["api_server"]

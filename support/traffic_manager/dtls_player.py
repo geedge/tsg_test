@@ -7,7 +7,7 @@ from dtls import do_patch
 from support.traffic_manager.workpath import workdir
 from datetime import datetime
 
-class DtlsPlayer():
+class DtlsPlayer:
     def send_dtls_traffic():
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send dlts traffic for effect verification.", flush=True)
         parse = configparser.ConfigParser()

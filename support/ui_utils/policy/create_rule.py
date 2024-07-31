@@ -9,7 +9,7 @@ from support.ui_utils.element_position.policy_element_position import *
 import traceback
 from datetime import datetime 
 
-class CreateRule():
+class CreateRule:
     def __init__(self, driver):
         self.driver = driver
         

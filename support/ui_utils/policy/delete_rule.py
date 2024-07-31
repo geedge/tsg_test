@@ -8,7 +8,7 @@ import random
 import time
 from datetime import datetime 
 
-class DeleteRule():
+class DeleteRule:
     def __init__(self, driver):
         self.driver = driver
         

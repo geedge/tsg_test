@@ -10,7 +10,7 @@ from support.traffic_manager.workpath import workdir
 from datetime import datetime
 from threading import Thread
 
-class Verification():
+class Verification:
     def verification(self, driver, parameter, test_data, cfg_list, test_rule_element_position):
         try:
             my_driver = driver

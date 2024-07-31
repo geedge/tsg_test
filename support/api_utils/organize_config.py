@@ -6,7 +6,7 @@ import requests
 import json
 from datetime import datetime 
 
-class OrganizeConfig():
+class OrganizeConfig:
     def organize_cfg(self, parameter, test_data, template_path):
         # 变量初始化
         api_server = parameter["api_server"]

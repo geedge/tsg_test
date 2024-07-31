@@ -2,7 +2,7 @@ import os
 import csv
 import pandas as pd
 
-class GenerateReport():
+class GenerateReport:
     def generate_report(self, script_type, root_path):
         report_folder_path = root_path + "/report"
         bool = self.is_file_in_directory(report_folder_path, "{}_report.csv".format(script_type))

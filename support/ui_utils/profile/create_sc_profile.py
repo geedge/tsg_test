@@ -11,7 +11,7 @@ import random
 import copy
 from datetime import datetime 
 
-class CreateProfile():
+class CreateProfile:
     def __init__(self, driver):
         self.driver = driver
         self.sc_info = {}
