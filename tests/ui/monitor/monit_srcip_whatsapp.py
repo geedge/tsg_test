@@ -89,7 +89,7 @@ def run(parameter):
                 "sub_action": [],
                 "packet_capture": []
             },
-            "is_mirror":"on",
+            "is_mirror":"off",
             "profile": [],
             "expected_return": "whatsapp",
             "counters": {"hits": 1},

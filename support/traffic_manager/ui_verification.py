@@ -119,7 +119,7 @@ class UiVerification():
                                             temp_log_result = False
                                 elif log_query_key == "server_port":
                                     print("to be added.")
-                                elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent"]:
+                                elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent", "http_version", "http_response_line"]:
                                     log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
                                     #print(temp_value)
@@ -270,7 +270,7 @@ class UiVerification():
                                         metric_result = False
                                 else:
                                     metric_result = False
-                if int(is_log) == 1:               
+                if int(is_log) == 1:
                     # 跳转至session record路径
                     sc_rule_id = test_data["rule_id"]
                     my_driver.find_element(By.ID,"Log").click()
@@ -312,7 +312,7 @@ class UiVerification():
                         elif log_query_key == "sent_bytes":
                             test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_sent"]
                         elif log_query_key == "received_bytes":
-                            test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_received"] 
+                            test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_received"]
                         log_str = parse.get("log", log_query_key)
                         if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
                             log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
@@ -329,9 +329,9 @@ class UiVerification():
                                     if cfg_list["admin_status"] == 0:
                                         metric_result = True
                                     else:
-                                        metric_result = False 
+                                        metric_result = False
                             else:
-                                temp_value = temp_value.strip('[] ')   
+                                temp_value = temp_value.strip('[] ')
                                 temp_value_list = temp_value.split(',')
                                 log_value_list = []
                                 for item in temp_value_list:

@@ -1,6 +1,6 @@
 import time
 
-from selenium.webdriver import Keys
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.log.page_jump import PageJump

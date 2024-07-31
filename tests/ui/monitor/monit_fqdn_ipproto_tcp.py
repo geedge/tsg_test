@@ -89,7 +89,7 @@ def run(parameter):
                     "TCP"
                 ]
             },
-            "is_mirror":"on",
+            "is_mirror":"off",
             "profile": [],
             "expected_return": "Example Domain",
             "counters": {"hits": 1},
