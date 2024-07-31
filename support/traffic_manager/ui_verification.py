@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-
-from support.ui_utils.log.search_log import SearchLog
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import configparser
@@ -11,6 +8,7 @@ from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.workpath import workdir
 from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *
+from support.ui_utils.log.search_log import SearchLog
 from selenium.webdriver.common.by import By
 from datetime import datetime
 
