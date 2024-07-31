@@ -11,7 +11,7 @@ import random
 import copy
 from datetime import datetime 
 
-class CreateProfile:
+class CreateServiceFunctionForwarderProfile:
     def __init__(self, driver):
         self.driver = driver
         self.sc_info = {}
@@ -66,6 +66,7 @@ class CreateProfile:
         self.sff_operate_radio(create_element_position, key="load_balance_method", value=load_balance_method, label_dict=label_dict, radio_name_dict=radio_name_dict)
         # Load Balance Localization操作
         load_balance_localization = self.format_from_data_lower_and_underline(data, key="load_balance_localization")
+        self.sc_info["load_balance_localization"] = load_balance_localization
         self.sff_operate_radio(create_element_position, key="load_balance_localization", value=load_balance_localization, label_dict=label_dict, radio_name_dict=radio_name_dict)
         # Failure Action 操作
         failure_action = self.format_from_data_lower_and_underline(data, key="failure_action")
@@ -166,6 +167,7 @@ class CreateProfile:
         # Device Group 操作
         device_group = self.format_from_data_lower_and_underline(data, key="device_group")
         device_group_list = device_group.split(":")
+        self.sc_info["device_tag"] = device_group_list[-1]
         #替换元素定位中的值，组织元素定位
         effective_devices_group_dict = {"device_group": "Select Device Group", "data_center": "Select Data Center"}
         effective_devices_name_dict = {'group-xxg-tsgxsfcos': 'group-xxg-tsgxSfcOs', 'group-xxg-7400': 'group-xxg-7400', 'group-xxg-9140': 'group-xxg-9140', 'group-xxg-tsgx': 'group-xxg-tsgx',

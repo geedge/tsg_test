@@ -279,6 +279,7 @@ class ApiVerification:
             conf = configparser.ConfigParser()
             conf.read(conf_path, encoding="utf-8")
             active_dest_ips_list = conf.get("sc_active_dst_ip","ip_list")
+            effective_device_tag = ["group-xxg-tsgx","center-xxg-tsgx"]
             if test_data["targeted_traffic"] == "raw":
                 # 获取开始时间
                 time.sleep(5)
@@ -348,10 +349,14 @@ class ApiVerification:
                                 metric_result = True
                             elif sc_info["sf_dest_ip"] in active_dest_ips_list and sc_info["admin_status"] == 0:
                                 metric_result = True
+                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                metric_result = True
                             else:
                                 metric_result = False
                         elif sc_info["sf_method"] == "layer2_switch":
                             if sc_info["admin_status"] == 0:
+                                metric_result = True
+                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
                                 metric_result = True
                             else:
                                 metric_result = False
@@ -403,10 +408,14 @@ class ApiVerification:
                                 metric_result = True
                             elif sc_info["sf_dest_ip"] in active_dest_ips_list and sc_info["admin_status"] == 0:
                                 metric_result = True
+                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                metric_result = True
                             else:
                                 metric_result = False
                         elif sc_info["sf_method"] == "layer2_switch":
                             if sc_info["admin_status"] == 0:
+                                metric_result = True
+                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
                                 metric_result = True
                             else:
                                 metric_result = False

@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.profile.create_sc_profile import CreateProfile
+from support.ui_utils.profile.create_sc_profile import CreateServiceFunctionForwarderProfile
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
@@ -387,7 +387,7 @@ def run(parameter):
         # 创建profile
         if "profile" in test_data and len(test_data["profile"]) != 0:
             profile_data = test_data["profile"]
-            service_chaining_profile = CreateProfile(driver)
+            service_chaining_profile = CreateServiceFunctionForwarderProfile(driver)
             for j in range(len(profile_data)):
                 create_profile_code,sc_info= service_chaining_profile.create_sff_profile(profile_data[j],test_service_function_forwarder_profile_element_position,test_service_function_profile_element_position)
                 if create_profile_code == 200:

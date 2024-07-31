@@ -620,7 +620,7 @@ class GetLog:
             lost_pkt = 3
             lost_byte = 192  # tcp三次握手的三个包的字节数和
             if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dest_ips_list:
-                if sc_info["app_name_1"]:
+                if sc_info["app_name_1"][0]["name"] == "http" or sc_info["app_name_1"][0]["name"] == "ssl":
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 50 * pkt_value
