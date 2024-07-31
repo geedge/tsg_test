@@ -48,6 +48,11 @@ class UiVerification:
                         else: # 如果为有对应的Rule Logs类型则点击72小时hit数量打开对应的日志查找列表
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
                             my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").click()
+                            is_save_element = "//button[contains(@class, 'el-button el-button--default el-button--small el-button--primary operation-confirm-Leave')]"
+                            element_exist_flag = my_driver.is_exist_element(is_save_element)
+                            print("element_exist_flag" + "is"+" " +str(element_exist_flag))
+                            if element_exist_flag == True:
+                                my_driver.find_element(By.XPATH, is_save_element).click()
                             time.sleep(1)
                             log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
                             log_number = log_number_str.split(": ")[-1]
