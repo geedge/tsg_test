@@ -4,7 +4,7 @@ import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 
-class CreateResponsePage():
+class CreateResponsePage:
     def __init__(self, driver):
         self.driver = driver
 

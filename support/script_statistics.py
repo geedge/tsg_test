@@ -3,7 +3,7 @@ import os
 import configparser
 from pathlib import Path 
 
-class ScriptStatistics():
+class ScriptStatistics:
     def script_statistics(self, policy_rule, protocol, script_type):
         print("=====================Start statistic=====================")
         security_api_number, monitor_api_number, statistics_api_number, intercept_api_number, manipulation_api_number, sc_api_number= 0, 0, 0, 0, 0, 0
@@ -21,7 +21,7 @@ class ScriptStatistics():
                     security_api_number = self.extract_data(security_api_case_name_list, protocol)
             
             if policy_rule == "" or "monitor" in policy_rule:
-                monitor_api_path = parse.get("root_path", "path") + "/tests/ui/monitor"
+                monitor_api_path = parse.get("root_path", "path") + "/tests/api/monitor"
                 if Path(monitor_api_path).exists():
                     monitor_api_case_name_list = os.listdir(monitor_api_path)
                     monitor_api_number = self.extract_data(monitor_api_case_name_list, protocol)

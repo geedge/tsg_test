@@ -5,7 +5,7 @@ import requests
 import json
 from datetime import datetime 
 
-class DeletePolicy():    
+class DeletePolicy:    
     def delele_policy_by_cfg(self, token, parameter, cfg_list):
         try:
             headers = {"Authorization": token}

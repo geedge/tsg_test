@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.ui_utils.object.generate_random_ip import GenerateRandomIP
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.object.create_object import CreateObject
@@ -82,9 +84,24 @@ def run(parameter):
             },
             "is_mirror":"on",
             "profile": [],
-            "expected_return": "baidu",
+            "expected_return": "trex",
             "counters": {"hits": 1},
-
+            "log_query_param": [
+                {"query_field_key": "http_host", "query_value": "www.yumi.com"},
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": 84},
+            ],
+            "traffic": {
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "10.64.224.7",
+                "clients_end_ip": "10.64.224.7",
+                "servers_start_ip": "2.1.1.7",
+                "servers_end_ip": "2.1.1.7",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "http_87pkts"
+            },
             "token": ""
         }
         log_in = LogIn()
@@ -103,6 +120,10 @@ def run(parameter):
                 "name":"monitor_source_ip"
             }
         ]
+
+        # 将测试数据中的ip替换为随机ip
+        random_ip = GenerateRandomIP(driver)
+        test_data = random_ip.generate_random_ip(test_data, run_env=parameter["env"])
 
         # 添加定位库集合
         test_rule_element_position = {}

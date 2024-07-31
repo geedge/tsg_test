@@ -9,7 +9,7 @@ from support.ui_utils.policy.page_jump import PageJump
 import traceback
 from datetime import datetime 
 
-class EditRule():
+class EditRule:
     def __init__(self, driver):
         self.driver = driver
         

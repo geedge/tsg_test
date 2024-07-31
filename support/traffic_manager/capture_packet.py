@@ -3,7 +3,7 @@ from scapy.all import *
 from scapy.all import sniff, IP
 from datetime import datetime
  
-class CapturePacket():
+class CapturePacket:
     def __init__(self):
         self.packet_count_in = 0
         self.packet_count_out = 0

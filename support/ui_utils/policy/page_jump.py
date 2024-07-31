@@ -8,7 +8,7 @@ from support.ui_utils.element_position.policy_element_position import *
 import configparser
 from datetime import datetime 
 
-class PageJump():
+class PageJump:
     def __init__(self, driver):
         self.driver = driver
         

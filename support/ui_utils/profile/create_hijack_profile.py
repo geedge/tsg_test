@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 from datetime import datetime 
 
-class CreateHijackProfile():
+class CreateHijackProfile:
     def __init__(self, driver):
         self.driver = driver
 

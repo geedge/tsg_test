@@ -9,7 +9,7 @@ import json
 from support.api_utils.delete_policy import *
 from datetime import datetime
 
-class CreateObject():
+class CreateObject:
     def __init__(self):
         self.ip_ids = []
         self.subid_ids = []

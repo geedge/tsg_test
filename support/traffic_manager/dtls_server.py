@@ -6,7 +6,7 @@ from socket import socket, AF_INET, SOCK_DGRAM
 from dtls import do_patch
 from support.traffic_manager.workpath import workdir
 
-class DtlsServer():
+class DtlsServer:
     def recv_dtls_traffic(self):
         parse = configparser.ConfigParser()
         parse_dir = os.path.join(workdir, "configuration_file.ini")

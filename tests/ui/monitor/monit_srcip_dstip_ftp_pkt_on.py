@@ -108,7 +108,7 @@ def run(parameter):
                      }
                 ]
             },
-            "is_mirror":"on",
+            "is_mirror":"off",
             "profile": [],
              "expected_return": "auto",
             "counters": {"hits": 1},

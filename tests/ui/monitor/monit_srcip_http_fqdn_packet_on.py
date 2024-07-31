@@ -105,7 +105,7 @@ def run(parameter):
                         "capture_depth":"500"
                      }]
             },
-            "is_mirror": "on",
+            "is_mirror": "off",
             "profile": [],
              "expected_return": "news",
             "counters": {"hits": 1},

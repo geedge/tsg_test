@@ -105,7 +105,7 @@ def run(parameter):
                         "capture_depth":"500"
                      }]
             },
-            "is_mirror":"on",
+            "is_mirror":"off",
             "profile": [],
             "expected_return": "mtv",
             "counters": {"hits": 1},
@@ -114,8 +114,7 @@ def run(parameter):
                                 {"query_field_key": "packet_capture_file", "query_value": True}
                                 ],
             "traffic": {
-
-
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://www.mtv.ru/"
             },

@@ -7,7 +7,7 @@ import json
 import ipaddress
 from datetime import datetime
 
-class GetLog():
+class GetLog:
     def get_log_schema(self, token, log_type, api_host, vsys_id):
         # 修改完成后删除注释：将下方的security_event替换成变量
         headers = {'Content-Type': 'application/json', 'Authorization': token}

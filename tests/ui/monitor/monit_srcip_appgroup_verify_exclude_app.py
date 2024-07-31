@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.report import GenerateReport
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
@@ -97,15 +99,15 @@ def run(parameter):
                 "sub_action": [],
                 "packet_capture": []
             },
-            "is_mirror":"on",
+            "is_mirror":"off",
             "profile": [],
             "expected_return": "yumi",
             "counters": {"hits": 0},
             "log_query_param": [],
             "traffic": {
-                "protocol": "ssl",
+                "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv http://www.yumi.com/"
+                "command": "curl -kv http://www.yumi.com"
             },
             "token": ""
         }
@@ -360,8 +362,31 @@ def run(parameter):
         # 清理环境
         support.ui_utils.env.teardown()
         # 删除配置
-        # delete = DeletePolicy()
-        # delete.delete_policy_by_name(token, parameter, name_list)
+        delete = DeletePolicy()
+        delete.delete_policy_by_name(token, parameter, name_list)
+        # 生成csv报告
+        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            if result is not None and result != "" and len(result) != 0:
+                report_data = []
+                report_data.append(parameter["test_case_name"])
+                result_flag = "Fail"
+                report_data.append(result_flag)
+                report_data.append(result)
+            elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
+                report_data = []
+                report_data.append("test_case_name")
+                result_flag = "Fail"
+                report_data.append(result_flag)
+                report_data.append(exception_result)
+            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
+                report_data = []
+                report_data.append("test_case_name")
+                result_flag = "Pass"
+                report_data.append(result_flag)
+                report_data.append("")
+            new_report = GenerateReport()
+            new_report.insert_data(parameter, report_data)
 
 if __name__ == '__main__':
     parameter = {

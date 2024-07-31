@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-
-from support.ui_utils.log.search_log import SearchLog
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import configparser
@@ -11,10 +8,11 @@ from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.workpath import workdir
 from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *
+from support.ui_utils.log.search_log import SearchLog
 from selenium.webdriver.common.by import By
 from datetime import datetime
 
-class UiVerification():
+class UiVerification:
     def ui_verification(self, driver, parameter, test_data, api_verification_result, test_rule_element_position, traffic_result, cfg_list):
         my_driver = driver
         policy_type = test_data["policy_type"]
