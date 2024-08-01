@@ -45,9 +45,10 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monit_srcip_mail_account",
-            "rule_action": "deny",
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
+            "rule_action": "allow",
             "rule_type": "create",
+            "is_mirror": "off",
             "condition": {
                 "source_ip": [
                     {
@@ -59,25 +60,11 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter['test_pc_ip'],
+                                "item_value": parameter["test_pc_ip"],
                             },
                         ]
                     }
                 ],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [],
-                "external_port": [],
-                "source_geography": [],
-                "destination_geography": [],
-                "sub_id": [],
-                "device": [],
-                "tunnel": [],
-                "tunnel_level": [],
-                "flag": [],
                 "application": [
                     {
                         "name": "mail",  #
@@ -85,7 +72,6 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
                 "protocol_filed": [
                     {
                         "name": "monit_mail_account_by_account",
@@ -97,22 +83,18 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_account",
-                                "item_value": "$hbn@163.com->"
+                                "item_value": "hbn&@163.com&com"
                             }
                         ],
                     }
                 ],
-                "sub_action_override": True,
-                "sub_action": [],
-                "packet_capture": []
             },
-            "is_mirror": "off",
-            "profile": [
-
-            ],
             "expected_return": "Ok",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_ip", "query_value": "192.168.40.206"}],
+            "log_query_param": [
+                                {"query_field_key": "decoded_as", "query_value": "MAIL"},
+                                {"query_field_key": "mail_account", "query_value": "hbn@163.com"}
+                            ],
             "traffic": {
                 "protocol": "mail",
                 "type": "curl",
@@ -142,182 +124,62 @@ def run(parameter):
 
         ]
 
-        # 添加定位库集合
-        test_rule_element_position = {}
-        if test_data["policy_type"] == "monitor":
-            test_ip_object_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
-                },
-                "create": {
-                    "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
-                    "objectPage_ipType_posId": ipObjectPage_ipType_posId,
-                    "objectPage_addItem_posId": ipObjectPage_addItem_posId,
-                    "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": ipObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath
-                },
-                "search": {
-                    "objectListPage_searchLabel_posId": ipObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": ipObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
-                }
-            }
-
-            test_account_object_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_account_posId
-                },
-                "create": {
-                    "objectListPage_createButton_posId": accountObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": accountObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": accountObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": accountObjectPage_addItem_posId,
-                    # item简单定位
-                    "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": accountObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath
-                },
-                "search": {
-                    "objectListPage_searchLabel_posId": accountObjectPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": accountObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": accountObjectPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "objectListPage_allSelect_posXpath": accountObjectPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
-                }
-            }
-
-            test_rule_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_monitor_posId
-                },
-                "create": {
-                    "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
-                    "policyRulePage_inputName_posXpath": monitorRulePage_inputName_posXpath,
-                    "policyRulePage_addSrcIP_posXpath": monitorRulePage_addSrcIP_posXpath,
-                    "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
-                    "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
-                    "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
-                    "policyRulePage_addApplication_posXpath": monitorRulePage_addApplication_posXpath,
-                    "policyRulePage_searchApplication_posXpath": monitorRulePage_searchApplication_posXpath,
-                    "policyRulePage_selectApplication_posXpath": monitorRulePage_selectApplication_posXpath,
-                    "policyRulePage_closeApplication_posXpath": monitorRulePage_closeApplication_posXpath,
-                    "policyRulePage_selectApplicationLabel_posXpath": monitorRulePage_selectApplicationLabel_posXpath,
-                    "policyRulePage_addCondition_posXpath": monitorRulePage_addCondition_posXpath,
-                    "policyRulePage_addConditionServerFqdn_posXpath": monitorRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": monitorRulePage_addCondition_close_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": monitorRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": monitorRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": monitorRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": monitorRulePage_closeServerFqdn_posXpath,
-                    "policyRulePage_enable_posXpath": monitorRulePage_enable_posXpath,
-                    "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
-                    "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,
-                    # profile
-                    "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
-                    "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
-                    "policyRulePage_firstSelectMirrorProfile_posXpath": monitorRulePage_firstSelectMirrorProfile_posXpath,
-                    "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
-                    "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
-                    "policyRulePage_saveProile_ok_posXpath": monitorRulePage_saveProile_ok_posXpath,
-                    "policyRulePage_saveProile_warningYes_posXpath": monitorRulePage_saveProile_warningYes_posXpath,
-                    # 添加account
-                    "policyRulePage_addConditionMailAccount_posXpath": policyRulePage_addCondition_mailAccount_posXpath,
-                    "policyRulePage_addMailAccount_posXpath": monitorRulePage_addmailAccount_posXpath,
-                    "policyRulePage_searchMailAccount_posXpath": monitorRulePage_searchmailAccount_posXpath,
-                    "policyRulePage_selectMailAccount_posXpath": monitorRulePage_selectmailAccount_posXpath,
-                    "policyRulePage_closeMailAccount_posXpath": monitorRulePage_closemailAccount_posXpath,
-                },
-                "search": {
-                    "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
-                    "policyRuleListPage_searchLable_dropDown_item_posXpath": monitorRuleListPage_searchLable_dropDown_item_posXpath,
-                    "policyRuleListPage_searchLable_input_itemContent_posXpath": monitorRuleListPage_searchLable_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLable_searchButton_posId": monitorRuleListPage_searchLable_searchButton_posId,
-                    "policyRuleListPage_tableTbody_posXpath": monitorRuleListPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "policyRuleListPage_allSelect_posXpath": monitorRulelistPage_allSelect_posXpath,
-                    "policyRuleListPage_deleteButton_posId": monitorRuleListPage_deleteButton_posId,
-                    "policyRuleListPage_okButton_warningYes_posXpath": monitorRuleListpage_okButton_warningYes_posXpath,
-                    "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
-                }
-            }
         # 创建object
-        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
-            ip_data = test_data["condition"]["source_ip"]
-            create_ip = CreateObject(driver)
-            for i in range(len(ip_data)):
-                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
-                if create_ip_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Create ip object successfully.", flush=True)
-                elif create_ip_code != 200:
-                    result = "Fail to create ip object."
-                    break
-
-        # 创建account
-        if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
-            protocol_field_data = test_data["condition"]["protocol_filed"]
-            create_account = CreateObject(driver)
-            for x in range(len(protocol_field_data)):
-                create_account_code = create_account.create(protocol_field_data[x],
-                                                            test_account_object_element_position)
-                if create_account_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Create account object successfully.", flush=True)
-                elif create_account_code != 200:
-                    result = "Fail to create account."
+        if "condition" in test_data.keys():
+            for cond_key, cond_value in (test_data["condition"].items()):
+                cond_status = 0
+                if cond_key == "application":
+                    continue  # 直接跳过
+                cond_key_out = cond_key.replace("_", " ")
+                if len(cond_value) != 0:  # 不为空
+                    cond_data = cond_value
+                    create_ip = CreateObject(driver)
+                    for i in range(len(cond_data)):  # 遍历创建所有condition
+                        if cond_key == "protocol_filed":
+                            tmp_key = cond_data[i]["object_type"]
+                            cond_key_out = tmp_key.replace("_", " ")
+                            element_position_map = get_element_position(tmp_key)
+                        else:
+                            element_position_map = get_element_position(cond_key)
+                        cond_code = create_ip.create(cond_data[i], element_position_map)
+                        if cond_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                  "Create {} object successfully.".format(cond_key_out), flush=True)
+                        else:
+                            result = "Fail to create {} object.".format(cond_key_out)
+                            cond_status = 1
+                            break
+                if cond_status == 1:  # 创建失败，退出遍历创建
                     break
 
         # 创建rule
-        if create_ip_code == 200:
+        if cond_code == 200:
             create_rule = CreateRule(driver)
-            create_rule_code = create_rule.create(test_data, test_rule_element_position)
+            element_position_map = get_element_position(test_data["policy_type"])
+            create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                      "Create monitor rule successfully.", flush=True)
+                      "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
             elif create_rule_code != 200:
-                result = "Fail to create monitor rule."
+                result = "Fail to create {} rule.".format(test_data["policy_type"])
+
         # 触发流量验证
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
+            element_position_map = get_element_position(test_data["policy_type"])
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],
-                                                                test_rule_element_position)
+                                                                element_position_map)
             if search_rule_code == 200:
-                # rule_id = search_rule.get_rule_id()
                 test_data["rule_id"] = rule_id
                 verify = Verification()
-                verification_result = verify.verification(driver, parameter, test_data, [], test_rule_element_position)
+                verification_result = verify.verification(driver, parameter, test_data, [], element_position_map)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:
                     driver = verification_result[4]
+            else:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                      "Traffic verification failed", flush=True)
 
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -333,57 +195,60 @@ def run(parameter):
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
+            element_position_map = get_element_position(test_data["policy_type"])
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
                                                                               test_data["rule_name"],
-                                                                              test_rule_element_position)
+                                                                              element_position_map)
             if search_rule_code == 200:
                 delete_rule = DeleteRule(driver)
-                delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
+                delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Delete monitor rule successfully.", flush=True)
+                          "Delete manipulation rule successfully.", flush=True)
                 elif delete_rule_code != 200:
-                    result = result + " In addition, fail to delete monitor rule."
+                    result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
-                result = result + " In addition, fail to search monitor rule."
+                result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
         # 删除object
-        if delete_rule_code == 200:
-            # 删除ip
-            for x in range(len(ip_data)):
-                search_ip = SearchObject(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"],
-                                                                              test_ip_object_element_position)
-                if search_ip_code == 200:
-                    delete_ip = DeleteObject(driver)
-                    delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
-                    if delete_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Delete ip object successfully.", flush=True)
-                    elif delete_ip_code != 200:
-                        result = result + " In addition, fail to delete ip object."
-                        break
-                else:
-                    result = result + " In addition, fail to search ip object."
+        if delete_rule_code == 200 and "condition" in test_data.keys():
+            # 删除
+            for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
+                if cond_key == "application":
+                    continue  # 直接跳过
+                cond_status = 0
+                cond_key_out = cond_key.replace("_", " ")
+                if len(cond_value) != 0:  # 不为空
+                    cond_data = cond_value
+                    for i in range(len(cond_data)):  # 遍历查询所有condition
+                        search_cond = SearchObject(driver)
+                        if cond_key == "protocol_filed":
+                            tmp_key = cond_data[i]["object_type"]
+                            cond_key_out = tmp_key.replace("_", " ")
+                            element_position_map = get_element_position(tmp_key)
+                        else:
+                            element_position_map = get_element_position(cond_key)
+                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"],
+                                                                                          element_position_map)
+                        if search_cond_code == 200:
+                            delete_cond = DeleteObject(driver)
+                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element,
+                                                                  True)
+                            if delete_cond_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                      "Delete {} object successfully.".format(cond_key_out), flush=True)
+                            else:
+                                result = result + " In addition, fail to delete {} object.".format(cond_key_out)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} object.".format(cond_key_out)
+                            break
+                        # 退出遍历标志
+                        if cond_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if cond_status == 1:  # 失败，退出遍历创建
                     break
-
-            # 删除filter
-            for y in range(len(protocol_field_data)):
-                search_account = SearchObject(driver)
-                search_account_code, first_row_checkbox_element = search_account.search(
-                    protocol_field_data[y]["name"], test_account_object_element_position)
-                if search_account_code == 200:
-                    delete_account = DeleteObject(driver)
-                    delete_account_code = delete_account.delete(test_account_object_element_position,
-                                                                first_row_checkbox_element, True)
-                    if delete_account_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Delete url object successfully.", flush=True)
-                    elif delete_account_code != 200:
-                        result = result + " In addition, fail to delete account object."
-                        break
-                else:
-                    result = result + " In addition, fail to search account object."
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -395,8 +260,10 @@ def run(parameter):
               "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
+        exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
               flush=True)
+        traceback.print_exc()
         return "Error: " + str(e)
     finally:
         # 清理环境
@@ -410,14 +277,23 @@ def run(parameter):
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
                 report_data.append(parameter["test_case_name"])
-                if False in verification_result:
-                    result_flag = "Fail"
-                else:
-                    result_flag = "Pass"
+                result_flag = "Fail"
                 report_data.append(result_flag)
                 report_data.append(result)
-                new_report = GenerateReport()
-                new_report.insert_data(parameter, report_data)
+            elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
+                report_data = []
+                report_data.append("test_case_name")
+                result_flag = "Fail"
+                report_data.append(result_flag)
+                report_data.append(exception_result)
+            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
+                report_data = []
+                report_data.append("test_case_name")
+                result_flag = "Pass"
+                report_data.append(result_flag)
+                report_data.append("")
+            new_report = GenerateReport()
+            new_report.insert_data(parameter, report_data)
 
 
 if __name__ == '__main__':
@@ -428,7 +304,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "script_type": "ui",
         "vsys_id": 1,
