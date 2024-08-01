@@ -260,6 +260,25 @@ def run(parameter):
                 elif create_ip_code != 200:
                     result = "Fail to create ip."
                     break
+        if "action_parameter" in test_data.keys():
+            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:   # 需要创建profile数据
+                    prfi_data = prfi_value
+                    prfi = CreateProfile(driver)
+                    for i in range(len(prfi_data)): # 遍历创建所有 profile
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_code = prfi.create(prfi_data[i], element_position_map)
+                        if prfi_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(prfi_key_out), flush=True)
+                        else:
+                            result = "Fail to create {} profile.".format(prfi_key_out)
+                            prfi_status = 1
+                            break
+                if prfi_status == 1:  # 创建失败，退出遍历创建
+                    break
+
         # 创建rule
         if create_ip_code == 200:
             create_rule = CreateRule(driver)
@@ -306,6 +325,38 @@ def run(parameter):
             else:
                 result = result + " In addition, fail to search security rule."
         
+        # 删除profile
+        if delete_rule_code == 200 and "action_parameter" in test_data.keys():
+            # 删除
+            for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
+                if prfi_key in manipulation_profile_no_create_list:
+                    continue  # 直接跳过
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:  # 不为空
+                    for i in range(len(prfi_value)):  # 遍历查询所有profile
+                        search_prfi = SearchProfile(driver)
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_name = prfi_value[i]["profile_file"]["name"].strip()
+                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
+                        if search_prfi_code == 200:
+                            delete_prfi = DeleteProfile(driver)
+                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element, True)
+                            if delete_prfi_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
+                            else:
+                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+                            break
+                        # 退出遍历标志
+                        if prfi_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if prfi_status == 1:  # 失败，退出遍历创建
+                    break
+                
         # 删除object
         if delete_rule_code == 200:
             # 删除ip
