@@ -76,7 +76,7 @@ class ApiVerification:
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             print(start_time)
             
-            # 等待时间，等待策略生效
+            # 等待时间，等待日志产生
             time.sleep(10)
             
             # 触发流量
@@ -99,9 +99,9 @@ class ApiVerification:
             if int(is_log) == 1:
                 if is_log_query == 1 or is_counters == 1:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of 'is_log' is 1. Ready to get log and metric now.", flush=True)
-                    for i in range(50):
+                    for i in range(60):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
-                        if i == 10 and script_type == "ui" and driver:
+                        if i == 30 and script_type == "ui" and driver:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
                             support.ui_utils.env.teardown()
                             support.ui_utils.env.initiate_selenium_request()
