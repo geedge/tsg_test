@@ -9,7 +9,7 @@ from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.common.action_chains import ActionChains
 from datetime import datetime 
 
-class CreateStatisticsTemplate:
+class CreateStatisticsTemplate():
     def __init__(self, driver):
         self.driver = driver
         self.actions = ActionChains(self.driver)
@@ -68,7 +68,7 @@ class CreateStatisticsTemplate:
                 first_metric_temp = charts[i]["metrics"][0].split(":")[0]
                 # if first_metric_temp not in{"","不修改","刪除"}:#修改数据待补充处理方式
                 if visualization_type_temp == "table" or visualization_type_temp == "bar" or visualization_type_temp == "line":  # 只有table\Bar 图的 有order by操作
-                    if visualization_type_temp == "line" and ( first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
+                    if visualization_type_temp == "line" and (first_metric_temp in metrics_no_dimension_temp or len(charts[i]["metrics"]) > 1):
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Line No Dimensions")
                     else:
                         # dimensions 操作
@@ -217,8 +217,7 @@ class CreateStatisticsTemplate:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
 
-    def _operate_metrics_or_dimensions_dropdown(self, chart, data_index=0, no_modify="不修改", data_key="",
-                                                chart_id=""):
+    def _operate_metrics_or_dimensions_dropdown(self, chart, data_index=0, no_modify="不修改", data_key="",chart_id=""):
         """
         操作metrics dimensions函数
         :param chart:   每个chart的字典数据
@@ -228,7 +227,9 @@ class CreateStatisticsTemplate:
         :param chart_id:    chart_id  UI页面中chart id序号
         :return:
         """
-        dropdown_item_metrics_dict = {'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
+        dropdown_item_metrics_dict = {'client_ip_object_list':'Client IP Object List','server_ip_object_list':'Server IP Object List',
+                                      'client_ip': 'Client IP','server_ip': 'Server IP',
+                                      'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
                                       'bytes': 'Bytes', 'new_c2s_flows': 'New Client-to-Server Flows',
                                       'new_s2c_flows': 'New Server-to-Client Flows', 'sessions': 'Sessions',
                                       'new_in_sessions': 'New Incoming Sessions',
@@ -248,11 +249,7 @@ class CreateStatisticsTemplate:
                                       'out_pkt_length_sketch': 'Outgoing Packet Length',
                                       'pkt_length_sketch': 'Packet Length'
                                       }
-        """
-        dropdown_item_dimensions_dict23 = {'time':'Time', 'client_ip': 'Client IP', 'server_ip': 'Server IP', 'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
-                                         'application': 'Application', 'websketch_categories': 'WebSketch Categories', 'client_ip_object': 'Client IP Matched Objects',
-                                         'server_ip_matched_objects': 'Server IP Matched Objects'}
-        """
+
         dropdown_item_dimensions_dict = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
                                          'server_ip': 'Server IP', 'client_asn': 'Client ASN',
                                          'server_asn': 'Server ASN', 'client_country': 'Client Country',
@@ -299,10 +296,8 @@ class CreateStatisticsTemplate:
                                                      old_value=drop_item_old, new_value=dropdown_item,
                                                      dropdown_item_dict=dropdown_item_dict)
                         else:  # 新增数据  4.5.6.3->
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to dropdown_add")
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], dropdown_item)
-                            self.dropdown_add(chart_id=chart_id, dropdown_name=repalceLabel, new_value=dropdown_item,
-                                              dropdown_item_dict=dropdown_item_dict)
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
+                            self.dropdown_add(chart_id=chart_id, dropdown_name=repalceLabel, new_value=dropdown_item, dropdown_item_dict=dropdown_item_dict)
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
@@ -392,7 +387,6 @@ class CreateStatisticsTemplate:
                 element_position_1 = element_position.format(replaceChart=chart_id, repalceLabel=repalceLabel)
                 # 定位元素中span换成label
                 element_position_1 = element_position_1.replace("span", "*")
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "element_position_1"+element_position_1)
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], self.driver.find_element(By.XPATH, element_position_1).is_enabled())
                 #self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                 #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
@@ -428,49 +422,34 @@ class CreateStatisticsTemplate:
         """
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 5555)
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], dropdown_name)
-        dropdown_aggragate_dict = {"sum": "SUM", "rate": "RATE", "bitrate": "BITRATE",
+        dropdown_aggragate_dict = {"unique_count": "UNIQUE_COUNT",
+                                   "sum": "SUM", "rate": "RATE", "bitrate": "BITRATE",
                                    "percentiles_hdr": "PERCENTILES_HDR", "median_hdr": "MEDIAN_HDR",
                                    "p95_percentile_hdr": "P95_PERCENTILE_HDR",
                                    "p99_percentile_hdr": "P99_PERCENTILE_HDR",
                                    "approx_count_distinct_hlld": "APPROX_COUNT_DISTINCT_HLLD"}
 
         try:
-            #time.sleep(3)
-            # ep_metricsAndDimensionsAdd = statisticsTemplates_button_metricsAndDimensionsAdd_posXpath.format(replaceChart=chart_id, repalceLabel=dropdown_name)   #添加按钮定位
             ep_metricsAndDimensionsSelects = statisticsTemplates_input_metricsAndDimensionsSelect_posXpath.format(
                 replaceChart=chart_id, repalceLabel=dropdown_name)  # 下拉框定位，可能存在多个
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 6666)
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], ep_metricsAndDimensionsSelects)
-            element_metricsAndDimensionsSelects = self.driver.find_elements(By.XPATH,
-                                                                            ep_metricsAndDimensionsSelects)  # 下拉框元素列表
-            element_metricsAndDimensionsAdd = element_metricsAndDimensionsSelects[-1].find_element(By.XPATH,
-                                                                                                   ".//i")  # 下拉框元素列表中最后一个为add添加按钮
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], ep_metricsAndDimensionsSelects, flush=True)
+            element_metricsAndDimensionsSelects = self.driver.find_elements(By.XPATH,ep_metricsAndDimensionsSelects)  # 下拉框元素列表
+            element_metricsAndDimensionsAdd = element_metricsAndDimensionsSelects[-1].find_element(By.XPATH,".//i")  # 下拉框元素列表中最后一个为add添加按钮
             # 点击添加按钮
             # 下拉列表
             time.sleep(1)
             is_click_add = "yes_click"
             for dropdownSelect_item in element_metricsAndDimensionsSelects[1:-1]:  # 下拉框元素列表中第二个到倒数第二个为操作数据
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 7777)
-                dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,
-                                                                                   "./div[1]//input").get_attribute(
-                    "value")
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], dropdownSelect_item_input_value)
+                dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,"./div[1]//input").get_attribute("value")
                 if dropdownSelect_item_input_value == "":  # 有空数据时，就跳过点击添加按钮
                     is_click_add = "no_click"
                     break
             if is_click_add == "yes_click":
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 8888)
                 element_metricsAndDimensionsAdd.click()  # 全部都有数据时，需要点击添加
             # 点击空的下拉列表框选项
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 9999)
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], ep_metricsAndDimensionsSelects)
-            element_metricsAndDimensionsSelects2 = self.driver.find_elements(By.XPATH,
-                                                                             ep_metricsAndDimensionsSelects)  # 下拉框元素列表  重新获取一次
+            element_metricsAndDimensionsSelects2 = self.driver.find_elements(By.XPATH, ep_metricsAndDimensionsSelects)  # 下拉框元素列表  重新获取一次
             if dropdown_name == "Metrics":
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1010)
-                create_class = element_metricsAndDimensionsSelects2[-1].find_element(By.XPATH, ".//i").get_attribute(
-                    "class")
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], create_class)
+                create_class = element_metricsAndDimensionsSelects2[-1].find_element(By.XPATH, ".//i").get_attribute("class")
                 if ("icon-Create1" not in create_class):  # 没有添加的元素时
                     tmp_element_metricsAndDimensionsSelects2 = element_metricsAndDimensionsSelects2[1:]
                 else:  # 有添加的元素时
@@ -478,12 +457,8 @@ class CreateStatisticsTemplate:
             else:
                 tmp_element_metricsAndDimensionsSelects2 = element_metricsAndDimensionsSelects2[1:-1]
             for dropdownSelect_item in tmp_element_metricsAndDimensionsSelects2:
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1111)
                 dropdownSelect_item_list = dropdownSelect_item.find_elements(By.XPATH, "./div")  # 所有列的集合
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], dropdownSelect_item_list)
-                dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,
-                                                                                   "./div[1]//input").get_attribute(
-                    "value")
+                dropdownSelect_item_input_value = dropdownSelect_item.find_element(By.XPATH,"./div[1]//input").get_attribute("value")
                 if dropdownSelect_item_input_value == "":  # 在空的下拉菜单中添加数据
                     # 遍历添加每一个列的下拉列表数据
                     col_n = 0
@@ -494,7 +469,6 @@ class CreateStatisticsTemplate:
                         # dimension需要操作一列
                         tmp_dropdownSelect_item_list = dropdownSelect_item_list[0:1]
                     for col_dropdownSelect in tmp_dropdownSelect_item_list:  # 需要操作的每一个行中列的数量
-                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1212)
                         col_dropdownSelect.find_element(By.XPATH, ".//input").click()
 
                         # 异常断言判断 "reverse_case": "....",   # 主要校验不同chart类型，可以选择不同的metrics   # 只是断言使用，无实际页面操作
@@ -506,8 +480,6 @@ class CreateStatisticsTemplate:
                                 is_disabled_list = ["Session IDs", "Client IPs", "Server IPs", "Incoming Latency",
                                                     "Outgoing Latency", "Latency"]
                                 el_drop_item_class_xpath = "//*[contains(@class, 'Metric')]//div[contains(@class, 'multipleSelect')]//div[@class='el-scrollbar']//li[contains(@class, 'el-select-dropdown__item')]"
-                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1313)
-                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], el_drop_item_class_xpath)
                                 drop_items = self.driver.find_elements(By.XPATH, el_drop_item_class_xpath)
                                 for i in drop_items:
                                     item_name = i.find_element(By.XPATH, ".//span").text.strip()
@@ -526,8 +498,6 @@ class CreateStatisticsTemplate:
                                                     "New Unestablished Sessions",
                                                     "SYN Packets", "Session IDs", "Client IPs", "Server IPs"]
                                 el_drop_item_class_xpath = "//*[contains(@class, 'Metric')]//div[contains(@class, 'multipleSelect')]//div[@class='el-scrollbar']//li[contains(@class, 'el-select-dropdown__item')]"
-                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1414)
-                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], el_drop_item_class_xpath)
                                 drop_items = self.driver.find_elements(By.XPATH, el_drop_item_class_xpath)
                                 for i in drop_items:
                                     item_name = i.find_element(By.XPATH, ".//span").text.strip()
@@ -547,42 +517,42 @@ class CreateStatisticsTemplate:
                                 replaceDropdownIterm = dropdown_aggragate_dict[col_name]
                             else:
                                 replaceDropdownIterm = col_name
+                            # 24.07及以前
                             if col_n == 0 or col_n == 1:
-                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1515)
-                                element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,
-                                                                                        f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
-
-                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item)
-                                # 移动元素到页面，在执行点击
-                                #self.actions.move_to_element(element_dropdown_item).perform()
-                                self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
-                                self.driver.execute_script("arguments[0].click();", element_dropdown_item)
+                                element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
                             elif col_n == 2:
-                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1616)
                                 # 输入label值
                                 col_dropdownSelect.find_element(By.XPATH, ".//input").clear()
                                 col_dropdownSelect.find_element(By.XPATH, ".//input").send_keys(replaceDropdownIterm)
                             col_n += 1
+                            # 24.08
+                            """
+                            if col_n == 0:
+                                element_dropdown_item = self.driver.find_element(By.XPATH,statisticsTemplates_metrics_dropdown_item_posXpath.format(replaceDropdownIterm))
+                                # 移动元素到页面，在执行点击
+                                self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
+                                self.driver.execute_script("arguments[0].click();", element_dropdown_item)
+                            if col_n == 1:
+                                element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
+                                # 移动元素到页面，在执行点击
+                                self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
+                                self.driver.execute_script("arguments[0].click();", element_dropdown_item)                            
+                            elif col_n == 2:
+                                # 输入label值
+                                col_dropdownSelect.find_element(By.XPATH, ".//input").clear()
+                                col_dropdownSelect.find_element(By.XPATH, ".//input").send_keys(replaceDropdownIterm)
+                            col_n += 1
+                            """
                         else:  # demesions数据操作
                             col_name = new_value
                             replaceDropdownIterm = dropdown_item_dict[col_name]
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], replaceDropdownIterm)
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1717)
-                            #time.sleep(3)
-                            elements = col_dropdownSelect.find_elements(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], len(elements))
+                            # 24.07及以前
                             element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
-                            #element_dropdown_item = col_dropdownSelect.find_element(By.XPATH, f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
-                            #col_dropdownSelect.execute_script("window.scrollTo(0," + str(element_dropdown_item.location["y"]) + ")")
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item)
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item.is_enabled())
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 1818)
+                            # 24.08
+                            #element_dropdown_item = self.driver.find_element(By.XPATH,statisticsTemplates_dimensions_dropdown_item_posXpath.format(replaceDropdownIterm))
                             self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                             self.driver.execute_script("arguments[0].click();", element_dropdown_item)
-                            #element_dropdown_item.click()
-                            # 移动元素到页面，在执行点击
-                            #self.actions.move_to_element(element_dropdown_item).perform()
-                            #self.driver.execute_script("arguments[0].click();", element_dropdown_item)
+
                     break
             return 200
         except Exception as e:

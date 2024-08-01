@@ -100,13 +100,14 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "$www.ct.cn",
+                        "name": "sc_ui_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
                         "plus": False,
                         "items": [
                             {
+                                "item_operation": "add",
                                 "item_value": "$www.ct.cn",
                             }
                         ]
@@ -115,7 +116,7 @@ def run(parameter):
 
                 "protocol_filed": [
                     {
-                        "name": "$www.ct.cn/",
+                        "name": "sc_ui_url",
                         "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
@@ -423,11 +424,11 @@ def run(parameter):
                 },
                 {
                     "type": "fqdn",
-                    "name": "$www.ct.cn",
+                    "name": "sc_ui_fqdn",
                 },
                 {
                     "type": "url",
-                    "name": "$www.ct.cn/",
+                    "name": "sc_ui_url",
                 },
                 {
                     "type": "service_function_forwarder",
