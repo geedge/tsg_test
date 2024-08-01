@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "service_chaining",
-            "rule_name": "sc_raw_srcip_dstip_fqdb_ssl_mirror_redispatch_block_vxlan_activeip_none",
+            "rule_name": "sc_raw_srcip_dstip_fqdn_ssl_mirror_redispatch_block_vxlan_activeip_none",
             "rule_action": "service_chaining",
             "targeted_traffic": "raw",
             "rule_type": "create",
@@ -100,13 +100,15 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "baidu.com",
+                        "name": "sc_ui_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
                         "plus": False,
                         "items": [
                             {
+                                "item_operation": "add",
+                                "item_operation": "add",
                                 "item_value": "baidu.com",
                             }
                         ]
@@ -359,7 +361,7 @@ def run(parameter):
             name_list = [
                 {
                     "type": "service_chaining",
-                    "name": "sc_raw_srcip_dstip_fqdb_ssl_mirror_redispatch_block_vxlan_activeip_none",
+                    "name": "sc_raw_srcip_dstip_fqdn_ssl_mirror_redispatch_block_vxlan_activeip_none",
                 },
                 {
                     "type": "ip",
@@ -371,7 +373,7 @@ def run(parameter):
                 },
                 {
                     "type": "fqdn",
-                    "name": "baidu.com",
+                    "name": "sc_ui_fqdn",
                 },
                 {
                     "type": "service_function_forwarder",
@@ -600,7 +602,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_srcip_dstip_fqdb_ssl_mirror_redispatch_block_vxlan_activeip_none"
+        "test_case_name": "sc_raw_srcip_dstip_fqdn_ssl_mirror_redispatch_block_vxlan_activeip_none"
     }
     run(parameter)
     """

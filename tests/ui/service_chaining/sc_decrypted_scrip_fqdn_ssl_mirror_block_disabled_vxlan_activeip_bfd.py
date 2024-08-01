@@ -87,13 +87,15 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "baidu.com",
+                        "name": "sc_ui_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
                         "plus": False,
                         "items": [
                             {
+                                "item_operation": "add",
+                                "item_operation": "add",
                                 "item_value": "baidu.com",
                             }
                         ]
@@ -344,7 +346,7 @@ def run(parameter):
                 },
                 {
                     "type": "fqdn",
-                    "name": "baidu.com",
+                    "name": "sc_ui_fqdn",
                 },
                 {
                     "type": "service_function_forwarder",
