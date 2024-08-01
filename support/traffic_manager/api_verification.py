@@ -99,7 +99,7 @@ class ApiVerification:
             if int(is_log) == 1:
                 if is_log_query == 1 or is_counters == 1:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of 'is_log' is 1. Ready to get log and metric now.", flush=True)
-                    for i in range(60):
+                    for i in range(70):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
                         if i == 30 and script_type == "ui" and driver:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)

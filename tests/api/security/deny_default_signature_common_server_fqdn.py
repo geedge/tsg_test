@@ -45,7 +45,7 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["common_server_fqdn"],
-            "expected_return": "SSL_ERROR_SYSCALL",
+            "expected_return": "reset",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"open.node.com"}],
             "traffic": {
