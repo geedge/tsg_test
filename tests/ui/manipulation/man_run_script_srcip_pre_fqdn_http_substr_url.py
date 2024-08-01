@@ -78,6 +78,8 @@ def run(parameter):
                         "plus": False,
                         "items": [
                             {
+                                "item_operation": "add",
+                                "item_type": "fqdn",
                                 "item_value": "www.baidu.*",
                             }
                         ]

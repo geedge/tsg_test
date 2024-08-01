@@ -61,7 +61,7 @@ class UiVerification:
                             if int(hit_count) == 0 and len(test_data['log_query_param']) == 0:
                                 #  如果hit_count为0且test data中为0，直接设置结果为no_set
                                 log_result = "no_set"
-                            else:
+                            else:    #UI 日志校验
                                 # 以Server IP为例，在log_query_list.ini中通过log api查找log ui的值
                                 parse = configparser.ConfigParser()
                                 parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
@@ -82,7 +82,7 @@ class UiVerification:
                                             temp_log_result = False
                                         temp_log_result_list.append(temp_log_result)
                                     # elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action" or log_query_key == "ftp_url" or log_query_key == "ftp_link_type":
-                                    elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from","imsi", "phone_number", "server_fqdn", "ip_protocol"]:
+                                    elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from","imsi", "phone_number", "server_fqdn", "ip_protocol", "mail_to", "mail_to_cmd"]:
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                         temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                         if temp_value == test_data["log_query_param"][t]["query_value"]:
@@ -127,13 +127,11 @@ class UiVerification:
                                                 temp_log_result = True
                                             else:
                                                 temp_log_result = False
-                                    elif log_query_key == "server_port":
-                                        print("to be added.")
                                     elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent", "http_version", "http_request_line", "http_response_line"]:
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]".format(replaceValue=log_str)
                                         temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
-                                        print(temp_value)
-                                        print(test_data["log_query_param"][t]["query_value"])
+                                        #print(temp_value)
+                                        #print(test_data["log_query_param"][t]["query_value"])
                                         if temp_value == test_data["log_query_param"][t]["query_value"]:
                                             temp_log_result = True
                                         else:

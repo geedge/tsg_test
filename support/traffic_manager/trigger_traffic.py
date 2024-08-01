@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import json
 import requests
@@ -57,22 +58,36 @@ class TriggerTraffic:
                 temp_data = test_data["traffic"]
             if test_data["traffic"]["protocol"] == "http":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate http traffic.", flush=True)
+                print("script_type is " + script_type)
+                # api 创建配置为瞬间创建，增加等待时长，等待策略生效
+                if script_type == "api":
+                    time.sleep(6)
+                    print("has sleep")
                 player = HttpPlayer()
                 result = player.send_http_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "https" or test_data["traffic"]["protocol"] == "ssl":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate ssl traffic.", flush=True)
+                print("script_type is "+ script_type)
+                if script_type == "api":
+                    time.sleep(6)
                 player = SSLPlayer()
                 result = player.send_ssl_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "ftp":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate ftp traffic.", flush=True)
+                if script_type == "api":
+                    time.sleep(6)
                 player = FtpPlayer()
                 result = player.send_ftp_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "dns":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate nslookup traffic.", flush=True)
+                if script_type == "api":
+                    time.sleep(6)
                 player = DnsPlayer()
                 result = player.send_dns_query(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "mail":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate mail traffic.", flush=True)
+                if script_type == "api":
+                    time.sleep(6)
                 player = MailPlayer()
                 result = player.send_mail_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "doh":

@@ -121,7 +121,7 @@ class OrganizeConfig:
                         src_ip_list = src_ip.split(".")
                         if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
                             src_ip_list[2] = str(random.randint(1, 25))
-                        elif str(vsys_id) == "11":  # 根据vsys id，确认IP范围
+                        elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
                             src_ip_list[2] = str(random.randint(224, 224))
                         src_ip_list[3] = str(random.randint(100, 250))
                         if run_env == "9140":
@@ -140,7 +140,7 @@ class OrganizeConfig:
                         ip_list_2 = two_ip_list[1].split(".")
                         if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
                             ip_list_1[2] = str(random.randint(1, 25))
-                        elif str(vsys_id) == "11":  # 根据vsys id，确认IP范围
+                        elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
                             ip_list_1[2] = str(random.randint(224, 224))
                         else:
                             ip_list_1[3] = str(random.randint(1, 50))

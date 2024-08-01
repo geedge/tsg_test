@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_http_rate_low",
+            "rule_name": "secy_deny_src_mail_suff_to_tamper",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -76,33 +76,45 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http", #
+                        "name": "mail", #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
                 "server_fqdn": [],
-                "protocol_filed": [],
+                "protocol_filed": [
+                    {
+                        "name": "secy_mail_to",
+                        "object_type": "account",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "mail_to",
+                                "item_value": "*@163.com"
+                            }
+                        ],
+                    }
+                ],
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "redirect",
-                        "to_url": "https://www.youtube.com",
-                        "drop_packet": 0,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
+                        "type": "tamper"
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "303",
+            "expected_return": "timed out",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
+            "log_query_param": [{"query_field_key":"decoded_as", "query_value": "MAIL"},
+            {"query_field_key":"mail_to_cmd", "query_value": "autotest@163.com"}],
             "traffic": {
-                "protocol": "http",
+                "protocol": "mail",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_manager/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
             },
             "token": ""
         }
@@ -112,7 +124,6 @@ def run(parameter):
         test_data["token"] = token
 
         # name_list汇总
-        # name_list汇总
         name_list = [
             {
                 "type": test_data["policy_type"],
@@ -121,6 +132,10 @@ def run(parameter):
             {
                 "type": test_data["condition"]["source_ip"][0]['object_type'],
                 "name": test_data["condition"]["source_ip"][0]['name']
+            },
+            {
+                "type":test_data["condition"]["protocol_filed"][0]['object_type'],
+                "name":test_data["condition"]["protocol_filed"][0]['name']
             }
         ]
         
@@ -158,7 +173,37 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-            
+            test_account_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_account_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": accountObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": accountObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": accountObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": accountObjectPage_addItem_posId,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": accountObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": accountObjectPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": accountObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": accountObjectPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": accountObjectPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
             test_rule_element_position = {
                 "page_jump":{
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -183,30 +228,33 @@ def run(parameter):
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    # fqdn
                     "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
-                    # url
-                    "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_url_posXpath,
-                    "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
-                    "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
-                    "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
-                    "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
-                    # req header
-                    "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
-                    "policyRulePage_addRequestHeader_posXpath": manipulationRulePage_addRequestHeader_posXpath,
-                    "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
-                    "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
-                    "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+                    # mail to
+                    "policyRulePage_addConditionMailTo_posXpath": policyRulePage_addCondition_mailTo_posXpath,
+                    "policyRulePage_addMailTo_posXpath": monitorRulePage_addmailTo_posXpath,
+                    "policyRulePage_searchMailTo_posXpath": monitorRulePage_searchmailTo_posXpath,
+                    "policyRulePage_selectMailTo_posXpath": monitorRulePage_selectmailTo_posXpath,
+                    "policyRulePage_closeMailTo_posXpath": monitorRulePage_closemailTo_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    # sub action
-                    "policyRulePage_subAction_redirect_posXpath": securityRulePage_subAction_redirect_posXpath,
-                    "policyRulePage_subAction_redirect_input_posId": securityRulePage_subAction_redirect_input_posXpath,
+                    # drop
+                    "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
+                    "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
+                    "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
+                    "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+                    # block
+                    "policyRulePage_subAction_block_posXpath": securityRulePage_subAction_block_posXpath,
+                    "policyRulePage_subAction_block_responseCode_posXpath": securityRulePage_subAction_block_responseCode_posXpath,
+                    "policyRulePage_subAction_block_responseCode_change_posXpath": securityRulePage_subAction_block_responseCode_change_posXpath,
+                    "policyRulePage_subAction_block_responseContent_posXpath": securityRulePage_subAction_block_responseContent_posXpath,
+                    "policyRulePage_subAction_block_responseContent_change_posXpath": securityRulePage_subAction_block_responseContent_change_posXpath,
+                    "policyRulePage_subAction_block_responseContent_text_posId": securityRulePage_subAction_block_responseContent_text_posId,
+                    # rate limit
+                    "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
+                    "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
+                    # tamper
+                    "policyRulePage_subAction_tamper_posXpath": securityRulePage_subAction_tamper_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -237,6 +285,20 @@ def run(parameter):
                 elif create_ip_code != 200:
                     result = "Fail to create ip."
                     break
+        # 创建protocol_filed        
+        if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+            protocol_field_data = test_data["condition"]["protocol_filed"]
+            create_protocol_filed = CreateObject(driver)
+            for x in range(len(protocol_field_data)):
+                object_type = protocol_field_data[x]['object_type']
+                if object_type == 'account':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_account_object_element_position)
+                if create_protocol_filed_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                elif create_protocol_filed_code != 200:
+                    result = "Fail to create {}.".format(object_type)
+                    break
+
         # 创建rule
         if create_ip_code == 200:
             create_rule = CreateRule(driver)
@@ -245,7 +307,7 @@ def run(parameter):
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
             elif create_rule_code != 200:
                 result = "Fail to create security rule."
-
+            
         # 触发流量验证
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -269,7 +331,6 @@ def run(parameter):
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
         
-        # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
@@ -299,6 +360,25 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search ip object."
+                    break
+        
+            # 删除protocol_filed
+            for q in range(len(protocol_field_data)):
+                search_protocol_filed = SearchObject(driver)
+                object_type = protocol_field_data[q]['object_type']
+                if object_type == 'account':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_account_object_element_position)
+                if search_protocol_filed_code == 200:
+                    delete_protocol_filed = DeleteObject(driver)
+                    if object_type == 'account':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_account_object_element_position, first_row_checkbox_element, True)
+                    if delete_protocol_filed_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
+                    elif delete_protocol_filed_code != 200:
+                        result = result + " In addition, fail to delete {} object.".format(object_type)
+                        break
+                else:
+                    result = result + " In addition, fail to search {} object.".format(object_type)
                     break
         
         # 脚本结束时间和耗时
@@ -346,15 +426,16 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/ui",
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "security",
         "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
     }
