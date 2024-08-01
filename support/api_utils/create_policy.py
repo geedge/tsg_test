@@ -207,7 +207,7 @@ def generate_testdata(parameter, test_data):
                     src_ip_list = src_ip.split(".")
                     if str(vsys_id) == "1":   #根据vsys id，确认IP范围
                         src_ip_list[2] = str(random.randint(1, 100))
-                    elif str(vsys_id) == "6":   #根据vsys id，确认IP范围
+                    elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
                         src_ip_list[2] = str(random.randint(200, 222))
                     else:
                         src_ip_list[2] = str(random.randint(224, 250))
@@ -226,9 +226,9 @@ def generate_testdata(parameter, test_data):
                     two_ip_list = src_ip.split("-")
                     ip_list_1 = two_ip_list[0].split(".")
                     ip_list_2 = two_ip_list[1].split(".")
-                    if str(vsys_id) == "6":
+                    if str(vsys_id) == "4":
                         ip_list_1[2] = str(random.randint(1, 100))
-                    elif str(vsys_id) == "6":
+                    elif str(vsys_id) == "4":
                         ip_list_1[2] = str(random.randint(200, 222))
                     else:
                         ip_list_1[2] = str(random.randint(224, 250))

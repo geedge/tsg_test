@@ -28,33 +28,61 @@ class CreateObject:
             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputName_posXpath"]).send_keys(object_name)
             # 添加item
             if data["object_type"] == "http_signature":
-                for i in data["item"]:
+                for i in range(len(data["item"])):
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_item_key_dropDown_posXpath"]).click()
-                    temp_element_position = create_element_position["objectPage_item_key_dropDown_select_posXpath"].format(replaceValue=i["item_key"])
+                    temp_element_position = create_element_position["objectPage_item_key_dropDown_select_posXpath"].format(replaceValue=data["item"][i]["item_key"])
                     self.driver.find_element(By.XPATH, temp_element_position).click()
-                    temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=i["item_value"])
+                    temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=data["item"][i]["item_value"])
                     self.driver.find_element(By.XPATH, temp_element_position).click()
-                    num = 0
-                    for t in i["value"]:
-                        num += 1
-                        temp_element_position = create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=num)
-                        self.driver.find_element(By.XPATH, temp_element_position).send_keys(t)
-                        if data["plus"] == True and num < len(i["value"]):
-                            self.driver.find_element(By.XPATH, create_element_position["objectPage_item_value_plus_posXpath"]).click()
+                    if data["item"][i]["item_operation"] == "add":   # 直接 新增 模式
+                        if "->" in data["item"][i]["value"][0]:   # -> 存在，需要拆分
+                            item_value_str = data["item"][i]["value"][0].split("->")[0].strip()
+                        else:    # -> 不存在，直接取值
+                            item_value_str = data["item"][i]["value"][0].strip()
+                        # 匹配多个multiple substrings 类型
+                        if "&" in item_value_str:   # & 含有多个 and multiple substrings
+                            item_values = item_value_str.split("&")
+                        else:
+                            item_values = [item_value_str]
+                    else:    # 修改模式，未完成
+                        print("todo modify moudle ...")
+                        item_values = [data["item"][i]["item_value"]]
+                    for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
+                        item_value = item_value.strip()
+                        temp_element_position = create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j+1)
+                        if j == 0:
+                            self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
+                        else:
+                            self.driver.find_element(By.XPATH,create_element_position["objectPage_item_value_plus_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] == "keywords":
-                for i in data["item"]:
+                for i in range(len(data["item"])):
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
-                    temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=i["item_value"])
+                    temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=data["item"][i]["item_value"])
                     self.driver.find_element(By.XPATH, temp_element_position).click()
-                    num = 0
-                    for t in i["value"]:
-                        num += 1
-                        temp_element_position = create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=num)
-                        self.driver.find_element(By.XPATH, temp_element_position).send_keys(t)
-                        if data["plus"] == True and num < len(i["value"]):
-                            self.driver.find_element(By.XPATH, create_element_position["objectPage_item_value_plus_posXpath"]).click()
+                    if data["item"][i]["item_operation"] == "add":   # 直接 新增 模式
+                        if "->" in data["item"][i]["value"][0]:   # -> 存在，需要拆分
+                            item_value_str = data["item"][i]["value"][0].split("->")[0].strip()
+                        else:    # -> 不存在，直接取值
+                            item_value_str = data["item"][i]["value"][0].strip()
+                        # 匹配多个multiple substrings 类型
+                        if "&" in item_value_str:   # & 含有多个 and multiple substrings
+                            item_values = item_value_str.split("&")
+                        else:
+                            item_values = [item_value_str]
+                    else:    # 修改模式，未完成
+                        print("todo modify moudle ...")
+                        item_values = [data["item"][i]["item_value"]]
+                    for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
+                        item_value = item_value.strip()
+                        temp_element_position = create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j+1)
+                        if j == 0:
+                            self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
+                        else:
+                            self.driver.find_element(By.XPATH,create_element_position["objectPage_item_value_plus_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] == "url" or data["object_type"] == "account" or data["object_type"] == "phone_number" or data["object_type"] == "fqdn":
                 for i in range(len(data["items"])):   # 只是简单的添加了一个item，后期优化
@@ -72,7 +100,7 @@ class CreateObject:
                     else:    # 修改模式，未完成
                         print("todo modify moudle ...")
                         item_values = [data["items"][i]["item_value"]]
-                    for j,item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
+                    for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
                         if j == 0:
                             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(item_value)
@@ -80,7 +108,6 @@ class CreateObject:
                             self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
                             self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
-                    break
             # elif data["object_type"] == "fqdn":
             #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added..")
             elif data["object_type"] == "tunnel":
