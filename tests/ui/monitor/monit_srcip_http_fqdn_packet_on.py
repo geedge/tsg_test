@@ -93,6 +93,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_value": "slope.ru",
+                                "item_operation": "add"
                             }
                         ]
                     }

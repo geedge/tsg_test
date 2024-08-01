@@ -85,7 +85,7 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "test_mtv",
+                        "name": "monit_test_mtv",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -93,6 +93,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_value": "*mtv.ru",
+                                "item_operation": "add"
                             }
                         ]
                     }
@@ -137,7 +138,7 @@ def run(parameter):
             },
             {
                 "type": "fqdn",
-                "name": "test_mtv"
+                "name": "monit_test_mtv"
             }
 
         ]

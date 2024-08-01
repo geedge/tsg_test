@@ -68,7 +68,7 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "test_example",
+                        "name": "monit_test_example",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -76,6 +76,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_value": "*example.com",
+                                "item_operation": "add"
                             }
                         ]
                     }
@@ -95,7 +96,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "Example Domain",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"},
+            "log_query_param": [
+                                {"query_field_key": "http_host", "query_value": "www.example.com"},
                                 {"query_field_key": "ip_protocol", "query_value": "tcp"}
                                 ],
             "traffic": {
@@ -118,7 +120,7 @@ def run(parameter):
             },
             {
                 "type": "fqdn",
-                "name": "test_example"
+                "name": "monit_test_example"
             }
         ]
 

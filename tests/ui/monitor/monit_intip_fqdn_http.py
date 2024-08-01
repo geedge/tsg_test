@@ -79,7 +79,7 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [ {
-                        "name": "test_yumi",
+                        "name": "monit_test_yumi",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -87,6 +87,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_value": "www.yumi.com",
+                                "item_operation": "add"
                             }
                         ]
                     }
@@ -99,7 +100,7 @@ def run(parameter):
             },
             "is_mirror":"off",
             "profile": [],
-            "expected_return": "baidu",
+            "expected_return": "yumi",
             "counters": {"hits": 1},
             "log_query_param": [
                                 {"query_field_key": "http_host", "query_value": "www.yumi.com"},
@@ -130,7 +131,7 @@ def run(parameter):
             },
             {
                 "type":"fqdn",
-                "name":"test_yumi"
+                "name":"monit_test_yumi"
             }
         ]
 

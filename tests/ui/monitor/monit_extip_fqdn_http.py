@@ -79,7 +79,7 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [ {
-                        "name": "test_example",
+                        "name": "monit_test_example",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -87,6 +87,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_value": "*example.com",
+                                "item_operation": "add"
                             }
                         ]
                     }
@@ -130,7 +131,7 @@ def run(parameter):
             },
             {
                 "type":"fqdn",
-                "name":"test_example"
+                "name":"monit_test_example"
             }
         ]
 
