@@ -95,7 +95,6 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_operation": "add",
                                 "item_value": "$www.facebook.com",
                             }
                         ]
