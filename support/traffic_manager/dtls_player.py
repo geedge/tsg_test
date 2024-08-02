@@ -24,7 +24,7 @@ class DtlsPlayer:
             # client_sock.send('Hi there'.encode('utf-8'))
             # self.execute_action(client_sock, blocksize)
         except Exception as e:
-            print(f"Error: {e}")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Error: {e}.", flush=True)
     
     def execute_action(self, client_sock, blocksize):
         try:
