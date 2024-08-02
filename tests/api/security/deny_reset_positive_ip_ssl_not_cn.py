@@ -64,12 +64,12 @@ def run(parameter):
             ],
             "app_name_1": ["ssl"],
             "expected_return": "timed out",
-            "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value": "www.example.com"}],
+            "counters_1": {"hits": 1},
+            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 https://www.example.com"
+                "command": "curl -kv --connect-timeout 20 -m 20 https://open.node.com:1443"
             },
             "token": ""
         }
