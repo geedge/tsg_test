@@ -364,8 +364,8 @@ class GetLog:
                                     if isinstance(v, int):
                                         statistics_value[k] += v
                                 break_flag = 0     # 默认外层循环累加，累加标志
-                                tmp_break_list = ["client_ip_sketch", "server_ip_ip_sketch", "fqdn_category", "client_ip_object", "server_ip_object", "websketch_categories"]   #兼容UI API，所以三组值
-                                for item in tmp_break_list:    #遍历判断是否符合上述条件，获取退出累加标志1。"client_ip_sketch", "server_ip_ip_sketch", "fqdn_category"
+                                tmp_break_list = ["client_ip_sketch", "server_ip_sketch", "fqdn_category", "client_ip_object", "server_ip_object", "websketch_categories"]   #兼容UI API，所以三组值
+                                for item in tmp_break_list:    #遍历判断是否符合上述条件，获取退出累加标志1。"client_ip_sketch", "server_ip_sketch", "fqdn_category"
                                     if item in result_list[0].keys():
                                         break_flag = 1    # 退出外层累加标志
                                         break

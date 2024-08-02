@@ -227,9 +227,70 @@ class CreateStatisticsTemplate():
         :param chart_id:    chart_id  UI页面中chart id序号
         :return:
         """
-        dropdown_item_metrics_dict = {'client_ip_object_list':'Client IP Object List','server_ip_object_list':'Server IP Object List',
-                                      'client_ip': 'Client IP','server_ip': 'Server IP',
-                                      'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
+        """
+        # 24.08版本开始：Metrics和Dimensions字典，前28个既可以为Metrics也可以为Dimensions
+        dropdown_item_metrics_dict = {
+            'client_ip_object_list': 'Client IP Object List',
+            'server_ip_object_list': 'Server IP Object List',
+            'fqdn_category_list': 'WebSketch Categories',
+            'client_ip': 'Client IP',
+            'client_country': 'Client Country',
+            'server_ip': 'Server IP',
+            'server_country': 'Server Country',
+            'client_asn': 'Client ASN',
+            'server_asn': 'Server ASN',
+            'server_fqdn': 'Server FQDN',
+            'server_domain': 'Server Domain',
+            'app': 'Application',
+            'app_category': 'Application Category',
+            'device_group': 'Device Group',
+            'c2s_ttl': 'Client-to-Server TTL',
+            's2c_ttl': 'Server-to-Client TTL',
+            'c2s_link_id': 'Incoming Link ID',
+            's2c_link_id': 'Outgoing Link ID',
+            'client_port': 'Client Port',
+            'server_port': 'Server Port',
+            'http_host': 'HTTP.Host',
+            'ssl_ja3_hash': 'SSL.JA3 Hash',
+            'ssl_sni': 'SSL.SNI',
+            'subscriber_id': 'Subscriber ID',
+            'decoded_as': 'Decoded AS',
+            'sled_ip': 'Sled IP',
+            'flags': 'Flags',
+            'direction': 'Direction',
+            'session_id': 'Session ID',
+            'in_pkt_length_distribution': 'Incoming Packet Length',
+            'out_pkt_length_distribution': 'Outgoing Packet Length',
+            'pkt_length_distribution': 'Packet Length',
+            'in_latency_ms': 'Incoming Latency',
+            'out_latency_ms': 'Outgoing Latency',
+            'dtls_handshake_latency_ms': 'DTLS.Handshake Latency(ms)',
+            'ssl_handshake_latency_ms': 'SSL.Handshake Latency(ms)',
+            'tcp_handshake_latency_ms': 'TCP Handshake Latency(ms)',
+            'duration_ms': 'Duration(ms)',
+            'tcp_rtt_ms': 'Round-trip Time(ms)',
+            'sent_bytes': 'Bytes Sent',
+            'sent_pkts': 'Packets Sent',
+            'received_pkts': 'Packets Received',
+            'received_bytes': 'Bytes Received',
+            'in_bytes': 'Incoming Bytes',
+            'out_bytes': 'Outgoing Bytes',
+            'in_pkts': 'Incoming Packets',
+            'out_pkts': 'Outgoing Packets',
+            'new_c2s_flows': 'New Client-to-Server Flows',
+            'new_s2c_flows': 'New Server-to-Client Flows',
+            'new_in_sessions': 'New Incoming Sessions',
+            'new_out_sessions': 'New Outgoing Sessions',
+            'closed_in_sessions': 'Closed Incoming Sessions',
+            'closed_out_sessions': 'Closed Outgoing Sessions',
+            'syn_pkts': 'SYN Packets',
+            'c2s_ip_fragments': 'Client-to-Server IP Fragments',
+            's2c_ip_fragments': 'Server-to-Client IP Fragments'
+        }
+        dropdown_item_dimensions_dict = self.get_first_n_elements_dict(dropdown_item_metrics_dict, 28)
+        """
+        # 24.07以前版本
+        dropdown_item_metrics_dict = {'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
                                       'bytes': 'Bytes', 'new_c2s_flows': 'New Client-to-Server Flows',
                                       'new_s2c_flows': 'New Server-to-Client Flows', 'sessions': 'Sessions',
                                       'new_in_sessions': 'New Incoming Sessions',
@@ -249,7 +310,6 @@ class CreateStatisticsTemplate():
                                       'out_pkt_length_sketch': 'Outgoing Packet Length',
                                       'pkt_length_sketch': 'Packet Length'
                                       }
-
         dropdown_item_dimensions_dict = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
                                          'server_ip': 'Server IP', 'client_asn': 'Client ASN',
                                          'server_asn': 'Server ASN', 'client_country': 'Client Country',
@@ -261,7 +321,7 @@ class CreateStatisticsTemplate():
                                          'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'Client-to-Server TTL',
                                          's2c_ttl': 'Server-to-Client TTL',
                                          'c2s_link_id': 'Client-to-Server Link ID', 's2c_link_id': 'Server-to-Client Link ID',
-                                         'client_port': 'Client Port','server_port':'Server Port'}
+                                         'client_port': 'Client Port','server_port': 'Server Port'}
 
         if data_key == "metrics":
             metrics_or_dimensions = chart[data_key]  # metrics 数据列表
@@ -296,7 +356,7 @@ class CreateStatisticsTemplate():
                                                      old_value=drop_item_old, new_value=dropdown_item,
                                                      dropdown_item_dict=dropdown_item_dict)
                         else:  # 新增数据  4.5.6.3->
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
                             self.dropdown_add(chart_id=chart_id, dropdown_name=repalceLabel, new_value=dropdown_item, dropdown_item_dict=dropdown_item_dict)
             return 200
         except Exception as e:
@@ -520,6 +580,9 @@ class CreateStatisticsTemplate():
                             # 24.07及以前
                             if col_n == 0 or col_n == 1:
                                 element_dropdown_item = col_dropdownSelect.find_element(By.XPATH,f".//div[contains(@class,'el-select-dropdown__wrap')]//span[normalize-space(text())='{replaceDropdownIterm}']")
+                                # 移动元素到页面，在执行点击
+                                self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
+                                self.driver.execute_script("arguments[0].click();", element_dropdown_item)
                             elif col_n == 2:
                                 # 输入label值
                                 col_dropdownSelect.find_element(By.XPATH, ".//input").clear()
@@ -649,3 +712,19 @@ class CreateStatisticsTemplate():
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             return 400
+
+    def get_first_n_elements_dict(self, dicts, n):
+        result = {}
+        try:
+            n = 28
+            # p = sorted([(k, v) for k, v in dicts.items()], reverse=True)
+            # s = set()
+            i = 0
+            for k, v in dicts.items():
+                if i < n:
+                    result[k] = v
+                    i = i + 1
+            return result,200
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
+            return result,400

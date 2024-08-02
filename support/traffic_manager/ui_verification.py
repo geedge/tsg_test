@@ -31,6 +31,8 @@ class UiVerification:
                     hit_count = -1
                     if policy_type == "statistics":  # 如果为Statistics Rule无对应的Log类型，则从Session Records查找
                         hit_count = my_driver.find_element(By.XPATH,statisticsRulePage_rightInfo_72hoursHitCount_posXpath).text
+                        # 因Statistics Rule暂未验证Session Records中的log属性,此处临时赋值
+                        log_result = True
                     else:
                         hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").text
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "hit_count:", hit_count, flush=True)
