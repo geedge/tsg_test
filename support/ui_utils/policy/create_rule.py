@@ -272,7 +272,7 @@ class CreateRule:
                             tmp_response_body.append(tmp_item)
                         elif tmp_item["item"][0]["item_type"] == "ftp_content":
                             tmp_ftp_content.append(tmp_item)
-                        elif tmp_item["item"][0]["item_type"] == "mail_content":
+                        elif tmp_item["item"][0]["item_type"] == "mail_subject":
                             tmp_mail_subject.append(tmp_item)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
