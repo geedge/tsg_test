@@ -199,11 +199,13 @@ if __name__ == "__main__":
         "debug_flag": "local",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 6,
+        "vsys_id": 4,
         "is_log": 0,
         "root_path": "C:/zcw/tsg_test",
         "path": "C:/zcw/tsg_test/tests/api",
         "module_name": "statistics",
         "test_case_name": "bytes_distributedby_serverip"
     }
+    parameter = replace_paras_api(parameter)
+    parameter = replace_paras_api(parameter)
     run(parameter)

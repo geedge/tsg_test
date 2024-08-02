@@ -206,4 +206,5 @@ if __name__ == "__main__":
         "module_name": "statistics",
         "test_case_name": "inbytes_distributedby_serverdomain"
     }
+    parameter = replace_paras_api(parameter)
     run(parameter)

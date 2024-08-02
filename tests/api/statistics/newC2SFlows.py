@@ -206,4 +206,5 @@ if __name__ == "__main__":
         "module_name": "statistics",
         "test_case_name": "newC2SFlows"
     }
+    parameter = replace_paras_api(parameter)
     run(parameter)

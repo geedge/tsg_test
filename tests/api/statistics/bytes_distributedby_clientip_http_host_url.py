@@ -223,4 +223,5 @@ if __name__ == "__main__":
         "module_name": "statistics",
         "test_case_name": "bytes_distributedby_clientip_http_host_url"
     }
+    parameter = replace_paras_api(parameter)
     run(parameter)

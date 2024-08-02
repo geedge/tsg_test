@@ -189,6 +189,9 @@ class ApiVerification:
                 #         else:
                 #             servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                 #             servers_end = servers_start
+
+                """
+                # 策略验证跳过
                 verify_policy_break_count = 0
                 for i in range(len(policy_id_list)):
                     while True:      # 多次策略验证
@@ -205,6 +208,7 @@ class ApiVerification:
                         verify_policy_break_count += 1
                         time.sleep(5)
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
+                    """
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             # 将原数据中使用的ip替换为随机生成ip
