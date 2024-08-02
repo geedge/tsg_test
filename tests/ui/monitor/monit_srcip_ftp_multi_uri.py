@@ -83,8 +83,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "autoFtp->"
-                                              "english.txt->"
+                                "item_value": "autoFtp&english.txt"
                                 #data["items"][i]["item_value"].split("->")[0].strip()
                                 #表达式运算的结果是english
                             }

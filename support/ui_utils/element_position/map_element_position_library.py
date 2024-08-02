@@ -199,7 +199,8 @@ test_keywords_object_element_position = {
         "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
         "objectPage_button_saveItem_posXpath": keywordsObjectPage_button_saveItem_posXpath,
         "objectPage_okButton_posId": keywordsObjectPage_okButton_posId,
-        "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath
+        "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath,
+        "ObjectPage_sameItem_addItem_posXpath": urlObjectPage_sameItem_addItem_posXpath,
     },
     "search": {
         "objectListPage_searchLabel_posId": keywordsObjectListPage_searchLabel_posId,
@@ -212,6 +213,43 @@ test_keywords_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": keywordsObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+
+
+test_account_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_account_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": accountObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": accountObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": accountObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": accountObjectPage_addItem_posId,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": accountObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath,
+                    "ObjectPage_sameItem_addItem_posXpath": urlObjectPage_sameItem_addItem_posXpath,
+                    "ObjectPage_sameItem_inputItem_posXpath": urlObjectPage_sameItem_inputItem_posXpath,
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": accountObjectPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": accountObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": accountObjectPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": accountObjectPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
+
+
 test_http_url_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -682,6 +720,31 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchCn_posXpath": monitorRulePage_searchCn_posXpath,
                     "policyRulePage_selectCn_posXpath": monitorRulePage_selectCn_posXpath,
                     "policyRulePage_closeCn_posXpath": monitorRulePage_closeCn_posXpath,
+                    # 添加mail account
+                    "policyRulePage_addConditionMailAccount_posXpath": policyRulePage_addCondition_mailAccount_posXpath,
+                    "policyRulePage_addMailAccount_posXpath": monitorRulePage_addmailAccount_posXpath,
+                    "policyRulePage_searchMailAccount_posXpath": monitorRulePage_searchmailAccount_posXpath,
+                    "policyRulePage_selectMailAccount_posXpath": monitorRulePage_selectmailAccount_posXpath,
+                    "policyRulePage_closeMailAccount_posXpath": monitorRulePage_closemailAccount_posXpath,
+                    #添加mail from
+                    "policyRulePage_addConditionMailFrom_posXpath": policyRulePage_addCondition_mailFrom_posXpath,
+                    "policyRulePage_addMailFrom_posXpath": monitorRulePage_addmailFrom_posXpath,
+                    "policyRulePage_searchMailFrom_posXpath": monitorRulePage_searchmailFrom_posXpath,
+                    "policyRulePage_selectMailFrom_posXpath": monitorRulePage_selectmailFrom_posXpath,
+                    "policyRulePage_closeMailFrom_posXpath": monitorRulePage_closemailFrom_posXpath,
+                    #添加mail to
+                    "policyRulePage_addConditionMailTo_posXpath": policyRulePage_addCondition_mailTo_posXpath,
+                    "policyRulePage_addMailTo_posXpath": monitorRulePage_addmailTo_posXpath,
+                    "policyRulePage_searchMailTo_posXpath": monitorRulePage_searchmailTo_posXpath,
+                    "policyRulePage_selectMailTo_posXpath": monitorRulePage_selectmailTo_posXpath,
+                    "policyRulePage_closeMailTo_posXpath": monitorRulePage_closemailTo_posXpath,
+                    #添加mail subject
+                    "policyRulePage_addConditionMailSubject_posXpath": policyRulePage_addCondition_mailSubject_posXpath,
+                    "policyRulePage_addMailSubject_posXpath": monitorRulePage_addmailSubject_posXpath,
+                    "policyRulePage_searchMailSubject_posXpath": monitorRulePage_searchmailSubject_posXpath,
+                    "policyRulePage_selectMailSubject_posXpath": monitorRulePage_selectmailSubject_posXpath,
+                    "policyRulePage_closeMailSubject_posXpath": monitorRulePage_closemailSubject_posXpath,
+
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
@@ -1130,6 +1193,8 @@ def get_element_position(key_name):
         element_position_map = test_fqdn_object_element_position
     elif key_name == "url":
         element_position_map = test_http_url_object_element_position
+    elif key_name == "account":
+        element_position_map =test_account_object_element_position
     # profile
     elif key_name == "response_page":
         element_position_map = test_response_page_element_position

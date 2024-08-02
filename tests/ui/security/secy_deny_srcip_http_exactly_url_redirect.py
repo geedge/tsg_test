@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_http_rate_low",
+            "rule_name": "secy_deny_srcip_http_exactly_url_redirect",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -82,7 +82,22 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [],
-                "protocol_filed": [],
+                "protocol_filed": [
+                    {
+                        "name": "secy_url",
+                        "object_type": "url",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "url",
+                                "item_value": "$open.node.com:180/"
+                            }
+                        ],
+                    }
+                ],
                 "sub_action_override": True,
                 "sub_action": [
                     {
@@ -98,7 +113,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "303",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
+            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},
+            {"query_field_key":"http_url", "query_value": "open.node.com:180/"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
@@ -121,6 +137,10 @@ def run(parameter):
             {
                 "type": test_data["condition"]["source_ip"][0]['object_type'],
                 "name": test_data["condition"]["source_ip"][0]['name']
+            },
+            {
+                "type":test_data["condition"]["protocol_filed"][0]['object_type'],
+                "name":test_data["condition"]["protocol_filed"][0]['name']
             }
         ]
         
@@ -158,7 +178,37 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-            
+            test_url_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": urlObjectPage_addItem_posId,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
+                    "objectPage_okButton_posId": urlObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
             test_rule_element_position = {
                 "page_jump":{
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -237,6 +287,20 @@ def run(parameter):
                 elif create_ip_code != 200:
                     result = "Fail to create ip."
                     break
+        # 创建protocol_filed        
+        if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+            protocol_field_data = test_data["condition"]["protocol_filed"]
+            create_protocol_filed = CreateObject(driver)
+            for x in range(len(protocol_field_data)):
+                object_type = protocol_field_data[x]['object_type']
+                if object_type == 'url':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_url_object_element_position)
+                if create_protocol_filed_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                elif create_protocol_filed_code != 200:
+                    result = "Fail to create {}.".format(object_type)
+                    break
+
         # 创建rule
         if create_ip_code == 200:
             create_rule = CreateRule(driver)
@@ -300,7 +364,25 @@ def run(parameter):
                 else:
                     result = result + " In addition, fail to search ip object."
                     break
-        
+        # 删除protocol_filed
+            for q in range(len(protocol_field_data)):
+                search_protocol_filed = SearchObject(driver)
+                object_type = protocol_field_data[q]['object_type']
+                if object_type == 'url':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_url_object_element_position)
+                if search_protocol_filed_code == 200:
+                    delete_protocol_filed = DeleteObject(driver)
+                    if object_type == 'url':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_url_object_element_position, first_row_checkbox_element, True)
+                    if delete_protocol_filed_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
+                    elif delete_protocol_filed_code != 200:
+                        result = result + " In addition, fail to delete {} object.".format(object_type)
+                        break
+                else:
+                    result = result + " In addition, fail to search {} object.".format(object_type)
+                    break
+
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -346,15 +428,16 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/ui",
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "security",
         "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
     }

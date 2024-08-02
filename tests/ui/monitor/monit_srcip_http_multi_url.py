@@ -96,9 +96,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "www.moe.gov.cn/jyb_xwfb/gzdt_gzdt->"
-                                              "www.moe.gov.cn/jyb_xwfb/gzdt_gzdt->"
-                                              "www.moe.gov.cn/jyb_xwfb/gzdt_gzdt",
+                                "item_value": "www.moe.gov.cn&jyb_xwfb&gzdt_gzdt"
                                 #data["items"][i]["item_value"].split("->")[0].strip()
                                 #表达式运算的结果是english
                             }

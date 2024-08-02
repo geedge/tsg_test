@@ -95,6 +95,8 @@ def run(parameter):
                         "plus": False,
                         "items": [
                             {
+                                "item_operation": "add",
+                                "item_type": "fqdn",
                                 "item_value": "open.node.com",
                             }
                         ]
@@ -651,15 +653,16 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.100",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.88",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/ui",
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "security",
         "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
     }
