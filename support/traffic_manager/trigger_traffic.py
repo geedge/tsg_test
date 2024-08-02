@@ -11,6 +11,7 @@ from support.traffic_manager.ssl_player import SSLPlayer
 from support.traffic_manager.ftp_player import FtpPlayer
 from support.traffic_manager.dns_player import DnsPlayer
 from support.traffic_manager.mail_player import MailPlayer
+from support.traffic_manager.dtls_player import DtlsPlayer
 from support.traffic_manager import trex_replay
 from support.traffic_manager.doh_player import DohPlayer
 from support.traffic_manager.workpath import workdir
@@ -57,7 +58,7 @@ class TriggerTraffic:
             elif len(test_data["traffic"]["protocol"]) == 0:
                 temp_data = test_data["traffic"]
             if test_data["traffic"]["protocol"] == "http":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate http traffic.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic.", flush=True)
                 print("script_type is " + script_type)
                 # api 创建配置为瞬间创建，增加等待时长，等待策略生效
                 if script_type == "api":
@@ -66,34 +67,38 @@ class TriggerTraffic:
                 player = HttpPlayer()
                 result = player.send_http_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "https" or test_data["traffic"]["protocol"] == "ssl":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate ssl traffic.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ssl traffic.", flush=True)
                 print("script_type is "+ script_type)
                 if script_type == "api":
                     time.sleep(6)
                 player = SSLPlayer()
                 result = player.send_ssl_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "ftp":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate ftp traffic.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ftp traffic.", flush=True)
                 if script_type == "api":
                     time.sleep(6)
                 player = FtpPlayer()
                 result = player.send_ftp_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "dns":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate nslookup traffic.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate nslookup traffic.", flush=True)
                 if script_type == "api":
                     time.sleep(6)
                 player = DnsPlayer()
                 result = player.send_dns_query(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "mail":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate mail traffic.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mail traffic.", flush=True)
                 if script_type == "api":
                     time.sleep(6)
                 player = MailPlayer()
                 result = player.send_mail_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "doh":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use curl to simulate mail traffic.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mail traffic.", flush=True)
                 player = DohPlayer()
                 result = player.send_doh_query(temp_data, script_type, debug_flag)
+            elif test_data["traffic"]["protocol"] == "dtls":
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate dtls traffic.", flush=True)
+                player = DtlsPlayer()
+                result = player.send_dtls_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use trex to replay traffic.", flush=True)
                 pcap_name = temp_data.get("pcap_name") + ".pcap"
