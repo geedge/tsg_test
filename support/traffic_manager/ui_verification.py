@@ -290,12 +290,16 @@ class UiVerification:
                     time.sleep(3)
                     # 以policy id作为filter查找命中策略的session
                     my_driver.find_element(By.ID,"addFilter").click()
+                    time.sleep(1)
                     my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").click()
                     my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").send_keys("service")
+                    time.sleep(1)
                     my_driver.find_element(By.ID,"Service Chaining Rule List26-_Label_UnrecognizedExp_Expression_groupItem_TagsSearch_FacedtedSearch_Search_VPanel_SessionLog_Home_App_anonymousComponent").click()
                     my_driver.find_element(By.ID,"operatorhas").click()
+                    time.sleep(1)
                     my_driver.find_element(By.XPATH,"//div[@class='el-tooltip el-input el-input--mini']//input").send_keys(sc_rule_id)
                     my_driver.find_element(By.ID,"facedQuery").click()
+                    time.sleep(1)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
                     for i in range(50) :
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
@@ -373,7 +377,7 @@ class UiVerification:
                                 log_byte_value = test_data["log_query_param"][t]["query_value"]
                                 if 1024 <= log_byte_value < 1048576:
                                     log_bytes_temp = str(round(log_byte_value/1024.0, 2)) + " KB"
-                                elif byte_value < 1024:
+                                elif log_byte_value < 1024:
                                     log_bytes_temp = str(log_byte_value) + " B"
                                 log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                 temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text

@@ -13,8 +13,12 @@ class AnalysisResult:
         if condition["policy_type"] == "statistics" and len(verification_result) == 5:
             failure_reason = verification_result[3]
         elif condition["policy_type"] == "service_chaining":
-            if cmd_result == False or log_result == False or metric_result == False:
-                failure_reason = failure_reason + "The verification result of metrics is failed, the failure reason is: the metrics do not match the expectation value."
+            if cmd_result == False:
+                failure_reason = failure_reason + "the metrics do not match the expectant value,"
+            if log_result == False:
+                failure_reason = failure_reason + "the expected value is not matched with queried values in the logs,"
+            if metric_result == False:
+                failure_reason = failure_reason + "the expected value is not matched with values of rule detail page,"
         elif condition["policy_type"] == "security" or condition["policy_type"] == "monitor" or condition["policy_type"] == "pxy_manipulation":
             if cmd_result == False:
                 failure_reason = failure_reason + "the contents returned by the command do not contain the expected value, "

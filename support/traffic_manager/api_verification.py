@@ -421,7 +421,7 @@ class ApiVerification:
                                 metric_result = False
                     elif metric_result == 444:
                         metric_result = False
-            return cmd_result, metric_result, metric_result, my_driver
+            return metric_result, cmd_result, metric_result, my_driver
         elif policy_type == "shaping":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.")
             return True, True, True

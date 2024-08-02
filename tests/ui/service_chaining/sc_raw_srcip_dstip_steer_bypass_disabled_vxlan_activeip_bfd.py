@@ -114,7 +114,7 @@ def run(parameter):
                             "device_group": "Device_Group:group-xxg-tsgx",
                             "connectivity": "VXLAN-G:2.2.2.53",
                             "health_check": "BFD:600:6",
-                            "enable": "on"
+                            "enable": "off"
                         }
                     ]
                 }
