@@ -619,12 +619,15 @@ class GetLog:
             pkt_value = sc_expected_metric["total_packets"]
             if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dest_ips_list:
                 if len(sc_info["app_name_1"]) > 0 :
-                    if sc_info["app_name_1"][0]["name"] == "http" or sc_info["app_name_1"][0]["name"] == "ssl":
+                    if sc_info["app_name_1"][0] == "http" or sc_info["app_name_1"][0] == "ssl":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
-                    elif sc_info["app_name_1"][0]["name"] == "ftp":
+                    elif sc_info["app_name_1"][0] == "ftp":
                         lost_pkt = 4
                         lost_byte = 266
+                    elif sc_info["app_name_1"][0] == "mail":
+                        lost_pkt = 15
+                        lost_byte = 1273
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 50 * pkt_value
@@ -648,12 +651,15 @@ class GetLog:
                     metric_result = False
             elif sc_info["sf_method"] == "layer2_switch":
                 if len(sc_info["app_name_1"]) > 0 :
-                    if sc_info["app_name_1"][0]["name"] == "http" or sc_info["app_name_1"][0]["name"] == "ssl":
+                    if sc_info["app_name_1"][0] == "http" or sc_info["app_name_1"][0] == "ssl":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
-                    elif sc_info["app_name_1"][0]["name"] == "ftp":
+                    elif sc_info["app_name_1"][0] == "ftp":
                         lost_pkt = 4
                         lost_byte = 266
+                    elif sc_info["app_name_1"][0] == "mail":
+                        lost_pkt = 15
+                        lost_byte = 1273
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 4 * pkt_value
