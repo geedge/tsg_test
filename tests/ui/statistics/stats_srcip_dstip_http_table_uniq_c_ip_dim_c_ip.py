@@ -60,26 +60,13 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.31",
+                                "item_value": "192.168.38.240",
                             },
                         ]
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [
-                    {
-                        "name": "stats_dstip_http_table_uniq_c_ip_dim_c_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "2.1.1.31",
-                            },
-                        ]
-                    }],
+                "destination_ip": [],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -93,11 +80,6 @@ def run(parameter):
                 "tunnel_level": [],
                 "flag": [],
                 "application": [
-                    {
-                        "name": "http",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
                 ],
                 "server_fqdn": [
                 ],
@@ -118,9 +100,21 @@ def run(parameter):
                             "metrics": [
                                 "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)"
                             ],
-                            "dimensions": ["application"],
+                            "dimensions": ["app"],
                             "order_by": "UNIQUECOUNT(Client IP)",
                             "row_limit": "20",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "server_ip:UNIQUE_COUNT:UNIQUECOUNT(Server IP)"
+                            ],
+                            "dimensions": ["app"],
+                            "order_by": "UNIQUECOUNT(Server IP)",
+                            "row_limit": "200",
                             "min_in_size": "0",
                             "max_out_size": "0"
                         }
@@ -133,8 +127,8 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.31",
-                "clients_end_ip": "10.64.224.31",
+                "clients_start_ip": "192.168.38.240",
+                "clients_end_ip": "192.168.38.240",
                 "servers_start_ip": "2.1.1.31",
                 "servers_end_ip": "2.1.1.31",
                 "m": 1,
@@ -174,14 +168,16 @@ def run(parameter):
                 "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": test_data["condition"]["destination_ip"][0]['object_type'],
-                "name": test_data["condition"]["destination_ip"][0]['name']
-            },
-            {
                 "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
                 "name": test_data["action_parameter"]["statistics_template"][0]['name']
             }
         ]
+        """        
+            {
+                "type": test_data["condition"]["destination_ip"][0]['object_type'],
+                "name": test_data["condition"]["destination_ip"][0]['name']
+            },
+        """
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -192,6 +188,7 @@ def run(parameter):
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
         # 创建object
+        """
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
@@ -214,9 +211,9 @@ def run(parameter):
                         break
             if cond_status == 1:   # 创建失败，退出遍历创建
                 break
-        """
+
         # 调试参数,正式运行需取消
-        cond_code = 200
+        #cond_code = 200
         # 创建Statistics Template
         create_statistics_template_code = 0
         if cond_code == 200:
@@ -256,12 +253,11 @@ def run(parameter):
         verification_result = {}
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
-            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],
-                                                                element_position_map)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],element_position_map)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.organize_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
 
@@ -487,11 +483,11 @@ if __name__ == '__main__':
 
     """
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "admin",
+        "password": "admin",
         "test_pc_ip": "192.168.64.73",
-        "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "api_server": "https://192.168.44.3",
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,  # 6
         "root_path": "D:/tsgcode/tsg_test",

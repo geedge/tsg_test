@@ -1,5 +1,6 @@
 import os
 import sys
+import inspect
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import random
 import requests
@@ -118,7 +119,6 @@ class OrganizeConfig:
         statistics_template_dimensions_dict = {}
         if test_data["policy_type"] == "statistics":
             # 从Statistics Rule定义信息中获取流量验证所需数据格式
-            statistics_template_metrics_dimension_list = self.get_template_chart_metric_dimension(test_data)
             for policy in policy_define:
                 create_policies_ids.append({'statistics': policy["id"]})
                 # 从Test Data中解析Metrics Key和Label、Dimensions Key和界面显示之间的字典关系
@@ -154,79 +154,45 @@ class OrganizeConfig:
                     for template in template_define:
                         template_temp = []
                         # 从接口搜索出的Template定义Chart个数和测试数据test_data中解析出的TemplateChart个数一致
-                        if len(template["dataview"]["charts"]) == len(statistics_template_metrics_dimension_list[template_number]["template_charts"]):
-                            chart_number = 0
-                            for chart in template["dataview"]["charts"]:
-                                chart_info = {"template_id": 0, "chart_id": 0, "chart_type": "line", "version": 0,
-                                              'sql': ""}
-                                chart_info["template_id"] = template_id
-                                chart_info["chart_id"] = chart["id"]
-                                chart_info["chart_type"] = chart["display"]["type"]
-                                chart_info["version"] = chart["version"]
-                                #24.07及以前版本
-                                chart_info["sql"] = chart["query"]["sql"]
-                                """
-                                #24.08及以后版本
-                                #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
-                                if chart["display"]["type"] != "Histogram" and chart["query"]["dimensions"] != []:
-                                    code,dimensions_tmp = self.chart_dimensions_to_query_dimensions(chart["query"]["dimensions"])
-                                    chart_info["dimensions"] = dimensions_tmp
-                                else:
-                                    chart_info["dimensions"] = chart["query"]["dimensions"]
-                                chart_info["metrics"] = chart["query"]["metrics"]
-                                chart_info["order_by"] = chart["query"]["order_by"]
-                                chart_info["limit"] = chart["query"]["limit"]
-                                """
-                                template_temp.append(chart_info)
-                                statistics_info = {}
-                                statistics_info["rule_id"] = test_data["rule_id"]
-                                statistics_info["template_id"] = template_id
-                                statistics_info["chart_id"] = chart["id"]
-                                statistics_info["chart_type"] = chart["display"]["type"]
-                                statistics_info["version"] = chart["version"]
-                                #24.07及以前版本
-                                statistics_info["sql"] = chart["query"]["sql"]
-                                statistics_info["metrics_dimension"] = statistics_template_metrics_dimension_list[template_number]["template_charts"][chart_number]
-                                """
-                                #24.08及以后版本
-                                #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
-                                if chart["display"]["type"] != "Histogram" and chart["query"]["dimensions"] != []:
-                                    code,dimensions_tmp = self.chart_dimensions_to_query_dimensions(chart["query"]["dimensions"])
-                                    statistics_info["dimensions"] = dimensions_tmp
-                                else:
-                                    statistics_info["dimensions"] = chart["query"]["dimensions"]
-                                statistics_info["metrics"] = chart["query"]["metrics"]
-                                statistics_info["order_by"] = chart["query"]["order_by"]
-                                statistics_info["limit"] = chart["query"]["limit"]
-                                #添加Label为字典的数据，格式如下：
-                                test1 = {"Client IPs1":{
-                                    "function": {
-                                        "name": "UNIQUE_COUNT"
-                                    },
-                                    "metric_name": "unique_count_1",
-                                    "metric_type": "unique_count",
-                                    "label": "Client IPs1"
-                                },"Client IPs":{
-                                    "function": {
-                                        "name": "COUNT"
-                                    },
-                                    "metric_name": "unique_count_1",
-                                    "metric_type": "unique_count",
-                                    "label": "Client IPs"
-                                }}
-                                self.statistics_template_metrics_dimension_list_2408(statistics_info)
-                                """
-                                statistics_sc_info_list.append(statistics_info)
-                                chart_number = chart_number + 1
-                            template_number = template_number + 1
-                        else:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The number of Template definition charts searched from the interface is inconsistent with the number of TemplateCharts parsed from the test data test_data!", flush=True)
+                        #if len(template["dataview"]["charts"]) == len(statistics_template_metrics_dimension_list[template_number]["template_charts"]):
+                        #    chart_number = 0
+                        for chart in template["dataview"]["charts"]:
+                            chart_info = {"template_id": 0, "chart_id": 0, "chart_type": "line", "version": 0,
+                                          "dimensions": [],"metrics":[],"order_by":"","limit":""}
+                            chart_info["template_id"] = template_id
+                            chart_info["chart_id"] = chart["id"]
+                            chart_info["chart_type"] = chart["display"]["type"]
+                            chart_info["version"] = chart["version"]
+                            #24.08及以后版本
+                            #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                            if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
+                                dimensions_tmp = self.chart_dimensions_to_query_dimensions(chart["query"]["dimensions"])
+                                chart_info["dimensions"] = dimensions_tmp
+                            else:
+                                chart_info["dimensions"] = chart["query"]["dimensions"]
+                            metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                            chart_info["metrics"] = metrics_tmp
+                            chart_info["order_by"] = chart["query"]["order_by"]
+                            chart_info["limit"] = chart["query"]["limit"]
+                            template_temp.append(chart_info)
+                            statistics_info = {}
+                            statistics_info["rule_id"] = test_data["rule_id"]
+                            statistics_info["template_id"] = template_id
+                            statistics_info["chart_id"] = chart["id"]
+                            statistics_info["chart_type"] = chart["display"]["type"]
+                            statistics_info["version"] = chart["version"]
+                            #24.08及以后版本
+                            #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                            if chart["display"]["type"] != "Histogram" and chart["query"]["dimensions"] != []:
+                                statistics_info["dimensions"] = dimensions_tmp
+                            else:
+                                statistics_info["dimensions"] = chart["query"]["dimensions"]
+                            statistics_info["metrics"] = metrics_tmp
+                            statistics_info["order_by"] = chart["query"]["order_by"]
+                            statistics_info["limit"] = chart["query"]["limit"]
+                            self.statistics_template_metrics_dimension_list_2408(statistics_info)
+                            statistics_sc_info_list.append(statistics_info)
                         create_profile_ids.append({'profile_type': 'Statistics_Templates', 'id': template_id, 'template_info': template_temp})
-                        template_info = {"profile_type": "", "id": 0, "template_info": []}
-                        template_info["profile_type"] = ""
-                        template_info["id"] = template_id
-                        template_info["template_info"] = template_temp
-
         cfg_list = {}
         cfg_list["create_ip_ids"] = create_ip_ids
         cfg_list["create_subid_ids"] = create_subid_ids
@@ -246,8 +212,6 @@ class OrganizeConfig:
         return cfg_list
 
     def chart_metrics_to_query_metrics(self,metrics_list):
-        metrics_result = []
-        code = 0
         metric_temp_json = """
         {
             "function": {
@@ -263,45 +227,54 @@ class OrganizeConfig:
         }       
         """
         try:
+            metrics_result = []
             for metric in metrics_list:
                 metric_temp_dict = json.loads(metric_temp_json)
                 metric_temp_dict["function"]["name"] = metric["function"]["name"]
+                metric_temp_dict["source_fields"] = metric["source_fields"]
                 metric_temp_dict["metric_name"] = metric["metric_name"]
                 metric_temp_dict["metric_type"] = metric["metric_type"]
                 metric_temp_dict["label"] = metric["label"]
                 metrics_result.append(metric_temp_dict)
+            return metrics_result
         except Exception as e:
-            code = 400
-        return code,metrics_result
+            self.error_print_function(inspect.currentframe().f_code.co_name, "Failed to parse Dimensions!")
+            raise "Failed to parse Metrics!".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3])
+
     def chart_dimensions_to_query_dimensions(self,dimensions_list):
-        dimensions_result = []
-        code = 0
         dimension_temp_json = """
         {
             "metric_name": "unique_count",
-            "label": "Client IPs"
+            "label": "Client IPs",
+            "source_fields": [
+                "sent_bytes",
+                "received_bytes"
+            ]
         }       
         """
         try:
+            dimensions_result = []
             for dimension in dimensions_list:
                 dimension_temp_dict = json.loads(dimension_temp_json)
-                dimension_temp_dict["metric_name"] = dimension["source_fields"]
+                dimension_temp_dict["metric_name"] = dimension["source_fields"][0]
                 dimension_temp_dict["label"] = dimension["label"]
+                dimension_temp_dict["source_fields"] = dimension["source_fields"]
                 dimensions_result.append(dimension_temp_dict)
         except Exception as e:
-            code = 400
-        return code,dimensions_result
+            self.error_print_function(inspect.currentframe().f_code.co_name, "Failed to parse Dimensions!")
+            raise "Failed to parse Dimensions!".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3])
+        return dimensions_result
     def statistics_template_metrics_dimension_list_2408(self,statistics_info):
         chart_dict = {"metrics": {}, "dimensions": {}}
-        if statistics_info["chart_type"] != "Histogram" and statistics_info["dimensions"] != []:
+        if statistics_info["chart_type"] != "histogram" and statistics_info["dimensions"] != []:
             dimensions_list = {}
-            for dimension in statistics_info["dimensions"]:
-                dimensions_list[dimension["lable"]] = dimension
+            for i in range(len(statistics_info["dimensions"])):
+                dimensions_list[statistics_info["dimensions"][i]["label"]] = statistics_info["dimensions"][i]
             chart_dict["dimensions"] = dimensions_list
         if statistics_info["metrics"] != []:
             metrics_list = {}
-            for metric in statistics_info["metrics"]:
-                metrics_list[metric["lable"]] = metric
+            for i in range(len(statistics_info["metrics"])):
+                metrics_list[statistics_info["metrics"][i]["label"]] = statistics_info["metrics"][i]
             chart_dict["metrics"] = metrics_list
         statistics_info["metrics_dimension"] = chart_dict
         return statistics_info
@@ -367,8 +340,7 @@ class OrganizeConfig:
                         config["condition"][obj][0]["item"][0]["item_value"] = new_two_ip
                     else:
                         start_ip = stop_ip = "1.1.1.1"
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
-
+                        self.error_print_function(inspect.currentframe().f_code.co_name, "Setrandom ip error.")
                     # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
                     if obj == "source_ip":# and traffic_replace_ip == 1:
                         config["traffic"]["clients_start_ip"] = start_ip
@@ -377,8 +349,7 @@ class OrganizeConfig:
                     #    config["traffic"]["servers_start_ip"] = start_ip
                     #    config["traffic"]["servers_end_ip"] = stop_ip
                     else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Setrandom ip error.", flush=True)
+                        self.error_print_function(inspect.currentframe().f_code.co_name, "Setrandom ip error.")
                         pass
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
@@ -392,14 +363,18 @@ class OrganizeConfig:
             query_condition = {"page_size": 20, "page_no": 1, "ids": rule_id, "type": rule_type,
                             "is_enabled": "True", "with_sub_vsys": 1, "page_location": "oneshot", "location_key": "json",
                             "vsys_id": vsys_id}
-            url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={str(vsys_id)}")
+            #https://192.168.44.3/v1/policy/rule?page_size=20&page_no=1&type=statistics&name=&is_enabled=&with_sub_vsys=1&user_tag_ids=&last_modified_by=&created_by=&page_location=0&location_id=&location_key=&vsys_id=
+            url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={vsys_id}")
+            #url = (api_host + f"/v1/policy/rule/{rule_id}?vsys_id={str(vsys_id)}")
             response = requests.get(url, headers=headers, verify=False)
-            assert response.status_code == 200
+            if response.status_code != 200:
+                self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{response.status_code}")
             response = json.loads(response.text)
             result = response['data']['rules']
             return result
         except AssertionError as e:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
+            self.error_print_function(inspect.currentframe().f_code.co_name, e)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def get_template_define(self, token, template_id, template_type, api_host, vsys_id):
         try:
@@ -458,7 +433,12 @@ class OrganizeConfig:
                         template_metrics_dimension_list["template_charts"] = template_metrics_dimension_dict
                         statistics_template_metrics_dimension_list.append(template_metrics_dimension_list)
         return statistics_template_metrics_dimension_list
+
+    def error_print_function(self, function, error):
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function}Error: {error}", flush=True)
+
 if __name__ == "__main__":
+
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
     test1 = {"Client IPs1":{
         "function": {

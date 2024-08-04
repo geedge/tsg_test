@@ -149,7 +149,7 @@ class ApiVerification:
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             # 将时间向前推迟 8 分钟，因为trex流量先发送。
-            new_time = current_utc_time - timedelta(seconds=30)
+            new_time = current_utc_time - timedelta(seconds=180)
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],'start_time', flush=True)
             # 解析trex使用参数， 解析client server ip
@@ -254,7 +254,7 @@ class ApiVerification:
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                        metric_results = log.get_livechart_statistics(token, start_time, end_time, statistics_info, statistics_metircs, trex_ip_info, test_data, api_server, vsys_id, script_type)
+                        metric_results = log.get_livechart_statistics_2408(token, start_time, end_time, statistics_info, statistics_metircs, trex_ip_info, test_data, api_server, vsys_id, script_type)
                         metric_result = metric_results[0]
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
