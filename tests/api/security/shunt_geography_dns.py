@@ -57,6 +57,7 @@ def run(parameter):
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],
             "traffic": {
+                "protocol": "dns",
                 "type": "nslookup",
                 "command": "nslookup www.example.com -timeout=1"
             },
@@ -137,7 +138,7 @@ if __name__ == "__main__":
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.88",
+        "test_pc_ip": "192.168.64.65",
         "api_server": "http://192.168.44.72",
         "test_subcriber_id": "test6488",
         "script_type": "api",
@@ -145,8 +146,8 @@ if __name__ == "__main__":
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/api",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }
