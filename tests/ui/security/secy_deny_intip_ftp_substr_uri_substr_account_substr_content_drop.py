@@ -149,7 +149,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
             },
             "token": ""
         }

@@ -109,7 +109,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "autotest",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
@@ -222,6 +222,7 @@ def run(parameter):
                     "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
                     "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
                     "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
+                    "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
