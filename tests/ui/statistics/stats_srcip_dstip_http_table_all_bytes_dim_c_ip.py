@@ -486,7 +486,7 @@ if __name__ == '__main__':
         "username": "admin",
         "password": "admin",
         "test_pc_ip": "192.168.64.73",
-        "api_server": "https://192.168.44.72",
+        "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
         "vsys_id": 5,#5

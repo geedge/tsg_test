@@ -188,11 +188,9 @@ def run(parameter):
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
         # 创建object
-        """
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
-        """
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":
@@ -411,91 +409,20 @@ def run(parameter):
 
 
 if __name__ == '__main__':
-    """
-    dicts = {
-        'client_ip_object_list': 'Client IP Object List',
-        'server_ip_object_list': 'Server IP Object List',
-        'fqdn_category_list': 'WebSketch Categories',
-        'client_ip': 'Client IP',
-        'client_country': 'Client Country',
-        'server_ip': 'Server IP',
-        'server_country': 'Server Country',
-        'client_asn': 'Client ASN',
-        'server_asn': 'Server ASN',
-        'server_fqdn': 'Server FQDN',
-        'server_domain': 'Server Domain',
-        'app': 'Application',
-        'app_category': 'Application Category',
-        'device_group': 'Device Group',
-        'c2s_ttl': 'Client-to-Server TTL',
-        's2c_ttl': 'Server-to-Client TTL',
-        'c2s_link_id': 'Incoming Link ID',
-        's2c_link_id': 'Outgoing Link ID',
-        'client_port': 'Client Port',
-        'server_port': 'Server Port',
-        'http_host': 'HTTP.Host',
-        'ssl_ja3_hash': 'SSL.JA3 Hash',
-        'ssl_sni': 'SSL.SNI',
-        'subscriber_id': 'Subscriber ID',
-        'decoded_as': 'Decoded AS',
-        'sled_ip': 'Sled IP',
-        'flags': 'Flags',
-        'direction': 'Direction',
-        'session_id': 'Session ID',
-        'in_pkt_length_distribution': 'Incoming Packet Length',
-        'out_pkt_length_distribution': 'Outgoing Packet Length',
-        'pkt_length_distribution': 'Packet Length',
-        'in_latency_ms': 'Incoming Latency',
-        'out_latency_ms': 'Outgoing Latency',
-        'dtls_handshake_latency_ms': 'DTLS.Handshake Latency(ms)',
-        'ssl_handshake_latency_ms': 'SSL.Handshake Latency(ms)',
-        'tcp_handshake_latency_ms': 'TCP Handshake Latency(ms)',
-        'duration_ms': 'Duration(ms)',
-        'tcp_rtt_ms': 'Round-trip Time(ms)',
-        'sent_bytes': 'Bytes Sent',
-        'sent_pkts': 'Packets Sent',
-        'received_pkts': 'Packets Received',
-        'received_bytes': 'Bytes Received',
-        'in_bytes': 'Incoming Bytes',
-        'out_bytes': 'Outgoing Bytes',
-        'in_pkts': 'Incoming Packets',
-        'out_pkts': 'Outgoing Packets',
-        'new_c2s_flows': 'New Client-to-Server Flows',
-        'new_s2c_flows': 'New Server-to-Client Flows',
-        'new_in_sessions': 'New Incoming Sessions',
-        'new_out_sessions': 'New Outgoing Sessions',
-        'closed_in_sessions': 'Closed Incoming Sessions',
-        'closed_out_sessions': 'Closed Outgoing Sessions',
-        'syn_pkts': 'SYN Packets',
-        'c2s_ip_fragments': 'Client-to-Server IP Fragments',
-        's2c_ip_fragments': 'Server-to-Client IP Fragments'
-    }
-    result = {}
-    n = 28
-    #p = sorted([(k, v) for k, v in dicts.items()], reverse=True)
-    #s = set()
-    i = 0
-    for k, v in dicts.items():
-        if i < n:
-            result[k] = v
-            i = i + 1
-    print(result)
-
-    """
     parameter = {
-        "username": "admin",
-        "password": "admin",
-        "test_pc_ip": "192.168.64.73",
-        "api_server": "https://192.168.44.3",
+        "username": "AutomationTestAccount",
+        "password": "1qaz@WSX",
+        "test_pc_ip": "192.168.64.38",
+        "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,  # 6
+        "vsys_id": 5,  # 5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
         "test_case_name": "stats_srcip_dstip_http_table_uniq_c_ip_dim_c_ip",
         "debug_flag": "local",
-        "test_subcriber_id": "test6489",
+        "test_subcriber_id": "test6438",
         "script_type": "ui",
         "policy_type": "statistics"
     }
