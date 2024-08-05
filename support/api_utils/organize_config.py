@@ -16,13 +16,12 @@ class OrganizeConfig:
         token = test_data["token"]
         create_ip_ids, create_subid_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
-        policy_define = self.get_policy_define(token, test_data["rule_id"], test_data["policy_type"], api_server,
-                                               vsys_id)
+        policy_define = self.get_policy_define(token, test_data["rule_id"], test_data["policy_type"], api_server, vsys_id)
         statistics_template_metrics_dict = {}
         statistics_template_dimensions_dict = {}
         if test_data["policy_type"] == "statistics":
             # 从Statistics Rule定义信息中获取流量验证所需数据格式
-            statistics_template_metrics_dimension_list = self.get_template_chart_metric_dimension(test_data)
+            #statistics_template_metrics_dimension_list = self.get_template_chart_metric_dimension(test_data)
             for policy in policy_define:
                 create_policies_ids.append({'statistics': policy["id"]})
                 # 从Test Data中解析Metrics Key和Label、Dimensions Key和界面显示之间的字典关系

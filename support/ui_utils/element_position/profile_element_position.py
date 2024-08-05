@@ -877,8 +877,8 @@ statisticsTemplates_LabelName_posXpath = "//form[contains(@class, 'ly-addform1')
 statisticsTemplates_dropdown_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'el-popper')]//span[normalize-space(text())='{replaceDropdownIterm}']"  # 所有的下拉列表中内容定位 。replaceDropdownIterm 二次处理
 statisticsTemplates_button_chartAdd_posXpath = "//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath
 statisticsTemplates_button_chartEdit_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//div[@class='operateIcon']//i[contains(@class, 'icon-Edit')]"  # 编辑图标按钮 xpath
-statisticsTemplates_metrics_dropdown_item_posXpath = "//div[@class='el-select-dropdown el-popper is-multiple'][not(contains(@style,'display: none;'))]//li/span[normalize-space(text())='{}']" #24.08版本，Metrics item定位
-statisticsTemplates_dimensions_dropdown_item_posXpath = "//div[@class='Dimension margin-top-2'][not(contains(@style,'display: none;'))]//li/span[normalize-space(text())='{}']" #24.08版本，Dimensions item定位
+statisticsTemplates_metrics_dropdown_item_posXpath = "//div[@class='el-select-dropdown el-popper is-multiple'][contains(@style,'position: absolute;')]//li/span[normalize-space(text())='{}']" #24.08版本，Metrics item定位#[not(contains(@style,'display: none;'))]
+statisticsTemplates_dimensions_dropdown_item_posXpath = "//div[@class='Dimension margin-top-2']//div[@class='el-select-dropdown el-popper'][contains(@style,'position: absolute;')]//li/span[normalize-space(text())='{}']" #24.08版本，Dimensions item定位
 statisticsTemplates_div_paperGrid_posXpath = "//*[@id='proxyTCP']/div[contains(@class, 'paper-grid')]"    # div的包含滚动条的长页面 xpath
 statisticsTemplates_div_rightDetails_posXpath = "//div[@id='router-view-container']//div[@class='paper-grid-right']//form/div"  # 右侧详情div容器 xpath
 statisticsTemplates_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss    #提示保存按钮警告框OK按钮
