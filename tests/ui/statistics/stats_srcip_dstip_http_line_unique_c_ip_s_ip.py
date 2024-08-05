@@ -44,16 +44,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_line_unique_client_server_ips",
+            "rule_name": "stats_srcip_dstip_http_line_unique_c_ip_s_ip",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_line_unique_client_server_ips",
+                        "name": "stats_srcip_http_line_unique_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_line_unique_client_server_ips",
+                        "name": "stats_dstip_http_line_unique_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -110,15 +110,15 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_srcip_dstip_http_line_unique_client_server_ips",
+                    "name": "stats_srcip_dstip_http_line_unique_c_ip_s_ip",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "client_ip_sketch:APPROX_COUNT_DISTINCT_HLLD:client ip sketch",
-                            "server_ip_sketch:APPROX_COUNT_DISTINCT_HLLD:server ip sketch"
+                            "client_ip:UNIQUE_COUNT:UNIQUE_COUNT(client ip)",
+                            "server_ip:UNIQUE_COUNT:UNIQUE_COUNT(server ip)"
                           ],
                           "dimensions": ["time"],
                           "order_by": "",
@@ -417,7 +417,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_line_unique_client_server_ips",
+        "test_case_name": "stats_srcip_dstip_http_line_unique_c_ip_s_ip",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

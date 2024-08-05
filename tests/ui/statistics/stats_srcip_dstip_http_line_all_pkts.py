@@ -118,7 +118,7 @@ def run(parameter):
                           "metrics": [
                             "in_pkts:RATE:in pkts",
                             "out_pkts:RATE:out pkts",
-                            "pkts:RATE:pkts"
+                            "in_pkts+out_pkts:RATE:pkts"
                           ],
                           "dimensions": [],
                           "order_by": "",

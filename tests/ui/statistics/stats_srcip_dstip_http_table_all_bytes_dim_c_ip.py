@@ -190,11 +190,9 @@ def run(parameter):
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
         # 创建object
-        """
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
-        """
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":
@@ -488,10 +486,10 @@ if __name__ == '__main__':
         "username": "admin",
         "password": "admin",
         "test_pc_ip": "192.168.64.73",
-        "api_server": "https://192.168.44.3",
+        "api_server": "https://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,  # 6
+        "vsys_id": 5,#5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",

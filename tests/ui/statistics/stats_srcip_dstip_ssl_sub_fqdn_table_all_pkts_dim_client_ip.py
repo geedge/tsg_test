@@ -131,7 +131,7 @@ def run(parameter):
                           "metrics": [
                             "in_pkts:SUM:incoming pkts",
                             "out_pkts:SUM:outgoing pkts",
-                            "pkts:SUM:all pkts"
+                            "in_pkts+out_pkts:SUM:all pkts"
                           ],
                           "dimensions": [
                             "client_ip"

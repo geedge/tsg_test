@@ -119,7 +119,7 @@ def run(parameter):
                           "metrics": [
                             "in_latency_ms_sketch:P99_PERCENTILE_HDR:in latency ms sketch",
                             "out_latency_ms_sketch:P99_PERCENTILE_HDR:out latency ms sketch",
-                            "latency_ms_sketch:P99_PERCENTILE_HDR:latency ms sketch"
+                            "tcp_handshake_latency_ms:P99_PERCENTILE_HDR:latency ms sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",
