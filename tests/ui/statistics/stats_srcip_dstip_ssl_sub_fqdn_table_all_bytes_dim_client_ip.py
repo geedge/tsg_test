@@ -146,7 +146,9 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.bbc.com"}],
+            "log_query_param": [
+                {"query_field_key": "ssl_sni", "query_value": "www.bbc.com"}
+            ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
