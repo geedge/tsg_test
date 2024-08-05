@@ -119,7 +119,7 @@ def run(parameter):
                           "metrics": [
                             "in_pkts:SUM:in pkts",
                             "out_pkts:SUM:out pkts",
-                            "pkts:SUM:pkts"
+                            "in_pkts+out_pkts:SUM:pkts"
                           ],
                           "dimensions": [
                             "client_ip",

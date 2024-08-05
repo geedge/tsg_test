@@ -28,6 +28,9 @@ from datetime import datetime
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        # 参数初始化
+        result, exception_result = "", ""
+        
         # 脚本启动时间
         start_time = time.time()
 
@@ -41,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "packets_srcip_http_line_client_country",
+            "rule_name": "stats_srcip_dstip_http_line_unique_c_ip_s_ip",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -50,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_line_pkts_dim_client_country",
+                        "name": "stats_srcip_http_line_unique_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -58,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.23",
+                                "item_value": "10.64.224.4",
                             },
                         ]
                     }
@@ -66,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_line_pkts_dim_client_country",
+                        "name": "stats_dstip_http_line_unique_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -74,7 +77,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.23",
+                                "item_value": "2.1.1.4",
                             },
                         ]
                     }],
@@ -107,20 +110,21 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_http_line_pkts_dim_client_country",
+                    "name": "stats_srcip_dstip_http_line_unique_c_ip_s_ip",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "pkts:RATE:pkts"
+                            "client_ip:UNIQUE_COUNT:UNIQUE_COUNT(client ip)",
+                            "server_ip:UNIQUE_COUNT:UNIQUE_COUNT(server ip)"
                           ],
-                          "dimensions": ["client_country"],
-                          "order_by": "pkts",
-                          "row_limit": "10",
-                          "min_in_size": "1",
-                          "max_out_size": "1"
+                          "dimensions": ["time"],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "0",
+                          "max_out_size": "0"
                         }
                       ]
                 }]
@@ -131,10 +135,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.23",
-                "clients_end_ip": "10.64.224.23",
-                "servers_start_ip": "2.1.1.23",
-                "servers_end_ip": "2.1.1.23",
+                "clients_start_ip": "10.64.224.4",
+                "clients_end_ip": "10.64.224.4",
+                "servers_start_ip": "2.1.1.4",
+                "servers_end_ip": "2.1.1.4",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -250,12 +254,17 @@ def run(parameter):
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            edit_rule_code = 200
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
                 cfg_list = config.organize_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
@@ -274,7 +283,6 @@ def run(parameter):
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
-
         # 避免报错：stale element not found
         time.sleep(5)
 
@@ -409,7 +417,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_line_pkts_dim_client_country",
+        "test_case_name": "stats_srcip_dstip_http_line_unique_c_ip_s_ip",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

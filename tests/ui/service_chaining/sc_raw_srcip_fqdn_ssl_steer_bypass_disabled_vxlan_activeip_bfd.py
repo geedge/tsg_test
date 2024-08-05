@@ -403,17 +403,13 @@ def run(parameter):
 
         # 创建profile
         if "profile" in test_data and len(test_data["profile"]) != 0:
-            profile_data = test_data["profile"]
             service_chaining_profile = CreateServiceFunctionForwarderProfile(driver)
-            for j in range(len(profile_data)):
-                create_profile_code,sc_info= service_chaining_profile.create_sff_profile(profile_data[j],test_service_function_forwarder_profile_element_position,test_service_function_profile_element_position)
-                if create_profile_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create service function forwarder profile successfully.", flush=True)
-                elif create_profile_code != 200:
-                        result = "Fail to create service chaining profile."
-                        break
-                sc_info["targeted_traffic"] = test_data["targeted_traffic"]
-                sc_info["app_name_1"] = test_data["condition"]["application"]
+            create_profile_code,sc_info= service_chaining_profile.create_sff_profile(test_data,test_service_function_forwarder_profile_element_position,test_service_function_profile_element_position)
+            if create_profile_code == 200:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create service function forwarder profile successfully.", flush=True)
+            elif create_profile_code != 200:
+                result = "Fail to create service chaining profile."
+
         # 创建rule
         if create_ip_code == 200 and create_profile_code == 200:
             if test_data["targeted_traffic"] == "decrypted":
@@ -502,6 +498,7 @@ def run(parameter):
         # 删除profile
         if delete_rule_code == 200:
             # 删除sff
+            profile_data = test_data["profile"]
             for x in range(len(profile_data)):
                 search_sff = SearchProfile(driver)
                 search_sff_code, first_row_checkbox_element = search_sff.search(profile_data[x]["name"],test_service_function_forwarder_profile_element_position)

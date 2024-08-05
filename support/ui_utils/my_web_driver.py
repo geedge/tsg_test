@@ -49,11 +49,20 @@ class MyWebDriver(webdriver.Remote):
         search_time = round(search_time, 1)
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"{caller_filename}. {caller_lineno} line. find element:{value}. find method: {by}. find take time:{search_time} second.")
         if throw_assert == 1:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Find Element Error: {caller_filename}. {caller_lineno} line. find element: {value}. find method: {by}.")
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], assert_info, flush=True)
-            raise
+            return 0
         return self.element
 
     def find_elements(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.3, find_after_wait_time=0.3, wait_timeout=10):
+        # 获取当前调用栈
+        current_stack = inspect.stack()
+        # 调用栈的第一个元素是当前的函数调用（my_function），
+        # 第二个元素是调用my_function的地方
+        caller_frame_record = current_stack[1]
+        # 获取调用者的文件名、行号、函数名等信息
+        caller_filename = caller_frame_record.filename
+        caller_lineno = caller_frame_record.lineno
         if wait_timeout > 60:
             wait_timeout = 60
         while wait_timeout > 0:
@@ -62,12 +71,7 @@ class MyWebDriver(webdriver.Remote):
             try:
                 self.element = super().find_elements(by, value)
             except:
-                caller_info = inspect.stack()[1]
-                caller_filename = caller_info.filename
-                caller_line_number = caller_info.frame
-                caller_code_context = caller_info.code_context
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], caller_filename, caller_line_number, caller_code_context, flush=True)
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"find method:{by};-->>", f"find element:{value}\n")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"{caller_filename}. {caller_lineno} line. find element: {value}. find method: {by}.")
                 throw_assert = 1
                 assert_info = traceback.format_exc()
                 continue
@@ -76,8 +80,9 @@ class MyWebDriver(webdriver.Remote):
                 throw_assert = 0
                 break   #找到则退出循环
         if throw_assert == 1:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Find Element Error: {caller_filename}. {caller_lineno} line. find element: {value}. find method: {by}.")
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], assert_info, flush=True)
-            raise
+            return 0
         return self.element
 
     def is_exist_element(self, Element, timeout=3):

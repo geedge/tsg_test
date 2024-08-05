@@ -84,7 +84,7 @@ class UiVerification:
                                             temp_log_result = False
                                         temp_log_result_list.append(temp_log_result)
                                     # elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action" or log_query_key == "ftp_url" or log_query_key == "ftp_link_type":
-                                    elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from","imsi", "phone_number", "server_fqdn", "ip_protocol", "mail_to", "mail_to_cmd", "mail_from_cmd", "mail_subject"]:
+                                    elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from","imsi", "phone_number", "server_fqdn", "ip_protocol", "mail_to", "mail_to_cmd", "mail_from_cmd", "mail_subject", "server_port"]:
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                         temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                         if temp_value == test_data["log_query_param"][t]["query_value"]:
@@ -234,6 +234,8 @@ class UiVerification:
                                     total_bytes_temp = round(byte_value/1024.0, 2)
                                 elif byte_value < 1024:
                                     total_bytes_temp = byte_value
+                                elif 1048576 <= byte_value < 1073741824:
+                                    total_bytes_temp = round(byte_value/1048576.0, 2)
                                 if cfg_list["type"] == 1:
                                     if sent_bytes == received_bytes == total_bytes_temp and sent_pkts == received_pkts == pkt_value_temp:
                                         metric_result = True
@@ -255,6 +257,8 @@ class UiVerification:
                                     total_bytes_temp = round(byte_value/1024.0, 2)
                                 elif byte_value < 1024:
                                     total_bytes_temp = byte_value
+                                elif 1048576 <= byte_value < 1073741824:
+                                    total_bytes_temp = round(byte_value/1048576.0, 2)
                                 if cfg_list["type"] == 2:
                                     if sent_bytes == total_bytes_temp and sent_pkts == pkt_value_temp and received_bytes == received_pkts == 0:
                                         metric_result = True
@@ -381,6 +385,8 @@ class UiVerification:
                                     log_bytes_temp = str(round(log_byte_value/1024.0, 2)) + " KB"
                                 elif log_byte_value < 1024:
                                     log_bytes_temp = str(log_byte_value) + " B"
+                                elif 1048576 <= log_byte_value < 1073741824:
+                                    log_bytes_temp = str(round(log_byte_value/1048576.0, 2)) + " MB"
                                 log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                 temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                 if temp_value == log_bytes_temp:

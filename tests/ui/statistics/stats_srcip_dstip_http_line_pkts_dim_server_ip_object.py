@@ -116,7 +116,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "pkts:RATE:pkts"
+                            "in_pkts+out_pkts:RATE:pkts"
                           ],
                           "dimensions": ["server_ip_object"],
                           "order_by": "pkts",

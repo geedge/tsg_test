@@ -15,31 +15,37 @@ class CreateServiceFunctionForwarderProfile:
     def __init__(self, driver):
         self.driver = driver
         self.sc_info = {}
-    def create_sff_profile(self, data, sff_profile_element_position,sf_profile_element_position):
-        page_jump_element_position = sff_profile_element_position["page_jump"]
-        create_element_position = sff_profile_element_position["create"]
-        try:
-            # 新建sf
-            if "service_functions" in data.keys():   # 判断是否需要创建sf
-                service_functions = data["service_functions"]
-                sf_name_list= self.get_sf_info(service_functions,sf_profile_element_position)
-            # 页面跳转
-            page_jump = PageJump(self.driver)
-            page_jump.jump_sub_profile_page(page_jump_element_position)
-            # 点击create
-            self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
-            # 输入name
-            sff_name = data["name"]
-            self.driver.find_element(By.ID, create_element_position["profilePge_inputName_posId"]).send_keys(sff_name)
-            #页面除name外其他选项的操作
-            self.operate_sff_page(data,sf_name_list,sff_profile_element_position)
-            # 确认创建
-            self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_posXCss"]).click()
-            self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_warningYes_posXpath"]).click()
-            return 200,self.sc_info
-        except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-            return 400
+    def create_sff_profile(self,test_data, sff_profile_element_position,sf_profile_element_position):
+        self.sc_info["targeted_traffic"] = test_data["targeted_traffic"]
+        self.sc_info["app_name_1"] = []
+        if len(test_data["condition"]["application"]) > 0:
+            self.sc_info["app_name_1"].append(test_data["condition"]["application"][0]["name"]) 
+        for j in range(len(test_data["profile"])):
+            sff_profile_data = test_data["profile"][j]
+            page_jump_element_position = sff_profile_element_position["page_jump"]
+            create_element_position = sff_profile_element_position["create"]
+            try:
+                # 新建sf
+                if "service_functions" in sff_profile_data.keys():   # 判断是否需要创建sf
+                    service_functions = sff_profile_data["service_functions"]
+                    sf_name_list= self.get_sf_info(service_functions,sf_profile_element_position)
+                # 页面跳转
+                page_jump = PageJump(self.driver)
+                page_jump.jump_sub_profile_page(page_jump_element_position)
+                # 点击create
+                self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
+                # 输入name
+                sff_name = sff_profile_data["name"]
+                self.driver.find_element(By.ID, create_element_position["profilePge_inputName_posId"]).send_keys(sff_name)
+                #页面除name外其他选项的操作
+                self.operate_sff_page(sff_profile_data,sf_name_list,sff_profile_element_position)
+                # 确认创建
+                self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_posXCss"]).click()
+                self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_warningYes_posXpath"]).click()
+                return 200,self.sc_info
+            except Exception as e:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
+                return 400
     def operate_sff_page(self, data,sf_name_list,sff_profile_element_position):
         create_element_position = sff_profile_element_position["create"]
         """

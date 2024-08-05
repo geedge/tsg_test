@@ -100,6 +100,8 @@ class CreatePolicyRule:
                     rule_template_dict['rule']['user_region']["html_profile"] = create_profile_ids[0]["id"]
             elif method == "rate_limit":
                 rule_template_dict['rule']['user_region']['bps'] = condition['bps_' + str(create_number)]
+            elif method == "tamper":
+                rule_template_dict['rule']['user_region']['tamper_mode'] = 'complete'
         elif action == 'monitor' and policy_type == "monitor":
             if 'packet_capture_'+str(create_number) in condition:
                 rule_template_dict["rule"]["user_region"]["packet_capture"]["enable"] = condition['packet_capture_'+str(create_number)]["enable"]

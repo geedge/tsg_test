@@ -131,7 +131,7 @@ def run(parameter):
                           "metrics": [
                             "in_bytes:SUM:incoming bytes",
                             "out_bytes:SUM:outgoing bytes",
-                            "bytes:BITRATE:all bytes"
+                            "in_bytes+out_bytes:BITRATE:all bytes"
                           ],
                           "dimensions": [
                             "client_ip"
@@ -146,7 +146,9 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.bbc.com"}],
+            "log_query_param": [
+                {"query_field_key": "ssl_sni", "query_value": "www.bbc.com"}
+            ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",

@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
 import copy
+import inspect
 import time
 import requests
 import json
@@ -619,12 +620,15 @@ class GetLog:
             pkt_value = sc_expected_metric["total_packets"]
             if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dest_ips_list:
                 if len(sc_info["app_name_1"]) > 0 :
-                    if sc_info["app_name_1"][0]["name"] == "http" or sc_info["app_name_1"][0]["name"] == "ssl":
+                    if sc_info["app_name_1"][0] == "http" or sc_info["app_name_1"][0] == "ssl":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
-                    elif sc_info["app_name_1"][0]["name"] == "ftp":
+                    elif sc_info["app_name_1"][0] == "ftp":
                         lost_pkt = 4
                         lost_byte = 266
+                    elif sc_info["app_name_1"][0] == "mail":
+                        lost_pkt = 15
+                        lost_byte = 1273
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 50 * pkt_value
@@ -648,12 +652,15 @@ class GetLog:
                     metric_result = False
             elif sc_info["sf_method"] == "layer2_switch":
                 if len(sc_info["app_name_1"]) > 0 :
-                    if sc_info["app_name_1"][0]["name"] == "http" or sc_info["app_name_1"][0]["name"] == "ssl":
+                    if sc_info["app_name_1"][0] == "http" or sc_info["app_name_1"][0] == "ssl":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
-                    elif sc_info["app_name_1"][0]["name"] == "ftp":
+                    elif sc_info["app_name_1"][0] == "ftp":
                         lost_pkt = 4
                         lost_byte = 266
+                    elif sc_info["app_name_1"][0] == "mail":
+                        lost_pkt = 15
+                        lost_byte = 1273
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 4 * pkt_value
@@ -753,6 +760,577 @@ class GetLog:
             failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
         finally:
             return metric_result, failure_reason_info
+
+    def get_livechart_statistics_2408(self, token, start_time, end_time, statistics_info, statistics_metircs_except,
+                                 trex_ip_info, test_data, host_api, vsys_id, script_type, alignment_period="PT1S"):
+        """
+        :param token:
+        :param start_time:
+        :param end_time:
+        :param statistics_info:
+        :param test_data:
+        :return:
+        """
+        # 请求接口查询statistics metric
+        headers = {'Content-Type': 'application/json', 'Authorization': token}
+        url = "{}/v1/log/query".format(host_api)
+        # 24.08重组请求体dsl结构数据,文档见https://docs.geedge.net/display/TSG/DSL+Examples
+        post_data_ori_json = """
+        {
+            "dsl": {
+                "name": "customized-statistics",
+                "data_source": "statistics_rule",
+                "filter": "vsys_id in (1) and rule_id = 282009 and template_id = 3015 and chart_id = 3026 and version = 4",
+                "custom.statistics.dimensions": [
+                    {
+                        "metric_name": "client_country",
+                        "label": "Client Country"
+                    }
+                ],
+                "custom.statistics.metrics": [
+                    {
+                        "function": {
+                            "name": "UNIQUE_COUNT"
+                        },
+                        "metric_type": "unique_count",
+                        "metric_name": "unique_count_1",
+                        "label": "UNIQUE_COUNT(Server IP Object List)"
+                    }
+                ],
+                "intervals": [
+                    "2024-08-01 11:39:42/2024-08-01 11:44:42"
+                ],
+                "order_by": "UNIQUE_COUNT(Server IP Object List) DESC",
+                "limit": 20,
+                "execution_mode": "oneshot"
+            },
+            "vsys_id": 1
+        }
+        """
+        #"order_by": "\"UNIQUE_COUNT(Server IP Object List)\" DESC",
+        post_data_ori_dict = json.loads(post_data_ori_json)
+        post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
+        post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
+        post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
+        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_id = {} and template_id = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
+        post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
+        post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
+        post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"] #如果想传入非UTC时间，携带时区也是可以的2024-07-22T17:38:30+08:00/2024-07-23T17:38:30+08:00
+        post_data_ori_dict_dsl["order_by"] = "'{}' DESC".format(statistics_info["order_by"])
+        post_data_ori_dict_dsl["limit"] = statistics_info["limit"]
+        post_data_ori_dict["dsl"] = post_data_ori_dict_dsl
+        post_data_ori_dict["vsys_id"] = vsys_id
+        # 请求接口获取Metrics数据
+        response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
+        r_dict = response.json()
+        # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric ：start_time:{},end_time:{},rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        if r_dict["code"] != 200:
+            self.error_print_function(inspect.currentframe().f_code.co_name, "statistics metric query failed.")
+            return [333, "The statistics metric API query failed."]
+        else:  # 返回正常结果
+            if r_dict["data"]["result"] == []:  # 为空
+                # 对应有方向的session方式需要另行处理
+                if script_type == "api":
+                    metrics_columns = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0][
+                        "source_columns"].lower()
+                    dimension_columns = \
+                        test_data["profile_condition_1"][0]["chart_list"][0]["dimensions"][0]["source_columns"][0].lower()
+                elif script_type == "ui":
+                    metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
+
+                    if len(statistics_info["dimensions"]) > 0:
+                        dimension_columns = [item["source_fields"] for item in statistics_info["dimensions"]]
+                    else:
+                        dimension_columns = "No Dimensions!"
+                # api返回值为空，不判断方向，直接返回重新查找
+                if metrics_columns in {"new_in_sessions","new_out_sessions","closed_in_sessions","closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
+                    return [333, "this is a pass"]
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Do not query statistics metric result.", flush=True)
+                return [333, "statistics metric no result was found."]
+            else:  # 提取结果，并断言
+                metric_result = False  # 默认
+                result_list_source = r_dict["data"]["result"]
+                result_list = []
+                if script_type == "ui":
+                    metrics_len = len(statistics_info["metrics"])
+                    dimensions_len = len(statistics_info["dimensions"]) #time调试时需确认是否处理
+                    tmp_result = {}
+                    for _ in copy.deepcopy(result_list_source):
+                        tmp_dict = {}
+                        tmp_dict_key = ""
+                        for k, v in _.items():
+                            if k in statistics_info["metrics_dimension"]["metrics"].keys():
+                                if v == None:  # Metric结果返回中包括None值处理
+                                    v = 0
+                                #k_0 = statistics_info["metrics_dimension"]["metrics"][k]
+                                k_0 = k
+                                # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并,所有Line都可以合并
+                                if statistics_info["chart_type"] == "line":# and metrics_len == 1 and dimensions_len == 1:
+                                    if tmp_dict_key == "":
+                                        tmp_dict_key = f"{k_0}"
+                                    else:
+                                        tmp_dict_key = f"{tmp_dict_key};{k_0}"
+                                    if len(tmp_result) > 0 and tmp_dict_key in tmp_result.keys():
+                                        tmp_v = tmp_result[tmp_dict_key] + v
+                                        tmp_result[tmp_dict_key] = tmp_v
+                                    else:
+                                        tmp_result[tmp_dict_key] = v
+                            elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
+                                #k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
+                                k_0 = k
+                                # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
+                                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1 and k != "__time":
+                                    if tmp_dict_key == "":
+                                        tmp_dict_key = f"{k_0};{v}"
+                                    else:
+                                        tmp_dict_key = f"{tmp_dict_key};{k_0}"
+                            else:
+                                continue
+                                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
+                                # throw Exception e
+                            if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1) == False:
+                                tmp_dict[k_0] = v
+                            # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
+                        if len(tmp_dict) > 0:
+                            result_list.append(tmp_dict)
+                        if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                            for key in tmp_result.keys():
+                                tmp_dict = {}
+                                key_list = key.split(";")
+                                if len(key_list) == 3:
+                                    tmp_dict[key_list[0]] = key_list[1]
+                                    tmp_dict[key_list[2]] = tmp_result[key]
+                                    result_list.append(tmp_dict)
+                else:#api如果使用统一处理方法,API需从Statistics Template API获取数据重新组织和UI一样
+                    for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
+                        tmp_dict = {}
+                        for k, v in _.items():
+                            k_0 = "_".join(k.lower().split())  # 将key变为小写且使用下划线连接
+                            tmp_dict[k_0] = v
+                        result_list.append(tmp_dict)
+                statistics_value = []
+                metrics_functions = [item["function"]["name"] for item in statistics_info["metrics"]]
+                if statistics_info["chart_type"] in {"line", "table", "bar"}:
+                    histogram_sketch_line_flag = False
+                    histogram_function_temp = {"MEDIAN", "P95_PERCENTILE", "P99_PERCENTILE"}
+                    if statistics_info["chart_type"] == "line":
+                        for histogram_function in histogram_function_temp:
+                            if histogram_function in metrics_functions:
+                                histogram_sketch_line_flag = True
+                                break
+                    if histogram_sketch_line_flag:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The histogram Metrics Line cannot automatically compare statistical results.", flush=True)
+                        metric_results = [True, ""]
+                    else:
+                        statistics_value = copy.deepcopy(result_list[0])
+                        if len(result_list) != 1:  #
+                            metrics_labels = [item["label"] for item in statistics_info["metrics"]]
+                            # 将列表中metric值设置为0
+                            for k, v in statistics_value.items():
+                                if k in metrics_labels:#if isinstance(v, int):
+                                    statistics_value[k] = 0
+                            # 遍历result结果，将metric值累加并存储到statistics_value
+                            #tmp_list_1 = []  # 下面for..提取值使用
+                            #metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
+                            #metrics_fields = [item["source_fields"] for item in statistics_info["metrics"]]
+                            #dimensions_columns = [item["source_fields"] for item in statistics_info["dimensions"]]
+                            #dimensions_fields = [item["source_fields"] for item in statistics_info["dimensions"]]
+                            for result_index in range(len(result_list)):
+                                # UNIQUE_COUNT、COUNT（SUM、RATE、BITRATE）的直接处理
+                                key_tmp = ""
+                                for k, v in result_list[result_index].items():
+                                    if k in metrics_labels:
+                                        statistics_value[k] += v
+                                break_flag = 0  # 默认外层循环累加，累加标志，如下面列表不是所有累加值，而是获取其中一个值即可
+                                tmp_break_list = ["client_ip_sketch", "server_ip_sketch", "fqdn_category",
+                                                  "client_ip_object", "server_ip_object",
+                                                  "websketch_categories"]  # 兼容UI API，所以三组值
+                                for item in tmp_break_list:  # 遍历判断是否符合上述条件，获取退出累加标志1。"client_ip_sketch", "server_ip_sketch", "fqdn_category"
+                                    if item in result_list[0].keys():
+                                        break_flag = 1  # 退出外层累加标志
+                                        break
+                                if break_flag == 1:
+                                    break  # 退出累加循环
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: \n{}".format(statistics_value))
+                        metric_results = self.assert_livechart_statistics_2408(statistics_info, statistics_value, statistics_metircs_except)  # 判断正确调用函数
+                elif statistics_info["chart_type"] == "histogram":
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Histogram cannot automatically compare statistical results.", flush=True)
+                    metric_results = [True, ""]
+                return metric_results
+    def assert_livechart_statistics_2408(self, statistics_info, statistics_value, statistics_metircs_except):
+        chart_type = statistics_info["chart_type"]
+        metric_result = False
+        failure_reason = "Result failed."
+        success_result = "Result passed."
+        failure_reason_info = ""
+        failure_info_1 = ""
+        failure_info_2 = ""
+        failure_info_3 = ""
+        metrics_info = {}
+        try:
+            metrics_labels = [item["label"] for item in statistics_info["metrics"]]
+            for i in range(len(statistics_info["metrics"])):
+                metrics_info[statistics_info["metrics"][i]["label"]] = statistics_info["metrics"][i]
+            #for metrics in statistics_info["metrics"]:
+            #    metrics_info[metrics["label"]] = metrics
+            # 重组需要断言使用的key列表
+            assert_key_list = []
+            for k, v in statistics_value.items():
+                if k in metrics_labels:
+                    """            
+                    failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                    match chart_type:
+                        case "line":
+                            metric_result,failure_info_2 = self.metric_value_verification(assert_key, statistics_metircs_except)
+                        case "histogram":
+                            metric_result = True
+                        case _:
+                            metric_result,failure_info_2 = self.metric_value_verification(assert_key,statistics_metircs_except)
+                    """
+                    if chart_type == "line":
+                        metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except)
+                    elif chart_type == "histogram":
+                        metric_result = True
+                    else:
+                        metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except)
+                else:
+                    continue
+                if metric_result == False:
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], failure_reason)
+                    actual_result = f"Total actual results: {statistics_value}"
+                    failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
+                    break
+            return metric_result, failure_reason_info
+        except Exception as e:
+            exception_result = str(e)
+            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            return metric_result, failure_info_2
+    def metric_value_verification(self, assert_key, metric_info,stats_value, test_traffic_statistics):
+        #metric_info:[{'function': {'name': 'UNIQUE_COUNT'}, 'label': 'UNIQUECOUNT(Client IP)', 'metric_name': 'unique_count_1', 'metric_type': 'unique_count', 'source_fields': ['client_ip']}]
+        function_name = metric_info["function"]["name"]
+        source_fields_tmp = metric_info["source_fields"]
+        metric_result = False
+        """
+        match function_name:
+            case "SUM":
+                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+            case "RATE":
+                metric_result, failure_info_2= self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+            case "BITRATE":
+                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics)
+            case "UNIQUE_COUNT":
+                metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, 1,test_traffic_statistics)
+            case _:
+                failure_info_2 = f"Invalid function name: {function_name}"
+        """
+        try:
+            if function_name == "SUM":
+                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+            elif function_name == "RATE":
+                metric_result, failure_info_2= self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+            elif function_name == "BITRATE":
+                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics)
+            elif function_name == "UNIQUE_COUNT":
+                metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+            elif function_name == "HISTOGRAM":
+                metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+            else:
+                failure_info_2 = f"Invalid function name: {function_name}"
+            return metric_result,failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            return metric_result, failure_info_2
+
+    def metric_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics):
+        failure_info_2 = ""
+        metric_result = False
+        """
+        match len(source_fields):
+            case 1:
+                # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
+                if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient or stats_value == test_traffic_statistics["total_bytes_received"] * rate_coefficient):
+                    metric_result = True
+                elif source_fields[0] == "sent_bytes" and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                    metric_result = True
+                elif source_fields[0] == "received_bytes" and stats_value == test_traffic_statistics["total_bytes_received"] * rate_coefficient:
+                    metric_result = True
+                # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
+                elif source_fields[0] in {"in_pkts", "out_pkts"} and (stats_value == test_traffic_statistics["total_packets_sent"]  or stats_value == test_traffic_statistics["total_packets_received"]):
+                    metric_result = True
+                elif source_fields[0] == "sent_pkts" and stats_value == test_traffic_statistics["total_packets_sent"]:
+                    metric_result = True
+                elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
+                    metric_result = True
+                elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
+                    metric_result = True
+                # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                # * Flows处理逻辑new_c2s_flows、new_s2c_flows
+                elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == test_traffic_statistics["total_packets_sent"]:
+                    metric_result = True
+                #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
+                #    metric_result = True
+                #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
+                #    metric_result = True
+                # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            case 2:
+                # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
+                if "in_bytes" in source_fields and "out_bytes" in source_fields and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                    metric_result = True
+                elif "sent_bytes" in source_fields and "received_bytes" in source_fields and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                    metric_result = True
+                # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
+                elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == test_traffic_statistics["total_packets"]:
+                    metric_result = True
+                elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == test_traffic_statistics["total_packets"]:
+                    metric_result = True
+                # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                # * Flows处理逻辑new_c2s_flows、new_s2c_flows
+                elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_packets_sent"]*2:
+                    metric_result = True
+                # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            case 3:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            case 4:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            case _:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+        """
+        try:
+            if len(source_fields) == 1:
+                # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
+                if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient or stats_value == test_traffic_statistics["total_bytes_received"] * rate_coefficient):
+                    metric_result = True
+                elif source_fields[0] == "sent_bytes" and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                    metric_result = True
+                elif source_fields[0] == "received_bytes" and stats_value == test_traffic_statistics["total_bytes_received"] * rate_coefficient:
+                    metric_result = True
+                # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
+                elif source_fields[0] in {"in_pkts", "out_pkts"} and (stats_value == test_traffic_statistics["total_packets_sent"]  or stats_value == test_traffic_statistics["total_packets_received"]):
+                    metric_result = True
+                elif source_fields[0] == "sent_pkts" and stats_value == test_traffic_statistics["total_packets_sent"]:
+                    metric_result = True
+                elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
+                    metric_result = True
+                elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
+                    metric_result = True
+                # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                # * Flows处理逻辑new_c2s_flows、new_s2c_flows
+                elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == test_traffic_statistics["total_packets_sent"]:
+                    metric_result = True
+                #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
+                #    metric_result = True
+                #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
+                #    metric_result = True
+                # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            elif len(source_fields) == 2:
+                # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
+                if "in_bytes" in source_fields and "out_bytes" in source_fields and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                    metric_result = True
+                elif "sent_bytes" in source_fields and "received_bytes" in source_fields and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                    metric_result = True
+                # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
+                elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == test_traffic_statistics["total_packets"]:
+                    metric_result = True
+                elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == test_traffic_statistics["total_packets"]:
+                    metric_result = True
+                # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                # * Flows处理逻辑new_c2s_flows、new_s2c_flows
+                elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_packets_sent"]*2:
+                    metric_result = True
+                # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            elif len(source_fields) == 3:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            elif len(source_fields) == 4:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            else:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            return metric_result,failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            return metric_result, failure_info_2
+
+    def metric_unique_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics):
+        failure_info_2 = ""
+        metric_result = False
+        all_metrics = {'client_ip_object_list':'Client IP Object List','server_ip_object_list':'Server IP Object List',
+                                      'client_ip': 'Client IP','server_ip': 'Server IP',
+                                      'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
+                                      'bytes': 'Bytes', 'new_c2s_flows': 'New Client-to-Server Flows',
+                                      'new_s2c_flows': 'New Server-to-Client Flows', 'sessions': 'Sessions',
+                                      'new_in_sessions': 'New Incoming Sessions',
+                                      'new_out_sessions': 'New Outgoing Sessions',
+                                      'new_unestablished_sessions': 'New Unestablished Sessions',
+                                      'in_pkts': 'Incoming Packets',
+                                      'out_pkts': 'Outgoing Packets',
+                                      'pkts': 'Packets',
+                                      'syn_pkts': 'SYN Packets',
+                                      'c2s_ip_fragments': 'Client-to-Server IP Fragments',
+                                      's2c_ip_fragments': 'Server-to-Client IP Fragments',
+                                      'ip_fragments': 'IP Fragments',
+                                      'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
+                                      'server_ip_sketch': 'Server IPs', 'in_latency_ms_sketch': 'Incoming Latency',
+                                      'out_latency_ms_sketch': 'Outgoing Latency', 'latency_ms_sketch': 'Latency',
+                                      'in_pkt_length_sketch': 'Incoming Packet Length',
+                                      'out_pkt_length_sketch': 'Outgoing Packet Length',
+                                      'pkt_length_sketch': 'Packet Length'
+                                      }
+        """
+        match len(source_fields):
+            case 1:
+                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            case 2:
+                if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            case 3:
+                if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics  and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            case 4:
+                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            case _:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+        """
+        try:
+            if len(source_fields) == 1:
+                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            elif len(source_fields) == 2:
+                if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            elif len(source_fields) == 3:
+                if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics  and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            elif len(source_fields) == 4:
+                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            else:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            return metric_result,failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            return metric_result, failure_info_2
+
+    def metric_histogram_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics):
+        # 待重构
+        failure_info_2 = ""
+        metric_result = False
+        all_metrics = {'client_ip_object_list':'Client IP Object List','server_ip_object_list':'Server IP Object List',
+                                      'client_ip': 'Client IP','server_ip': 'Server IP',
+                                      'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
+                                      'bytes': 'Bytes', 'new_c2s_flows': 'New Client-to-Server Flows',
+                                      'new_s2c_flows': 'New Server-to-Client Flows', 'sessions': 'Sessions',
+                                      'new_in_sessions': 'New Incoming Sessions',
+                                      'new_out_sessions': 'New Outgoing Sessions',
+                                      'new_unestablished_sessions': 'New Unestablished Sessions',
+                                      'in_pkts': 'Incoming Packets',
+                                      'out_pkts': 'Outgoing Packets',
+                                      'pkts': 'Packets',
+                                      'syn_pkts': 'SYN Packets',
+                                      'c2s_ip_fragments': 'Client-to-Server IP Fragments',
+                                      's2c_ip_fragments': 'Server-to-Client IP Fragments',
+                                      'ip_fragments': 'IP Fragments',
+                                      'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
+                                      'server_ip_sketch': 'Server IPs', 'in_latency_ms_sketch': 'Incoming Latency',
+                                      'out_latency_ms_sketch': 'Outgoing Latency', 'latency_ms_sketch': 'Latency',
+                                      'in_pkt_length_sketch': 'Incoming Packet Length',
+                                      'out_pkt_length_sketch': 'Outgoing Packet Length',
+                                      'pkt_length_sketch': 'Packet Length'
+                                      }
+        """
+                match len(source_fields):
+                    case 1:
+                        if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                            metric_result = True
+                        else:
+                            failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                    case 2:
+                        if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                            metric_result = True
+                        else:
+                            failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                    case 3:
+                        if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics  and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                            metric_result = True
+                        else:
+                            failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                    case 4:
+                        if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                            metric_result = True
+                        else:
+                            failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                    case _:
+                        failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+                """
+        try:
+            if len(source_fields) == 1:
+                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            elif len(source_fields) == 2:
+                if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            elif len(source_fields) == 3:
+                if source_fields[0] in all_metrics and source_fields[1] in all_metrics and source_fields[2] in all_metrics and source_fields[3] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            elif len(source_fields) == 4:
+                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    metric_result = True
+                else:
+                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            else:
+                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            return metric_result, failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            return metric_result, failure_info_2
+    def error_print_function(self,function,error):
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function}Error: {error}", flush=True)
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

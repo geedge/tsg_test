@@ -118,7 +118,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "new_c2s_flows:RATE:new c2s flows",
-                            "new_s2c_flows:RATE:new s2c flows"
+                            "new_s2c_flows:RATE:new s2c flows",
+                            "new_c2s_flows+new_s2c_flows:RATE:all flows"
                           ],
                           "dimensions": [],
                           "order_by": "new c2s flows",

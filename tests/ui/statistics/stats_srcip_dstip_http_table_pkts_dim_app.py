@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "pkts:SUM:pkts"
+                            "in_pkts+out_pkts:SUM:pkts"
                           ],
                           "dimensions": [
                             "application"

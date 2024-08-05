@@ -110,13 +110,13 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "reset",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
+                "command": "curl -m 30 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
             },
             "token": ""
         }

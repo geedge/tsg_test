@@ -11,10 +11,8 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
-
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.verification import Verification
-
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -44,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_line_syn_pkts_dim_server_country",
+            "rule_name": "stats_srcip_dstip_ftp_table_all_bytes_dim_c_ip_s_ip",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +51,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_line_syn_pkts_dim_server_country",
+                        "name": "stats_srcip_ftp_table_all_bytes_dim_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.11",
+                                "item_value": "10.64.224.3",
                             },
                         ]
                     }
@@ -69,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_line_syn_pkts_dim_server_country",
+                        "name": "stats_dstip_ftp_table_all_bytes_dim_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -77,7 +75,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.9",
+                                "item_value": "2.1.1.3",
                             },
                         ]
                     }],
@@ -95,7 +93,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "ftp",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -110,41 +108,47 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_http_line_syn_pkts_dim_server_country",
+                    "name": "stats_table_all_bytes_dim_c_ip_s_ip",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "stats_line_syn_pkts_dim_server_country",
-                          "visualization_type": "Line",
+                          "chart_name": "table_all_bytes_dim_c_ip_s_ip",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "syn_pkts:Rate:syn pkts"
+                            "in_bytes:SUM:incoming bytes",
+                            "out_bytes:SUM:outgoing bytes",
+                            "in_bytes+bytes:BITRATE:all bytes"
                           ],
                           "dimensions": [
-                            "server_country"
+                            "client_ip",
+                            "server_ip"
                           ],
-                          "order_by": "syn pkts",
-                          "row_limit": "10",
+                          "order_by": "all bytes",
+                          "row_limit": "100",
                           "min_in_size": "0",
                           "max_out_size": "0"
                         }
                       ]
                 }]
             },
-            "expected_return": "reset",
+            "expected_return": "",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
+            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.9",
-                "clients_end_ip": "10.64.224.9",
-                "servers_start_ip": "2.1.1.9",
-                "servers_end_ip": "2.1.1.9",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts"
+                "pcap_name": "ftp_login_ftpuser"
             },
+            "statists_metric_results": [
+                {"client_ip": "10.64.4.192", "server_ip": "2.1.1.3", "in_bytes": 678, "out_bytes": 982, "bytes": 13280}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -255,7 +259,6 @@ def run(parameter):
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            edit_rule_code = 200
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
@@ -287,7 +290,6 @@ def run(parameter):
 
         # 避免报错：stale element not found
         time.sleep(5)
-
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -415,11 +417,11 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,#6
+        "vsys_id": 5,#5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_line_syn_pkts_dim_server_country",
+        "test_case_name": "stats_srcip_dstip_ftp_table_all_bytes_dim_c_ip_s_ip",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

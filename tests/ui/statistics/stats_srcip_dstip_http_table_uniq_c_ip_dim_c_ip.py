@@ -60,26 +60,13 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.31",
+                                "item_value": "192.168.38.240",
                             },
                         ]
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [
-                    {
-                        "name": "stats_dstip_http_table_uniq_c_ip_dim_c_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "2.1.1.31",
-                            },
-                        ]
-                    }],
+                "destination_ip": [],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -93,11 +80,6 @@ def run(parameter):
                 "tunnel_level": [],
                 "flag": [],
                 "application": [
-                    {
-                        "name": "http",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
                 ],
                 "server_fqdn": [
                 ],
@@ -118,9 +100,21 @@ def run(parameter):
                             "metrics": [
                                 "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)"
                             ],
-                            "dimensions": ["application"],
+                            "dimensions": ["app"],
                             "order_by": "UNIQUECOUNT(Client IP)",
                             "row_limit": "20",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "server_ip:UNIQUE_COUNT:UNIQUECOUNT(Server IP)"
+                            ],
+                            "dimensions": ["app"],
+                            "order_by": "UNIQUECOUNT(Server IP)",
+                            "row_limit": "200",
                             "min_in_size": "0",
                             "max_out_size": "0"
                         }
@@ -133,8 +127,8 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.31",
-                "clients_end_ip": "10.64.224.31",
+                "clients_start_ip": "192.168.38.240",
+                "clients_end_ip": "192.168.38.240",
                 "servers_start_ip": "2.1.1.31",
                 "servers_end_ip": "2.1.1.31",
                 "m": 1,
@@ -174,14 +168,16 @@ def run(parameter):
                 "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": test_data["condition"]["destination_ip"][0]['object_type'],
-                "name": test_data["condition"]["destination_ip"][0]['name']
-            },
-            {
                 "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
                 "name": test_data["action_parameter"]["statistics_template"][0]['name']
             }
         ]
+        """        
+            {
+                "type": test_data["condition"]["destination_ip"][0]['object_type'],
+                "name": test_data["condition"]["destination_ip"][0]['name']
+            },
+        """
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -195,7 +191,6 @@ def run(parameter):
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
-        """
         for cond_key, cond_value in (test_data["condition"].items()):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":
@@ -214,9 +209,9 @@ def run(parameter):
                         break
             if cond_status == 1:   # 创建失败，退出遍历创建
                 break
-        """
+
         # 调试参数,正式运行需取消
-        cond_code = 200
+        #cond_code = 200
         # 创建Statistics Template
         create_statistics_template_code = 0
         if cond_code == 200:
@@ -256,12 +251,11 @@ def run(parameter):
         verification_result = {}
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
-            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],
-                                                                element_position_map)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],element_position_map)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.organize_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
 
@@ -415,91 +409,20 @@ def run(parameter):
 
 
 if __name__ == '__main__':
-    """
-    dicts = {
-        'client_ip_object_list': 'Client IP Object List',
-        'server_ip_object_list': 'Server IP Object List',
-        'fqdn_category_list': 'WebSketch Categories',
-        'client_ip': 'Client IP',
-        'client_country': 'Client Country',
-        'server_ip': 'Server IP',
-        'server_country': 'Server Country',
-        'client_asn': 'Client ASN',
-        'server_asn': 'Server ASN',
-        'server_fqdn': 'Server FQDN',
-        'server_domain': 'Server Domain',
-        'app': 'Application',
-        'app_category': 'Application Category',
-        'device_group': 'Device Group',
-        'c2s_ttl': 'Client-to-Server TTL',
-        's2c_ttl': 'Server-to-Client TTL',
-        'c2s_link_id': 'Incoming Link ID',
-        's2c_link_id': 'Outgoing Link ID',
-        'client_port': 'Client Port',
-        'server_port': 'Server Port',
-        'http_host': 'HTTP.Host',
-        'ssl_ja3_hash': 'SSL.JA3 Hash',
-        'ssl_sni': 'SSL.SNI',
-        'subscriber_id': 'Subscriber ID',
-        'decoded_as': 'Decoded AS',
-        'sled_ip': 'Sled IP',
-        'flags': 'Flags',
-        'direction': 'Direction',
-        'session_id': 'Session ID',
-        'in_pkt_length_distribution': 'Incoming Packet Length',
-        'out_pkt_length_distribution': 'Outgoing Packet Length',
-        'pkt_length_distribution': 'Packet Length',
-        'in_latency_ms': 'Incoming Latency',
-        'out_latency_ms': 'Outgoing Latency',
-        'dtls_handshake_latency_ms': 'DTLS.Handshake Latency(ms)',
-        'ssl_handshake_latency_ms': 'SSL.Handshake Latency(ms)',
-        'tcp_handshake_latency_ms': 'TCP Handshake Latency(ms)',
-        'duration_ms': 'Duration(ms)',
-        'tcp_rtt_ms': 'Round-trip Time(ms)',
-        'sent_bytes': 'Bytes Sent',
-        'sent_pkts': 'Packets Sent',
-        'received_pkts': 'Packets Received',
-        'received_bytes': 'Bytes Received',
-        'in_bytes': 'Incoming Bytes',
-        'out_bytes': 'Outgoing Bytes',
-        'in_pkts': 'Incoming Packets',
-        'out_pkts': 'Outgoing Packets',
-        'new_c2s_flows': 'New Client-to-Server Flows',
-        'new_s2c_flows': 'New Server-to-Client Flows',
-        'new_in_sessions': 'New Incoming Sessions',
-        'new_out_sessions': 'New Outgoing Sessions',
-        'closed_in_sessions': 'Closed Incoming Sessions',
-        'closed_out_sessions': 'Closed Outgoing Sessions',
-        'syn_pkts': 'SYN Packets',
-        'c2s_ip_fragments': 'Client-to-Server IP Fragments',
-        's2c_ip_fragments': 'Server-to-Client IP Fragments'
-    }
-    result = {}
-    n = 28
-    #p = sorted([(k, v) for k, v in dicts.items()], reverse=True)
-    #s = set()
-    i = 0
-    for k, v in dicts.items():
-        if i < n:
-            result[k] = v
-            i = i + 1
-    print(result)
-
-    """
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
+        "username": "AutomationTestAccount",
+        "password": "1qaz@WSX",
+        "test_pc_ip": "192.168.64.38",
         "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,  # 6
+        "vsys_id": 5,  # 5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
         "test_case_name": "stats_srcip_dstip_http_table_uniq_c_ip_dim_c_ip",
         "debug_flag": "local",
-        "test_subcriber_id": "test6489",
+        "test_subcriber_id": "test6438",
         "script_type": "ui",
         "policy_type": "statistics"
     }

@@ -16,7 +16,7 @@ def get_group_id(app, api_host):
     # 该方法用于将字符串类型的['ssl', 'http']转换为list类型的['ssl', 'http']（在无法使用list函数直接转换的情况下）
     app = ast.literal_eval(app)
     for app_name in app:
-        sql="select group_id from app_id_dict where app_name= 'appname'"
+        sql="select object_id from app_id_dict where app_name= 'appname'"
         sql=sql.replace("appname", app_name)
         #连接数据库
         mycursor = db.cursor()

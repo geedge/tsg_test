@@ -49,11 +49,11 @@ def run(parameter):
             "app_name_1": ["dns"],
             "expected_return": "connection timed out",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.jd.com"}],
+            "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.facebook.com"}],
             "traffic": {
                 "protocol": "dns",
                 "type": "nslookup",
-                "command": "nslookup www.facebook -timeout=1 8.8.8.8"
+                "command": "nslookup www.facebook.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }

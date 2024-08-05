@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "session_identifier_sketch:APPROX_COUNT_DISTINCT_HLLD:session identifier sketch"
+                            "session_id:UNIQUE_COUNT:UNIQUE_COUNT(session)"
                           ],
                           "dimensions": ["time"],
                           "order_by": "",
