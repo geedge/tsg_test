@@ -19,10 +19,10 @@ RUN yum install -y kernel-devel kernel-headers
 RUN yum group install -y "Development tools"
 
 # 通过pip3安装需要的包
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3.12 install --no-cache-dir -r requirements.txt
 
 # 安装chrome和chromedriver
 RUN find . -type f -name "*.py" -exec chmod 777 {} \;
-RUN python3 install_chrome.py
-RUN python3 install_trex.py
-RUN python3 update_tsg_ca.py
+RUN python3.12 install_chrome.py
+RUN python3.12 install_trex.py
+RUN python3.12 update_tsg_ca.py
