@@ -114,7 +114,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "pkts:RATE:pkts"
+                            "in_pkts+out_pkts:RATE:pkts"
                           ],
                           "dimensions": ["fqdn_category"],
                           "order_by": "pkts",

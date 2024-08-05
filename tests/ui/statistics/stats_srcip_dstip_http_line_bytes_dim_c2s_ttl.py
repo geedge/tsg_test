@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "stats_http_line_bytes_dim_c2s_ttl",
                           "visualization_type": "Line",
                           "metrics": [
-                            "bytes:BITRATE:bytes"
+                            "in_bytes+out_bytes:BITRATE:bytes"
                           ],
                           "dimensions": [
                             "c2s_ttl"

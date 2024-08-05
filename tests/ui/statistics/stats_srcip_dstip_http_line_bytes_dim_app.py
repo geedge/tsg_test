@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "bytes:BITRATE:bytes"
+                            "in_bytes+out_bytes:BITRATE:bytes"
                           ],
                           "dimensions": ["application"],
                           "order_by": "bytes",

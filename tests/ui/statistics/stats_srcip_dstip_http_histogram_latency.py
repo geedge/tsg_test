@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "Latency",
                           "visualization_type": "Histogram",
                           "metrics": [
-                            "latency_ms_sketch:PERCENTILES_HDR:latency ms sketch"
+                            "tcp_handshake_latency_ms:HISTOGRAM:latency ms sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",

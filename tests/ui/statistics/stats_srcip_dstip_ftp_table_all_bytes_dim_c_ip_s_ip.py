@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_ftp_table_all_bytes_dim_client_server_ip",
+            "rule_name": "stats_srcip_dstip_ftp_table_all_bytes_dim_c_ip_s_ip",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -51,7 +51,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_ftp_table_all_bytes_dim_client_server_ip",
+                        "name": "stats_srcip_ftp_table_all_bytes_dim_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -67,7 +67,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_ftp_table_all_bytes_dim_client_server_ip",
+                        "name": "stats_dstip_ftp_table_all_bytes_dim_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -108,16 +108,16 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_table_all_bytes_dim_client_server_ip",
+                    "name": "stats_table_all_bytes_dim_c_ip_s_ip",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "table_all_bytes_dim_client_server_ip",
+                          "chart_name": "table_all_bytes_dim_c_ip_s_ip",
                           "visualization_type": "Table",
                           "metrics": [
                             "in_bytes:SUM:incoming bytes",
                             "out_bytes:SUM:outgoing bytes",
-                            "bytes:BITRATE:all bytes"
+                            "in_bytes+bytes:BITRATE:all bytes"
                           ],
                           "dimensions": [
                             "client_ip",
@@ -417,11 +417,11 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,#6
+        "vsys_id": 5,#5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_ftp_table_all_bytes_dim_client_server_ip",
+        "test_case_name": "stats_srcip_dstip_ftp_table_all_bytes_dim_c_ip_s_ip",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

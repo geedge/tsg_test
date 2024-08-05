@@ -118,7 +118,8 @@ def run(parameter):
                           "visualization_type": "Table",
                           "metrics": [
                             "new_c2s_flows:Rate:new c2s flows",
-                            "new_s2c_flows:Rate:new s2c flows"
+                            "new_s2c_flows:Rate:new s2c flows",
+                            "new_c2s_flows+new_s2c_flows:Rate:all flows"
                           ],
                           "dimensions": [
                             "client_port"

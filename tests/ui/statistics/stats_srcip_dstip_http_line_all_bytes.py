@@ -117,7 +117,7 @@ def run(parameter):
                           "metrics": [
                             "in_bytes:BITRATE:in bytes",
                             "out_bytes:BITRATE:out bytes",
-                            "bytes:BITRATE:bytes"
+                            "in_bytes+out_bytes:BITRATE:bytes"
                           ],
                           "dimensions": [],
                           "order_by": "",
