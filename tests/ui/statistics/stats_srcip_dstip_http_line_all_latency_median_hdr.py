@@ -117,9 +117,9 @@ def run(parameter):
                           "chart_name": "stats_http_line_all_latency_median_hdr",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_latency_ms_sketch:MEDIAN_HDR:in latency ms sketch",
-                            "out_latency_ms_sketch:MEDIAN_HDR:out latency ms sketch",
-                            "tcp_handshake_latency_ms:MEDIAN_HDR:latency ms sketch"
+                            "in_latency_ms:MEDIAN:in latency ms sketch",
+                            "out_latency_ms:MEDIAN:out latency ms sketch",
+                            "tcp_handshake_latency_ms:MEDIAN:latency ms sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",

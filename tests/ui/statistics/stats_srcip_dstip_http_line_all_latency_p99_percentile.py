@@ -117,9 +117,9 @@ def run(parameter):
                           "chart_name": "stats_http_line_all_latency_p99_percentile",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_latency_ms_sketch:P99_PERCENTILE_HDR:in latency ms sketch",
-                            "out_latency_ms_sketch:P99_PERCENTILE_HDR:out latency ms sketch",
-                            "tcp_handshake_latency_ms:P99_PERCENTILE_HDR:latency ms sketch"
+                            "in_latency_ms:P99_PERCENTILE:in latency ms sketch",
+                            "out_latency_ms:P99_PERCENTILE:out latency ms sketch",
+                            "tcp_handshake_latency_ms:P99_PERCENTILE:latency ms sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",

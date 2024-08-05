@@ -117,9 +117,9 @@ def run(parameter):
                           "chart_name": "stats_http_line_all_pkt_len_median_hdr",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_pkt_length_sketch:MEDIAN_HDR:in pkt length sketch",
-                            "out_pkt_length_sketch:MEDIAN_HDR:out pkt length sketch",
-                            "pkt_length_sketch:MEDIAN_HDR:pkt length sketch"
+                            "in_pkt_length_sketch:MEDIAN:in pkt length sketch",
+                            "out_pkt_length_sketch:MEDIAN:out pkt length sketch",
+                            "pkt_length_sketch:MEDIAN:pkt length sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",
