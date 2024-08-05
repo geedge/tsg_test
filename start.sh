@@ -3,18 +3,16 @@
 systemctl disable firewalld.service
 
 cd /opt
-# git clone git@git.mesalab.cn:chongming/tsg_test.git
+git clone git@git.mesalab.cn:chongming/tsg_test.git
 cd /opt/tsg_test
-# git checkout develop
+git checkout develop
 find . -type f -name "*.py" -exec chmod 777 {} \;
 chmod 777 /opt/tsg_test/supervisor.conf
 chmod 777 /opt/tsg_test/package/requirements.txt
 chmod 777 /opt/tsg_test/package/tsg_ca.txt
 chmod 777 /etc/pki/tls/certs/ca-bundle.crt
 
-python3 /opt/tsg_test/package/install_python.py
-
-python3.12 /opt/tsg_test/package/install_docker.py
+python3 /opt/tsg_test/package/install_docker.py
 
 if [[ "$(docker images -q)" == "" ]] || [[ "$(docker images --format "{{.Repository}}:{{.Tag}}" | grep 'package')" != "package:base" ]]; then
     echo "No Docker images, start to building."
