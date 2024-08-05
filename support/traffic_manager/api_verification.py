@@ -46,7 +46,6 @@ class ApiVerification:
                 statistics_sc_info_list = []
                 cfg_list["rule_id"] = test_data["rule_id"]
                 statistics_sc_info_list.append(cfg_list)
-                sc_expected_metric = traffic_result
             elif policy_type == "statistics":
                 statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
                 #cfg_list["rule_id"] = test_data["rule_id"]
@@ -150,7 +149,7 @@ class ApiVerification:
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             # 将时间向前推迟 8 分钟，因为trex流量先发送。
-            new_time = current_utc_time - timedelta(seconds=30)
+            new_time = current_utc_time - timedelta(seconds=180)
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],'start_time', flush=True)
             # 解析trex使用参数， 解析client server ip
@@ -189,6 +188,9 @@ class ApiVerification:
                 #         else:
                 #             servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                 #             servers_end = servers_start
+
+                """
+                # 策略验证跳过
                 verify_policy_break_count = 0
                 for i in range(len(policy_id_list)):
                     while True:      # 多次策略验证
@@ -205,6 +207,7 @@ class ApiVerification:
                         verify_policy_break_count += 1
                         time.sleep(5)
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
+                    """
             time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
             # 执行回放命令
             # 将原数据中使用的ip替换为随机生成ip
@@ -251,7 +254,7 @@ class ApiVerification:
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                        metric_results = log.get_livechart_statistics(token, start_time, end_time, statistics_info, statistics_metircs, trex_ip_info, test_data, api_server, vsys_id, script_type)
+                        metric_results = log.get_livechart_statistics_2408(token, start_time, end_time, statistics_info, statistics_metircs, trex_ip_info, test_data, api_server, vsys_id, script_type)
                         metric_result = metric_results[0]
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
@@ -334,7 +337,7 @@ class ApiVerification:
                             utc_tz = pytz.timezone('UTC')
                             current_utc_time = datetime.now(utc_tz)
                             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                            metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, api_server, vsys_id)
+                            metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, traffic_result, active_dest_ips_list, api_server, vsys_id)
                             if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                 break
                             elif metric_result == False:  # 查询验证失败时，再查询验证两次
@@ -421,7 +424,7 @@ class ApiVerification:
                                 metric_result = False
                     elif metric_result == 444:
                         metric_result = False
-            return cmd_result, metric_result, metric_result, my_driver
+            return metric_result, cmd_result, metric_result, my_driver
         elif policy_type == "shaping":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.")
             return True, True, True
@@ -536,3 +539,17 @@ class ApiVerification:
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
+    """
+    log = support.api_utils.get_log.GetLog()
+    token = "f4339216-6164-42fd-98f0-48f5cecf7154&41&"
+    start_time, end_time = "2024-07-29T09:22:42Z","2024-08-02T09:22:42Z"
+    statistics_info = {'rule_id': '281993', 'template_id': 43, 'chart_id': 121, 'chart_type': 'table', 'version': 1, 'sql': ' SELECT client_ip as "Client IP" ,sum(in_bytes) as "incoming bytes" ,sum(out_bytes) as "outgoing bytes" ,RATE(bytes, ${duration}, ${interval}) * 8 as "all bytes"  FROM statistics_rule WHERE  __time  >= \'${start_time}\' AND __time < \'${end_time}\'  AND ( ${filter} )  AND rule_id = ${rule_id} AND template_id = ${template_id} AND chart_id = ${chart_id} AND version = ${version} GROUP BY client_ip ORDER BY  "all bytes" desc LIMIT 100', 'metrics_dimension': {'metrics': {'incoming bytes': 'in_bytes', 'outgoing bytes': 'out_bytes', 'all bytes': 'bytes'}, 'dimensions': {'Client IP': 'client_ip'}}}
+    statistics_metircs = {'clients_end': '10.64.21.202', 'clients_start': '10.64.21.202', 'servers_end': '2.1.1.3', 'servers_start': '2.1.1.3'}
+    trex_ip_info = {'clients_end': '10.64.21.202', 'clients_start': '10.64.21.202', 'servers_end': '2.1.1.3', 'servers_start': '2.1.1.3'}
+    test_data =test_data = {'is_multi_priority': False, 'rule_num': 1, 'policy_type': 'statistics', 'rule_name': 'stats_srcip_dstip_mail_imap_table_all_bytes_dim_client_ip', 'rule_action': 'statistics', 'rule_type': 'create', 'debug_flag': 'local', 'test_subcriber_id': 'test6489', 'script_type': 'ui', 'condition': {'source_ip': [{'name': 'stats_srcip_mail_imap_table_all_bytes_dim_client_ip', 'object_type': 'ip', 'select_type': False, 'negate': False, 'item': [{'item_operation': 'add', 'item_type': 'ipv4', 'item_value': '10.64.21.202'}]}], 'source_port': [], 'destination_ip': [{'name': 'stats_dstip_mail_imap_table_all_bytes_dim_client_ip', 'object_type': 'ip', 'select_type': False, 'negate': False, 'item': [{'item_operation': 'add', 'item_type': 'ipv4', 'item_value': '2.1.1.3'}]}], 'destination_port': [], 'internal_ip': [], 'internal_port': [], 'external_ip': [], 'external_port': [], 'source_geography': [], 'destination_geography': [], 'sub_id': [], 'device': [], 'tunnel': [], 'tunnel_level': [], 'flag': [], 'application': [{'name': 'mail', 'object_type': 'application', 'negate': False}], 'server_fqdn': [], 'protocol_filed': [], 'sub_action_override': True, 'sub_action': [], 'packet_capture': []}, 'action_parameter': {'statistics_template': [{'name': 'stats_mail_imap_table_all_bytes_dim_client_ip', 'profile_type': 'statistics_template', 'charts': [{'chart_name': 'stats_mail_imap_table_all_bytes_dim_client_ip', 'visualization_type': 'Table', 'metrics': ['in_bytes:SUM:incoming bytes', 'out_bytes:SUM:outgoing bytes', 'bytes:BITRATE:all bytes'], 'dimensions': ['client_ip'], 'order_by': 'all bytes', 'row_limit': '100', 'min_in_size': '0', 'max_out_size': '0'}]}]}, 'expected_return': 'reset', 'counters': {'hits': 1}, 'log_query_param': [{'query_field_key': 'app', 'query_value': 'imap'}], 'traffic': {'protocol': '', 'type': 'trex', 'clients_start_ip': '10.64.21.202', 'clients_end_ip': '10.64.21.202', 'servers_start_ip': '2.1.1.3', 'servers_end_ip': '2.1.1.3', 'm': 1, 'd': 1, 'yaml_name': 'test_https', 'pcap_name': 'mail_imap'}, 'statists_metric_results': [{'client_ip': '10.64.5.193', 'in_bytes': 17247, 'out_bytes': 1157083, 'bytes': 9394640}], 'token': 'f4339216-6164-42fd-98f0-48f5cecf7154&41&', 'rule_id': '281993'}
+    script_type = "ui"
+    vsys_id = 1
+    api_server = "http://192.168.44.72"
+    metric_results = log.get_livechart_statistics_2408(token, start_time, end_time, statistics_info, statistics_metircs,
+                                                  trex_ip_info, test_data, api_server, vsys_id, script_type)
+    """

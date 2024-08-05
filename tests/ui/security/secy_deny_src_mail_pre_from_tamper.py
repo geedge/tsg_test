@@ -110,7 +110,7 @@ def run(parameter):
             "expected_return": "timed out",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"decoded_as", "query_value": "MAIL"},
-            {"query_field_key":"mail_from", "query_value": "hbn@163.com"}
+            {"query_field_key":"mail_from_cmd", "query_value": "hbn@163.com"}
             ],
             "traffic": {
                 "protocol": "mail",
@@ -231,12 +231,12 @@ def run(parameter):
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
                     "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    # mail account
-                    "policyRulePage_addConditionMailAccount_posXpath": policyRulePage_addCondition_mailAccount_posXpath,
-                    "policyRulePage_addMailAccount_posXpath": monitorRulePage_addmailAccount_posXpath,
-                    "policyRulePage_searchMailAccount_posXpath": monitorRulePage_searchmailAccount_posXpath,
-                    "policyRulePage_selectMailAccount_posXpath": monitorRulePage_selectmailAccount_posXpath,
-                    "policyRulePage_closeMailAccount_posXpath": monitorRulePage_closemailAccount_posXpath,
+                    # mail from
+                    "policyRulePage_addConditionMailFrom_posXpath": policyRulePage_addCondition_mailFrom_posXpath,
+                    "policyRulePage_addMailFrom_posXpath": monitorRulePage_addmailFrom_posXpath,
+                    "policyRulePage_searchMailFrom_posXpath": monitorRulePage_searchmailFrom_posXpath,
+                    "policyRulePage_selectMailFrom_posXpath": monitorRulePage_selectmailFrom_posXpath,
+                    "policyRulePage_closeMailFrom_posXpath": monitorRulePage_closemailFrom_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     # drop

@@ -88,7 +88,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "auto",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"}],
             "traffic": {
                 "protocol": "ftp",

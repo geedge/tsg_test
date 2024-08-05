@@ -11,8 +11,10 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
+
 from support.ui_utils.policy.edit_rule import EditRule
 from support.traffic_manager.verification import Verification
+
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -23,12 +25,11 @@ import traceback
 from support.report import *
 from datetime import datetime
 
+
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
-        # 参数初始化
-        result, exception_result = "", ""
-        
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 脚本启动时间
         start_time = time.time()
 
@@ -42,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_ftp_table_all_bytes_dim_client_server_ip",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_c_ip",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -51,7 +52,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_ftp_table_all_bytes_dim_client_server_ip",
+                        "name": "stats_dstip_http_table_uniq_c_ip_dim_c_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -59,26 +60,13 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.3",
+                                "item_value": "192.168.38.240",
                             },
                         ]
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [
-                    {
-                        "name": "stats_dstip_ftp_table_all_bytes_dim_client_server_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "2.1.1.3",
-                            },
-                        ]
-                    }],
+                "destination_ip": [],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -92,11 +80,6 @@ def run(parameter):
                 "tunnel_level": [],
                 "flag": [],
                 "application": [
-                    {
-                        "name": "ftp",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
                 ],
                 "server_fqdn": [
                 ],
@@ -108,47 +91,53 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_table_all_bytes_dim_client_server_ip",
+                    "name": "stats_http_table_uniq_c_ip_dim_c_ip",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "table_all_bytes_dim_client_server_ip",
-                          "visualization_type": "Table",
-                          "metrics": [
-                            "in_bytes:SUM:incoming bytes",
-                            "out_bytes:SUM:outgoing bytes",
-                            "bytes:BITRATE:all bytes"
-                          ],
-                          "dimensions": [
-                            "client_ip",
-                            "server_ip"
-                          ],
-                          "order_by": "all bytes",
-                          "row_limit": "100",
-                          "min_in_size": "0",
-                          "max_out_size": "0"
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:SUM:SUM(Send Bytes)",
+                                "received_bytes:SUM:SUM(Received Bytes)",
+                                "sent_bytes+received_bytes:SUM:SUM(Sent Bytes Received Bytes)"
+                            ],
+                            "dimensions": ["client_ip"],
+                            "order_by": "SUM(Sent Bytes Received Bytes)",
+                            "row_limit": "500",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Bar",
+                            "metrics": [
+                                "sent_bytes+received_bytes:BITRATE:BITRATE(Sent Bytes Received Bytes)"
+                            ],
+                            "dimensions": ["app"],
+                            "order_by": "BITRATE(Sent Bytes Received Bytes)",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
                         }
-                      ]
+                    ]
                 }]
             },
-            "expected_return": "",
+            "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
-                "servers_start_ip": "2.1.1.3",
-                "servers_end_ip": "2.1.1.3",
+                "clients_start_ip": "192.168.38.240",
+                "clients_end_ip": "192.168.38.240",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "ftp_login_ftpuser"
+                "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [
-                {"client_ip": "10.64.4.192", "server_ip": "2.1.1.3", "in_bytes": 678, "out_bytes": 982, "bytes": 13280}
-            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -181,14 +170,16 @@ def run(parameter):
                 "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": test_data["condition"]["destination_ip"][0]['object_type'],
-                "name": test_data["condition"]["destination_ip"][0]['name']
-            },
-            {
                 "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
                 "name": test_data["action_parameter"]["statistics_template"][0]['name']
             }
         ]
+        """        
+            {
+                "type": test_data["condition"]["destination_ip"][0]['object_type'],
+                "name": test_data["condition"]["destination_ip"][0]['name']
+            },
+        """
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -198,7 +189,7 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-                # 创建object
+        # 创建object
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
@@ -221,6 +212,8 @@ def run(parameter):
             if cond_status == 1:   # 创建失败，退出遍历创建
                 break
 
+        # 调试参数,正式运行需取消
+        #cond_code = 200
         # 创建Statistics Template
         create_statistics_template_code = 0
         if cond_code == 200:
@@ -228,18 +221,19 @@ def run(parameter):
             statistics_templates = profile["statistics_template"]
             for statistics_template in statistics_templates:
                 cond_status = 0
-                #create_statistics_template = CreateProfile(driver)
+                # create_statistics_template = CreateProfile(driver)
                 create_statistics_template = CreateStatisticsTemplate(driver)
                 element_position_map = get_profile_element_position("statistics_template")
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
                 create_statistics_template_code = cond_code
                 if cond_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} Profile successfully.".format("statistics_template"), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create {} Profile successfully.".format("statistics_template"), flush=True)
                 else:
                     result = "Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
                     break
-                if cond_status == 1:   # 创建失败，退出遍历创建
+                if cond_status == 1:  # 创建失败，退出遍历创建
                     break
 
         # 创建rule
@@ -250,56 +244,58 @@ def run(parameter):
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                      "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
             elif create_rule_code != 200:
                 result = "Fail to create {} rule.".format(test_data["policy_type"])
 
-
         # 触发流量验证
+        verification_result = {}
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
-            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],element_position_map)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.organize_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
 
             # 编辑修改使用
-            #search_rule = SearchRule(driver)
-            #element_position_map = get_element_position(test_data["policy_type"])
-            #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            #if search_rule_code == 200:
-                # rule_id = search_rule.get_rule_id()
-               # test_data["rule_id"] = rule_id
-
+            # search_rule = SearchRule(driver)
+            # element_position_map = get_element_position(test_data["policy_type"])
+            # edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            # if search_rule_code == 200:
+            # rule_id = search_rule.get_rule_id()
+            # test_data["rule_id"] = rule_id
 
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
             if len(result) == 0:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                      "The test case is passed.", flush=True)
             elif len(result) != 0:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                      "The test case is failed. The failure reason is: ", result, flush=True)
 
         # 避免报错：stale element not found
         time.sleep(5)
+
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
-            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
+                                                                              test_data["rule_name"],
+                                                                              element_position_map)
             if search_rule_code == 200:
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete Statistics rule successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Delete Statistics rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
@@ -321,7 +317,8 @@ def run(parameter):
                             delete_prfi = DeleteProfile(driver)
                             delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
                             if delete_prfi_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                      "Delete {} profile successfully.".format(prfi_key_out), flush=True)
                             else:
                                 result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
                                 break
@@ -346,12 +343,15 @@ def run(parameter):
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
                         element_position_map = get_element_position(cond_key)
-                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
+                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"],
+                                                                                          element_position_map)
                         if search_cond_code == 200:
                             delete_cond = DeleteObject(driver)
-                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
+                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element,
+                                                                  True)
                             if delete_cond_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(cond_key), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                      "Delete {} object successfully.".format(cond_key), flush=True)
                             else:
                                 result = result + " In addition, fail to delete {} object.".format(cond_key)
                                 break
@@ -367,13 +367,16 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
 
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
+              flush=True)
         traceback.print_exc()
         return "Error: " + str(e)
     finally:
@@ -384,7 +387,7 @@ def run(parameter):
         delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
+        if os.path.exists(file_path) and os.path.isfile(file_path):
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
                 report_data.append(parameter["test_case_name"])
@@ -405,29 +408,99 @@ def run(parameter):
                 report_data.append("")
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
-    
 
 
 if __name__ == '__main__':
-    parameter = {
+    """
+    dicts = {
+        'client_ip_object_list': 'Client IP Object List',
+        'server_ip_object_list': 'Server IP Object List',
+        'fqdn_category_list': 'WebSketch Categories',
+        'client_ip': 'Client IP',
+        'client_country': 'Client Country',
+        'server_ip': 'Server IP',
+        'server_country': 'Server Country',
+        'client_asn': 'Client ASN',
+        'server_asn': 'Server ASN',
+        'server_fqdn': 'Server FQDN',
+        'server_domain': 'Server Domain',
+        'app': 'Application',
+        'app_category': 'Application Category',
+        'device_group': 'Device Group',
+        'c2s_ttl': 'Client-to-Server TTL',
+        's2c_ttl': 'Server-to-Client TTL',
+        'c2s_link_id': 'Incoming Link ID',
+        's2c_link_id': 'Outgoing Link ID',
+        'client_port': 'Client Port',
+        'server_port': 'Server Port',
+        'http_host': 'HTTP.Host',
+        'ssl_ja3_hash': 'SSL.JA3 Hash',
+        'ssl_sni': 'SSL.SNI',
+        'subscriber_id': 'Subscriber ID',
+        'decoded_as': 'Decoded AS',
+        'sled_ip': 'Sled IP',
+        'flags': 'Flags',
+        'direction': 'Direction',
+        'session_id': 'Session ID',
+        'in_pkt_length_distribution': 'Incoming Packet Length',
+        'out_pkt_length_distribution': 'Outgoing Packet Length',
+        'pkt_length_distribution': 'Packet Length',
+        'in_latency_ms': 'Incoming Latency',
+        'out_latency_ms': 'Outgoing Latency',
+        'dtls_handshake_latency_ms': 'DTLS.Handshake Latency(ms)',
+        'ssl_handshake_latency_ms': 'SSL.Handshake Latency(ms)',
+        'tcp_handshake_latency_ms': 'TCP Handshake Latency(ms)',
+        'duration_ms': 'Duration(ms)',
+        'tcp_rtt_ms': 'Round-trip Time(ms)',
+        'sent_bytes': 'Bytes Sent',
+        'sent_pkts': 'Packets Sent',
+        'received_pkts': 'Packets Received',
+        'received_bytes': 'Bytes Received',
+        'in_bytes': 'Incoming Bytes',
+        'out_bytes': 'Outgoing Bytes',
+        'in_pkts': 'Incoming Packets',
+        'out_pkts': 'Outgoing Packets',
+        'new_c2s_flows': 'New Client-to-Server Flows',
+        'new_s2c_flows': 'New Server-to-Client Flows',
+        'new_in_sessions': 'New Incoming Sessions',
+        'new_out_sessions': 'New Outgoing Sessions',
+        'closed_in_sessions': 'Closed Incoming Sessions',
+        'closed_out_sessions': 'Closed Outgoing Sessions',
+        'syn_pkts': 'SYN Packets',
+        'c2s_ip_fragments': 'Client-to-Server IP Fragments',
+        's2c_ip_fragments': 'Server-to-Client IP Fragments'
+    }
+    result = {}
+    n = 28
+    #p = sorted([(k, v) for k, v in dicts.items()], reverse=True)
+    #s = set()
+    i = 0
+    for k, v in dicts.items():
+        if i < n:
+            result[k] = v
+            i = i + 1
+    print(result)
 
-        "username": "zhaokun",
-        "password": "zhaokun1",
+    """
+    parameter = {
+        "username": "admin",
+        "password": "admin",
         "test_pc_ip": "192.168.64.73",
-        "api_server": "http://192.168.44.72",
+        "api_server": "https://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,#6
+        "vsys_id": 5,#5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_ftp_table_all_bytes_dim_client_server_ip",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_c_ip",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
     }
     run(parameter)
+
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure

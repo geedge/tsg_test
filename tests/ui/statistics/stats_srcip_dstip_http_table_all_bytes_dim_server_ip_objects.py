@@ -121,7 +121,7 @@ def run(parameter):
                           "metrics": [
                             "in_bytes:SUM:in bytes",
                             "out_bytes:SUM:out bytes",
-                            "bytes:SUM:bytes"
+                            "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
                             "server_ip_object"

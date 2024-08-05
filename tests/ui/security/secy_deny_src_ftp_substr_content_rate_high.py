@@ -107,13 +107,13 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "rate_limit",
-                        "rate_value": "100000",
+                        "rate_value": "1000000",
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "autotest",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"},
             {"query_field_key":"decoded_as", "query_value": "FTP"},

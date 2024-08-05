@@ -52,7 +52,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "open.node.com"
+                            "heeelo"
                         ]
                         }
                     ]

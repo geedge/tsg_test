@@ -14,7 +14,7 @@ class LogIn:
 
     def login(self, user, pwd, api_server):
         url = api_server + "/v1/user/login"
-        loginJson = {"username": "", "password": ""}
+        loginJson = {"username": "", "password": "", "auth_mode": 1, "ldap_id": "", "vsys_id": 0}
         loginJson["username"] = user
         loginJson["password"] = pwd
         response = requests.post(url, json=loginJson, verify=False)

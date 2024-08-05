@@ -111,7 +111,7 @@ def run(parameter):
             "expected_return": "Ok",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"decoded_as", "query_value": "MAIL"},
-            {"query_field_key":"mail_from", "query_value": "hbn@163.com"}
+            {"query_field_key":"mail_from_cmd", "query_value": "hbn@163.com"}
             ],
             "traffic": {
                 "protocol": "mail",

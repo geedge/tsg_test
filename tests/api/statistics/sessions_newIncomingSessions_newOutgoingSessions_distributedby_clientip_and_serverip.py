@@ -220,4 +220,5 @@ if __name__ == "__main__":
         "module_name": "statistics",
         "test_case_name": "sessions_newIncomingSessions_newOutgoingSessions_distributedby_clientip_and_serverip"
     }
+    parameter = replace_paras_api(parameter)
     run(parameter)

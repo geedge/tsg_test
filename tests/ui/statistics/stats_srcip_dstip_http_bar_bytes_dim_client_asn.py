@@ -48,8 +48,8 @@ def run(parameter):
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "bytes:RATE:bytes"
+                            "in_bytes+out_bytes:RATE:bytes"
                           ],
                           "dimensions": [
                             "client_asn"

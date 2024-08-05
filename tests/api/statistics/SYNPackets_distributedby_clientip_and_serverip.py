@@ -215,4 +215,5 @@ if __name__ == "__main__":
         "module_name": "statistics",
         "test_case_name": "SYNPackets_distributedby_clientip_and_serverip"
     }
+    parameter = replace_paras_api(parameter)
     run(parameter)

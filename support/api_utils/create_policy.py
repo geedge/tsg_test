@@ -5,7 +5,10 @@ import random
 from support.api_utils.create_object import CreateObject
 from support.api_utils.create_rule import CreatePolicyRule
 from support.api_utils.create_profile import CreateProfile
-from datetime import datetime 
+from datetime import datetime
+from support.traffic_manager.workpath import workdir
+import configparser
+import os
 
 class CreatePolicy:
     def create_policy(self, parameter, test_data, template_path):
@@ -271,6 +274,27 @@ def generate_testdata(parameter, test_data):
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
     test_data = config
     return test_data
+
+def replace_paras_api(parameter):
+    #print(workdir)
+    conf_path = os.path.join(workdir, "configuration_file.ini")
+    parse = configparser.ConfigParser()
+    parse.read(conf_path, encoding="utf-8")
+
+    parameter["username"] = parse.get("account", "username")
+    parameter["password"] = parse.get("account", "password")
+    parameter["api_server"] = parse.get("tsg_url", "login_url")
+    parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_api")
+    parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
+    parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
+    parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
+    parameter["vsys_id"] = parse.get("vsys", "id_for_api")
+    parameter["is_log"] = parse.get("is_log", "api")
+
+    #project_path = parse.get("root_path", "path")
+    #parameter["root_path"] = project_path
+    #print(parameter)
+    return parameter
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

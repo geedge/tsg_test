@@ -108,8 +108,6 @@ class CreateObject:
                             self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
                             self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
-            # elif data["object_type"] == "fqdn":
-            #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added..")
             elif data["object_type"] == "tunnel":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             elif data["object_type"] == "flag":
@@ -121,19 +119,20 @@ class CreateObject:
             elif data["object_type"] == "ip_learning":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             else:
-                for x in data["item"]:
+                for i in range(len(data["item"])):
                     if data["object_type"] == "ip":
                         self.driver.find_element(By.ID, create_element_position["objectPage_ipType_posId"]).click()
-                    if x["item_type"] == "imsi":
+                    if data["item"][i]["item_type"] == "imsi":
                         self.driver.find_element(By.ID, create_element_position["objectPage_imsiType_posId"]).click()
-                    elif x["item_type"] == "phone_number":
+                    elif data["item"][i]["item_type"] == "phone_number":
                         self.driver.find_element(By.ID, create_element_position["objectPage_phnoeNumberType_posId"]).click()
-                    elif x["item_type"] == "imei":
+                    elif data["item"][i]["item_type"] == "imei":
                         self.driver.find_element(By.ID, create_element_position["objectPage_imeiType_posId"]).click()
-                    if x["item_operation"] == "add":
+                    if data["item"][i]["item_operation"] == "add":
                         self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
-                        self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(x["item_value"])
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(data["item"][i]["item_value"])
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
+
             if "statistics_option" in data.keys():
                 # 如果修改Object的统计参数则进行操作
                 statistics_option_temp = data["statistics_option"]

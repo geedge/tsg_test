@@ -1,5 +1,6 @@
 import os
 import sys
+import inspect
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import random
 import requests
@@ -104,7 +105,179 @@ class OrganizeConfig:
         cfg_list["statistics_template_metrics_dict"] = statistics_template_metrics_dict
         cfg_list["statistics_template_dimensions_dict"] = statistics_template_dimensions_dict
         return cfg_list
+    def organize_statistics_rule_cfg(self, parameter, test_data, template_path):
+        # 变量初始化
+        api_server = parameter["api_server"]
+        run_env = parameter["env"]
+        vsys_id = parameter["vsys_id"]
+        token = test_data["token"]
+        create_ip_ids, create_subid_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], []
+        statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
+        policy_define = self.get_policy_define(token, test_data["rule_id"], test_data["policy_type"], api_server,
+                                               vsys_id)
+        statistics_template_metrics_dict = {}
+        statistics_template_dimensions_dict = {}
+        if test_data["policy_type"] == "statistics":
+            # 从Statistics Rule定义信息中获取流量验证所需数据格式
+            for policy in policy_define:
+                create_policies_ids.append({'statistics': policy["id"]})
+                # 从Test Data中解析Metrics Key和Label、Dimensions Key和界面显示之间的字典关系
+                statistics_template_metrics_dict = {}
+                statistics_template_dimensions_dict = {}
+                if policy["source"] != None:
+                    for source in policy["source"]:
+                        if source["attribute_name"] == "ATTR_SOURCE_IP":
+                            for object in source["objects"]:
+                                if object["object_type"] == "ip" and object["object_sub_type"] == "ip":
+                                    for id in object["object_ids"]:
+                                        create_ip_ids.append(id)
+                    for source in policy["source"]:
+                        if source["attribute_name"] == "ATTR_SOURCE_IP":
+                            for object in source["objects"]:
+                                if object["object_type"] == "ip" and object["object_sub_type"] == "ip_learning":
+                                    for id in object["object_ids"]:
+                                        create_ip_ids.append(id)
+                if policy["destination"] != None:
+                    for destination in policy["destination"]:
+                        if destination["attribute_name"] == "ATTR_DESTINATION_IP":
+                            for object in destination["objects"]:
+                                if object["object_type"] == "ip" and object["object_sub_type"] == "ip":
+                                    for id in object["object_ids"]:
+                                        create_ip_ids.append(id)
+                user_region = policy["user_region"]
+                if user_region != {}:
+                    template_id = user_region["template_id"]
+                    template_define = self.get_template_define(token, template_id, "statistics_template",
+                                                               api_server, vsys_id)
+                    # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
+                    template_number = 0
+                    for template in template_define:
+                        template_temp = []
+                        # 从接口搜索出的Template定义Chart个数和测试数据test_data中解析出的TemplateChart个数一致
+                        #if len(template["dataview"]["charts"]) == len(statistics_template_metrics_dimension_list[template_number]["template_charts"]):
+                        #    chart_number = 0
+                        for chart in template["dataview"]["charts"]:
+                            chart_info = {"template_id": 0, "chart_id": 0, "chart_type": "line", "version": 0,
+                                          "dimensions": [],"metrics":[],"order_by":"","limit":""}
+                            chart_info["template_id"] = template_id
+                            chart_info["chart_id"] = chart["id"]
+                            chart_info["chart_type"] = chart["display"]["type"]
+                            chart_info["version"] = chart["version"]
+                            #24.08及以后版本
+                            #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                            if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
+                                dimensions_tmp = self.chart_dimensions_to_query_dimensions(chart["query"]["dimensions"])
+                                chart_info["dimensions"] = dimensions_tmp
+                            else:
+                                chart_info["dimensions"] = chart["query"]["dimensions"]
+                            metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                            chart_info["metrics"] = metrics_tmp
+                            chart_info["order_by"] = chart["query"]["order_by"]
+                            chart_info["limit"] = chart["query"]["limit"]
+                            template_temp.append(chart_info)
+                            statistics_info = {}
+                            statistics_info["rule_id"] = test_data["rule_id"]
+                            statistics_info["template_id"] = template_id
+                            statistics_info["chart_id"] = chart["id"]
+                            statistics_info["chart_type"] = chart["display"]["type"]
+                            statistics_info["version"] = chart["version"]
+                            #24.08及以后版本
+                            #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                            if chart["display"]["type"] != "Histogram" and chart["query"]["dimensions"] != []:
+                                statistics_info["dimensions"] = dimensions_tmp
+                            else:
+                                statistics_info["dimensions"] = chart["query"]["dimensions"]
+                            statistics_info["metrics"] = metrics_tmp
+                            statistics_info["order_by"] = chart["query"]["order_by"]
+                            statistics_info["limit"] = chart["query"]["limit"]
+                            self.statistics_template_metrics_dimension_list_2408(statistics_info)
+                            statistics_sc_info_list.append(statistics_info)
+                        create_profile_ids.append({'profile_type': 'Statistics_Templates', 'id': template_id, 'template_info': template_temp})
+        cfg_list = {}
+        cfg_list["create_ip_ids"] = create_ip_ids
+        cfg_list["create_subid_ids"] = create_subid_ids
+        cfg_list["create_fqdn_ids"] = create_fqdn_ids
+        cfg_list["create_url_ids"] = create_url_ids
+        cfg_list["create_flag_ids"] = create_flag_ids
+        cfg_list["create_keywords_ids"] = create_keywords_ids
+        cfg_list["create_account_ids"] = create_account_ids
+        cfg_list["create_http_signature_ids"] = create_http_signature_ids
+        cfg_list["create_geo_name_ids"] = create_geo_name_ids
+        cfg_list["create_profile_ids"] = create_profile_ids
+        cfg_list["create_policies_ids"] = create_policies_ids
+        cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
+        #cfg_list["timeout_result"] = timeout_result
+        cfg_list["statistics_template_metrics_dict"] = statistics_template_metrics_dict
+        cfg_list["statistics_template_dimensions_dict"] = statistics_template_dimensions_dict
+        return cfg_list
 
+    def chart_metrics_to_query_metrics(self,metrics_list):
+        metric_temp_json = """
+        {
+            "function": {
+                "name": "UNIQUE_COUNT"
+            },
+            "source_fields": [
+                "sent_bytes",
+                "received_bytes"
+            ],
+            "metric_name": "unique_count_1",
+            "metric_type": "unique_count",
+            "label": "Client IPs"
+        }       
+        """
+        try:
+            metrics_result = []
+            for metric in metrics_list:
+                metric_temp_dict = json.loads(metric_temp_json)
+                metric_temp_dict["function"]["name"] = metric["function"]["name"]
+                metric_temp_dict["source_fields"] = metric["source_fields"]
+                metric_temp_dict["metric_name"] = metric["metric_name"]
+                metric_temp_dict["metric_type"] = metric["metric_type"]
+                metric_temp_dict["label"] = metric["label"]
+                metrics_result.append(metric_temp_dict)
+            return metrics_result
+        except Exception as e:
+            self.error_print_function(inspect.currentframe().f_code.co_name, "Failed to parse Dimensions!")
+            raise "Failed to parse Metrics!".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3])
+
+    def chart_dimensions_to_query_dimensions(self,dimensions_list):
+        dimension_temp_json = """
+        {
+            "metric_name": "unique_count",
+            "label": "Client IPs",
+            "source_fields": [
+                "sent_bytes",
+                "received_bytes"
+            ]
+        }       
+        """
+        try:
+            dimensions_result = []
+            for dimension in dimensions_list:
+                dimension_temp_dict = json.loads(dimension_temp_json)
+                dimension_temp_dict["metric_name"] = dimension["source_fields"][0]
+                dimension_temp_dict["label"] = dimension["label"]
+                dimension_temp_dict["source_fields"] = dimension["source_fields"]
+                dimensions_result.append(dimension_temp_dict)
+        except Exception as e:
+            self.error_print_function(inspect.currentframe().f_code.co_name, "Failed to parse Dimensions!")
+            raise "Failed to parse Dimensions!".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3])
+        return dimensions_result
+    def statistics_template_metrics_dimension_list_2408(self,statistics_info):
+        chart_dict = {"metrics": {}, "dimensions": {}}
+        if statistics_info["chart_type"] != "histogram" and statistics_info["dimensions"] != []:
+            dimensions_list = {}
+            for i in range(len(statistics_info["dimensions"])):
+                dimensions_list[statistics_info["dimensions"][i]["label"]] = statistics_info["dimensions"][i]
+            chart_dict["dimensions"] = dimensions_list
+        if statistics_info["metrics"] != []:
+            metrics_list = {}
+            for i in range(len(statistics_info["metrics"])):
+                metrics_list[statistics_info["metrics"][i]["label"]] = statistics_info["metrics"][i]
+            chart_dict["metrics"] = metrics_list
+        statistics_info["metrics_dimension"] = chart_dict
+        return statistics_info
     def generate_random_ip(self, config, parameter):
         vsys_id = parameter["vsys_id"]
         run_env = parameter["env"]
@@ -167,8 +340,7 @@ class OrganizeConfig:
                         config["condition"][obj][0]["item"][0]["item_value"] = new_two_ip
                     else:
                         start_ip = stop_ip = "1.1.1.1"
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
-
+                        self.error_print_function(inspect.currentframe().f_code.co_name, "Setrandom ip error.")
                     # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
                     if obj == "source_ip":# and traffic_replace_ip == 1:
                         config["traffic"]["clients_start_ip"] = start_ip
@@ -177,8 +349,7 @@ class OrganizeConfig:
                     #    config["traffic"]["servers_start_ip"] = start_ip
                     #    config["traffic"]["servers_end_ip"] = stop_ip
                     else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Setrandom ip error.", flush=True)
+                        self.error_print_function(inspect.currentframe().f_code.co_name, "Setrandom ip error.")
                         pass
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
@@ -192,19 +363,26 @@ class OrganizeConfig:
             query_condition = {"page_size": 20, "page_no": 1, "ids": rule_id, "type": rule_type,
                             "is_enabled": "True", "with_sub_vsys": 1, "page_location": "oneshot", "location_key": "json",
                             "vsys_id": vsys_id}
-            url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={str(vsys_id)}")
+            #https://192.168.44.3/v1/policy/rule?page_size=20&page_no=1&type=statistics&name=&is_enabled=&with_sub_vsys=1&user_tag_ids=&last_modified_by=&created_by=&page_location=0&location_id=&location_key=&vsys_id=
+            url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={vsys_id}")
+            #url = (api_host + f"/v1/policy/rule/{rule_id}?vsys_id={str(vsys_id)}")
             response = requests.get(url, headers=headers, verify=False)
-            assert response.status_code == 200
+            if response.status_code != 200:
+                self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{response.status_code}")
             response = json.loads(response.text)
             result = response['data']['rules']
             return result
         except AssertionError as e:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
+            self.error_print_function(inspect.currentframe().f_code.co_name, e)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def get_template_define(self, token, template_id, template_type, api_host, vsys_id):
         try:
             # 请求接口查询metric
             headers = {'Content-Type': 'application/json', 'Authorization': token}
+            # 获取单个Template
+            #url = (api_host + f"/v1/policy/profile/statistics_template/{template_id}?page_size=-1&vsys_id={vsys_id}")
+            # 获取一批Template
             url = (api_host + f"/v1/policy/profile/statistics_template?page_size=20&page_no=1&ids={template_id}&vsys_id={str(vsys_id)}")
             response = requests.get(url, headers=headers, verify=False)
             assert response.status_code == 200
@@ -255,5 +433,67 @@ class OrganizeConfig:
                         template_metrics_dimension_list["template_charts"] = template_metrics_dimension_dict
                         statistics_template_metrics_dimension_list.append(template_metrics_dimension_list)
         return statistics_template_metrics_dimension_list
+
+    def error_print_function(self, function, error):
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function}Error: {error}", flush=True)
+
 if __name__ == "__main__":
+
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
+    test1 = {"Client IPs1":{
+        "function": {
+            "name": "UNIQUE_COUNT"
+        },
+        "metric_name": "unique_count_1",
+        "metric_type": "unique_count",
+        "label": "Client IPs1"
+    },"Client IPs":{
+        "source_fields": [
+            "sent_bytes",
+            "received_bytes"
+        ],
+        "function": {
+            "name": "COUNT"
+        },
+        "metric_name": "unique_count_1",
+        "metric_type": "unique_count",
+        "label": "Client IPs"
+    }}
+    test = [{
+        "function": {
+            "name": "UNIQUE_COUNT"
+        },
+        "metric_name": "unique_count_1",
+        "metric_type": "unique_count",
+        "label": "Client IPs1"
+    }, {
+        "function": {
+            "name": "COUNT"
+        },
+        "metric_name": "unique_count_1",
+        "metric_type": "unique_count",
+        "label": "Client IPs"
+    }]
+    list1 = {}
+    for t in test:
+        list1[t["label"]] = t
+    print(list1)
+    print(list1["Client IPs"])
+    print(list1["Client IPs"]["function"]["name"])
+    #metrics_labels = [{item["label"]:item} for item in test],
+    #if "Client IPs" in metrics_labels:
+    #    print(metrics_labels["Client IPs"])
+    """
+    import copy
+
+    original = {'c D': 3, 'a C': 1, 'b F': 2}
+    deep_copied = copy.deepcopy(original)
+
+    # 打印 original 和 deep_copied 的键
+    print("Original keys:", list(original.keys()))  # 输出: ['c', 'a', 'b']
+    print("Deep copied keys:", list(deep_copied.keys()))  # 输出: ['c', 'a', 'b']
+
+    # 手动排序键
+    sorted_keys = sorted(deep_copied.keys())
+    print("Sorted keys:", sorted_keys)  # 输出: ['a', 'b', 'c']
+    """

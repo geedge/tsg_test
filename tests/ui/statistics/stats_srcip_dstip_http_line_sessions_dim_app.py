@@ -114,7 +114,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "sessions:RATE:sessions"
+                            "new_in_sessions+new_out_sessions:RATE:sessions"
                           ],
                           "dimensions": ["application"],
                           "order_by": "sessions",

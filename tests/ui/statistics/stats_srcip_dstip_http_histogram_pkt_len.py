@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "Latency",
                           "visualization_type": "Histogram",
                           "metrics": [
-                            "pkt_length_sketch:PERCENTILES_HDR:packet length sketch"
+                            "pkt_length_sketch:HISTOGRAM:packet length sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",

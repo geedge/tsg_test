@@ -131,7 +131,7 @@ def run(parameter):
                           "metrics": [
                             "in_bytes:SUM:incoming bytes",
                             "out_bytes:SUM:outgoing bytes",
-                            "bytes:BITRATE:all bytes"
+                            "in_bytes+out_bytes:BITRATE:all bytes"
                           ],
                           "dimensions": [
                             "client_ip"
