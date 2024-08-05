@@ -188,7 +188,7 @@ class CreateObject:
                         object_dict['mask'] = item['mask']
                     object_dict = dict(flag=object_dict, op='add')
                     items.append(object_dict)
-                member = dict(items=items, type=1)            
+                member = dict(items=items, type="item")            
             elif obj_type == "http_signature":
                 for item in add_item_list:
                     patterns = []
