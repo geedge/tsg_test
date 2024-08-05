@@ -111,7 +111,7 @@ def run(parameter):
             "is_mirror":"off",
             "profile": [],
              "expected_return": "auto",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']},
                                 {"query_field_key": "decoded_as", "query_value": "FTP"},
                                 {"query_field_key": "packet_capture_file", "query_value": True}

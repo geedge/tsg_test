@@ -145,7 +145,7 @@ class UiVerification:
                                         temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
                                         print(temp_value)
                                         print(test_data["log_query_param"][t]["query_value"])
-                                        if temp_value == str(test_data["log_query_param"][t]["query_value"]):
+                                        if int(temp_value.replace(',', '')) == int(test_data["log_query_param"][t]["query_value"]) :
                                             temp_log_result = True
                                         else:
                                             temp_log_result = False

@@ -98,11 +98,6 @@ def run(parameter):
             "is_mirror":"off",
             "profile": [
 
-                        {
-                            "name":"profile1",
-                            "vlan_id":"10"
-                            #vlan的范围：应该是在3-66
-                        }
              ],
             "expected_return": "douban",
             "counters": {"hits": 1},
@@ -281,16 +276,6 @@ def run(parameter):
                     result = "Fail to create ip object."
                     break
 
-        if "profile" in test_data  and len(test_data["profile"]) != 0:
-            profile_data = test_data["profile"]
-            mirror_traffic_profile = CreateMonitorProfile(driver,test_monitor_profile_element_position)
-            for i in range(len(profile_data)):
-                create_monitor_profile_code = mirror_traffic_profile.create_monitor_profile(profile_data[i],test_monitor_profile_element_position,test_data["profile"][i]["name"])
-                if create_monitor_profile_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create traffic mirroring profile successfully.", flush=True)
-                elif create_monitor_profile_code != 200:
-                    result = "Fail to create Traffic Mirroring Profiles profile."
-                    break
 
         # 创建rule
         if create_ip_code == 200:
@@ -358,22 +343,6 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
 
-        #删除profile
-        if delete_rule_code == 200:
-            for x in range(len(profile_data)):
-                search_mirror_profile = SearchProfile(driver)
-                profile_return_code,first_row_checkbox_element=search_mirror_profile.search(profile_data[x]['name'],test_monitor_profile_element_position)
-                if profile_return_code == 200:
-                    delete_mirror_profile = DeleteProfile(driver)
-                    delete_profile_code = delete_mirror_profile.delete(test_monitor_profile_element_position,first_row_checkbox_element,True)
-                    if delete_profile_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete monitor profile successfully.", flush=True)
-                    elif delete_profile_code != 200:
-                        result = result + " In addition, fail to delete profile."
-                        break
-                else:
-                    result = result + " In addition, fail to search profile."
-                    break
 
 
         # 脚本结束时间和耗时

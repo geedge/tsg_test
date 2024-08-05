@@ -97,7 +97,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "*slope.ru"
+                                "item_value": "slope.ru*"
                                 # data["items"][i]["item_value"].split("->")[0].strip()
                                 # 表达式运算的结果是english
                             }
@@ -139,7 +139,7 @@ def run(parameter):
                                 "item_value": "TEXT",
                                 "value": [
                                     "text/html",
-                                    "text/html",
+                                    "html",
                                 ]
                             },
 

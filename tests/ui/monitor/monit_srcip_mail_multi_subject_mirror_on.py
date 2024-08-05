@@ -74,16 +74,22 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monit_mail_account_by_account",
-                        "object_type": "account",
+                        "name": "monit_mail_subject_by_keywords",
+                        "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "items": [
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_account",
-                                "item_value": "hbn&@163.com&com"
+                                "item_type": "mail_subject",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "testssdsd",
+                                    "223edsasa"
+                                ]
                             }
                         ],
                     }
