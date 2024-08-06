@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_line_unique_sessions",
+            "rule_name": "stats_srcip_dstip_ssl_line_uniq_sessions",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_line_unique_sessions",
+                        "name": "stats_srcip_ssl_line_uniq_sessions",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.4",
+                                "item_value": "10.64.224.9",
                             },
                         ]
                     }
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_line_unique_sessions",
+                        "name": "stats_dstip_ssl_line_uniq_sessions",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -77,7 +77,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.4",
+                                "item_value": "2.1.1.11",
                             },
                         ]
                     }],
@@ -110,7 +110,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_http_line_unique_sessions",
+                    "name": "stats_ssl_line_uniq_sessions",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -134,14 +134,14 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.4",
-                "clients_end_ip": "10.64.224.4",
-                "servers_start_ip": "2.1.1.4",
-                "servers_end_ip": "2.1.1.4",
+                "clients_start_ip": "10.64.224.11",
+                "clients_end_ip": "10.64.224.11",
+                "servers_start_ip": "2.1.1.11",
+                "servers_end_ip": "2.1.1.11",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "http_87pkts"
+                "pcap_name": "test_https"
             },
             # "traffic": {
             #     "type": "trex",
@@ -253,11 +253,10 @@ def run(parameter):
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            edit_rule_code = 200
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.organize_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
                 if len(verification_result) == 4:
@@ -272,8 +271,6 @@ def run(parameter):
             #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
-
-
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
             analysis = AnalysisResult()
@@ -282,6 +279,7 @@ def run(parameter):
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
+
         # 避免报错：stale element not found
         time.sleep(5)
 
@@ -416,7 +414,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_line_unique_sessions",
+        "test_case_name": "stats_srcip_dstip_ssl_line_uniq_sessions",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

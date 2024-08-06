@@ -83,7 +83,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_account",
-                                "item_value": "hbn&@163.com&com"
+                                "item_value": "zhangchengwei163fx&@163.com&com"
                             }
                         ],
                     }
@@ -92,7 +92,7 @@ def run(parameter):
             "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [
-                {"query_field_key": "decoded_as", "query_value": "MAIL"},
+                {"query_field_key": "mail_account", "query_value": "zhangchengwei163fx@163.com"},
                 {"query_field_key": "monitor_mirrored_pkts", "query_value": 1086},
             ],
             "traffic": {

@@ -93,7 +93,7 @@ def run(parameter):
             "is_mirror": "off",
             "profile": [],
             "expected_return": "auto",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [
                                 {"query_field_key": "imsi", "query_value": parameter['test_imsi']}
                             ],

@@ -90,6 +90,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
+            "is_mirror": "off",
             "expected_return": "youtube",
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "server_ip", "query_value": "8.8.8.8"},

@@ -31,7 +31,6 @@ def run(parameter):
             "do_log_1": 2,
             "obj_condition_1": [
             {
-                "is_negate": 1,
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",

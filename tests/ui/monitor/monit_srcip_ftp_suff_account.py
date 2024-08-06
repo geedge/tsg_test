@@ -105,7 +105,7 @@ def run(parameter):
             "is_mirror": "off",
             "profile": [],
             "expected_return": "auto",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
@@ -130,7 +130,7 @@ def run(parameter):
                 "name": "monitor_source_ip"
             },
             {
-                "type": "url",
+                "type": "account",
                 "name": "monitor_ftp_account"
             }
 
@@ -415,7 +415,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.9",
+        "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag" : "local",

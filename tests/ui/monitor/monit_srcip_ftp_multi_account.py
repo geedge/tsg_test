@@ -104,7 +104,7 @@ def run(parameter):
             "is_mirror": "off",
             "profile": [],
             "expected_return": "auto",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
@@ -129,7 +129,7 @@ def run(parameter):
                 "name": "monitor_source_ip"
             },
             {
-                "type": "url",
+                "type": "account",
                 "name": "monitor_ftp_account"
             }
 

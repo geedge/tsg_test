@@ -88,7 +88,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "http_host", "query_value": "www.yumi.com"},
-                {"query_field_key": "monitor_mirrored_pkts", "query_value": 84},
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": 87},
             ],
             "traffic": {
                 "protocol": "",

@@ -83,7 +83,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_account",
-                                "item_value": "hbn*->"
+                                "item_value": "zhang*->"
                             }
                         ],
                     }
@@ -93,7 +93,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
-                                {"query_field_key": "mail_account", "query_value": "hbn@163.com"}
+                                {"query_field_key": "mail_account", "query_value": "zhangchengwei163fx@163.com"}
                             ],
             "traffic": {
                 "protocol": "mail",

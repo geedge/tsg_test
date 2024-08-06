@@ -63,7 +63,7 @@ def run(parameter):
                 }
             ],
             "app_name_1": ["http"],
-            "expected_return": "SSL_ERROR_SYSCALL",
+            "expected_return": "reset",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_port","query_value": 180}],
             "traffic": {

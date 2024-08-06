@@ -73,6 +73,19 @@ def run(parameter):
                 "flag": [],
                 "application": [],
                 "server_fqdn": [
+                    {
+                        "name": "monit_test_baidu",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_value": "www.baidu.com",
+                                "item_operation": "add"
+                            }
+                        ]
+                    }
                 ],
                 "protocol_filed": [],
                 "sub_action_override": True,
@@ -109,6 +122,10 @@ def run(parameter):
             {
                 "type": "ip",
                 "name": "monitor_internal_ip"
+            },
+            {
+                "type": "fqdn",
+                "name": "monit_test_baidu"
             }
         ]
 
@@ -157,6 +174,13 @@ def run(parameter):
                     "policyRulePage_searchInternalIP_posXpath": monitorRulePage_searchInternalIP_posXpath,
                     "policyRulePage_selectInternalIP_posXpath": monitorRulePage_selectInternalIP_posXpath,
                     "policyRulePage_closeInternalIP_posXpath": monitorRulePage_closeInternalIP_posXpath,
+                    # 添加Server FQDN
+                    "policyRulePage_addConditionServerFqdn_posXpath": policyRulePage_addCondition_serverFqdn_posXpath,
+                    "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
+                    "policyRulePage_addServerFqdn_posXpath": policyRulePage_addServerFqdn_posXpath,
+                    "policyRulePage_searchServerFqdn_posXpath": policyRulePage_searchServerFqdn_posXpath,
+                    "policyRulePage_selectServerFqdn_posXpath": policyRulePage_selectServerFqdn_posXpath,
+                    "policyRulePage_closeServerFqdn_posXpath": policyRulePage_closeServerFqdn_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
@@ -183,6 +207,19 @@ def run(parameter):
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
                 elif create_ip_code != 200:
                     result = "Fail to create ip object."
+                    break
+
+        # 创建Server FQDN
+        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
+            fqdn_data = test_data["condition"]["server_fqdn"]
+            create_fqdn = CreateObject(driver)
+            for i in range(len(fqdn_data)):
+                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
+                if create_fqdn_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create fqdn object successfully.", flush=True)
+                elif create_fqdn_code != 200:
+                    result = "Fail to create fqdn."
                     break
 
         # 创建rule
@@ -250,6 +287,25 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search ip object."
+                    break
+
+            # 删除fqdn
+            for x in range(len(fqdn_data)):
+                search_fqdn = SearchObject(driver)
+                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"],
+                                                                                  test_fqdn_object_element_position)
+                if search_fqdn_code == 200:
+                    delete_fqdn = DeleteObject(driver)
+                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position,
+                                                          first_row_checkbox_element, True)
+                    if delete_fqdn_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Delete fqdn object successfully.", flush=True)
+                    elif delete_fqdn_code != 200:
+                        result = result + " In addition, fail to delete fqdn object."
+                        break
+                else:
+                    result = result + " In addition, fail to search fqdn object."
                     break
 
         # 脚本结束时间和耗时

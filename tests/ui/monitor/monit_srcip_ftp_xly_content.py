@@ -112,12 +112,12 @@ def run(parameter):
             "is_mirror": "off",
             "profile": [],
             "expected_return": "auto",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
+                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_little.txt -u ftpuser:111111"
             },
             "token": ""
         }

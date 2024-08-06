@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_line_syn_pkts_dim_client_asn",
+            "rule_name": "stats_srcip_dstip_http_line_uniq_sessions",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_line_syn_pkts_dim_client_asn",
+                        "name": "stats_srcip_http_line_uniq_sessions",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.11",
+                                "item_value": "10.64.224.4",
                             },
                         ]
                     }
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_line_syn_pkts_dim_client_asn",
+                        "name": "stats_dstip_http_line_uniq_sessions",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -77,7 +77,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.9",
+                                "item_value": "2.1.1.4",
                             },
                         ]
                     }],
@@ -110,20 +110,18 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_http_line_syn_pkts_dim_client_asn",
+                    "name": "stats_http_line_uniq_sessions",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "stats_line_syn_pkts_dim_client_asn",
+                          "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "syn_pkts:Rate:syn pkts"
+                            "session_id:UNIQUE_COUNT:UNIQUE_COUNT(session)"
                           ],
-                          "dimensions": [
-                            "client_asn"
-                          ],
-                          "order_by": "syn pkts",
-                          "row_limit": "10",
+                          "dimensions": ["time"],
+                          "order_by": "",
+                          "row_limit": "",
                           "min_in_size": "0",
                           "max_out_size": "0"
                         }
@@ -136,10 +134,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.9",
-                "clients_end_ip": "10.64.224.9",
-                "servers_start_ip": "2.1.1.9",
-                "servers_end_ip": "2.1.1.9",
+                "clients_start_ip": "10.64.224.4",
+                "clients_end_ip": "10.64.224.4",
+                "servers_start_ip": "2.1.1.4",
+                "servers_end_ip": "2.1.1.4",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -259,7 +257,7 @@ def run(parameter):
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 config = OrganizeConfig()
-                cfg_list = config.organize_cfg(parameter, test_data, template_path)
+                cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
                 if len(verification_result) == 4:
@@ -284,7 +282,6 @@ def run(parameter):
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
-
         # 避免报错：stale element not found
         time.sleep(5)
 
@@ -419,7 +416,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_line_syn_pkts_dim_client_asn",
+        "test_case_name": "stats_srcip_dstip_http_line_uniq_sessions",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",
