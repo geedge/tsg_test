@@ -10,6 +10,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask, request, jsonify
 from support.report import *
+from support.case_tag import *
 from datetime import datetime 
 
 app = Flask(__name__)
@@ -28,6 +29,7 @@ app = Flask(__name__)
 @app.route('/v1/statistics_api', methods=["POST"])
 @app.route('/v1/service_chaining_api', methods=["POST"])
 @app.route('/v1/shaping_api', methods=["POST"])
+@app.route('/v1/case_tag', methods=["POST"])
 # @app.route('/v1/temp_api', methods=["POST"])
 # @app.route('/v1/temp_ui', methods=["POST"])
 def receive_parameter():
@@ -36,13 +38,14 @@ def receive_parameter():
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "==========Receive request from Metersphere.==========", flush=True)
         req_json = request.get_json()
         run_status = req_json.get("run_status")
-        module_name = req_json.get("module_name")
-        sub_module_name = req_json.get("sub_module_name")
-        test_case_name = req_json.get("test_case_name")
-        tag = req_json.get("tag")
         
         if run_status == 1:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to build test parameter.", flush=True)
+            module_name = req_json.get("module_name")
+            sub_module_name = req_json.get("sub_module_name")
+            test_case_name = req_json.get("test_case_name")
+            tag = req_json.get("tag")
+        
             parameter = {
                 "username": "",
                 "password": "",
@@ -150,6 +153,23 @@ def receive_parameter():
                 response_result["code"] = 417
             response = jsonify(response_result)
             response.status_code = response_result["code"]
+        elif run_status == 2:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Count cases number as required.", flush=True)
+            policy_rule = req_json.get("policy")
+            protocol = req_json.get("app")
+            action = req_json.get("action")
+            sub_action = req_json.get("sub_action")
+            script_type = req_json.get("script_type")
+            case_tag = CaseTag()
+            result = case_tag.case_statistic_info(policy_rule, protocol, action, sub_action, script_type)
+            if len(result) != 0:
+                response_result = {}
+                response_result["code"] = 200
+                response_result["msg"] = result
+                response_result["data"] = None
+                response_result["success"] = True
+                response = jsonify(response_result)
+                response.status_code = response_result["code"]
         else:
             response_result = {}
             response_result["code"] = 418
