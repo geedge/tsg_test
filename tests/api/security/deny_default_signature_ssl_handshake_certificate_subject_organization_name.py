@@ -47,11 +47,11 @@ def run(parameter):
             "app_name_1": ["ssl_handshake_certificate_subject_organization_name"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"www.qq.com"}],
+            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"www.baidu.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 5 -kv https://www.qq.com/"
+                "command": "curl --connect-timeout 5 -m 5 -kv https://www.baidu.com/"
             },
             "token": ""
         }

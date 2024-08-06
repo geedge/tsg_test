@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_pn_ipprototcp_http_substr_serverfqdn_substr_url_substr_resheader_by_ct_rst",
+            "rule_name": "secy_deny_pn_ipprototcp_http_substr_serverfqdn_substr_url_substr_resheader_by_ct_drop_rst",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -167,7 +167,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_pn_ipprototcp_http_substr_serverfqdn_substr_url_substr_resheader_by_ct_rst"
+                "name": "secy_deny_pn_ipprototcp_http_substr_serverfqdn_substr_url_substr_resheader_by_ct_drop_rst"
             },
             {
                 "type": "mobile_identity",
