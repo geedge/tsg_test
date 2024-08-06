@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+            "rule_name": "stats_srcip_dstip_http_table_uniq_common_field_dim_by_self_part4",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -52,7 +52,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+                        "name": "stats_srcip_http_table_uniq_common_field_dim_by_self_part4",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -68,7 +68,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+                        "name": "stats_dstip_http_table_uniq_common_field_dim_by_self_part4",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -110,18 +110,90 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_srcip_dstip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+                    "name": "stats_http_table_uniq_common_field_dim_by_self_part4",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(DTLS.Handshake Latency(ms))",
+                            "chart_name": "UNIQUECOUNT(Direction)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "dtls_handshake_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(DTLS.Handshake Latency(ms))"
+                                "direction:UNIQUE_COUNT:UNIQUECOUNT(Direction)"
                             ],
-                            "dimensions": ["dtls_handshake_latency_ms"],
-                            "order_by": "UNIQUECOUNT(DTLS.Handshake Latency(ms))",
+                            "dimensions": ["direction"],
+                            "order_by": "UNIQUECOUNT(Direction)",
                             "row_limit": "20",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Incoming Latency)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(Incoming Latency)"
+                            ],
+                            "dimensions": ["in_latency_ms"],
+                            "order_by": "UNIQUECOUNT(Incoming Latency)",
+                            "row_limit": "50",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Outgoing Latency)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "out_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(Outgoing Latency)"
+                            ],
+                            "dimensions": ["out_latency_ms"],
+                            "order_by": "UNIQUECOUNT(Outgoing Latency)",
+                            "row_limit": "100",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(TCP Handshake Latency(ms))",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "tcp_handshake_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(TCP Handshake Latency(ms))"
+                            ],
+                            "dimensions": ["tcp_handshake_latency_ms"],
+                            "order_by": "UNIQUECOUNT(TCP Handshake Latency(ms))",
+                            "row_limit": "200",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Subscriber ID)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "subscriber_id:UNIQUE_COUNT:UNIQUECOUNT(Subscriber ID)"
+                            ],
+                            "dimensions": ["subscriber_id"],
+                            "order_by": "UNIQUECOUNT(Subscriber ID)",
+                            "row_limit": "500",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Subscriber ID)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "tcp_rtt_ms:UNIQUE_COUNT:UNIQUECOUNT(Subscriber ID)"
+                            ],
+                            "dimensions": ["tcp_rtt_ms"],
+                            "order_by": "UNIQUECOUNT(Subscriber ID)",
+                            "row_limit": "500",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(SYN Packets)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "syn_pkts:UNIQUE_COUNT:UNIQUECOUNT(SYN Packets)"
+                            ],
+                            "dimensions": ["syn_pkts"],
+                            "order_by": "UNIQUECOUNT(SYN Packets)",
+                            "row_limit": "500",
                             "min_in_size": "0",
                             "max_out_size": "0"
                         }
@@ -413,6 +485,16 @@ def run(parameter):
 
 
 if __name__ == '__main__':
+    """
+     direction  	 
+     in_latency_ms	
+     out_latency_ms	
+     tcp_handshake_latency_ms
+     subscriber_id
+     duration_ms
+     syn_pkts
+     tcp_rtt_ms
+    """
     parameter = {
         "username": "AutomationTestAccount",
         "password": "1qaz@WSX",
@@ -424,7 +506,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+        "test_case_name": "stats_srcip_dstip_http_table_uniq_common_field_dim_by_self_part4",
         "debug_flag": "local",
         "test_subcriber_id": "test6438",
         "script_type": "ui",

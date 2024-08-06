@@ -152,8 +152,6 @@ class OrganizeConfig:
                     template_number = 0
                     for template in template_define:
                         template_temp = []
-                        # 从接口搜索出的Template定义Chart个数和测试数据test_data中解析出的TemplateChart个数一致
-                        #if len(template["dataview"]["charts"]) == len(statistics_template_metrics_dimension_list[template_number]["template_charts"]):
                         #    chart_number = 0
                         for chart in template["dataview"]["charts"]:
                             chart_info = {"template_id": 0, "chart_id": 0, "chart_type": "line", "version": 0,
