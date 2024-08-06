@@ -241,7 +241,7 @@ class OrganizeConfig:
     def chart_dimensions_to_query_dimensions(self,dimensions_list):
         dimension_temp_json = """
         {
-            "metric_name": "unique_count",
+            "dimension_name": "client_ip",
             "label": "Client IPs",
             "source_fields": [
                 "sent_bytes",
@@ -253,7 +253,7 @@ class OrganizeConfig:
             dimensions_result = []
             for dimension in dimensions_list:
                 dimension_temp_dict = json.loads(dimension_temp_json)
-                dimension_temp_dict["metric_name"] = dimension["source_fields"][0]
+                dimension_temp_dict["dimension_name"] = dimension["source_fields"][0]
                 dimension_temp_dict["label"] = dimension["label"]
                 dimension_temp_dict["source_fields"] = dimension["source_fields"]
                 dimensions_result.append(dimension_temp_dict)
