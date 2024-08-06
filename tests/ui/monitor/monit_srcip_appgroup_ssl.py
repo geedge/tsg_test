@@ -2,8 +2,6 @@
 import os
 import sys
 
-from support.report import GenerateReport
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
@@ -23,13 +21,14 @@ from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env
 import traceback
 
+from support.report import *
 from datetime import datetime
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         #参数初始化
-        result = ''
+        result, exception_result = "", ""
         # 脚本启动时间
         start_time = time.time()
 
@@ -43,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_app_group_verify_exclude",
+            "rule_name": "monitor_app_group",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -101,13 +100,13 @@ def run(parameter):
             },
             "is_mirror":"off",
             "profile": [],
-            "expected_return": "yumi",
-            "counters": {"hits": 0},
-            "log_query_param": [],
+            "expected_return": "skype",
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.skype.com"}],
             "traffic": {
-                "protocol": "http",
+                "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv http://www.yumi.com"
+                "command": "curl -L https://www.skype.com/"
             },
             "token": ""
         }
@@ -120,7 +119,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_app_group_verify_exclude"
+                "name": "monitor_app_group"
             },
             {
                 "type":"ip",
@@ -227,7 +226,7 @@ def run(parameter):
                     "policyRulePage_addServerFqdn_posXpath": monitorRulePage_addServerFqdn_posXpath,
                     "policyRulePage_searchServerFqdn_posXpath": monitorRulePage_searchServerFqdn_posXpath,
                     "policyRulePage_selectServerFqdn_posXpath": monitorRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": monitorRulePage_closeServerFqdn_posXpath,
+                   "policyRulePage_closeServerFqdn_posXpath": monitorRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_enable_posXpath": monitorRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
                     "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,
@@ -366,7 +365,7 @@ def run(parameter):
         delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):
+        if os.path.exists(file_path) and os.path.isfile(file_path):  
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
                 report_data.append(parameter["test_case_name"])
@@ -387,7 +386,7 @@ def run(parameter):
                 report_data.append("")
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
-
+    
 if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
@@ -403,7 +402,7 @@ if __name__ == '__main__':
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_app_group_verify_exclude"
+        "test_case_name": "monitor_app_group"
     }
     run(parameter)
     """

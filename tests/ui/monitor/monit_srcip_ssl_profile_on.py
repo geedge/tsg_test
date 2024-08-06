@@ -2,6 +2,7 @@
 import os
 import sys
 
+from support.api_utils.organize_config import OrganizeConfig
 from support.ui_utils.object.generate_random_ip import GenerateRandomIP
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -149,8 +150,8 @@ def run(parameter):
         ]
 
         # 将测试数据中的ip替换为随机ip
-        random_ip = GenerateRandomIP(driver)
-        test_data = random_ip.generate_random_ip(test_data, run_env=parameter["env"])
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter)
 
         # 添加定位库集合
         test_rule_element_position = {}

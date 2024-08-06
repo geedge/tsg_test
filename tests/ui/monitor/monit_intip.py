@@ -97,9 +97,10 @@ def run(parameter):
             "profile": [],
             "expected_return": "baidu",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"},
+            "log_query_param": [
+                                {"query_field_key": "ssl_sni", "query_value": "www.baidu.com"},
                                 {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
-                                ],
+                               ],
 
             "traffic": {
                 "protocol": "ssl",
