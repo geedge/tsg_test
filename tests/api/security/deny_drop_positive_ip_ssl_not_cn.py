@@ -64,12 +64,12 @@ def run(parameter):
             ],
             "app_name_1": ["ssl"],
             "expected_return": "timed out",
-            "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"www.jd.com"}],
+            "counters_1": {"hits": 1},
+            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"open.node.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 5 -m 5 https://www.jd.com"
+                "command": "curl -kv --connect-timeout 15 -m 15 https://open.node.com:1443"
             },
             "token": ""
         }

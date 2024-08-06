@@ -43,25 +43,16 @@ def run(parameter):
             "do_log_1": 2,
             "obj_condition_1": [
                 {
-                "attribute_name": "ATTR_DESTINATION_GEO_COUNTRY",
-                "object_type": "geolocation",
-                "object_sub_type": "geolocation",
+                "attribute_name": "ATTR_SUBSCRIBER_ID",
+                "object_type": "subscriberid",
+                "object_sub_type": "subscriberid",
                 "object_list": [
                     {
                     "add_item_list": [
                         {
-                        "type": "library",
-                        "continent": "Asia",
-                        "geoname_id": "680523",
-                        "super_administrative_area": "auto_geo_obj",
-                        "administrative_area": "auto_geo_obj",
-                        "country_abbr": "auto_geo_obj",
-                        "country": "auto_geo_obj",
-                        "location_type": "country",
-                        "latitude": "0",
-                        "longitude": "0",
-                        "addr_type": 4,
-                        "ip_address": "8.8.8.8"
+                        "keyword_array": [
+                            "default"
+                        ]
                         }
                     ]
                     }
