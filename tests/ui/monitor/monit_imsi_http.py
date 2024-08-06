@@ -84,7 +84,21 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
+                "server_fqdn": [
+                    {
+                        "name": "monit_test_yumi",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_value": "www.yumi.com",
+                                "item_operation": "add"
+                            }
+                        ]
+                    }
+                ],
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [],
@@ -119,6 +133,10 @@ def run(parameter):
             {
                 "type": "mobile_identity",
                 "name": "monitor_imsi"
+            },
+            {
+                "type": "fqdn",
+                "name": "monit_test_yumi"
             }
 
         ]
@@ -155,6 +173,37 @@ def run(parameter):
                     "objectListPage_allSelect_posXpath": imsiObjectListPage_allSelect_posXpath,
                     "objectListPage_deleteButton_posId": imsiObjectListPage_deleteButton_posId,
                     "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
+
+            test_fqdn_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_fqdn_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": fqdnObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": fqdnObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": fqdnObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": fqdnObjectPage_addItem_posId,
+                    "objectPage_inputItem_posXpath": fqdnObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": fqdnObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": fqdnObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": fqdnObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": fqdnObjectListPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": fqdnObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": fqdnObjectListPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": fqdnObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": fqdnObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
 
@@ -202,6 +251,7 @@ def run(parameter):
                     "policyRulePage_searchImsi_posXpath": policyRulePage_searchImsi_posXpath,
                     "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
                     "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
+
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
@@ -229,6 +279,19 @@ def run(parameter):
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_sub_type), flush=True)
                 elif create_device_code != 200:
                     result = "Fail to create {} object.".format(object_sub_type)
+                    break
+
+        # 创建Server FQDN
+        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
+            fqdn_data = test_data["condition"]["server_fqdn"]
+            create_fqdn = CreateObject(driver)
+            for i in range(len(fqdn_data)):
+                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
+                if create_fqdn_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create fqdn object successfully.", flush=True)
+                elif create_fqdn_code != 200:
+                    result = "Fail to create fqdn."
                     break
 
         # 创建rule
@@ -299,7 +362,25 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search {} object.".format(object_sub_type)
-                # 脚本结束时间和耗时
+
+            # 删除fqdn
+            for x in range(len(fqdn_data)):
+                search_fqdn = SearchObject(driver)
+                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"],
+                                                                                  test_fqdn_object_element_position)
+                if search_fqdn_code == 200:
+                    delete_fqdn = DeleteObject(driver)
+                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position,
+                                                          first_row_checkbox_element, True)
+                    if delete_fqdn_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Delete fqdn object successfully.", flush=True)
+                    elif delete_fqdn_code != 200:
+                        result = result + " In addition, fail to delete fqdn object."
+                        break
+                else:
+                    result = result + " In addition, fail to search fqdn object."
+                    break
 
         # 脚本结束时间和耗时
         end_time = time.time()

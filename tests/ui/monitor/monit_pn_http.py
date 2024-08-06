@@ -84,7 +84,21 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
+                "server_fqdn": [
+                    {
+                        "name": "monit_test_yumi",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_value": "www.yumi.com",
+                                "item_operation": "add"
+                            }
+                        ]
+                    }
+                ],
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [],
@@ -119,8 +133,11 @@ def run(parameter):
             {
                 "type": "mobile_identity",
                 "name": "monitor_phone_number"
+            },
+            {
+                "type": "fqdn",
+                "name": "monit_test_yumi"
             }
-
         ]
 
         # 添加定位库集合
@@ -232,6 +249,18 @@ def run(parameter):
                 elif create_device_code != 200:
                     result = "Fail to create {} object.".format(object_sub_type)
                     break
+        # 创建Server FQDN
+        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
+            fqdn_data = test_data["condition"]["server_fqdn"]
+            create_fqdn = CreateObject(driver)
+            for i in range(len(fqdn_data)):
+                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
+                if create_fqdn_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create fqdn object successfully.", flush=True)
+                elif create_fqdn_code != 200:
+                    result = "Fail to create fqdn."
+                    break
 
         # 创建rule
         if create_device_code == 200:
@@ -301,7 +330,25 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search {} object.".format(object_sub_type)
-                # 脚本结束时间和耗时
+
+            # 删除fqdn
+            for x in range(len(fqdn_data)):
+                search_fqdn = SearchObject(driver)
+                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"],
+                                                                                  test_fqdn_object_element_position)
+                if search_fqdn_code == 200:
+                    delete_fqdn = DeleteObject(driver)
+                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position,
+                                                          first_row_checkbox_element, True)
+                    if delete_fqdn_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Delete fqdn object successfully.", flush=True)
+                    elif delete_fqdn_code != 200:
+                        result = result + " In addition, fail to delete fqdn object."
+                        break
+                else:
+                    result = result + " In addition, fail to search fqdn object."
+                    break
 
         # 脚本结束时间和耗时
         end_time = time.time()

@@ -47,7 +47,7 @@ def run(parameter):
             "app_name_1": ["ssl_analysis_sni_absent"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"server_port","query_value":"1443"}],
+            "log_query_param_1": [{"query_field_key":"server_port","query_value":1443}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

@@ -122,9 +122,9 @@ def run(parameter):
             "profile": [],
             "expected_return": "auto",
             "counters": {"hits": 1},
-            "log_query_param": [[{"query_field_key": "ftp_account", "query_value": "ftpuser"},
+            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"},
                                 {"query_field_key": "ftp_url","query_value": "ftp://192.168.40.206/autoFtp/english_big.txt"}
-                                ]],
+                                ],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",

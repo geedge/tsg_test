@@ -2,6 +2,7 @@
 import os
 import sys
 
+from support.api_utils.organize_config import OrganizeConfig
 from support.ui_utils.object.generate_random_ip import GenerateRandomIP
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -59,7 +60,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter['test_pc_ip'],
+                                "item_value": "10.64.224.7",
                             },
                         ]
                     }
@@ -100,12 +101,12 @@ def run(parameter):
                                     {"query_field_key": "monitor_mirrored_pkts", "query_value": 172},
                                ],
             "traffic": {
-                "protocol": " ",
+                "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "192.168.64.86",
-                "clients_end_ip": "192.168.64.86",
-                "servers_start_ip": "2.1.1.1",
-                "servers_end_ip": "2.1.1.2",
+                "clients_start_ip": "10.64.224.7",
+                "clients_end_ip": "10.64.224.7",
+                "servers_start_ip": "2.1.1.7",
+                "servers_end_ip": "2.1.1.7",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -136,8 +137,8 @@ def run(parameter):
         ]
 
         # 将测试数据中的ip替换为随机ip
-        random_ip = GenerateRandomIP(driver)
-        test_data = random_ip.generate_random_ip(test_data, run_env=parameter["env"])
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter)
 
         # 添加定位库集合
         test_rule_element_position = {}

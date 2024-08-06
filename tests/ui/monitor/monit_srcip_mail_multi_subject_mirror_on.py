@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.api_utils.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
@@ -60,7 +62,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
+                                "item_value": "10.64.224.7",
                             },
                         ]
                     }
@@ -74,16 +76,22 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monit_mail_account_by_account",
-                        "object_type": "account",
+                        "name": "monit_mail_subject_by_keywords",
+                        "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "items": [
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_account",
-                                "item_value": "hbn&@163.com&com"
+                                "item_type": "mail_subject",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "testssdsd",
+                                    "223edsasa"
+                                ]
                             }
                         ],
                     }
@@ -130,6 +138,9 @@ def run(parameter):
             }
 
         ]
+
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter)
 
         # 创建object
         if "condition" in test_data.keys():

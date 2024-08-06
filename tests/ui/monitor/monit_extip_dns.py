@@ -90,6 +90,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
+            "is_mirror": "off",
             "expected_return": "youtube",
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "server_ip", "query_value": "8.8.8.8"},
@@ -338,7 +339,7 @@ if __name__ == '__main__':
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 10,
-        "is_log": 0,
+        "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "monitor",

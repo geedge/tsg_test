@@ -6,7 +6,10 @@ import time
 import requests
 import json
 import ipaddress
-from datetime import datetime
+from datetime import datetime, timezone
+
+from support.util_statistics_template import UtilStatisticsTemplate
+
 
 class GetLog:
     def get_log_schema(self, token, log_type, api_host, vsys_id):
@@ -825,6 +828,9 @@ class GetLog:
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric ：start_time:{},end_time:{},rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        # 时差，速率使用：
+        util = UtilStatisticsTemplate()
+        time_dif_seconds = util.time_dif_seconds(start_time, end_time)
         if r_dict["code"] != 200:
             self.error_print_function(inspect.currentframe().f_code.co_name, "statistics metric query failed.")
             return [333, "The statistics metric API query failed."]
@@ -954,14 +960,14 @@ class GetLog:
                                         break
                                 if break_flag == 1:
                                     break  # 退出累加循环
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: \n{}".format(statistics_value))
-                        metric_results = self.assert_livechart_statistics_2408(statistics_info, statistics_value, statistics_metircs_except)  # 判断正确调用函数
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: \n{}".format(statistics_value))
+                        metric_results = self.assert_livechart_statistics_2408(statistics_info, statistics_value, statistics_metircs_except,time_dif_seconds)  # 判断正确调用函数
                 elif statistics_info["chart_type"] == "histogram":
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                           "Histogram cannot automatically compare statistical results.", flush=True)
                     metric_results = [True, ""]
                 return metric_results
-    def assert_livechart_statistics_2408(self, statistics_info, statistics_value, statistics_metircs_except):
+    def assert_livechart_statistics_2408(self, statistics_info, statistics_value, statistics_metircs_except,time_dif_seconds):
         chart_type = statistics_info["chart_type"]
         metric_result = False
         failure_reason = "Result failed."
@@ -981,8 +987,7 @@ class GetLog:
             assert_key_list = []
             for k, v in statistics_value.items():
                 if k in metrics_labels:
-                    """            
-                    failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                    """          
                     match chart_type:
                         case "line":
                             metric_result,failure_info_2 = self.metric_value_verification(assert_key, statistics_metircs_except)
@@ -992,11 +997,16 @@ class GetLog:
                             metric_result,failure_info_2 = self.metric_value_verification(assert_key,statistics_metircs_except)
                     """
                     if chart_type == "line":
-                        metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except)
+                        failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                        metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
                     elif chart_type == "histogram":
                         metric_result = True
+                    elif chart_type == "table" or  chart_type == "bar":
+                        failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                        metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
                     else:
-                        metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except)
+                        failure_info_1 = f"Chart Type Error:{chart_type}"
+
                 else:
                     continue
                 if metric_result == False:
@@ -1009,7 +1019,7 @@ class GetLog:
             exception_result = str(e)
             self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
             return metric_result, failure_info_2
-    def metric_value_verification(self, assert_key, metric_info,stats_value, test_traffic_statistics):
+    def metric_value_verification(self, assert_key, metric_info,stats_value, test_traffic_statistics,time_dif_seconds):
         #metric_info:[{'function': {'name': 'UNIQUE_COUNT'}, 'label': 'UNIQUECOUNT(Client IP)', 'metric_name': 'unique_count_1', 'metric_type': 'unique_count', 'source_fields': ['client_ip']}]
         function_name = metric_info["function"]["name"]
         source_fields_tmp = metric_info["source_fields"]
@@ -1029,15 +1039,15 @@ class GetLog:
         """
         try:
             if function_name == "SUM":
-                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
             elif function_name == "RATE":
-                metric_result, failure_info_2= self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+                metric_result, failure_info_2= self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
             elif function_name == "BITRATE":
-                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics)
+                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics, time_dif_seconds)
             elif function_name == "UNIQUE_COUNT":
-                metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+                metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
             elif function_name == "HISTOGRAM":
-                metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
+                metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
             else:
                 failure_info_2 = f"Invalid function name: {function_name}"
             return metric_result,failure_info_2
@@ -1046,10 +1056,14 @@ class GetLog:
             self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
             return metric_result, failure_info_2
 
-    def metric_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics):
+    def metric_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds = 1):
         failure_info_2 = ""
         metric_result = False
-        """
+        """        
+        util = UtilStatisticsTemplate()
+        code, all_metrics = util.get_all_metrics_or_dimensions("count_metrics")
+        if code != 200:
+            return False, "Failed to obtain the Field whose Metric Type is Count"
         match len(source_fields):
             case 1:
                 # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
@@ -1109,9 +1123,25 @@ class GetLog:
                 failure_info_2 = f"Meaningless source fields definition: {source_fields}"
         """
         try:
+            total_bytes_sent = test_traffic_statistics["total_bytes_sent"]* rate_coefficient
+            if total_bytes_sent>0 and time_dif_seconds > 1:
+                total_bytes_sent = round(total_bytes_sent/ time_dif_seconds, 2)
+
+            total_bytes_received = test_traffic_statistics["total_bytes_received"]* rate_coefficient
+            if total_bytes_received>0 and time_dif_seconds > 1:
+                total_bytes_received = round(total_bytes_received / time_dif_seconds, 2)
+
+            sent_pkts = test_traffic_statistics["sent_pkts"]
+            if sent_pkts > 0 and time_dif_seconds > 1:
+                sent_pkts = round(sent_pkts / time_dif_seconds, 2)
+
+            received_pkts = test_traffic_statistics["received_pkts"]
+            if received_pkts > 0 and time_dif_seconds > 1:
+                received_pkts = round(received_pkts / time_dif_seconds, 2)
+
             if len(source_fields) == 1:
                 # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
-                if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient or stats_value == test_traffic_statistics["total_bytes_received"] * rate_coefficient):
+                if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == total_bytes_sent or stats_value == total_bytes_received):
                     metric_result = True
                 elif source_fields[0] == "sent_bytes" and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
                     metric_result = True
@@ -1127,7 +1157,7 @@ class GetLog:
                 elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
                     metric_result = True
                 # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
                     metric_result = True
                 # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                 elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == test_traffic_statistics["total_packets_sent"]:
@@ -1137,6 +1167,8 @@ class GetLog:
                 #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
                 #    metric_result = True
                 # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == test_traffic_statistics["total_packets_sent"] or stats_value == 0):
+                    metric_result = True
                 else:
                     failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
             elif len(source_fields) == 2:
@@ -1171,32 +1203,17 @@ class GetLog:
             self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
             return metric_result, failure_info_2
 
-    def metric_unique_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics):
+    def metric_unique_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds):
         failure_info_2 = ""
         metric_result = False
-        all_metrics = {'client_ip_object_list':'Client IP Object List','server_ip_object_list':'Server IP Object List',
-                                      'client_ip': 'Client IP','server_ip': 'Server IP',
-                                      'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
-                                      'bytes': 'Bytes', 'new_c2s_flows': 'New Client-to-Server Flows',
-                                      'new_s2c_flows': 'New Server-to-Client Flows', 'sessions': 'Sessions',
-                                      'new_in_sessions': 'New Incoming Sessions',
-                                      'new_out_sessions': 'New Outgoing Sessions',
-                                      'new_unestablished_sessions': 'New Unestablished Sessions',
-                                      'in_pkts': 'Incoming Packets',
-                                      'out_pkts': 'Outgoing Packets',
-                                      'pkts': 'Packets',
-                                      'syn_pkts': 'SYN Packets',
-                                      'c2s_ip_fragments': 'Client-to-Server IP Fragments',
-                                      's2c_ip_fragments': 'Server-to-Client IP Fragments',
-                                      'ip_fragments': 'IP Fragments',
-                                      'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
-                                      'server_ip_sketch': 'Server IPs', 'in_latency_ms_sketch': 'Incoming Latency',
-                                      'out_latency_ms_sketch': 'Outgoing Latency', 'latency_ms_sketch': 'Latency',
-                                      'in_pkt_length_sketch': 'Incoming Packet Length',
-                                      'out_pkt_length_sketch': 'Outgoing Packet Length',
-                                      'pkt_length_sketch': 'Packet Length'
-                                      }
-        """
+        util = UtilStatisticsTemplate()
+        code, all_metrics = util.get_all_metrics_or_dimensions("unique_count_metrics")
+        if code != 200:
+            return False, "Failed to obtain the Field whose Metric Type is Unique_Count"
+        """        
+        'in_pkt_length_distribution': 'Incoming Packet Length',
+        'out_pkt_length_distribution': 'Outgoing Packet Length',
+        'pkt_length_distribution': 'Packet Length',
         match len(source_fields):
             case 1:
                 if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
@@ -1250,32 +1267,13 @@ class GetLog:
             self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
             return metric_result, failure_info_2
 
-    def metric_histogram_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics):
+    def metric_histogram_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds):
         # 待重构
         failure_info_2 = ""
-        metric_result = False
-        all_metrics = {'client_ip_object_list':'Client IP Object List','server_ip_object_list':'Server IP Object List',
-                                      'client_ip': 'Client IP','server_ip': 'Server IP',
-                                      'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
-                                      'bytes': 'Bytes', 'new_c2s_flows': 'New Client-to-Server Flows',
-                                      'new_s2c_flows': 'New Server-to-Client Flows', 'sessions': 'Sessions',
-                                      'new_in_sessions': 'New Incoming Sessions',
-                                      'new_out_sessions': 'New Outgoing Sessions',
-                                      'new_unestablished_sessions': 'New Unestablished Sessions',
-                                      'in_pkts': 'Incoming Packets',
-                                      'out_pkts': 'Outgoing Packets',
-                                      'pkts': 'Packets',
-                                      'syn_pkts': 'SYN Packets',
-                                      'c2s_ip_fragments': 'Client-to-Server IP Fragments',
-                                      's2c_ip_fragments': 'Server-to-Client IP Fragments',
-                                      'ip_fragments': 'IP Fragments',
-                                      'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
-                                      'server_ip_sketch': 'Server IPs', 'in_latency_ms_sketch': 'Incoming Latency',
-                                      'out_latency_ms_sketch': 'Outgoing Latency', 'latency_ms_sketch': 'Latency',
-                                      'in_pkt_length_sketch': 'Incoming Packet Length',
-                                      'out_pkt_length_sketch': 'Outgoing Packet Length',
-                                      'pkt_length_sketch': 'Packet Length'
-                                      }
+        util = UtilStatisticsTemplate()
+        code, all_metrics = util.get_all_metrics_or_dimensions("distribution_metrics")
+        if code != 200:
+            return False, "Failed to obtain the Field whose Metric Type is Distribution"
         """
                 match len(source_fields):
                     case 1:
@@ -1331,6 +1329,7 @@ class GetLog:
             return metric_result, failure_info_2
     def error_print_function(self,function,error):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function}Error: {error}", flush=True)
+
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

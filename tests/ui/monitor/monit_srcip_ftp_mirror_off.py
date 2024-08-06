@@ -92,8 +92,10 @@ def run(parameter):
             "is_mirror":"off",
             "profile": [],
             "expected_return": "auto",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
+            "counters": {"hits": "many"},
+            "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"},
+                                {"query_field_key": "ftp_account", "query_value": "ftpuser"}
+                                ],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",

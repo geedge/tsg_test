@@ -2,6 +2,7 @@
 import os
 import sys
 
+from support.api_utils.organize_config import OrganizeConfig
 from support.ui_utils.object.generate_random_ip import GenerateRandomIP
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -56,7 +57,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter['test_pc_ip'],
+                                "item_value": "10.64.224.7",
                             },
                         ]
                     }
@@ -88,7 +89,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "http_host", "query_value": "www.yumi.com"},
-                {"query_field_key": "monitor_mirrored_pkts", "query_value": 84},
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": 87},
             ],
             "traffic": {
                 "protocol": "",
@@ -122,8 +123,8 @@ def run(parameter):
         ]
 
         # 将测试数据中的ip替换为随机ip
-        random_ip = GenerateRandomIP(driver)
-        test_data = random_ip.generate_random_ip(test_data, run_env=parameter["env"])
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter)
 
         # 添加定位库集合
         test_rule_element_position = {}

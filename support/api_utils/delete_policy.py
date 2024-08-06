@@ -320,10 +320,10 @@ class DeletePolicy:
             profile_url = api_server + "/v1/policy/profile/statistics_template"
             self.query_and_delete_by_name(profile_url, template, headers)
             
-            # 删除geolocation
-            geolocation_template = {'location_type': 'geoname_id', 'country': 'auto_geo_obj', 'vsys_id': vsys_id}
-            geolocation_url = api_server + "/v1/policy/library/geolocation"
-            self.delete_geolocation(geolocation_url, geolocation_template, headers, vsys_id)
+            # 删除geolocation  24.08 版本临时注释掉
+            # geolocation_template = {'location_type': 'geoname_id', 'country': 'auto_geo_obj', 'vsys_id': vsys_id}
+            # geolocation_url = api_server + "/v1/policy/library/geolocation"
+            # self.delete_geolocation(geolocation_url, geolocation_template, headers, vsys_id)
         elif script_type == "ui":
             if len(name_list) > 0:
                 for name_item in name_list:

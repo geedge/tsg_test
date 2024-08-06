@@ -188,7 +188,7 @@ class CreateObject:
                         object_dict['mask'] = item['mask']
                     object_dict = dict(flag=object_dict, op='add')
                     items.append(object_dict)
-                member = dict(items=items, type=1)            
+                member = dict(items=items, type="item")            
             elif obj_type == "http_signature":
                 for item in add_item_list:
                     patterns = []
@@ -268,7 +268,7 @@ class CreateObject:
         if obj_type == 'geolocation':
             member = dict(geolocation = geolocation, type = 'library')
         else:
-            member = dict(items=items, type=1)
+            member = dict(items=items, type="item")
         return member
            
     def create_or_import_object(self, type, obj_template_dict, headers, api_host, is_repeat):
@@ -276,6 +276,7 @@ class CreateObject:
             if type == "create":
                 url = api_host + "/v1/policy/object"
                 time1 = datetime.now()
+                print(json.dumps(obj_template_dict))
                 response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
