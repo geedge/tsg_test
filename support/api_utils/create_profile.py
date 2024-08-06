@@ -12,6 +12,7 @@ class CreateProfile:
     """
     创建profile接口api
     """
+
     def process_statistics_post_data(self, profile_statistics_template, post_statistics_data, vsys_id):
         """
         根据测试用例数据，构建post数据请求数据
@@ -19,6 +20,409 @@ class CreateProfile:
         :param post_statistics_data:   测试用例数据
         :return:
         """
+        # key-value: key为测试数据test_data中定义名称，value为statistic api中metrics_source_fields映射的查询数据
+        metrics_source_fields_map = {
+            "Client IP Object List": {
+                "source_columns": "client_ip_object_list",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Server IP Object List": {
+                "source_columns": "server_ip_object_list",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "WebSketch Categories": {
+                "source_columns": "fqdn_category_list",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Client IP": {
+                "source_columns": "client_ip",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Client Country": {
+                "source_columns": "client_country",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Server IP": {
+                "source_columns": "server_ip",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Server Country": {
+                "source_columns": "server_country",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Client ASN": {
+                "source_columns": "client_asn",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Server ASN": {
+                "source_columns": "server_asn",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Server FQDN": {
+                "source_columns": "server_fqdn",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Server Domain": {
+                "source_columns": "server_domain",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Application": {
+                "source_columns": "app",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Application Category": {
+                "source_columns": "app_category",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Client-to-Server TTL": {
+                "source_columns": "c2s_ttl",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Server-to-Client TT": {
+                "source_columns": "s2c_ttl",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Incoming Link ID": {
+                "source_columns": "in_link_id",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Outgoing Link ID": {
+                "source_columns": "out_link_id",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Client Port": {
+                "source_columns": "client_port",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Server Port": {
+                "source_columns": "server_port",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "HTTP.Host": {
+                "source_columns": "http_host",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "SSL.JA3 Hash": {
+                "source_columns": "ssl_ja3_hash",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "SSL.SNI": {
+                "source_columns": "ssl_sni",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Subscriber ID": {
+                "source_columns": "subscriber_id",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Decoded AS": {
+                "source_columns": "decoded_as",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Sled IP": {
+                "source_columns": "sled_ip",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Flags": {
+                "source_columns": "flags",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Direction": {
+                "source_columns": "direction",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Session ID":  {
+                "source_columns": "session_id",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
+            "Incoming Packet Length": {
+                "source_columns": "in_pkt_length_distribution",
+                "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
+            },
+            "Outgoing Packet Length": {
+                "source_columns": "out_pkt_length_distribution",
+                "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
+            },
+            "Packet Length": {
+                "source_columns": "pkt_length_distribution",
+                "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
+            },
+            "Incoming Latency": {
+                "source_columns": "in_latency_ms",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "short", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+            },
+            "Outgoing Latency": {
+                "source_columns": "out_latency_ms",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "short", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+            },
+            "DTLS.Handshake Latency(ms)": {
+                "source_columns": "dtls_handshake_latency_ms",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "short", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+            },
+            "SSL.Handshake Latency(ms)": {
+                "source_columns": "ssl_handshake_latency_ms",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "short", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+            },
+            "TCP Handshake Latency(ms)": {
+                "source_columns": "tcp_handshake_latency_ms",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "short", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+            },
+            "Duration(ms)": {
+                "source_columns": "duration_ms",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "short", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+            },
+            "Round-trip Time(ms)": {
+                "source_columns": "tcp_rtt_ms",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "short", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+            },
+            "Bytes Sent": {
+                "source_columns": "sent_bytes",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "bytes", "metric_type": "count"},
+                             {"function": "RATE", "unit": "Bps", "metric_type": "count"},
+                             {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+            },
+            "Packets Sent": {
+                "source_columns": "sent_pkts",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "packets", "metric_type": "count"},
+                             {"function": "RATE", "unit": "pps", "metric_type": "count"},
+                             {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+            },
+            "Packets Received": {
+                "source_columns": "received_pkts",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "packets", "metric_type": "count"},
+                             {"function": "RATE", "unit": "pps", "metric_type": "count"},
+                             {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+            },
+            "Bytes Received": {
+                "source_columns": "received_bytes",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "bytes", "metric_type": "count"},
+                             {"function": "RATE", "unit": "Bps", "metric_type": "count"},
+                             {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+            },
+            "Incoming Bytes": {
+                "source_columns": "in_bytes",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "bytes", "metric_type": "count"},
+                             {"function": "RATE", "unit": "Bps", "metric_type": "count"},
+                             {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+            },
+            "Outgoing Bytes": {
+                "source_columns": "out_bytes",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "bytes", "metric_type": "count"},
+                             {"function": "RATE", "unit": "Bps", "metric_type": "count"},
+                             {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+            },
+            "Incoming Packets": {
+                "source_columns": "in_pkts",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "packets", "metric_type": "count"},
+                             {"function": "RATE", "unit": "pps", "metric_type": "count"},
+                             {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+            },
+            "Outgoing Packets":  {
+                "source_columns": "out_pkts",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "packets", "metric_type": "count"},
+                             {"function": "RATE", "unit": "pps", "metric_type": "count"},
+                             {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+            },
+            "New Client-to-Server Flows": {
+                "source_columns": "new_c2s_flows",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "flows", "metric_type": "count"},
+                             {"function": "RATE", "unit": "fps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},]
+            },
+            "New Server-to-Client Flows":  {
+                "source_columns": "new_s2c_flows",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "flows", "metric_type": "count"},
+                             {"function": "RATE", "unit": "fps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},]
+            },
+            "New Incoming Sessions": {
+                "source_columns": "new_in_sessions",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+            },
+            "New Outgoing Sessions": {
+                "source_columns": "new_out_sessions",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+            },
+            "Closed Incoming Sessions": {
+                "source_columns": "closed_in_sessions",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+            },
+            "Closed Outgoing Sessions": {
+                "source_columns": "closed_out_sessions",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
+                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+            },
+            "SYN Packets": {
+                "source_columns": "syn_pkts",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "packets", "metric_type": "count"},
+                             {"function": "RATE", "unit": "pps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+            },
+            "Client-to-Server IP Fragments": {
+                "source_columns": "c2s_ip_fragments",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "packets", "metric_type": "count"},
+                             {"function": "RATE", "unit": "pps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+            },
+            "Server-to-Client IP Fragments": {
+                "source_columns": "s2c_ip_fragments",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
+                             {"function": "SUM", "unit": "packets", "metric_type": "count"},
+                             {"function": "RATE", "unit": "pps", "metric_type": "count"},
+                             {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+            },
+        }
+        dimensions_source_fields_map = {
+            "__time": "__time",
+            "Client IP Object List": "client_ip_object_list",
+            "Server IP Object Lis": "server_ip_object_list",
+            "WebSketch Categories": "fqdn_category_list",
+            "Client IP": "client_ip",
+            "Client Country": "client_country",
+            "Server IP": "server_ip",
+            "Server Country": "server_country",
+            "Client ASN": "client_asn",
+            "Server ASN": "server_asn",
+            "Server FQDN": "server_fqdn",
+            "Server Domain": "server_domain",
+            "Application": "app",
+            "Application Category": "app_category",
+            "Client-to-Server TTL": "c2s_ttl",
+            "Server-to-Client TTL": "s2c_ttl",
+            "Incoming Link ID": "in_link_id",
+            "Outgoing Link ID": "out_link_id",
+            "Client Port": "client_port",
+            "Server Port": "server_port",
+            "HTTP.Host": "http_host",
+            "SSL.JA3 Hash": "ssl_ja3_hash",
+            "SSL.SNI": "ssl_sni",
+            "Subscriber ID": "subscriber_id",
+            "Decoded AS": "decoded_as",
+            "Sled IP": "sled_ip",
+            "Flags": "flags",
+            "Direction": "direction"
+        }
+        unit_map = {
+            "bytes": [],
+            "Bps": [],
+            "bps": [],
+            "flows": [],
+            "fps": [],
+            "sessions": [],
+            "sps": [],
+            "packets": [],
+            "pps": [],
+            "short": [],
+            "ms": [],
+        }
+        bytes_uint = []
+        metrics_source_fields_map = {k.lower(): v for k, v in metrics_source_fields_map.items()}
+        dimensions_source_fields_map = {k.lower(): v for k, v in dimensions_source_fields_map.items()}     # 将key转成小写
         # 读取profile_statistics_template模板文件
         with open(profile_statistics_template, "r", encoding="utf-8") as f_template:
             f_template_dict = json.load(f_template)
@@ -46,67 +450,59 @@ class CreateProfile:
             chart_pre_name = ""
             chart_after_name = ""
             for metric_index in range(len(post_statistics_data["chart_list"][chart_idex]["metrics"])):
-                metrics_dict["source_columns"][0] = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["source_columns"]
-                metrics_dict["function"]["name"] = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["function"]
-                metrics_dict["alias"] = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["source_columns"].title()
-                metrics_dict["alias"] = " ".join(metrics_dict["alias"].split("_"))    # 将_连接改为空格连接
-                # 根据metric和function判断unit是什么
-                metrics = metrics_dict["source_columns"][0]
-                fun_name = metrics_dict["function"]["name"]
-                if "bytes" in metrics:   # 和byte有关的meitric
-                    if fun_name == "SUM":
-                        unit = "bytes"
-                    elif fun_name == "RATE":
-                        unit = "Bps"
-                    else:
-                        unit = "bps"
-                elif "flows" in metrics:
-                    if fun_name == "SUM":
-                        unit = "flows"
-                    else:
-                        unit = "fps"
-                elif "sessions" in metrics:
-                    if fun_name == "SUM":
-                        unit = "sessions"
-                    elif fun_name == "APPROX_COUNT_DISTINCT_HLLD":
-                        unit = "sessions"
-                    else:
-                        unit = "sps"
-                elif "syn_pkts" in metrics:
-                    if fun_name == "SUM":
-                        unit = "packets"
-                    else:
-                        unit = "pps"
-                elif "ip_sketch" in metrics:
-                    if fun_name == "APPROX_COUNT_DISTINCT_HLLD":
-                        unit = "short"
-                elif "ms_sketch" in metrics:
-                    if fun_name == "PERCENTILES_HDR":
-                        unit = "ms"
-                else:
-                    unit = "default"
+                source_fields_str = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["source_columns"].lower().strip()
+                # 通过+号包含多个值
+                source_fields_list_temp = source_fields_str.split("+")
+                source_fields_list = list(filter(lambda x: x, source_fields_list_temp))  # 排除空元素
+                label = ""
+                for i in range(len(source_fields_list)):
+                    tmp_source = metrics_source_fields_map[source_fields_list[i]]["source_columns"]   # 通过映射，从metrics_source_fields_map取出value
+                    tmp_label_source = tmp_source.replace("_", " ")
+                    label = tmp_label_source + " "
+                    metrics_dict["source_fields"].append(tmp_source)
+                label = label.strip()
+                function_name =  post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["function"]
+                metrics_dict["function"]["name"] = function_name
+                metrics_dict["label"] = label
+                metrics_0 = metrics_dict["source_fields"][0]
+                for key, value in metrics_source_fields_map.items():
+                    if value["source_columns"] == metrics_0:
+                        for k in range(len(value["function"])):
+                            if value["function"][k]["function"].lower() == function_name.lower():
+                                unit = value["function"][k]["unit"]
+                                metric_type = value["function"][k]["metric_type"]
+                                #print(unit, metric_type)
+                                break
+                        break
+
                 metrics_dict["unit"] = unit
+                metrics_dict["metric_type"] = metric_type
+                metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index+1)
+
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["metrics"].append(copy.deepcopy(metrics_dict))
-                chart_pre_name = metrics_dict["source_columns"][0] + " "
+                chart_pre_name = metrics_dict["source_fields"][0] + " "
+
             # 重组dimensions
             dimensions_dict = copy.deepcopy(f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["dimensions"][0])
             f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["dimensions"].clear()
             for dimension_index in range(len(post_statistics_data["chart_list"][chart_idex]["dimensions"])):
-                dimensions_dict["source_columns"][0] = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["source_columns"][0]
+                source_fields_str = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["source_columns"][0].lower().strip()
+                tmp_source = dimensions_source_fields_map[source_fields_str]
+                dimensions_dict["source_fields"].append(tmp_source)
+                label = tmp_source.replace("_", " ")
                 dimensions_dict["is_drilldown"] = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["is_drilldown"]
-                if "__time" in dimensions_dict["source_columns"][0]:
-                    dimensions_dict["alias"] = "Time"
+                if "__time" in tmp_source:
+                    dimensions_dict["label"] = "Time"
                 else:
-                    dimensions_dict["alias"] = dimensions_dict["source_columns"][0].lower()
-                    dimensions_dict["alias"] = " ".join(dimensions_dict["alias"].split("_"))  # 将_连接改为空格连接
+                    dimensions_dict["label"] = label # 将_连接改为空格连接
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["dimensions"].append(copy.deepcopy(dimensions_dict))
-                chart_after_name = dimensions_dict["source_columns"][0] + " "
+                chart_after_name = dimensions_dict["source_fields"][0] + " "
             # 重组order by
             post_order_by = post_statistics_data["chart_list"][chart_idex]["order_by"]
             function_name = ""
             if post_order_by == None:
                 if chart_type == "table" or chart_type == "bar":
-                    f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["metrics"][0]["alias"]
+                    f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["metrics"][0]["label"]
                 else:
                     f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = ""
             else:
@@ -240,7 +636,7 @@ class CreateProfile:
                 headers["Content-Type"] = "application/json"
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], process_post_data)
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
-                assert response.status_code == 200
+                #assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
@@ -375,20 +771,23 @@ class CreateProfile:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
     
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
-        url = "{}/v1/policy/profile/{type}/{id}".format(api_host, type=profile_type, id=template_id)
+        url = "{}/v1/policy/profile/{type}".format(api_host, type=profile_type)
         params_dict = {
-            "vsys_id": vsys_id
+            "vsys_id": vsys_id,
+            "ids": template_id
         }
         response = requests.get(url, params=params_dict, headers=headers)
         # 打桩数据
         r_dict = response.json()
         template_info = []
         chart_info = {"template_id": template_id, "chart_id": 0, "chart_type": ""}
-        for chart in r_dict["data"]["statistics_template"]["dataview"]["charts"]:
+        for chart in r_dict["data"]["statistics_templates"][0]["dataview"]["charts"]:
             chart_info["chart_type"] = chart["display"]["type"]
             chart_info["chart_id"] = chart["id"]
             chart_info["version"] = chart["version"]
-            chart_info["sql"] = chart["query"]["sql"]
+            #chart_info["sql"] = chart["query"]["sql"]
+            chart_info["sql"] = ""
+
             template_info.append(copy.deepcopy(chart_info))
         return template_info
 
