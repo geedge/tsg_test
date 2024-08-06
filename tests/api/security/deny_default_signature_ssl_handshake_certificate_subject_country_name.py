@@ -51,7 +51,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 5 -kv https://activity.windows.com/"
+                "command": "curl --connect-timeout 15 -m 15 -kv https://activity.windows.com/"
             },
             "token": ""
         }
