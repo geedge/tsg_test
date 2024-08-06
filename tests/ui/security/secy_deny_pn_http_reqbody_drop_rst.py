@@ -40,8 +40,8 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_pn_http_substr_resbody_rst",
-            "rule_action": "allow",
+            "rule_name": "secy_deny_pn_http_reqbody_drop_rst",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],
@@ -83,7 +83,7 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "secy_keywords_resbody",
+                        "name": "secy_keywords_reqbody",
                         "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
@@ -93,10 +93,10 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "response_body",
+                                "item_type": "request_body",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "test_resbody"
+                                    "helloSecurity"
                                 ]
                             }
                         ],
@@ -114,7 +114,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "reset",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
             "traffic": {
@@ -133,7 +133,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_pn_http_substr_resbody_rst"
+                "name": "secy_deny_pn_http_reqbody_drop_rst"
             },
             {
                 "type": "mobile_identity",
@@ -141,7 +141,7 @@ def run(parameter):
             },
             {
                 "type": "keywords",
-                "name": "secy_keywords_resbody"
+                "name": "secy_keywords_reqbody"
             }
         ]
         
@@ -238,12 +238,12 @@ def run(parameter):
                     "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
                     "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    # response body
-                    "policyRulePage_addConditionResponseBody_posXpath": securityRulePage_addCondition_responseBody_posXpath,
-                    "policyRulePage_addResponseBody_posXpath": manipulationRulePage_addResponseBody_posXpath,
-                    "policyRulePage_searchResponseBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
-                    "policyRulePage_selectResponseBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
-                    "policyRulePage_closeResponseBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
+                    # request body
+                    "policyRulePage_addConditionRequestBody_posXpath": securityRulePage_addCondition_requestBody_posXpath,
+                    "policyRulePage_addRequestBody_posXpath": manipulationRulePage_addRequestBody_posXpath,
+                    "policyRulePage_searchRequestBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
+                    "policyRulePage_selectRequestBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
+                    "policyRulePage_closeRequestBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
                     # sub action
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
@@ -428,8 +428,6 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.91",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "test_imsi": "110035141486424",
-        "test_phone_number": "523335886424",
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 11,
