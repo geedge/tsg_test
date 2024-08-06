@@ -57,7 +57,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter['test_pc_ip'],
+                                "item_value": "10.64.224.7",
                             },
                         ]
                     }
