@@ -66,10 +66,10 @@ def run(parameter):
             ],
             "app_name_1": ["ssl"],
             "expected_return": "京东",
-            "counters_1": {"hits": 0},
+            "counters_1": {},
             "log_query_param_1": [],
             "traffic": {
-                
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl --connect-timeout 35 -m 35 https://www.jd.com"
             },

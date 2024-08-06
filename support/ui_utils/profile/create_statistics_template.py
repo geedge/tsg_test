@@ -516,7 +516,7 @@ class CreateStatisticsTemplate():
                     dropdown_item_xpath = "./div[3]//input"
                 else:
                     dropdown_item_xpath = "./div[1]//input"
-                dropdown_item_input_value = dropdownSelect_item.find_element(By.XPATH,dropdown_item_xpath).get_attribute("value")
+                dropdown_item_input_value = dropdownSelect_item.find_element(By.XPATH, dropdown_item_xpath).get_attribute("value")
                 if dropdown_item_input_value == "":  # 有空数据时，就跳过点击添加按钮
                     is_click_add = "no_click"
                     break

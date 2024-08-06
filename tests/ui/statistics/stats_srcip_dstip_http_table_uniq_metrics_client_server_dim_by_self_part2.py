@@ -43,7 +43,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+            "rule_name": "stats_srcip_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -52,7 +52,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+                        "name": "stats_srcip_http_table_uniq_metrics_client_server_dim_by_self_part1",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -68,7 +68,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+                        "name": "stats_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -110,17 +110,101 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_srcip_dstip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+                    "name": "stats_http_table_uniq_metrics_client_server_dim_by_self_part1",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(DTLS.Handshake Latency(ms))",
+                            "chart_name": "UNIQUECOUNT(Client IP)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "dtls_handshake_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(DTLS.Handshake Latency(ms))"
+                                "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)"
                             ],
-                            "dimensions": ["dtls_handshake_latency_ms"],
-                            "order_by": "UNIQUECOUNT(DTLS.Handshake Latency(ms))",
+                            "dimensions": ["client_ip"],
+                            "order_by": "UNIQUECOUNT(Client IP)",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Server IP)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "server_ip:UNIQUE_COUNT:UNIQUECOUNT(Server IP)"
+                            ],
+                            "dimensions": ["server_ip"],
+                            "order_by": "UNIQUECOUNT(Server IP)",
+                            "row_limit": "50",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Client Country)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "client_country:UNIQUE_COUNT:UNIQUECOUNT(Client Country)"
+                            ],
+                            "dimensions": ["client_country"],
+                            "order_by": "UNIQUECOUNT(Client Country)",
+                            "row_limit": "100",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Server Country)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "server_country:UNIQUE_COUNT:UNIQUECOUNT(Server Country)"
+                            ],
+                            "dimensions": ["server_country"],
+                            "order_by": "UNIQUECOUNT(Server Country)",
+                            "row_limit": "200",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Client ASN)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "client_asn:UNIQUE_COUNT:UNIQUECOUNT(Client ASN)"
+                            ],
+                            "dimensions": ["client_asn"],
+                            "order_by": "UNIQUECOUNT(Client ASN)",
+                            "row_limit": "500",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Server ASN)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "server_asn:UNIQUE_COUNT:UNIQUECOUNT(Server ASN)"
+                            ],
+                            "dimensions": ["server_asn"],
+                            "order_by": "UNIQUECOUNT(Server ASN)",
+                            "row_limit": "1000",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Client Port)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "client_port:UNIQUE_COUNT:UNIQUECOUNT(Client Port)"
+                            ],
+                            "dimensions": ["client_port"],
+                            "order_by": "UNIQUECOUNT(Client Port)",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "max_out_size": "0"
+                        },
+                        {
+                            "chart_name": "UNIQUECOUNT(Server Port)",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "server_port:UNIQUE_COUNT:UNIQUECOUNT(Server Port)"
+                            ],
+                            "dimensions": ["server_port"],
+                            "order_by": "UNIQUECOUNT(Server Port)",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "max_out_size": "0"
@@ -413,6 +497,16 @@ def run(parameter):
 
 
 if __name__ == '__main__':
+    """
+     client_ip	
+     client_country	
+     server_ip	
+     server_country
+     client_asn
+     server_asn
+     client_port
+     server_port
+    """
     parameter = {
         "username": "AutomationTestAccount",
         "password": "1qaz@WSX",
@@ -424,7 +518,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_table_uniq_dtls_handshake_latency_ms_dim_dtls_handshake_latency_ms",
+        "test_case_name": "stats_srcip_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
         "debug_flag": "local",
         "test_subcriber_id": "test6438",
         "script_type": "ui",
