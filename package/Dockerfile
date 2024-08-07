@@ -16,6 +16,7 @@ RUN yum install -y python3-devel java-1.8.0-openjdk
 RUN yum install -y python3 python3-pip
 RUN yum install -y tcpdump pciutils bind-utils curl
 RUN yum install -y kernel-devel kernel-headers
+RUN yum install -y libffi-devel
 RUN yum group install -y "Development tools"
 
 RUN find . -type f -name "*.py" -exec chmod 777 {} \;
