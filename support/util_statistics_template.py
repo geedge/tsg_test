@@ -97,7 +97,7 @@ class UtilStatisticsTemplate():
         elif type == "unique_count_metrics":
             code,metric_tmp = self.get_specify_elements_dict(all_metrics, 0, 29)
             if code == 200:
-                code,metric_tmp1= self.get_specify_elements_dict(all_metrics, 32, (len(all_metrics) - 1))
+                code, metric_tmp1 = self.get_specify_elements_dict(all_metrics, 32, (len(all_metrics) - 1))
                 if code == 200:
                     for k, v in metric_tmp1.items():
                         metric_tmp[k] = v

@@ -1039,14 +1039,17 @@ class GetLog:
         """
         try:
             if function_name == "SUM":
+                time_dif_seconds = 0
                 metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
             elif function_name == "RATE":
-                metric_result, failure_info_2= self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
             elif function_name == "BITRATE":
                 metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics, time_dif_seconds)
             elif function_name == "UNIQUE_COUNT":
+                time_dif_seconds = 0
                 metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
             elif function_name == "HISTOGRAM":
+                time_dif_seconds = 0
                 metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
             else:
                 failure_info_2 = f"Invalid function name: {function_name}"
@@ -1124,69 +1127,81 @@ class GetLog:
         """
         try:
             total_bytes_sent = test_traffic_statistics["total_bytes_sent"]* rate_coefficient
-            if total_bytes_sent>0 and time_dif_seconds > 1:
-                total_bytes_sent = round(total_bytes_sent/ time_dif_seconds, 2)
+            if total_bytes_sent > 0 and time_dif_seconds > 1:
+                total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2)
 
-            total_bytes_received = test_traffic_statistics["total_bytes_received"]* rate_coefficient
-            if total_bytes_received>0 and time_dif_seconds > 1:
+            total_bytes_received = test_traffic_statistics["total_bytes_received"] * rate_coefficient
+            if total_bytes_received > 0 and time_dif_seconds > 1:
                 total_bytes_received = round(total_bytes_received / time_dif_seconds, 2)
 
-            sent_pkts = test_traffic_statistics["sent_pkts"]
-            if sent_pkts > 0 and time_dif_seconds > 1:
-                sent_pkts = round(sent_pkts / time_dif_seconds, 2)
+            total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
+            if total_bytes > 0 and time_dif_seconds > 1:
+                total_bytes = round(total_bytes / time_dif_seconds, 2)
 
-            received_pkts = test_traffic_statistics["received_pkts"]
-            if received_pkts > 0 and time_dif_seconds > 1:
-                received_pkts = round(received_pkts / time_dif_seconds, 2)
+            total_packets_sent = test_traffic_statistics["total_packets_sent"]
+            if total_packets_sent > 0 and time_dif_seconds > 1:
+                sent_pkts = round(total_packets_sent / time_dif_seconds, 2)
+
+            total_packets_received = test_traffic_statistics["total_packets_received"]
+            if total_packets_received > 0 and time_dif_seconds > 1:
+                total_bytes_received = round(total_packets_received / time_dif_seconds, 2)
+
+            total_packets = test_traffic_statistics["total_packets"]
+            if total_packets > 0 and time_dif_seconds > 1:
+                received_pkts = round(total_packets / time_dif_seconds, 2)
+
+            total_syn_pkt = test_traffic_statistics["total_syn_pkt"]
+            if total_syn_pkt > 0 and time_dif_seconds > 1:
+                total_syn_pkt = round(total_syn_pkt / time_dif_seconds, 2)
 
             if len(source_fields) == 1:
                 # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
                 if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == total_bytes_sent or stats_value == total_bytes_received):
                     metric_result = True
-                elif source_fields[0] == "sent_bytes" and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                elif source_fields[0] == "sent_bytes" and stats_value == total_bytes_sent:
                     metric_result = True
-                elif source_fields[0] == "received_bytes" and stats_value == test_traffic_statistics["total_bytes_received"] * rate_coefficient:
+                elif source_fields[0] == "received_bytes" and stats_value == total_bytes_received:
                     metric_result = True
                 # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
-                elif source_fields[0] in {"in_pkts", "out_pkts"} and (stats_value == test_traffic_statistics["total_packets_sent"]  or stats_value == test_traffic_statistics["total_packets_received"]):
+                elif source_fields[0] in {"in_pkts", "out_pkts"} and (stats_value == total_packets_sent or stats_value == total_packets_received):
                     metric_result = True
-                elif source_fields[0] == "sent_pkts" and stats_value == test_traffic_statistics["total_packets_sent"]:
+                elif source_fields[0] == "sent_pkts" and stats_value == total_packets_sent:
                     metric_result = True
-                elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
+                elif source_fields[0] == "received_pkts" and stats_value == total_packets_received:
                     metric_result = True
-                elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
+                elif source_fields[0] == "syn_pkts" and total_syn_pkt * 2:
                     metric_result = True
                 # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == total_syn_pkt or stats_value == 0):
                     metric_result = True
                 # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == test_traffic_statistics["total_packets_sent"]:
+                elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_packets_sent:
                     metric_result = True
                 #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
                 #    metric_result = True
                 #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
                 #    metric_result = True
                 # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
-                elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == test_traffic_statistics["total_packets_sent"] or stats_value == 0):
+                elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == total_packets_sent or stats_value == total_packets_received or stats_value == 0):
                     metric_result = True
                 else:
                     failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
             elif len(source_fields) == 2:
                 # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
-                if "in_bytes" in source_fields and "out_bytes" in source_fields and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                if "in_bytes" in source_fields and "out_bytes" in source_fields and stats_value == total_bytes:
                     metric_result = True
-                elif "sent_bytes" in source_fields and "received_bytes" in source_fields and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
+                elif "sent_bytes" in source_fields and "received_bytes" in source_fields and stats_value == total_bytes:
                     metric_result = True
                 # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
-                elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == test_traffic_statistics["total_packets"]:
+                elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == total_packets:
                     metric_result = True
-                elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == test_traffic_statistics["total_packets"]:
+                elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
                     metric_result = True
                 # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt:
                     metric_result = True
                 # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_packets_sent"]*2:
+                elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt*2:
                     metric_result = True
                 # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
                 else:
