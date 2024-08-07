@@ -73,7 +73,6 @@ class ApiVerification:
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-            print(start_time)
             
             # 等待时间，等待日志产生
             time.sleep(10)

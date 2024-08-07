@@ -240,7 +240,7 @@ class CreateStatisticsTemplate():
         if code != 200:
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:_operate_metrics_or_dimensions_dropdown();Exception: Parsing Dimension Error")
             return 400
-        code, dropdown_item_dimensions_dict = self.get_first_n_elements_dict(dropdown_item_metrics_dict, 28)
+        code, dropdown_item_dimensions_dict = util.get_all_metrics_or_dimensions("dimensions")
         if code != 200:
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:_operate_metrics_or_dimensions_dropdown();Exception: Parsing Dimension Error")
             return 400
@@ -312,7 +312,7 @@ class CreateStatisticsTemplate():
                                                      old_value=drop_item_old, new_value=dropdown_item,
                                                      dropdown_item_dict=dropdown_item_dict)
                         else:  # 新增数据  4.5.6.3->
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
                             self.dropdown_add(chart_id=chart_id, dropdown_name=repalceLabel, new_value=dropdown_item, dropdown_item_dict=dropdown_item_dict)
             return 200
         except Exception as e:
