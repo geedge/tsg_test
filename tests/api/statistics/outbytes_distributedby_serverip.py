@@ -70,14 +70,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "out_bytes",
+                                    "source_columns": "Outgoing Bytes",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "server_ip"
+                                        "Server IP"
                                     ],
                                     "is_drilldown": 0
                                 }

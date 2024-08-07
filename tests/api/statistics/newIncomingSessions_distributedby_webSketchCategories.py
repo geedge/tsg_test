@@ -70,14 +70,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "new_in_sessions",
+                                    "source_columns": "New Incoming Sessions",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "fqdn_category"
+                                        "WebSketch Categories"
                                     ],
                                     "is_drilldown": 0
                                 }

@@ -70,14 +70,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "new_s2c_flows",
+                                    "source_columns": "New Server to Client Flows",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "server_ip"
+                                        "Server IP"
                                     ],
                                     "is_drilldown": 0
                                 }

@@ -70,7 +70,7 @@ def run(parameter):
                             "type": "histogram",
                             "metrics": [
                                 {
-                                    "source_columns": "latency_ms_sketch",
+                                    "source_columns": "Incoming Latency+Outgoing Latency",
                                     "function": "PERCENTILES_HDR"
                                 }
                             ],

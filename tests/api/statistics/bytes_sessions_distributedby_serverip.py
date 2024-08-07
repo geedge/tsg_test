@@ -70,18 +70,18 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "bytes",
+                                    "source_columns": "Incoming Bytes+Outgoing Bytes",
                                     "function": "SUM"
                                 },
                                 {
-                                    "source_columns": "sessions",
+                                    "source_columns": "New Incoming Sessions+New Outgoing Sessions",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "server_ip"
+                                        "Server IP"
                                     ],
                                     "is_drilldown": 0
                                 }

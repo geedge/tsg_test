@@ -70,18 +70,18 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "new_c2s_flows",
+                                    "source_columns": "New Client to Server Flows",
                                     "function": "SUM"
                                 },
                                 {
-                                    "source_columns": "new_s2c_flows",
+                                    "source_columns": "New Server to Client Flows",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "server_fqdn"
+                                        "Server FQDN"
                                     ],
                                     "is_drilldown": 0
                                 }

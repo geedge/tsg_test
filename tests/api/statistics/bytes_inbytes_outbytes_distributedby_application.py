@@ -70,22 +70,22 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "bytes",
+                                    "source_columns": "Incoming Bytes+Outgoing Bytes",
                                     "function": "SUM"
                                 },
                                 {
-                                    "source_columns": "in_bytes",
+                                    "source_columns": "Incoming Bytes",
                                     "function": "SUM"
                                 },
                                 {
-                                    "source_columns": "out_bytes",
+                                    "source_columns": "Outgoing Bytes",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "application"
+                                        "Application"
                                     ],
                                     "is_drilldown": 0
                                 }

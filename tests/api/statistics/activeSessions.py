@@ -70,8 +70,8 @@ def run(parameter):
                             "type": "line",
                             "metrics": [
                                 {
-                                    "source_columns": "session_identifier_sketch",
-                                    "function": "APPROX_COUNT_DISTINCT_HLLD"
+                                    "source_columns": "Session ID",
+                                    "function": "UNIQUE_COUNT"
                                 }
                             ],
                             "dimensions": [

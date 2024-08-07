@@ -70,14 +70,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "bytes",
+                                    "source_columns": "Incoming Bytes+Outgoing Bytes",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "fqdn_category"
+                                        "WebSketch Categories"
                                     ],
                                     "is_drilldown": 0
                                 }

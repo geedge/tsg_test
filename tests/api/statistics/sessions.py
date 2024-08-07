@@ -70,7 +70,7 @@ def run(parameter):
                             "type": "line",
                             "metrics": [
                                 {
-                                    "source_columns": "bytes",
+                                    "source_columns": "Incoming Bytes+Outgoing Bytes",
                                     "function": "RATE"
                                 }
                             ],
@@ -204,7 +204,7 @@ if __name__ == "__main__":
         "root_path": "C:/zcw/tsg_test",
         "path": "C:/zcw/tsg_test/tests/api",
         "module_name": "statistics",
-        "test_case_name": "sessions"
+        "test_case_name": "New Incoming Sessions+New Outgoing Sessions"
     }
     parameter = replace_paras_api(parameter)
     run(parameter)

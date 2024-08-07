@@ -70,7 +70,7 @@ def run(parameter):
                             "type": "line",
                             "metrics": [
                                 {
-                                    "source_columns": "new_out_sessions",
+                                    "source_columns": "New Outgoing Sessions",
                                     "function": "RATE"
                                 }
                             ],

@@ -70,20 +70,20 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "new_c2s_flows",
+                                    "source_columns": "New Client to Server Flows",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "client_ip"
+                                        "Client IP"
                                     ],
                                     "is_drilldown": 0
                                 },
                                 {
                                     "source_columns": [
-                                        "server_ip"
+                                        "Server IP"
                                     ],
                                     "is_drilldown": 0
                                 }

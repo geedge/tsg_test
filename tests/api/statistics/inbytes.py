@@ -70,7 +70,7 @@ def run(parameter):
                             "type": "line",
                             "metrics": [
                                 {
-                                    "source_columns": "in_bytes",
+                                    "source_columns": "Incoming Bytes",
                                     "function": "RATE"
                                 }
                             ],

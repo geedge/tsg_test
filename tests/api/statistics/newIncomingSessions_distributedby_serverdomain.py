@@ -70,14 +70,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "new_in_sessions",
+                                    "source_columns": "New Incoming Sessions",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "server_fqdn"
+                                        "Server FQDN"
                                     ],
                                     "is_drilldown": 0
                                 }

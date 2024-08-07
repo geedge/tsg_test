@@ -73,7 +73,7 @@ def run(parameter):
                             "type": "line",
                             "metrics": [
                                 {
-                                    "source_columns": "syn_pkts",
+                                    "source_columns": "SYN Packets",
                                     "function": "RATE"
                                 }
                             ],

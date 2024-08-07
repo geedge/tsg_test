@@ -70,7 +70,7 @@ def run(parameter):
                             "type": "line",
                             "metrics": [
                                 {
-                                    "source_columns": "client_ip_sketch",
+                                    "source_columns": "Client IP Object List",
                                     "function": "APPROX_COUNT_DISTINCT_HLLD"
                                 }
                             ],

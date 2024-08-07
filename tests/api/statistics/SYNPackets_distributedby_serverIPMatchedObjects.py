@@ -73,14 +73,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "syn_pkts",
+                                    "source_columns": "SYN Packets",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "server_ip_object"
+                                        "Server IP Object List"
                                     ],
                                     "is_drilldown": 0
                                 }

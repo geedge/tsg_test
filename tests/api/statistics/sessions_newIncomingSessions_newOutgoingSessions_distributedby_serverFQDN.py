@@ -70,22 +70,22 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "sessions",
+                                    "source_columns": "New Incoming Sessions+New Outgoing Sessions",
                                     "function": "SUM"
                                 },
                                 {
-                                    "source_columns": "new_in_sessions",
+                                    "source_columns": "New Incoming Sessions",
                                     "function": "SUM"
                                 },
                                 {
-                                    "source_columns": "new_out_sessions",
+                                    "source_columns": "New Outgoing Sessions",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "server_domain"
+                                        "Server Domain"
                                     ],
                                     "is_drilldown": 0
                                 }

@@ -70,14 +70,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "sessions",
+                                    "source_columns": "New Incoming Sessions+New Outgoing Sessions",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "client_ip_object"
+                                        "Client IP Object List"
                                     ],
                                     "is_drilldown": 0
                                 }

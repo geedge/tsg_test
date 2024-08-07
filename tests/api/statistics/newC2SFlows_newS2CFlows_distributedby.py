@@ -70,11 +70,11 @@ def run(parameter):
                             "type": "line",
                             "metrics": [
                                 {
-                                    "source_columns": "new_c2s_flows",
+                                    "source_columns": "New Client to Server Flows",
                                     "function": "RATE"
                                 },
                                 {
-                                    "source_columns": "new_s2c_flows",
+                                    "source_columns": "New Server to Client Flows",
                                     "function": "RATE"
                                 }
                             ],
