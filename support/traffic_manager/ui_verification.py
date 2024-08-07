@@ -52,7 +52,6 @@ class UiVerification:
                             my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").click()
                             is_save_element = "//button[contains(@class, 'el-button el-button--default el-button--small el-button--primary operation-confirm-Leave')]"
                             element_exist_flag = my_driver.is_exist_element(is_save_element)
-                            print("element_exist_flag" + "is"+" " +str(element_exist_flag))
                             if element_exist_flag == True:
                                 my_driver.find_element(By.XPATH, is_save_element).click()
                             time.sleep(1)
@@ -107,7 +106,6 @@ class UiVerification:
                                                     time.sleep(1)
                                                 log_item_element = my_driver.find_element_by_xpath(log_item_pos_xpath)
                                                 my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
-                                                print("had scroll")
                                                 my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
                                                 time.sleep(1)
                                                 # 只有下载失败的时候界面才有此定位
@@ -132,8 +130,6 @@ class UiVerification:
                                     elif log_query_key in ["http_host", "http_url", "http_response_content_type", "http_user_agent", "http_version", "http_request_line", "http_response_line"]:
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]".format(replaceValue=log_str)
                                         temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
-                                        #print(temp_value)
-                                        #print(test_data["log_query_param"][t]["query_value"])
                                         if temp_value == test_data["log_query_param"][t]["query_value"]:
                                             temp_log_result = True
                                         else:
