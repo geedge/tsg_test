@@ -276,7 +276,6 @@ class CreateObject:
             if type == "create":
                 url = api_host + "/v1/policy/object"
                 time1 = datetime.now()
-                print(json.dumps(obj_template_dict))
                 response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:

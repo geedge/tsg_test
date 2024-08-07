@@ -63,7 +63,6 @@ class TriggerTraffic:
                 # api 创建配置为瞬间创建，增加等待时长，等待策略生效
                 if script_type == "api":
                     time.sleep(6)
-                    print("has sleep")
                 player = HttpPlayer()
                 result = player.send_http_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "https" or test_data["traffic"]["protocol"] == "ssl":
