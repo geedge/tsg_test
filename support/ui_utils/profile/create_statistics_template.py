@@ -312,7 +312,7 @@ class CreateStatisticsTemplate():
                                                      old_value=drop_item_old, new_value=dropdown_item,
                                                      dropdown_item_dict=dropdown_item_dict)
                         else:  # 新增数据  4.5.6.3->
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
                             self.dropdown_add(chart_id=chart_id, dropdown_name=repalceLabel, new_value=dropdown_item, dropdown_item_dict=dropdown_item_dict)
             return 200
         except Exception as e:

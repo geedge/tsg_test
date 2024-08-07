@@ -1150,9 +1150,13 @@ class GetLog:
             if total_packets > 0 and time_dif_seconds > 1:
                 received_pkts = round(total_packets / time_dif_seconds, 2)
 
-            total_syn_pkt = test_traffic_statistics["total_syn_pkt"]
-            if total_syn_pkt > 0 and time_dif_seconds > 1:
-                total_syn_pkt = round(total_syn_pkt / time_dif_seconds, 2)
+            total_syn_pkt1 = test_traffic_statistics["total_syn_pkt"]
+            if total_syn_pkt1 > 0 and time_dif_seconds > 1:
+                total_syn_pkt = round(total_syn_pkt1 / time_dif_seconds, 2)
+
+            total_syn_pkt2 = test_traffic_statistics["total_syn_pkt"] * 2
+            if total_syn_pkt2 > 0 and time_dif_seconds > 1:
+                total_syn_pkt = round(total_syn_pkt2 / time_dif_seconds, 2)
 
             if len(source_fields) == 1:
                 # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
@@ -1198,17 +1202,17 @@ class GetLog:
                 elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
                     metric_result = True
                 # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt:
+                elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt1:
                     metric_result = True
                 # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt*2:
+                elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
                     metric_result = True
                 # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
                 else:
                     failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 3:
+            elif len(source_fields) == 3: #如有需定义3个的业务场景需补充相关逻辑
                 failure_info_2 = f"Meaningless source fields definition: {source_fields}"
-            elif len(source_fields) == 4:
+            elif len(source_fields) == 4: #如有需定义4个的业务场景需补充相关逻辑
                 failure_info_2 = f"Meaningless source fields definition: {source_fields}"
             else:
                 failure_info_2 = f"Meaningless source fields definition: {source_fields}"
