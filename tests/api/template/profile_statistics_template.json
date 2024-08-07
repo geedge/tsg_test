@@ -5,7 +5,7 @@
         "dataview": {
             "charts": [
                 {
-                    "name": "Bytes Distributed by Client IP",
+                    "name": "Bytes Sent and Bytes Received Distributed by Server IP",
                     "id": "",
                     "op": "add",
                     "display": {
@@ -21,8 +21,8 @@
                         "source": "statistics_rule",
                         "metrics": [
                             {
-                                "source_columns": [
-                                    "bytes"
+                                "source_fields": [
+
                                 ],
                                 "function": {
                                     "name": "SUM",
@@ -31,14 +31,16 @@
 
                                     ]
                                 },
-                                "alias": "Bytes",
+                                "metric_type": "count",
+                                "metric_name": "count_1",
+                                "label": "SUM(Bytes Sent Bytes Received)",
                                 "unit": "bytes"
                             }
                         ],
                         "dimensions": [
                             {
-                                "source_columns": [
-                                    "client_ip"
+                                "source_fields": [
+
                                 ],
                                 "function": {
                                     "name": "",
@@ -47,23 +49,23 @@
 
                                     ]
                                 },
-                                "alias": "Client IP",
+                                "label": "Server IP",
                                 "is_drilldown": 0
                             }
                         ],
-                        "order_by": "Bytes",
-                        "limit": "100",
+                        "order_by": "SUM(Bytes Sent Bytes Received)",
+                        "limit": 20,
                         "series_limit": ""
                     },
                     "threshold": {
-                        "in_bytes": 10,
-                        "out_bytes": 10
+                        "in_bytes": 0,
+                        "out_bytes": 0
                     }
                 }
             ]
         },
-        "vsys_id": 6
+        "vsys_id": 4
     },
     "return_data": 1,
-    "vsys_id": 6
+    "vsys_id": 4
 }
