@@ -4,7 +4,7 @@ import platform
 import subprocess
 from datetime import datetime 
 
-def install_package():
+def install_chrome():
     try:
         os.chdir("/opt")
         subprocess.check_call(["wget", "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-122.0.6261.111-1.x86_64.rpm"])
@@ -18,4 +18,4 @@ def install_package():
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to install chrome and chromedriver.")
         
 if __name__ == '__main__':
-    install_package()
+    install_chrome()

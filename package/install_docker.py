@@ -3,7 +3,7 @@ import os
 import subprocess
 from datetime import datetime 
 
-def install_trex():
+def install_docker():
     try:
         subprocess.check_call(["yum", "install", "-y", "yum-utils", "device-mapper-persistent-data", "lvm2"])
         subprocess.check_call(["yum-config-manager", "--add-repo", "https://download.docker.com/linux/centos/docker-ce.repo"])
@@ -15,4 +15,4 @@ def install_trex():
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to install docker.")
         
 if __name__ == '__main__':
-    install_trex()
+    install_docker()

@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_src_ftp_substr_content_rst",
+            "rule_name": "secy_deny_src_ftp_substr_url_drop_rst",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -84,21 +84,16 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "secy_ftp_content",
-                        "object_type": "keywords",
+                        "name": "secy_ftp_url",
+                        "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
+                        "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "ftp_content",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "autotest"
-                                ]
+                                "item_type": "url",
+                                "item_value": "ftp://192.168.40.206/autoFtp/english.txt->"
                             }
                         ],
                     }
@@ -119,8 +114,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"},
             {"query_field_key":"decoded_as", "query_value": "FTP"},
-            {"query_field_key":"ftp_url", "query_value": "ftp://192.168.40.206/autoFtp/english.txt"},
-            {"query_field_key":"ftp_link_type", "query_value": "data"}],
+            {"query_field_key":"ftp_url", "query_value": "ftp://192.168.40.206/autoFtp/english.txt"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
@@ -183,36 +177,35 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-            test_keywords_object_element_position = {
+            test_url_object_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                     "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
                 },
                 "create": {
-                    "objectListPage_createButton_posId": keywordsObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": keywordsObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": keywordsObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": keywordsObjectPage_addItem_posId,
-                    "objectPage_item_value_select_posXpath": keywordsObjectPage_item_value_select_posXpath,
-                    "objectPage_inputItem_posXpath": keywordsObjectPage_inputItem_posXpath,
-                    "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
-                    "objectPage_button_saveItem_posXpath": keywordsObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": keywordsObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath
+                    "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": urlObjectPage_addItem_posId,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
+                    "objectPage_okButton_posId": urlObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
                 },
                 "search": {
-                    "objectListPage_searchLabel_posId": keywordsObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": keywordsObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": keywordsObjectListPage_tableTbody_posXpath
+                    "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
                 },
                 "delete": {
-                    "objectListPage_allSelect_posXpath": keywordsObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": keywordsObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": keywordsObjectListPage_deleteButton_warningYes_posXpath
+                    "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
             test_rule_element_position = {
@@ -241,12 +234,12 @@ def run(parameter):
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
                     "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    # ftp content
-                    "policyRulePage_addConditionFtpContent_posXpath": securityRulePage_addCondition_ftpContent_posXpath,
-                    "policyRulePage_addFtpContent_posXpath": securityRulePage_addftpContent_posXpath,
-                    "policyRulePage_searchFtpContent_posXpath": securityRulePage_searchftpContent_posXpath,
-                    "policyRulePage_selectFtpContent_posXpath": securityRulePage_selectftpContent_posXpath,
-                    "policyRulePage_closeFtpContent_posXpath": securityRulePage_closeftpContent_posXpath,
+                    # url
+                    "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_uri_posXpath,
+                    "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
+                    "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
+                    "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
+                    "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
                     # drop
@@ -256,9 +249,6 @@ def run(parameter):
                     "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
                     # tamper
                     "policyRulePage_subAction_tamper_posXpath": securityRulePage_subAction_tamper_posXpath,
-                    # rate limit
-                    "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
-                    "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -295,8 +285,8 @@ def run(parameter):
             create_protocol_filed = CreateObject(driver)
             for x in range(len(protocol_field_data)):
                 object_type = protocol_field_data[x]['object_type']
-                if object_type == 'keywords':
-                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_keywords_object_element_position)
+                if object_type == 'url':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_url_object_element_position)
                 if create_protocol_filed_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
                 elif create_protocol_filed_code != 200:
@@ -370,12 +360,12 @@ def run(parameter):
             for q in range(len(protocol_field_data)):
                 search_protocol_filed = SearchObject(driver)
                 object_type = protocol_field_data[q]['object_type']
-                if object_type == 'keywords':
-                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_keywords_object_element_position)
+                if object_type == 'url':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_url_object_element_position)
                 if search_protocol_filed_code == 200:
                     delete_protocol_filed = DeleteObject(driver)
-                    if object_type == 'keywords':
-                        delete_protocol_filed_code = delete_protocol_filed.delete(test_keywords_object_element_position, first_row_checkbox_element, True)
+                    if object_type == 'url':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_url_object_element_position, first_row_checkbox_element, True)
                     if delete_protocol_filed_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
                     elif delete_protocol_filed_code != 200:
@@ -436,7 +426,7 @@ if __name__ == '__main__':
         "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 11,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
