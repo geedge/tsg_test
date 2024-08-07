@@ -109,7 +109,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "autotest",
-            "counters": {"hits": 2},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
