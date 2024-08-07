@@ -1328,7 +1328,7 @@ class GetLog:
             self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
             return metric_result, failure_info_2
     def error_print_function(self,function,error):
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function}Error: {error}", flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function} Error: {error}", flush=True)
 
 
 if __name__ == '__main__':

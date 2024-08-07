@@ -143,86 +143,16 @@ class ApiVerification:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is no_set. The mean is: no need to get logs.', flush=True)
             
             return cmd_result, log_result, metric_result, my_driver
-        elif policy_type == "statistics":      # statistics 使用trex流量回放验证
+        elif policy_type == "statistics":      # statistics 数据校验
             # 获取开始时间
             time.sleep(5)
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
-            # 将时间向前推迟 8 分钟，因为trex流量先发送。
+            # 将时间向前推迟 180 秒，因为trex流量先发送。
             new_time = current_utc_time - timedelta(seconds=180)
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],'start_time', flush=True)
-            # 解析trex使用参数， 解析client server ip
-            # if script_type == "ui":
-                # if "source_ip" in test_data["condition"].keys():
-                #     source_ip = test_data["condition"]["source_ip"]
-                #     for ip_item in source_ip:
-                #         if "-" in ip_item["item"][0]["item_value"]:
-                #             clients_start = ip_item["item"][0]["item_value"].split("-")[0]
-                #             clients_end = ip_item["item"][0]["item_value"].split("-")[-1]
-                #         else:
-                #             clients_start = ip_item["item"][0]["item_value"]
-                #             clients_end = clients_start
-                # if "destination_ip" in test_data["condition"].keys():
-                #     destination_ip = test_data["condition"]["destination_ip"]
-                #     for ip_item in destination_ip:
-                #         if "-" in ip_item["item"][0]["item_value"]:
-                #             servers_start = ip_item["item"][0]["item_value"].split("-")[0]
-                #             servers_end = ip_item["item"][0]["item_value"].split("-")[-1]
-                #         else:
-                #             servers_start = ip_item["item"][0]["item_value"]
-                #             servers_end = servers_start
-            if script_type == "api":
-                # for ip_item in test_data["obj_condition_1"]:
-                #     if "ATTR_SOURCE_IP" in ip_item.values():
-                #         if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                #             clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                #             clients_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                #         else:
-                #             clients_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                #             clients_end = clients_start
-                #     if "ATTR_DESTINATION_IP" in ip_item.values():
-                #         if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                #             servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                #             servers_end = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                #         else:
-                #             servers_start = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                #             servers_end = servers_start
-
-                """
-                # 策略验证跳过
-                verify_policy_break_count = 0
-                for i in range(len(policy_id_list)):
-                    while True:      # 多次策略验证
-                        policy_id = policy_id_list[i]
-                        verify_attribute_dict = {"src_ip": test_data["traffic"]["clients_start_ip"], "dst_ip": test_data["traffic"]["servers_start_ip"]}
-                        policy_verify = support.api_utils.policy_verify.PolicyVerify()
-                        hit_policy_list = policy_verify.policy_verify(test_data, verify_attribute_dict, token, api_server, vsys_id)
-                        if policy_id in hit_policy_list:   # 策略生效，验证通过，跳出验证
-                            break
-                        if verify_policy_break_count > 40:    # 预计验证200秒，仍然不生效，则结束执行，报异常。
-                            # 直接调用清空策略方法
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Invalid test, end test. Policy id: {}".format(policy_id), flush=True)
-                            return False, False, False, "The policy verification fail."
-                        verify_policy_break_count += 1
-                        time.sleep(5)
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Interval {} second, result of the {} policy verification: policy verification fail, no effect of policy, {}policy id:{} ...".format(20*verify_policy_break_count, verify_policy_break_count, test_data["policy_type"], policy_id), flush=True)
-                    """
-            time.sleep(5)     # 策略验证通过后，延迟五秒启动流量回放
-            # 执行回放命令
-            # 将原数据中使用的ip替换为随机生成ip
-            # test_data["traffic"]["clients_start_ip"] = clients_start
-            # test_data["traffic"]["clients_end_ip"] = clients_end
-            # test_data["traffic"]["servers_start_ip"] = servers_start
-            # test_data["traffic"]["servers_end_ip"] = servers_end
-            # if debug_flag == "local":
-            #     temp_data = json.dumps(test_data["traffic"])
-            #     statistics_result = self.call_traffic_server(temp_data, script_type, debug_flag)
-            #     statistics_metircs = statistics_result["result"]
-            # else:
-            #     statistics_metircs = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
-            statistics_metircs = traffic_result
-            time.sleep(50)
+            statistics_metircs_expect = traffic_result
+            time.sleep(10)
             if script_type == "ui":
                 # 点击 语言快捷切换按钮
                 element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
@@ -230,8 +160,6 @@ class ApiVerification:
                 my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
                 my_driver.execute_script("arguments[0].click();", element_language_menu)
             utc_tz = pytz.timezone('UTC')
-            current_utc_time = datetime.now(utc_tz)
-            end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             cmd_return = expected_return = test_data["expected_return"]
             # 断言判断
             trex_ip_info = {}
@@ -254,7 +182,7 @@ class ApiVerification:
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                        metric_results = log.get_livechart_statistics_2408(token, start_time, end_time, statistics_info, statistics_metircs, trex_ip_info, test_data, api_server, vsys_id, script_type)
+                        metric_results = log.get_livechart_statistics_2408(token, start_time, end_time, statistics_info, statistics_metircs_expect, trex_ip_info, test_data, api_server, vsys_id, script_type)
                         metric_result = metric_results[0]
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break

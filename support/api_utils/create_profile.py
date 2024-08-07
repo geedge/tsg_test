@@ -785,9 +785,26 @@ class CreateProfile:
             chart_info["chart_type"] = chart["display"]["type"]
             chart_info["chart_id"] = chart["id"]
             chart_info["version"] = chart["version"]
-            #chart_info["sql"] = chart["query"]["sql"]
-            chart_info["sql"] = ""
-
+            chart_info["metrics"] = []
+            chart_info["dimensions"] = []
+            for i in range(len(chart["query"]["dimensions"])):
+                metric_name = chart["query"]["dimensions"][i]["source_fields"][0]
+                label = chart["query"]["dimensions"][i]["label"]
+                tmp_dict_1 = {"metric_name": metric_name, "label": label}
+                chart_info["dimensions"].append(tmp_dict_1)
+            for j in range(len(chart["query"]["metrics"])):
+                metric_type = chart["query"]["metrics"][j]["metric_type"]
+                metric_name = chart["query"]["metrics"][j]["metric_name"]
+                label = chart["query"]["metrics"][j]["label"]
+                function_name = chart["query"]["metrics"][j]["function"]["name"]
+                tmp_dict_2 = {"function":
+                                  {"name": function_name},
+                              "metric_type": metric_type,
+                              "metric_name": metric_name,
+                              "label": label}
+                chart_info["metrics"].append(tmp_dict_2)
+            chart_info["order_by"] = chart["query"]["order_by"]
+            chart_info["limit"] = chart["query"]["limit"]
             template_info.append(copy.deepcopy(chart_info))
         return template_info
 
