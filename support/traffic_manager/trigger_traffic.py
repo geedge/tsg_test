@@ -59,7 +59,6 @@ class TriggerTraffic:
                 temp_data = test_data["traffic"]
             if test_data["traffic"]["protocol"] == "http":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic.", flush=True)
-                print("script_type is " + script_type)
                 # api 创建配置为瞬间创建，增加等待时长，等待策略生效
                 if script_type == "api":
                     time.sleep(6)
