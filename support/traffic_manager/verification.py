@@ -57,15 +57,15 @@ class Verification:
                     if policy_type == "security" or policy_type == "service_chaining" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
                         if api_verification_result[0] == True and ui_verification_result[0] == True:
                             verification_result[0] = True
-                        else :
+                        else:
                             verification_result[0] = False
                         if api_verification_result[1] == True and ui_verification_result[1] == True or (api_verification_result[1] == "no_set" and ui_verification_result[1] == "no_set"):
                             verification_result[1] = True
-                        else :
+                        else:
                             verification_result[1] = False
                         if api_verification_result[2] == True and ui_verification_result[2] == True:
                             verification_result[2] = True
-                        else :
+                        else:
                             verification_result[2] = False
                         verification_result[3] = ui_verification_result[3]
                         return verification_result
