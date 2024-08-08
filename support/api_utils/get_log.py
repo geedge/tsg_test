@@ -854,7 +854,10 @@ class GetLog:
                             }
                 if script_type == "api":
                     metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
-                    metrics_columns = tmp_dict[metrics_columns_temp]
+                    if metrics_columns_temp in tmp_dict.items():
+                        metrics_columns = tmp_dict[metrics_columns_temp]
+                    else:
+                        metrics_columns = ""
                 elif script_type == "ui":
                     metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
                 # api返回值为空，不判断方向，直接返回重新查找
