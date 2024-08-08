@@ -382,7 +382,7 @@ class CreateProfile:
         dimensions_source_fields_map = {
             "__time": "__time",
             "Client IP Object List": "client_ip_object_list",
-            "Server IP Object Lis": "server_ip_object_list",
+            "Server IP Object List": "server_ip_object_list",
             "WebSketch Categories": "fqdn_category_list",
             "Client IP": "client_ip",
             "Client Country": "client_country",
@@ -809,6 +809,7 @@ class CreateProfile:
             if "order_by" in chart["query"].keys():   # 有 order_by 则取出
                 chart_info["order_by"] = chart["query"]["order_by"]
             chart_info["limit"] = chart["query"]["limit"]
+            chart_info["topk"] = ""
             template_info.append(copy.deepcopy(chart_info))
         return template_info
 

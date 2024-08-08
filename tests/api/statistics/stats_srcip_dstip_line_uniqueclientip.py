@@ -71,7 +71,7 @@ def run(parameter):
                             "metrics": [
                                 {
                                     "source_columns": "Client IP Object List",
-                                    "function": "APPROX_COUNT_DISTINCT_HLLD"
+                                    "function": "UNIQUE_COUNT"
                                 }
                             ],
                             "dimensions": [
