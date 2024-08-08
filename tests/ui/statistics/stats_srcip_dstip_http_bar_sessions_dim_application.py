@@ -116,7 +116,7 @@ def run(parameter):
                           "metrics": [
                             "new_in_sessions+new_out_sessions:RATE:sessions"
                           ],
-                          "dimensions": ["application"],
+                          "dimensions": ["app"],
                           "order_by": "sessions",
                           "row_limit": "10",
                           "min_in_size": "1",

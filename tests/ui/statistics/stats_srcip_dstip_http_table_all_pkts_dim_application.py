@@ -120,7 +120,7 @@ def run(parameter):
                             "out_pkts:SUM:out pkts",
                             "in_pkts+out_pkts:SUM:pkts"
                           ],
-                          "dimensions": ["application"],
+                          "dimensions": ["app"],
                           "order_by": "pkts",
                           "row_limit": "500",
                           "min_in_size": "1",

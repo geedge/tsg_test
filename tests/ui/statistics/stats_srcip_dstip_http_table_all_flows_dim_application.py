@@ -121,7 +121,7 @@ def run(parameter):
                             "new_s2c_flows:SUM:new s2c flows",
                             "new_c2s_flows+new_s2c_flows:SUM:all flows"
                           ],
-                          "dimensions": ["application"],
+                          "dimensions": ["app"],
                           "order_by": "new c2s flows",
                           "row_limit": "1000",
                           "min_in_size": "1",
