@@ -110,6 +110,7 @@ def run(parameter):
             ],
             "app_name_1": ["ssl"],
             "traffic":{
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "192.168.64.86",
                 "clients_end_ip": "192.168.64.86",

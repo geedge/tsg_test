@@ -61,7 +61,7 @@ def run(parameter):
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "test_sc_api_mirror_block_vxlan_notip_bfd",
+                    "name": "test_sc_api_sc_raw_srcip_dstip_fqdn_ssl_mirror_block_vlan_none",
                     "type": "2",
                     "load_balance_method": "hash-ext-ip",
                     "load_balance_localization": "nearby",
@@ -71,7 +71,7 @@ def run(parameter):
                     "sf_condition":[
                         {
                             "profile_type": "service_function",
-                            "name": "test_sc_api_vxlan_notip_bfd",
+                            "name": "test_sc_api_vlan_none",
                             "profile_id":None,
                             "device_group":{
                                 "tag":"device_group",
@@ -79,13 +79,10 @@ def run(parameter):
                             },
                             "admin_status":1,
                             "connectivity":{
-                                "method":"vxlan_g",
-                                "dest_ip":"5.6.3.2"
+                                "method":"layer2_switch",
                             },
                             "health_check":{
-                                "method":"bfd",
-                                "interval_ms": 200,
-                                "retires": 5
+                                "method":"none"
                             },
                             "is_valid":1,
                             "vsys_id":1
@@ -95,6 +92,7 @@ def run(parameter):
             ],
             "app_name_1": ["ssl"],
             "traffic":{
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "192.168.64.86",
                 "clients_end_ip": "192.168.64.86",
@@ -188,6 +186,6 @@ if __name__ == "__main__":
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
         "module_name": "service_chaining",
-        "test_case_name": "raw_mirror_block_vxlan_notip_bfd"
+        "test_case_name": "sc_raw_srcip_dstip_ssl_mirror_block_vlan_none"
     }
     run(parameter)

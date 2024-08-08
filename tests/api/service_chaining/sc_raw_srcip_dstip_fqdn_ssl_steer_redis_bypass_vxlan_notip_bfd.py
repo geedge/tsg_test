@@ -56,19 +56,36 @@ def run(parameter):
                             ]
                         }
                 ]
+                },
+                {
+                    "attribute_name": "ATTR_SERVER_FQDN",
+                    "object_type": "fqdn",
+                    "object_sub_type": "fqdn",
+                    "repeat_time": 1,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "keyword_array": [
+                                        "*baidu.com"
+                                    ]
+                                }
+                            ]
+                        }
+                ]
                 }
             ],   
             "profile_condition_1":[
                 {
                     "profile_type": "service_function_forwarder",
-                    "name": "test_sc_api_mirror_redis_block_vxlan_notip_bfd",
-                    "type": "2",
+                    "name": "test_sc_api_steer_redis_bypass_vxlan_notip_bfd",
+                    "type": "1",
                     "load_balance_method": "hash-int-ip",
                     "load_balance_localization": "nearby",
                     "failure_action": "re-dispatch",
                     "unavailability_action": {
-                        "action": "block",
-                        "health_service_func_lt": 0
+                    "action": "bypass",
+                    "health_service_func_lt": 0
                     },
                     "return_data": 1,
                     "op_action": "add",
@@ -84,7 +101,7 @@ def run(parameter):
                             "admin_status":1,
                             "connectivity":{
                                 "method":"vxlan_g",
-                                "dest_ip":"7.8.9.4"
+                                "dest_ip":"2.2.4.5"
                             },
                             "health_check":{
                                 "method":"bfd",
@@ -99,6 +116,7 @@ def run(parameter):
             ],
             "app_name_1": ["ssl"],
             "traffic":{
+                "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "192.168.64.86",
                 "clients_end_ip": "192.168.64.86",
@@ -192,6 +210,6 @@ if __name__ == "__main__":
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
         "module_name": "service_chaining",
-        "test_case_name": "raw_mirror_redis_block_vxlan_notip_bfd"
+        "test_case_name": "sc_raw_srcip_dstip_fqdn_ssl_steer_redis_bypass_vxlan_notip_bfd"
     }
     run(parameter)
