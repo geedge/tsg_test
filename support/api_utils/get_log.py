@@ -281,14 +281,14 @@ class GetLog:
                     metrics_len = len(statistics_info["metrics_dimension"]["metrics"])
                     dimensions_len = len(statistics_info["metrics_dimension"]["dimensions"])
                     tmp_result = {}
-                    for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
+                    for _ in copy.deepcopy(result_list_source):
                         tmp_dict = {}
                         tmp_dict_key = ""
                         for k, v in _.items():
                             if k in statistics_info["metrics_dimension"]["metrics"].keys():
                                 if v == None:  # Metric结果返回中包括None值处理
                                     v = 0
-                                k_0 = statistics_info["metrics_dimension"]["metrics"][k]  # 将key变为小写且使用下划线连接
+                                k_0 = statistics_info["metrics_dimension"]["metrics"][k]
                                 # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
                                 if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
                                     if tmp_dict_key == "":
@@ -327,7 +327,7 @@ class GetLog:
                                 result_list.append(tmp_dict)
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The Metrics results:{}.".format(result_list), flush=True)
                 else:
-                    for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
+                    for _ in copy.deepcopy(result_list_source):
                         tmp_dict = {}
                         for k, v in _.items():
                             k_0 = "_".join(k.lower().split())  # 将key变为小写且使用下划线连接
@@ -871,63 +871,56 @@ class GetLog:
                 metric_result = False  # 默认
                 result_list_source = r_dict["data"]["result"]
                 result_list = []
-                if script_type == "ui":
-                    metrics_len = len(statistics_info["metrics"])
-                    dimensions_len = len(statistics_info["dimensions"]) #time调试时需确认是否处理
-                    tmp_result = {}
-                    for _ in copy.deepcopy(result_list_source):
-                        tmp_dict = {}
-                        tmp_dict_key = ""
-                        for k, v in _.items():
-                            if k in statistics_info["metrics_dimension"]["metrics"].keys():
-                                if v == None:  # Metric结果返回中包括None值处理
-                                    v = 0
-                                #k_0 = statistics_info["metrics_dimension"]["metrics"][k]
-                                k_0 = k
-                                # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并,所有Line都可以合并
-                                if statistics_info["chart_type"] == "line":# and metrics_len == 1 and dimensions_len == 1:
-                                    if tmp_dict_key == "":
-                                        tmp_dict_key = f"{k_0}"
-                                    else:
-                                        tmp_dict_key = f"{tmp_dict_key};{k_0}"
-                                    if len(tmp_result) > 0 and tmp_dict_key in tmp_result.keys():
-                                        tmp_v = tmp_result[tmp_dict_key] + v
-                                        tmp_result[tmp_dict_key] = tmp_v
-                                    else:
-                                        tmp_result[tmp_dict_key] = v
-                            elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
-                                #k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
-                                k_0 = k
-                                # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
-                                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1 and k != "__time":
-                                    if tmp_dict_key == "":
-                                        tmp_dict_key = f"{k_0};{v}"
-                                    else:
-                                        tmp_dict_key = f"{tmp_dict_key};{k_0}"
-                            else:
-                                continue
-                                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
-                                # throw Exception e
-                            if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1) == False:
-                                tmp_dict[k_0] = v
+                metrics_len = len(statistics_info["metrics"])
+                dimensions_len = len(statistics_info["dimensions"]) #time调试时需确认是否处理
+                tmp_result = {}
+                for _ in copy.deepcopy(result_list_source):
+                    tmp_dict = {}
+                    tmp_dict_key = ""
+                    for k, v in _.items():
+                        if k in statistics_info["metrics_dimension"]["metrics"].keys():
+                            if v == None:  # Metric结果返回中包括None值处理
+                                v = 0
+                            #k_0 = statistics_info["metrics_dimension"]["metrics"][k]
+                            k_0 = k
+                            # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并,所有Line都可以合并
+                            if statistics_info["chart_type"] == "line":# and metrics_len == 1 and dimensions_len == 1:
+                                if tmp_dict_key == "":
+                                    tmp_dict_key = f"{k_0}"
+                                else:
+                                    tmp_dict_key = f"{tmp_dict_key};{k_0}"
+                                if len(tmp_result) > 0 and tmp_dict_key in tmp_result.keys():
+                                    tmp_v = tmp_result[tmp_dict_key] + v
+                                    tmp_result[tmp_dict_key] = tmp_v
+                                else:
+                                    tmp_result[tmp_dict_key] = v
+                        elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
+                            #k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
+                            k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
-                        if len(tmp_dict) > 0:
-                            result_list.append(tmp_dict)
-                        if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
-                            for key in tmp_result.keys():
-                                tmp_dict = {}
-                                key_list = key.split(";")
-                                if len(key_list) == 3:
-                                    tmp_dict[key_list[0]] = key_list[1]
-                                    tmp_dict[key_list[2]] = tmp_result[key]
-                                    result_list.append(tmp_dict)
-                else:#api如果使用统一处理方法,API需从Statistics Template API获取数据重新组织和UI一样
-                    for _ in copy.deepcopy(result_list_source):  # 将key转成小写，  ***且将key中空格替换为下划线****
-                        tmp_dict = {}
-                        for k, v in _.items():
-                            k_0 = "_".join(k.lower().split())  # 将key变为小写且使用下划线连接
+                            if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1 and k != "__time":
+                                if tmp_dict_key == "":
+                                    tmp_dict_key = f"{k_0};{v}"
+                                else:
+                                    tmp_dict_key = f"{tmp_dict_key};{k_0}"
+                        else:
+                            continue
+                            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
+                            # throw Exception e
+                        if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1) == False:
                             tmp_dict[k_0] = v
+                        # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
+                    if len(tmp_dict) > 0:
                         result_list.append(tmp_dict)
+                    if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                        for key in tmp_result.keys():
+                            tmp_dict = {}
+                            key_list = key.split(";")
+                            if len(key_list) == 3:
+                                tmp_dict[key_list[0]] = key_list[1]
+                                tmp_dict[key_list[2]] = tmp_result[key]
+                                result_list.append(tmp_dict)
+
                 statistics_value = []
                 metrics_functions = [item["function"]["name"] for item in statistics_info["metrics"]]
                 if statistics_info["chart_type"] in {"line", "table", "bar"}:
@@ -1142,7 +1135,7 @@ class GetLog:
                 failure_info_2 = f"Meaningless source fields definition: {source_fields}"
         """
         try:
-            total_bytes_sent = test_traffic_statistics["total_bytes_sent"]* rate_coefficient
+            total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
             if total_bytes_sent > 0 and time_dif_seconds > 1:
                 total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2)
 
@@ -1156,23 +1149,23 @@ class GetLog:
 
             total_packets_sent = test_traffic_statistics["total_packets_sent"]
             if total_packets_sent > 0 and time_dif_seconds > 1:
-                sent_pkts = round(total_packets_sent / time_dif_seconds, 2)
+                total_packets_sent = round(total_packets_sent / time_dif_seconds, 2)
 
             total_packets_received = test_traffic_statistics["total_packets_received"]
             if total_packets_received > 0 and time_dif_seconds > 1:
-                total_bytes_received = round(total_packets_received / time_dif_seconds, 2)
+                total_packets_received = round(total_packets_received / time_dif_seconds, 2)
 
             total_packets = test_traffic_statistics["total_packets"]
             if total_packets > 0 and time_dif_seconds > 1:
-                received_pkts = round(total_packets / time_dif_seconds, 2)
+                total_packets = round(total_packets / time_dif_seconds, 2)
 
             total_syn_pkt1 = test_traffic_statistics["total_syn_pkt"]
             if total_syn_pkt1 > 0 and time_dif_seconds > 1:
-                total_syn_pkt = round(total_syn_pkt1 / time_dif_seconds, 2)
+                total_syn_pkt1 = round(total_syn_pkt1 / time_dif_seconds, 2)
 
             total_syn_pkt2 = test_traffic_statistics["total_syn_pkt"] * 2
             if total_syn_pkt2 > 0 and time_dif_seconds > 1:
-                total_syn_pkt = round(total_syn_pkt2 / time_dif_seconds, 2)
+                total_syn_pkt2 = round(total_syn_pkt2 / time_dif_seconds, 2)
 
             if len(source_fields) == 1:
                 # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
@@ -1189,13 +1182,13 @@ class GetLog:
                     metric_result = True
                 elif source_fields[0] == "received_pkts" and stats_value == total_packets_received:
                     metric_result = True
-                elif source_fields[0] == "syn_pkts" and total_syn_pkt * 2:
+                elif source_fields[0] == "syn_pkts" and total_syn_pkt2:
                     metric_result = True
                 # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == total_syn_pkt or stats_value == 0):
+                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == total_syn_pkt1 or stats_value == 0):
                     metric_result = True
                 # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_packets_sent:
+                elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt2:
                     metric_result = True
                 #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
                 #    metric_result = True

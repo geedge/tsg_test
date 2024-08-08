@@ -17,6 +17,7 @@ from support.traffic_manager.workpath import workdir
 from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
+from support.api_utils.organize_config import *
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # from support.traffic_manager.traffic_replay import TrafficReplay
 
@@ -166,8 +167,9 @@ class ApiVerification:
             trex_ip_info["clients_end"] = test_data["traffic"]["clients_end_ip"]
             trex_ip_info["servers_start"] = test_data["traffic"]["servers_start_ip"]
             trex_ip_info["servers_end"] = test_data["traffic"]["servers_end_ip"]
-            if len(statistics_sc_info_list) > 0:  # 非空
-                for statistics_info in statistics_sc_info_list:
+            statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
+            if len(statistics_template_chart_list) > 0:  # 非空
+                for statistics_info in statistics_template_chart_list:
                     n = 1    #自增变量
                     fail_count = 1   #失败重试变量
                     while n < 20:
@@ -216,41 +218,6 @@ class ApiVerification:
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                # 解析trex使用参数， 解析client server ip
-                # if script_type == "api":
-                #     for ip_item in test_data["obj_condition_1"]:
-                #         if "ATTR_SOURCE_IP" in ip_item.values():
-                #             if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                #                 test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                #                 test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                #             else:
-                #                 test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                #         if "ATTR_DESTINATION_IP" in ip_item.values():
-                #             if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                #                 test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                #                 test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
-                #             else:
-                #                 test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
-                # elif script_type == "ui":
-                #     for source_ip in test_data["condition"]["source_ip"]:
-                #         if "-" in source_ip["item"][0]["item_value"]:
-                #             test_data["traffic"]["clients_start_ip"] = source_ip["item"][0]["item_value"].split("-")[0]
-                #             test_data["traffic"]["clients_end_ip"] = source_ip["item"][0]["item_value"].split("-")[-1]
-                #         else:
-                #             test_data["traffic"]["clients_start_ip"] = test_data["traffic"]["clients_end_ip"] = source_ip["item"][0]["item_value"]
-                #     for dest_ip in test_data["condition"]["destination_ip"]:
-                #         if "-" in dest_ip["item"][0]["item_value"]:
-                #             test_data["traffic"]["servers_start_ip"] = dest_ip["item"][0]["item_value"].split("-")[0]
-                #             test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"].split("-")[-1]
-                #         else:
-                #             test_data["traffic"]["servers_start_ip"] = test_data["traffic"]["servers_end_ip"] = dest_ip["item"][0]["item_value"]
-                # 执行回放命令
-                # if debug_flag == "local":
-                #     temp_data = json.dumps(test_data["traffic"])
-                #     sc_result = self.call_traffic_server(temp_data, script_type, debug_flag)
-                #     sc_metircs = sc_result["result"]
-                # else:
-                #     sc_metircs = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz)
                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
