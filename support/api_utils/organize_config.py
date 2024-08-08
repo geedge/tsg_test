@@ -75,6 +75,8 @@ class OrganizeConfig:
                             chart_info["metrics"] = metrics_tmp
                             if "order_by" in chart["query"].keys():
                                 chart_info["order_by"] = chart["query"]["order_by"]
+                            if chart["display"]["type"] == "Histogram":
+                                chart_info.pop("order_by")
                             if "series_limit" in chart["query"].keys():
                                 topk_dimensions_tmp = self.chart_topk_dimensions_to_query_topk_dimensions(chart["query"]["dimensions"], chart["query"]["series_limit"], chart["query"]["metrics"][0]["label"])
                                 chart_info["topk"] = topk_dimensions_tmp
@@ -96,6 +98,8 @@ class OrganizeConfig:
                             statistics_info["metrics"] = metrics_tmp
                             if "order_by" in chart["query"].keys():
                                 statistics_info["order_by"] = chart["query"]["order_by"]
+                            if chart["display"]["type"] == "Histogram":
+                                statistics_info.pop("order_by")
                             statistics_info["topk"] = ""
                             if "series_limit" in chart["query"].keys():
                                 topk_dimensions_tmp = self.chart_topk_dimensions_to_query_topk_dimensions(

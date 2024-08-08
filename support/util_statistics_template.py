@@ -104,7 +104,7 @@ class UtilStatisticsTemplate():
         elif type == "distribution_metrics":
             return self.get_specify_elements_dict(all_metrics, 29, (len(all_metrics) - 1))
         else:
-            return self.get_specify_elements_dict(all_metrics,0, 28)
+            return 200, all_metrics
 
 
     def get_specify_elements_dict(self, dicts, start, end):
