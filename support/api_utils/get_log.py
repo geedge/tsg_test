@@ -1028,23 +1028,6 @@ class GetLog:
         function_name = metric_info["function"]["name"]
         source_fields_tmp = metric_info["source_fields"]
         metric_result = False
-        """            
-        if function_name == "SUM":
-            time_dif_seconds = 0
-            metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
-        elif function_name == "RATE":
-            metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
-        elif function_name == "BITRATE":
-            metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics, time_dif_seconds)
-        elif function_name == "UNIQUE_COUNT":
-            time_dif_seconds = 0
-            metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
-        elif function_name == "HISTOGRAM":
-            time_dif_seconds = 0
-            metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
-        else:
-            failure_info_2 = f"Invalid function name: {function_name}"        
-        """
         try:
             match function_name:
                 case "SUM":
@@ -1071,69 +1054,6 @@ class GetLog:
     def metric_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds = 1):
         failure_info_2 = ""
         metric_result = False
-        """        
-        util = UtilStatisticsTemplate()
-        code, all_metrics = util.get_all_metrics_or_dimensions("count_metrics")
-        if code != 200:
-            return False, "Failed to obtain the Field whose Metric Type is Count"
-        match len(source_fields):
-            case 1:
-                # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
-                if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient or stats_value == test_traffic_statistics["total_bytes_received"] * rate_coefficient):
-                    metric_result = True
-                elif source_fields[0] == "sent_bytes" and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
-                    metric_result = True
-                elif source_fields[0] == "received_bytes" and stats_value == test_traffic_statistics["total_bytes_received"] * rate_coefficient:
-                    metric_result = True
-                # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
-                elif source_fields[0] in {"in_pkts", "out_pkts"} and (stats_value == test_traffic_statistics["total_packets_sent"]  or stats_value == test_traffic_statistics["total_packets_received"]):
-                    metric_result = True
-                elif source_fields[0] == "sent_pkts" and stats_value == test_traffic_statistics["total_packets_sent"]:
-                    metric_result = True
-                elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
-                    metric_result = True
-                elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
-                    metric_result = True
-                # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == test_traffic_statistics["total_packets_sent"]:
-                    metric_result = True
-                #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
-                #    metric_result = True
-                #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
-                #    metric_result = True
-                # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            case 2:
-                # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
-                if "in_bytes" in source_fields and "out_bytes" in source_fields and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
-                    metric_result = True
-                elif "sent_bytes" in source_fields and "received_bytes" in source_fields and stats_value == test_traffic_statistics["total_bytes_sent"] * rate_coefficient:
-                    metric_result = True
-                # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
-                elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == test_traffic_statistics["total_packets"]:
-                    metric_result = True
-                elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == test_traffic_statistics["total_packets"]:
-                    metric_result = True
-                # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_packets_sent"]*2:
-                    metric_result = True
-                # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            case 3:
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
-            case 4:
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
-            case _:
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
-        """
         try:
             total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
             if total_bytes_sent > 0 and time_dif_seconds > 1:
@@ -1167,64 +1087,65 @@ class GetLog:
             if total_syn_pkt2 > 0 and time_dif_seconds > 1:
                 total_syn_pkt2 = round(total_syn_pkt2 / time_dif_seconds, 2)
 
-            if len(source_fields) == 1:
-                # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
-                if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == total_bytes_sent or stats_value == total_bytes_received):
-                    metric_result = True
-                elif source_fields[0] == "sent_bytes" and stats_value == total_bytes_sent:
-                    metric_result = True
-                elif source_fields[0] == "received_bytes" and stats_value == total_bytes_received:
-                    metric_result = True
-                # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
-                elif source_fields[0] in {"in_pkts", "out_pkts"} and (stats_value == total_packets_sent or stats_value == total_packets_received):
-                    metric_result = True
-                elif source_fields[0] == "sent_pkts" and stats_value == total_packets_sent:
-                    metric_result = True
-                elif source_fields[0] == "received_pkts" and stats_value == total_packets_received:
-                    metric_result = True
-                elif source_fields[0] == "syn_pkts" and total_syn_pkt2:
-                    metric_result = True
-                # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == total_syn_pkt1 or stats_value == 0):
-                    metric_result = True
-                # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt2:
-                    metric_result = True
-                #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
-                #    metric_result = True
-                #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
-                #    metric_result = True
-                # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
-                elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == total_packets_sent or stats_value == total_packets_received or stats_value == 0):
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 2:
-                # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
-                if "in_bytes" in source_fields and "out_bytes" in source_fields and stats_value == total_bytes:
-                    metric_result = True
-                elif "sent_bytes" in source_fields and "received_bytes" in source_fields and stats_value == total_bytes:
-                    metric_result = True
-                # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
-                elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == total_packets:
-                    metric_result = True
-                elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
-                    metric_result = True
-                # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt1:
-                    metric_result = True
-                # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
-                    metric_result = True
-                # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 3: #如有需定义3个的业务场景需补充相关逻辑
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
-            elif len(source_fields) == 4: #如有需定义4个的业务场景需补充相关逻辑
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
-            else:
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            match len(source_fields):
+                case 1:
+                    # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
+                    if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == total_bytes_sent or stats_value == total_bytes_received):
+                        metric_result = True
+                    elif source_fields[0] == "sent_bytes" and stats_value == total_bytes_sent:
+                        metric_result = True
+                    elif source_fields[0] == "received_bytes" and stats_value == total_bytes_received:
+                        metric_result = True
+                    # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
+                    elif source_fields[0] in {"in_pkts", "out_pkts"} and (stats_value == total_packets_sent or stats_value == total_packets_received):
+                        metric_result = True
+                    elif source_fields[0] == "sent_pkts" and stats_value == total_packets_sent:
+                        metric_result = True
+                    elif source_fields[0] == "received_pkts" and stats_value == total_packets_received:
+                        metric_result = True
+                    elif source_fields[0] == "syn_pkts" and total_syn_pkt2:
+                        metric_result = True
+                    # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                    elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == total_syn_pkt1 or stats_value == 0):
+                        metric_result = True
+                    # * Flows处理逻辑new_c2s_flows、new_s2c_flows
+                    elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt2:
+                        metric_result = True
+                    #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
+                    #    metric_result = True
+                    #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
+                    #    metric_result = True
+                    # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                    elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == total_packets_sent or stats_value == total_packets_received or stats_value == 0):
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 2:
+                    # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
+                    if "in_bytes" in source_fields and "out_bytes" in source_fields and stats_value == total_bytes:
+                        metric_result = True
+                    elif "sent_bytes" in source_fields and "received_bytes" in source_fields and stats_value == total_bytes:
+                        metric_result = True
+                    # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
+                    elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == total_packets:
+                        metric_result = True
+                    elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
+                        metric_result = True
+                    # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                    elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt1:
+                        metric_result = True
+                    # * Flows处理逻辑new_c2s_flows、new_s2c_flows
+                    elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
+                        metric_result = True
+                    # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 3: #如有需定义3个的业务场景需补充相关逻辑
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+                case 4: #如有需定义4个的业务场景需补充相关逻辑
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+                case _:
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
             return metric_result,failure_info_2
         except Exception as e:
             exception_result = str(e)
@@ -1241,54 +1162,32 @@ class GetLog:
         """        
         'in_pkt_length_distribution': 'Incoming Packet Length',
         'out_pkt_length_distribution': 'Outgoing Packet Length',
-        'pkt_length_distribution': 'Packet Length',
-        match len(source_fields):
-            case 1:
-                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            case 2:
-                if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            case 3:
-                if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics  and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            case 4:
-                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            case _:
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+        'pkt_length_distribution': 'Packet Length',        
         """
         try:
-            if len(source_fields) == 1:
-                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 2:
-                if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 3:
-                if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics  and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 4:
-                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            else:
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            match len(source_fields):
+                case 1:
+                    if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 2:
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 3:
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics  and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 4:
+                    if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case _:
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
             return metric_result,failure_info_2
         except Exception as e:
             exception_result = str(e)
@@ -1302,54 +1201,30 @@ class GetLog:
         code, all_metrics = util.get_all_metrics_or_dimensions("distribution_metrics")
         if code != 200:
             return False, "Failed to obtain the Field whose Metric Type is Distribution"
-        """
-                match len(source_fields):
-                    case 1:
-                        if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                            metric_result = True
-                        else:
-                            failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                    case 2:
-                        if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                            metric_result = True
-                        else:
-                            failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                    case 3:
-                        if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics  and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                            metric_result = True
-                        else:
-                            failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                    case 4:
-                        if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                            metric_result = True
-                        else:
-                            failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                    case _:
-                        failure_info_2 = f"Meaningless source fields definition: {source_fields}"
-                """
         try:
-            if len(source_fields) == 1:
-                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 2:
-                if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 3:
-                if source_fields[0] in all_metrics and source_fields[1] in all_metrics and source_fields[2] in all_metrics and source_fields[3] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            elif len(source_fields) == 4:
-                if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                    metric_result = True
-                else:
-                    failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-            else:
-                failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            match len(source_fields):
+                case 1:
+                    if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 2:
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 3:
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics and source_fields[2] in all_metrics and source_fields[3] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 4:
+                    if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case _:
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
             return metric_result, failure_info_2
         except Exception as e:
             exception_result = str(e)
