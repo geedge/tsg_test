@@ -37,6 +37,9 @@ class Verification:
             #     capture_thread.join()
             #     traffic_thread.join()
             # else:
+            # 等待配置同步
+            if script_type == "api":
+                time.sleep(3)
             trigger_traffic = TriggerTraffic()
             traffic_result = trigger_traffic.trigger_traffic(parameter, test_data)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Start to verify the effect of the policy rule.traffic_result:{}.".format(traffic_result), flush=True)
