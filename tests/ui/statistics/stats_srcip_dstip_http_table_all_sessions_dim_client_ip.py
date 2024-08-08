@@ -120,7 +120,7 @@ def run(parameter):
                             "new_out_sessions:SUM:new out sessions",
                             "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
-                          "dimensions": ["application"],
+                          "dimensions": ["app"],
                           "order_by": "sessions",
                           "row_limit": "1000",
                           "min_in_size": "0",

@@ -119,7 +119,7 @@ def run(parameter):
                           "metrics": [
                             "in_bytes+out_bytes:BITRATE:bytes"
                           ],
-                          "dimensions": ["application"],
+                          "dimensions": ["app"],
                           "order_by": "bytes",
                           "row_limit": "15",
                           "min_in_size": "1",
