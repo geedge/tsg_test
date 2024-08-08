@@ -92,7 +92,7 @@ def run(parameter):
             "profile": [],
             "is_mirror": "off",
             "expected_return": "youtube",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 2},
             "log_query_param": [{"query_field_key": "server_ip", "query_value": "8.8.8.8"},
                                 {"query_field_key": "decoded_as", "query_value": "DNS"},
                                 ],

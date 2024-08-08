@@ -93,7 +93,7 @@ def run(parameter):
             "is_mirror": "off",
             "profile": [],
             "expected_return": "skype",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 2},
             "log_query_param":[
                                 {"query_field_key": "decoded_as", "query_value": "DNS"},
                                 {"query_field_key": "imsi", "query_value": parameter['test_imsi']}
