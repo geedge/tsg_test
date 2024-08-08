@@ -14,6 +14,7 @@ from support.traffic_manager.mail_player import MailPlayer
 from support.traffic_manager.dtls_player import DtlsPlayer
 from support.traffic_manager import trex_replay
 from support.traffic_manager.doh_player import DohPlayer
+from support.traffic_manager.mpls_one_label_player import MplsOneLabelPlayer
 from support.traffic_manager.workpath import workdir
 from datetime import datetime
 
@@ -59,35 +60,22 @@ class TriggerTraffic:
                 temp_data = test_data["traffic"]
             if test_data["traffic"]["protocol"] == "http":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic.", flush=True)
-                print("script_type is " + script_type)
-                # api 创建配置为瞬间创建，增加等待时长，等待策略生效
-                if script_type == "api":
-                    time.sleep(6)
                 player = HttpPlayer()
                 result = player.send_http_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "https" or test_data["traffic"]["protocol"] == "ssl":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ssl traffic.", flush=True)
-                print("script_type is "+ script_type)
-                if script_type == "api":
-                    time.sleep(6)
                 player = SSLPlayer()
                 result = player.send_ssl_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "ftp":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ftp traffic.", flush=True)
-                if script_type == "api":
-                    time.sleep(6)
                 player = FtpPlayer()
                 result = player.send_ftp_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "dns":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate nslookup traffic.", flush=True)
-                if script_type == "api":
-                    time.sleep(6)
                 player = DnsPlayer()
                 result = player.send_dns_query(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "mail":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mail traffic.", flush=True)
-                if script_type == "api":
-                    time.sleep(6)
                 player = MailPlayer()
                 result = player.send_mail_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "doh":
@@ -98,6 +86,14 @@ class TriggerTraffic:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate dtls traffic.", flush=True)
                 player = DtlsPlayer()
                 result = player.send_dtls_traffic(temp_data, script_type, debug_flag)
+            elif test_data["traffic"]["protocol"] == "mpls":
+                if test_data["traffic"]["type"] == "one_label":
+                    player = MplsOneLabelPlayer()
+                    result = player.send_mpls_one_label_traffic(temp_data, script_type, debug_flag)
+                elif test_data["traffic"]["type"] == "two_label":
+                    print("to be added")
+            elif test_data["traffic"]["protocol"] == "vxlan":
+                print("to be added")
             elif test_data["traffic"]["protocol"] == "":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use trex to replay traffic.", flush=True)
                 pcap_name = temp_data.get("pcap_name") + ".pcap"

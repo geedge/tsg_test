@@ -17,8 +17,7 @@ class UtilStatisticsTemplate():
         # 将时间差转换为秒
         difference_in_seconds = time_difference.total_seconds()
 
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              f"时间差为: {difference_in_seconds}秒")
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"时间差为: {difference_in_seconds}秒")
 
 
     def get_all_metrics_or_dimensions(self, type="metrics"):
@@ -105,7 +104,7 @@ class UtilStatisticsTemplate():
         elif type == "distribution_metrics":
             return self.get_specify_elements_dict(all_metrics, 29, (len(all_metrics) - 1))
         else:
-            return self.get_specify_elements_dict(all_metrics,0, 28)
+            return 200, all_metrics
 
 
     def get_specify_elements_dict(self, dicts, start, end):

@@ -386,7 +386,7 @@ class GetLog:
                             for k, v in result_list[0].items():  # 取得session_indentifier_sketch的值
                                 if isinstance(v, int):
                                     statistics_value[k] = avg_1
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: \n{}".format(statistics_value))
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: {}".format(statistics_value))
                         # 重组需要断言使用的key列表
                         assert_key_list = []
                         dimension_list = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
@@ -819,8 +819,18 @@ class GetLog:
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
         post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
         post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"] #如果想传入非UTC时间，携带时区也是可以的2024-07-22T17:38:30+08:00/2024-07-23T17:38:30+08:00
-        post_data_ori_dict_dsl["order_by"] = "'{}' DESC".format(statistics_info["order_by"])
-        post_data_ori_dict_dsl["limit"] = statistics_info["limit"]
+        if statistics_info["topk"] != "" and statistics_info["topk"] != None:
+            post_data_ori_dict_dsl["custom.statistics.subquery.topk"] = statistics_info["topk"]
+        post_data_ori_dict_dsl["intervals"] = [
+            f"{start_time}/{end_time}"]  # 如果想传入非UTC时间，携带时区也是可以的2024-07-22T17:38:30+08:00/2024-07-23T17:38:30+08:00
+        if "order_by" in statistics_info.keys():
+            post_data_ori_dict_dsl["order_by"] = "'{}' DESC".format(statistics_info["order_by"])
+        else:
+            post_data_ori_dict_dsl.pop("order_by")  # 不存在，暂时删除key
+        if "limit" in statistics_info.keys():
+            post_data_ori_dict_dsl["limit"] = statistics_info["limit"]
+        else:
+            post_data_ori_dict_dsl.pop("limit")  # 不存在，暂时删除key
         post_data_ori_dict["dsl"] = post_data_ori_dict_dsl
         post_data_ori_dict["vsys_id"] = vsys_id
         # 请求接口获取Metrics数据
@@ -837,18 +847,16 @@ class GetLog:
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
                 # 对应有方向的session方式需要另行处理
+                tmp_dict = {"new outgoing sessions":  "new_out_sessions",
+                            "new incoming sessions": "new_in_sessions",
+                            "closed incoming sessions": "closed_in_sessions",
+                            "closed outgoing sessions": "closed_out_sessions",
+                            }
                 if script_type == "api":
-                    metrics_columns = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0][
-                        "source_columns"].lower()
-                    dimension_columns = \
-                        test_data["profile_condition_1"][0]["chart_list"][0]["dimensions"][0]["source_columns"][0].lower()
+                    metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
+                    metrics_columns = tmp_dict[metrics_columns_temp]
                 elif script_type == "ui":
                     metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
-
-                    if len(statistics_info["dimensions"]) > 0:
-                        dimension_columns = [item["source_fields"] for item in statistics_info["dimensions"]]
-                    else:
-                        dimension_columns = "No Dimensions!"
                 # api返回值为空，不判断方向，直接返回重新查找
                 if metrics_columns in {"new_in_sessions","new_out_sessions","closed_in_sessions","closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
                     return [333, "this is a pass"]
@@ -960,7 +968,7 @@ class GetLog:
                                         break
                                 if break_flag == 1:
                                     break  # 退出累加循环
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: \n{}".format(statistics_value))
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: {}".format(statistics_value))
                         metric_results = self.assert_livechart_statistics_2408(statistics_info, statistics_value, statistics_metircs_except,time_dif_seconds)  # 判断正确调用函数
                 elif statistics_info["chart_type"] == "histogram":
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
@@ -1024,36 +1032,36 @@ class GetLog:
         function_name = metric_info["function"]["name"]
         source_fields_tmp = metric_info["source_fields"]
         metric_result = False
-        """
-        match function_name:
-            case "SUM":
-                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
-            case "RATE":
-                metric_result, failure_info_2= self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics)
-            case "BITRATE":
-                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics)
-            case "UNIQUE_COUNT":
-                metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, 1,test_traffic_statistics)
-            case _:
-                failure_info_2 = f"Invalid function name: {function_name}"
+        """            
+        if function_name == "SUM":
+            time_dif_seconds = 0
+            metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+        elif function_name == "RATE":
+            metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+        elif function_name == "BITRATE":
+            metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics, time_dif_seconds)
+        elif function_name == "UNIQUE_COUNT":
+            time_dif_seconds = 0
+            metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+        elif function_name == "HISTOGRAM":
+            time_dif_seconds = 0
+            metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+        else:
+            failure_info_2 = f"Invalid function name: {function_name}"        
         """
         try:
-            if function_name == "SUM":
-                time_dif_seconds = 0
-                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
-            elif function_name == "RATE":
-                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
-            elif function_name == "BITRATE":
-                metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp,stats_value, 8, test_traffic_statistics, time_dif_seconds)
-            elif function_name == "UNIQUE_COUNT":
-                time_dif_seconds = 0
-                metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
-            elif function_name == "HISTOGRAM":
-                time_dif_seconds = 0
-                metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
-            else:
-                failure_info_2 = f"Invalid function name: {function_name}"
-            return metric_result,failure_info_2
+            match function_name:
+                case "SUM":
+                    metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,1, test_traffic_statistics, time_dif_seconds)
+                case "RATE":
+                    metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,1, test_traffic_statistics, time_dif_seconds)
+                case "BITRATE":
+                    metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,8, test_traffic_statistics, time_dif_seconds)
+                case "UNIQUE_COUNT":
+                    metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
+                case _:
+                    failure_info_2 = f"Invalid function name: {function_name}"
+            return metric_result, failure_info_2
         except Exception as e:
             exception_result = str(e)
             self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
@@ -1347,7 +1355,7 @@ class GetLog:
             self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
             return metric_result, failure_info_2
     def error_print_function(self,function,error):
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function}Error: {error}", flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function} Error: {error}", flush=True)
 
 
 if __name__ == '__main__':

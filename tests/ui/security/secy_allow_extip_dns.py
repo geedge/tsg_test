@@ -89,7 +89,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "youtube",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 2},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "8.8.8.8"}],
             "traffic": {
                 "protocol": "dns",

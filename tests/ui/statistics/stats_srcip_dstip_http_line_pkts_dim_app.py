@@ -116,7 +116,7 @@ def run(parameter):
                           "metrics": [
                             "in_pkts+out_pkts:RATE:pkts"
                           ],
-                          "dimensions": ["application"],
+                          "dimensions": ["app"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",

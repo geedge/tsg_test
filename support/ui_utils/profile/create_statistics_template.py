@@ -236,7 +236,7 @@ class CreateStatisticsTemplate():
         """
         # 24.08版本开始：Metrics和Dimensions字典，前28个既可以为Metrics也可以为Dimensions
         util = UtilStatisticsTemplate()
-        code, dropdown_item_metrics_dict = util.get_all_metrics_or_dimensions()
+        code, dropdown_item_metrics_dict = util.get_all_metrics_or_dimensions("metrics")
         if code != 200:
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:_operate_metrics_or_dimensions_dropdown();Exception: Parsing Dimension Error")
             return 400

@@ -74,11 +74,11 @@ class CreateProfile:
                 "source_columns": "app_category",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Client-to-Server TTL": {
+            "Client to Server TTL": {
                 "source_columns": "c2s_ttl",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Server-to-Client TT": {
+            "Server to Client TT": {
                 "source_columns": "s2c_ttl",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
@@ -159,7 +159,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},]
             },
             "Outgoing Latency": {
                 "source_columns": "out_latency_ms",
@@ -168,7 +169,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},]
             },
             "DTLS.Handshake Latency(ms)": {
                 "source_columns": "dtls_handshake_latency_ms",
@@ -295,7 +297,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
             },
-            "New Client-to-Server Flows": {
+            "New Client to Server Flows": {
                 "source_columns": "new_c2s_flows",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "flows", "metric_type": "count"},
@@ -304,7 +306,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},]
             },
-            "New Server-to-Client Flows":  {
+            "New Server to Client Flows":  {
                 "source_columns": "new_s2c_flows",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "flows", "metric_type": "count"},
@@ -358,7 +360,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
             },
-            "Client-to-Server IP Fragments": {
+            "Client to Server IP Fragments": {
                 "source_columns": "c2s_ip_fragments",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "packets", "metric_type": "count"},
@@ -367,7 +369,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
             },
-            "Server-to-Client IP Fragments": {
+            "Server to Client IP Fragments": {
                 "source_columns": "s2c_ip_fragments",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "packets", "metric_type": "count"},
@@ -380,7 +382,7 @@ class CreateProfile:
         dimensions_source_fields_map = {
             "__time": "__time",
             "Client IP Object List": "client_ip_object_list",
-            "Server IP Object Lis": "server_ip_object_list",
+            "Server IP Object List": "server_ip_object_list",
             "WebSketch Categories": "fqdn_category_list",
             "Client IP": "client_ip",
             "Client Country": "client_country",
@@ -392,8 +394,8 @@ class CreateProfile:
             "Server Domain": "server_domain",
             "Application": "app",
             "Application Category": "app_category",
-            "Client-to-Server TTL": "c2s_ttl",
-            "Server-to-Client TTL": "s2c_ttl",
+            "Client to Server TTL": "c2s_ttl",
+            "Server to Client TTL": "s2c_ttl",
             "Incoming Link ID": "in_link_id",
             "Outgoing Link ID": "out_link_id",
             "Client Port": "client_port",
@@ -455,10 +457,11 @@ class CreateProfile:
                 source_fields_list_temp = source_fields_str.split("+")
                 source_fields_list = list(filter(lambda x: x, source_fields_list_temp))  # 排除空元素
                 label = ""
+                metrics_dict["source_fields"].clear()    # 遍历添加前清空一下旧数据
                 for i in range(len(source_fields_list)):
                     tmp_source = metrics_source_fields_map[source_fields_list[i]]["source_columns"]   # 通过映射，从metrics_source_fields_map取出value
                     tmp_label_source = tmp_source.replace("_", " ")
-                    label = tmp_label_source + " "
+                    label = label + tmp_label_source + " "
                     metrics_dict["source_fields"].append(tmp_source)
                 label = label.strip()
                 function_name =  post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["function"]
@@ -785,9 +788,28 @@ class CreateProfile:
             chart_info["chart_type"] = chart["display"]["type"]
             chart_info["chart_id"] = chart["id"]
             chart_info["version"] = chart["version"]
-            #chart_info["sql"] = chart["query"]["sql"]
-            chart_info["sql"] = ""
-
+            chart_info["metrics"] = []
+            chart_info["dimensions"] = []
+            for i in range(len(chart["query"]["dimensions"])):
+                metric_name = chart["query"]["dimensions"][i]["source_fields"][0]
+                label = chart["query"]["dimensions"][i]["label"]
+                tmp_dict_1 = {"metric_name": metric_name, "label": label}
+                chart_info["dimensions"].append(tmp_dict_1)
+            for j in range(len(chart["query"]["metrics"])):
+                metric_type = chart["query"]["metrics"][j]["metric_type"]
+                metric_name = chart["query"]["metrics"][j]["metric_name"]
+                label = chart["query"]["metrics"][j]["label"]
+                function_name = chart["query"]["metrics"][j]["function"]["name"]
+                tmp_dict_2 = {"function":
+                                  {"name": function_name},
+                              "metric_type": metric_type,
+                              "metric_name": metric_name,
+                              "label": label}
+                chart_info["metrics"].append(tmp_dict_2)
+            if "order_by" in chart["query"].keys():   # 有 order_by 则取出
+                chart_info["order_by"] = chart["query"]["order_by"]
+            chart_info["limit"] = chart["query"]["limit"]
+            chart_info["topk"] = ""
             template_info.append(copy.deepcopy(chart_info))
         return template_info
 

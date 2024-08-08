@@ -85,11 +85,8 @@ class CreatePolicy:
                         for chart in policy_statistics_template_chart_info[0]["profile_info"][0]["template_info"]:
                             statistics_info = {}
                             statistics_info["rule_id"] = policy_statistics_template_chart_info[0]["policy_id"]
-                            statistics_info["template_id"] = chart["template_id"]
-                            statistics_info["chart_id"] = chart["chart_id"]
-                            statistics_info["chart_type"] = chart["chart_type"]
-                            statistics_info["version"] = chart["version"]
-                            statistics_info["sql"] = chart["sql"]
+                            for k, v in chart.items():    # 将chart字典中的数据，copy到statistics_info
+                                statistics_info[k] = v
                             statistics_sc_info_list.append(statistics_info)
                 elif test_data["policy_type"] == "service_chaining":
                     sc_sff_sf_info = {}
