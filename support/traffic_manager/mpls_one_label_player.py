@@ -77,7 +77,7 @@ if __name__ == '__main__':
     test_data = {
         "traffic": {
             "protocol": "mpls",
-            "type": "tcpreplay",
+            "type": "one_label",
             "pcap_name": "mpls_one_label"
         }
     }

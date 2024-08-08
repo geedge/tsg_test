@@ -14,6 +14,7 @@ from support.traffic_manager.mail_player import MailPlayer
 from support.traffic_manager.dtls_player import DtlsPlayer
 from support.traffic_manager import trex_replay
 from support.traffic_manager.doh_player import DohPlayer
+from support.traffic_manager.mpls_one_label_player import MplsOneLabelPlayer
 from support.traffic_manager.workpath import workdir
 from datetime import datetime
 
@@ -97,6 +98,14 @@ class TriggerTraffic:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate dtls traffic.", flush=True)
                 player = DtlsPlayer()
                 result = player.send_dtls_traffic(temp_data, script_type, debug_flag)
+            elif test_data["traffic"]["protocol"] == "mpls":
+                if test_data["traffic"]["type"] == "one_label":
+                    player = MplsOneLabelPlayer()
+                    result = player.send_mpls_one_label_traffic(temp_data, script_type, debug_flag)
+                elif test_data["traffic"]["type"] == "two_label":
+                    print("to be added")
+            elif test_data["traffic"]["protocol"] == "vxlan":
+                print("to be added")
             elif test_data["traffic"]["protocol"] == "":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use trex to replay traffic.", flush=True)
                 pcap_name = temp_data.get("pcap_name") + ".pcap"
