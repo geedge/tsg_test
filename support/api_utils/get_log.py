@@ -1012,7 +1012,7 @@ class GetLog:
                         metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
                     elif chart_type == "histogram":
                         metric_result = True
-                    elif chart_type == "table" or  chart_type == "bar":
+                    elif chart_type == "table" or chart_type == "bar":
                         failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
                         metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
                     else:
@@ -1055,13 +1055,18 @@ class GetLog:
         try:
             match function_name:
                 case "SUM":
+                    time_dif_seconds = 0
                     metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,1, test_traffic_statistics, time_dif_seconds)
                 case "RATE":
                     metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,1, test_traffic_statistics, time_dif_seconds)
                 case "BITRATE":
                     metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,8, test_traffic_statistics, time_dif_seconds)
                 case "UNIQUE_COUNT":
+                    time_dif_seconds = 0
                     metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
+                case "HISTOGRAM":
+                    time_dif_seconds = 0
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
                 case _:
                     failure_info_2 = f"Invalid function name: {function_name}"
             return metric_result, failure_info_2

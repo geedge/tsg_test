@@ -95,7 +95,7 @@ def run(parameter):
             "is_mirror":"off",
             "profile": [],
             "expected_return": "www.example.com",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 2},
             "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.example.com"},
                                 {"query_field_key": "ip_protocol", "query_value": "udp"}
                                 ],

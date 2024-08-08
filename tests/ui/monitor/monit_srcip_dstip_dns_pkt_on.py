@@ -110,7 +110,7 @@ def run(parameter):
             "is_mirror":"off",
             "profile": [],
              "expected_return": "bport",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 2},
             "log_query_param": [
                                 {"query_field_key": "dns_qname", "query_value": "www.bport.ru"},
                                 {"query_field_key": "decoded_as", "query_value": "DNS"},
