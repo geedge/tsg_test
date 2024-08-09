@@ -98,7 +98,7 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
-                {"query_field_key": "mail_subject", "query_value": "hbn@163.com"}
+                {"query_field_key": "mail_subject", "query_value": "Bestman"}
             ],
             "traffic": {
                 "protocol": "mail",

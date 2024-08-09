@@ -83,7 +83,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "autoFtp&english.txt"
+                                "item_value": "autoFtp&english_big.txt"
                                 #data["items"][i]["item_value"].split("->")[0].strip()
                                 #表达式运算的结果是english
                             }
@@ -93,7 +93,7 @@ def run(parameter):
             },
             "expected_return": "auto",
             "counters": {"hits": 1},
-            "log_query_param": [ {"query_field_key":"ftp_url", "query_value": "ftp://192.168.40.206/autoFtp/english.txt"}],
+            "log_query_param": [ {"query_field_key":"ftp_url", "query_value": "ftp://192.168.40.206/autoFtp/english_big.txt"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",

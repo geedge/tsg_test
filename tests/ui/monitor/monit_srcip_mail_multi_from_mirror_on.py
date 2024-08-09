@@ -62,7 +62,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
+                                "item_value": "10.64.101.2",
                             },
                         ]
                     }
@@ -76,7 +76,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monit_mail_account_by_account",
+                        "name": "monit_mail_from_by_account",
                         "object_type": "account",
                         "item_operation": "add",
                         "select_type": False,
@@ -84,7 +84,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_account",
+                                "item_type": "mail_from",
                                 "item_value": "zhangchengwei163fx&@163.com&com"
                             }
                         ],
@@ -100,8 +100,8 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
+                "clients_start_ip": "10.64.101.2",
+                "clients_end_ip": "10.64.101.2",
                 "servers_start_ip": "2.1.1.3",
                 "servers_end_ip": "2.1.1.3",
                 "m": 1,
@@ -133,8 +133,8 @@ def run(parameter):
 
         ]
 
-        organize_config = OrganizeConfig()
-        test_data = organize_config.generate_random_ip(test_data, parameter)
+        # organize_config = OrganizeConfig()
+        # test_data = organize_config.generate_random_ip(test_data, parameter)
 
         # 创建object
         if "condition" in test_data.keys():
