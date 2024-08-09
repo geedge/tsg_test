@@ -1109,7 +1109,7 @@ class GetLog:
                     elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == total_syn_pkt1 or stats_value == 0):
                         metric_result = True
                     # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                    elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt2:
+                    elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt1:
                         metric_result = True
                     #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
                     #    metric_result = True
@@ -1132,7 +1132,7 @@ class GetLog:
                     elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
                         metric_result = True
                     # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                    elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt1:
+                    elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt2:
                         metric_result = True
                     # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                     elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
