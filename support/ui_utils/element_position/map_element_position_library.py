@@ -624,6 +624,42 @@ test_security_rule_element_position = {
     }
 }
 
+test_monitor_profile_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+                    "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
+                },
+                "create": {
+                    "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
+                    "profilePage_inputName_posId": trafficMirroringProfiles_input_Name_posId,
+                    "profilePage_addLANID_posCss": trafficMirroringProfiles_button_vlanIdAdd_posCss,
+                    "trafficMirroringProfiles_input_vlanIdsInput_posXpath": trafficMirroringProfiles_input_vlanIdsInput_posXpath,
+                    "profilePage_button_oK_posCss": trafficMirroringProfiles_button_oK_posCss,
+                    "profilePage_button_cancel_posCss": trafficMirroringProfiles_button_cancel_posCss,
+                    "profilePage_button_warningSaveYes_posCss": trafficMirroringProfiles_button_warningSaveYes_posCss,
+                    # action
+                },
+                "edit": {
+                    "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
+                },
+                "search": {
+                    "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+                    "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
+                    "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
+                    "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
+                },
+                "delete": {
+                    "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+                    "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+                    "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posCss
+                }
+            }
+
+
 test_monitor_rule_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -975,6 +1011,8 @@ test_session_log_element_position = {
 def get_profile_element_position(key_name):
     if key_name == "statistics_template":
         element_position_map = test_statistics_template_element_position
+    elif key_name == "monitor_profile":
+        element_position_map = test_monitor_profile_element_position
     else:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} no element position map".format(key_name))
         element_position_map = {}
