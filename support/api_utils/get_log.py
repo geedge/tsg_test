@@ -105,11 +105,11 @@ class GetLog:
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         # 传入值与日志的值相等时验证
-                        if query_field_key in log and query_field_key != "packet_capture_file" and log[query_field_key] == query_value:
+                        if query_field_key in log and query_field_key not in {"packet_capture_file" , "http_response_body" , "http_request_body"} and log[query_field_key] == query_value:
                             log_reult = True
                         
                         # 验证packet capture
-                        elif query_field_key == "packet_capture_file":
+                        elif query_field_key in {"packet_capture_file","http_response_body","http_request_body"}:
                             # 验证开关开启状态
                             if query_value == True:
                                 # 查询结果中packet_capture_file长度大于0，走下一步骤

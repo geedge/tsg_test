@@ -701,6 +701,11 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
                     "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
                     "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
+                    #add  dst ip
+                    "policyRulePage_addDstIP_posXpath": policyRulePage_addDstIP_posXpath,
+                    "policyRulePage_searchDstIP_posXpath": policyRulePage_searchDstIP_posXpath,
+                    "policyRulePage_selectDstIP_posXpath": policyRulePage_selectDstIP_posXpath,
+                    "policyRulePage_closeDstIP_posXpath": policyRulePage_closeDstIP_posXpath,
                     #add Server FQDN
                     "policyRulePage_addConditionServerFqdn_posXpath": policyRulePage_addCondition_serverFqdn_posXpath,
                     "policyRulePage_addServerFqdn_posXpath": policyRulePage_addServerFqdn_posXpath,

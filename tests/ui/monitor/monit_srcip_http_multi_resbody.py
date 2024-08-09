@@ -49,6 +49,7 @@ def run(parameter):
             "rule_name": "monit_srcip_http_multi_resbody",
             "rule_type": "create",
             "is_mirror": "off",
+            "log_options": "all",
             "condition": {
                 "source_ip": [
                     {
@@ -102,8 +103,7 @@ def run(parameter):
                                 "item_type": "response_body",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "test",
-                                    "resbody",
+                                    "test&resbody",
                                 ]
                             }
                         ]
@@ -112,13 +112,15 @@ def run(parameter):
             },
             "expected_return": "helloMonitor",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]}],
+            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
+                                {"query_field_key": "http_response_body", "query_value": True}
+                               ],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
                 "command": "curl --connect-timeout 10 -m 10 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"helloMonitor\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://192.168.40.206:180/go"
             },
-            "token": ""
+            "token": "",
         }
 
         log_in = LogIn()
@@ -320,8 +322,8 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zcw3",
-        "password": "qa111111",
+        "username": "lina2024",
+        "password": "lina2024",
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",

@@ -49,6 +49,7 @@ def run(parameter):
             "rule_action": "monitor",
             "rule_type": "create",
             "is_mirror": "off",
+            "log_options": "all",
             "condition": {
                 "source_ip": [
                     {
@@ -87,8 +88,7 @@ def run(parameter):
                                 "item_type": "request_body",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "hello",
-                                    "Monitor",
+                                    "hello&Monitor",
                                 ]
                             }
                         ]
@@ -97,7 +97,9 @@ def run(parameter):
             },
             "expected_return": "helloMonitor",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]}],
+            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
+                                {"query_field_key": "http_request_body", "query_value": True}
+                                ],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",

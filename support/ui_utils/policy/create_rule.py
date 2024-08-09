@@ -61,6 +61,9 @@ class CreateRule:
                 else:
                     pass
 
+                if "log_options" in test_data  and test_data["log_options"] == "all":
+                    self.driver.find_element(By.XPATH,monitorRulePage_logOptions_all_posXpath).click()
+
             # 添加ip
             if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
                 src_ip_data = test_data["condition"]["source_ip"]
