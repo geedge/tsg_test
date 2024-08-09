@@ -207,11 +207,11 @@ def generate_testdata(parameter, test_data):
                 if "-" not in src_ip and "/" not in src_ip:
                     src_ip_list = src_ip.split(".")
                     if str(vsys_id) == "1":   #根据vsys id，确认IP范围
-                        src_ip_list[2] = str(random.randint(90, 100))
+                        src_ip_list[2] = str(random.randint(90, 95))
                     elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
-                        src_ip_list[2] = str(random.randint(210, 222))
+                        src_ip_list[2] = str(random.randint(210, 215))
                     else:
-                        src_ip_list[2] = str(random.randint(240, 250))
+                        src_ip_list[2] = str(random.randint(240, 245))
                     src_ip_list[3] = str(random.randint(100, 250))
                     if run_env == "9140":
                         src_ip_list[0] = "172"
@@ -228,11 +228,11 @@ def generate_testdata(parameter, test_data):
                     ip_list_1 = two_ip_list[0].split(".")
                     ip_list_2 = two_ip_list[1].split(".")
                     if str(vsys_id) == "1":
-                        ip_list_1[2] = str(random.randint(90, 100))
+                        ip_list_1[2] = str(random.randint(96, 100))
                     elif str(vsys_id) == "4":
-                        ip_list_1[2] = str(random.randint(210, 222))
+                        ip_list_1[2] = str(random.randint(216, 222))
                     else:
-                        ip_list_1[2] = str(random.randint(240, 250))
+                        ip_list_1[2] = str(random.randint(246, 250))
                     ip_list_1[3] = str(random.randint(1, 50))
                     ip_list_2[2] = ip_list_1[2]
                     ip_list_2[3] = str(int(ip_list_1[3]) + 200)
