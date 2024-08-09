@@ -28,10 +28,10 @@ def run(parameter):
             "do_log_1": 2,
             "obj_condition_1": [
                 {
-                "is_negate": 1,
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",
+                "repeat_time": 1,
                 "object_list": [
                     {
                     "add_item_list": [
@@ -42,6 +42,24 @@ def run(parameter):
                     ]
                     }
                 ]
+                },
+                {
+                    "is_negate": 1,
+                    "attribute_name": "ATTR_SERVER_FQDN",
+                    "object_type": "fqdn",
+                    "object_sub_type": "fqdn",
+                    "repeat_time": 1,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "keyword_array": [
+                                        "baidu"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "app_name_1": ["http"],
