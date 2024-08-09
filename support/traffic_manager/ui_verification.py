@@ -48,7 +48,7 @@ class UiVerification:
                         if element_exist_flag == True:
                             my_driver.find_element(By.XPATH, is_save_element).click()
                         time.sleep(1)
-                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
+                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
                         log_number = log_number_str.split(": ")[-1]
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "log_number:", log_number, flush=True)
                         # 等于0，则是bug，不需要进一步判断，直接返回false
@@ -305,7 +305,7 @@ class UiVerification:
                     time.sleep(1)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
                     for i in range(50) :
-                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div").text
+                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
                         log_number = log_number_str.split(": ")[-1]
                         if int(log_number) == 0:
                             i += 1

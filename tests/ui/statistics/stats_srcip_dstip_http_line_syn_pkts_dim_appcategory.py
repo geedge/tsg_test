@@ -120,7 +120,7 @@ def run(parameter):
                             "syn_pkts:Rate:syn pkts"
                           ],
                           "dimensions": [
-                            "fqdn_category"
+                            "app_category"
                           ],
                           "order_by": "syn pkts",
                           "row_limit": "10",
