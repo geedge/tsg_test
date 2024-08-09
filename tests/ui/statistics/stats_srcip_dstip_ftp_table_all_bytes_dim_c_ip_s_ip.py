@@ -261,10 +261,10 @@ def run(parameter):
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
-                config = OrganizeConfig()
-                cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
+                #config = OrganizeConfig()
+                #cfg_list = config.organize_statistics_rule_cfg(parameter, test_data)
                 verify = Verification()
-                verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
+                verification_result = verify.verification(driver, parameter, test_data, None, element_position_map)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:
@@ -411,13 +411,13 @@ def run(parameter):
 if __name__ == '__main__':
     parameter = {
 
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "AutomationTestAccount",
+        "password": "1qaz@WSX",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 5,#5
+        "vsys_id": 1,#5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",

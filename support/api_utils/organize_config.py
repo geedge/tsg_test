@@ -6,7 +6,8 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import random
 import requests
 import json
-from datetime import datetime 
+from datetime import datetime
+import traceback
 
 class OrganizeConfig:
     def organize_statistics_rule_cfg(self, parameter, test_data):
@@ -99,6 +100,9 @@ class OrganizeConfig:
         {
             "dimension_name": "client_ip",
             "label": "Client IPs",
+            "function": {
+                "name": ""
+            },
             "source_fields": [
                 "sent_bytes",
                 "received_bytes"
@@ -111,6 +115,7 @@ class OrganizeConfig:
                 dimension_temp_dict = json.loads(dimension_temp_json)
                 dimension_temp_dict["dimension_name"] = dimension["source_fields"][0]
                 dimension_temp_dict["label"] = dimension["label"]
+                dimension_temp_dict["function"]["name"] = dimension["function"]["name"]
                 dimension_temp_dict["source_fields"] = dimension["source_fields"]
                 dimensions_result.append(dimension_temp_dict)
         except Exception as e:

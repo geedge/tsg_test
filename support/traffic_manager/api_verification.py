@@ -47,8 +47,8 @@ class ApiVerification:
                 statistics_sc_info_list = []
                 cfg_list["rule_id"] = test_data["rule_id"]
                 statistics_sc_info_list.append(cfg_list)
-            elif policy_type == "statistics":
-                statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
+            #elif policy_type == "statistics":
+                #statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
                 #cfg_list["rule_id"] = test_data["rule_id"]
                 #statistics_sc_info_list.append(cfg_list)
             temp_list = {}
@@ -75,8 +75,6 @@ class ApiVerification:
             current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             
-            # 等待时间，等待日志产生
-            time.sleep(10)
             
             # 触发流量
             # if debug_flag == "local":
@@ -148,7 +146,7 @@ class ApiVerification:
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             # 将时间向前推迟 180 秒，因为trex流量先发送。
-            new_time = current_utc_time - timedelta(seconds=180)
+            new_time = current_utc_time - timedelta(seconds=30)
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             statistics_metircs_expect = traffic_result
             time.sleep(10)
@@ -167,6 +165,7 @@ class ApiVerification:
             trex_ip_info["servers_start"] = test_data["traffic"]["servers_start_ip"]
             trex_ip_info["servers_end"] = test_data["traffic"]["servers_end_ip"]
             statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The expect result: {}'.format(statistics_metircs_expect), flush=True)
             if len(statistics_template_chart_list) > 0:  # 非空
                 for statistics_info in statistics_template_chart_list:
                     max_fail_count = 10    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
@@ -174,7 +173,6 @@ class ApiVerification:
                     n = 1  # 自增变量
                     fail_count = 0   #自增变量
                     while n < 20:
-                        #time.sleep(7)
                         if script_type == "ui":
                             # 点击 语言快捷切换按钮
                             element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)

@@ -116,7 +116,7 @@ def run(parameter):
                           "metrics": [
                             "in_pkts+out_pkts:RATE:pkts"
                           ],
-                          "dimensions": ["fqdn_category"],
+                          "dimensions": ["app_category"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",
@@ -141,7 +141,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"fqdn_category": "4", "pkts": 83}
+                {"app_category": "4", "pkts": 83}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -255,10 +255,10 @@ def run(parameter):
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
-                config = OrganizeConfig()
-                cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
+                #config = OrganizeConfig()
+                #cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
-                verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
+                verification_result = verify.verification(driver, parameter, test_data, None, element_position_map)
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)

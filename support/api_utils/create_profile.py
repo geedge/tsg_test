@@ -496,6 +496,7 @@ class CreateProfile:
                 dimensions_dict["is_drilldown"] = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["is_drilldown"]
                 if "__time" in tmp_source:
                     dimensions_dict["label"] = "Time"
+                    dimensions_dict["function"]["name"] = "DATETIME_FLOOR_WITH_FILL"     # time维度需要有 DATETIME_FLOOR_WITH_FILL 函数
                 else:
                     dimensions_dict["label"] = label # 将_连接改为空格连接
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["dimensions"].append(copy.deepcopy(dimensions_dict))

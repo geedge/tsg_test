@@ -123,7 +123,7 @@ def run(parameter):
                           ],
                           "dimensions": [
                             "application",
-                            "fqdn_category"
+                            "app_category"
                           ],
                           "order_by": "pkts",
                           "row_limit": "10",
@@ -149,7 +149,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"app": "123","fqdn_category": "234", "in_pkts": 19, "out_pkts": 64, "pkts": 83}
+                {"app": "123","app_category": "234", "in_pkts": 19, "out_pkts": 64, "pkts": 83}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -263,10 +263,10 @@ def run(parameter):
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
-                config = OrganizeConfig()
-                cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
+                #config = OrganizeConfig()
+                #cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
-                verification_result = verify.verification(driver, parameter, test_data, cfg_list, element_position_map)
+                verification_result = verify.verification(driver, parameter, test_data, None, element_position_map)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:
