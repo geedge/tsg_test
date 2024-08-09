@@ -180,25 +180,19 @@ def run(parameter):
         # 创建profile
         prfi_code = 200
         if "profile" in test_data.keys():
-            for prfi_key, prfi_value in (test_data["action_parameter"]).items():
-                if prfi_key in manipulation_profile_no_create_list:
-                    continue  # 直接跳过
-                prfi_status = 0
-                prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:  # 需要创建profile数据
-                    prfi_data = prfi_value
-                    prfi = CreateMonitorProfile(driver)
-                    for i in range(len(prfi_data)):  # 遍历创建所有 profile
-                        element_position_map = get_element_position(prfi_key)
-                        prfi_code = prfi.create(prfi_data[i], element_position_map)
-                        if prfi_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                                  "Create {} profile successfully.".format(prfi_key_out), flush=True)
-                        else:
-                            result = "Fail to create {} profile.".format(prfi_key_out)
-                            prfi_status = 1
-                            break
-                if prfi_status == 1:  # 创建失败，退出遍历创建
+            profile_data = test_data["profile"]
+            element_position_map = get_profile_element_position("monitor_profile")
+            create_monitor_profile = CreateMonitorProfile(driver, element_position_map)
+            for i in range(len(profile_data)):
+                create_monitor_profile_code = create_monitor_profile.create_monitor_profile(profile_data[i],
+                                                                                            test_monitor_profile_element_position,
+                                                                                            test_data["profile"][i][
+                                                                                                "name"])
+                if create_monitor_profile_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create traffic mirroring profile successfully.", flush=True)
+                elif create_monitor_profile_code != 200:
+                    result = "Fail to create Traffic Mirroring Profiles profile."
                     break
 
         # 创建rule
@@ -302,37 +296,24 @@ def run(parameter):
         # 删除profile
         if delete_rule_code == 200 and "profile" in test_data.keys():
             # 删除
-            for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
-                if prfi_key in manipulation_profile_no_create_list:
-                    continue  # 直接跳过
-                prfi_status = 0
-                prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:  # 不为空
-                    for i in range(len(prfi_value)):  # 遍历查询所有profile
-                        search_prfi = SearchProfile(driver)
-                        element_position_map = get_element_position(prfi_key)
-                        prfi_name = prfi_value[i]["profile_file"]["name"].strip()
-                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name,
-                                                                                          element_position_map)
-                        if search_prfi_code == 200:
-                            delete_prfi = DeleteProfile(driver)
-                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element,
-                                                                  True)
-                            if delete_prfi_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                                      "Delete {} profile successfully.".format(prfi_key_out), flush=True)
-                            else:
-                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
-                                break
-                        else:
-                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+            if delete_rule_code == 200:
+                for x in range(len(profile_data)):
+                    search_mirror_profile = SearchProfile(driver)
+                    profile_return_code, first_row_checkbox_element = search_mirror_profile.search(
+                        profile_data[x]['name'], test_monitor_profile_element_position)
+                    if profile_return_code == 200:
+                        delete_mirror_profile = DeleteProfile(driver)
+                        delete_profile_code = delete_mirror_profile.delete(test_monitor_profile_element_position,
+                                                                           first_row_checkbox_element, True)
+                        if delete_profile_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                  "Delete monitor profile successfully.", flush=True)
+                        elif delete_profile_code != 200:
+                            result = result + " In addition, fail to delete profile."
                             break
-                        # 退出遍历标志
-                        if prfi_status == 1:  # 失败，退出遍历创建
-                            break
-                # 退出遍历标志
-                if prfi_status == 1:  # 失败，退出遍历创建
-                    break
+                    else:
+                        result = result + " In addition, fail to search profile."
+                        break
 
         # 脚本结束时间和耗时
         end_time = time.time()

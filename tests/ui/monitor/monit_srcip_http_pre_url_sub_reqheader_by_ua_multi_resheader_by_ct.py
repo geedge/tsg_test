@@ -386,22 +386,24 @@ def run(parameter):
                     break
 
             # 删除fqdn
-            for x in range(len(fqdn_data)):
-                search_fqdn = SearchObject(driver)
-                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"],
-                                                                                  test_fqdn_object_element_position)
-                if search_fqdn_code == 200:
-                    delete_fqdn = DeleteObject(driver)
-                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position,
-                                                          first_row_checkbox_element, True)
-                    if delete_fqdn_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn object successfully.", flush=True)
-                    elif delete_fqdn_code != 200:
-                        result = result + " In addition, fail to delete fqdn object."
-                        break
-                else:
-                    result = result + " In addition, fail to search fqdn object."
-                    break
+            if delete_rule_code == 200:
+                # 删除filter
+                for y in range(len(protocol_field_data)):
+                    search_url = SearchObject(driver)
+                    search_url_code, first_row_checkbox_element = search_url.search(protocol_field_data[y]["name"],
+                                                                                    element_position_map)
+                    if search_url_code == 200:
+                        delete_url = DeleteObject(driver)
+                        delete_url_code = delete_url.delete(element_position_map, first_row_checkbox_element,
+                                                            True)
+                        if delete_url_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                  "Delete url object successfully.", flush=True)
+                        elif delete_url_code != 200:
+                            result = result + " In addition, fail to delete ip object."
+                            break
+                    else:
+                        result = result + " In addition, fail to search url object."
 
         # 删除profile
         if delete_rule_code == 200:
