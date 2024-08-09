@@ -18,6 +18,7 @@ class UtilStatisticsTemplate():
         difference_in_seconds = time_difference.total_seconds()
 
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"时间差为: {difference_in_seconds}秒")
+        return difference_in_seconds
 
 
     def get_all_metrics_or_dimensions(self, type="metrics"):
