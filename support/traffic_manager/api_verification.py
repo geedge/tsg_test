@@ -146,7 +146,7 @@ class ApiVerification:
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             # 将时间向前推迟 180 秒，因为trex流量先发送。
-            new_time = current_utc_time - timedelta(seconds=180)
+            new_time = current_utc_time - timedelta(seconds=30)
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             statistics_metircs_expect = traffic_result
             time.sleep(10)

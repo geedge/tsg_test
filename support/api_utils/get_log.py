@@ -290,7 +290,7 @@ class GetLog:
                                     v = 0
                                 k_0 = statistics_info["metrics_dimension"]["metrics"][k]
                                 # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
-                                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2:
                                     if tmp_dict_key == "":
                                         tmp_dict_key = f"{k_0}"
                                     else:
@@ -303,7 +303,7 @@ class GetLog:
                             elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
                                 k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
                                 # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
-                                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2:
                                     if tmp_dict_key == "":
                                         tmp_dict_key = f"{k_0};{v}"
                                     else:
@@ -312,12 +312,12 @@ class GetLog:
                                 continue
                                 # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
                                 #throw Exception e
-                            if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1) == False:
+                            if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2) == False:
                                 tmp_dict[k_0] = v
                         # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
                         if len(tmp_dict) > 0:
                             result_list.append(tmp_dict)
-                    if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                    if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2:
                         for key in tmp_result.keys():
                             tmp_dict = {}
                             key_list = key.split(";")
@@ -869,6 +869,7 @@ class GetLog:
             else:  # 提取结果，并断言
                 metric_result = False  # 默认
                 result_list_source = r_dict["data"]["result"]
+                #print(result_list_source)
                 result_list = []
                 metrics_len = len(statistics_info["metrics"])
                 dimensions_len = len(statistics_info["dimensions"]) #time调试时需确认是否处理
@@ -883,7 +884,7 @@ class GetLog:
                             #k_0 = statistics_info["metrics_dimension"]["metrics"][k]
                             k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并,所有Line都可以合并
-                            if statistics_info["chart_type"] == "line":# and metrics_len == 1 and dimensions_len == 1:
+                            if statistics_info["chart_type"] == "line":# and metrics_len == 1 and dimensions_len == 2:
                                 if tmp_dict_key == "":
                                     tmp_dict_key = f"{k_0}"
                                 else:
@@ -897,7 +898,7 @@ class GetLog:
                             #k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
                             k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
-                            if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1 and k != "__time":
+                            if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2 and k != "__time":
                                 if tmp_dict_key == "":
                                     tmp_dict_key = f"{k_0};{v}"
                                 else:
@@ -906,12 +907,12 @@ class GetLog:
                             continue
                             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
                             # throw Exception e
-                        if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1) == False:
+                        if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2) == False:
                             tmp_dict[k_0] = v
                         # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
                     if len(tmp_dict) > 0:
                         result_list.append(tmp_dict)
-                    if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 1:
+                    if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2:
                         for key in tmp_result.keys():
                             tmp_dict = {}
                             key_list = key.split(";")
