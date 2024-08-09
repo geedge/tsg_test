@@ -150,12 +150,18 @@ class ApiVerification:
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             statistics_metircs_expect = traffic_result
             time.sleep(10)
+            max_fail_count = 10    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
+            search_interval_time = 5    # 每次查询statistic metric的 间隔时间 单位秒
             if script_type == "ui":
+                time.sleep(60)
+                max_fail_count = 20
+                search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
                 # 点击 语言快捷切换按钮
                 element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
                 # 移动元素到页面，在执行点击
                 my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
                 my_driver.execute_script("arguments[0].click();", element_language_menu)
+                time.sleep(60)
             utc_tz = pytz.timezone('UTC')
             cmd_return = expected_return = test_data["expected_return"]
             # 断言判断
@@ -168,8 +174,6 @@ class ApiVerification:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The expect result: {}'.format(statistics_metircs_expect), flush=True)
             if len(statistics_template_chart_list) > 0:  # 非空
                 for statistics_info in statistics_template_chart_list:
-                    max_fail_count = 10    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
-                    search_interval_time = 5    # 每次查询statistic metric的 间隔时间 单位秒
                     n = 1  # 自增变量
                     fail_count = 0   #自增变量
                     while n < 20:
