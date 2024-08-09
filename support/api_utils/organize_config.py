@@ -1,3 +1,4 @@
+import copy
 import os
 import sys
 import inspect
@@ -8,126 +9,60 @@ import json
 from datetime import datetime 
 
 class OrganizeConfig:
-    def organize_statistics_rule_cfg(self, parameter, test_data, template_path):
+    def organize_statistics_rule_cfg(self, parameter, test_data):
         # 变量初始化
         api_server = parameter["api_server"]
         run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
         token = test_data["token"]
-        create_ip_ids, create_subid_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], []
-        statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
-        policy_define = self.get_policy_define(token, test_data["rule_id"], test_data["policy_type"], api_server,
-                                               vsys_id)
-        statistics_template_metrics_dict = {}
-        statistics_template_dimensions_dict = {}
+        policy_define = self.get_policy_define(token, test_data["rule_id"], test_data["policy_type"], api_server, vsys_id)
+        statistics_sc_info_list = []
         if test_data["policy_type"] == "statistics":
-            # 从Statistics Rule定义信息中获取流量验证所需数据格式
-            for policy in policy_define:
-                create_policies_ids.append({'statistics': policy["id"]})
-                # 从Test Data中解析Metrics Key和Label、Dimensions Key和界面显示之间的字典关系
-                statistics_template_metrics_dict = {}
-                statistics_template_dimensions_dict = {}
-                if policy["source"] != None:
-                    for source in policy["source"]:
-                        if source["attribute_name"] == "ATTR_SOURCE_IP":
-                            for object in source["objects"]:
-                                if object["object_type"] == "ip" and object["object_sub_type"] == "ip":
-                                    for id in object["object_ids"]:
-                                        create_ip_ids.append(id)
-                    for source in policy["source"]:
-                        if source["attribute_name"] == "ATTR_SOURCE_IP":
-                            for object in source["objects"]:
-                                if object["object_type"] == "ip" and object["object_sub_type"] == "ip_learning":
-                                    for id in object["object_ids"]:
-                                        create_ip_ids.append(id)
-                if policy["destination"] != None:
-                    for destination in policy["destination"]:
-                        if destination["attribute_name"] == "ATTR_DESTINATION_IP":
-                            for object in destination["objects"]:
-                                if object["object_type"] == "ip" and object["object_sub_type"] == "ip":
-                                    for id in object["object_ids"]:
-                                        create_ip_ids.append(id)
-                user_region = policy["user_region"]
-                if user_region != {}:
-                    template_id = user_region["template_id"]
-                    template_define = self.get_template_define(token, template_id, "statistics_template",
-                                                               api_server, vsys_id)
-                    # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
-                    template_number = 0
-                    for template in template_define:
-                        template_temp = []
-                        #    chart_number = 0
-                        for chart in template["dataview"]["charts"]:
-                            chart_info = {"template_id": 0, "chart_id": 0, "chart_type": "line", "version": 0,
-                                          "dimensions": [],"metrics":[],"order_by":"","limit":""}
-                            chart_info["template_id"] = template_id
-                            chart_info["chart_id"] = chart["id"]
-                            chart_info["chart_type"] = chart["display"]["type"]
-                            chart_info["version"] = chart["version"]
-                            #24.08及以后版本
-                            #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
-                            if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
-                                dimensions_tmp = self.chart_dimensions_to_query_dimensions(chart["query"]["dimensions"])
-                                chart_info["dimensions"] = dimensions_tmp
-                            else:
-                                chart_info["dimensions"] = chart["query"]["dimensions"]
-                            metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
-                            chart_info["metrics"] = metrics_tmp
-                            if "order_by" in chart["query"].keys():
-                                chart_info["order_by"] = chart["query"]["order_by"]
-                            if chart["display"]["type"] == "Histogram":
-                                chart_info.pop("order_by")
-                            if "series_limit" in chart["query"].keys():
-                                topk_dimensions_tmp = self.chart_topk_dimensions_to_query_topk_dimensions(chart["query"]["dimensions"], chart["query"]["series_limit"], chart["query"]["metrics"][0]["label"])
-                                chart_info["topk"] = topk_dimensions_tmp
-                            elif "limit" in chart["query"].keys() and chart["query"]["limit"] != 65535:
-                                chart_info["limit"] = chart["query"]["limit"]
-                            template_temp.append(chart_info)
-                            statistics_info = {}
-                            statistics_info["rule_id"] = test_data["rule_id"]
-                            statistics_info["template_id"] = template_id
-                            statistics_info["chart_id"] = chart["id"]
-                            statistics_info["chart_type"] = chart["display"]["type"]
-                            statistics_info["version"] = chart["version"]
-                            #24.08及以后版本
-                            #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
-                            if chart["display"]["type"] != "Histogram" and chart["query"]["dimensions"] != []:
-                                statistics_info["dimensions"] = dimensions_tmp
-                            else:
-                                statistics_info["dimensions"] = chart["query"]["dimensions"]
-                            statistics_info["metrics"] = metrics_tmp
-                            if "order_by" in chart["query"].keys():
-                                statistics_info["order_by"] = chart["query"]["order_by"]
-                            if chart["display"]["type"] == "Histogram":
-                                statistics_info.pop("order_by")
-                            statistics_info["topk"] = ""
-                            if "series_limit" in chart["query"].keys():
-                                topk_dimensions_tmp = self.chart_topk_dimensions_to_query_topk_dimensions(
-                                    chart["query"]["dimensions"], chart["query"]["series_limit"],
-                                    chart["query"]["metrics"][0]["label"])
-                                statistics_info["topk"] = topk_dimensions_tmp
-                            elif "limit" in chart["query"].keys() and chart["query"]["limit"] != 65535:
-                                statistics_info["limit"] = chart["query"]["limit"]
-                            self.statistics_template_metrics_dimension_list_2408(statistics_info)
-                            statistics_sc_info_list.append(statistics_info)
-                        create_profile_ids.append({'profile_type': 'Statistics_Templates', 'id': template_id, 'template_info': template_temp})
-        cfg_list = {}
-        cfg_list["create_ip_ids"] = create_ip_ids
-        cfg_list["create_subid_ids"] = create_subid_ids
-        cfg_list["create_fqdn_ids"] = create_fqdn_ids
-        cfg_list["create_url_ids"] = create_url_ids
-        cfg_list["create_flag_ids"] = create_flag_ids
-        cfg_list["create_keywords_ids"] = create_keywords_ids
-        cfg_list["create_account_ids"] = create_account_ids
-        cfg_list["create_http_signature_ids"] = create_http_signature_ids
-        cfg_list["create_geo_name_ids"] = create_geo_name_ids
-        cfg_list["create_profile_ids"] = create_profile_ids
-        cfg_list["create_policies_ids"] = create_policies_ids
-        cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
-        #cfg_list["timeout_result"] = timeout_result
-        cfg_list["statistics_template_metrics_dict"] = statistics_template_metrics_dict
-        cfg_list["statistics_template_dimensions_dict"] = statistics_template_dimensions_dict
-        return cfg_list
+            try:
+                # 从Statistics Rule定义信息中获取流量验证所需数据格式
+                for policy in policy_define:
+                    user_region = policy["user_region"]
+                    if user_region != {}:
+                        template_id = user_region["template_id"]
+                        template_define = self.get_template_define(token, template_id, "statistics_template",api_server, vsys_id)
+                        # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
+                        template_number = 0
+                        for template in template_define:
+                            template_temp = []
+                            #    chart_number = 0
+                            for chart in template["dataview"]["charts"]:
+                                #24.08及以后版本
+                                statistics_info = {}
+                                statistics_info["rule_id"] = test_data["rule_id"]
+                                statistics_info["template_id"] = template_id
+                                statistics_info["chart_id"] = chart["id"]
+                                statistics_info["chart_type"] = chart["display"]["type"]
+                                statistics_info["version"] = chart["version"]
+                                #24.08及以后版本
+                                #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                                if chart["display"]["type"] != "Histogram" and chart["query"]["dimensions"] != []:
+                                    statistics_info["dimensions"] = self.chart_dimensions_to_query_dimensions(chart["query"]["dimensions"])
+                                else:
+                                    statistics_info["dimensions"] = chart["query"]["dimensions"]
+                                statistics_info["metrics"] = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                                if "order_by" in chart["query"].keys():
+                                    statistics_info["order_by"] = chart["query"]["order_by"]
+                                if chart["display"]["type"] == "Histogram":
+                                    statistics_info.pop("order_by")
+                                statistics_info["topk"] = ""
+                                if "series_limit" in chart["query"].keys():
+                                    topk_dimensions_tmp = self.chart_topk_dimensions_to_query_topk_dimensions(
+                                        chart["query"]["dimensions"], chart["query"]["series_limit"],
+                                        chart["query"]["metrics"][0]["label"])
+                                    statistics_info["topk"] = topk_dimensions_tmp
+                                elif "limit" in chart["query"].keys() and chart["query"]["limit"] != 65535:
+                                    statistics_info["limit"] = chart["query"]["limit"]
+                                self.statistics_template_metrics_dimension_list_2408(statistics_info)
+                                statistics_sc_info_list.append(copy.deepcopy(statistics_info))
+            except Exception as e:
+                traceback.print_exc()
+                #self.error_print_function(inspect.currentframe().f_code.co_name,"Failed to parse Dimensions!")
+        return statistics_sc_info_list
 
     def chart_metrics_to_query_metrics(self,metrics_list):
         metric_temp_json = """

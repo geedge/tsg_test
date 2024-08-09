@@ -79,6 +79,7 @@ class CreatePolicy:
                 if test_data["policy_type"] == "statistics":
                     temp_info = {}
                     temp_info["policy_id"] = list(policy_id_list[i].values())[i]
+                    test_data["rule_id"] = temp_info["policy_id"]
                     temp_info["profile_info"] = temp_profile_list
                     policy_statistics_template_chart_info.append(temp_info)
                     if len(policy_statistics_template_chart_info) > 0:

@@ -101,7 +101,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "POST",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"server_port", "query_value": 1443}],
+            "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
