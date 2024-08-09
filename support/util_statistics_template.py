@@ -20,6 +20,8 @@ class UtilStatisticsTemplate():
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"时间差为: {difference_in_seconds}秒")
         return difference_in_seconds
 
+    tmp_break_list = ["Client IP Object List", "Server IP Object List", "Session ID",
+        "client_ip_sketch", "server_ip_sketch", "fqdn_category", "client_ip_object", "server_ip_object", "websketch_categories"]  # 兼容UI API，所以三组值
 
     def get_all_metrics_or_dimensions(self, type="metrics"):
         """

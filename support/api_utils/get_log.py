@@ -943,21 +943,14 @@ class GetLog:
                                 if k in metrics_labels:#if isinstance(v, int):
                                     statistics_value[k] = 0
                             # 遍历result结果，将metric值累加并存储到statistics_value
-                            #tmp_list_1 = []  # 下面for..提取值使用
-                            #metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
-                            #metrics_fields = [item["source_fields"] for item in statistics_info["metrics"]]
-                            #dimensions_columns = [item["source_fields"] for item in statistics_info["dimensions"]]
-                            #dimensions_fields = [item["source_fields"] for item in statistics_info["dimensions"]]
                             for result_index in range(len(result_list)):
                                 # UNIQUE_COUNT、COUNT（SUM、RATE、BITRATE）的直接处理
-                                key_tmp = ""
                                 for k, v in result_list[result_index].items():
                                     if k in metrics_labels:
                                         statistics_value[k] += v
                                 break_flag = 0  # 默认外层循环累加，累加标志，如下面列表不是所有累加值，而是获取其中一个值即可
-                                tmp_break_list = ["client_ip_sketch", "server_ip_sketch", "fqdn_category",
-                                                  "client_ip_object", "server_ip_object",
-                                                  "websketch_categories"]  # 兼容UI API，所以三组值
+                                tmp_break_list_tmp = UtilStatisticsTemplate().tmp_break_list   #  兼容UI API，所以三组值
+                                tmp_break_list = [i.lower() for i in tmp_break_list_tmp]   # 将元素转成小写
                                 for item in tmp_break_list:  # 遍历判断是否符合上述条件，获取退出累加标志1。"client_ip_sketch", "server_ip_sketch", "fqdn_category"
                                     if item in result_list[0].keys():
                                         break_flag = 1  # 退出外层累加标志
