@@ -289,7 +289,7 @@ def generate_testdata(parameter, test_data):
                     pass
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
     test_data = config
-    print(test_data)
+    #print(test_data)
     return test_data
 
 def replace_paras_api(parameter):
