@@ -121,7 +121,7 @@ def run(parameter):
                           ],
                           "dimensions": [
                             "application",
-                            "fqdn_category"
+                            "app_category"
                           ],
                           "order_by": "sessions",
                           "row_limit": "10",

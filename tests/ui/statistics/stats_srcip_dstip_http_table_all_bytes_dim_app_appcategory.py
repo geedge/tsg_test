@@ -121,7 +121,7 @@ def run(parameter):
                           ],
                           "dimensions": [
                             "application",
-                            "fqdn_category"
+                            "app_category"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
@@ -147,7 +147,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"application": "2407TCP", "fqdn_category": "4", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+                {"application": "2407TCP", "app_category": "4", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",

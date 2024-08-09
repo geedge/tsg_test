@@ -122,7 +122,7 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "fqdn_category"
+                            "app_category"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
