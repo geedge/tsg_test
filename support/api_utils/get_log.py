@@ -1001,6 +1001,7 @@ class GetLog:
                     """
                     if chart_type == "line":
                         failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                        time_dif_seconds = 0 #line图5分钟内数据按每秒时间粒度，按时间前面已经累加，此处不再平均
                         metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
                     elif chart_type == "histogram":
                         metric_result = True
