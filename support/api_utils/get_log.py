@@ -243,7 +243,7 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         # assert response.status_code == 200
         r_dict = response.json()
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric ：start_time:{},end_time:{},rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric：start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric result data：")
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_dict)
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get the metric information of rule id {}".format(post_data_ori_dict))
@@ -837,7 +837,7 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric ：start_time:{},end_time:{},rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric：start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
         # 时差，速率使用：
         util = UtilStatisticsTemplate()
         time_dif_seconds = util.time_dif_seconds(start_time, end_time)
@@ -854,7 +854,7 @@ class GetLog:
                             }
                 if script_type == "api":
                     metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
-                    if metrics_columns_temp in tmp_dict.items():
+                    if metrics_columns_temp in tmp_dict.keys():
                         metrics_columns = tmp_dict[metrics_columns_temp]
                     else:
                         metrics_columns = ""
@@ -864,8 +864,7 @@ class GetLog:
                 if metrics_columns in {"new_in_sessions","new_out_sessions","closed_in_sessions","closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
                     return [333, "this is a pass"]
                 else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Do not query statistics metric result.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 return [333, "statistics metric no result was found."]
             else:  # 提取结果，并断言
                 metric_result = False  # 默认
@@ -965,13 +964,13 @@ class GetLog:
                                 if break_flag == 1:
                                     break  # 退出累加循环
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: {}".format(statistics_value))
-                        metric_results = self.assert_livechart_statistics_2408(statistics_info, statistics_value, statistics_metircs_except,time_dif_seconds)  # 判断正确调用函数
+                        metric_results = self.assert_livechart_statistics_2408(statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds)  # 判断正确调用函数
                 elif statistics_info["chart_type"] == "histogram":
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                           "Histogram cannot automatically compare statistical results.", flush=True)
                     metric_results = [True, ""]
                 return metric_results
-    def assert_livechart_statistics_2408(self, statistics_info, statistics_value, statistics_metircs_except,time_dif_seconds):
+    def assert_livechart_statistics_2408(self, statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds):
         chart_type = statistics_info["chart_type"]
         metric_result = False
         failure_reason = "Result failed."
@@ -1132,7 +1131,7 @@ class GetLog:
                     elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
                         metric_result = True
                     # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                    elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt2:
+                    elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt1:
                         metric_result = True
                     # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                     elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:

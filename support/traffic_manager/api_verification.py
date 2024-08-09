@@ -145,7 +145,6 @@ class ApiVerification:
             return cmd_result, log_result, metric_result, my_driver
         elif policy_type == "statistics":      # statistics 数据校验
             # 获取开始时间
-            time.sleep(5)
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz)
             # 将时间向前推迟 180 秒，因为trex流量先发送。
@@ -170,8 +169,10 @@ class ApiVerification:
             statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
             if len(statistics_template_chart_list) > 0:  # 非空
                 for statistics_info in statistics_template_chart_list:
-                    n = 1    #自增变量
-                    fail_count = 1   #失败重试变量
+                    max_fail_count = 10    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
+                    search_interval_time = 5    # 每次查询statistic metric的 间隔时间 单位秒
+                    n = 1  # 自增变量
+                    fail_count = 0   #自增变量
                     while n < 20:
                         #time.sleep(7)
                         if script_type == "ui":
@@ -188,14 +189,11 @@ class ApiVerification:
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
                         elif metric_result == False:  # 查询验证失败时，再查询验证一次
-                            if fail_count < 2:
-                                time.sleep(50)
-                            else:
-                                time.sleep(7)
-                            if fail_count > 5:
-                                break
                             fail_count += 1
-                        elif  metric_results[0] == 333 and metric_results[1] == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
+                            if fail_count >= max_fail_count:
+                                break
+                            time.sleep(search_interval_time)
+                        elif metric_result == 333 and metric_results[1] == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
                             break
                         n += 1
                 if  metric_results[0] == 333:     # API 查询失败时变量赋值
