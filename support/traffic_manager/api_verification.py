@@ -47,8 +47,8 @@ class ApiVerification:
                 statistics_sc_info_list = []
                 cfg_list["rule_id"] = test_data["rule_id"]
                 statistics_sc_info_list.append(cfg_list)
-            elif policy_type == "statistics":
-                statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
+            #elif policy_type == "statistics":
+                #statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
                 #cfg_list["rule_id"] = test_data["rule_id"]
                 #statistics_sc_info_list.append(cfg_list)
             temp_list = {}
