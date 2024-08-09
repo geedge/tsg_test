@@ -123,7 +123,7 @@ def run(parameter):
                           ],
                           "dimensions": [
                             "application",
-                            "fqdn_category"
+                            "app_category"
                           ],
                           "order_by": "new c2s flows",
                           "row_limit": "1000",

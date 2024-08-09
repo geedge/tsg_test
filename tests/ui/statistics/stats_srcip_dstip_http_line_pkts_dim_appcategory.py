@@ -116,7 +116,7 @@ def run(parameter):
                           "metrics": [
                             "in_pkts+out_pkts:RATE:pkts"
                           ],
-                          "dimensions": ["fqdn_category"],
+                          "dimensions": ["app_category"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",
@@ -141,7 +141,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"fqdn_category": "4", "pkts": 83}
+                {"app_category": "4", "pkts": 83}
             ],
             # "traffic": {
             #     "type": "trex",

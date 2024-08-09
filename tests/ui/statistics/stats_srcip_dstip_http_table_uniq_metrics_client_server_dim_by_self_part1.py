@@ -162,18 +162,6 @@ def run(parameter):
                             "max_out_size": "0"
                         },
                         {
-                            "chart_name": "UNIQUECOUNT(WebSketch Categories)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "fqdn_category_list:UNIQUE_COUNT:UNIQUECOUNT(WebSketch Categories)"
-                            ],
-                            "dimensions": ["fqdn_category_list"],
-                            "order_by": "UNIQUECOUNT(WebSketch Categories)",
-                            "row_limit": "100",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
                             "chart_name": "UNIQUECOUNT(HTTP.Host)",
                             "visualization_type": "Table",
                             "metrics": [
