@@ -62,7 +62,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.7",
+                                "item_value": "10.64.101.7",
                             },
                         ]
                     }
@@ -95,13 +95,13 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
-                {"query_field_key": "monitor_mirrored_pkts", "query_value": 1086},
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": 937},
             ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
+                "clients_start_ip": "10.64.101.7",
+                "clients_end_ip": "10.64.101.7",
                 "servers_start_ip": "2.1.1.3",
                 "servers_end_ip": "2.1.1.3",
                 "m": 1,

@@ -79,7 +79,7 @@ class UiVerification:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
                                 # elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action" or log_query_key == "ftp_url" or log_query_key == "ftp_link_type":
-                                elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from","imsi", "phone_number", "server_fqdn", "ip_protocol", "mail_to", "mail_to_cmd", "mail_from_cmd", "mail_subject", "server_port"]:
+                                elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from","imsi", "phone_number", "server_fqdn", "ip_protocol", "mail_to", "mail_to_cmd", "mail_from_cmd", "mail_subject"]:
                                     log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                     if temp_value == test_data["log_query_param"][t]["query_value"]:
@@ -96,11 +96,11 @@ class UiVerification:
                                         if element_exist_flag == True:
                                             # 连续点击下载按钮5次（防止下载异常的时候异常信息消失的太快）
                                             for _ in range(5):
-                                                log_item_element = my_driver.find_element_by_xpath(log_item_pos_xpath)
+                                                log_item_element = my_driver.find_element(By.XPATH,log_item_pos_xpath)
                                                 my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
                                                 my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
                                                 time.sleep(1)
-                                            log_item_element = my_driver.find_element_by_xpath(log_item_pos_xpath)
+                                            log_item_element = my_driver.find_element(By.XPATH, log_item_pos_xpath)
                                             my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
                                             my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
                                             time.sleep(1)
@@ -131,7 +131,7 @@ class UiVerification:
                                     else:
                                         temp_log_result = False
                                     temp_log_result_list.append(temp_log_result)
-                                elif log_query_key in ["monitor_mirrored_bytes", "monitor_mirrored_pkts"]:
+                                elif log_query_key in ["monitor_mirrored_bytes", "monitor_mirrored_pkts","server_port"]:
                                     log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
                                         replaceValue=log_str)
                                     temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()

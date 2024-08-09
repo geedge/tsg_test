@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.api_utils.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *
 from support.ui_utils.profile.search_profile import SearchProfile
@@ -60,7 +62,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.7",
+                                "item_value": "10.64.101.7",
                             },
                         ]
                     }
@@ -89,16 +91,23 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "Ok",
+            "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [
-                                {"query_field_key": "decoded_as", "query_value": "MAIL"},
-                                {"query_field_key": "mail_account", "query_value": "zhangchengwei163fx@163.com"}
-                            ],
+                {"query_field_key": "decoded_as", "query_value": "MAIL"},
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": 1086},
+            ],
             "traffic": {
-                "protocol": "mail",
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_manager/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "10.64.101.7",
+                "clients_end_ip": "10.64.101.7",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test_https",
+                "pcap_name": "mail_imap"
             },
             "token": ""
         }
@@ -123,6 +132,9 @@ def run(parameter):
             }
 
         ]
+
+        # organize_config = OrganizeConfig()
+        # test_data = organize_config.generate_random_ip(test_data, parameter)
 
         # 创建object
         if "condition" in test_data.keys():

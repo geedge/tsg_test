@@ -64,20 +64,6 @@ def run(parameter):
                         ]
                     }
                 ],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [],
-                "external_port": [],
-                "source_geography": [],
-                "destination_geography": [],
-                "sub_id": [],
-                "device": [],
-                "tunnel": [],
-                "tunnel_level": [],
-                "flag": [],
                 "application": [
                     {
                         "name": "mail",  #
@@ -85,7 +71,6 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
                 "protocol_filed": [
                     {
                         "name": "monit_mail_from_by_account",
@@ -101,15 +86,9 @@ def run(parameter):
                             }
                         ],
                     }
-                ],
-                "sub_action_override": True,
-                "sub_action": [],
-                "packet_capture": []
+                ]
             },
             "is_mirror": "off",
-            "profile": [
-
-            ],
             "expected_return": "Ok",
             "counters": {"hits": 1},
             "log_query_param": [
