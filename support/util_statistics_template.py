@@ -35,7 +35,6 @@ class UtilStatisticsTemplate():
         all_metrics = {
             'client_ip_object_list': 'Client IP Object List',
             'server_ip_object_list': 'Server IP Object List',
-            'fqdn_category_list': 'WebSketch Categories',
             'client_ip': 'Client IP',
             'client_country': 'Client Country',
             'server_ip': 'Server IP',
@@ -49,29 +48,29 @@ class UtilStatisticsTemplate():
             'device_group': 'Device Group',
             'c2s_ttl': 'Client-to-Server TTL',
             's2c_ttl': 'Server-to-Client TTL',
-            'c2s_link_id': 'Incoming Link ID',
-            's2c_link_id': 'Outgoing Link ID',
+            'c2s_link_id': 'Client-to-Server Link ID',
+            's2c_link_id': 'Server-to-Client Link ID',
             'client_port': 'Client Port',
             'server_port': 'Server Port',
-            'http_host': 'HTTP.Host',
-            'ssl_ja3_hash': 'SSL.JA3 Hash',
-            'ssl_sni': 'SSL.SNI',
+            'http_host': 'HTTP Host',
+            'ssl_ja3_hash': 'SSL JA3 Hash',
+            'ssl_sni': 'SSL SNI',
             'subscriber_id': 'Subscriber ID',
             'decoded_as': 'Decoded AS',
             'sled_ip': 'Sled IP',
             'flags': 'Flags',
             'direction': 'Direction',
             'session_id': 'Session ID',
-            'in_pkt_length_distribution': 'Incoming Packet Length',
-            'out_pkt_length_distribution': 'Outgoing Packet Length',
-            'pkt_length_distribution': 'Packet Length',
+            'in_pkt_length_distribution': 'Incoming Packet Length Distribution',
+            'out_pkt_length_distribution': 'Outgoing Packet Length Distribution',
+            'pkt_length_distribution': 'Packet Length Distribution',
             'in_latency_ms': 'Incoming Latency',
             'out_latency_ms': 'Outgoing Latency',
-            'dtls_handshake_latency_ms': 'DTLS.Handshake Latency(ms)',
-            'ssl_handshake_latency_ms': 'SSL.Handshake Latency(ms)',
+            'dtls_handshake_latency_ms': 'DTLS Handshake Latency(ms)',
+            'ssl_handshake_latency_ms': 'SSL Handshake Latency(ms)',
             'tcp_handshake_latency_ms': 'TCP Handshake Latency(ms)',
-            'duration_ms': 'Duration(ms)',
-            'tcp_rtt_ms': 'Round-trip Time(ms)',
+            'duration_ms': 'Duration',
+            'tcp_rtt_ms': 'Round-trip Time',
             'sent_bytes': 'Bytes Sent',
             'sent_pkts': 'Packets Sent',
             'received_pkts': 'Packets Received',
@@ -93,19 +92,19 @@ class UtilStatisticsTemplate():
         if type == "metrics":
             return 200, all_metrics
         elif type == "dimensions":
-            return self.get_specify_elements_dict(all_metrics, 0, 28)
+            return self.get_specify_elements_dict(all_metrics, 0, 27)
         elif type == "count_metrics":
-            return self.get_specify_elements_dict(all_metrics, 32, (len(all_metrics) - 1))
+            return self.get_specify_elements_dict(all_metrics, 31, (len(all_metrics) - 1))
         elif type == "unique_count_metrics":
-            code,metric_tmp = self.get_specify_elements_dict(all_metrics, 0, 29)
+            code,metric_tmp = self.get_specify_elements_dict(all_metrics, 0, 28)
             if code == 200:
-                code, metric_tmp1 = self.get_specify_elements_dict(all_metrics, 32, (len(all_metrics) - 1))
+                code, metric_tmp1 = self.get_specify_elements_dict(all_metrics, 31, (len(all_metrics) - 1))
                 if code == 200:
                     for k, v in metric_tmp1.items():
                         metric_tmp[k] = v
             return code, metric_tmp
         elif type == "distribution_metrics":
-            return self.get_specify_elements_dict(all_metrics, 29, (len(all_metrics) - 1))
+            return self.get_specify_elements_dict(all_metrics, 28, (len(all_metrics) - 1))
         else:
             return 200, all_metrics
 

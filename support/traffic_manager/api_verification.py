@@ -153,15 +153,15 @@ class ApiVerification:
             max_fail_count = 10    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
             search_interval_time = 5    # 每次查询statistic metric的 间隔时间 单位秒
             if script_type == "ui":
-                time.sleep(60)
-                max_fail_count = 20
+                #time.sleep(60)
+                #max_fail_count = 20
                 search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
                 # 点击 语言快捷切换按钮
                 element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
                 # 移动元素到页面，在执行点击
                 my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
                 my_driver.execute_script("arguments[0].click();", element_language_menu)
-                time.sleep(60)
+                #time.sleep(60)
             utc_tz = pytz.timezone('UTC')
             cmd_return = expected_return = test_data["expected_return"]
             # 断言判断

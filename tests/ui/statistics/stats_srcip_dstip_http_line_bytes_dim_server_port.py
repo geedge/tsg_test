@@ -120,7 +120,7 @@ def run(parameter):
                                 "in_bytes+out_bytes:BITRATE:bytes"
                             ],
                             "dimensions": [
-                                "s2c_link_id"
+                                "server_port"
                             ],
                             "order_by": "bytes",
                             "row_limit": "5",
