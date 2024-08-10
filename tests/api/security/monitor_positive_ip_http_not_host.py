@@ -25,6 +25,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_action_1": "monitor",
+            "is_mirror": "off",
             "do_log_1": 2,
             "obj_condition_1": [
                 {
@@ -63,7 +64,7 @@ def run(parameter):
             "app_name_1": ["http"],
             "expected_return": "POST",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [],
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
@@ -144,17 +145,19 @@ def run(parameter):
       
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.65",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test",
         "script_type": "api",
+        "debug_flag": "local",
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "vsys_id": 1,
+        "is_log": 1,
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_alert_204_negative_not_ip_http"
+        "test_case_name": "allow_positive_ip_http_not_host"
     }
     run(parameter)

@@ -47,11 +47,11 @@ def run(parameter):
             "app_name_1": ["ssl_handshake_certificate_algorithm_identifier"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"www.jd.com"}],
+            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"www.baidu.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 5 -kv https://www.jd.com"
+                "command": "curl --connect-timeout 15 -m 15 -kv https://www.baidu.com"
             },
             "token": ""
         }

@@ -95,8 +95,8 @@ def run(parameter):
             "app_name_1": [],
             "app_name_2": [],
             "expected_return": "POST",
-            "counters_1": {"hits": "many"},
-            "counters_2": {"hits": 0},
+            "counters_1": {"hits": 0},
+            "counters_2": {"hits": "many"},
             "log_query_param_1": [],
             "log_query_param_2": [],
             "traffic": {
