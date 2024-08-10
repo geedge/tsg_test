@@ -47,7 +47,7 @@ def run(parameter):
             ],
             "app_name_1": ["ssl"],
             "expected_return": "youtube",
-            "counters_1": {},
+            "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
                 "protocol": "ssl",
