@@ -43,8 +43,8 @@ class Verification:
                 time.sleep(3)
             trigger_traffic = TriggerTraffic()
             traffic_result = trigger_traffic.trigger_traffic(parameter, test_data)
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Start to verify the effect of the policy rule.traffic_result:{}.".format(traffic_result), flush=True)
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Start to verify the effect of the policy rule.traffic_result:{}.".format(traffic_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             if script_type == "ui":
                 traffic_verification = ApiVerification()
                 api_verification_result = traffic_verification.api_verification(my_driver, parameter, test_data, traffic_result, cfg_list)
