@@ -47,11 +47,11 @@ def run(parameter):
             "app_name_1": ["ssl_handshake_certificate_issuer_common_name"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
-            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"froala.com"}],
+            "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"open.node.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 5 -kv https://froala.com/wysiwyg-editor/"
+                "command": "curl --connect-timeout 10 -m 10 -kv https://open.node.com:1443"
             },
             "token": ""
         }
