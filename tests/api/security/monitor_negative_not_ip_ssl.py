@@ -25,6 +25,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_action_1": "monitor",
+            "is_mirror": "off",
             "do_log_1": 2,
             "obj_condition_1": [
                 {
