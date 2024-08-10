@@ -195,7 +195,7 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-                # 创建object
+        # 创建object
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
@@ -420,6 +420,7 @@ if __name__ == '__main__':
         "script_type": "ui",
         "policy_type": "statistics"
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

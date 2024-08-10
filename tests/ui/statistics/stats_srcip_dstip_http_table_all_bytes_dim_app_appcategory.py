@@ -120,7 +120,7 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "application",
+                            "app",
                             "app_category"
                           ],
                           "order_by": "bytes",
@@ -426,7 +426,8 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

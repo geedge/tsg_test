@@ -122,7 +122,7 @@ def run(parameter):
                             "new_c2s_flows+new_s2c_flows:SUM:all flows"
                           ],
                           "dimensions": [
-                            "application",
+                            "app",
                             "app_category"
                           ],
                           "order_by": "new c2s flows",
@@ -427,7 +427,8 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

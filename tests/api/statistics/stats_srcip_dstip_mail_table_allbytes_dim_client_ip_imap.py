@@ -201,8 +201,8 @@ if __name__ == "__main__":
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "C:/zcw/tsg_test",
-        "path": "C:/zcw/tsg_test/tests/api",
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "D:/tsgcode/tsg_test/tests/api",
         "module_name": "statistics",
         "test_case_name": "bytes_distributedby_clientip_mail_imap"
     }

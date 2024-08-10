@@ -559,7 +559,8 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6438",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
+    parameter = replace_paras(parameter)
     run(parameter)
 
     """

@@ -861,17 +861,26 @@ class GetLog:
                             "closed incoming sessions": "closed_in_sessions",
                             "closed outgoing sessions": "closed_out_sessions",
                             }
-                if script_type == "api":
-                    metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
-                    if metrics_columns_temp in tmp_dict.keys():
-                        metrics_columns = tmp_dict[metrics_columns_temp]
-                    else:
-                        metrics_columns = ""
-                elif script_type == "ui":
-                    metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
+                #if script_type == "api":
+                #    metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
+                #    if metrics_columns_temp in tmp_dict.keys():
+                #        metrics_columns = tmp_dict[metrics_columns_temp]
+                #    else:
+                #        metrics_columns = ""
+               # elif script_type == "ui":
+               #     metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
                 # api返回值为空，不判断方向，直接返回重新查找
-                if metrics_columns in {"new_in_sessions","new_out_sessions","closed_in_sessions","closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
-                    return [333, "this is a pass"]
+                #if metrics_columns in tmp_dict:#{"new_in_sessions", "new_out_sessions", "closed_in_sessions", "closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
+                #    return [333, "this is a pass"]
+                #else:
+                #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
+                # api返回值为空，不判断方向，直接返回重新查找
+                if len(statistics_info["metrics"]) == 1:
+                    #for item in statistics_info["metrics"]:
+                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_dict:
+                        return [333, "this is a pass"]
+                    else:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 return [333, "statistics metric no result was found."]
@@ -887,9 +896,9 @@ class GetLog:
                     tmp_dict = {}
                     tmp_dict_key = ""
                     for k, v in _.items():
-                        if k in statistics_info["metrics_dimension"]["metrics"].keys():
-                            if v == None:  # Metric结果返回中包括None值处理
-                                v = 0
+                        if v == None:  # Metric结果返回中包括None值处理
+                            v = 0
+                        if k in statistics_info["metrics_dimension"]["metrics"].keys() and v > 0:
                             #k_0 = statistics_info["metrics_dimension"]["metrics"][k]
                             k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并,所有Line都可以合并
@@ -907,7 +916,7 @@ class GetLog:
                             #k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
                             k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
-                            if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2 and k != "__time":
+                            if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2 and k != "Time":
                                 if tmp_dict_key == "":
                                     tmp_dict_key = f"{k_0};{v}"
                                 else:
@@ -921,14 +930,14 @@ class GetLog:
                         # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
                     if len(tmp_dict) > 0:
                         result_list.append(tmp_dict)
-                    if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2:
-                        for key in tmp_result.keys():
-                            tmp_dict = {}
-                            key_list = key.split(";")
-                            if len(key_list) == 3:
-                                tmp_dict[key_list[0]] = key_list[1]
-                                tmp_dict[key_list[2]] = tmp_result[key]
-                                result_list.append(tmp_dict)
+                if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2:
+                    for key in tmp_result.keys():
+                        tmp_dict = {}
+                        key_list = key.split(";")
+                        if len(key_list) == 3:
+                            tmp_dict[key_list[0]] = key_list[1]
+                            tmp_dict[key_list[2]] = tmp_result[key]
+                            result_list.append(tmp_dict)
 
                 statistics_value = []
                 metrics_functions = [item["function"]["name"] for item in statistics_info["metrics"]]

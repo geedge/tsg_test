@@ -120,7 +120,7 @@ def run(parameter):
                             "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
                           "dimensions": [
-                            "application",
+                            "app",
                             "app_category"
                           ],
                           "order_by": "sessions",
@@ -421,7 +421,8 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：
