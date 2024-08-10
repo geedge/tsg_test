@@ -369,9 +369,9 @@ def run(parameter):
                 for i in range(len(ip_data)):
                     create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
                     if create_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(condition_key), flush=True)
                     elif create_ip_code != 200:
-                        result = "Fail to create ip object."
+                        result = "Fail to create {} object.".format(condition_key)
                         break
             if condition_key == "server_fqdn":
                 fqdn_data = test_data["condition"][condition_key]
@@ -446,7 +446,7 @@ def run(parameter):
         # 删除object
         if delete_rule_code == 200:
             # 删除ip
-            for condition_key in test_data["condition"].keys():
+              for condition_key in test_data["condition"].keys():
                 if condition_key == "source_ip" or condition_key == "destination_ip":
                     ip_data = test_data["condition"][condition_key]
                     for x in range(len(ip_data)):
@@ -456,12 +456,12 @@ def run(parameter):
                             delete_ip = DeleteObject(driver)
                             delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
                             if delete_ip_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(condition_key), flush=True)
                             elif delete_ip_code != 200:
-                                result = result + " In addition, fail to delete ip object."
+                                result = result + " In addition, fail to delete {} object.".format(condition_key)
                                 break
                         else:
-                            result = result + " In addition, fail to search ip object."
+                            result = result + " In addition, fail to search {} object.".format(condition_key)
                             break
                 if condition_key == "server_fqdn":
                     fqdn_data = test_data["condition"][condition_key]
@@ -491,7 +491,7 @@ def run(parameter):
                     delete_sff = DeleteProfile(driver)
                     delete_sff_code = delete_sff.delete(test_service_function_forwarder_profile_element_position, first_row_checkbox_element, True)
                     if delete_sff_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sff successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function forwarder successfully.", flush=True)
                         # 删除sf
                         sf_data = test_data["profile"][x]["service_functions"]
                         search_sf = SearchProfile(driver)
@@ -501,18 +501,18 @@ def run(parameter):
                                 delete_sf = DeleteProfile(driver)
                                 delete_sf_code = delete_sf.delete(test_service_function_profile_element_position, first_row_checkbox_element, True)
                                 if delete_sf_code == 200:
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sf successfully.", flush=True)
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function successfully.", flush=True)
                                 elif delete_sf_code != 200:
-                                    result = result + " In addition, fail to delete sf."
+                                    result = result + " In addition, fail to delete service function."
                                     break
                             else:
-                                result = result + " In addition, fail to search sf."
+                                result = result + " In addition, fail to search service function."
                                 break
                     elif delete_sff_code != 200:
-                        result = result + " In addition, fail to delete sff."
+                        result = result + " In addition, fail to delete service function forwarder."
                         break
                 else:
-                    result = result + " In addition, fail to search sff."
+                    result = result + " In addition, fail to search service function forwarder."
                     break
 
             # 脚本结束时间和耗时

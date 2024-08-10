@@ -400,21 +400,22 @@ def run(parameter):
                 for i in range(len(ip_data)):
                     create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
                     if create_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(condition_key), flush=True)
                     elif create_ip_code != 200:
-                        result = "Fail to create ip object."
+                        result = "Fail to create {} object.".format(condition_key)
                         break
             if condition_key == "protocol_filed" and len(test_data["condition"]["protocol_filed"]) != 0:
                 protocol_field_data = test_data["condition"]["protocol_filed"]
                 create_protocol_filed = CreateObject(driver)
                 for x in range(len(protocol_field_data)):
                     object_type = protocol_field_data[x]['object_type']
+                    item_type = protocol_field_data[x]['items'][0]['item_type']
                     if object_type == 'account':
                         create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_account_object_element_position)
                     if create_protocol_filed_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(item_type), flush=True)
                     elif create_protocol_filed_code != 200:
-                        result = "Fail to create {}.".format(object_type)
+                        result = "Fail to create {}.".format(item_type)
                         break
 
 
@@ -486,18 +487,19 @@ def run(parameter):
                             delete_ip = DeleteObject(driver)
                             delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
                             if delete_ip_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(condition_key), flush=True)
                             elif delete_ip_code != 200:
-                                result = result + " In addition, fail to delete ip object."
+                                result = result + " In addition, fail to delete {} object.".format(condition_key)
                                 break
                         else:
-                            result = result + " In addition, fail to search ip object."
+                            result = result + " In addition, fail to search {} object.".format(condition_key)
                             break
                 if condition_key == "protocol_filed" and len(test_data["condition"]["protocol_filed"]) != 0:
                     protocol_field_data = test_data["condition"]["protocol_filed"]
                     for q in range(len(protocol_field_data)):
                         search_protocol_filed = SearchObject(driver)
                         object_type = protocol_field_data[q]['object_type']
+                        item_type = protocol_field_data[q]['items'][0]['item_type']
                         if object_type == 'account':
                             search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_account_object_element_position)
                         if search_protocol_filed_code == 200:
@@ -505,9 +507,9 @@ def run(parameter):
                             if object_type == 'account':
                                 delete_protocol_filed_code = delete_protocol_filed.delete(test_account_object_element_position, first_row_checkbox_element, True)
                             if delete_protocol_filed_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(item_type), flush=True)
                             elif delete_protocol_filed_code != 200:
-                                result = result + " In addition, fail to delete {} object.".format(object_type)
+                                result = result + " In addition, fail to delete {} object.".format(item_type)
                                 break
 
         # 删除profile
@@ -521,7 +523,7 @@ def run(parameter):
                     delete_sff = DeleteProfile(driver)
                     delete_sff_code = delete_sff.delete(test_service_function_forwarder_profile_element_position, first_row_checkbox_element, True)
                     if delete_sff_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sff successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function forwarder successfully.", flush=True)
                         # 删除sf
                         sf_data = test_data["profile"][x]["service_functions"]
                         search_sf = SearchProfile(driver)
@@ -531,18 +533,18 @@ def run(parameter):
                                 delete_sf = DeleteProfile(driver)
                                 delete_sf_code = delete_sf.delete(test_service_function_profile_element_position, first_row_checkbox_element, True)
                                 if delete_sf_code == 200:
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sf successfully.", flush=True)
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function successfully.", flush=True)
                                 elif delete_sf_code != 200:
-                                    result = result + " In addition, fail to delete sf."
+                                    result = result + " In addition, fail to delete service function."
                                     break
                             else:
-                                result = result + " In addition, fail to search sf."
+                                result = result + " In addition, fail to search service function."
                                 break
                     elif delete_sff_code != 200:
-                        result = result + " In addition, fail to delete sff."
+                        result = result + " In addition, fail to delete service function forwarder."
                         break
                 else:
-                    result = result + " In addition, fail to search sff."
+                    result = result + " In addition, fail to search service function forwarder."
                     break
 
             # 脚本结束时间和耗时
