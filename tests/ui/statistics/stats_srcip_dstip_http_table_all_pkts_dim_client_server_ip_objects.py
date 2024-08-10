@@ -124,8 +124,8 @@ def run(parameter):
                             "in_pkts+out_pkts:SUM:pkts"
                           ],
                           "dimensions": [
-                            "client_ip_object",
-                            "server_ip_object"
+                            "client_ip_object_list",
+                            "server_ip_object_list"
                           ],
                           "order_by": "pkts",
                           "row_limit": "10",

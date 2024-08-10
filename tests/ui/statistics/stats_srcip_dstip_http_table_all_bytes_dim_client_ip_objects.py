@@ -122,7 +122,7 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "client_ip_object"
+                            "client_ip_object_list"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",

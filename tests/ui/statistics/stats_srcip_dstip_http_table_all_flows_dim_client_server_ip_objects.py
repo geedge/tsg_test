@@ -124,8 +124,8 @@ def run(parameter):
                             "new_c2s_flows+new_s2c_flows:SUM:all flows"
                           ],
                           "dimensions": [
-                            "client_ip_object",
-                            "server_ip_object"
+                            "client_ip_object_list",
+                            "server_ip_object_list"
                           ],
                           "order_by": "new c2s flows",
                           "row_limit": "1000",

@@ -121,8 +121,8 @@ def run(parameter):
                             "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
                           "dimensions": [
-                            "client_ip_object",
-                            "server_ip_object"
+                            "client_ip_object_list",
+                            "server_ip_object_list"
                           ],
                           "order_by": "sessions",
                           "row_limit": "10",
