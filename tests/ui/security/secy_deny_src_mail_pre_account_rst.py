@@ -110,7 +110,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "reset",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"decoded_as", "query_value": "MAIL"},
             {"query_field_key":"mail_account", "query_value": "hbn@163.com"}

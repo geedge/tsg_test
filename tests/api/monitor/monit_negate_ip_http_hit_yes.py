@@ -18,56 +18,41 @@ def run(parameter):
         
         # 脚本启动时间
         start_time = time.time()
+        
         # 测试数据
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "security",
-            "rule_action_1": "allow",
+            "policy_type": "monitor",
+            "rule_action_1": "monitor",
+            "is_mirror": "off",
             "do_log_1": 2,
             "obj_condition_1": [
                 {
-                    "attribute_name": "ATTR_SOURCE_IP",
-                    "object_type": "ip",
-                    "object_sub_type": "ip",
-                    "repeat_time": 1,
-                    "object_list": [
+                "is_negate": 1,
+                "attribute_name": "ATTR_SOURCE_IP",
+                "object_type": "ip",
+                "object_sub_type": "ip",
+                "object_list": [
+                    {
+                    "add_item_list": [
                         {
-                            "add_item_list": [
-                                {
-                                    "ip_address": "default",
-                                    "port_range": "0-65535"
-                                }
-                            ]
+                        "ip_address": "1.1.1.1",
+                        "port_range": "0-65535"
                         }
                     ]
-                },
-                {
-                    "attribute_name": "ATTR_SERVER_FQDN",
-                    "object_type": "fqdn",
-                    "object_sub_type": "fqdn",
-                    "repeat_time": 1,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "keyword_array": [
-                                        "www.baidu.com"
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    }
+                ]
                 }
             ],
-            "app_name_1": ["https"],
-            "expected_return": "百度一下",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.baidu.com"}],
+            "app_name_1": ["http"],
+            "expected_return": "POST",
+            "counters_1": {"hits": "many"},
+            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
             "traffic": {
-                "protocol": "ssl",
+                "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "command": "curl -kv http://open.node.com:180"
             },
             "token": ""
         }
@@ -90,7 +75,6 @@ def run(parameter):
         # 流量验证
         verify = Verification()
         verification_result = verify.verification("", parameter, test_data, cfg_list, "")
-        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "verification result: ", verification_result, flush=True)
         
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()
@@ -99,11 +83,16 @@ def run(parameter):
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
         elif len(result) != 0:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
-    
+      
         # 删除配置
         delete = DeletePolicy()
         delete.delele_policy_by_cfg(token, parameter, cfg_list)
         
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+            
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
@@ -147,10 +136,10 @@ if __name__ == "__main__":
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 6,
-        "is_log": 1,
+        "is_log": 0,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "allow_http_fqdn"
+        "test_case_name": "deny_alert_204_negative_not_ip_http"
     }
     run(parameter)
