@@ -157,13 +157,9 @@ class ApiVerification:
                 time.sleep(60)
             utc_tz = pytz.timezone('UTC')
             cmd_return = expected_return = test_data["expected_return"]
-            # 断言判断
-            trex_ip_info = {}
-            trex_ip_info["clients_start"] = test_data["traffic"]["clients_start_ip"]
-            trex_ip_info["clients_end"] = test_data["traffic"]["clients_end_ip"]
-            trex_ip_info["servers_start"] = test_data["traffic"]["servers_start_ip"]
-            trex_ip_info["servers_end"] = test_data["traffic"]["servers_end_ip"]
-            statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
+            code, statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
+            if code != 200:
+                return False, False, False, "Exception when getting Statistics Template information from the interface", my_driver  # 匹配其它策略模式
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The expect result: {}'.format(statistics_metircs_expect), flush=True)
             if len(statistics_template_chart_list) > 0:  # 非空
                 for statistics_info in statistics_template_chart_list:
@@ -178,7 +174,7 @@ class ApiVerification:
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                        metric_results = log.get_livechart_statistics_2408(token, start_time, end_time, statistics_info, statistics_metircs_expect, trex_ip_info, test_data, api_server, vsys_id, script_type)
+                        metric_results = log.get_livechart_statistics(token, start_time, end_time, statistics_info, statistics_metircs_expect, api_server, vsys_id)
                         metric_result = metric_results[0]
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
