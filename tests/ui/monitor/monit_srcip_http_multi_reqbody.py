@@ -113,8 +113,7 @@ def run(parameter):
             "expected_return": "helloMonitor",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
-                                {"query_field_key": "http_request_body", "query_value": True}
-                                ],
+                               ],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",

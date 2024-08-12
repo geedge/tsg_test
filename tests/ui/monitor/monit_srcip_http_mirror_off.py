@@ -107,11 +107,13 @@ def run(parameter):
             "profile": [],
             "expected_return": "news",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "slope.ru"}],
+            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
+                                {"query_field_key": "decoded_as", "query_value": "HTTP"}
+                            ],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
+                "command": "curl --connect-timeout 10 -m 10 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"helloMonitor\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://192.168.40.206:180/go"
             },
             "token": ""
         }
@@ -133,12 +135,7 @@ def run(parameter):
             {
                 "type": "ip",
                 "name": "monitor_dst_ip"
-            },
-            {
-                "type": "traffic_mirror",
-                "name": "profile1"
             }
-
         ]
 
         # 添加定位库集合

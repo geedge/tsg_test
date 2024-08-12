@@ -91,8 +91,7 @@ def run(parameter):
                                 "item_key": "User-Agent",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "curl",
-                                    "curl"
+                                    "curl&curl"
                                 ]
                             },
                         ]
