@@ -13,7 +13,7 @@ from support.util_statistics_template import UtilStatisticsTemplate
 
 class GetLog:
     def get_log_schema(self, token, log_type, api_host, vsys_id):
-        # 修改完成后删除注释：将下方的security_event替换成变量
+        # 修改完成后删除注释:将下方的security_event替换成变量
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = api_host + "/v1/log/schema/" + log_type + "?vsys_id=" + str(vsys_id)
         response = requests.get(url, headers=headers, verify=False)
@@ -77,7 +77,7 @@ class GetLog:
             log_condition_dict['execution_mode'] = 'oneshot'
 
             # 从conditions中获取object_type判断是否存在subscriberid
-            # 加script_type判断条件的原因是：ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
+            # 加script_type判断条件的原因是:ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0][
                 "attribute_name"] == "ATTR_SUBSCRIBER_ID":
                 log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
@@ -252,8 +252,8 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         # assert response.status_code == 200
         r_dict = response.json()
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric：start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
-        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric result data：")
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric result data:")
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_dict)
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get the metric information of rule id {}".format(post_data_ori_dict))
         if r_dict["code"] != 200:
@@ -426,7 +426,7 @@ class GetLog:
                         #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statists_metric_results: \n{}".format(test_data["statists_metric_results"]), flush=True)
                         for i in range(len(assert_key_list)):
                             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Determine the correctness of the Key:{}".format(str(assert_key_list)))
-                            # 因目前功能端版本：tsg-os-v24.07-rc3-c3f7112只要带有非首包可命中且符合Dimensions的流量均不能全部统计*pkts和*bytes，所以需要从Test_data传入期望统计结果："statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
+                            # 因目前功能端版本:tsg-os-v24.07-rc3-c3f7112只要带有非首包可命中且符合Dimensions的流量均不能全部统计*pkts和*bytes，所以需要从Test_data传入期望统计结果:"statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
                             # 如果有期望值就比对期望值
                             #if "statists_metric_results" in test_data.keys():
                             #    metric_results = self.expected_value_vs_statistics_metric(statistics_info["chart_type"],
@@ -729,7 +729,7 @@ class GetLog:
                                     trex_ip_info,statists_metric_results):
 
         """
-        statists_metric_results:Statistics Rule因Condition、Dimensions等影响无法统计到全部流量时期望的统计结果格式如下：
+        statists_metric_results:Statistics Rule因Condition、Dimensions等影响无法统计到全部流量时期望的统计结果格式如下:
         "statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
         """
         metric_result = False
@@ -750,7 +750,7 @@ class GetLog:
                         #和原始流量对比需转换，暂未对比，因已经和期望值对比，此处不比较也没有影响 and statists_metric_result[assert_key] <= statistics_metircs_except["total_packets"]:
                         metric_result = True
                         assert_key_equal_expected = True
-                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"pass：expected_value_vs_statistics_metric",flush=True)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"pass:expected_value_vs_statistics_metric",flush=True)
                         break
             if  assert_key_in_expected == False:
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Key:{assert_key} for missing expected: {statists_metric_results}", flush=True)
@@ -846,8 +846,8 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric：start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
-        # 时差，速率使用：
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        # 时差，速率使用:
         util = UtilStatisticsTemplate()
         time_dif_seconds = util.time_dif_seconds(start_time, end_time)
         if r_dict["code"] != 200:
@@ -1139,7 +1139,7 @@ class GetLog:
                     #    metric_result = True
                     #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
                     #    metric_result = True
-                    # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                    # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
                     elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == total_packets_sent or stats_value == total_packets_received or stats_value == 0):
                         metric_result = True
                     else:
@@ -1161,7 +1161,7 @@ class GetLog:
                     # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                     elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
                         metric_result = True
-                    # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                    # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 3: #如有需定义3个的业务场景需补充相关逻辑
