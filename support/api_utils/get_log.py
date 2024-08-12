@@ -190,7 +190,7 @@ class GetLog:
                         # 接口返回的统计是否与预期的一致
                         if key not in metric or metric[key] > 2:
                             metric_result = False
-                        elif key in metric and metric[key] == 1 and (('app_name_1' in test_data and test_data['app_name_1'] in ['dns', 'ftp']) or ('application' in test_data['condition'] and test_data['condition']['application'][0]['name'] in ['dns', 'ftp'])):
+                        elif key in metric and metric[key] == 1 and (test_data['traffic']['protocol'] in ['dns', 'ftp']):
                             metric_result = None
                         else:
                             metric_result = True

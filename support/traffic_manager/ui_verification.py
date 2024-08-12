@@ -26,7 +26,7 @@ class UiVerification:
         edit_rule = EditRule(my_driver)
         edit_rule_code, _ = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
         if edit_rule_code == 200:
-            if policy_type == "security" and rule_action != "shunt" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor" or policy_type == "statistics":
+            if policy_type == "security"  or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor" or policy_type == "statistics":
                 # 判断api的metric_result为true，只是为了作为命中和生成log的基本判断，无其他特殊意义
                 if api_verification_result[2] == True:
                     # 从ui上判断metric_result
@@ -34,6 +34,8 @@ class UiVerification:
                     hit_count = -1
                     if policy_type == "statistics":  # 如果为Statistics Rule无对应的Log类型，则从Session Records查找
                         hit_count = my_driver.find_element(By.XPATH, statisticsRulePage_rightInfo_72hoursHitCount_posXpath).text
+                    elif rule_action == "shunt":
+                        hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span").text
                     else:
                         hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").text
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "hit_count:", hit_count, flush=True)
@@ -41,7 +43,7 @@ class UiVerification:
                         metric_result = True
                     
                     # 从ui上判断log_result
-                    if int(is_log) == 1 and policy_type != "statistics":
+                    if int(is_log) == 1 and policy_type != "statistics" and rule_action != "shunt":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
                         my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").click()
                         is_save_element = "//button[contains(@class, 'el-button el-button--default el-button--small el-button--primary operation-confirm-Leave')]"
@@ -156,6 +158,8 @@ class UiVerification:
                         if search_rule_code == 200:
                             log_number = total
                             log_result = True
+                    elif int(is_log) == 1 and rule_action == "shunt":
+                        log_result = "no_set"
                 
                 if metric_result == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"metric_result" of ui is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)

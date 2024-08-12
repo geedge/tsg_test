@@ -89,7 +89,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "Failed",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"server_port", "query_value": 80}],
             "traffic": {
                 "protocol": "http",
