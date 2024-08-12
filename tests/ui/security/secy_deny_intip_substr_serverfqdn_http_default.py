@@ -18,12 +18,16 @@ from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 import support.ui_utils.env
+
 from support.report import *
 from datetime import datetime
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        # 参数初始化
+        result, exception_result = "", ""
+        
         # 脚本启动时间
         start_time = time.time()
         
