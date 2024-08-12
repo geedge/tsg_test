@@ -85,8 +85,8 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_account",
-                                "item_value": "zhangchengwei163fx&@163.com&com"
+                                "item_type": "mail_from",
+                                "item_value": " zhangchengwei&@geedge&networks.com"
                             }
                         ],
                     }

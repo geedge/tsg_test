@@ -32,7 +32,7 @@ def get_group_id(app, api_host):
 def get_app_id(app, api_host):
     """
     # 返回app id值
-    :param app:  例如："['http']"
+    :param app:  例如:"['http']"
     :param api_host: "http://192.168.44.72"
     :return:
     """

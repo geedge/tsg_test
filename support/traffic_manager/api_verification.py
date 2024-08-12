@@ -157,19 +157,14 @@ class ApiVerification:
                 time.sleep(60)
             utc_tz = pytz.timezone('UTC')
             cmd_return = expected_return = test_data["expected_return"]
-            # 断言判断
-            trex_ip_info = {}
-            trex_ip_info["clients_start"] = test_data["traffic"]["clients_start_ip"]
-            trex_ip_info["clients_end"] = test_data["traffic"]["clients_end_ip"]
-            trex_ip_info["servers_start"] = test_data["traffic"]["servers_start_ip"]
-            trex_ip_info["servers_end"] = test_data["traffic"]["servers_end_ip"]
-            statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
+            code, statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
+            if code != 200:
+                return False, False, False, "Exception when getting Statistics Template information from the interface", my_driver  # 匹配其它策略模式
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The expect result: {}'.format(statistics_metircs_expect), flush=True)
             if len(statistics_template_chart_list) > 0:  # 非空
                 for statistics_info in statistics_template_chart_list:
-                    n = 1  # 自增变量
                     fail_count = 0   #自增变量
-                    while n < 20:
+                    while True:    # max_fail_count最大查询测试
                         if script_type == "ui":
                             # 点击 语言快捷切换按钮
                             element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
@@ -179,27 +174,20 @@ class ApiVerification:
                         utc_tz = pytz.timezone('UTC')
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                        metric_results = log.get_livechart_statistics_2408(token, start_time, end_time, statistics_info, statistics_metircs_expect, trex_ip_info, test_data, api_server, vsys_id, script_type)
+                        metric_results = log.get_livechart_statistics(token, start_time, end_time, statistics_info, statistics_metircs_expect, api_server, vsys_id)
                         metric_result = metric_results[0]
                         if metric_result == True:  # 返回结果不等于333，则退出循环查询
                             break
-                        elif metric_result == False:  # 查询验证失败时，再查询验证一次
+                        elif metric_result == 333 and metric_results[1] == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
+                            metric_result = True    # 无法断言方向，强制通过
+                            metric_results[1] = ""
+                            break
+                        else:   # 查询验证失败，再验证
+                            metric_result = False
                             fail_count += 1
                             if fail_count >= max_fail_count:
                                 break
                             time.sleep(search_interval_time)
-                        elif metric_result == 333 and metric_results[1] == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
-                            break
-                        else:
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'Rerequest result: {}'.format(metric_results), flush=True)
-                            time.sleep(search_interval_time)
-                        n += 1
-                if  metric_results[0] == 333:     # API 查询失败时变量赋值
-                    metric_result = False
-                    if metric_results[1] == "this is a pass":     # incoming或者outgoing的session方向
-                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The direction of incoming or outgoing session is different from the actual flow direction, or the data is empty when fqdn_category is the dimension.")
-                        metric_results[1] = ""
-                        metric_result = True
             return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
         elif policy_type == "service_chaining":
             #从配置文件中获取active ip list
@@ -210,7 +198,7 @@ class ApiVerification:
             effective_device_tag = ["group-xxg-tsgx","center-xxg-tsgx"]
             if test_data["targeted_traffic"] == "raw":
                 # 获取开始时间
-                time.sleep(5)
+                time.sleep(30)
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')

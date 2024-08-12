@@ -43,7 +43,21 @@ def run(parameter):
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
+                "source_ip": [
+                    {
+                        "name": "monitor_source_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": parameter['test_pc_ip'],
+                            },
+                        ]
+                    }
+                ],
                 "source_port": [],
                 "destination_ip": [],
                 "destination_port": [],
@@ -97,8 +111,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "Example Domain",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"},
-                                ],
+            "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
@@ -177,6 +190,11 @@ def run(parameter):
                     "policyRulePage_searchInternalPort_posXpath": monitorRulePage_searchInternalPort_posXpath,
                     "policyRulePage_selectInternalPort_posXpath": monitorRulePage_selectInternalPort_posXpath,
                     "policyRulePage_closeInternalPort_posXpath": monitorRulePage_closeInternalPort_posXpath,
+                    # 添加ip
+                    "policyRulePage_addSrcIP_posXpath": monitorRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
 
                 },
                 "search": {
@@ -193,6 +211,18 @@ def run(parameter):
                     "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
                 }
             }
+        # 创建object
+        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+            ip_data = test_data["condition"]["source_ip"]
+            create_ip = CreateObject(driver)
+            for i in range(len(ip_data)):
+                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+                if create_ip_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create ip object successfully.", flush=True)
+                elif create_ip_code != 200:
+                    result = "Fail to create ip object."
+                    break
 
         # 创建object
         if "internal_port" in test_data["condition"] and len(test_data["condition"]["internal_port"]) != 0:
@@ -304,6 +334,25 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
 
+            # 删除ip
+            for x in range(len(ip_data)):
+                search_ip = SearchObject(driver)
+                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"],
+                                                                              test_ip_object_element_position)
+                if search_ip_code == 200:
+                    delete_port = DeleteObject(driver)
+                    delete_ip_code = delete_port.delete(test_ip_object_element_position, first_row_checkbox_element,
+                                                        True)
+                    if delete_ip_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Delete ip object successfully.", flush=True)
+                    elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -323,7 +372,7 @@ def run(parameter):
         delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
+        if os.path.exists(file_path) and os.path.isfile(file_path):
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
                 report_data.append(parameter["test_case_name"])
