@@ -1,16 +1,14 @@
 # import os
 import inspect
-import sys
 import time
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.profile.page_jump import PageJump
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.common.action_chains import ActionChains
 from datetime import datetime
 
-from support.util_statistics_template import UtilStatisticsTemplate
+from support.api_utils.util_statistics_template import UtilStatisticsTemplate
 
 
 class CreateStatisticsTemplate():
@@ -124,7 +122,7 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 点击chart的OK保存按钮
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Click the chart OK save button")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Click the chart OK save button")
                 #self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
                 chart_ok_btn = self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"])
                 self.driver.execute_script("arguments[0].scrollIntoView();", chart_ok_btn)
