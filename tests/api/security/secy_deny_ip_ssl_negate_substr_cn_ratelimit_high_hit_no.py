@@ -31,7 +31,6 @@ def run(parameter):
             "do_log_1": 2,
             "obj_condition_1": [
             {
-                "is_negate": 1,
                 "attribute_name": "ATTR_SOURCE_IP",
                 "object_type": "ip",
                 "object_sub_type": "ip",
@@ -56,7 +55,7 @@ def run(parameter):
                 "add_item_list": [
                     {
                     "keyword_array": [
-                        "www.jd.com"
+                        "node"
                     ]
                     }
                 ]
@@ -65,13 +64,13 @@ def run(parameter):
             }
             ],
             "app_name_1": ["ssl"],
-            "expected_return": "京东",
+            "expected_return": "POST",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 35 -m 35 https://www.jd.com"
+                "command": "curl --connect-timeout 35 -m 35 https://open.node.com:1443"
             },
             "token": ""
         }
