@@ -24,7 +24,7 @@ class GetLog:
         return log_schema
 
     def get_log_by_condition(self, token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data,
-                             api_host, vsys_id, script_type):
+                             api_host, vsys_id, script_type,output):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         log_condition = {
             "page_no": 1,
@@ -105,7 +105,7 @@ class GetLog:
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         # 传入值与日志的值相等时验证
-                        if query_field_key in log and query_field_key not in {"packet_capture_file" , "http_response_body" , "http_request_body"} and log[query_field_key] == query_value:
+                        if query_field_key in log and query_field_key not in {"packet_capture_file" , "http_response_body" , "http_request_body","monitor_mirrored_pkts","monitor_mirrored_bytes"} and log[query_field_key] == query_value:
                             log_reult = True
                         
                         # 验证packet capture
@@ -132,7 +132,46 @@ class GetLog:
                                     log_reult = False
                                 else:
                                     log_reult = True
-                        # 传入值不相等，而且非packet capture验证为false
+                        # monitor 验证 "monitor_mirrored_pkts","monitor_mirrored_bytes"
+                        elif query_field_key in {"monitor_mirrored_pkts","monitor_mirrored_bytes"}:
+                            actual_bytes_value = output["total_bytes"]
+                            actual_pkts_value = output["total_packets"]
+                            mirror_bytes_value = 0
+                            mirror_pkts_value = 0
+                            if "mirror_type" in test_data:
+                                if test_data["mirror_type"] in {"ftp", "http", "ssl"}:
+                                    mirror_bytes_value = actual_bytes_value - 192
+                                    mirror_pkts_value = actual_pkts_value - 3
+                                    if "profile" in test_data and test_data["profile"] != "":
+                                        vlan_ids = test_data['profile'][0]['vlan_id']
+                                        num_vlans = len(vlan_ids)
+                                        mirror_bytes_value *= num_vlans
+                                        mirror_pkts_value *= num_vlans
+                                elif test_data["mirror_type"] in {"dns", "mail"}:
+                                    if log[query_field_key] == query_value:
+                                        log_reult = True
+                                    else:
+                                        log_reult = False
+                                elif test_data["mirror_type"] == "":
+                                    mirror_bytes_value = actual_bytes_value
+                                    mirror_pkts_value = actual_pkts_value
+                                    if "profile" in test_data and test_data["profile"] != "":
+                                        vlan_ids = test_data['profile'][0]['vlan_id']
+                                        num_vlans = len(vlan_ids)
+                                        mirror_bytes_value *= num_vlans
+                                        mirror_pkts_value *= num_vlans
+                            else:
+                                log_reult = False
+
+                                # 统一处理逻辑
+                            if "mirror_type" in test_data and test_data["mirror_type"] in {"ftp", "http", "ssl",""}:
+                                if query_field_key == "monitor_mirrored_pkts" and log[query_field_key] == mirror_pkts_value:
+                                    log_reult = True
+                                elif query_field_key == "monitor_mirrored_bytes" and log[query_field_key] == mirror_bytes_value:
+                                    log_reult = True
+                                else:
+                                    log_reult = False
+                        # 传入值不相等，而且非packet capture等验证为false
                         else:
                             log_reult = False
             elif len(log_query_params) == 0:

@@ -51,6 +51,7 @@ def run(parameter):
             "rule_action": "allow",
             "rule_type": "create",
             "is_mirror": "on",
+            "mirror_type": "mail",
             "condition": {
                 "source_ip": [
                     {
@@ -96,6 +97,7 @@ def run(parameter):
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
                 {"query_field_key": "monitor_mirrored_pkts", "query_value": 1086},
+                {"query_field_key": "monitor_mirrored_bytes", "query_value": 1174440}
             ],
             "traffic": {
                 "protocol": "",
@@ -133,8 +135,8 @@ def run(parameter):
 
         ]
 
-        # organize_config = OrganizeConfig()
-        # test_data = organize_config.generate_random_ip(test_data, parameter)
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter)
 
         # 创建object
         if "condition" in test_data.keys():

@@ -93,13 +93,15 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"on",
+            "mirror_type": "dns",
             "profile": [],
             "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [
                                 {"query_field_key": "decoded_as", "query_value": "DNS"},
-                                {"query_field_key": "monitor_mirrored_pkts", "query_value": 2}
-                            ],
+                                {"query_field_key": "monitor_mirrored_pkts", "query_value": 2},
+                                {"query_field_key": "monitor_mirrored_bytes", "query_value": 162},
+            ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",

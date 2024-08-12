@@ -93,6 +93,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"on",
+            "mirror_type": "ssl",
             "profile": [
 
                         {
@@ -110,7 +111,8 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                                     {"query_field_key": "ssl_sni", "query_value": "www.baidu.com"},
-                                    {"query_field_key": "monitor_mirrored_pkts", "query_value":688},
+                                    {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
+                                    {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
                                ],
             "traffic": {
                 "protocol": "",

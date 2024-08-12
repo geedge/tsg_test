@@ -84,6 +84,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"on",
+            "mirror_type": "",
             "profile": [],
             "expected_return": "trex",
             "counters": {"hits": 1},

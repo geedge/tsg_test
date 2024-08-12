@@ -468,13 +468,13 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "lotus",
-        "password": "lotus2023",
+        "username": "lina2024",
+        "password": "lina2024",
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag" : "local",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "script_type": "ui",
         "vsys_id": 1,

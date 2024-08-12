@@ -49,6 +49,7 @@ def run(parameter):
             "rule_name": "monitor_rule_mail_mirror_on",
             "rule_action": "deny",
             "rule_type": "create",
+            "mirror_type":"mail",
             "condition": {
                 "source_ip": [
                     {
@@ -60,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.7",
+                                "item_value": "10.64.99.7",
                             },
                         ]
                     }
@@ -93,20 +94,18 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"on",
-            "profile": [
-
-             ],
             "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
                 {"query_field_key": "monitor_mirrored_pkts", "query_value": 1086},
+                {"query_field_key": "monitor_mirrored_bytes", "query_value":1174440}
             ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
+                "clients_start_ip": "10.64.99.7",
+                "clients_end_ip": "10.64.99.7",
                 "servers_start_ip": "2.1.1.3",
                 "servers_end_ip": "2.1.1.3",
                 "m": 1,
@@ -130,15 +129,10 @@ def run(parameter):
             {
                 "type":"ip",
                 "name":"monitor_source_ip"
-            },
-            {
-                "type": "traffic_mirror",
-                "name": "profile1"
             }
-
         ]
 
-        # 将测试数据中的ip替换为随机ip
+        #将测试数据中的ip替换为随机ip
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
 

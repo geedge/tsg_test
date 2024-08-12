@@ -93,6 +93,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"on",
+            "mirror_type": "mail",
             "profile": [
 
                         {
@@ -111,6 +112,7 @@ def run(parameter):
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
                 {"query_field_key": "monitor_mirrored_pkts", "query_value": 4344},
+                {"query_field_key": "monitor_mirrored_bytes", "query_value": 4697760}
             ],
             "traffic": {
                 "protocol": "",
