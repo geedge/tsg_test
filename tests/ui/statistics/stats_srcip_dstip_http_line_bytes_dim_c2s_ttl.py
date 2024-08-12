@@ -145,7 +145,7 @@ def run(parameter):
                 "yaml_name": "test_https",
                 "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [#如果Bytes Aggregate为：BITRATE则Bytes*8,此处为已经转换后的数据
+            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8,此处为已经转换后的数据
                 {"c2s_ttl": "64", "bytes": 754864}
             ],
             # "traffic": {
@@ -283,7 +283,7 @@ def run(parameter):
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
 
-        # 避免报错：stale element not found
+        # 避免报错:stale element not found
         time.sleep(5)
 
         # 删除rule
@@ -422,12 +422,13 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
+    # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
 
-    # 执行如下命令生成测试报告（自动打开浏览器）：
+    # 执行如下命令生成测试报告（自动打开浏览器）:
     allure serve allure
     """

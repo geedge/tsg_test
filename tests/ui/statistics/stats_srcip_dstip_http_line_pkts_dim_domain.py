@@ -74,7 +74,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.23",
+                                "item_value": "10.64.0.1",
                             },
                         ]
                     }],
@@ -133,8 +133,8 @@ def run(parameter):
                 "type": "trex",
                 "clients_start_ip": "10.64.224.23",
                 "clients_end_ip": "10.64.224.23",
-                "servers_start_ip": "2.1.1.23",
-                "servers_end_ip": "2.1.1.23",
+                "servers_start_ip": "10.64.0.1",
+                "servers_end_ip": "10.64.0.1",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
@@ -189,7 +189,7 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-                # 创建object
+        # 创建object
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
@@ -275,7 +275,7 @@ def run(parameter):
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
 
-        # 避免报错：stale element not found
+        # 避免报错:stale element not found
         time.sleep(5)
 
         # 删除rule
@@ -399,8 +399,8 @@ def run(parameter):
 if __name__ == '__main__':
     parameter = {
 
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "AutomationTestAccount",
+        "password": "1qaz@WSX",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
@@ -414,12 +414,13 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
+    # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
 
-    # 执行如下命令生成测试报告（自动打开浏览器）：
+    # 执行如下命令生成测试报告（自动打开浏览器）:
     allure serve allure
     """

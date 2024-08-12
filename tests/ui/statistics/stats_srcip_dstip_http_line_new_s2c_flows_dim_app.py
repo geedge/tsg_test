@@ -117,10 +117,10 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_s2c_flows:Rate:new s2c flows"
+                            "new_s2c_flows:RATE:new s2c flows"
                           ],
                           "dimensions": [
-                            "application"
+                            "app"
                           ],
                           "order_by": "new s2c flows",
                           "row_limit": "10",
@@ -275,7 +275,7 @@ def run(parameter):
             #if search_rule_code == 200:
                 # rule_id = search_rule.get_rule_id()
                # test_data["rule_id"] = rule_id
-        # 避免报错：stale element not found
+        # 避免报错:stale element not found
         time.sleep(5)
 
         # 分析验证结果，并返回给flask
@@ -424,12 +424,13 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
+    # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
 
-    # 执行如下命令生成测试报告（自动打开浏览器）：
+    # 执行如下命令生成测试报告（自动打开浏览器）:
     allure serve allure
     """

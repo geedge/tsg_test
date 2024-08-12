@@ -91,7 +91,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
             },
             "token": ""
         }
@@ -321,9 +321,10 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.91",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

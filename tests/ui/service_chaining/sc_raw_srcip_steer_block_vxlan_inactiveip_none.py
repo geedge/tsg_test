@@ -396,7 +396,7 @@ def run(parameter):
                     delete_sff = DeleteProfile(driver)
                     delete_sff_code = delete_sff.delete(test_service_function_forwarder_profile_element_position, first_row_checkbox_element, True)
                     if delete_sff_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sff successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function forwarder successfully.", flush=True)
                         # 删除sf
                         sf_data = test_data["profile"][x]["service_functions"]
                         search_sf = SearchProfile(driver)
@@ -406,18 +406,18 @@ def run(parameter):
                                 delete_sf = DeleteProfile(driver)
                                 delete_sf_code = delete_sf.delete(test_service_function_profile_element_position, first_row_checkbox_element, True)
                                 if delete_sf_code == 200:
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sf successfully.", flush=True)
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function successfully.", flush=True)
                                 elif delete_sf_code != 200:
-                                    result = result + " In addition, fail to delete sf."
+                                    result = result + " In addition, fail to delete service function."
                                     break
                             else:
-                                result = result + " In addition, fail to search sf."
+                                result = result + " In addition, fail to search service function."
                                 break
                     elif delete_sff_code != 200:
-                        result = result + " In addition, fail to delete sff."
+                        result = result + " In addition, fail to delete service function forwarder."
                         break
                 else:
-                    result = result + " In addition, fail to search sff."
+                    result = result + " In addition, fail to search service function forwarder."
                     break
 
             # 脚本结束时间和耗时

@@ -53,7 +53,7 @@ class Verification:
                 elif len(api_verification_result) == 5:
                     my_driver = api_verification_result[4]
                 policy_type = test_data["policy_type"]
-                if len(api_verification_result) > 0:# and policy_type != "statistics":
+                if len(api_verification_result) > 0 and policy_type != "statistics":
                     verification_result = [False for _ in range(4)]
                     ui_verification = UiVerification()
                     ui_verification_result = ui_verification.ui_verification(my_driver, parameter, test_data, api_verification_result, test_rule_element_position, traffic_result, cfg_list)
@@ -63,7 +63,7 @@ class Verification:
                             verification_result[0] = True
                         else:
                             verification_result[0] = False
-                        if api_verification_result[1] == True and ui_verification_result[1] == True or (api_verification_result[1] == "no_set" and ui_verification_result[1] == "no_set"):
+                        if api_verification_result[1] == True and ui_verification_result[1] == True or (api_verification_result[1] == 'no_set' and ui_verification_result[1] == 'no_set'):
                             verification_result[1] = True
                         else:
                             verification_result[1] = False

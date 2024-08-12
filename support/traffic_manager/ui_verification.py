@@ -9,6 +9,7 @@ from support.traffic_manager.workpath import workdir
 from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.ui_utils.log.search_log import SearchLog
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from datetime import datetime
 
@@ -25,7 +26,7 @@ class UiVerification:
         edit_rule = EditRule(my_driver)
         edit_rule_code, _ = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
         if edit_rule_code == 200:
-            if policy_type == "security" and rule_action != "shunt" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor" or policy_type == "statistics":
+            if policy_type == "security"  or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor" or policy_type == "statistics":
                 # 判断api的metric_result为true，只是为了作为命中和生成log的基本判断，无其他特殊意义
                 if api_verification_result[2] == True:
                     # 从ui上判断metric_result
@@ -33,6 +34,8 @@ class UiVerification:
                     hit_count = -1
                     if policy_type == "statistics":  # 如果为Statistics Rule无对应的Log类型，则从Session Records查找
                         hit_count = my_driver.find_element(By.XPATH, statisticsRulePage_rightInfo_72hoursHitCount_posXpath).text
+                    elif rule_action == "shunt":
+                        hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span").text
                     else:
                         hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").text
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "hit_count:", hit_count, flush=True)
@@ -40,7 +43,7 @@ class UiVerification:
                         metric_result = True
                     
                     # 从ui上判断log_result
-                    if int(is_log) == 1 and policy_type != "statistics":
+                    if int(is_log) == 1 and policy_type != "statistics" and rule_action != "shunt":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
                         my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").click()
                         is_save_element = "//button[contains(@class, 'el-button el-button--default el-button--small el-button--primary operation-confirm-Leave')]"
@@ -159,6 +162,8 @@ class UiVerification:
                         if search_rule_code == 200:
                             log_number = total
                             log_result = True
+                    elif int(is_log) == 1 and rule_action == "shunt":
+                        log_result = "no_set"
                 
                 if metric_result == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"metric_result" of ui is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
@@ -173,6 +178,7 @@ class UiVerification:
                 return api_verification_result[0], log_result, metric_result, my_driver
             elif policy_type == "service_chaining":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get value of sent pkts, received pkts, sent bytes, received bytes from UI detail page.", flush=True)
+                time.sleep(4)
                 sent_pkts_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Sent Packets']/parent::tr//td[2]").text
                 if sent_pkts_str == "-":
                     sent_pkts = 0
@@ -184,13 +190,13 @@ class UiVerification:
                     sent_bytes = 0
                 else:
                     sent_bytes, sent_bytes_unit = self.extract_value("bytes", sent_bytes_str)
-
+                   
                 received_pkts_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Received Packets']/parent::tr//td[2]").text
                 if received_pkts_str == "-":
                     received_pkts = 0
                 else:
                     received_pkts, received_pkts_unit = self.extract_value("packets", received_pkts_str)
-
+                
                 received_bytes_str = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Received Bytes']/parent::tr//td[2]").text
                 if received_bytes_str == "-":
                     received_bytes = 0
@@ -288,32 +294,34 @@ class UiVerification:
                                     else:
                                         metric_result = False
                                 else:
-                                    metric_result = False
+                                    metric_result = False           
                 if int(is_log) == 1:
                     # 跳转至session record路径
-                    sc_rule_id = test_data["rule_id"]
+                    sc_rule_id = int(test_data["rule_id"])
                     my_driver.find_element(By.ID,"Log").click()
+                    time.sleep(1)
                     my_driver.find_element(By.ID,"Log_SesssionRecords").click()
-                    time.sleep(3)
+                    time.sleep(1.5)
                     # 以policy id作为filter查找命中策略的session
                     my_driver.find_element(By.ID,"addFilter").click()
                     time.sleep(1)
                     my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").click()
                     my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").send_keys("service")
-                    time.sleep(1)
+                    time.sleep(1.5)
                     my_driver.find_element(By.ID,"Service Chaining Rule List26-_Label_UnrecognizedExp_Expression_groupItem_TagsSearch_FacedtedSearch_Search_VPanel_SessionLog_Home_App_anonymousComponent").click()
                     my_driver.find_element(By.ID,"operatorhas").click()
                     time.sleep(1)
                     my_driver.find_element(By.XPATH,"//div[@class='el-tooltip el-input el-input--mini']//input").send_keys(sc_rule_id)
-                    my_driver.find_element(By.ID,"facedQuery").click()
-                    time.sleep(1)
+                    btn = my_driver.find_element(By.ID,"facedQuery")
+                    my_driver.execute_script("arguments[0].click()", btn)
+                    time.sleep(1.5)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
                     for i in range(50) :
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
                         log_number = log_number_str.split(": ")[-1]
                         if int(log_number) == 0:
                             i += 1
-                            my_driver.find_element(By.ID,"facedQuery").click()
+                            my_driver.execute_script("arguments[0].click()", btn)
                             time.sleep(7)
                         elif int(log_number) > 0:
                             break
@@ -322,15 +330,15 @@ class UiVerification:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Failed to get log value from log page.", flush=True)
                     else:
                         # 点击展开
-                        time.sleep(3)
                         my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
+                        time.sleep(2)
                         parse = configparser.ConfigParser()
                         parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
                         parse.read(parse_dir, encoding="utf-8")
                         temp_log_result_list = []
                         for t in range(len(test_data["log_query_param"])):
                             log_query_key = test_data["log_query_param"][t]["query_field_key"]
-                            if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_raw":
+                            if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
                                 test_data["log_query_param"][t]["query_value"] = cfg_list["sf_id_list"]
                             elif log_query_key == "sent_pkts":
                                 test_data["log_query_param"][t]["query_value"] = traffic_result["total_packets_sent"]

@@ -13,7 +13,7 @@ from support.util_statistics_template import UtilStatisticsTemplate
 
 class GetLog:
     def get_log_schema(self, token, log_type, api_host, vsys_id):
-        # 修改完成后删除注释：将下方的security_event替换成变量
+        # 修改完成后删除注释:将下方的security_event替换成变量
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = api_host + "/v1/log/schema/" + log_type + "?vsys_id=" + str(vsys_id)
         response = requests.get(url, headers=headers, verify=False)
@@ -77,7 +77,7 @@ class GetLog:
             log_condition_dict['execution_mode'] = 'oneshot'
 
             # 从conditions中获取object_type判断是否存在subscriberid
-            # 加script_type判断条件的原因是：ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
+            # 加script_type判断条件的原因是:ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0][
                 "attribute_name"] == "ATTR_SUBSCRIBER_ID":
                 log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
@@ -229,7 +229,7 @@ class GetLog:
                         # 接口返回的统计是否与预期的一致
                         if key not in metric or metric[key] > 2:
                             metric_result = False
-                        elif key in metric and metric[key] == 1 and (('app_name_1' in test_data and test_data['app_name_1'] in ['dns', 'ftp']) or ('application' in test_data['condition'] and test_data['condition']['application'][0]['name'] in ['dns', 'ftp'])):
+                        elif key in metric and metric[key] == 1 and (test_data['traffic']['protocol'] in ['dns', 'ftp']):
                             metric_result = None
                         else:
                             metric_result = True
@@ -291,8 +291,8 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         # assert response.status_code == 200
         r_dict = response.json()
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric：start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
-        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric result data：")
+        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric result data:")
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], r_dict)
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get the metric information of rule id {}".format(post_data_ori_dict))
         if r_dict["code"] != 200:
@@ -465,7 +465,7 @@ class GetLog:
                         #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statists_metric_results: \n{}".format(test_data["statists_metric_results"]), flush=True)
                         for i in range(len(assert_key_list)):
                             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Determine the correctness of the Key:{}".format(str(assert_key_list)))
-                            # 因目前功能端版本：tsg-os-v24.07-rc3-c3f7112只要带有非首包可命中且符合Dimensions的流量均不能全部统计*pkts和*bytes，所以需要从Test_data传入期望统计结果："statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
+                            # 因目前功能端版本:tsg-os-v24.07-rc3-c3f7112只要带有非首包可命中且符合Dimensions的流量均不能全部统计*pkts和*bytes，所以需要从Test_data传入期望统计结果:"statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
                             # 如果有期望值就比对期望值
                             #if "statists_metric_results" in test_data.keys():
                             #    metric_results = self.expected_value_vs_statistics_metric(statistics_info["chart_type"],
@@ -768,7 +768,7 @@ class GetLog:
                                     trex_ip_info,statists_metric_results):
 
         """
-        statists_metric_results:Statistics Rule因Condition、Dimensions等影响无法统计到全部流量时期望的统计结果格式如下：
+        statists_metric_results:Statistics Rule因Condition、Dimensions等影响无法统计到全部流量时期望的统计结果格式如下:
         "statists_metric_results":[{'c2s_ttl': 64, 's2c_ttl': 40, 'in_bytes': 1140, 'out_bytes': 93218, 'bytes': 94358}]
         """
         metric_result = False
@@ -789,7 +789,7 @@ class GetLog:
                         #和原始流量对比需转换，暂未对比，因已经和期望值对比，此处不比较也没有影响 and statists_metric_result[assert_key] <= statistics_metircs_except["total_packets"]:
                         metric_result = True
                         assert_key_equal_expected = True
-                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"pass：expected_value_vs_statistics_metric",flush=True)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"pass:expected_value_vs_statistics_metric",flush=True)
                         break
             if  assert_key_in_expected == False:
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Key:{assert_key} for missing expected: {statists_metric_results}", flush=True)
@@ -885,8 +885,8 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric：start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
-        # 时差，速率使用：
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        # 时差，速率使用:
         util = UtilStatisticsTemplate()
         time_dif_seconds = util.time_dif_seconds(start_time, end_time)
         if r_dict["code"] != 200:
@@ -900,17 +900,26 @@ class GetLog:
                             "closed incoming sessions": "closed_in_sessions",
                             "closed outgoing sessions": "closed_out_sessions",
                             }
-                if script_type == "api":
-                    metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
-                    if metrics_columns_temp in tmp_dict.keys():
-                        metrics_columns = tmp_dict[metrics_columns_temp]
-                    else:
-                        metrics_columns = ""
-                elif script_type == "ui":
-                    metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
+                #if script_type == "api":
+                #    metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
+                #    if metrics_columns_temp in tmp_dict.keys():
+                #        metrics_columns = tmp_dict[metrics_columns_temp]
+                #    else:
+                #        metrics_columns = ""
+               # elif script_type == "ui":
+               #     metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
                 # api返回值为空，不判断方向，直接返回重新查找
-                if metrics_columns in {"new_in_sessions","new_out_sessions","closed_in_sessions","closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
-                    return [333, "this is a pass"]
+                #if metrics_columns in tmp_dict:#{"new_in_sessions", "new_out_sessions", "closed_in_sessions", "closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
+                #    return [333, "this is a pass"]
+                #else:
+                #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
+                # api返回值为空，不判断方向，直接返回重新查找
+                if len(statistics_info["metrics"]) == 1:
+                    #for item in statistics_info["metrics"]:
+                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_dict:
+                        return [333, "this is a pass"]
+                    else:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 return [333, "statistics metric no result was found."]
@@ -926,17 +935,21 @@ class GetLog:
                     tmp_dict = {}
                     tmp_dict_key = ""
                     for k, v in _.items():
+                        if v == None:  # Metric结果返回中包括None值处理
+                            v = 0
                         if k in statistics_info["metrics_dimension"]["metrics"].keys():
-                            if v == None:  # Metric结果返回中包括None值处理
-                                v = 0
+                            if v == 0:
+                                continue
                             #k_0 = statistics_info["metrics_dimension"]["metrics"][k]
                             k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并,所有Line都可以合并
                             if statistics_info["chart_type"] == "line":# and metrics_len == 1 and dimensions_len == 2:
                                 if tmp_dict_key == "":
                                     tmp_dict_key = f"{k_0}"
-                                else:
+                                elif dimensions_len == 2:
                                     tmp_dict_key = f"{tmp_dict_key};{k_0}"
+                                else:
+                                    tmp_dict_key = f"{k_0}"
                                 if len(tmp_result) > 0 and tmp_dict_key in tmp_result.keys():
                                     tmp_v = tmp_result[tmp_dict_key] + v
                                     tmp_result[tmp_dict_key] = tmp_v
@@ -945,29 +958,37 @@ class GetLog:
                         elif k in statistics_info["metrics_dimension"]["dimensions"].keys():
                             #k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
                             k_0 = k
-                            # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
-                            if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2 and k != "__time":
+                            # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并，如果line图有非Time的Dimensions根据目前设计仅有一个非时间的维度
+                            if statistics_info["chart_type"] == "line" and k != "Time":
+                                #if metrics_len == 1 and dimensions_len == 2:
                                 if tmp_dict_key == "":
                                     tmp_dict_key = f"{k_0};{v}"
                                 else:
                                     tmp_dict_key = f"{tmp_dict_key};{k_0}"
+                            else:
+                                continue
                         else:
                             continue
                             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
                             # throw Exception e
-                        if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2) == False:
+                        #if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2) == False:
+                        if statistics_info["chart_type"] != "line":
                             tmp_dict[k_0] = v
                         # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
                     if len(tmp_dict) > 0:
                         result_list.append(tmp_dict)
-                    if statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2:
+                if statistics_info["chart_type"] == "line":
+                    if metrics_len == 1 and dimensions_len == 2:
                         for key in tmp_result.keys():
                             tmp_dict = {}
                             key_list = key.split(";")
                             if len(key_list) == 3:
                                 tmp_dict[key_list[0]] = key_list[1]
                                 tmp_dict[key_list[2]] = tmp_result[key]
-                                result_list.append(tmp_dict)
+                                result_list.append(copy.deepcopy(tmp_dict))
+                    else:
+                        result_list.append(tmp_result)
+
 
                 statistics_value = []
                 metrics_functions = [item["function"]["name"] for item in statistics_info["metrics"]]
@@ -1157,7 +1178,7 @@ class GetLog:
                     #    metric_result = True
                     #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
                     #    metric_result = True
-                    # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                    # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
                     elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == total_packets_sent or stats_value == total_packets_received or stats_value == 0):
                         metric_result = True
                     else:
@@ -1179,7 +1200,7 @@ class GetLog:
                     # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                     elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
                         metric_result = True
-                    # * Fragments处理逻辑：c2s_ip_fragments、s2c_ip_fragments,to do
+                    # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 3: #如有需定义3个的业务场景需补充相关逻辑

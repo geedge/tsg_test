@@ -147,6 +147,8 @@ class CreatePolicy:
                             src_ip_list[2] = str(random.randint(1, 100))
                         elif str(vsys_id) == "6":   #根据vsys id，确认IP范围
                             src_ip_list[2] = str(random.randint(200, 222))
+                        elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(192, 223))  
                         else:
                             src_ip_list[2] = str(random.randint(224, 250))
                         src_ip_list[3] = str(random.randint(100, 250))
@@ -166,6 +168,8 @@ class CreatePolicy:
                             ip_list_1[2] = str(random.randint(1, 100))
                         elif str(vsys_id) == "6":
                             ip_list_1[2] = str(random.randint(200, 222))
+                        elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(192, 223))    
                         else:
                             ip_list_1[2] = str(random.randint(224, 250))
                         ip_list_1[3] = str(random.randint(1, 50))

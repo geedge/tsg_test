@@ -514,7 +514,7 @@ class CreateProfile:
                     if post_statistics_data["chart_list"][chart_idex]["metrics"][_]["source_columns"].lower().strip() == post_order_by.lower().strip():
                         function_name = post_statistics_data["chart_list"][chart_idex]["metrics"][_]["function"]
                         break
-                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "order_by参数错误：{}".format(post_order_by))
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "order_by参数错误:{}".format(post_order_by))
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
             # 重组 limit、 drilldown_limit
             f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = str(post_statistics_data["chart_list"][chart_idex]["limit"])
@@ -626,7 +626,7 @@ class CreateProfile:
         :param path_dict:  模板路径 {}
         :param post_data:     请求数据
         :param token:
-        :return:   例如：{'profile_type': 'Statistics_Templates', 'id': 1223, 'template_info': [{'template_id': 1223, 'chart_id': 2881, 'chart_type': 'table'}, {'template_id': 1223, 'chart_id': 2883, 'chart_type': 'table'}]}
+        :return:   例如:{'profile_type': 'Statistics_Templates', 'id': 1223, 'template_info': [{'template_id': 1223, 'chart_id': 2881, 'chart_type': 'table'}, {'template_id': 1223, 'chart_id': 2883, 'chart_type': 'table'}]}
         """
         try:
             # 处理请求体数据

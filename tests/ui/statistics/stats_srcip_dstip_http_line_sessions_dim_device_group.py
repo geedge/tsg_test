@@ -114,7 +114,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_in_sessions+new_out_sessions:Rate:sessions"
+                            "new_in_sessions+new_out_sessions:RATE:sessions"
                           ],
                           "dimensions": ["device_group"],
                           "order_by": "sessions",
@@ -276,7 +276,7 @@ def run(parameter):
             elif len(result) != 0:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
 
-        # 避免报错：stale element not found
+        # 避免报错:stale element not found
         time.sleep(5)
 
         # 删除rule
@@ -415,12 +415,13 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
+    # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
 
-    # 执行如下命令生成测试报告（自动打开浏览器）：
+    # 执行如下命令生成测试报告（自动打开浏览器）:
     allure serve allure
     """

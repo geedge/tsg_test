@@ -32,8 +32,10 @@ class CreateServiceFunctionForwarderProfile:
                 # 页面跳转
                 page_jump = PageJump(self.driver)
                 page_jump.jump_sub_profile_page(page_jump_element_position)
+                time.sleep(1)
                 # 点击create
                 self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
+                time.sleep(1)
                 # 输入name
                 sff_name = sff_profile_data["name"]
                 self.driver.find_element(By.ID, create_element_position["profilePge_inputName_posId"]).send_keys(sff_name)
@@ -70,31 +72,37 @@ class CreateServiceFunctionForwarderProfile:
         # Load Balance Method 操作
         load_balance_method = self.format_from_data_lower_and_underline(data, key="load_balance_method")
         self.sff_operate_radio(create_element_position, key="load_balance_method", value=load_balance_method, label_dict=label_dict, radio_name_dict=radio_name_dict)
+        time.sleep(1)
         # Load Balance Localization操作
         load_balance_localization = self.format_from_data_lower_and_underline(data, key="load_balance_localization")
         self.sc_info["load_balance_localization"] = load_balance_localization
         self.sff_operate_radio(create_element_position, key="load_balance_localization", value=load_balance_localization, label_dict=label_dict, radio_name_dict=radio_name_dict)
+        time.sleep(1)
         # Failure Action 操作
         failure_action = self.format_from_data_lower_and_underline(data, key="failure_action")
         failure_action_list = failure_action.split(":")
         failure_action = failure_action_list[0]
         self.sff_operate_radio(create_element_position, key="failure_action", value=failure_action, label_dict=label_dict, radio_name_dict=radio_name_dict)     #点击 Failure Action 操作
+        time.sleep(1)
         if "re-dispatch" in failure_action_list:
             # Unavailability Action 点击操作
             replaceLabel_unavailability_action = label_dict["unavailability_action"]
             replaceRadioName_unavailability_action = radio_name_dict[failure_action_list[1]]
             ep_unavailability_action = create_element_position["profilePage_operateUnavailabilityAction_Radio_posXpath"].format(replaceLabel=replaceLabel_unavailability_action, replaceRadioName=replaceRadioName_unavailability_action)
+            time.sleep(1.5)
             self.driver.find_element(By.XPATH,ep_unavailability_action).click()   #点击 Unavailability Action
             if "bypass" in failure_action_list:   # bypass 下的输入框操作 Minimum Health Service Functions
-                data_minHealthServiceFunctions = failure_action_list[-1]
+                data_minHealthServiceFunctions = int(failure_action_list[-1])
                 self.operate_input(data_input=data_minHealthServiceFunctions, ep_input=create_element_position["profilePage_inputMiniHealthServerFunctions_posXpath"])   # 输入 Minimum Health Service Functions
         #添加SF的操作
         self.driver.find_element(By.XPATH,create_element_position["profilePage_addSF_posXpath"]).click()
+        time.sleep(1)
         for name in sf_name_list:
             self.driver.find_element(By.XPATH,create_element_position["profilePage_searchSF_posXpath"]).send_keys(name)
             self.driver.find_element(By.XPATH,create_element_position["profilePage_searchSF_posXpath"]).send_keys(Keys.ENTER)
-            time.sleep(1.5)
+            time.sleep(1)
             self.driver.find_element(By.XPATH,create_element_position["profilePage_chooseSF_posXpath"].format(replaceValue=name)).click()
+            time.sleep(1)
         self.driver.find_element(By.XPATH,create_element_position["profilePage_closeSFProfile_posXpath"]).click()
 
     def sff_operate_radio(self,create_element_position,key="", value="", label_dict=None, radio_name_dict=None):
@@ -136,6 +144,7 @@ class CreateServiceFunctionForwarderProfile:
         for sf in range(len(service_functions)):
             try:
                 serviceFunctions_name= self.create_sf_profile(service_functions[sf],sf_profile_element_position)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create service function profile successfully.", flush=True)
                 sf_name_list.append(serviceFunctions_name)
             except:   # 给一次概率一样的机会
                 serviceFunctions_name = self.create_sf_profile(service_functions[sf],sf_profile_element_position)
@@ -148,6 +157,7 @@ class CreateServiceFunctionForwarderProfile:
         #页面跳转
         page_jump = PageJump(self.driver)
         page_jump.jump_sub_profile_page(page_jump_element_position)
+        time.sleep(1)
         #点击create
         self.driver.find_element(By.ID,create_element_position["profileListPage_createButton_posId"]).click()
         #在打开页面操作：输入name
@@ -184,9 +194,12 @@ class CreateServiceFunctionForwarderProfile:
         ep_dropdown_item = create_element_position["profilePage_operateDeviceRadio_posXpath"].format(replaceGroup=replaceGroup, replaceDeviceName=replaceDeviceName)
         #点击添加框
         self.driver.find_element(By.XPATH, create_element_position["profilePage_addDeviceTag_posXpath"]).click()
+        time.sleep(1)
         #点击侧滑里列表中按钮
         self.driver.find_element(By.XPATH, ep_dropdown_item).click()
+        time.sleep(1)
         self.driver.find_element(By.XPATH, create_element_position["profilePage_effectiveDevicesDrawerOk_posXpath"]).click()
+        time.sleep(0.5)
         # Connectivity选择操作
         connectivity = self.format_from_data_lower_and_underline(data, key="connectivity")
         data_internal_vlan = data_external_vlan = ""
@@ -210,16 +223,18 @@ class CreateServiceFunctionForwarderProfile:
             self.operate_input(sf_dest_ip,create_element_position["profilePage_inputDestIP_posXpath"],True)
         # Health Check 操作
         health_check = self.format_from_data_lower_and_underline(data, key="health_check")
+        time.sleep(1)
         # 组织元素定位
         health_check_radio_index_dict = {'none': 0, 'in-band_bfd': 1, 'bfd': 2, 'http': 3}
         health_item = health_check.split(":")[0]
         replaceIndex = health_check_radio_index_dict[health_item]
         # 点击health check单选按钮
         self.driver.find_element(By.XPATH,create_element_position["profilePage_operateHealthCheckRadio_posXpath"].format(replaceIndex=replaceIndex)).click()
+        time.sleep(1)
         if health_check.startswith("bfd:"):
             health_check_list = health_check.split(":")
-            data_interval = health_check_list[1]
-            data_retries = health_check_list[2]
+            data_interval = int(health_check_list[1])
+            data_retries = int(health_check_list[2])
             # 输入input操作
             self.operate_input(data_interval,create_element_position["profilePage_inputInterval_posXpath"],True)
             self.operate_input(data_retries,create_element_position["profilePage_inputRetries_posXpath"],True)

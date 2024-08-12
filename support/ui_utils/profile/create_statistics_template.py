@@ -124,7 +124,7 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 点击chart的OK保存按钮
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Click the chart OK save button")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Click the chart OK save button")
                 #self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"]).click()
                 chart_ok_btn = self.driver.find_element(By.XPATH, create_element_position["templates_button_ChartOK_posXpath"])
                 self.driver.execute_script("arguments[0].scrollIntoView();", chart_ok_btn)
@@ -236,54 +236,19 @@ class CreateStatisticsTemplate():
         """
         # 24.08版本开始：Metrics和Dimensions字典，前28个既可以为Metrics也可以为Dimensions
         util = UtilStatisticsTemplate()
-        code, dropdown_item_metrics_dict = util.get_all_metrics_or_dimensions("metrics")
-        if code != 200:
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:_operate_metrics_or_dimensions_dropdown();Exception: Parsing Dimension Error")
-            return 400
-        code, dropdown_item_dimensions_dict = util.get_all_metrics_or_dimensions("dimensions")
-        if code != 200:
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:_operate_metrics_or_dimensions_dropdown();Exception: Parsing Dimension Error")
-            return 400
-        """
-        # 24.07以前版本
-        dropdown_item_metrics_dict = {'in_bytes': 'Incoming Bytes', 'out_bytes': 'Outgoing Bytes',
-                                      'bytes': 'Bytes', 'new_c2s_flows': 'New Client-to-Server Flows',
-                                      'new_s2c_flows': 'New Server-to-Client Flows', 'sessions': 'Sessions',
-                                      'new_in_sessions': 'New Incoming Sessions',
-                                      'new_out_sessions': 'New Outgoing Sessions',
-                                      'new_unestablished_sessions': 'New Unestablished Sessions',
-                                      'in_pkts': 'Incoming Packets',
-                                      'out_pkts': 'Outgoing Packets',
-                                      'pkts': 'Packets',
-                                      'syn_pkts': 'SYN Packets',
-                                      'c2s_ip_fragments': 'Client-to-Server IP Fragments',
-                                      's2c_ip_fragments': 'Server-to-Client IP Fragments',
-                                      'ip_fragments': 'IP Fragments',
-                                      'session_identifier_sketch': 'Session IDs', 'client_ip_sketch': 'Client IPs',
-                                      'server_ip_sketch': 'Server IPs', 'in_latency_ms_sketch': 'Incoming Latency',
-                                      'out_latency_ms_sketch': 'Outgoing Latency', 'latency_ms_sketch': 'Latency',
-                                      'in_pkt_length_sketch': 'Incoming Packet Length',
-                                      'out_pkt_length_sketch': 'Outgoing Packet Length',
-                                      'pkt_length_sketch': 'Packet Length'
-                                      }
-        dropdown_item_dimensions_dict = {'time': 'Time', 'device_group': 'Device Group', 'client_ip': 'Client IP',
-                                         'server_ip': 'Server IP', 'client_asn': 'Client ASN',
-                                         'server_asn': 'Server ASN', 'client_country': 'Client Country',
-                                         'server_country': 'Server Country',
-                                         'server_fqdn': 'Server FQDN', 'server_domain': 'Server Domain',
-                                         'application': 'Application',
-                                         'fqdn_category': 'WebSketch Categories',
-                                         'client_ip_object': 'Client IP Matched Objects',
-                                         'server_ip_object': 'Server IP Matched Objects', 'c2s_ttl': 'Client-to-Server TTL',
-                                         's2c_ttl': 'Server-to-Client TTL',
-                                         'c2s_link_id': 'Client-to-Server Link ID', 's2c_link_id': 'Server-to-Client Link ID',
-                                         'client_port': 'Client Port','server_port': 'Server Port'}        
-        """
         if data_key == "metrics":
+            code, dropdown_item_metrics_dict = util.get_all_metrics_or_dimensions("metrics")
+            if code != 200:
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:_operate_metrics_or_dimensions_dropdown();Exception: Parsing Dimension Error")
+                return 400
             metrics_or_dimensions = chart[data_key]  # metrics 数据列表
             dropdown_item_dict = dropdown_item_metrics_dict
             repalceLabel = "Metrics"
         else:  # dimensions
+            code, dropdown_item_dimensions_dict = util.get_all_metrics_or_dimensions("dimensions")
+            if code != 200:
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:_operate_metrics_or_dimensions_dropdown();Exception: Parsing Dimension Error")
+                return 400
             metrics_or_dimensions = chart[data_key]  # dimensions 数据列表
             dropdown_item_dict = dropdown_item_dimensions_dict
             repalceLabel = "Dimensions"
@@ -312,7 +277,7 @@ class CreateStatisticsTemplate():
                                                      old_value=drop_item_old, new_value=dropdown_item,
                                                      dropdown_item_dict=dropdown_item_dict)
                         else:  # 新增数据  4.5.6.3->
-                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"pass:dropdown_add:{len(metrics_or_dimensions)}")
                             self.dropdown_add(chart_id=chart_id, dropdown_name=repalceLabel, new_value=dropdown_item, dropdown_item_dict=dropdown_item_dict)
             return 200
         except Exception as e:

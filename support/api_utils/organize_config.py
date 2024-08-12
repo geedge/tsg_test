@@ -16,19 +16,19 @@ class OrganizeConfig:
         run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
         token = test_data["token"]
-        policy_define = self.get_policy_define(token, test_data["rule_id"], test_data["policy_type"], api_server, vsys_id)
+        policy_info = self.get_policy_info(token, test_data["rule_id"], test_data["policy_type"], api_server, vsys_id)
         statistics_sc_info_list = []
         if test_data["policy_type"] == "statistics":
             try:
                 # 从Statistics Rule定义信息中获取流量验证所需数据格式
-                for policy in policy_define:
+                for policy in policy_info:
                     user_region = policy["user_region"]
                     if user_region != {}:
                         template_id = user_region["template_id"]
-                        template_define = self.get_template_define(token, template_id, "statistics_template",api_server, vsys_id)
+                        template_info = self.get_template_info(token, template_id, "statistics_template",api_server, vsys_id)
                         # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
                         template_number = 0
-                        for template in template_define:
+                        for template in template_info:
                             template_temp = []
                             #    chart_number = 0
                             for chart in template["dataview"]["charts"]:
@@ -237,7 +237,7 @@ class OrganizeConfig:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
 
-    def get_policy_define(self, token, rule_id, rule_type, api_host, vsys_id):
+    def get_policy_info(self, token, rule_id, rule_type, api_host, vsys_id):
         try:
             # 请求接口查询metric
             headers = {'Content-Type': 'application/json', 'Authorization': token}
@@ -259,7 +259,7 @@ class OrganizeConfig:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
-    def get_template_define(self, token, template_id, template_type, api_host, vsys_id):
+    def get_template_info(self, token, template_id, template_type, api_host, vsys_id):
         try:
             # 请求接口查询metric
             headers = {'Content-Type': 'application/json', 'Authorization': token}
