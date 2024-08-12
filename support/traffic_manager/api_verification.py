@@ -210,7 +210,7 @@ class ApiVerification:
             effective_device_tag = ["group-xxg-tsgx","center-xxg-tsgx"]
             if test_data["targeted_traffic"] == "raw":
                 # 获取开始时间
-                time.sleep(5)
+                time.sleep(30)
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
