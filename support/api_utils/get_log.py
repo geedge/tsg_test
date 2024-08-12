@@ -2,13 +2,12 @@
 # coding=utf-8
 import copy
 import inspect
-import time
 import requests
 import json
 import ipaddress
-from datetime import datetime, timezone
+from datetime import datetime
 
-from support.util_statistics_template import UtilStatisticsTemplate
+from support.api_utils.util_statistics_template import UtilStatisticsTemplate
 
 
 class GetLog:
@@ -244,7 +243,7 @@ class GetLog:
                 metric_result = None
             return metric_result
 
-    def get_livechart_statistics(self, token, start_time, end_time, statistics_info, statistics_metircs_except,
+    def get_livechart_statistics_bak(self, token, start_time, end_time, statistics_info, statistics_metircs_except,
                                  trex_ip_info, test_data, host_api, vsys_id, script_type, alignment_period="PT1S"):
         """
         :param token:
@@ -323,13 +322,13 @@ class GetLog:
                 return [333, "statistics metric no result was found."]
             else:  # 提取结果，并断言
                 metric_result = False  # 默认
-                result_list_source = r_dict["data"]["result"]
+                result_list_from_api = r_dict["data"]["result"]
                 result_list = []
                 if "metrics_dimension" in statistics_info.keys(): #ui操作
                     metrics_len = len(statistics_info["metrics_dimension"]["metrics"])
                     dimensions_len = len(statistics_info["metrics_dimension"]["dimensions"])
                     tmp_result = {}
-                    for _ in copy.deepcopy(result_list_source):
+                    for _ in copy.deepcopy(result_list_from_api):
                         tmp_dict = {}
                         tmp_dict_key = ""
                         for k, v in _.items():
@@ -375,7 +374,7 @@ class GetLog:
                                 result_list.append(tmp_dict)
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The Metrics results:{}.".format(result_list), flush=True)
                 else:
-                    for _ in copy.deepcopy(result_list_source):
+                    for _ in copy.deepcopy(result_list_from_api):
                         tmp_dict = {}
                         for k, v in _.items():
                             k_0 = "_".join(k.lower().split())  # 将key变为小写且使用下划线连接
@@ -475,7 +474,7 @@ class GetLog:
                             #                                                             trex_ip_info,
                             #                                                             test_data["statists_metric_results"])  # 判断正确调用函数
                             #else:
-                            metric_results = self.assert_livechart_statistics(statistics_info["chart_type"],
+                            metric_results = self.assert_livechart_statistics_bak(statistics_info["chart_type"],
                                                                               assert_key_list[i], statistics_value,
                                                                               statistics_metircs_except,
                                                                               trex_ip_info)  # 判断正确调用函数
@@ -490,7 +489,7 @@ class GetLog:
                     metric_results = [True, ""]
                 return metric_results
 
-    def assert_livechart_statistics(self, chart_type, assert_key, statistics_value, statistics_metircs_except,
+    def assert_livechart_statistics_bak(self, chart_type, assert_key, statistics_value, statistics_metircs_except,
                                     trex_ip_info):
         metric_result = False
         failure_reason = "Result failed."
@@ -812,8 +811,7 @@ class GetLog:
         finally:
             return metric_result, failure_reason_info
 
-    def get_livechart_statistics_2408(self, token, start_time, end_time, statistics_info, statistics_metircs_except,
-                                 trex_ip_info, test_data, host_api, vsys_id, script_type, alignment_period="PT1S"):
+    def get_livechart_statistics(self, token, start_time, end_time, statistics_info, statistics_metircs_except,host_api, vsys_id):
         """
         :param token:
         :param start_time:
@@ -858,7 +856,6 @@ class GetLog:
             "vsys_id": 1
         }
         """
-        #"order_by": "\"UNIQUE_COUNT(Server IP Object List)\" DESC",
         post_data_ori_dict = json.loads(post_data_ori_json)
         post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
         post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
@@ -866,11 +863,9 @@ class GetLog:
         post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_id = {} and template_id = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
         post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
-        post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"] #如果想传入非UTC时间，携带时区也是可以的2024-07-22T17:38:30+08:00/2024-07-23T17:38:30+08:00
+        post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"]
         if statistics_info["topk"] != "" and statistics_info["topk"] != None:
             post_data_ori_dict_dsl["custom.statistics.subquery.topk"] = statistics_info["topk"]
-        post_data_ori_dict_dsl["intervals"] = [
-            f"{start_time}/{end_time}"]  # 如果想传入非UTC时间，携带时区也是可以的2024-07-22T17:38:30+08:00/2024-07-23T17:38:30+08:00
         if "order_by" in statistics_info.keys():
             post_data_ori_dict_dsl["order_by"] = "'{}' DESC".format(statistics_info["order_by"])
         else:
@@ -886,12 +881,9 @@ class GetLog:
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
-        # 时差，速率使用:
-        util = UtilStatisticsTemplate()
-        time_dif_seconds = util.time_dif_seconds(start_time, end_time)
         if r_dict["code"] != 200:
-            self.error_print_function(inspect.currentframe().f_code.co_name, "statistics metric query failed.")
-            return [333, "The statistics metric API query failed."]
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Metrics data from the interface.")
+            return [False, "The statistics metric API query failed."]
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
                 # 对应有方向的session方式需要另行处理
@@ -900,38 +892,24 @@ class GetLog:
                             "closed incoming sessions": "closed_in_sessions",
                             "closed outgoing sessions": "closed_out_sessions",
                             }
-                #if script_type == "api":
-                #    metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
-                #    if metrics_columns_temp in tmp_dict.keys():
-                #        metrics_columns = tmp_dict[metrics_columns_temp]
-                #    else:
-                #        metrics_columns = ""
-               # elif script_type == "ui":
-               #     metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
-                # api返回值为空，不判断方向，直接返回重新查找
-                #if metrics_columns in tmp_dict:#{"new_in_sessions", "new_out_sessions", "closed_in_sessions", "closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
-                #    return [333, "this is a pass"]
-                #else:
-                #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 # api返回值为空，不判断方向，直接返回重新查找
                 if len(statistics_info["metrics"]) == 1:
                     #for item in statistics_info["metrics"]:
                     if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_dict:
                         return [333, "this is a pass"]
-                    else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
-                else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
-                return [333, "statistics metric no result was found."]
+                    #else:
+                    #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
+                #else:
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
+                return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
-                metric_result = False  # 默认
-                result_list_source = r_dict["data"]["result"]
-                #print(result_list_source)
+                result_list_from_api = r_dict["data"]["result"]
+                #print(result_list_from_api)
                 result_list = []
                 metrics_len = len(statistics_info["metrics"])
                 dimensions_len = len(statistics_info["dimensions"]) #time调试时需确认是否处理
                 tmp_result = {}
-                for _ in copy.deepcopy(result_list_source):
+                for _ in copy.deepcopy(result_list_from_api):
                     tmp_dict = {}
                     tmp_dict_key = ""
                     for k, v in _.items():
@@ -944,9 +922,10 @@ class GetLog:
                             k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并,所有Line都可以合并
                             if statistics_info["chart_type"] == "line":# and metrics_len == 1 and dimensions_len == 2:
-                                if tmp_dict_key == "":
-                                    tmp_dict_key = f"{k_0}"
-                                elif dimensions_len == 2:
+                                #if tmp_dict_key == "":
+                                #    tmp_dict_key = f"{k_0}"
+                                #elif dimensions_len == 2:
+                                if dimensions_len == 2:
                                     tmp_dict_key = f"{tmp_dict_key};{k_0}"
                                 else:
                                     tmp_dict_key = f"{k_0}"
@@ -969,9 +948,6 @@ class GetLog:
                                 continue
                         else:
                             continue
-                            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The interface query chart results{} are inconsistent with the user-defined data{}{}".format(k,statistics_info["metrics_dimension"]["metrics"].keys(),statistics_info["metrics_dimension"]["dimensions"].keys()), flush=True)
-                            # throw Exception e
-                        #if (statistics_info["chart_type"] == "line" and metrics_len == 1 and dimensions_len == 2) == False:
                         if statistics_info["chart_type"] != "line":
                             tmp_dict[k_0] = v
                         # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并
@@ -988,8 +964,6 @@ class GetLog:
                                 result_list.append(copy.deepcopy(tmp_dict))
                     else:
                         result_list.append(tmp_result)
-
-
                 statistics_value = []
                 metrics_functions = [item["function"]["name"] for item in statistics_info["metrics"]]
                 if statistics_info["chart_type"] in {"line", "table", "bar"}:
@@ -1001,7 +975,7 @@ class GetLog:
                                 histogram_sketch_line_flag = True
                                 break
                     if histogram_sketch_line_flag:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The histogram Metrics Line cannot automatically compare statistical results.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The histogram metrics Line cannot automatically compare statistical results.", flush=True)
                         metric_results = [True, ""]
                     else:
                         statistics_value = copy.deepcopy(result_list[0])
@@ -1027,13 +1001,15 @@ class GetLog:
                                 if break_flag == 1:
                                     break  # 退出累加循环
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: {}".format(statistics_value))
-                        metric_results = self.assert_livechart_statistics_2408(statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds)  # 判断正确调用函数
+                        # 时差，速率使用:
+                        util = UtilStatisticsTemplate()
+                        time_dif_seconds = util.time_dif_seconds(start_time, end_time)
+                        metric_results = self.assert_livechart_statistics(statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds)  # 判断正确调用函数
                 elif statistics_info["chart_type"] == "histogram":
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Histogram cannot automatically compare statistical results.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram cannot automatically compare statistical results.", flush=True)
                     metric_results = [True, ""]
                 return metric_results
-    def assert_livechart_statistics_2408(self, statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds):
+    def assert_livechart_statistics(self, statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds):
         chart_type = statistics_info["chart_type"]
         metric_result = False
         failure_reason = "Result failed."
@@ -1084,7 +1060,7 @@ class GetLog:
             return metric_result, failure_reason_info
         except Exception as e:
             exception_result = str(e)
-            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Chart Visualization Type verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
     def metric_value_verification(self, assert_key, metric_info,stats_value, test_traffic_statistics,time_dif_seconds):
         #metric_info:[{'function': {'name': 'UNIQUE_COUNT'}, 'label': 'UNIQUECOUNT(Client IP)', 'metric_name': 'unique_count_1', 'metric_type': 'unique_count', 'source_fields': ['client_ip']}]
@@ -1111,7 +1087,7 @@ class GetLog:
             return metric_result, failure_info_2
         except Exception as e:
             exception_result = str(e)
-            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Statistical metric data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
     def metric_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds = 1):
@@ -1212,7 +1188,7 @@ class GetLog:
             return metric_result,failure_info_2
         except Exception as e:
             exception_result = str(e)
-            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
     def metric_unique_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds):
@@ -1254,7 +1230,7 @@ class GetLog:
             return metric_result,failure_info_2
         except Exception as e:
             exception_result = str(e)
-            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Unique Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
     def metric_histogram_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds):
@@ -1291,10 +1267,9 @@ class GetLog:
             return metric_result, failure_info_2
         except Exception as e:
             exception_result = str(e)
-            self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{e}")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
-    def error_print_function(self,function,error):
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function} Error: {error}", flush=True)
+
 
 
 if __name__ == '__main__':

@@ -13,11 +13,12 @@ class OrganizeConfig:
     def organize_statistics_rule_cfg(self, parameter, test_data):
         # 变量初始化
         api_server = parameter["api_server"]
-        run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
         token = test_data["token"]
-        policy_info = self.get_policy_info(token, test_data["rule_id"], test_data["policy_type"], api_server, vsys_id)
         statistics_sc_info_list = []
+        code, policy_info = self.get_policy_info(token, test_data["rule_id"], test_data["policy_type"], api_server, vsys_id)
+        if code != 200:
+            return 400, statistics_sc_info_list
         if test_data["policy_type"] == "statistics":
             try:
                 # 从Statistics Rule定义信息中获取流量验证所需数据格式
@@ -25,47 +26,50 @@ class OrganizeConfig:
                     user_region = policy["user_region"]
                     if user_region != {}:
                         template_id = user_region["template_id"]
-                        template_info = self.get_template_info(token, template_id, "statistics_template",api_server, vsys_id)
+                        code, template_info = self.get_template_info(token, template_id, "statistics_template",api_server, vsys_id)
+                        if code != 200:
+                            return 400, statistics_sc_info_list
                         # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
-                        template_number = 0
                         for template in template_info:
-                            template_temp = []
-                            #    chart_number = 0
                             for chart in template["dataview"]["charts"]:
-                                #24.08及以后版本
                                 statistics_info = {}
                                 statistics_info["rule_id"] = test_data["rule_id"]
                                 statistics_info["template_id"] = template_id
                                 statistics_info["chart_id"] = chart["id"]
                                 statistics_info["chart_type"] = chart["display"]["type"]
                                 statistics_info["version"] = chart["version"]
-                                #24.08及以后版本
-                                #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
-                                if chart["display"]["type"] != "Histogram" and chart["query"]["dimensions"] != []:
-                                    statistics_info["dimensions"] = self.chart_dimensions_to_query_dimensions(chart["query"]["dimensions"])
+                                if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
+                                    code, query_dimensions = self.query_dimensions_from_chart_dimensions(chart["query"]["dimensions"])
+                                    if code != 200:
+                                        return 400, statistics_sc_info_list
+                                    statistics_info["dimensions"] = query_dimensions
                                 else:
                                     statistics_info["dimensions"] = chart["query"]["dimensions"]
-                                statistics_info["metrics"] = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
+                                code, query_metrics = self.query_metrics_from_chart_metrics(chart["query"]["metrics"])
+                                if code != 200:
+                                    return 400, statistics_sc_info_list
+                                statistics_info["metrics"] = query_metrics
                                 if "order_by" in chart["query"].keys():
                                     statistics_info["order_by"] = chart["query"]["order_by"]
-                                if chart["display"]["type"] == "Histogram":
+                                if chart["display"]["type"] == "histogram":
                                     statistics_info.pop("order_by")
                                 statistics_info["topk"] = ""
                                 if "series_limit" in chart["query"].keys():
-                                    topk_dimensions_tmp = self.chart_topk_dimensions_to_query_topk_dimensions(
-                                        chart["query"]["dimensions"], chart["query"]["series_limit"],
-                                        chart["query"]["metrics"][0]["label"])
+                                    code, topk_dimensions_tmp = self.query_topk_dimensions_from_chart_dimensions(chart["query"]["dimensions"], chart["query"]["series_limit"], chart["query"]["metrics"][0]["label"])
+                                    if code != 200:
+                                        return 400, statistics_sc_info_list
                                     statistics_info["topk"] = topk_dimensions_tmp
                                 elif "limit" in chart["query"].keys() and chart["query"]["limit"] != 65535:
                                     statistics_info["limit"] = chart["query"]["limit"]
-                                self.statistics_template_metrics_dimension_list_2408(statistics_info)
+                                self.statistics_template_metrics_dimension_list(statistics_info)
                                 statistics_sc_info_list.append(copy.deepcopy(statistics_info))
             except Exception as e:
-                traceback.print_exc()
-                #self.error_print_function(inspect.currentframe().f_code.co_name,"Failed to parse Dimensions!")
-        return statistics_sc_info_list
+                #traceback.print_exc()
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Analyze the Template data anomaly of Statistics Rule{}".format(e))
+                return 400, statistics_sc_info_list
+        return 200, statistics_sc_info_list
 
-    def chart_metrics_to_query_metrics(self,metrics_list):
+    def query_metrics_from_chart_metrics(self,metrics_list):
         metric_temp_json = """
         {
             "function": {
@@ -80,8 +84,8 @@ class OrganizeConfig:
             "label": "Client IPs"
         }       
         """
+        metrics_result = []
         try:
-            metrics_result = []
             for metric in metrics_list:
                 metric_temp_dict = json.loads(metric_temp_json)
                 metric_temp_dict["function"]["name"] = metric["function"]["name"]
@@ -90,12 +94,12 @@ class OrganizeConfig:
                 metric_temp_dict["metric_type"] = metric["metric_type"]
                 metric_temp_dict["label"] = metric["label"]
                 metrics_result.append(metric_temp_dict)
-            return metrics_result
         except Exception as e:
-            self.error_print_function(inspect.currentframe().f_code.co_name, "Failed to parse Dimensions!")
-            raise "Failed to parse Metrics!".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3])
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Analyze the abnormal metrics data of Template Chart. except{}".format(e))
+            return 400, metrics_result
+        return 200, metrics_result
 
-    def chart_dimensions_to_query_dimensions(self,dimensions_list):
+    def query_dimensions_from_chart_dimensions(self,dimensions_list):
         dimension_temp_json = """
         {
             "dimension_name": "client_ip",
@@ -109,8 +113,8 @@ class OrganizeConfig:
             ]
         }       
         """
+        dimensions_result = []
         try:
-            dimensions_result = []
             for dimension in dimensions_list:
                 dimension_temp_dict = json.loads(dimension_temp_json)
                 dimension_temp_dict["dimension_name"] = dimension["source_fields"][0]
@@ -119,11 +123,11 @@ class OrganizeConfig:
                 dimension_temp_dict["source_fields"] = dimension["source_fields"]
                 dimensions_result.append(dimension_temp_dict)
         except Exception as e:
-            self.error_print_function(inspect.currentframe().f_code.co_name, "Failed to parse Dimensions!")
-            raise "Failed to parse Dimensions!".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3])
-        return dimensions_result
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Analyze the abnormal dimesions data of Template Chart. except{}".format(e))
+            return 400, dimensions_result
+        return 200, dimensions_result
 
-    def chart_topk_dimensions_to_query_topk_dimensions(self, dimensions_list, series_limit, metric):
+    def query_topk_dimensions_from_chart_dimensions(self, dimensions_list, series_limit, metric):
         dimension_temp_json = """
         {
             "dimensions": [
@@ -143,11 +147,10 @@ class OrganizeConfig:
                     dimension_temp_dict["limit"] = series_limit
                     break
         except Exception as e:
-            self.error_print_function(inspect.currentframe().f_code.co_name, "Failed to parse TOPK Dimensions!")
-            raise "Failed to parse TOPK Dimensions!".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                                            str(datetime.now().microsecond)[:3])
-        return dimension_temp_dict
-    def statistics_template_metrics_dimension_list_2408(self,statistics_info):
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Analyze the abnormal TOPK dimesions data of Template Chart. except{}".format(e))
+            return 400, dimension_temp_dict
+        return 200, dimension_temp_dict
+    def statistics_template_metrics_dimension_list(self,statistics_info):
         chart_dict = {"metrics": {}, "dimensions": {}}
         if statistics_info["chart_type"] != "histogram" and statistics_info["dimensions"] != []:
             dimensions_list = {}
@@ -223,7 +226,6 @@ class OrganizeConfig:
                         config["condition"][obj][0]["item"][0]["item_value"] = new_two_ip
                     else:
                         start_ip = stop_ip = "1.1.1.1"
-                        self.error_print_function(inspect.currentframe().f_code.co_name, "Setrandom ip error.")
                     # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
                     if obj == "source_ip":# and traffic_replace_ip == 1:
                         config["traffic"]["clients_start_ip"] = start_ip
@@ -232,7 +234,6 @@ class OrganizeConfig:
                     #    config["traffic"]["servers_start_ip"] = start_ip
                     #    config["traffic"]["servers_end_ip"] = stop_ip
                     else:
-                        self.error_print_function(inspect.currentframe().f_code.co_name, "Setrandom ip error.")
                         pass
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
@@ -241,24 +242,17 @@ class OrganizeConfig:
         try:
             # 请求接口查询metric
             headers = {'Content-Type': 'application/json', 'Authorization': token}
-            url = api_host + "/v1/policy/rule"
-            # ?page_size=20&page_no=1&ids=849138&type=statistics&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id=1
-            query_condition = {"page_size": 20, "page_no": 1, "ids": rule_id, "type": rule_type,
-                            "is_enabled": "True", "with_sub_vsys": 1, "page_location": "oneshot", "location_key": "json",
-                            "vsys_id": vsys_id}
-            #https://192.168.44.3/v1/policy/rule?page_size=20&page_no=1&type=statistics&name=&is_enabled=&with_sub_vsys=1&user_tag_ids=&last_modified_by=&created_by=&page_location=0&location_id=&location_key=&vsys_id=
             url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={vsys_id}")
-            #url = (api_host + f"/v1/policy/rule/{rule_id}?vsys_id={str(vsys_id)}")
             response = requests.get(url, headers=headers, verify=False)
             if response.status_code != 200:
-                self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{response.status_code}")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
+                return 400, []
             response = json.loads(response.text)
             result = response['data']['rules']
-            return result
         except AssertionError as e:
-            self.error_print_function(inspect.currentframe().f_code.co_name, e)
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
-
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
+            return 400, []
+        return 200, result
     def get_template_info(self, token, template_id, template_type, api_host, vsys_id):
         try:
             # 请求接口查询metric
@@ -271,12 +265,10 @@ class OrganizeConfig:
             assert response.status_code == 200
             response = json.loads(response.text)
             result = response['data']['statistics_templates']
-            return result
         except AssertionError as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
-
-    def error_print_function(self, function, error):
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:{self.__class__.__name__},Function:{function}Error: {error}", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
+            return 400, result
+        return 200, result
 
 if __name__ == "__main__":
 
