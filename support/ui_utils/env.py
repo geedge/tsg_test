@@ -40,9 +40,9 @@ def my_driver():
         # 启用无痕模式
         chrome_option.add_argument("--incognito")
         # 启用无窗口模式
-        # chrome_option.add_argument("--headless")
-        # chrome_option.add_argument("--disable-gpu")
-        # chrome_option.add_argument("--window-size=1920, 1200")
+        chrome_option.add_argument("--headless")
+        chrome_option.add_argument("--disable-gpu")
+        chrome_option.add_argument("--window-size=1920, 1200")
     # 关闭“chrome正受到自动测试软件的控制”
     # chrome_option.add_experimental_option('useAutomationExtension', False)
     # chrome_option.add_experimental_option('excludeSwitches', ['enable-automation'])
