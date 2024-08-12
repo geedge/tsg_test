@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_s2c_flows:Rate:new s2c flows"
+                            "new_s2c_flows:RATE:new s2c flows"
                           ],
                           "dimensions": [
                             "app"

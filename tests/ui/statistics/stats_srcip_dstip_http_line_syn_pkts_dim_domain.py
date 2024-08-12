@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "stats_line_syn_pkts_dim_domain",
                           "visualization_type": "Line",
                           "metrics": [
-                            "syn_pkts:Rate:syn pkts"
+                            "syn_pkts:RATE:syn pkts"
                           ],
                           "dimensions": [
                             "server_domain"

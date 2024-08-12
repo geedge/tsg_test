@@ -119,7 +119,7 @@ def run(parameter):
                           "chart_name": "stats_line_syn_pkts_dim_client_ip_object",
                           "visualization_type": "Line",
                           "metrics": [
-                            "syn_pkts:Rate:syn pkts"
+                            "syn_pkts:RATE:syn pkts"
                           ],
                           "dimensions": [
                             "client_ip_object_list"

@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "stats_http_line_syn_pkts_dim_app",
                           "visualization_type": "Line",
                           "metrics": [
-                            "syn_pkts:Rate:syn pkts"
+                            "syn_pkts:RATE:syn pkts"
                           ],
                           "dimensions": [
                             "app"

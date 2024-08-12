@@ -117,9 +117,9 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_c2s_flows:Rate:new c2s flows",
-                            "new_s2c_flows:Rate:new s2c flows",
-                            "new_c2s_flows+new_s2c_flows:Rate:all flows"
+                            "new_c2s_flows:RATE:new c2s flows",
+                            "new_s2c_flows:RATE:new s2c flows",
+                            "new_c2s_flows+new_s2c_flows:RATE:all flows"
                           ],
                           "dimensions": [
                             "client_port"
