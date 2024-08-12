@@ -138,8 +138,7 @@ def run(parameter):
                                 "item_key": "Content-Type",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "text/html",
-                                    "html",
+                                    "text/html&html",
                                 ]
                             },
 
@@ -179,7 +178,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "monitor",
-                "name": "monitor_app_http_url_request_heaser_response_header"
+                "name": "monit_srcip_http_suff_url_substr_reqheader_by_ua_multi_resheader_by_ct"
             },
             {
                 "type": "ip",
@@ -276,6 +275,38 @@ def run(parameter):
                     "policyRuleListPage_deleteButton_posId": monitorRuleListPage_deleteButton_posId,
                     "policyRuleListPage_okButton_warningYes_posXpath": monitorRuleListpage_okButton_warningYes_posXpath,
                     "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
+                }
+            }
+
+            test_url_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
+                },
+                "create": {
+                    "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posId": urlObjectPage_addItem_posId,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
+                    "objectPage_okButton_posId": urlObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
+                },
+                "search": {
+                    "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
         # 创建object
@@ -385,25 +416,33 @@ def run(parameter):
                     result = result + " In addition, fail to search ip object."
                     break
 
-            # 删除fqdn
-            if delete_rule_code == 200:
-                # 删除filter
-                for y in range(len(protocol_field_data)):
-                    search_url = SearchObject(driver)
-                    search_url_code, first_row_checkbox_element = search_url.search(protocol_field_data[y]["name"],
-                                                                                    element_position_map)
-                    if search_url_code == 200:
-                        delete_url = DeleteObject(driver)
-                        delete_url_code = delete_url.delete(element_position_map, first_row_checkbox_element,
-                                                            True)
-                        if delete_url_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                                  "Delete url object successfully.", flush=True)
-                        elif delete_url_code != 200:
-                            result = result + " In addition, fail to delete ip object."
-                            break
-                    else:
-                        result = result + " In addition, fail to search url object."
+        # 删除protocol_filed
+        for q in range(len(protocol_field_data)):
+            search_protocol_filed = SearchObject(driver)
+            object_type = protocol_field_data[q]['object_type']
+            if object_type == 'url':
+                search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(
+                    protocol_field_data[q]["name"], test_url_object_element_position)
+            elif object_type == 'http_signature':
+                search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(
+                    protocol_field_data[q]["name"], test_http_signature_object_element_position)
+            if search_protocol_filed_code == 200:
+                delete_protocol_filed = DeleteObject(driver)
+                if object_type == 'url':
+                    delete_protocol_filed_code = delete_protocol_filed.delete(
+                        test_url_object_element_position, first_row_checkbox_element, True)
+                elif object_type == 'http_signature':
+                    delete_protocol_filed_code = delete_protocol_filed.delete(
+                        test_http_signature_object_element_position, first_row_checkbox_element, True)
+                if delete_protocol_filed_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Delete {} object successfully.".format(object_type), flush=True)
+                elif delete_protocol_filed_code != 200:
+                    result = result + " In addition, fail to delete {} object.".format(object_type)
+                    break
+            else:
+                result = result + " In addition, fail to search {} object.".format(object_type)
+                break
 
         # 删除profile
         if delete_rule_code == 200:

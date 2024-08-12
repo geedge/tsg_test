@@ -87,7 +87,9 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [],
+                "application": [
+
+                ],
                 "server_fqdn": [
                 ],
                 "protocol_filed": [],
@@ -99,7 +101,7 @@ def run(parameter):
             "is_mirror":"off",
             "profile": [],
             "expected_return": "新闻",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
                 "protocol": "http",
