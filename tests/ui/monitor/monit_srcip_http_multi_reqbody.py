@@ -66,6 +66,21 @@ def run(parameter):
                         ]
                     }
                 ],
+                "destination_ip": [
+                    {
+                        "name": "monitor_dst_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.40.206",
+                            },
+                        ]
+                    }
+                ],
                 "application": [
                     {
                         "name": "http",  #
@@ -122,6 +137,10 @@ def run(parameter):
             {
                 "type": test_data["condition"]["source_ip"][0]['object_type'],
                 "name": test_data["condition"]["source_ip"][0]['name']
+            },
+            {
+                "type": test_data["condition"]["protocol_filed"][0]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][0]['name']
             },
             {
                 "type": test_data["condition"]["protocol_filed"][0]['object_type'],

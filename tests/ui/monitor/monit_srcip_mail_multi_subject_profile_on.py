@@ -51,6 +51,7 @@ def run(parameter):
             "rule_action": "allow",
             "rule_type": "create",
             "is_mirror": "on",
+            "mirror_type": "mail",
             "condition": {
                 "source_ip": [
                     {
@@ -115,6 +116,7 @@ def run(parameter):
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
                 {"query_field_key": "monitor_mirrored_pkts", "query_value": 3748},
+                {"query_field_key": "monitor_mirrored_bytes", "query_value": 4623316}
             ],
             "traffic": {
                 "protocol": "",

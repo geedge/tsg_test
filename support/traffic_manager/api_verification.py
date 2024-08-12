@@ -109,7 +109,7 @@ class ApiVerification:
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                         time.sleep(7)
                         if is_log_query == 1 and log_result == None:
-                            log_result = log.get_log_by_condition(token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data, api_server, vsys_id, script_type)
+                            log_result = log.get_log_by_condition(token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data, api_server, vsys_id, script_type,output)
                         if is_log_query == 0:
                             log_result = "no_set"
                         if is_counters == 1 and metric_result == None:

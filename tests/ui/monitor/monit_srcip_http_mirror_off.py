@@ -63,7 +63,21 @@ def run(parameter):
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [],
+                "destination_ip": [
+                    {
+                        "name": "monitor_dst_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "192.168.40.206",
+                            },
+                        ]
+                    }
+                ],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -91,8 +105,8 @@ def run(parameter):
             },
             "is_mirror":"off",
             "profile": [],
-              "expected_return": "news",
-            "counters": {"hits": "many"},
+            "expected_return": "news",
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "slope.ru"}],
             "traffic": {
                 "protocol": "http",
@@ -115,6 +129,10 @@ def run(parameter):
             {
                 "type":"ip",
                 "name":"monitor_source_ip"
+            },
+            {
+                "type": "ip",
+                "name": "monitor_dst_ip"
             },
             {
                 "type": "traffic_mirror",
@@ -202,7 +220,12 @@ def run(parameter):
                     "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
                     "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
                     "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
-                    "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath
+                    "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
+                    # add  dst ip
+                    "policyRulePage_addDstIP_posXpath": policyRulePage_addDstIP_posXpath,
+                    "policyRulePage_searchDstIP_posXpath": policyRulePage_searchDstIP_posXpath,
+                    "policyRulePage_selectDstIP_posXpath": policyRulePage_selectDstIP_posXpath,
+                    "policyRulePage_closeDstIP_posXpath": policyRulePage_closeDstIP_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
@@ -227,6 +250,18 @@ def run(parameter):
                 if create_ip_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
                 elif create_ip_code != 200:
+                    result = "Fail to create ip object."
+                    break
+
+        if "destination_ip" in test_data["condition"] and len(test_data["condition"]["destination_ip"]) != 0:
+            ip_data2 = test_data["condition"]["destination_ip"]
+            create_ip2 = CreateObject(driver)
+            for i in range(len(ip_data2)):
+                create_ip_code2 = create_ip2.create(ip_data2[i], test_ip_object_element_position)
+                if create_ip_code2 == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create ip object successfully.", flush=True)
+                elif create_ip_code2 != 200:
                     result = "Fail to create ip object."
                     break
 
@@ -291,6 +326,25 @@ def run(parameter):
                     if delete_ip_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
                     elif delete_ip_code != 200:
+                        result = result + " In addition, fail to delete ip object."
+                        break
+                else:
+                    result = result + " In addition, fail to search ip object."
+                    break
+
+            # 删除ip2
+            for x in range(len(ip_data2)):
+                search_ip2 = SearchObject(driver)
+                search_ip_code2, first_row_checkbox_element = search_ip2.search(ip_data2[x]["name"],
+                                                                                test_ip_object_element_position)
+                if search_ip_code2 == 200:
+                    delete_ip2 = DeleteObject(driver)
+                    delete_ip_code2 = delete_ip2.delete(test_ip_object_element_position,
+                                                        first_row_checkbox_element, True)
+                    if delete_ip_code2 == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Delete ip object successfully.", flush=True)
+                    elif delete_ip_code2 != 200:
                         result = result + " In addition, fail to delete ip object."
                         break
                 else:

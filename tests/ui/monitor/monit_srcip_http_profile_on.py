@@ -60,7 +60,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.7",
+                                "item_value": "10.64.24.7",
                             },
                         ]
                     }
@@ -93,6 +93,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"on",
+            "mirror_type": "http",
             "profile": [
 
                         {
@@ -110,13 +111,14 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "http_host", "query_value": "www.yumi.com"},
-                {"query_field_key": "monitor_mirrored_pkts", "query_value": 336},
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
+                {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
             ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.7",
-                "clients_end_ip": "10.64.224.7",
+                "clients_start_ip": "10.64.24.7",
+                "clients_end_ip": "10.64.24.7",
                 "servers_start_ip": "2.1.1.7",
                 "servers_end_ip": "2.1.1.7",
                 "m": 1,

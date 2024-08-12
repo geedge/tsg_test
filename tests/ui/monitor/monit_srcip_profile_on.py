@@ -89,6 +89,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"on",
+            "mirror_type": "",
             "profile": [
 
                         {
