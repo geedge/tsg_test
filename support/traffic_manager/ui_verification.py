@@ -334,7 +334,7 @@ class UiVerification:
                         temp_log_result_list = []
                         for t in range(len(test_data["log_query_param"])):
                             log_query_key = test_data["log_query_param"][t]["query_field_key"]
-                            if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_raw":
+                            if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
                                 test_data["log_query_param"][t]["query_value"] = cfg_list["sf_id_list"]
                             elif log_query_key == "sent_pkts":
                                 test_data["log_query_param"][t]["query_value"] = traffic_result["total_packets_sent"]
