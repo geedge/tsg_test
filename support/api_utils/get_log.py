@@ -883,8 +883,7 @@ class GetLog:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Metrics data from the interface.")
-
-            return [333, "The statistics metric API query failed."]
+            return [False, "The statistics metric API query failed."]
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
                 # 对应有方向的session方式需要另行处理
@@ -898,11 +897,11 @@ class GetLog:
                     #for item in statistics_info["metrics"]:
                     if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_dict:
                         return [333, "this is a pass"]
-                    else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
-                else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
-                return [333, "statistics metric no result was found."]
+                    #else:
+                    #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
+                #else:
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
+                return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
                 result_list_from_api = r_dict["data"]["result"]
                 #print(result_list_from_api)
