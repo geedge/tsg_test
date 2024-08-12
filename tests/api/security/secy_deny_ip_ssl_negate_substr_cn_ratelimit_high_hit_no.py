@@ -70,7 +70,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 35 -m 35 https://open.node.com:1443"
+                "command": "curl --connect-timeout 35 -m 35 -kv https://open.node.com:1443"
             },
             "token": ""
         }
