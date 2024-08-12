@@ -27,20 +27,14 @@ class OrganizeConfig:
                         template_id = user_region["template_id"]
                         template_info = self.get_template_info(token, template_id, "statistics_template",api_server, vsys_id)
                         # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
-                        template_number = 0
                         for template in template_info:
-                            template_temp = []
-                            #    chart_number = 0
                             for chart in template["dataview"]["charts"]:
-                                #24.08及以后版本
                                 statistics_info = {}
                                 statistics_info["rule_id"] = test_data["rule_id"]
                                 statistics_info["template_id"] = template_id
                                 statistics_info["chart_id"] = chart["id"]
                                 statistics_info["chart_type"] = chart["display"]["type"]
                                 statistics_info["version"] = chart["version"]
-                                #24.08及以后版本
-                                #code,metrics_tmp = self.chart_metrics_to_query_metrics(chart["query"]["metrics"])
                                 if chart["display"]["type"] != "Histogram" and chart["query"]["dimensions"] != []:
                                     statistics_info["dimensions"] = self.chart_dimensions_to_query_dimensions(chart["query"]["dimensions"])
                                 else:
@@ -241,14 +235,7 @@ class OrganizeConfig:
         try:
             # 请求接口查询metric
             headers = {'Content-Type': 'application/json', 'Authorization': token}
-            url = api_host + "/v1/policy/rule"
-            # ?page_size=20&page_no=1&ids=849138&type=statistics&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id=1
-            query_condition = {"page_size": 20, "page_no": 1, "ids": rule_id, "type": rule_type,
-                            "is_enabled": "True", "with_sub_vsys": 1, "page_location": "oneshot", "location_key": "json",
-                            "vsys_id": vsys_id}
-            #https://192.168.44.3/v1/policy/rule?page_size=20&page_no=1&type=statistics&name=&is_enabled=&with_sub_vsys=1&user_tag_ids=&last_modified_by=&created_by=&page_location=0&location_id=&location_key=&vsys_id=
             url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={vsys_id}")
-            #url = (api_host + f"/v1/policy/rule/{rule_id}?vsys_id={str(vsys_id)}")
             response = requests.get(url, headers=headers, verify=False)
             if response.status_code != 200:
                 self.error_print_function(inspect.currentframe().f_code.co_name, f"response.status_code:{response.status_code}")

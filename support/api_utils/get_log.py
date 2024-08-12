@@ -819,7 +819,6 @@ class GetLog:
             "vsys_id": 1
         }
         """
-        #"order_by": "\"UNIQUE_COUNT(Server IP Object List)\" DESC",
         post_data_ori_dict = json.loads(post_data_ori_json)
         post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
         post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
@@ -827,11 +826,9 @@ class GetLog:
         post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_id = {} and template_id = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
         post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
-        post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"] #如果想传入非UTC时间，携带时区也是可以的2024-07-22T17:38:30+08:00/2024-07-23T17:38:30+08:00
+        post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"]
         if statistics_info["topk"] != "" and statistics_info["topk"] != None:
             post_data_ori_dict_dsl["custom.statistics.subquery.topk"] = statistics_info["topk"]
-        post_data_ori_dict_dsl["intervals"] = [
-            f"{start_time}/{end_time}"]  # 如果想传入非UTC时间，携带时区也是可以的2024-07-22T17:38:30+08:00/2024-07-23T17:38:30+08:00
         if "order_by" in statistics_info.keys():
             post_data_ori_dict_dsl["order_by"] = "'{}' DESC".format(statistics_info["order_by"])
         else:
@@ -861,19 +858,6 @@ class GetLog:
                             "closed incoming sessions": "closed_in_sessions",
                             "closed outgoing sessions": "closed_out_sessions",
                             }
-                #if script_type == "api":
-                #    metrics_columns_temp = test_data["profile_condition_1"][0]["chart_list"][0]["metrics"][0]["source_columns"].lower()
-                #    if metrics_columns_temp in tmp_dict.keys():
-                #        metrics_columns = tmp_dict[metrics_columns_temp]
-                #    else:
-                #        metrics_columns = ""
-               # elif script_type == "ui":
-               #     metrics_columns = [item["source_fields"] for item in statistics_info["metrics"]]
-                # api返回值为空，不判断方向，直接返回重新查找
-                #if metrics_columns in tmp_dict:#{"new_in_sessions", "new_out_sessions", "closed_in_sessions", "closed_out_sessions"}:  # or dimension_columns == "fqdn_category":
-                #    return [333, "this is a pass"]
-                #else:
-                #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 # api返回值为空，不判断方向，直接返回重新查找
                 if len(statistics_info["metrics"]) == 1:
                     #for item in statistics_info["metrics"]:
@@ -885,7 +869,6 @@ class GetLog:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 return [333, "statistics metric no result was found."]
             else:  # 提取结果，并断言
-                metric_result = False  # 默认
                 result_list_source = r_dict["data"]["result"]
                 #print(result_list_source)
                 result_list = []
@@ -962,7 +945,7 @@ class GetLog:
                                 histogram_sketch_line_flag = True
                                 break
                     if histogram_sketch_line_flag:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The histogram Metrics Line cannot automatically compare statistical results.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The histogram metrics Line cannot automatically compare statistical results.", flush=True)
                         metric_results = [True, ""]
                     else:
                         statistics_value = copy.deepcopy(result_list[0])
