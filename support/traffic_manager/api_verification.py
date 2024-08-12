@@ -150,8 +150,8 @@ class ApiVerification:
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             statistics_metircs_expect = traffic_result
             time.sleep(10)
-            max_fail_count = 10    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
-            search_interval_time = 5    # 每次查询statistic metric的 间隔时间 单位秒
+            max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
+            search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
             if script_type == "ui":
                 #time.sleep(60)
                 #max_fail_count = 20
@@ -197,6 +197,9 @@ class ApiVerification:
                             time.sleep(search_interval_time)
                         elif metric_result == 333 and metric_results[1] == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
                             break
+                        else:
+                            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'Rerequest result: {}'.format(metric_results), flush=True)
+                            time.sleep(search_interval_time)
                         n += 1
                 if  metric_results[0] == 333:     # API 查询失败时变量赋值
                     metric_result = False
