@@ -104,10 +104,10 @@ def run(parameter):
                 "clients_end_ip": "192.168.64.86",
                 "servers_start_ip": "2.1.1.1",
                 "servers_end_ip": "2.1.1.2",
-                "m": 60,
+                "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "test_https"
+                "pcap_name": "ftp_login_ftpuser"
             },
             "token": ""
         }

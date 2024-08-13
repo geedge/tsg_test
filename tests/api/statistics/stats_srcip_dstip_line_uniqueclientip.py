@@ -107,7 +107,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test_https",
-                "pcap_name": "test_https"
+                "pcap_name": "ftp_login_ftpuser"
             },
             "token": ""
         }
