@@ -897,10 +897,6 @@ class GetLog:
                     #for item in statistics_info["metrics"]:
                     if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_dict:
                         return [333, "this is a pass"]
-                    #else:
-                    #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
-                #else:
-                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not query statistics metric result.", flush=True)
                 return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
                 result_list_from_api = r_dict["data"]["result"]
