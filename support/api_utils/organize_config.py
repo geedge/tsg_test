@@ -51,8 +51,8 @@ class OrganizeConfig:
                                 statistics_info["metrics"] = query_metrics
                                 if "order_by" in chart["query"].keys():
                                     statistics_info["order_by"] = chart["query"]["order_by"]
-                                if chart["display"]["type"] == "histogram":
-                                    statistics_info.pop("order_by")
+                                #if chart["display"]["type"] == "histogram":
+                                #    statistics_info.pop("order_by")
                                 statistics_info["topk"] = ""
                                 if "series_limit" in chart["query"].keys():
                                     code, topk_dimensions_tmp = self.query_topk_dimensions_from_chart_dimensions(chart["query"]["dimensions"], chart["query"]["series_limit"], chart["query"]["metrics"][0]["label"])

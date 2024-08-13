@@ -28,10 +28,11 @@ from datetime import datetime
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 脚本启动时间
         start_time = time.time()
+        # 参数初始化
+        result, exception_result = "", ""
 
         # 环境初始化
         support.ui_utils.env.initiate_selenium_request()

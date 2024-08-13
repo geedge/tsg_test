@@ -151,7 +151,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"client_ip_object": "1573552","server_ip_object": "1573552", "in_pkts": 19, "out_pkts": 64, "pkts": 83}
+                {"client_ip_object_list": "1573552","server_ip_object_list": "1573552", "in_pkts": 19, "out_pkts": 64, "pkts": 83}
             ],
             # "traffic": {
             #     "type": "trex",

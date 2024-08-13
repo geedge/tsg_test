@@ -28,9 +28,12 @@ from datetime import datetime
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Begin to run test case: " + parameter["test_case_name"], flush=True)
-        # 脚本启动时间
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        
+        # 参数初始化
+        result, exception_result = "", ""
+		
+		# 脚本启动时间
         start_time = time.time()
 
         # 环境初始化

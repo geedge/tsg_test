@@ -148,7 +148,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"server_port": 80,"server_ip_object": "1573552", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+                {"server_port": 80,"server_ip_object_list": "1573552", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",

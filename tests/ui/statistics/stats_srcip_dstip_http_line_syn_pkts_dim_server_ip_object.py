@@ -122,7 +122,7 @@ def run(parameter):
                             "syn_pkts:RATE:syn pkts"
                           ],
                           "dimensions": [
-                            "server_ip_object"
+                            "server_ip_object_list"
                           ],
                           "order_by": "syn pkts",
                           "row_limit": "10",

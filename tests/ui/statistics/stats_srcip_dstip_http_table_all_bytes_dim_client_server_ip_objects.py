@@ -42,7 +42,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_client_server_ip_matched_objects",
+            "rule_name": "stats_srcip_dstip_http_table_all_bytes_dim_client_server_ip_objects",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -51,7 +51,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_table_all_bytes_dim_client_server_ip_matched_objects",
+                        "name": "stats_srcip_http_table_all_bytes_dim_client_server_ip_objects",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -68,7 +68,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_table_all_bytes_dim_client_server_ip_matched_objects",
+                        "name": "stats_dstip_http_table_all_bytes_dim_client_server_ip_objects",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -110,7 +110,7 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_http_table_all_bytes_dim_client_server_ip_matched_objects",
+                    "name": "stats_http_table_all_bytes_dim_client_server_ip_objects",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
@@ -122,8 +122,8 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "client_ip_object",
-                            "server_ip_object"
+                            "client_ip_object_list",
+                            "server_ip_object_list"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
@@ -149,7 +149,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"client_ip_object": "1573552","server_ip_object": "1573552", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+                {"client_ip_object_list": "1573552","server_ip_object_list": "1573552", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -423,7 +423,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_client_server_ip_matched_objects",
+        "test_case_name": "stats_srcip_dstip_http_table_all_bytes_dim_client_server_ip_objects",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

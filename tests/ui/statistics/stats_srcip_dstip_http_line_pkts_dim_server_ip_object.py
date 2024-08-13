@@ -121,7 +121,7 @@ def run(parameter):
                           "metrics": [
                             "in_pkts+out_pkts:RATE:pkts"
                           ],
-                          "dimensions": ["server_ip_object"],
+                          "dimensions": ["server_ip_object_list"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",

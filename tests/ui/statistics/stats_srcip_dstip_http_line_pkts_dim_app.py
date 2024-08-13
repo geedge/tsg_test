@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_srcip_http_line_pkts_dim_app",
+                        "name": "stats_dstip_http_line_pkts_dim_app",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
