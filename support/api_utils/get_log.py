@@ -887,15 +887,11 @@ class GetLog:
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
                 # 对应有方向的session方式需要另行处理
-                tmp_dict = {"new outgoing sessions":  "new_out_sessions",
-                            "new incoming sessions": "new_in_sessions",
-                            "closed incoming sessions": "closed_in_sessions",
-                            "closed outgoing sessions": "closed_out_sessions",
-                            }
+                tmp_list = ["new_out_sessions", "new_in_sessions", "closed_in_sessions", "closed_out_sessions"]
                 # api返回值为空，不判断方向，直接返回重新查找
                 if len(statistics_info["metrics"]) == 1:
                     #for item in statistics_info["metrics"]:
-                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_dict:
+                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_list:
                         return [333, "this is a pass"]
                 return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
