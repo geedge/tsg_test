@@ -70,14 +70,14 @@ def run(parameter):
                             "type": "table",
                             "metrics": [
                                 {
-                                    "source_columns": "New Incoming Sessions",
+                                    "source_columns": "SYN Packets",
                                     "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "WebSketch Categories"
+                                        "Client Port"
                                     ],
                                     "is_drilldown": 0
                                 }
@@ -204,7 +204,7 @@ if __name__ == "__main__":
         "root_path": "C:/zcw/tsg_test",
         "path": "C:/zcw/tsg_test/tests/api",
         "module_name": "statistics",
-        "test_case_name": "newIncomingSessions_distributedby_webSketchCategories"
+        "test_case_name": "SYNPackets_distributedby_webSketchCategories"
     }
     parameter = replace_paras_api(parameter)
     run(parameter)

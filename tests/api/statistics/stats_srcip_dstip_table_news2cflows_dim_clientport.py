@@ -77,7 +77,7 @@ def run(parameter):
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "WebSketch Categories"
+                                        "Client Port"
                                     ],
                                     "is_drilldown": 0
                                 }

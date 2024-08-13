@@ -16,7 +16,7 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result, exception_result = "", ""
-        
+
         # 脚本启动时间
         start_time = time.time()
         
@@ -72,12 +72,20 @@ def run(parameter):
                                 {
                                     "source_columns": "New Incoming Sessions+New Outgoing Sessions",
                                     "function": "SUM"
+                                },
+                                {
+                                    "source_columns": "New Incoming Sessions",
+                                    "function": "SUM"
+                                },
+                                {
+                                    "source_columns": "New Outgoing Sessions",
+                                    "function": "SUM"
                                 }
                             ],
                             "dimensions": [
                                 {
                                     "source_columns": [
-                                        "WebSketch Categories"
+                                        "Client Port"
                                     ],
                                     "is_drilldown": 0
                                 }
@@ -148,7 +156,7 @@ def run(parameter):
         delete = DeletePolicy()
         delete.delele_policy_by_cfg(token, parameter, cfg_list)
         
-		
+
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
@@ -204,7 +212,7 @@ if __name__ == "__main__":
         "root_path": "C:/zcw/tsg_test",
         "path": "C:/zcw/tsg_test/tests/api",
         "module_name": "statistics",
-        "test_case_name": "sessions_distributedby_webSketchCategories"
+        "test_case_name": "sessions_newIncomingSessions_newOutgoingSessions_distributedby_webSketchCategories"
     }
     parameter = replace_paras_api(parameter)
     run(parameter)
