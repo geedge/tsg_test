@@ -84,7 +84,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "新闻",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"}],
+            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"},
+            {"query_field_key": "server_fqdn", "query_value": "www.news.cn"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",

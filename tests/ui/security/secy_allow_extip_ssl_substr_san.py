@@ -105,7 +105,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "POST",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"ssl_sni", "query_value": "open.node.com"}],
+            "log_query_param": [{"query_field_key":"ssl_sni", "query_value": "open.node.com"},
+            {"query_field_key":"ssl_san", "query_value": "*.node.com;*.node.cn"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

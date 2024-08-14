@@ -148,7 +148,9 @@ def run(parameter):
             "profile": [],
             "expected_return": "helloSecurity",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
+            "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"},
+            {"query_field_key":"phone_number", "query_value": "523335886424"},
+            {"query_field_key": "ip_protocol", "query_value": "tcp"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",

@@ -90,7 +90,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "auto",
             "counters": {"hits": 2},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"}],
+            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"},
+            {"query_field_key": "decoded_as", "query_value": "FTP"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",

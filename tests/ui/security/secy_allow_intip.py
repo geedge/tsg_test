@@ -84,7 +84,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "POST",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"}],
+            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"},
+            {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
