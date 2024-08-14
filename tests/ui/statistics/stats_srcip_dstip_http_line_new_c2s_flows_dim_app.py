@@ -120,7 +120,7 @@ def run(parameter):
                             "new_c2s_flows:RATE:new c2s flows"
                           ],
                           "dimensions": [
-                              "application"
+                              "app"
                           ],
                           "order_by": "new s2c flows",
                           "row_limit": "10",

@@ -386,7 +386,7 @@ class GetLog:
                     # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f'{statistics_info["chart_type"]}>>断言对比...')
                     histogram_sketch_line_flag = False
                     histogram_sketch_temp ={"in_latency_ms_sketch","out_latency_ms_sketch","latency_ms_sketch",
-                                  "in_pkt_length_sketch","out_pkt_length_sketch","pkt_length_sketch"}
+                                  "in_pkt_length_distribution","out_pkt_length_distribution","pkt_length_distribution"}
                     if statistics_info["chart_type"] == "line":
                         for histogram_sketch in histogram_sketch_temp:
                             if histogram_sketch in result_list[0].keys():

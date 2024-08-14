@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "in_bytes+out_bytes:RATE:bytes"
+                            "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
                             "server_ip"
