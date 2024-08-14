@@ -117,7 +117,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "new_in_sessions+new_out_sessions:RATE:sessions"
+                            "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
                           "dimensions": ["client_ip"],
                           "order_by": "sessions",

@@ -117,9 +117,9 @@ def run(parameter):
                           "chart_name": "stats_http_line_all_pkt_len_p99_percentile",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_pkt_length_sketch:P99_PERCENTILE:in pkt length sketch",
-                            "out_pkt_length_sketch:P99_PERCENTILE:out pkt length sketch",
-                            "pkt_length_sketch:P99_PERCENTILE:pkt length sketch"
+                            "in_pkt_length_distribution:P99_PERCENTILE:in pkt length sketch",
+                            "out_pkt_length_distribution:P99_PERCENTILE:out pkt length sketch",
+                            "pkt_length_distribution:P99_PERCENTILE:pkt length sketch"
                           ],
                           "dimensions": [],
                           "order_by": "",
