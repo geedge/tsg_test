@@ -11,7 +11,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask, request, jsonify
 from support.report import *
 from support.case_tag import *
-from datetime import datetime 
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -161,13 +161,16 @@ def receive_parameter():
             sub_action = req_json.get("sub_action")
             script_type = req_json.get("script_type")
             case_tag = CaseTag()
-            result = case_tag.case_statistic_info(policy_rule, protocol, action, sub_action, script_type)
-            if len(result) != 0:
-                response_result = {}
+            result_list = case_tag.case_statistic_info(policy_rule, protocol, action, sub_action, script_type)
+            response_result = {}
+            if len(result_list) != 0:
                 response_result["code"] = 200
-                response_result["msg"] = result
-                response_result["data"] = None
                 response_result["success"] = True
+                for i in range(len(result_list)):
+                    temp = result_list[i]
+                    temp_key = temp.split(": ")[0]
+                    temp_value = temp.split(": ")[1]
+                    response_result[temp_key] = temp_value
                 response = jsonify(response_result)
                 response.status_code = response_result["code"]
         else:
