@@ -105,7 +105,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "auto",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"}],
+            "log_query_param": [{"query_field_key":"ftp_account", "query_value": "ftpuser"},
+            {"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",

@@ -116,8 +116,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"},
-            {"query_field_key":"phone_number", "query_value": "523335886424"}],
+            "log_query_param": [{"query_field_key":"imsi", "query_value":parameter['test_imsi']},
+            {"query_field_key":"phone_number", "query_value": parameter['test_phone_number']}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",

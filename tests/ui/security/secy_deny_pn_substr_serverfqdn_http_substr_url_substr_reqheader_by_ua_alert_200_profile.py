@@ -166,7 +166,7 @@ def run(parameter):
             "expected_return": "200",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},
-            {"query_field_key":"phone_number", "query_value": "523335886424"}],
+            {"query_field_key":"phone_number", "query_value": parameter['test_phone_number']}],
             "traffic": {
                 "protocol": "http",
                 "type": "wget",

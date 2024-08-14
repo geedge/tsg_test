@@ -105,7 +105,8 @@ def run(parameter):
             "profile": [],
             "expected_return": "Example Domain",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"server_fqdn", "query_value": "www.example.com"}],
+            "log_query_param": [{"query_field_key":"server_fqdn", "query_value": "www.example.com"},
+            {"query_field_key":"server_ip", "query_value": "93.184.215.14"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",

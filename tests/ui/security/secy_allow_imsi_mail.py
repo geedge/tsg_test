@@ -89,7 +89,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "Ok",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"imsi", "query_value": "110035141486424"}],
+            "log_query_param": [{"query_field_key":"imsi", "query_value":parameter['test_imsi']}],
             "traffic": {
                 "protocol": "mail",
                 "type": "curl",
