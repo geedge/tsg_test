@@ -30,8 +30,6 @@ app = Flask(__name__)
 @app.route('/v1/service_chaining_api', methods=["POST"])
 @app.route('/v1/shaping_api', methods=["POST"])
 @app.route('/v1/case_tag', methods=["POST"])
-# @app.route('/v1/temp_api', methods=["POST"])
-# @app.route('/v1/temp_ui', methods=["POST"])
 def receive_parameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
