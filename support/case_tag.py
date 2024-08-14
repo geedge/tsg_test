@@ -214,7 +214,7 @@ class CaseTag:
             result_list.append("The {} protocol script number of intercept ui case is: {}".format(protocol, intercept_ui_number))
             result_list.append("The {} protocol script number of manipulation ui case is: {}".format(protocol, manipulation_ui_number))
             result_list.append("The {} protocol script number of service chaining ui case is: {}".format(protocol, sc_ui_number))
-        print(result_list)
+        # print(result_list)
         return result_list
         
     def extract_data(self, case_name_list, protocol, action, sub_action):
