@@ -930,14 +930,16 @@ class GetLog:
                             #k_0 = statistics_info["metrics_dimension"]["dimensions"][k]
                             k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并，如果line图有非Time的Dimensions根据目前设计仅有一个非时间的维度
-                            if statistics_info["chart_type"] == "line" and k != "Time":
+                            if statistics_info["chart_type"] == "line":
+                                if k == "Time":
+                                    continue
                                 #if metrics_len == 1 and dimensions_len == 2:
                                 if tmp_dict_key == "":
                                     tmp_dict_key = f"{k_0};{v}"
                                 else:
                                     tmp_dict_key = f"{tmp_dict_key};{k_0}"
                             else:
-                                continue
+                                tmp_dict[k_0] = v
                         else:
                             continue
                         if statistics_info["chart_type"] != "line":
@@ -986,8 +988,9 @@ class GetLog:
                                 break_flag = 0  # 默认外层循环累加，累加标志，如下面列表不是所有累加值，而是获取其中一个值即可
                                 tmp_break_list_tmp = UtilStatisticsTemplate().tmp_break_list   #  兼容UI API，所以三组值
                                 tmp_break_list = [i.lower() for i in tmp_break_list_tmp]   # 将元素转成小写
+                                temp_dimensions_keys = [copy.deepcopy(k.lower()) for k in result_list[0].keys()]
                                 for item in tmp_break_list:  # 遍历判断是否符合上述条件，获取退出累加标志1。"client_ip_sketch", "server_ip_sketch", "fqdn_category"
-                                    if item in result_list[0].keys():
+                                    if item in temp_dimensions_keys:
                                         break_flag = 1  # 退出外层累加标志
                                         break
                                 if break_flag == 1:
