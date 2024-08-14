@@ -107,7 +107,8 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"ssl_sni", "query_value": "open.node.com"},
             {"query_field_key":"ssl_san", "query_value": "*.node.com;*.node.cn"},
-            {"query_field_key":"server_ip", "query_value": "192.168.40.206"}],
+            {"query_field_key":"server_ip", "query_value": "192.168.40.206"},
+            {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
