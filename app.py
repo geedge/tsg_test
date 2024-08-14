@@ -132,7 +132,7 @@ def receive_parameter():
                     new_path = "tests." + tag + "." + module_name + "." + test_case_name
                     module = importlib.import_module(new_path)
                     result = module.run(parameter)
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Test caes response is: {}".format(result), flush=True)
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Test caes response is: {}".format(result), flush=True)
                     # module.run()返回的结果是failure reason，如果是空，则表示测试通过。
                     if len(result) == 0:
                         response_result["code"] = 200
