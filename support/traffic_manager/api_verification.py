@@ -123,22 +123,22 @@ class ApiVerification:
                 log_result = "no_set"
             
             if metric_result == True:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "metric_result" is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of api is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
             elif metric_result == False:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "metric_result" is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of api is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
             elif metric_result == None:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "metric_result" is none. The mean is: do not get metrics.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of api is none. The mean is: do not get metrics.', flush=True)
             elif metric_result == "no_set":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "metric_result" is no_set. The mean is: no need to get metrics.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of api is no_set. The mean is: no need to get metrics.', flush=True)
             
             if log_result == True:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of api is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
             elif log_result == False:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of api is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
             elif log_result == None:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is none. The mean is: do not get logs.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of api is none. The mean is: do not get logs.', flush=True)
             elif log_result == "no_set":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "log_result" is no_set. The mean is: no need to get logs.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of api is no_set. The mean is: no need to get logs.', flush=True)
             
             return cmd_result, log_result, metric_result, my_driver
         elif policy_type == "statistics":      # statistics 数据校验

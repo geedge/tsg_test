@@ -30,7 +30,7 @@ class UiVerification:
                 # 判断api的metric_result为true，只是为了作为命中和生成log的基本判断，无其他特殊意义
                 if api_verification_result[2] == True:
                     # 从ui上判断metric_result
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get hit count from UI detail page.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get hit count from ui detail page.", flush=True)
                     hit_count = -1
                     if policy_type == "statistics":  # 如果为Statistics Rule无对应的Log类型，则从Session Records查找
                         hit_count = my_driver.find_element(By.XPATH, statisticsRulePage_rightInfo_72hoursHitCount_posXpath).text
@@ -38,7 +38,7 @@ class UiVerification:
                         hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span").text
                     else:
                         hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").text
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "hit_count:", hit_count, flush=True)
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "hit_count:", hit_count, flush=True)
                     if int(hit_count) == test_data["counters"]["hits"] or int(hit_count) > 0 and test_data["counters"]["hits"] == "many":
                         metric_result = True
                     
@@ -53,7 +53,7 @@ class UiVerification:
                         time.sleep(1)
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
                         log_number = log_number_str.split(": ")[-1]
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "log_number:", log_number, flush=True)
+                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "log_number:", log_number, flush=True)
                         
                         # 如果condition的范围很广，test_data["counters"]["hits"]设置为many，意味着不能进行精准的log判断。如果test_data["counters"]["hits"]不为many，则表示可以准确判断。
                         # 策略非要带着sip，目的是减少更繁琐的判断，可复用下面的流程，如果是negate sip，建议app选择除http和ssl外的协议
@@ -171,14 +171,14 @@ class UiVerification:
                         log_result = "no_set"
                 
                 if metric_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"metric_result" of ui is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of ui is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
                 elif metric_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"metric_result" of ui is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of ui is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
 
                 if log_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"log_result" of ui is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of ui is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
                 elif log_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], '"log_result" of ui is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of ui is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
             
                 return api_verification_result[0], log_result, metric_result, my_driver
             elif policy_type == "service_chaining":
