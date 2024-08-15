@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_intip_substr_serverfqdn_substr_url_substr_reqheader_by_ua_http_drop",
+            "rule_name": "secy_deny_srcip_substr_fqdn_http_substr_url_substr_reqheader_ua_drop",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -113,7 +113,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "secy_httpsig",
+                        "name": "secy_http_sig",
                         "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
@@ -180,7 +180,7 @@ def run(parameter):
             },
             {
                 "type": "http_signature",
-                "name": "secy_httpsig"
+                "name": "secy_http_sig"
             }
         ]
         
