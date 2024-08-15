@@ -6,9 +6,7 @@ import requests
 import json
 import ipaddress
 from datetime import datetime
-
 from support.api_utils.util_statistics_template import UtilStatisticsTemplate
-
 
 class GetLog:
     def get_log_schema(self, token, log_type, api_host, vsys_id):
@@ -106,7 +104,6 @@ class GetLog:
                         # 传入值与日志的值相等时验证
                         if query_field_key in log and query_field_key not in {"packet_capture_file" , "http_response_body" , "http_request_body","monitor_mirrored_pkts","monitor_mirrored_bytes", "client_port"} and log[query_field_key] == query_value:
                             log_reult = True
-                        
                         # 验证packet capture
                         elif query_field_key in {"packet_capture_file","http_response_body","http_request_body"}:
                             # 验证开关开启状态
@@ -161,7 +158,6 @@ class GetLog:
                                         mirror_pkts_value *= num_vlans
                             else:
                                 log_reult = False
-
                                 # 统一处理逻辑
                             if "mirror_type" in test_data and test_data["mirror_type"] in {"ftp", "http", "ssl",""}:
                                 if query_field_key == "monitor_mirrored_pkts" and log[query_field_key] == mirror_pkts_value:
@@ -1010,6 +1006,7 @@ class GetLog:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram cannot automatically compare statistical results.", flush=True)
                     metric_results = [True, ""]
                 return metric_results
+    
     def assert_livechart_statistics(self, statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds):
         chart_type = statistics_info["chart_type"]
         metric_result = False
@@ -1063,6 +1060,7 @@ class GetLog:
             exception_result = str(e)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Chart Visualization Type verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
+    
     def metric_value_verification(self, assert_key, metric_info,stats_value, test_traffic_statistics,time_dif_seconds):
         #metric_info:[{'function': {'name': 'UNIQUE_COUNT'}, 'label': 'UNIQUECOUNT(Client IP)', 'metric_name': 'unique_count_1', 'metric_type': 'unique_count', 'source_fields': ['client_ip']}]
         function_name = metric_info["function"]["name"]
@@ -1270,8 +1268,6 @@ class GetLog:
             exception_result = str(e)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
-
-
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
