@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_src_ftp_exactly_account_drop_rst",
+            "rule_name": "secy_deny_srcip_ftp_exactly_account_drop_rst",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
