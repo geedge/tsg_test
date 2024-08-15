@@ -151,6 +151,19 @@ class UiVerification:
                                         #后续补充ui校验
                                         temp_log_result = True
                                         temp_log_result_list.append(temp_log_result)
+                                    elif log_query_key in ["client_port"]:
+                                        log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
+                                            replaceValue=log_str)
+                                        temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
+                                        temp_value = int(temp_value.replace(',', ''))
+                                        # test_data中的client_port为string类型时,进行port的范围验证
+                                        if type(test_data["log_query_param"][t]["query_value"]) == str:
+                                            start, end = map(int, test_data["log_query_param"][t]["query_value"].split('-'))
+                                            if start <= temp_value <= end:
+                                                temp_log_result = True
+                                            else:
+                                                temp_log_result = False
+                                        temp_log_result_list.append(temp_log_result)
                                 if False not in temp_log_result_list:
                                     log_result = True
                                 else:

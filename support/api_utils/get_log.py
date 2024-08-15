@@ -104,7 +104,7 @@ class GetLog:
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         # 传入值与日志的值相等时验证
-                        if query_field_key in log and query_field_key not in {"packet_capture_file" , "http_response_body" , "http_request_body","monitor_mirrored_pkts","monitor_mirrored_bytes"} and log[query_field_key] == query_value:
+                        if query_field_key in log and query_field_key not in {"packet_capture_file" , "http_response_body" , "http_request_body","monitor_mirrored_pkts","monitor_mirrored_bytes", "client_port"} and log[query_field_key] == query_value:
                             log_reult = True
                         
                         # 验证packet capture
@@ -170,7 +170,13 @@ class GetLog:
                                     log_reult = True
                                 else:
                                     log_reult = False
-                        # 传入值不相等，而且非packet capture等验证为false
+                        # 验证范围类型的client port
+                        elif query_field_key in {"client_port"}:
+                            start, end = map(int, query_value.split('-'))
+                            if start <= log[query_field_key] <= end:
+                                log_reult = True
+                            else:
+                                log_reult = False
                         else:
                             log_reult = False
             elif len(log_query_params) == 0:
