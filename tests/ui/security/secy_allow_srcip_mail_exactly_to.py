@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_allow_src_mail_exactly_to",
+            "rule_name": "secy_allow_srcip_mail_exactly_to",
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {

@@ -115,7 +115,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "secy_httpsig_resheader",
+                        "name": "secy_http_sig",
                         "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
@@ -184,7 +184,7 @@ def run(parameter):
             },
             {
                 "type": "http_signature",
-                "name": "secy_httpsig_resheader"
+                "name": "secy_http_sig"
             }
         ]
         
