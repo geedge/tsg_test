@@ -11,7 +11,7 @@ from scapy.contrib.mpls import *
 from scapy.layers.inet import IP, TCP
 from datetime import datetime
 
-class UnorderedTcp:
+class UnorderedTcpPlayer:
     def send_unordered_tcp_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send tcp out of order traffic for effect verification.", flush=True)
         try:
@@ -90,5 +90,5 @@ if __name__ == '__main__':
         }
     }
     traffic_data = test_data["traffic"]
-    unordered_tcp = UnorderedTcp()
+    unordered_tcp = UnorderedTcpPlayer()
     unordered_tcp.send_unordered_tcp_traffic(traffic_data, "ui", False)

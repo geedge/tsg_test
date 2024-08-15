@@ -15,6 +15,8 @@ from support.traffic_manager.dtls_player import DtlsPlayer
 from support.traffic_manager import trex_replay
 from support.traffic_manager.doh_player import DohPlayer
 from support.traffic_manager.mpls_one_label_player import MplsOneLabelPlayer
+from support.traffic_manager.gre_over_gre_player import GreOverGrePlayer
+from support.traffic_manager.unordered_tcp_player import UnorderedTcpPlayer
 from support.traffic_manager.workpath import workdir
 from datetime import datetime
 
@@ -92,6 +94,15 @@ class TriggerTraffic:
                     result = player.send_mpls_one_label_traffic(temp_data, script_type, debug_flag)
                 elif test_data["traffic"]["type"] == "two_label":
                     print("to be added")
+            elif test_data["traffic"]["protocol"] == "gre":
+                if test_data["traffic"]["type"] == "gre_over_gre":
+                    player = GreOverGrePlayer()
+                    result = player.send_gre_over_gre_traffic(temp_data, script_type, debug_flag)
+                elif test_data["traffic"]["type"] == "gre":
+                    print("to be added")    
+            elif test_data["traffic"]["protocol"] == "unordered_tcp":
+                player = UnorderedTcpPlayer()
+                result = player.send_unordered_tcp_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "vxlan":
                 print("to be added")
             elif test_data["traffic"]["protocol"] == "":
