@@ -94,8 +94,9 @@ class ApiVerification:
             
             log_result, metric_result = None, None
             if int(is_log) == 1:
-                if is_log_query == 1 or is_counters == 1:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of 'is_log' is 1. Ready to get log and metric now.", flush=True)
+                if is_log_query == True or is_counters == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The 'is_log' is True.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api request.", flush=True)
                     for i in range(70):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
                         if i == 30 and script_type == "ui" and driver:
@@ -108,13 +109,13 @@ class ApiVerification:
                         current_utc_time = datetime.now(utc_tz)
                         end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                         time.sleep(7)
-                        if is_log_query == 1 and log_result == None:
+                        if is_log_query == True and log_result == None:
                             log_result = log.get_log_by_condition(token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data, api_server, vsys_id, script_type,output)
-                        if is_log_query == 0:
+                        if is_log_query == False:
                             log_result = "no_set"
-                        if is_counters == 1 and metric_result == None:
+                        if is_counters == True and metric_result == None:
                             metric_result = log.get_metric(token, rule_num, start_time, end_time, create_policies_ids, test_data, api_server, vsys_id, script_type)
-                        if is_counters == 0:
+                        if is_counters == False:
                             log_result = "no_set"
                         if log_result != None and metric_result != None:
                             break
@@ -310,7 +311,7 @@ class ApiVerification:
     def is_in(self, full_str, sub_str, debug_flag):
         if sub_str == "trex":  #故若干
             cmd_result = True
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
             return cmd_result
         if debug_flag == "local":
             temp = full_str["result"]
@@ -320,15 +321,15 @@ class ApiVerification:
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
         cmd_result = all(word in temp for word in sub_str)
         if cmd_result == True:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "cmd_result" is {}. The mean is: the expected value is in the returned value from test data.'.format(cmd_result), flush=True)
         elif cmd_result == False:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of "cmd_result" is {}. The mean is: the expected value is not in the returned value from test data.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "cmd_result" is {}. The mean is: the expected value is not in the returned value from test data.'.format(cmd_result), flush=True)
         return cmd_result # 返回：True or False
 
     def is_verify(self, script_type, test_data, loop_num, counters, log_query_param):
         # 判断传入了验证日志、metric相关的参数
-        is_counters = 0
-        is_log_query = 0
+        is_counters = False
+        is_log_query = False
         for i in range(loop_num):
             index = i + 1
             if script_type == "ui":
@@ -336,7 +337,7 @@ class ApiVerification:
             elif script_type == "api":
                 counters_data = test_data[counters + '_' + str(index)]
             if counters_data != {}:
-                is_counters = 1
+                is_counters = True
                 break
         for i in range(loop_num):
             index = i + 1
@@ -345,10 +346,10 @@ class ApiVerification:
             elif script_type == "api":
                 log_query_param_data = test_data[log_query_param + '_' + str(index)]
             if len(log_query_param_data) > 0:
-                is_log_query = 1
+                is_log_query = True
                 break
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of 'is_counters' is", is_counters, flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of 'is_log_query' is", is_log_query, flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The 'is_counters' is {}.".format(is_counters), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The 'is_log_query' is {}.".format(is_log_query), flush=True)
         return is_counters, is_log_query
     
     def call_traffic_server(self, data, script_type, debug_flag):
