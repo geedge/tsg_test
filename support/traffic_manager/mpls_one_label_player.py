@@ -64,7 +64,6 @@ class MplsOneLabelPlayer:
             p = subprocess.Popen(tcpreplay_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
             output, error = p.communicate()
             result = output + error
-            result = 123
             return result
         except Exception as e:
             return f"Exception: {e}"
