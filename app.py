@@ -95,6 +95,8 @@ def receive_parameter():
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
                 parameter["is_log"] = parse.get("is_log", "ui")
+            elif tag == "all":
+                parameter["path"] = f"{project_path}/tests/ui"
             elif tag == "general_ui":
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["sub_module_name"] = sub_module_name

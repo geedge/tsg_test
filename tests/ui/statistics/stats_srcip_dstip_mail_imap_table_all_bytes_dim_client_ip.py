@@ -144,7 +144,7 @@ def run(parameter):
                 "servers_end_ip": "2.1.1.3",
                 "m": 1,
                 "d": 1,
-                "yaml_name": "test_https",
+                "yaml_name": "test",
                 "pcap_name": "mail_imap"
             },
             "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
@@ -158,7 +158,7 @@ def run(parameter):
             #     "servers_end_ip": "2.1.1.2",
             #     "m": 1,
             #     "d": 1,
-            #     "yaml_name": "test_https",
+            #     "yaml_name": "test",
             #     "pcap_name": "test_https"
             # },
             # "traffic": {

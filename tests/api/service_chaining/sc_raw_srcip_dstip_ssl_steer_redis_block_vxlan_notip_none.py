@@ -105,7 +105,7 @@ def run(parameter):
                 "servers_end_ip": "2.1.1.2",
                 "m": 1,
                 "d": 1,
-                "yaml_name": "test_https",
+                "yaml_name": "test",
                 "pcap_name": "test_https"
             },
             "expected_return":''
