@@ -2,7 +2,7 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.workpath import workdir
 import configparser
 import subprocess
 import random
@@ -11,25 +11,24 @@ from scapy.contrib.mpls import *
 from scapy.layers.inet import IP, TCP
 from datetime import datetime
 
-class MplsOneLabelPlayer:
-    def send_mpls_one_label_traffic(self, traffic_data, script_type, debug_flag):
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send mpls traffic for effect verification.", flush=True)
+class GreOverGrePlayer:
+    def send_gre_over_gre_traffic(self, traffic_data, script_type, debug_flag):
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send gre over gre traffic for effect verification.", flush=True)
         try:
             pcap = traffic_data["pcap_name"] + ".pcap"
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
             parse.read(parse_dir, encoding="utf-8")
-            traffic_manager_path = parse.get("traffic_playback", "traffic_playback_workpath")
+            packet_generator_path = parse.get("traffic_playback", "traffic_playback_workpath")
             intf = parse.get("tcpreplay", "intf")
-            client_ip = parse.get("tcpreplay", "client_ip")
-            server_ip = parse.get("tcpreplay", "server_ip")
-            # client_ip = "192.64.{}.{}".format(random.randint(1, 254), random.randint(1, 254))
-            # server_ip = "192.64.{}.{}".format(random.randint(1, 254), random.randint(1, 254))
+            inner_client_ip = parse.get("tcpreplay", "client_ip")
+            inner_server_ip = parse.get("tcpreplay", "server_ip")
+            # inner_client_ip = "192.64.{}.{}".format(random.randint(1, 254), random.randint(1, 254))
+            # inner_server_ip = "192.64.{}.{}".format(random.randint(1, 254), random.randint(1, 254))
             client_port = random.randint(1000, 60000)
-            client_label = random.randint(1101, 1200)
             
-            pcap_root_path = traffic_manager_path + "/traffic_pcap/"
-            pcap_path = traffic_manager_path + "/traffic_pcap/" + pcap
+            pcap_root_path = packet_generator_path + "/traffic_pcap/"
+            pcap_path = packet_generator_path + "/traffic_pcap/" + pcap
             pkts = rdpcap(pcap_path)
             first_client_ip = pkts[0][MPLS][MPLS][IP].src
 
@@ -41,14 +40,13 @@ class MplsOneLabelPlayer:
             pkt_count = 1
             for pkt in pkts_temp:
                 pkt_count = pkt_count + 1
-                if pkt[IP].src == first_client_ip:
-                    pkt[MPLS].label = client_label
-                    pkt[IP].src = client_ip
-                    pkt[IP].dst = server_ip
+                if pkt[4].src == first_client_ip:
+                    pkt[4].src = inner_client_ip
+                    pkt[4].dst = inner_server_ip
                     pkt[TCP].sport = client_port
-                else:
-                    pkt[IP].src = server_ip
-                    pkt[IP].dst = client_ip
+                else :
+                    pkt[4].src = inner_server_ip
+                    pkt[4].dst = inner_client_ip
                     pkt[TCP].dport = client_port
                 current_time += unit_time
                 pkt.time = current_time
@@ -75,11 +73,11 @@ if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
     test_data = {
         "traffic": {
-            "protocol": "mpls",
-            "type": "one_label",
-            "pcap_name": "mpls_one_label"
+            "protocol": "gre",
+            "type": "gre_over_gre",
+            "pcap_name": "gre_over_gre"
         }
     }
     traffic_data = test_data["traffic"]
-    mpls_player = MplsOneLabelPlayer()
-    mpls_player.send_mpls_one_label_traffic(traffic_data, "ui", False)
+    gre_over_gre_player = GreOverGrePlayer()
+    gre_over_gre_player.send_gre_over_gre_traffic(traffic_data, "ui", False)

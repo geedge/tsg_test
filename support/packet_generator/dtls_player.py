@@ -4,7 +4,7 @@ import ssl
 import configparser
 from socket import socket, AF_INET, SOCK_DGRAM
 from dtls import do_patch
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.workpath import workdir
 from datetime import datetime
 
 class DtlsPlayer:

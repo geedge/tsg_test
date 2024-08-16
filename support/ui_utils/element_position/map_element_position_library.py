@@ -8,7 +8,7 @@ from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.workpath import workdir
 import configparser
 import os
 

@@ -2,11 +2,11 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from support.traffic_manager.capture_packet import *
-from support.traffic_manager.trigger_traffic import *
-from support.traffic_manager.api_verification import *
-from support.traffic_manager.ui_verification import *
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.capture_packet import *
+from support.packet_generator.trigger_traffic import *
+from support.packet_generator.api_verification import *
+from support.packet_generator.ui_verification import *
+from support.packet_generator.workpath import workdir
 from datetime import datetime
 from threading import Thread
 

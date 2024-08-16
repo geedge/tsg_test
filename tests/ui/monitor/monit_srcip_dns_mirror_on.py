@@ -15,7 +15,7 @@ from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
-from support.traffic_manager.verification import Verification
+from support.packet_generator.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *

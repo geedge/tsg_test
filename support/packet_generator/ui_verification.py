@@ -5,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import configparser
 from support.ui_utils.policy.edit_rule import EditRule
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.workpath import workdir
 from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.ui_utils.log.search_log import SearchLog
@@ -68,7 +68,7 @@ class UiVerification:
                             elif int(hit_count) == int(log_number) and 0 < int(hit_count) <= 2:
                                 # ui日志校验，以server ip为例，在log_query_list.ini中通过log api查找log ui的值
                                 parse = configparser.ConfigParser()
-                                parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
+                                parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")
                                 parse.read(parse_dir, encoding="utf-8")
                                 temp_log_result_list = []
                                 # 点击展开
@@ -351,7 +351,7 @@ class UiVerification:
                         my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                         time.sleep(2)
                         parse = configparser.ConfigParser()
-                        parse_dir = os.path.join(workdir, "support", "traffic_manager", "log_query_list.ini")
+                        parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")
                         parse.read(parse_dir, encoding="utf-8")
                         temp_log_result_list = []
                         for t in range(len(test_data["log_query_param"])):

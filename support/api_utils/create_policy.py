@@ -6,7 +6,7 @@ from support.api_utils.create_object import CreateObject
 from support.api_utils.create_rule import CreatePolicyRule
 from support.api_utils.create_profile import CreateProfile
 from datetime import datetime
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.workpath import workdir
 import configparser
 import os
 

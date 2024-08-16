@@ -12,14 +12,14 @@ import configparser
 import json
 import platform
 import pytz
-import support.traffic_manager.trex_replay as trex_replay
-from support.traffic_manager.workpath import workdir
+import support.packet_generator.trex_replay as trex_replay
+from support.packet_generator.workpath import workdir
 from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.api_utils.organize_config import *
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from support.traffic_manager.traffic_replay import TrafficReplay
+# from support.packet_generator.traffic_replay import TrafficReplay
 
 class ApiVerification:
     def api_verification(self, driver, parameter, test_data, traffic_result, cfg_list):

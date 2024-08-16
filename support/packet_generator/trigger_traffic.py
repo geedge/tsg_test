@@ -6,18 +6,18 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import json
 import requests
 import configparser
-from support.traffic_manager.http_player import HttpPlayer
-from support.traffic_manager.ssl_player import SSLPlayer
-from support.traffic_manager.ftp_player import FtpPlayer
-from support.traffic_manager.dns_player import DnsPlayer
-from support.traffic_manager.mail_player import MailPlayer
-from support.traffic_manager.dtls_player import DtlsPlayer
-from support.traffic_manager import trex_replay
-from support.traffic_manager.doh_player import DohPlayer
-from support.traffic_manager.mpls_one_label_player import MplsOneLabelPlayer
-from support.traffic_manager.gre_over_gre_player import GreOverGrePlayer
-from support.traffic_manager.unordered_tcp_player import UnorderedTcpPlayer
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.http_player import HttpPlayer
+from support.packet_generator.ssl_player import SSLPlayer
+from support.packet_generator.ftp_player import FtpPlayer
+from support.packet_generator.dns_player import DnsPlayer
+from support.packet_generator.mail_player import MailPlayer
+from support.packet_generator.dtls_player import DtlsPlayer
+from support.packet_generator import trex_replay
+from support.packet_generator.doh_player import DohPlayer
+from support.packet_generator.mpls_one_label_player import MplsOneLabelPlayer
+from support.packet_generator.gre_over_gre_player import GreOverGrePlayer
+from support.packet_generator.unordered_tcp_player import UnorderedTcpPlayer
+from support.packet_generator.workpath import workdir
 from datetime import datetime
 
 class TriggerTraffic:

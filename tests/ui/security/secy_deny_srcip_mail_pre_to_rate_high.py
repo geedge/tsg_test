@@ -13,7 +13,7 @@ from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
-from support.traffic_manager.verification import Verification
+from support.packet_generator.verification import Verification
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
@@ -115,7 +115,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "mail",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/traffic_manager/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
+                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/packet_generator/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
             },
             "token": ""
         }

@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.api_utils.log_in import *
 from support.api_utils.create_policy import *
 import time
-from support.traffic_manager.verification import Verification
+from support.packet_generator.verification import Verification
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 from support.report import *
