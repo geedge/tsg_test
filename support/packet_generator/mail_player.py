@@ -59,6 +59,7 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "mail",
+            "type": "client", # client/curl
             "mail_type": "other", # gmail or other smtp
             "mail_port": 465, # gmail：465（用于SSL）、587（用于启动TLS）。smtp默认：25
             "sender": "hbn@163.com",

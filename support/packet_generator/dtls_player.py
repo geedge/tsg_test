@@ -8,7 +8,7 @@ from support.packet_generator.workpath import workdir
 from datetime import datetime
 
 class DtlsPlayer:
-    def send_dtls_traffic(self):
+    def send_dtls_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send dlts traffic for effect verification.", flush=True)
         parse = configparser.ConfigParser()
         parse_dir = os.path.join(workdir, "configuration_file.ini")
@@ -56,5 +56,12 @@ class DtlsPlayer:
 
 if __name__ == "__main__":
     print("test")
+    test_data = {
+        "traffic": {
+            "protocol": "dtls",
+            "type": ""
+        }
+    }
+    traffic_data = test_data["traffic"]
     dtls_player = DtlsPlayer()
-    dtls_player.send_dtls_traffic()
+    dtls_player.send_dtls_traffic(traffic_data, "ui", False)

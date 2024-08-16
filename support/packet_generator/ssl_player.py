@@ -13,11 +13,11 @@ class SSLPlayer:
         output, error = p.communicate()
         result = output + error
         
-        # type = traffic_data["type"]
+        # action = traffic_data["action"]
         # url = traffic_data["url"]
-        # if type == "get":
+        # if action == "get":
         #     result = self.send_get_request(url)
-        # elif type == "post":
+        # elif action == "post":
         #     result = self.send_post_request(url)
             
         return result
@@ -66,7 +66,8 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "ssl",
-            "type": "post", # get/post
+            "type": "client", # client/curl
+            "action": "post", # get/post
             "url": "https://www.google.com"
         }
     }

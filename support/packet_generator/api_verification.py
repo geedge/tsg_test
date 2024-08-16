@@ -95,7 +95,7 @@ class ApiVerification:
             log_result, metric_result = None, None
             if int(is_log) == 1:
                 if is_log_query == True or is_counters == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The 'is_log' is True.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_log' is True.", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
                     for i in range(70):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
@@ -124,22 +124,22 @@ class ApiVerification:
                 log_result = "no_set"
             
             if metric_result == True:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of api is {}.'.format(metric_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is {}.'.format(metric_result), flush=True)
             elif metric_result == False:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of api is {}.'.format(metric_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is {}.'.format(metric_result), flush=True)
             elif metric_result == None:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of api is none.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is none.', flush=True)
             elif metric_result == "no_set":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of api is no_set.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is no_set.', flush=True)
             
             if log_result == True:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of api is {}.'.format(log_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is {}.'.format(log_result), flush=True)
             elif log_result == False:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of api is {}.'.format(log_result), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is {}.'.format(log_result), flush=True)
             elif log_result == None:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of api is none.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is none.', flush=True)
             elif log_result == "no_set":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of api is no_set.', flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is no_set.', flush=True)
             
             return cmd_result, log_result, metric_result, my_driver
         elif policy_type == "statistics":      # statistics 数据校验
@@ -311,7 +311,7 @@ class ApiVerification:
     def is_in(self, full_str, sub_str, debug_flag):
         if sub_str == "trex":  #故若干
             cmd_result = True
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "cmd_result" is {}.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "cmd_result" is {}.'.format(cmd_result), flush=True)
             return cmd_result
         if debug_flag == "local":
             temp = full_str["result"]
@@ -321,9 +321,9 @@ class ApiVerification:
         # 遍历sub_str中的每个单词，并检查该单词是否在full_str中
         cmd_result = all(word in temp for word in sub_str)
         if cmd_result == True:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "cmd_result" is {}.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "cmd_result" is {}.'.format(cmd_result), flush=True)
         elif cmd_result == False:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "cmd_result" is {}.'.format(cmd_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "cmd_result" is {}.'.format(cmd_result), flush=True)
         return cmd_result # 返回：True or False
 
     def is_verify(self, script_type, test_data, loop_num, counters, log_query_param):
@@ -348,8 +348,8 @@ class ApiVerification:
             if len(log_query_param_data) > 0:
                 is_log_query = True
                 break
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The 'is_counters' is {}.".format(is_counters), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The 'is_log_query' is {}.".format(is_log_query), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_counters' is {}.".format(is_counters), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_log_query' is {}.".format(is_log_query), flush=True)
         return is_counters, is_log_query
     
     def call_traffic_server(self, data, script_type, debug_flag):

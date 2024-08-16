@@ -35,6 +35,7 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "doh",
+            "type": "client",
             "domain": "www.baidu.com",
             "query_type": "A",
             "doh_server_url": "https://dns9.quad9.net"

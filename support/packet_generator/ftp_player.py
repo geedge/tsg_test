@@ -63,6 +63,7 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "ftp",
+            "type": "client", # client/curl
             "host": "192.168.40.206",
             "user": "ftpuser",
             "password": "111111",

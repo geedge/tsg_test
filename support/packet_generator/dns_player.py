@@ -34,6 +34,7 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "dns",
+            "type": "client", # client/curl
             "domain": "www.google.com",
             "query_type": "A" # A, AAAA
         }

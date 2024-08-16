@@ -32,6 +32,7 @@ if __name__ == "__main__":
     test_data = {
         "traffic": {
             "protocol": "quic",
+            "type": "",
             "host": "www.youtube.com",
             "port": 443
         }

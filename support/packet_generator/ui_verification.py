@@ -118,7 +118,6 @@ class UiVerification:
                                                 if error_text_is_exist == True:
                                                     temp_log_result = False
                                                 # 下载成功时无错误提示.
-
                                                 else:
                                                     temp_log_result = True
                                             else:
@@ -184,14 +183,14 @@ class UiVerification:
                         log_result = "no_set"
                 
                 if metric_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of ui is {}.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is {}.'.format(metric_result), flush=True)
                 elif metric_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of ui is {}.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is {}.'.format(metric_result), flush=True)
 
                 if log_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of ui is {}.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is {}.'.format(log_result), flush=True)
                 elif log_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of ui is {}.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is {}.'.format(log_result), flush=True)
             
                 return api_verification_result[0], log_result, metric_result, my_driver
             elif policy_type == "service_chaining":
