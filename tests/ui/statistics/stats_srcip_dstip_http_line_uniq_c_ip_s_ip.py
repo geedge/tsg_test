@@ -120,7 +120,7 @@ def run(parameter):
                             "client_ip:UNIQUE_COUNT:UNIQUE_COUNT(client ip)",
                             "server_ip:UNIQUE_COUNT:UNIQUE_COUNT(server ip)"
                           ],
-                          "dimensions": ["time"],
+                          "dimensions": [],
                           "order_by": "",
                           "row_limit": "",
                           "min_in_size": "0",

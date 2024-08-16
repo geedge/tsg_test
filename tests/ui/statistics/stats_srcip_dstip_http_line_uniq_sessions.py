@@ -119,7 +119,7 @@ def run(parameter):
                           "metrics": [
                             "session_id:UNIQUE_COUNT:UNIQUE_COUNT(session)"
                           ],
-                          "dimensions": ["time"],
+                          "dimensions": [],
                           "order_by": "",
                           "row_limit": "",
                           "min_in_size": "0",
