@@ -109,7 +109,8 @@ def run(parameter):
                         "plus": False,
                         "items": [
                             {
-                                "item_value": "www.bbc.com",
+                                "item_operation": "add",
+                                "item_value": "www.bbc.com"
                             }
                         ]
                     }
