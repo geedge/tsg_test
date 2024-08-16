@@ -88,8 +88,7 @@ def run(parameter):
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
+                        "statistics": "None",
                         "item": [
                             {
                                 "item_operation": "add",

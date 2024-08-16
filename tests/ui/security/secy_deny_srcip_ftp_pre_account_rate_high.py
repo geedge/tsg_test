@@ -93,7 +93,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ftp_account",
-                                "item_value": "ftpu*->"
+                                "item_value": "ftpu*"
                             }
                         ],
                     }

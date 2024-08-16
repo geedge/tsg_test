@@ -87,7 +87,6 @@ def run(parameter):
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
                         "items": [
                             {
                                 "item_operation": "add",

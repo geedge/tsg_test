@@ -93,7 +93,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "english->"
+                                "item_value": "english"
                             }
                         ],
                     },
@@ -103,8 +103,7 @@ def run(parameter):
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
+                        "statistics": "None",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -126,7 +125,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ftp_account",
-                                "item_value": "ftpuser->"
+                                "item_value": "ftpuser"
                             }
                         ],
                     }
@@ -148,7 +147,7 @@ def run(parameter):
             "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"},
             {"query_field_key": "decoded_as", "query_value": "FTP"},
             {"query_field_key":"ftp_account", "query_value": "ftpuser"},
-            {"query_field_key":"ftp_url", "query_value": "ftp://192.168.40.206/autoFtp/english_big.txt"}],
+            {"query_field_key":"ftp_url", "query_value": "ftp://192.168.40.206/autoFtp/english.txt"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",

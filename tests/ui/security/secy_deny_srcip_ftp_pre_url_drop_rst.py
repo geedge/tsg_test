@@ -93,7 +93,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "ftp://192.168.*->"
+                                "item_value": "ftp://192.168.*"
                             }
                         ],
                     }

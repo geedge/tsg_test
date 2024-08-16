@@ -92,7 +92,6 @@ def run(parameter):
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
                         "items": [
                             {
                                 "item_operation": "add",
@@ -113,7 +112,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "open.node->"
+                                "item_value": "open.node"
                             }
                         ],
                     },
@@ -123,9 +122,7 @@ def run(parameter):
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
+                        "statistics": "None",
                             {
                                 "item_operation": "add",
                                 "item_type": "request_header",
@@ -158,7 +155,7 @@ def run(parameter):
                         "profile_file": {
                             "name": "secy_res",
                             "model": "create",
-                            "file": "testa.html->"
+                            "file": "testa.html"
                         },
                     }
                 ]
