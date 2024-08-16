@@ -64,7 +64,7 @@ class UiVerification:
                                     log_result = "no_set"
                                 else:
                                     log_result = False
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of hit_count or log_number is 0. The mean is: maybe it's a bug.", flush=True)
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of hit_count or log_number is 0. Maybe it's a bug.", flush=True)
                             elif int(hit_count) == int(log_number) and 0 < int(hit_count) <= 2:
                                 # ui日志校验，以server ip为例，在log_query_list.ini中通过log api查找log ui的值
                                 parse = configparser.ConfigParser()
@@ -184,14 +184,14 @@ class UiVerification:
                         log_result = "no_set"
                 
                 if metric_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of ui is {}. The mean is: the metrics match the expected value from test data.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of ui is {}.'.format(metric_result), flush=True)
                 elif metric_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of ui is {}. The mean is: the metrics do not match the expected value from test data.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "metric_result" of ui is {}.'.format(metric_result), flush=True)
 
                 if log_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of ui is {}. The mean is: the logs result match the expected value from test data.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of ui is {}.'.format(log_result), flush=True)
                 elif log_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of ui is {}. The mean is: the logs result do not match the expected value from test data.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The "log_result" of ui is {}.'.format(log_result), flush=True)
             
                 return api_verification_result[0], log_result, metric_result, my_driver
             elif policy_type == "service_chaining":
