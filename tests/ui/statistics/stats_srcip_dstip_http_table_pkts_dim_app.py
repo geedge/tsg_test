@@ -277,10 +277,10 @@ def run(parameter):
         if len(verification_result) != 0:
             analysis = AnalysisResult()
             result = analysis.analysis_result(test_data, [], verification_result)
-            if len(result) == 0:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------The test case is passed.")
-            elif len(result) != 0:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "!!!The test case is failed. The failure reason is: ", result)
+            # if len(result) == 0:
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "------The test case is passed.")
+            # elif len(result) != 0:
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "!!!The test case is failed. The failure reason is: ", result)
 
         # 避免报错:stale element not found
         time.sleep(5)

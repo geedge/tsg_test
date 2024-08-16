@@ -135,11 +135,13 @@ def receive_parameter():
                     # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Test caes response is: {}".format(result), flush=True)
                     # module.run()返回的结果是failure reason，如果是空，则表示测试通过。
                     if len(result) == 0:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                         response_result["code"] = 200
                         response_result["msg"] = "Pass"
                         response_result["data"] = None
                         response_result["success"] = True
                     elif len(result) != 0:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
                         response_result["code"] = 416
                         response_result["msg"] = result
                         response_result["data"] = None

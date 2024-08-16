@@ -153,10 +153,10 @@ def run(parameter):
         # 分析验证结果，并返回给flask
         analysis = AnalysisResult()
         result = analysis.analysis_result(test_data, cfg_list, verification_result)
-        if len(result) == 0:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
-        elif len(result) != 0:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
+        # if len(result) == 0:
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
+        # elif len(result) != 0:
+            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
     
         # 删除配置
         delete = DeletePolicy()
