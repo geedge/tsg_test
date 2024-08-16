@@ -53,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_dstip_http_sub_url_table_all_pkts_dim_client_server_ip",
+                        "name": "stats_srcip_http_sub_url_table_all_pkts_dim_client_server_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_srcip_http_sub_url_table_all_pkts_dim_client_server_ip",
+                        "name": "stats_dstip_http_sub_url_table_all_pkts_dim_client_server_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -95,7 +95,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "http",
                         "object_type": "application",
                         "negate": False
                     }
@@ -223,16 +223,23 @@ def run(parameter):
             cond_status = 0
             if cond_key == "application" or cond_key == "sub_action_override":
                 continue   # 直接跳过
+            cond_status = 0
+            cond_key_out = cond_key.replace("_", " ")
             if len(cond_value) != 0:  # 不为空
                 cond_data = cond_value
                 create_ip = CreateObject(driver)
                 for i in range(len(cond_data)):  # 遍历创建所有condition
-                    element_position_map = get_element_position(cond_key)
+                    if cond_key == "protocol_filed":
+                        tmp_key = cond_data[i]["object_type"]
+                        cond_key_out = tmp_key.replace("_", " ")
+                        element_position_map = get_element_position(tmp_key)
+                    else:
+                        element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key), flush=True)
                     else:
-                        result = "Fail to create {} object.".format(cond_key)
+                        result = "Fail to create {} object.".format(cond_key_out)
                         cond_status = 1
                         break
             if cond_status == 1:   # 创建失败，退出遍历创建
