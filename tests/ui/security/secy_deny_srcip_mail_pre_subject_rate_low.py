@@ -90,6 +90,7 @@ def run(parameter):
                         "select_type": False,
                         "negate": False,
                         "statistics": "None",
+                        "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_subject",
