@@ -39,6 +39,7 @@ def run(parameter):
             "rule_name": "dos_protect_srcip_http_rate_srcip_d3",
             "rule_action": "protect",
             "rule_type": "create",
+            "do_log" : 2,
             "condition": {
                 "source_ip": [
                     {
@@ -80,7 +81,7 @@ def run(parameter):
                     ]
                 }
             ],
-            "app_name": ["http"],
+            "application": ["http"],
             "threshold": {
                 "type": "rate",
                 "rate_threshold": {
@@ -108,8 +109,8 @@ def run(parameter):
                 "clients_end_ip": "1.1.1.1",
                 "servers_start_ip": "2.1.1.1",
                 "servers_end_ip": "2.1.1.2",
-                "m": 1,
-                "d": 1,
+                "m": 2,
+                "d": 2,
                 "yaml_name": "test",
                 "pcap_name": "http"
             },

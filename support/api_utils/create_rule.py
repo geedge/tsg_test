@@ -39,10 +39,14 @@ class CreatePolicyRule:
         else:
             rule_template_dict['rule']['flag'] = None
         
-        action = condition['rule_action_'+str(create_number)]
-        policy_type = condition["policy_type"]
+        temp_rule_action = 'rule_action_'+str(create_number)
+        if temp_rule_action in condition.keys():
+            action = condition[temp_rule_action]
+        else:
+            action = condition["rule_action"]
         rule_template_dict['rule']['action'] = action
         rule_template_dict['rule']['vsys_id'] = vsys_id
+        policy_type = condition["policy_type"]
         rule_template_dict["rule"]["type"] = policy_type
         rule_template_dict['vsys_id'] = vsys_id
         
@@ -116,7 +120,11 @@ class CreatePolicyRule:
             else:
                 rule_template_dict["rule"]["user_region"]["traffic_mirror"] = {"enable":0}
         
-        app_name = condition['application_'+str(create_number)]
+        temp_application = 'application_'+str(create_number)
+        if temp_application in condition.keys():
+            app_name = condition[temp_application]
+        else:
+            app_name = condition['application']
         if len(app_name) > 0:
             app_group_id_list = get_application_id.get_group_id(str(app_name), api_host)
             objects_list = []
@@ -127,7 +135,11 @@ class CreatePolicyRule:
         else:
             rule_template_dict['rule']['application'] = None
             
-        rule_template_dict['rule']['do_log'] = condition['do_log_' + str(create_number)]
+        temp_do_log = 'do_log_' + str(create_number)
+        if temp_do_log in condition.keys():
+            rule_template_dict['rule']['do_log'] = condition[temp_do_log]
+        else:
+            rule_template_dict['rule']['do_log'] = condition['do_log']
         
         # 添加sc逻辑
         if condition["policy_type"] == "service_chaining":
@@ -136,11 +148,22 @@ class CreatePolicyRule:
                 pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, dst_list, path_dict,vsys_id)
             user_region = {"targeted_traffic": "", "sff_profiles": []}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
-            rule_template_dict["rule"]["action"] = condition["rule_action_1"]
-            if len(condition["application_1"]) == 0:
-                user_region["protocol"] = ""
+            temp_rule_action = 'rule_action_'+str(create_number)
+            if temp_rule_action in condition.keys():
+                rule_template_dict["rule"]["action"] = condition[temp_rule_action]
             else:
-                user_region["protocol"] = condition["application_1"][0]
+                rule_template_dict["rule"]["action"] = condition["rule_action"]
+            temp_application = 'application_'+str(create_number)
+            if temp_application in condition.keys():
+                if len(condition[temp_application]) == 0:
+                    user_region["protocol"] = ""
+                else:
+                    user_region["protocol"] = condition[temp_application][0]
+            else:
+                if len(condition["application"]) == 0:
+                    user_region["protocol"] = ""
+                else:
+                    user_region["protocol"] = condition["application"][0]
             user_region["targeted_traffic"] = condition["targeted_traffic"]
             user_region["sff_profiles"].append(create_profile_ids[0]["id"])
             rule_template_dict["rule"]["user_region"] = user_region
@@ -148,27 +171,50 @@ class CreatePolicyRule:
         elif condition["policy_type"] == "statistics":
             user_region = {"protocol":"", "template_id":0}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
-            rule_template_dict["rule"]["action"] = condition["rule_action_1"]
-            if len(condition["application_1"]) == 0:
-                user_region["protocol"] = ""
+            temp_rule_action = 'rule_action_'+str(create_number)
+            if temp_rule_action in condition.keys():
+                rule_template_dict["rule"]["action"] = condition[temp_rule_action]
             else:
-                user_region["protocol"] = condition["application_1"][0]
+                rule_template_dict["rule"]["action"] = condition["rule_action"]
+            temp_application = 'application_'+str(create_number)
+            if temp_application in condition.keys():
+                if len(condition[temp_application]) == 0:
+                    user_region["protocol"] = ""
+                else:
+                    user_region["protocol"] = condition[temp_application][0]
+            else:
+                if len(condition["application"]) == 0:
+                    user_region["protocol"] = ""
+                else:
+                    user_region["protocol"] = condition["application"][0]
             user_region["template_id"] = create_profile_ids[0]["id"]
             rule_template_dict["rule"]["user_region"] = user_region
         # 添加intercept逻辑, 填写和Intercept相关的user_region
         elif condition["policy_type"] == "pxy_intercept":
             user_region = {"protocol": "", "tcp_option_profile": 1}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
-            if len(condition["application_1"]) == 0:
-                user_region["protocol"] = ""
+            temp_application = 'application_'+str(create_number)
+            if temp_application in condition.keys():
+                if len(condition[temp_application]) == 0:
+                    user_region["protocol"] = ""
+                else:
+                    user_region["protocol"] = condition[temp_application][0]
+                    # 当且仅当application=ssl且action=intercept时, user_region包含解密profiles和解密kering
+                    if "ssl" in condition[temp_application][0] and action == "intercept":
+                        user_region["keyring_for_untrusted"] = 0
+                        user_region["keyring_for_trusted"] = 1
+                        user_region["decryption_profile"] = 1
+                        user_region["traffic_mirror"] = {"enable": 0}
             else:
-                user_region["protocol"] = condition["application_1"][0]
-            # 当且仅当application=ssl且action=intercept时, user_region包含解密profiles和解密kering
-            if "ssl" in condition["application_1"][0] and action == "intercept":
-                user_region["keyring_for_untrusted"] = 0
-                user_region["keyring_for_trusted"] = 1
-                user_region["decryption_profile"] = 1
-                user_region["traffic_mirror"] = {"enable": 0}
+                if len(condition["application"]) == 0:
+                    user_region["protocol"] = ""
+                else:
+                    user_region["protocol"] = condition["application"][0]
+                    if "ssl" in condition["application"][0] and action == "intercept":
+                        user_region["keyring_for_untrusted"] = 0
+                        user_region["keyring_for_trusted"] = 1
+                        user_region["decryption_profile"] = 1
+                        user_region["traffic_mirror"] = {"enable": 0}
             rule_template_dict["rule"]["user_region"] = user_region
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":

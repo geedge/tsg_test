@@ -75,8 +75,11 @@ class GetLog:
 
             # 从conditions中获取object_type判断是否存在subscriberid
             # 加script_type判断条件的原因是:ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
-            if script_type == "api" and len(test_data["obj_condition_1"]) > 0 and test_data["obj_condition_1"][0][
-                "attribute_name"] == "ATTR_SUBSCRIBER_ID":
+            if "obj_condition_1" in test_data.keys():
+                temp_obj_condition = test_data["obj_condition_1"]
+            elif "obj_condition" in test_data.keys():
+                temp_obj_condition = test_data["obj_condition"]
+            if script_type == "api" and len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
                 log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
@@ -94,7 +97,11 @@ class GetLog:
             if script_type == "ui":
                 log_query_params = test_data['log_query_param']
             elif script_type == "api":
-                log_query_params = test_data['log_query_param_' + str(log_index)]
+                temp_log_query_param = 'log_query_param_' + str(log_index)
+                if temp_log_query_param in test_data.keys():
+                    log_query_params = test_data[temp_log_query_param]
+                else:
+                    log_query_params = test_data['log_query_param']
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare log with test data.", flush=True)
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
@@ -210,7 +217,11 @@ class GetLog:
             if script_type == "ui":
                 counter = test_data['counters']
             elif script_type == "api":
-                counter = test_data['counters_' + str(index)]
+                temp_counters = 'counters_' + str(index)
+                if temp_counters in test_data.keys():
+                    counter = test_data[temp_counters]
+                else:
+                    counter = test_data['counters']
             result_len = len(response['data']['result'])
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare metric with test data.", flush=True)
             # 需要hits == 0时，则验证，验证通过metric置为true
@@ -671,14 +682,14 @@ class GetLog:
             byte_value = sc_expected_metric["total_bytes"]
             pkt_value = sc_expected_metric["total_packets"]
             if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dest_ips_list:
-                if len(sc_info["application_1"]) > 0 :
-                    if sc_info["application_1"][0] == "http" or sc_info["application_1"][0] == "ssl":
+                if len(sc_info["application"]) > 0 :
+                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
-                    elif sc_info["application_1"][0] == "ftp":
+                    elif sc_info["application"][0] == "ftp":
                         lost_pkt = 4
                         lost_byte = 266
-                    elif sc_info["application_1"][0] == "mail":
+                    elif sc_info["application"][0] == "mail":
                         lost_pkt = 15
                         lost_byte = 1273
                     pkt_value -= lost_pkt
@@ -703,14 +714,14 @@ class GetLog:
                 else:
                     metric_result = False
             elif sc_info["sf_method"] == "layer2_switch":
-                if len(sc_info["application_1"]) > 0 :
-                    if sc_info["application_1"][0] == "http" or sc_info["application_1"][0] == "ssl":
+                if len(sc_info["application"]) > 0 :
+                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
-                    elif sc_info["application_1"][0] == "ftp":
+                    elif sc_info["application"][0] == "ftp":
                         lost_pkt = 4
                         lost_byte = 266
-                    elif sc_info["application_1"][0] == "mail":
+                    elif sc_info["application"][0] == "mail":
                         lost_pkt = 15
                         lost_byte = 1273
                     pkt_value -= lost_pkt

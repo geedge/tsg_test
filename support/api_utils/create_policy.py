@@ -34,8 +34,12 @@ class CreatePolicy:
         for i in range(rule_num):
             # 第i次循环，创建第i组object、profile和rule
             create_number = i + 1
-            object_condition_key = "obj_condition_{}".format(create_number)
-            object_condition_value = test_data[object_condition_key]
+            
+            temp_obj_condition = "obj_condition_{}".format(create_number)
+            if temp_obj_condition in test_data.keys():
+                object_condition_value = test_data[temp_obj_condition]
+            else:
+                object_condition_value = test_data["obj_condition"]
             
             # 创建object
             create_object = CreateObject()
@@ -61,10 +65,14 @@ class CreatePolicy:
                 create_geo_name_ids.extend(geo_name_ids)
 
             # 创建profile
-            profile_condition_key = "profile_condition_{}".format(create_number)
-            if (profile_condition_key in test_data.keys()) and len(test_data[profile_condition_key]) > 0:    # 含有profile_condition_ key 并且非空
+            
+            temp_profile_condition = "profile_condition_{}".format(create_number)
+            if temp_profile_condition in test_data.keys():
+                profile_condition_value = test_data[temp_profile_condition]
+            else:
+                profile_condition_value = test_data["profile_condition"]
+            if len(profile_condition_value) > 0:
                 create_profile = CreateProfile()
-                profile_condition_value = test_data[profile_condition_key]
                 for profile_data in profile_condition_value:
                     create_profile_ids_dict = create_profile.create_profile_from_template(template_path, profile_data, token, api_server, vsys_id)
                     create_profile_ids.append(create_profile_ids_dict)
@@ -74,7 +82,7 @@ class CreatePolicy:
             # 创建rule
             create_rule = CreatePolicyRule()
             policy_id_list = create_rule.create_rule_from_template(token, src_list, dst_list, filter_list, flag_list, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
-            policy_id = list(policy_id_list[0].values())[0]
+            # policy_id = list(policy_id_list[0].values())[0]
             if len(create_profile_ids) > i:
                 if test_data["policy_type"] == "statistics":
                     temp_info = {}
@@ -99,7 +107,11 @@ class CreatePolicy:
                             sc_info = {}
                             sc_info["rule_id"] = policy_sc_sff_sf_info[0]["policy_id"]
                             sc_info["targeted_traffic"] = test_data["targeted_traffic"]
-                            sc_info["application_1"] = test_data["application_1"]
+                            temp_application = 'application_'+str(create_number)
+                            if temp_application in test_data.keys():
+                                sc_info["application"] = test_data[temp_application]
+                            else:
+                                sc_info["application"] = test_data['application']
                             sc_info["sff_id"] = sff["id"]
                             sc_info["type"] = sff["sff_info"]["type"]
                             sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["id"]
@@ -135,8 +147,13 @@ class CreatePolicy:
     
     def generate_random_ip(self, config, run_env, vsys_id):
         # statistics中将ip改为随机
-        if "obj_condition_1" in config.keys():
-            for obj in config["obj_condition_1"]:
+        temp_obj_condition = "obj_condition_1"
+        if temp_obj_condition in config.keys():
+            object_condition_value = config[temp_obj_condition]
+        else:
+            object_condition_value = config["obj_condition"]
+        if len(object_condition_value) > 0:
+            for obj in object_condition_value:
                 if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
                     src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
                     if "default" in src_ip:
@@ -200,8 +217,13 @@ def generate_testdata(parameter, test_data):
     config = test_data
     vsys_id = str(parameter["vsys_id"])
     run_env = str(parameter["env"])
-    if "obj_condition_1" in config.keys():
-        for obj in config["obj_condition_1"]:
+    temp_obj_condition = "obj_condition_1"
+    if temp_obj_condition in config.keys():
+        object_condition_value = config[temp_obj_condition]
+    else:
+        object_condition_value = config["obj_condition"]
+    if len(object_condition_value) > 0:
+        for obj in object_condition_value:
             if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
                 src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
                 traffic_replace_ip = 0
@@ -301,7 +323,6 @@ def replace_paras_api(parameter):
     conf_path = os.path.join(workdir, "configuration_file.ini")
     parse = configparser.ConfigParser()
     parse.read(conf_path, encoding="utf-8")
-
     parameter["username"] = parse.get("account", "username")
     parameter["password"] = parse.get("account", "password")
     parameter["api_server"] = parse.get("tsg_url", "login_url")
@@ -311,7 +332,6 @@ def replace_paras_api(parameter):
     parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
     parameter["vsys_id"] = parse.get("vsys", "id_for_api")
     parameter["is_log"] = parse.get("is_log", "api")
-
     #project_path = parse.get("root_path", "path")
     #parameter["root_path"] = project_path
     #print(parameter)
