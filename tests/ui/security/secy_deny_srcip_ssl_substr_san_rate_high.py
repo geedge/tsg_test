@@ -93,7 +93,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "san",
-                                "item_value": "node->"
+                                "item_value": "node"
                             }
                         ],
                     }

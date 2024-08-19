@@ -90,7 +90,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "Failed",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"}],
             "traffic": {
                 "protocol": "http",

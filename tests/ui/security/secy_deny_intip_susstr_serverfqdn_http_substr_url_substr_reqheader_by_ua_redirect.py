@@ -87,7 +87,6 @@ def run(parameter):
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
                         "items": [
                             {
                                 "item_operation": "add",
@@ -108,7 +107,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "open.node->"
+                                "item_value": "open.node"
                             }
                         ],
                     },
@@ -118,8 +117,7 @@ def run(parameter):
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
+                        "statistics": "None",
                         "item": [
                             {
                                 "item_operation": "add",

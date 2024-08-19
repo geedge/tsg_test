@@ -93,7 +93,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "*/english.txt->"
+                                "item_value": "*/english.txt"
                             }
                         ],
                     }
