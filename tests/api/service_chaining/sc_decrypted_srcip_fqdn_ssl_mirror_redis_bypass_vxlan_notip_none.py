@@ -19,7 +19,7 @@ def run(parameter):
         # 测试数据
         test_data = {
             "is_multi_priority": False,
-            "ruleNum": 1,
+            "rule_num": 1,
             "policy_type": "service_chaining",
             "rule_action_1": "service_chaining",
             "targeted_traffic": "decrypted",
