@@ -57,6 +57,7 @@ def run(parameter):
                     {
                         "name": "stats_srcip_http_table_uniq_c_ip_obj_list_dim_c_ip_obj_list",
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
@@ -73,6 +74,7 @@ def run(parameter):
                     {
                         "name": "stats_dstip_http_table_uniq_c_ip_obj_list_dim_c_ip_obj_list",
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
@@ -115,10 +117,10 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "client_ip_object_list:UNIQUE_COUNT:UNIQUECOUNT(client_ip_object_list)"
+                                "client_ip_object_list:UNIQUE_COUNT:UNIQUECOUNT(Client IP Object List)"
                             ],
                             "dimensions": ["client_ip_object_list"],
-                            "order_by": "UNIQUECOUNT(client_ip_object_list)",
+                            "order_by": "UNIQUECOUNT(Client IP Object List)",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "max_out_size": "0"
