@@ -78,8 +78,8 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": [],
-            "app_name_2": [],
+            "application_1": [],
+            "application_2": [],
             "expected_return": "百度一下",
             "counters_1": {"hits": "many"},
             "counters_2": {"hits": 0},

@@ -92,8 +92,8 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": [],
-            "app_name_2": [],
+            "application_1": [],
+            "application_2": [],
             "expected_return": "POST",
             "counters_1": {"hits": 0},
             "counters_2": {"hits": "many"},

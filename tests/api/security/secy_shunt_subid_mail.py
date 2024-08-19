@@ -43,7 +43,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["mail"],
+            "application_1": ["mail"],
             "expected_return": "Ok",
             "counters_1": {"hits": 1},
             "log_query_param_1": [],

@@ -48,8 +48,8 @@ def run(parameter):
                 }
             ],
             "obj_condition_2": [],
-            "app_name_1": ["ssl"],
-            "app_name_2": ["ssl"],
+            "application_1": ["ssl"],
+            "application_2": ["ssl"],
             "expected_return": "SSL_ERROR_SYSCALL",
             "counters_1": {"hits": 0},
             "counters_2": {"hits": 1},

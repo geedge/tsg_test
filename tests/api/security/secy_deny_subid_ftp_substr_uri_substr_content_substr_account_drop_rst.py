@@ -76,7 +76,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ftp"],
+            "application_1": ["ftp"],
             "expected_return": "timed out",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],

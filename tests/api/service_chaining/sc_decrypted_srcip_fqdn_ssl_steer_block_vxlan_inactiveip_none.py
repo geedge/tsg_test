@@ -91,7 +91,7 @@ def run(parameter):
                     ]
                 }               
             ],
-            "app_name_1": ["ssl"],
+            "application_1": ["ssl"],
             "expected_return":"",
             "traffic":{
                 "protocol": "ssl",

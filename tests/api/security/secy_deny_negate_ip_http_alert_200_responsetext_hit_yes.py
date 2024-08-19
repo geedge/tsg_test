@@ -47,7 +47,7 @@ def run(parameter):
                 ]
             }
             ],
-            "app_name_1": ["http"],
+            "application_1": ["http"],
             "expected_return": "200-OK-TEXT",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"open.node.com"}],

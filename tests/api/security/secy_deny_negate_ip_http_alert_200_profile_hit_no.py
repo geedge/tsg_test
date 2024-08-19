@@ -54,7 +54,7 @@ def run(parameter):
                 "return_data": 1
                 }
             ],
-            "app_name_1": ["http"],
+            "application_1": ["http"],
             "expected_return": "POST",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],

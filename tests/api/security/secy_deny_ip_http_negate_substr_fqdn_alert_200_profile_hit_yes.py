@@ -70,7 +70,7 @@ def run(parameter):
                 "return_data": 1
                 }
             ],
-            "app_name_1": ["http"],
+            "application_1": ["http"],
             "expected_return": "404 Page Not Found",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [],

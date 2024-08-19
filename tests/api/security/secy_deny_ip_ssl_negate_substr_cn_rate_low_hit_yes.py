@@ -63,7 +63,7 @@ def run(parameter):
             ]
             }
             ],
-            "app_name_1": ["ssl"],
+            "application_1": ["ssl"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"open.node.com"}],

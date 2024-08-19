@@ -52,11 +52,11 @@ class PolicyVerify:
             verify_dst_ip["attribute_value"]["ip"] = verify_attribute_dict["dst_ip"]
             verify_list_dict["verify_list"][0]["verify_session"]["attributes"].append(verify_dst_ip)
         # 重组查询 application
-        if condition["app_name_1"] != []:
-            app_list = get_application_id.get_app_id(str(condition["app_name_1"]), host_api)
+        if condition["application_1"] != []:
+            app_list = get_application_id.get_app_id(str(condition["application_1"]), host_api)
             verify_app["attribute_value"]["numeric"] = app_list[0]
             appId = app_list[0]
-            appName = str(condition["app_name_1"][0])
+            appName = str(condition["application_1"][0])
         verify_list_dict["verify_list"][0]["verify_session"]["attributes"].append(verify_app)
         # 重组 filter
         for obj_cond in condition["obj_condition_1"]:    # 遍历添加filter条件

@@ -91,7 +91,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ssl"],
+            "application_1": ["ssl"],
             "expected_return": "baidu",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],

@@ -43,7 +43,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ftp"],
+            "application_1": ["ftp"],
             "expected_return": "auto",
             "counters_1": {"hits": 1},
             "log_query_param_1": [],

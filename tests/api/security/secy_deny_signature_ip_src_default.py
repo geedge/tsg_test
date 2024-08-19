@@ -44,7 +44,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ip_src"],
+            "application_1": ["ip_src"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_ip","query_value":"8.8.8.8"}],

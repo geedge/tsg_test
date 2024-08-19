@@ -60,7 +60,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ssl"],
+            "application_1": ["ssl"],
             "expected_return": "SSL_ERROR_SYSCALL",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],

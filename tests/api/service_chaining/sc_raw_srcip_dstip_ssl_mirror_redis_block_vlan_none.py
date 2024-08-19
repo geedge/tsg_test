@@ -94,7 +94,7 @@ def run(parameter):
                     ]
                 }               
             ],
-            "app_name_1": ["ssl"],
+            "application_1": ["ssl"],
             "traffic":{
                 "protocol": "",
                 "type": "trex",

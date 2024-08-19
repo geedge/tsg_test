@@ -59,7 +59,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["dns"],
+            "application_1": ["dns"],
             "expected_return": "www.example.com",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],

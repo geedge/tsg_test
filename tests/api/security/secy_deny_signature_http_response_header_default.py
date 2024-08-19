@@ -44,7 +44,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["http_response_header"],
+            "application_1": ["http_response_header"],
             "expected_return": "timed out",
             "counters_1": {"hits": "many"},
             "log_query_param_1": [{"query_field_key":"server_fqdn","query_value":"www.yumi.com"}],

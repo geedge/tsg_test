@@ -60,7 +60,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["ssl"],
+            "application_1": ["ssl"],
             "expected_return": "SSL CA 2018",
             "counters_1": {},
             "log_query_param_1": [],

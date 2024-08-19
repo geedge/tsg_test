@@ -112,7 +112,7 @@ def run(parameter):
             ]
             }
             ],
-            "app_name_1": ["http"],
+            "application_1": ["http"],
             "expected_return": "403",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"www.example.com"}],

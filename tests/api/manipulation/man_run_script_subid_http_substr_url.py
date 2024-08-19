@@ -68,7 +68,7 @@ def run(parameter):
                 "return_data": 1
                 }
             ],
-            "app_name_1": ["http"],
+            "application_1": ["http"],
             "expected_return": "nihao",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],

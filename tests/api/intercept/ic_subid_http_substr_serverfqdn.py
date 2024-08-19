@@ -60,7 +60,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["http"],
+            "application_1": ["http"],
             "expected_return": "玉米网",
             "counters_1": {},
             "log_query_param_1": [],

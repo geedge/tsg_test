@@ -99,7 +99,7 @@ def run(parameter):
                     ]
                 }
             ],
-            "app_name_1": [],
+            "application_1": [],
             "expected_return": "POST",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key": "http_host", "query_value": "open.node.com"}],

@@ -44,7 +44,7 @@ def run(parameter):
                 ]
                 }
             ],
-            "app_name_1": ["dns"],
+            "application_1": ["dns"],
             "expected_return": "facebook",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],

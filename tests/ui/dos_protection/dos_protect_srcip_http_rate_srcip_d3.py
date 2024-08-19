@@ -32,7 +32,7 @@ def run(parameter):
         start_time = time.time()
         
         # 测试数据
-        test_data = {
+        ui_test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "dos_protection",
@@ -42,7 +42,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "secy_srcip",
+                        "name": "dos_srcip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -55,43 +55,51 @@ def run(parameter):
                         ]
                     }
                 ],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [],
-                "external_port": [],
-                "source_geography": [],
-                "destination_geography": [],
-                "sub_id": [],
-                "device": [],
-                "tunnel": [],
-                "tunnel_level": [],
-                "flag": [],
                 "application": [
                     {
-                        "name": "http", #
+                        "name": "http",
                         "object_type": "application",
                         "negate": False
                     }
-                ],
-                "server_fqdn": [],
-                "protocol_filed": [],
-                "sub_action_override": True,
-                "sub_action": [
-                    {
-                        "type": "rate_limit",
-                        "rate_value": "1000000",
-                    }
-                ],
-                "packet_capture": []
+                ]
             },
-            "profile": [],
+            "obj_condition": [
+                {
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "object_type": "ip",
+                    "object_sub_type": "ip",
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "ip_address": "default",
+                                    "port_range": "0-65535"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "app_name": ["http"],
+            "threshold": {
+                "type": "rate",
+                "rate_threshold": {
+                    "group_by": "source_ip",
+                    "request_per_period": 1,
+                    "counting_period": "10s"
+                }
+            },
+            "mitigation": {
+                "behavior": "deny",
+                "timeout": "10s"
+            },
             "expected_return": "",
             "counters": {"hits": 1},
             "log_query_param": [
-                {"query_field_key":"http_host", "query_value": "open.node.com"}
+                
+            ],
+            "dos_query_param": [
+                
             ],
             "traffic": {
                 "protocol": "",
@@ -137,23 +145,23 @@ def run(parameter):
             log_in = LogIn()
             pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
             token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-            test_data["token"] = token
+            ui_test_data["token"] = token
 
             # name_list汇总
             name_list = [
                 {
-                    "type": test_data["policy_type"],
-                    "name": test_data["rule_name"]
+                    "type": ui_test_data["policy_type"],
+                    "name": ui_test_data["rule_name"]
                 },
                 {
-                    "type": test_data["condition"]["source_ip"][0]['object_type'],
-                    "name": test_data["condition"]["source_ip"][0]['name']
+                    "type": ui_test_data["condition"]["source_ip"][0]['object_type'],
+                    "name": ui_test_data["condition"]["source_ip"][0]['name']
                 }
             ]
             
             # 添加定位库集合
             test_rule_element_position = {}
-            if test_data["policy_type"] == "dos_protection":
+            if ui_test_data["policy_type"] == "dos_protection":
                 test_ip_object_element_position = {
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -254,8 +262,8 @@ def run(parameter):
                 }
             
             # 创建object
-            if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
-                ip_data = test_data["condition"]["source_ip"]
+            if "source_ip" in ui_test_data["condition"] and len(ui_test_data["condition"]["source_ip"]) != 0:
+                ip_data = ui_test_data["condition"]["source_ip"]
                 create_ip = CreateObject(driver)
                 for i in range(len(ip_data)):
                     create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
@@ -268,7 +276,7 @@ def run(parameter):
             # 创建rule
             if create_ip_code == 200:
                 create_rule = CreateRule(driver)
-                create_rule_code = create_rule.create(test_data, test_rule_element_position)
+                create_rule_code = create_rule.create(ui_test_data, test_rule_element_position)
                 if create_rule_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
                 elif create_rule_code != 200:
@@ -277,12 +285,12 @@ def run(parameter):
             # 触发流量验证
             if create_rule_code == 200:
                 search_rule = SearchRule(driver)
-                search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+                search_rule_code, rule_id = search_rule.get_rule_id(ui_test_data["policy_type"], ui_test_data["rule_name"], test_rule_element_position)
                 if search_rule_code == 200:
                     # rule_id = search_rule.get_rule_id()
-                    test_data["rule_id"] = rule_id
+                    ui_test_data["rule_id"] = rule_id
                     verify = Verification()
-                    verification_result = verify.verification(driver, parameter, test_data, [], test_rule_element_position)
+                    verification_result = verify.verification(driver, parameter, ui_test_data, [], test_rule_element_position)
                     if len(verification_result) == 4:
                         driver = verification_result[3]
                     elif len(verification_result) == 5:
@@ -291,12 +299,12 @@ def run(parameter):
             # 分析验证结果，并返回给flask
             if len(verification_result) != 0:
                 analysis = AnalysisResult()
-                result = analysis.analysis_result(test_data, [], verification_result)
+                result = analysis.analysis_result(ui_test_data, [], verification_result)
             
             # 删除rule
             if create_rule_code == 200:
                 search_rule = SearchRule(driver)
-                search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+                search_rule_code, first_row_checkbox_element = search_rule.search(ui_test_data["policy_type"], ui_test_data["rule_name"], test_rule_element_position)
                 if search_rule_code == 200:
                     delete_rule = DeleteRule(driver)
                     delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)

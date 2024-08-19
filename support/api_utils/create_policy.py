@@ -99,7 +99,7 @@ class CreatePolicy:
                             sc_info = {}
                             sc_info["rule_id"] = policy_sc_sff_sf_info[0]["policy_id"]
                             sc_info["targeted_traffic"] = test_data["targeted_traffic"]
-                            sc_info["app_name_1"] = test_data["app_name_1"]
+                            sc_info["application_1"] = test_data["application_1"]
                             sc_info["sff_id"] = sff["id"]
                             sc_info["type"] = sff["sff_info"]["type"]
                             sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["id"]
