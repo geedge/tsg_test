@@ -57,9 +57,9 @@ class TriggerTraffic:
         else:
             if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or  (test_data["policy_type"] == "monitor" and test_data["is_mirror"] == "on") :
                 test_data = self.replace_trex_ip(test_data, script_type)
-            if len(test_data["traffic"]["protocol"]) > 0:
+            if len(test_data["traffic"]["protocol"]) > 0 and "command" in test_data["traffic"]:
                 temp_data = test_data["traffic"]["command"]
-            elif len(test_data["traffic"]["protocol"]) == 0:
+            elif len(test_data["traffic"]["protocol"]) == 0 or "command" not in test_data["traffic"]: 
                 temp_data = test_data["traffic"]
             if test_data["traffic"]["protocol"] == "http":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic by {}.".format(test_data["traffic"]["type"]), flush=True)
@@ -92,6 +92,7 @@ class TriggerTraffic:
             elif test_data["traffic"]["protocol"] == "quic":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate quic traffic by client.", flush=True)
                 result = quic_player.send_quic_traffic(temp_data, script_type, debug_flag)
+                result = str(result)
             elif test_data["traffic"]["protocol"] == "mpls":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mpls traffic by tcpreplay.", flush=True)
                 if test_data["traffic"]["type"] == "one_label":
