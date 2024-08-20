@@ -99,7 +99,19 @@ def run(parameter):
                 
             ],
             "dos_query_param": [
-                {"attack_type": "tcp_syn_flood"}
+                {
+                    "query_field_key": "attack_type",
+                    "query_value": "custom_network_attack"
+                },
+                {
+                    "query_field_key": "packets",
+                    "query_value": 1
+                },
+                {
+                    "query_field_key": "bytes",
+                    "query_value": 698
+                }
+                
             ],
             "traffic": {
                 "protocol": "",
@@ -108,7 +120,7 @@ def run(parameter):
                 "clients_end_ip": "1.1.1.1",
                 "servers_start_ip": "2.1.1.1",
                 "servers_end_ip": "2.1.1.2",
-                "m": 1,
+                "m": 2,
                 "d": 2,
                 "yaml_name": "test",
                 "pcap_name": "http"
