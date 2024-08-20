@@ -54,6 +54,7 @@ def run(parameter):
                         "name": "stats_srcip_ftp_table_all_bytes_dim_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {
@@ -70,6 +71,7 @@ def run(parameter):
                         "name": "stats_dstip_ftp_table_all_bytes_dim_c_ip_s_ip",
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {

@@ -56,6 +56,7 @@ def run(parameter):
                         "name": "stats_srcip_http_bar_sessions_dim_client_ip",
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {
@@ -72,6 +73,7 @@ def run(parameter):
                         "name": "stats_dstip_http_bar_sessions_dim_client_ip",
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {

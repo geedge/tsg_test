@@ -325,25 +325,25 @@ class CreateRule:
                                 else:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == "http_signature":
-                            for item_dict in protocol_field_data[x]["item"]:
-                                if item_dict["item_type"] == "request_header":
-                                    self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
-                                elif item_dict["item_type"] == "response_header":
-                                    self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
-                                else:
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
+                            item_dict = protocol_field_data[x]["item"][0]
+                            if item_dict["item_type"] == "request_header":
+                                self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
+                            elif item_dict["item_type"] == "response_header":
+                                self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
+                            else:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == "keywords":
-                            for item_dict in protocol_field_data[x]["item"]:
-                                if item_dict["item_type"] == "request_body":
-                                    self.add_protocol_field(protocol_field_data, "RequestBody", create_element_position, temp)
-                                elif item_dict["item_type"] == "response_body":
-                                    self.add_protocol_field(protocol_field_data, "ResponseBody", create_element_position, temp)
-                                elif item_dict["item_type"] == "ftp_content":
-                                    self.add_protocol_field(protocol_field_data, "FtpContent", create_element_position, temp)
-                                elif item_dict["item_type"] == "mail_subject":
-                                    self.add_protocol_field(protocol_field_data, "MailSubject", create_element_position, temp)
-                                else:
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
+                            item_dict = protocol_field_data[x]["item"][0]
+                            if item_dict["item_type"] == "request_body":
+                                self.add_protocol_field(protocol_field_data, "RequestBody", create_element_position, temp)
+                            elif item_dict["item_type"] == "response_body":
+                                self.add_protocol_field(protocol_field_data, "ResponseBody", create_element_position, temp)
+                            elif item_dict["item_type"] == "ftp_content":
+                                self.add_protocol_field(protocol_field_data, "FtpContent", create_element_position, temp)
+                            elif item_dict["item_type"] == "mail_subject":
+                                self.add_protocol_field(protocol_field_data, "MailSubject", create_element_position, temp)
+                            else:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == "account":
                             for item_dict in protocol_field_data[x]["items"]:
                                 if item_dict["item_type"] == "ftp_account":
@@ -643,8 +643,11 @@ class CreateRule:
                     self.driver.find_element(By.ID,create_element_position["policyRulePage_addSFFProfile_posId"]).click()
                     #在侧滑框中搜索sff并选中
                     for sff in sff_data:
+                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"]).click()
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"]).send_keys(sff["name"])
+                        time.sleep(0.5)
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"]).send_keys(Keys.ENTER)
+                        time.sleep(1)
                         selectSFFXpath = create_element_position["policyRulePage_selectSFFProfile_posXpath"].format(replaceValue=sff["name"])
                         self.driver.find_element(By.XPATH,selectSFFXpath).click()
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_closeSFFProfile_posXpath"]).click()

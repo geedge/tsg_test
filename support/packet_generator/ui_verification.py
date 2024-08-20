@@ -311,7 +311,11 @@ class UiVerification:
                                     else:
                                         metric_result = False
                                 else:
-                                    metric_result = False           
+                                    metric_result = False   
+                if metric_result == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining ui is passed", flush=True)  
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining ui is failed", flush=True)      
                 if int(is_log) == 1:
                     # 跳转至session record路径
                     sc_rule_id = int(test_data["rule_id"])
@@ -424,6 +428,10 @@ class UiVerification:
                                 log_result = True
                         else:
                                 log_result = False
+                    if log_result == True:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining log is passed", flush=True)    
+                    else:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining log is failed", flush=True)
                 return api_verification_result[0], log_result, metric_result, my_driver
     
     def extract_value(self, type, value):

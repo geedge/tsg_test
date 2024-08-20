@@ -57,6 +57,7 @@ def run(parameter):
                     {
                         "name": "stats_dstip_http_table_uniq_c_ip_dim_c_ip",
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
@@ -69,7 +70,21 @@ def run(parameter):
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [],
+                "destination_ip": [
+                    {
+                        "name": "stats_dstip_http_sub_url_table_all_pkts_dim_client_server_ip",
+                        "object_type": "ip",
+                        "statistics_option": "Brief",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "2.1.1.3",
+                            },
+                        ]
+                    }],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],

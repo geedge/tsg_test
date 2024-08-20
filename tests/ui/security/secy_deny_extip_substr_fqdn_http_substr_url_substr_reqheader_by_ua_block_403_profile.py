@@ -163,7 +163,8 @@ def run(parameter):
             },
             "expected_return": "403",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
+            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},
+                                {"query_field_key": "http_user_agent", "query_value": "curl/7.61.1"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
@@ -179,29 +180,29 @@ def run(parameter):
         # name_list汇总
         name_list = [
             {
-                "type": "security",
-                "name": "secy_deny_extip_substr_serverfqdn_http_substr_url_substr_reqheader_by_ua_block_403_profile"
+                "type": test_data["policy_type"],
+                "name": test_data["rule_name"]
             },
             {
-                "type": "ip",
-                "name": "secy_extip"
+                "type": test_data["condition"]["external_ip"][0]['object_type'],
+                "name": test_data["condition"]["external_ip"][0]['name']
             },
             {
-                "type": "fqdn",
-                "name": "secy_fqdn"
+                "type": test_data["condition"]["server_fqdn"][0]['object_type'],
+                "name": test_data["condition"]["server_fqdn"][0]['name']
             },
             {
-                "type": "url",
-                "name": "secy_url"
+                "type": test_data["condition"]["protocol_filed"][0]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][0]['name']
             },
             {
-                "type": "http_signature",
-                "name": "secy_http_sig"
+                "type": test_data["condition"]["protocol_filed"][1]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][1]['name']
             },
             {
-                "type": "response_page",
-                "name": "secy_respage"
-            }
+                "type": test_data["action_parameter"]["response_page"][0]['profile_type'],
+                "name": test_data["action_parameter"]["response_page"][0]['profile_file']['name']
+            },
         ]
         
         # 添加定位库集合

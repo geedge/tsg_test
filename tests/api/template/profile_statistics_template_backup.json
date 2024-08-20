@@ -1,0 +1,69 @@
+{
+    "statistics_template": {
+        "name": "test",
+        "id": "",
+        "dataview": {
+            "charts": [
+                {
+                    "name": "Bytes Distributed by Client IP",
+                    "id": "",
+                    "op": "add",
+                    "display": {
+                        "page_x": "",
+                        "page_y": "",
+                        "height": "",
+                        "width": "",
+                        "type": "table",
+                        "table_type": "regular"
+                    },
+                    "query": {
+                        "sql": "",
+                        "source": "statistics_rule",
+                        "metrics": [
+                            {
+                                "source_columns": [
+                                    "bytes"
+                                ],
+                                "function": {
+                                    "name": "SUM",
+                                    "expression": "",
+                                    "variables": [
+
+                                    ]
+                                },
+                                "alias": "Bytes",
+                                "unit": "bytes"
+                            }
+                        ],
+                        "dimensions": [
+                            {
+                                "source_columns": [
+                                    "client_ip"
+                                ],
+                                "function": {
+                                    "name": "",
+                                    "expression": "",
+                                    "variables": [
+
+                                    ]
+                                },
+                                "alias": "Client IP",
+                                "is_drilldown": 0
+                            }
+                        ],
+                        "order_by": "Bytes",
+                        "limit": "100",
+                        "series_limit": ""
+                    },
+                    "threshold": {
+                        "in_bytes": 10,
+                        "out_bytes": 10
+                    }
+                }
+            ]
+        },
+        "vsys_id": 6
+    },
+    "return_data": 1,
+    "vsys_id": 6
+}
