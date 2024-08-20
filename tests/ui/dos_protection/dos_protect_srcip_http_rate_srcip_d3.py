@@ -96,22 +96,34 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": 1},
             "log_query_param": [
-                
-            ],
-            "dos_query_param": [
                 {
                     "query_field_key": "attack_type",
                     "query_value": "custom_network_attack"
                 },
                 {
+                    "query_field_key": "sessions",
+                    "query_value": 2
+                },
+                {
+                    "query_field_key": "sessions/s",
+                    "query_value": 0
+                },
+                {
                     "query_field_key": "packets",
+                    "query_value": 8
+                },
+                {
+                    "query_field_key": "packets/s",
                     "query_value": 1
                 },
                 {
                     "query_field_key": "bytes",
-                    "query_value": 698
+                    "query_value": 1376
+                },
+                {
+                    "query_field_key": "bits/s",
+                    "query_value": "1.83 K"
                 }
-                
             ],
             "traffic": {
                 "protocol": "",
@@ -120,8 +132,8 @@ def run(parameter):
                 "clients_end_ip": "1.1.1.1",
                 "servers_start_ip": "2.1.1.1",
                 "servers_end_ip": "2.1.1.2",
-                "m": 2,
-                "d": 2,
+                "m": 1,
+                "d": 5,
                 "yaml_name": "test",
                 "pcap_name": "http"
             },
@@ -328,14 +340,6 @@ def run(parameter):
         # 删除配置
         delete = DeletePolicy()
         delete.delete_policy_by_name(token, parameter, name_list)
-        # 测试结束后恢复网卡状态，让ui网卡恢复默认up，api网卡恢复默认down
-        # parse = configparser.ConfigParser()
-        # parse_dir = os.path.join("configuration_file.ini")
-        # parse.read(parse_dir, encoding="utf-8")
-        # api_intf = parse.get("test_pc", "api_intf")
-        # ui_intf = parse.get("test_pc", "ui_intf")
-        # switch = SwitchIntf()
-        # switch.switch_intf(ui_intf, api_intf)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
