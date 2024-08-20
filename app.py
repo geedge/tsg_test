@@ -139,7 +139,7 @@ def receive_parameter():
                     if len(result) == 0:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                         response_result["code"] = 200
-                        response_result["msg"] = "Pass"
+                        response_result["msg"] = "pass"
                         response_result["data"] = None
                         response_result["success"] = True
                     elif len(result) != 0:

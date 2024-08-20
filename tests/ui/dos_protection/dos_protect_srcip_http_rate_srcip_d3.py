@@ -32,7 +32,7 @@ def run(parameter):
         start_time = time.time()
         
         # 测试数据
-        ui_test_data = {
+        test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "dos_protection",
@@ -117,52 +117,34 @@ def run(parameter):
             "token": ""
         }
         
-        # 获取网卡
-        parse = configparser.ConfigParser()
-        parse_dir = os.path.join("configuration_file.ini")
-        parse.read(parse_dir, encoding="utf-8")
-        api_intf = parse.get("test_pc", "api_intf")
-        ui_intf = parse.get("test_pc", "ui_intf")
-        
-        parameter_reinitialization = False
-        if parameter["script_type"] == "all":
-            parameter_reinitialization = True
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        test_data["token"] = token
         
         if parameter["script_type"] == "ui" or parameter["script_type"] == "all":
-            # script_type为all时，需要单独对参数进行初始化
-            if parameter_reinitialization == True:
-                parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_ui_with_traffic")
-                parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
-                parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
-                parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
-                parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
-                parameter["is_log"] = parse.get("is_log", "ui")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
             
             # 环境初始化
             support.ui_utils.env.initiate_selenium_request()
             driver = support.ui_utils.env.my_driver()
             support.ui_utils.env.setup()
-            
-            log_in = LogIn()
-            pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-            token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-            ui_test_data["token"] = token
 
             # name_list汇总
             name_list = [
                 {
-                    "type": ui_test_data["policy_type"],
-                    "name": ui_test_data["rule_name"]
+                    "type": test_data["policy_type"],
+                    "name": test_data["rule_name"]
                 },
                 {
-                    "type": ui_test_data["condition"]["source_ip"][0]['object_type'],
-                    "name": ui_test_data["condition"]["source_ip"][0]['name']
+                    "type": test_data["condition"]["source_ip"][0]['object_type'],
+                    "name": test_data["condition"]["source_ip"][0]['name']
                 }
             ]
             
             # 添加定位库集合
             test_rule_element_position = {}
-            if ui_test_data["policy_type"] == "dos_protection":
+            if test_data["policy_type"] == "dos_protection":
                 test_ip_object_element_position = {
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -263,8 +245,8 @@ def run(parameter):
                 }
             
             # 创建object
-            if "source_ip" in ui_test_data["condition"] and len(ui_test_data["condition"]["source_ip"]) != 0:
-                ip_data = ui_test_data["condition"]["source_ip"]
+            if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+                ip_data = test_data["condition"]["source_ip"]
                 create_ip = CreateObject(driver)
                 for i in range(len(ip_data)):
                     create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
@@ -277,7 +259,7 @@ def run(parameter):
             # 创建rule
             if create_ip_code == 200:
                 create_rule = CreateRule(driver)
-                create_rule_code = create_rule.create(ui_test_data, test_rule_element_position)
+                create_rule_code = create_rule.create(test_data, test_rule_element_position)
                 if create_rule_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
                 elif create_rule_code != 200:
@@ -286,12 +268,12 @@ def run(parameter):
             # 触发流量验证
             if create_rule_code == 200:
                 search_rule = SearchRule(driver)
-                search_rule_code, rule_id = search_rule.get_rule_id(ui_test_data["policy_type"], ui_test_data["rule_name"], test_rule_element_position)
+                search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
                 if search_rule_code == 200:
                     # rule_id = search_rule.get_rule_id()
-                    ui_test_data["rule_id"] = rule_id
+                    test_data["rule_id"] = rule_id
                     verify = Verification()
-                    verification_result = verify.verification(driver, parameter, ui_test_data, [], test_rule_element_position)
+                    verification_result = verify.verification(driver, parameter, test_data, [], test_rule_element_position)
                     if len(verification_result) == 4:
                         driver = verification_result[3]
                     elif len(verification_result) == 5:
@@ -300,12 +282,12 @@ def run(parameter):
             # 分析验证结果，并返回给flask
             if len(verification_result) != 0:
                 analysis = AnalysisResult()
-                result = analysis.analysis_result(ui_test_data, [], verification_result)
+                result = analysis.analysis_result(test_data, [], verification_result)
             
             # 删除rule
             if create_rule_code == 200:
                 search_rule = SearchRule(driver)
-                search_rule_code, first_row_checkbox_element = search_rule.search(ui_test_data["policy_type"], ui_test_data["rule_name"], test_rule_element_position)
+                search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
                 if search_rule_code == 200:
                     delete_rule = DeleteRule(driver)
                     delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
@@ -335,17 +317,7 @@ def run(parameter):
                         break
         
         if parameter["script_type"] == "api" or parameter["script_type"] == "all":
-            # script_type为all时，需要单独对参数进行初始化
-            if parameter_reinitialization == True:
-                parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_api")
-                parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_api")
-                parameter["env"] = "tsgx"
-                parameter["vsys_id"] = parse.get("vsys", "id_for_api")
-                parameter["is_log"] = parse.get("is_log", "api")
-            
-            # 切换网卡，让ui网卡down，api网卡up
-            switch = SwitchIntf()
-            switch.switch_intf(api_intf, ui_intf)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -365,13 +337,13 @@ def run(parameter):
         delete = DeletePolicy()
         delete.delete_policy_by_name(token, parameter, name_list)
         # 测试结束后恢复网卡状态，让ui网卡恢复默认up，api网卡恢复默认down
-        parse = configparser.ConfigParser()
-        parse_dir = os.path.join("configuration_file.ini")
-        parse.read(parse_dir, encoding="utf-8")
-        api_intf = parse.get("test_pc", "api_intf")
-        ui_intf = parse.get("test_pc", "ui_intf")
-        switch = SwitchIntf()
-        switch.switch_intf(ui_intf, api_intf)
+        # parse = configparser.ConfigParser()
+        # parse_dir = os.path.join("configuration_file.ini")
+        # parse.read(parse_dir, encoding="utf-8")
+        # api_intf = parse.get("test_pc", "api_intf")
+        # ui_intf = parse.get("test_pc", "ui_intf")
+        # switch = SwitchIntf()
+        # switch.switch_intf(ui_intf, api_intf)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
