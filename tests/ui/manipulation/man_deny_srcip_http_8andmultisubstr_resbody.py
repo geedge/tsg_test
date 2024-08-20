@@ -83,8 +83,7 @@ def run(parameter):
                                 "item_type": "response_body",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "&test&test&resbody&resbody&resbody&test_resbody&test_resbody&_res"
-                                    "test_resbody"
+                                    "test&test&resbody&resbody&resbody&test_resbody&test_resbody&_res"
                                 ]
                             }
                         ],
