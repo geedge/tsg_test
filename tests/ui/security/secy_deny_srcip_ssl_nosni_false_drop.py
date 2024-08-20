@@ -95,7 +95,7 @@ def run(parameter):
                         "type": "drop",
                         "drop_packet": 0,
                         "send_tcp_rst": False,
-                        "send_icmp_unreachable": True
+                        "send_icmp_unreachable": False
                     }
                 ],
                 "packet_capture": []

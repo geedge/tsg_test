@@ -244,6 +244,10 @@ class ApiVerification:
                                 metric_result = False
                     elif metric_result == 444:
                         metric_result = False
+                if metric_result == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining api is passed", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3],"The verification of service chaining api is failed", flush=True)
                 cmd_result = metric_result
             elif test_data["targeted_traffic"] == "decrypted":
                 # 获取开始时间

@@ -88,14 +88,14 @@ def run(parameter):
                     {
                         "type": "drop",
                         "drop_packet": 0,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
+                        "send_tcp_rst": False,
+                        "send_icmp_unreachable": False
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "timed out",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"},
             {"query_field_key":"decoded_as", "query_value": "MAIL"}],

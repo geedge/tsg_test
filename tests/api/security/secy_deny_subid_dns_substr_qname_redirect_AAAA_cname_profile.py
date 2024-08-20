@@ -27,9 +27,9 @@ def run(parameter):
             "method_1": "redirect",
             "profile_condition_1": [
                 {
-                "profile_type": "dns_record",
-                "type": "CNAME",
-                "value": "www.www.www"
+                    "profile_type": "dns_record",
+                    "type": "CNAME",
+                    "value": "www.www.www"
                 }
             ],
             "resolution_1":[
@@ -51,19 +51,19 @@ def run(parameter):
             "do_log_1": 2,
             "obj_condition_1": [
                 {
-                "attribute_name": "ATTR_SUBSCRIBER_ID",
-                "object_type": "subscriberid",
-                "object_sub_type": "subscriberid",
-                "object_list": [
-                    {
-                    "add_item_list": [
+                    "attribute_name": "ATTR_SUBSCRIBER_ID",
+                    "object_type": "subscriberid",
+                    "object_sub_type": "subscriberid",
+                    "object_list": [
                         {
-                        "keyword_array": [
-                            "default"
+                        "add_item_list": [
+                            {
+                                "keyword_array": [
+                                    "default"
+                                ]
+                            }
                         ]
                         }
-                    ]
-                    }
                 ]
                 },
                 {
@@ -83,9 +83,9 @@ def run(parameter):
                 ]
                 }
             ],
-            "application_1": ["dns"],
+            "app_name_1": ["dns"],
             "expected_return": "www.www.www",
-            "counters_1": {"hits": "many"},
+            "counters_1": {"hits": 2},
             "log_query_param_1": [{"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "protocol": "dns",

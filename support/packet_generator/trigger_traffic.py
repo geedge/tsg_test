@@ -12,7 +12,7 @@ from support.packet_generator.ftp_player import FtpPlayer
 from support.packet_generator.dns_player import DnsPlayer
 from support.packet_generator.mail_player import MailPlayer
 from support.packet_generator.dtls_player import DtlsPlayer
-from support.packet_generator.quic_player import QuicPlayer
+import support.packet_generator.quic_player as quic_player
 from support.packet_generator import trex_replay
 from support.packet_generator.doh_player import DohPlayer
 from support.packet_generator.mpls_one_label_player import MplsOneLabelPlayer
@@ -91,8 +91,7 @@ class TriggerTraffic:
                 result = player.send_dtls_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "quic":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate quic traffic by client.", flush=True)
-                player = QuicPlayer()
-                result = player.send_quic_traffic(temp_data, script_type, debug_flag)
+                result = quic_player.send_quic_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "mpls":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mpls traffic by tcpreplay.", flush=True)
                 if test_data["traffic"]["type"] == "one_label":

@@ -105,7 +105,7 @@ def run(parameter):
                         "to_url": "https://www.youtube.com",
                         "drop_packet": 0,
                         "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
+                        "send_icmp_unreachable": False
                     }
                 ],
                 "packet_capture": []

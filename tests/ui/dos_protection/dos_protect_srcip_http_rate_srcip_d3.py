@@ -20,7 +20,6 @@ from support.ui_utils.switch_intf import *
 import support.ui_utils.env
 from support.report import *
 from datetime import datetime
-import configparser
 
 def run(parameter):
     try:
@@ -100,7 +99,7 @@ def run(parameter):
                 
             ],
             "dos_query_param": [
-                
+                {"attack_type": "tcp_syn_flood"}
             ],
             "traffic": {
                 "protocol": "",
@@ -109,7 +108,7 @@ def run(parameter):
                 "clients_end_ip": "1.1.1.1",
                 "servers_start_ip": "2.1.1.1",
                 "servers_end_ip": "2.1.1.2",
-                "m": 2,
+                "m": 1,
                 "d": 2,
                 "yaml_name": "test",
                 "pcap_name": "http"
@@ -176,71 +175,52 @@ def run(parameter):
                         "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                     }
                 }
-                
                 test_rule_element_position = {
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                         "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
-                        "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_security_posId
+                        "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_dos_posId
                     },
                     "create": {
-                        "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
-                        "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-                        "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                        # srcip
-                        "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
-                        "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
-                        "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
-                        "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
-                        "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
-                        "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
-                        "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
-                        "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
-                        "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                        # fqdn
-                        "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                        "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
-                        "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
-                        "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
-                        "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
-                        # url
-                        "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_url_posXpath,
-                        "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
-                        "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
-                        "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
-                        "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
-                        # req header
-                        "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
-                        "policyRulePage_addRequestHeader_posXpath": manipulationRulePage_addRequestHeader_posXpath,
-                        "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
-                        "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
-                        "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
-                        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                        "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                        "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
-                        # sub action
-                        "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
-                        "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
-                        "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
-                        "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
-                        "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
+                        "policyRuleListPage_createButton_posId": dosRuleListPage_createButton_posId,
+                        "policyRulePage_inputName_posXpath": dosRulePage_inputName_posXpath,
+                        "policyRulePage_selectAction_posId": dosRulePage_selectShunt_posId,
+                        "policyRulePage_addSrcIP_posXpath": dosRulePage_addSrcIP_posXpath,
+                        "policyRulePage_searchSrcIP_posXpath": dosRulePage_searchSrcIP_posXpath,
+                        "policyRulePage_selectSrcIP_posXpath": dosRulePage_selectSrcIP_posXpath,
+                        "policyRulePage_closeSrcIP_posXpath": dosRulePage_closeSrcIP_posXpath,
+                        "policyRulePage_addApplication_posXpath": dosRulePage_addApplication_posXpath,
+                        "policyRulePage_selectApplicationLabel_posXpath": dosRulePage_selectApplicationLabel_posXpath,
+                        "policyRulePage_searchApplication_posXpath": dosRulePage_searchApplication_posXpath,
+                        "policyRulePage_selectApplication_posXpath": dosRulePage_selectApplication_posXpath,
+                        "policyRulePage_closeApplication_posXpath": dosRulePage_closeApplication_posXpath,
+                        "policyRulePage_thresholdType_posId": dosRulePage_thresholdType_posId,
+                        "policyRulePage_groupBy_dropDownBox_posXpath": dosRulePage_groupBy_dropDownBox_posXpath,
+                        "policyRulePage_groupBy_select_posXpath": dosRulePage_groupBy_select_posXpath,
+                        "policyRulePage_requestPerPeriod_posXpath": dosRulePage_requestPerPeriod_posXpath,
+                        "policyRulePage_countingPeriod_dropDownBox_posXpath": dosRulePage_countingPeriod_dropDownBox_posXpath,
+                        "policyRulePage_countingPeriod_select_posXpath": dosRulePage_countingPeriod_select_posXpath,
+                        "policyRulePage_mitigationBehavior_deny_posId": dosRulePage_mitigationBehavior_deny_posId,
+                        "policyRulePage_mitigationTimeouts_dropDownBox_posXpath": dosRulePage_mitigationTimeouts_dropDownBox_posXpath,
+                        "policyRulePage_mitigationTimeouts_select_posXpath": dosRulePage_mitigationTimeouts_select_posXpath,
+                        "policyRulePage_enable_posXpath": dosRulePage_enable_posXpath,
+                        "policyRulePage_okButton_yes_posId": dosRulePage_ok_posId,
+                        "policyRulePage_okButton_warningYes_posXpath": dosRulePage_okButton_warningYes_posXpath
                     },
                     "search": {
-                        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-                        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-                        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-                        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
-                        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+                        "policyRuleListPage_searchLable_posId": dosRuleListPage_searchLable_posId,
+                        "policyRuleListPage_searchLable_dropDown_item_posXpath": dosRuleListPage_searchLable_dropDown_item_posXpath,
+                        "policyRuleListPage_searchLable_input_itemContent_posXpath": dosRuleListPage_searchLable_input_itemContent_posXpath,
+                        "policyRuleListPage_searchLable_searchButton_posId": dosRuleListPage_searchLable_searchButton_posId,
+                        "policyRuleListPage_tableTbody_posXpath": dosRuleListPage_tableTbody_posXpath
                     },
                     "delete": {
-                        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
-                        "policyRuleListPage_deleteButton_posId": securityRuleListPage_deleteButton_posId,
-                        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-                        "policyRuleListPage_okButton_warningNo_posXpath":securityRuleListpage_okButton_warningNo_posXpath
+                        "policyRuleListPage_allSelect_posXpath": dosRuleListPage_allSelect_posXpath,
+                        "policyRuleListPage_deleteButton_posId": dosRuleListPage_deleteButton_posId,
+                        "policyRuleListPage_okButton_warningYes_posXpath": dosRuleListpage_okButton_warningYes_posXpath,
+                        "policyRuleListPage_okButton_warningNo_posXpath":dosRuleListpage_okButton_warningNo_posXpath
                     }
                 }
             
@@ -373,12 +353,13 @@ if __name__ == '__main__':
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.87",
-        "test_subcriber_id": "test6491",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 5,
         "is_log": 1,
+        "debug_flag": "local",
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_testtests/ui",
         "module_name": "dos_protection",
