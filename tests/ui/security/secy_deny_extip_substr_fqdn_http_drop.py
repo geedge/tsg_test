@@ -103,7 +103,7 @@ def run(parameter):
                         "type": "drop",
                         "drop_packet": 0,
                         "send_tcp_rst": True,
-                        "send_icmp_unreachable": True
+                        "send_icmp_unreachable": False
                     }
                 ],
                 "packet_capture": []
@@ -127,16 +127,16 @@ def run(parameter):
         # name_list汇总
         name_list = [
             {
-                "type": "security",
-                "name": "secy_deny_extip_substr_serverfqdn_http_drop"
+                "type": test_data["policy_type"],
+                "name": test_data["rule_name"]
             },
             {
-                "type": "ip",
-                "name": "secy_extip"
+                "type": test_data["condition"]["external_ip"][0]['object_type'],
+                "name": test_data["condition"]["external_ip"][0]['name']
             },
             {
-                "type": "fqdn",
-                "name": "secy_fqdn"
+                "type": test_data["condition"]["server_fqdn"][0]['object_type'],
+                "name": test_data["condition"]["server_fqdn"][0]['name']
             }
         ]
         
