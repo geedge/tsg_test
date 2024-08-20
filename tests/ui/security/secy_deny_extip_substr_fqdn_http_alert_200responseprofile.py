@@ -7,6 +7,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
+from support.ui_utils.profile.create_profile import CreateProfile
+from support.ui_utils.profile.search_profile import SearchProfile
+from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
@@ -18,6 +21,7 @@ from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 import support.ui_utils.env
+from support.ui_utils.element_position.map_element_position_library import *
 
 from support.report import *
 from datetime import datetime
@@ -302,6 +306,26 @@ def run(parameter):
                 elif create_fqdn_code != 200:
                     result = "Fail to create fqdn."
                     break
+        # 创建profile
+        prfi_code = 200
+        if "action_parameter" in test_data.keys():
+            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:   # 需要创建profile数据
+                    prfi_data = prfi_value
+                    prfi = CreateProfile(driver)
+                    for i in range(len(prfi_data)): # 遍历创建所有 profile
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_code = prfi.create(prfi_data[i], element_position_map)
+                        if prfi_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(prfi_key_out), flush=True)
+                        else:
+                            result = "Fail to create {} profile.".format(prfi_key_out)
+                            prfi_status = 1
+                            break
+                if prfi_status == 1:  # 创建失败，退出遍历创建
+                    break
         
         # 创建rule
         if create_port_code == 200:
@@ -383,6 +407,37 @@ def run(parameter):
                     break
         
                 # 脚本结束时间和耗时
+            # 删除profile
+        if delete_rule_code == 200 and "action_parameter" in test_data.keys():
+            # 删除
+            for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
+                if prfi_key in manipulation_profile_no_create_list:
+                    continue  # 直接跳过
+                prfi_status = 0
+                prfi_key_out = prfi_key.replace("_", " ")
+                if len(prfi_value) != 0:  # 不为空
+                    for i in range(len(prfi_value)):  # 遍历查询所有profile
+                        search_prfi = SearchProfile(driver)
+                        element_position_map = get_element_position(prfi_key)
+                        prfi_name = prfi_value[i]["profile_file"]["name"].strip()
+                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
+                        if search_prfi_code == 200:
+                            delete_prfi = DeleteProfile(driver)
+                            delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element, True)
+                            if delete_prfi_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
+                            else:
+                                result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+                            break
+                        # 退出遍历标志
+                        if prfi_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if prfi_status == 1:  # 失败，退出遍历创建
+                    break
         
         # 脚本结束时间和耗时
         end_time = time.time()
