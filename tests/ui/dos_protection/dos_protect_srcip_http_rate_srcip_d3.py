@@ -16,7 +16,6 @@ from support.packet_generator.verification import Verification
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
-from support.ui_utils.switch_intf import *
 import support.ui_utils.env
 from support.report import *
 from datetime import datetime
