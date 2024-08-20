@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from support.packet_generator.workpath import workdir
 import ssl
 import configparser
 from socket import socket, AF_INET, SOCK_DGRAM
 from dtls import do_patch
-from support.packet_generator.workpath import workdir
 from datetime import datetime
 
 class DtlsPlayer:
@@ -55,7 +57,7 @@ class DtlsPlayer:
             client_sock.close()
 
 if __name__ == "__main__":
-    print("test")
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
     test_data = {
         "traffic": {
             "protocol": "dtls",

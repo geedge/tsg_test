@@ -5,6 +5,7 @@ mainPage_policySecondLevelMenu_intercept_posId = "policy_Intercept"  # 二级菜
 mainPage_policySecondLevelMenu_manipulation_posId = "policy_Manipulation"  # 二级菜单manipulatjion
 mainPage_policySecondLevelMenu_shaping_posId = "policy_trafficShaping"  # 二级菜单Shaping
 mainPage_policySecondLevelMenu_statistics_posId = "policy_statistics"  # 二级菜单Statistics
+mainPage_policySecondLevelMenu_dos_posId = "policy_DoSProtection"  # 二级菜单DoS Protection
 
 mainPage_button_menu_posXCss = ".menu-btn span"
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
@@ -880,3 +881,49 @@ statisticsRulePage_rightInfo_firstHitTime_posXpath = "//form[@class='el-form pap
 statisticsRulePage_rightInfo_throughput_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[3]//td[2]"
 statisticsRulePage_rightInfo_hitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[4]//td[2]"
 statisticsRulePage_rightInfo_72hoursHitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[5]//td[2]"#//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr/td[2]
+
+# DoS Protection
+dosRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
+dosRuleListPage_editButton_posId = "appEdit-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
+dosRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
+dosRuleListpage_okButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+dosRuleListpage_okButton_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
+dosRuleListPage_searchLable_posId = "select-label"
+dosRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
+dosRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
+dosRuleListPage_searchLable_searchButton_posId = "searchQuery"
+dosRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
+dosRuleListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
+
+dosRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
+dosRulePage_selectShunt_posId = "protectprotect"
+dosRulePage_selectDeny_posId = "denydeny"
+dosRulePage_selectAllow_posId = "allowallow"
+
+dosRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
+dosRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
+dosRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
+dosRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
+
+dosRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
+dosRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
+dosRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
+dosRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
+dosRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
+
+dosRulePage_thresholdType_posId = "custom0-_Counting_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
+dosRulePage_groupBy_dropDownBox_posXpath = "//label[normalize-space(text())='Group By']/parent::*//i"
+dosRulePage_groupBy_select_posXpath = "//li//span[normalize-space(text())='{replaceValue}']"
+dosRulePage_requestPerPeriod_posXpath = "//label[normalize-space(text())='Request Per Period']/parent::*//input"
+dosRulePage_countingPeriod_dropDownBox_posXpath = "//label[normalize-space(text())='Counting Period']/parent::*//i"
+dosRulePage_countingPeriod_select_posXpath = "//div[@x-placement='bottom-start']//li//span[normalize-space(text())='{replaceValue}']"
+
+dosRulePage_mitigationBehavior_deny_posId = "custom0-_ActionParameters_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
+dosRulePage_mitigationBehavior_none_posId = "custom1-_ActionParameters_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
+dosRulePage_mitigationTimeouts_dropDownBox_posXpath = "//label[normalize-space(text())='Mitigation Timeouts']/parent::*//i"
+dosRulePage_mitigationTimeouts_select_posXpath = "//div[@x-placement='top-start']//li//span[normalize-space(text())='{replaceValue}']"
+
+dosRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
+dosRulePage_ok_posId = "OK-_Dos_protection_edit_Home_App_anonymousComponent"
+dosRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+dosRulePage_cancel_posId = "Cancle-_Dos_protection_edit_Home_App_anonymousComponent"
