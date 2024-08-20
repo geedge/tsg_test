@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime 
 
 class MyWebDriver(webdriver.Remote):
-    def find_element(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.3, find_after_wait_time=0.3, wait_timeout=10):
+    def find_element(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.1, find_after_wait_time=0.1, wait_timeout=10):
         """
         封装find_element方法:
         :param by:
