@@ -12,13 +12,13 @@ class SearchObject:
         page_jump_element_position = object_element_position["page_jump"]
         # 打开该列表
         page_jump = PageJump(self.driver)
-        time.sleep(3)
+        time.sleep(0.5)
         page_jump.jump_sub_object_page(page_jump_element_position)
         self.driver.find_element(By.ID, search_element_position["objectListPage_searchLabel_posId"]).send_keys(name)
         self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_selectName_posXpath"]).click()
         btn = self.driver.find_element(By.ID, mainPage_objectSearch_buttonSearch_posId)
         self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
-        time.sleep(2)
+        time.sleep(0.5)
         element_tr = self.driver.find_element(By.XPATH, search_element_position["objectListPage_tableTbody_posXpath"])
         row = element_tr.find_elements(By.XPATH, "tr") 
         if len(row) != 0 :

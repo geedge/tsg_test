@@ -24,7 +24,7 @@ class SearchProfile:
         # 点击查询按钮
         element_search = self.driver.find_element(By.ID, mainPage_profileSearch_buttonSearch_posId)
         self.driver.execute_script("arguments[0].click()", element_search)  # 强制点击
-        time.sleep(1)
+        time.sleep(0.5)
         element_tr = self.driver.find_element(By.XPATH, search_element_position["profileListPage_tableTbody_posXpath"])
         row = element_tr.find_elements(By.XPATH, "tr")
         if len(row) != 0 :

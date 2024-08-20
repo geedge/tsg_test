@@ -19,9 +19,7 @@ class PageJump:
         # 菜单操作
         self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
         self.change_vsys(vsys_name=vsys_name)
-        time.sleep(1)
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()
-        time.sleep(1)
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"]).click()
         
     def change_vsys(self, vsys_name=""):
@@ -55,7 +53,6 @@ class PageJump:
         self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
         #current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
         vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
-        time.sleep(1)
         flag_num = 0
         for el_vsys_item in vsys_tree_name_list:
             vsys_item_name = el_vsys_item.text.strip().lower()

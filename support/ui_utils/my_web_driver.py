@@ -36,7 +36,7 @@ class MyWebDriver(webdriver.Remote):
             try:
                 self.element = super().find_element(by, value)
             except:
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"{caller_filename}. {caller_lineno} line. find element: {value}. find method: {by}.")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"{caller_filename}. {caller_lineno} line. find element: {value}. find method: {by}.", flush=True)
                 throw_assert = 1
                 assert_info = traceback.format_exc()
                 continue
@@ -47,7 +47,7 @@ class MyWebDriver(webdriver.Remote):
         time_2 = time.time()
         search_time = time_2 - time_1
         search_time = round(search_time, 1)
-        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"{caller_filename}. {caller_lineno} line. find element:{value}. find method: {by}. find take time:{search_time} second.")
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"{caller_filename}. {caller_lineno} line. find element:{value}. find method: {by}. find take time:{search_time} second.", flush=True)
         if throw_assert == 1:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Find Element Error: {caller_filename}. {caller_lineno} line. find element: {value}. find method: {by}.")
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], assert_info, flush=True)
