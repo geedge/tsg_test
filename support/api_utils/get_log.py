@@ -317,6 +317,9 @@ class GetLog:
                     elif sc_info["application"][0] == "mail":
                         lost_pkt = 15
                         lost_byte = 1273
+                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic":
+                        lost_pkt = 0
+                        lost_byte = 0
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 50 * pkt_value
@@ -349,6 +352,9 @@ class GetLog:
                     elif sc_info["application"][0] == "mail":
                         lost_pkt = 15
                         lost_byte = 1273
+                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic":
+                        lost_pkt = 0
+                        lost_byte = 0
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 sc_expected_metric["total_bytes"] = byte_value + 4 * pkt_value

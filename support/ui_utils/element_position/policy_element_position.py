@@ -581,7 +581,7 @@ serviceChainingRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@cla
 serviceChainingRulePage_okButton_posId = "OK-_policy_service_chaining_write_Home_App_anonymousComponent"
 serviceChainingRulePage_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 serviceChainingRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
-
+serviceChainingRulePage_addConditionQname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='QNAME']"
 
 # shaping
 shapingRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_trafficShaping_Home_App_anonymousComponent"
