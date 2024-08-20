@@ -17,9 +17,9 @@ class CreateServiceFunctionForwarderProfile:
         self.sc_info = {}
     def create_sff_profile(self,test_data, sff_profile_element_position,sf_profile_element_position):
         self.sc_info["targeted_traffic"] = test_data["targeted_traffic"]
-        self.sc_info["app_name_1"] = []
+        self.sc_info["application"] = []
         if len(test_data["condition"]["application"]) > 0:
-            self.sc_info["app_name_1"].append(test_data["condition"]["application"][0]["name"]) 
+            self.sc_info["application"].append(test_data["condition"]["application"][0]["name"]) 
         for j in range(len(test_data["profile"])):
             sff_profile_data = test_data["profile"][j]
             page_jump_element_position = sff_profile_element_position["page_jump"]
@@ -98,7 +98,9 @@ class CreateServiceFunctionForwarderProfile:
         self.driver.find_element(By.XPATH,create_element_position["profilePage_addSF_posXpath"]).click()
         time.sleep(1)
         for name in sf_name_list:
+            self.driver.find_element(By.XPATH,create_element_position["profilePage_searchSF_posXpath"]).click()
             self.driver.find_element(By.XPATH,create_element_position["profilePage_searchSF_posXpath"]).send_keys(name)
+            time.sleep(0.5)
             self.driver.find_element(By.XPATH,create_element_position["profilePage_searchSF_posXpath"]).send_keys(Keys.ENTER)
             time.sleep(1)
             self.driver.find_element(By.XPATH,create_element_position["profilePage_chooseSF_posXpath"].format(replaceValue=name)).click()
