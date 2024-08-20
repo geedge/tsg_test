@@ -48,7 +48,7 @@ class PageJump:
             self.driver.find_element(By.CSS_SELECTOR,page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
         self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
         vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
-        time.sleep(1)
+        time.sleep(0.5)
         flag_num = 0
         for el_vsys_item in vsys_tree_name_list:
             vsys_item_name = el_vsys_item.text.strip().lower()

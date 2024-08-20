@@ -22,12 +22,12 @@ class CreateRule:
             page_jump.jump_sub_policy_page(page_jump_element_position)
 
             # 点击create
-            time.sleep(1)
+            time.sleep(0.3)
             self.driver.find_element(By.ID, create_element_position["policyRuleListPage_createButton_posId"]).click()
             
             # 输入name
             rule_name = test_data["rule_name"]
-            time.sleep(1)
+            time.sleep(0.5)
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_inputName_posXpath"]).send_keys(rule_name)
             
             # 选择action
@@ -230,7 +230,7 @@ class CreateRule:
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"]).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"]).send_keys(Keys.ENTER)
-                        time.sleep(3)
+                        time.sleep(0.5)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                     elif server_fqdn_data[t]["object_type"] == "category":
@@ -533,10 +533,10 @@ class CreateRule:
                             redirect_url = test_data["action_parameter"]["redirect_url"][0]["redirect_url"]
                             # 操作 action parameter
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectHttp_addResponseCodeSelectBox_posXpath"]).click()
-                            time.sleep(1)
+                            time.sleep(0.3)
                             btn = self.driver.find_element(By.XPATH, response_code_drop_position)
                             self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
-                            time.sleep(1)
+                            time.sleep(0.3)
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath"]).clear()
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath"]).send_keys(redirect_url)
                         else:

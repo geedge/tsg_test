@@ -13,7 +13,7 @@ class PageJump:
         
     def jump_sub_object_page(self, page_jump_element_position, vsys_name=""):
         # 菜单操作
-        btn = self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"], find_before_wait_time=1.0)
+        btn = self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"], find_before_wait_time=0.3)
         btn = self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
         self.change_vsys(vsys_name=vsys_name)
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()
@@ -38,7 +38,7 @@ class PageJump:
             change_vsys_name = vsys_name
         self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
         vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
-        time.sleep(1)
+        time.sleep(0.5)
         flag_num = 0
         for el_vsys_item in vsys_tree_name_list:
             vsys_item_name = el_vsys_item.text.strip().lower()

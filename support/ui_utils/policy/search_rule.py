@@ -26,7 +26,7 @@ class SearchRule:
         # 强制点击js方法
         btn = self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"])
         self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
-        time.sleep(3)
+        time.sleep(0.3)
         #self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
         element_tr = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_tableTbody_posXpath"])
         row = element_tr.find_elements(By.XPATH, "tr")

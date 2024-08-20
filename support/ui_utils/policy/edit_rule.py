@@ -28,7 +28,7 @@ class EditRule:
             self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
             btn = self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"])
             self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
-            time.sleep(1)
+            time.sleep(0.5)
             if type == "security":
                 rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
                 edit_button_position = "appEdit-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"

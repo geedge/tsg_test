@@ -23,6 +23,7 @@ class CreateObject:
             # 点击create
             self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"]).click()
             self.driver.find_element(By.ID, create_element_position["objectListPage_dropDown_createButton_posId"]).click()
+            time.sleep(1.5)
             # 输入name
             object_name = data["name"]
             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputName_posXpath"]).send_keys(object_name)
@@ -176,7 +177,7 @@ class CreateObject:
             group_subordinate_data = data["group_subordinate"]
             if len(group_subordinate_data) != 0:
                 for x in range(len(group_subordinate_data)):
-                    time.sleep(2)
+                    time.sleep(0.5)
                     self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_searchSubordinate{}_posXpath".format(object_type)]).send_keys(group_subordinate_data[x]["name"])
                     self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_searchSubordinate{}_posXpath".format(object_type)]).send_keys(Keys.ENTER)
                     temp_element_position = create_element_position["groupObjectPage_selectSubordinate{}_posXpath".format(object_type)].format(replaceValue=group_subordinate_data[x]["name"])
@@ -194,7 +195,7 @@ class CreateObject:
                 # 添加exclude
                 group_exclude_data = data["group_exclude"]
                 for y in range(len(group_exclude_data)):
-                    time.sleep(2)
+                    time.sleep(0.5)
                     self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_searchExclude{}_posXpath".format(object_type)]).send_keys(group_exclude_data[y]["name"])
                     self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_searchExclude{}_posXpath".format(object_type)]).send_keys(Keys.ENTER)
                     temp_element_position = create_element_position["groupObjectPage_selectExclude{}_posXpath".format(object_type)].format(replaceValue=group_exclude_data[y]["name"])

@@ -11,13 +11,11 @@ class DeleteObject:
     def delete(self, object_element_position, first_row_checkbox_element, is_del_all):
         delete_element_position = object_element_position["delete"]
         try:
+            time.sleep(0.5)
             if is_del_all == True:
-                time.sleep(1)
-                #self.driver.find_element(By.XPATH, delete_element_position["objectListPage_allSelect_posXpath"]).click()  #遇到无reference count在优化
                 rows = self.driver.find_element(By.XPATH, ipObjectListPage_tableTbody_posXpath).find_elements(By.XPATH, "./tr")
                 self.select_lock_and_referenceCount(rows)
             else:
-                time.sleep(1)
                 first_row_checkbox_element.click()
             self.driver.find_element(By.ID, delete_element_position["objectListPage_deleteButton_posId"]).click()
             self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
@@ -92,5 +90,5 @@ class DeleteObject:
             if click_flag == 1:  # 没有 icon-lock  引用为0，， 需要点击
                 el_td_1.find_element(By.XPATH, ".//*[@class='el-checkbox__input']").click()
                 return_code = 0
-                time.sleep(0.2)
+                time.sleep(0.1)
         return return_code
