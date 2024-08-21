@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_dns_redirect_qtype_AAAA_atype_AAAA_profile",
+            "rule_name": "secy_deny_srcip_dns_redirect_qtype_aaaa_atype_aaaa_profile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
