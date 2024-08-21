@@ -253,7 +253,7 @@ class UiVerification:
                             pkt_value = traffic_result["total_packets"]
                             if cfg_list["sf_method"] == "vxlan_g" and cfg_list["sf_dest_ip"] in sc_active_ip_list:
                                 if 1000 <= pkt_value < 10000:
-                                    pkt_value_temp = int(round(pkt_value/1000, 0))
+                                    pkt_value_temp = round(pkt_value/1000, 2)
                                 elif pkt_value < 1000:
                                     pkt_value_temp = pkt_value
                                 if 1024 <= byte_value < 1048576:
@@ -276,7 +276,7 @@ class UiVerification:
                                     metric_result = False
                             elif cfg_list["sf_method"] == "layer2_switch":
                                 if 1000 <= pkt_value < 10000:
-                                    pkt_value_temp = int(round(pkt_value/1000, 0))
+                                    pkt_value_temp = round(pkt_value/1000, 2)
                                 elif pkt_value < 1000: 
                                     pkt_value_temp = pkt_value
                                 if 1024 <= byte_value < 1048576:
@@ -406,7 +406,8 @@ class UiVerification:
                             elif log_query_key == "sent_pkts" or log_query_key == "received_pkts":
                                 log_pkt_value = test_data["log_query_param"][t]["query_value"]
                                 log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                temp_value = int(my_driver.find_element(By.XPATH, log_item_pos_xpath).text)
+                                log_pkt_temp = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                temp_value = int(log_pkt_temp.replace(",",""))
                                 if temp_value == log_pkt_value:
                                     temp_log_result = True
                                 else:
@@ -439,7 +440,7 @@ class UiVerification:
     def extract_value(self, type, value):
         if type == "packets":
             if " " in value:
-                value_number = int(value.split(" ")[0])
+                value_number = float(value.split(" ")[0])
                 value_unit = value.split(" ")[-1]
             else:
                 value_number = int(value)

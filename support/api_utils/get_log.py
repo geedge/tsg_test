@@ -308,7 +308,8 @@ class GetLog:
             pkt_value = sc_expected_metric["total_packets"]
             if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dest_ips_list:
                 if len(sc_info["application"]) > 0 :
-                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl":
+                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl" or \
+                        sc_info["application"][0] == "rdp" or sc_info["application"][0] == "OPENVPN":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
                     elif sc_info["application"][0] == "ftp":
@@ -317,7 +318,8 @@ class GetLog:
                     elif sc_info["application"][0] == "mail":
                         lost_pkt = 15
                         lost_byte = 1273
-                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic":
+                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic" or \
+                                sc_info["application"][0] == "rtp" :
                         lost_pkt = 0
                         lost_byte = 0
                     pkt_value -= lost_pkt
@@ -343,7 +345,8 @@ class GetLog:
                     metric_result = False
             elif sc_info["sf_method"] == "layer2_switch":
                 if len(sc_info["application"]) > 0 :
-                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl":
+                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl" or \
+                        sc_info["application"][0] == "rdp" or sc_info["application"][0] == "OPENVPN":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
                     elif sc_info["application"][0] == "ftp":
@@ -352,7 +355,8 @@ class GetLog:
                     elif sc_info["application"][0] == "mail":
                         lost_pkt = 15
                         lost_byte = 1273
-                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic":
+                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic" or \
+                        sc_info["application"][0] == "rtp":
                         lost_pkt = 0
                         lost_byte = 0
                     pkt_value -= lost_pkt
