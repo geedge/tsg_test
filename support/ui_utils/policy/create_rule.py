@@ -417,12 +417,16 @@ class CreateRule:
                                 qtype = detail['qtype']
                                 if len(sub_action_data[0]['resolution']) == 1 and answer0_len == 1:
                                     answer_value_type = detail['answer'][0]['answer_value_type']
-                                    
+                                    atype = detail['answer'][0]['atype']
                                     ttl = detail['answer'][0]['ttl']
                                     # 点击切换qtype,默认即会选中qtype A
                                     if qtype == "AAAA":
                                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_dnsAnswerqTypeAAAA_posXpath"]).click()
-                                    # 点击切换answer的返回方式
+                                    # 切换Answer Type
+                                    self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerType0Choose_posId"]).click()
+                                    answer_type_posXpath = create_element_position["policyRulePage_dnsAnswerType0ChooseValue_posXpath"].format(replaceValue=atype)
+                                    self.driver.find_element(By.XPATH, answer_type_posXpath).click()
+                                    # 点击切换answer的返回方式,text和Profile
                                     self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0ValueType_posId"]).click()
                                     choose_answer_type_posXpath = create_element_position["policyRulePage_dnsAnswer0ValueTypeChoose_posXpath"].format(replaceValue=answer_value_type)
                                     self.driver.find_element(By.XPATH, choose_answer_type_posXpath).click()
@@ -434,10 +438,10 @@ class CreateRule:
                                         self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueNameSelect_posId"]).click()
                                     else:
                                         dns_text_value = detail['answer'][0]['answer_value']
-                                        if qtype == "A":
+                                        if atype == "A" or atype == "AAAA":
                                             self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0ATextPlaceholder_posId"]).send_keys(dns_text_value)
-                                        elif qtype == "AAAA":
-                                            self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0AAAATextPlaceholder_posId"]).send_keys(dns_text_value)   
+                                        elif atype == "CNAME":
+                                            self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0CnameTextPlaceholder_posId"]).send_keys(dns_text_value)
                                     self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueTTL0_posId"]).send_keys(ttl)
 
                 elif sub_action_data[0]["type"] == "alert":
