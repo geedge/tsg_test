@@ -72,7 +72,7 @@ class ApiVerification:
                 test_pc_ip = test_data["condition"]["source_ip"][0]["item"][0]["item_value"]
             # 获取开始时间
             utc_tz = pytz.timezone('UTC')
-            current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
+            current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             
             
