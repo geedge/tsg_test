@@ -15,7 +15,7 @@ class PageJump:
         # 菜单操作
         btn = self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"], find_before_wait_time=0.3)
         btn = self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
-        self.change_vsys(vsys_name=vsys_name)
+        #self.change_vsys(vsys_name=vsys_name)    # 调整到页面登录时切换vsys
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"]).click()
         
@@ -47,7 +47,6 @@ class PageJump:
             if change_vsys_name.lower() in vsys_item_name_list:
                 flag_num = 1
                 el_vsys_item.find_element(By.XPATH, ".//div[@class='menu-title']").click()
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Change to vsys {change_vsys_name}")
                 break
         if flag_num == 0:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"no vsys: {change_vsys_name}", flush=True)

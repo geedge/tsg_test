@@ -1,4 +1,6 @@
-mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
+#mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
+mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
+mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss    # 改为引用dashboard路径
 mainPage_policyFirstLevelMenu_posId = "policy"  # 一级菜单Policies
 mainPage_policySecondLevelMenu_security_posId = "Objects_ProxyInterception"
 mainPage_policySecondLevelMenu_intercept_posId = "policy_Intercept"  # 二级菜单intercept
@@ -9,7 +11,8 @@ mainPage_policySecondLevelMenu_dos_posId = "policy_DoSProtection"  # 二级菜�
 
 mainPage_button_menu_posXCss = ".menu-btn span"
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
-mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//div[@class='VsysTree']/ul//li"    # vsys tree中vsys name定位
+mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
+
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
 language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']/.."#快捷切换语言按钮
 policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
