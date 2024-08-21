@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "service_chaining",
-            "rule_name": "sc_raw_srcip_dstip_rdp_mirror_bypass_vlan_none",
+            "rule_name": "sc_raw_srcip_dstip_openvpn_mirror_bypass_vlan_none",
             "rule_action": "service_chaining",
             "targeted_traffic": "raw",
             "rule_type": "create",
@@ -309,7 +309,7 @@ def run(parameter):
             name_list = [
                 {
                     "type": "service_chaining",
-                    "name": "sc_raw_srcip_dstip_rdp_mirror_bypass_vlan_none",
+                    "name": "sc_raw_srcip_dstip_openvpn_mirror_bypass_vlan_none",
                 },
                 {
                     "type": "ip",
@@ -511,7 +511,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_srcip_dstip_rdp_mirror_bypass_vlan_none"
+        "test_case_name": "sc_raw_srcip_dstip_openvpn_mirror_bypass_vlan_none"
     }
     run(parameter)
     """
