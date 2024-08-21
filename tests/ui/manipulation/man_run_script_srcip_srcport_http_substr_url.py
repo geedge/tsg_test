@@ -116,7 +116,7 @@ def run(parameter):
             },
             "expected_return": "javascript",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

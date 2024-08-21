@@ -22,7 +22,7 @@ class UtilStatisticsTemplate():
 
     tmp_break_list = ["Client IP Object List", "Server IP Object List", "Session ID",
         "client_ip_sketch", "server_ip_sketch", "fqdn_category", "client_ip_object_list", "server_ip_object_list", "websketch_categories"]  # 兼容UI API，所以三组值
-
+    tmp_in_out_list = ["new_out_sessions", "new_in_sessions", "closed_in_sessions", "closed_out_sessions"]
     def get_all_metrics_or_dimensions(self, type="metrics"):
         """
         type获取数据类型：

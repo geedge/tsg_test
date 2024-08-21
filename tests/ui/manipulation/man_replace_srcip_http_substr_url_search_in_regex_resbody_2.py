@@ -101,7 +101,7 @@ def run(parameter):
             },
             "expected_return": "www.baidu.com/img",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.libertyfund.org"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.libertyfund.org"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

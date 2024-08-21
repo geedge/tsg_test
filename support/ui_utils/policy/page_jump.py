@@ -18,7 +18,7 @@ class PageJump:
         """
         # 菜单操作
         self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
-        self.change_vsys(vsys_name=vsys_name)
+        #self.change_vsys(vsys_name=vsys_name)     # 调整到页面登录时切换vsys
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"]).click()
         

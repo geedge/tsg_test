@@ -45,6 +45,8 @@ class CreateProfile():
                 self.driver.find_element(By.ID, create_element_position["profilePage_Type_A_posId"]).click()
             elif data['type'] == 'AAAA':
                 self.driver.find_element(By.ID, create_element_position["profilePage_Type_AAAA_posId"]).click()
+            elif data['type'] == 'CNAME':
+                self.driver.find_element(By.ID, create_element_position["profilePage_Type_CNAME_posId"]).click()
             # 只有1个item，直接输入
             if len(data['items']) == 1:
                 self.driver.find_element(By.XPATH, create_element_position["dnsRecordsProfiles_input_item_posXpath"]).send_keys(data['items'][0])

@@ -1,4 +1,6 @@
-mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
+#mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
+mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
+mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss    # 改为引用dashboard路径
 mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
 mainPage_logSearch_buttonSearch_posId = "searchQuery"  # 查询按钮id
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name

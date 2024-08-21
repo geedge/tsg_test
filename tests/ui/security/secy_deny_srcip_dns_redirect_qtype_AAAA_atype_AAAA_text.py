@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_dns_redirect_qtype_AAAA_atype_AAAA_text",
+            "rule_name": "secy_deny_srcip_dns_redirect_qtype_aaaa_atype_aaaa_text",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -208,6 +208,8 @@ def run(parameter):
                     "policyRulePage_dnsAnswerqTypeAAAA_posXpath": securityRulePage_subAction_redirect_qtypeAAAA_posXpath,
                     "policyRulePage_dnsAnswer0ValueType_posId":  securityRulePage_subAction_redirect_answer0ValueType_posId,
                     "policyRulePage_dnsAnswer0ValueTypeChoose_posXpath":  securityRulePage_subAction_redirect_answer0ValueTypeChoose_posXpath,
+                    "policyRulePage_dnsAnswerType0Choose_posId": securityRulePage_subAction_redirect_dnsAnswerType0choose_posId,
+                    "policyRulePage_dnsAnswerType0ChooseValue_posXpath": securityRulePage_subAction_redirect_dnsAnswerType0chooseValue_posXpath,
                     "policyRulePage_dnsAnswerValueSelectPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswerValueSelectPlaceholder_posId,
                     "policyRulePage_dnsAnswerValueNameSearch_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSearch_posId,
                     "policyRulePage_dnsAnswerValueNameSelect_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSelect_posId,

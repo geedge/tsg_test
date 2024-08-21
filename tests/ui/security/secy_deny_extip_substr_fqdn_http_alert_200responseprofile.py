@@ -450,6 +450,8 @@ def run(parameter):
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         return "Error: " + str(e)
+    finally:
+        # 清理环境
         support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()

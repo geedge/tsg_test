@@ -384,6 +384,8 @@ def run(parameter):
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         return "Error: " + str(e)
+    finally:
+        # 清理环境
         support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
@@ -416,17 +418,18 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.65",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test",
         "script_type": "ui",
+        "debug_flag": "local",
         "env": "tsgx",
-        "vsys_id": 10,
-        "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "vsys_id": 1,
+        "is_log": 1,
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+        "test_case_name": "allow_positive_ip_http_not_host"
     }
     run(parameter)
     """

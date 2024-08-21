@@ -436,6 +436,8 @@ class CreateRule:
                                         dns_text_value = detail['answer'][0]['answer_value']
                                         if qtype == "A":
                                             self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0ATextPlaceholder_posId"]).send_keys(dns_text_value)
+                                        elif atype == "AAAA":
+                                            self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0AAAATextPlaceholder_posId"]).send_keys(dns_text_value)
                                         elif qtype == "AAAA":
                                             self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0AAAATextPlaceholder_posId"]).send_keys(dns_text_value)   
                                     self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueTTL0_posId"]).send_keys(ttl)
@@ -702,11 +704,12 @@ class CreateRule:
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_add{}_posXpath".format(ip_condition_type)]).click()
         # 通过ip name搜索并选中
         for i in range(len(ip_data)):
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).clear()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).send_keys(ip_data[i]["name"])
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).send_keys(Keys.ENTER)
             temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(ip_condition_type)].format(replaceValue=ip_data[i]["name"])
             self.driver.find_element(By.XPATH, temp_element_position).click()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(ip_condition_type)]).click()
+        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(ip_condition_type)]).click()
     
     def add_port(self, port_data, port_condition_type, create_element_position):
         # 点add condition的+

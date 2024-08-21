@@ -74,7 +74,6 @@ def run(parameter):
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
                         "items": [
                             {
                                 "item_operation": "add",
@@ -105,8 +104,7 @@ def run(parameter):
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
+                        "statistics": "None",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -125,8 +123,7 @@ def run(parameter):
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
+                        "statistics": "None",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -143,7 +140,7 @@ def run(parameter):
             },
             "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

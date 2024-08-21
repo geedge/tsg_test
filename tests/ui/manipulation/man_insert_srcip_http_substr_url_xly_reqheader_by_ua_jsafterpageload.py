@@ -90,8 +90,7 @@ def run(parameter):
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
+                        "statistics": "None",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -122,7 +121,7 @@ def run(parameter):
             },
             "expected_return": "test_case_javascript",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"},  {"query_field_key": "http_user_agent", "query_value": "Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "http_user_agent", "query_value": "Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
