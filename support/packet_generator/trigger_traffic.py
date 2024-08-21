@@ -92,7 +92,6 @@ class TriggerTraffic:
             elif test_data["traffic"]["protocol"] == "quic":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate quic traffic by client.", flush=True)
                 result = quic_player.asyncio.run(quic_player.send_quic_traffic(temp_data, script_type, debug_flag))
-                result = str(result)
             elif test_data["traffic"]["protocol"] == "mpls":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mpls traffic by tcpreplay.", flush=True)
                 if test_data["traffic"]["type"] == "one_label":
