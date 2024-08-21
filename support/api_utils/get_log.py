@@ -476,43 +476,49 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Metrics data from the interface.")
             return [False, "The statistics metric API query failed."]
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
-                # 对应有方向的session方式需要另行处理
-                tmp_list = ["new_out_sessions", "new_in_sessions", "closed_in_sessions", "closed_out_sessions"]
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is []")
+                # 对应有方向的session的单一Metrics方式需要另行处理
+                tmp_in_out_list = UtilStatisticsTemplate().tmp_in_out_list
                 # api返回值为空，不判断方向，直接返回重新查找
                 if len(statistics_info["metrics"]) == 1:
                     #for item in statistics_info["metrics"]:
-                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_list:
+                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_in_out_list:
                         return [333, "this is a pass"]
                 return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
                 result_list_from_api = r_dict["data"]["result"]
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is {}".format(result_list_from_api))
                 #print(result_list_from_api)
                 result_list = []
                 metrics_len = len(statistics_info["metrics"])
                 dimensions_len = len(statistics_info["dimensions"]) #time调试时需确认是否处理
                 tmp_result = {}
+                break_flag = False
                 for _ in copy.deepcopy(result_list_from_api):
                     tmp_dict = {}
                     tmp_dict_key = ""
+                    if break_flag:
+                        break
                     for k, v in _.items():
                         if v == None:  # Metric结果返回中包括None值处理
                             v = 0
                         if k in statistics_info["metrics_dimension"]["metrics"].keys():
                             if v == 0:
                                 continue
-                            #k_0 = statistics_info["metrics_dimension"]["metrics"][k]
                             k_0 = k
                             # 如果是Line图且为1Metrics加Dimensions则同一类型分组合并,所有Line都可以合并
-                            if statistics_info["chart_type"] == "line":# and metrics_len == 1 and dimensions_len == 2:
-                                #if tmp_dict_key == "":
-                                #    tmp_dict_key = f"{k_0}"
-                                #elif dimensions_len == 2:
+                            # Line图的UNIQUE_COUNT不能合并，比如一条流量只有1个Session ID但是流量持续了多个周期，则每个周期出1个Session ID的UNIQUE_COUNT统计数据
+                            if "unique_count" == statistics_info["metrics_dimension"]["metrics"][k]["metric_type"]:
+                                tmp_dict = _
+                                break_flag = True
+                                break
+                            if statistics_info["chart_type"] == "line":
                                 if dimensions_len == 2:
                                     tmp_dict_key = f"{tmp_dict_key};{k_0}"
                                 else:
@@ -553,7 +559,8 @@ class GetLog:
                                 tmp_dict[key_list[2]] = tmp_result[key]
                                 result_list.append(copy.deepcopy(tmp_dict))
                     else:
-                        result_list.append(tmp_result)
+                        if tmp_result != {}:
+                            result_list.append(tmp_result)
                 statistics_value = []
                 metrics_functions = [item["function"]["name"] for item in statistics_info["metrics"]]
                 if statistics_info["chart_type"] in {"line", "table", "bar"}:
@@ -591,7 +598,7 @@ class GetLog:
                                         break
                                 if break_flag == 1:
                                     break  # 退出累加循环
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: {}".format(statistics_value))
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: {}".format(statistics_value), flush=True)
                         # 时差，速率使用:
                         util = UtilStatisticsTemplate()
                         time_dif_seconds = util.time_dif_seconds(start_time, end_time)
