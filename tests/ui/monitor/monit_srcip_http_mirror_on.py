@@ -95,7 +95,6 @@ def run(parameter):
             },
             "is_mirror":"on",
             "mirror_type": "http",
-            "profile": [],
             "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [

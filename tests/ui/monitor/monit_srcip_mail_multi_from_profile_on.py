@@ -77,7 +77,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monit_mail_account_by_account",
+                        "name": "monit_mail_from_by_account",
                         "object_type": "account",
                         "item_operation": "add",
                         "select_type": False,
@@ -109,8 +109,8 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
-                {"query_field_key": "monitor_mirrored_pkts", "query_value": 4344},
-                {"query_field_key": "monitor_mirrored_bytes", "query_value": 4697760}
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": 3748},
+                {"query_field_key": "monitor_mirrored_bytes", "query_value": 4623316}
             ],
             "traffic": {
                 "protocol": "",

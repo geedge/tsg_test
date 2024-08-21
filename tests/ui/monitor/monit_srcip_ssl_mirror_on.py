@@ -94,7 +94,6 @@ def run(parameter):
             },
             "is_mirror":"on",
             "mirror_type": "ssl",
-            "profile": [],
             "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.bbc.com"},

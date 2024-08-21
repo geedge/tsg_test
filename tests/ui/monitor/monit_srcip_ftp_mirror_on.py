@@ -94,7 +94,6 @@ def run(parameter):
             },
             "is_mirror":"on",
             "mirror_type": "ftp",
-            "profile": [],
              "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"},

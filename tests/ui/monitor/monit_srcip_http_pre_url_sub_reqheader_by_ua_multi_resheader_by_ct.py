@@ -63,28 +63,12 @@ def run(parameter):
                         ]
                     }
                 ],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [],
-                "external_port": [],
-                "source_geography": [],
-                "destination_geography": [],
-                "sub_id": [],
-                "device": [],
-                "tunnel": [],
-                "tunnel_level": [],
-                "flag": [],
                 "application": [
                     {
                         "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
-                ],
-                "server_fqdn": [
                 ],
                 "protocol_filed": [
                     {
@@ -146,14 +130,6 @@ def run(parameter):
                     }
 
                 ],
-                "sub_action_override": True,
-                "sub_action": [],
-                "packet_capture": [
-                    {
-                        "enable": True,
-                        "capture_depth": "2000"
-                    }
-                ]
             },
             "is_mirror": "off",
             "profile": [
@@ -397,71 +373,50 @@ def run(parameter):
             else:
                 result = result + " In addition, fail to search monitor rule."
 
+
         # 删除object
-        if delete_rule_code == 200:
-            # 删除ip
-            for x in range(len(ip_data)):
-                search_ip = SearchObject(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"],
-                                                                              test_ip_object_element_position)
-                if search_ip_code == 200:
-                    delete_ip = DeleteObject(driver)
-                    delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
-                    if delete_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
-                    elif delete_ip_code != 200:
-                        result = result + " In addition, fail to delete ip object."
-                        break
-                else:
-                    result = result + " In addition, fail to search ip object."
+        if delete_rule_code == 200 and "condition" in test_data.keys():
+            # 删除
+            for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
+                if cond_key == "application":
+                    continue  # 直接跳过
+                cond_status = 0
+                cond_key_out = cond_key.replace("_", " ")
+                if len(cond_value) != 0:  # 不为空
+                    cond_data = cond_value
+                    for i in range(len(cond_data)):  # 遍历查询所有condition
+                        search_cond = SearchObject(driver)
+                        if cond_key == "protocol_filed":
+                            tmp_key = cond_data[i]["object_type"]
+                            cond_key_out = tmp_key.replace("_", " ")
+                            element_position_map = get_element_position(tmp_key)
+                        else:
+                            element_position_map = get_element_position(cond_key)
+                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"],
+                                                                                          element_position_map)
+                        if search_cond_code == 200:
+                            delete_cond = DeleteObject(driver)
+                            delete_cond_code = delete_cond.delete(element_position_map,
+                                                                  first_row_checkbox_element,
+                                                                  True)
+                            if delete_cond_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                      str(datetime.now().microsecond)[:3],
+                                      "Delete {} object successfully.".format(cond_key_out), flush=True)
+                            else:
+                                result = result + " In addition, fail to delete {} object.".format(cond_key_out)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} object.".format(cond_key_out)
+                            break
+                        # 退出遍历标志
+                        if cond_status == 1:  # 失败，退出遍历创建
+                            break
+                # 退出遍历标志
+                if cond_status == 1:  # 失败，退出遍历创建
                     break
 
-        # 删除protocol_filed
-        for q in range(len(protocol_field_data)):
-            search_protocol_filed = SearchObject(driver)
-            object_type = protocol_field_data[q]['object_type']
-            if object_type == 'url':
-                search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(
-                    protocol_field_data[q]["name"], test_url_object_element_position)
-            elif object_type == 'http_signature':
-                search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(
-                    protocol_field_data[q]["name"], test_http_signature_object_element_position)
-            if search_protocol_filed_code == 200:
-                delete_protocol_filed = DeleteObject(driver)
-                if object_type == 'url':
-                    delete_protocol_filed_code = delete_protocol_filed.delete(
-                        test_url_object_element_position, first_row_checkbox_element, True)
-                elif object_type == 'http_signature':
-                    delete_protocol_filed_code = delete_protocol_filed.delete(
-                        test_http_signature_object_element_position, first_row_checkbox_element, True)
-                if delete_protocol_filed_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Delete {} object successfully.".format(object_type), flush=True)
-                elif delete_protocol_filed_code != 200:
-                    result = result + " In addition, fail to delete {} object.".format(object_type)
-                    break
-            else:
-                result = result + " In addition, fail to search {} object.".format(object_type)
-                break
 
-        # 删除profile
-        if delete_rule_code == 200:
-            # 删除filter
-            for y in range(len(protocol_field_data)):
-                search_url = SearchObject(driver)
-                search_url_code, first_row_checkbox_element = search_url.search(protocol_field_data[y]["name"],
-                                                                                element_position_map)
-                if search_url_code == 200:
-                    delete_url = DeleteObject(driver)
-                    delete_url_code = delete_url.delete(element_position_map, first_row_checkbox_element,
-                                                        True)
-                    if delete_url_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete url object successfully.", flush=True)
-                    elif delete_url_code != 200:
-                        result = result + " In addition, fail to delete ip object."
-                        break
-                else:
-                    result = result + " In addition, fail to search url object."
 
         # 脚本结束时间和耗时
         end_time = time.time()
