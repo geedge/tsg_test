@@ -436,7 +436,7 @@ class CreateRule:
                                         dns_text_value = detail['answer'][0]['answer_value']
                                         if qtype == "A":
                                             self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0ATextPlaceholder_posId"]).send_keys(dns_text_value)
-                                        elif atype == "AAAA":
+                                        elif qtype == "AAAA":
                                             self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0AAAATextPlaceholder_posId"]).send_keys(dns_text_value)
                                         elif qtype == "AAAA":
                                             self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0AAAATextPlaceholder_posId"]).send_keys(dns_text_value)   

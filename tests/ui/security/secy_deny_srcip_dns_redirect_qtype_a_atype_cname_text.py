@@ -212,6 +212,7 @@ def run(parameter):
                     "policyRulePage_dnsAnswerValueSelectPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswerValueSelectPlaceholder_posId,
                     "policyRulePage_dnsAnswerValueNameSearch_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSearch_posId,
                     "policyRulePage_dnsAnswerValueNameSelect_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSelect_posId,
+                    "policyRulePage_dnsAnswer0ATextPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswer0ATextPlaceholder_posId,
                     "policyRulePage_dnsAnswer0CnameTextPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswer0CnameTextPlaceholder_posId,
                     "policyRulePage_dnsAnswerValueTTL0_posId": securityRulePage_subAction_redirect_dnsAnswerValueTTL0_posId,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
