@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_ssl_table_all_bytes_dim_seld_ip",
+            "rule_name": "stats_srcip_dstip_ssl_table_all_bytes_dim_sled_ip",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_ssl_table_all_bytes_dim_seld_ip",
+                        "name": "stats_srcip_ssl_table_all_bytes_dim_sled_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_ssl_table_all_bytes_dim_seld_ip",
+                        "name": "stats_dstip_ssl_table_all_bytes_dim_sled_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -109,11 +109,11 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_ssl_table_all_bytes_dim_seld_ip",
+                    "name": "stats_ssl_table_all_bytes_dim_sled_ip",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "stats_ssl_table_all_bytes_dim_seld_ip",
+                          "chart_name": "stats_ssl_table_all_bytes_dim_sled_ip",
                           "visualization_type": "Table",
                           "metrics": [
                             "in_bytes:SUM:incoming bytes",
@@ -121,7 +121,7 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:all bytes"
                           ],
                           "dimensions": [
-                            "seld_ip"
+                            "sled_ip"
                           ],
                           "order_by": "all bytes",
                           "row_limit": "100",
@@ -423,7 +423,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_ssl_table_all_bytes_dim_seld_ip",
+        "test_case_name": "stats_srcip_dstip_ssl_table_all_bytes_dim_sled_ip",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

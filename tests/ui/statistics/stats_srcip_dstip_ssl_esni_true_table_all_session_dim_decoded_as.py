@@ -227,7 +227,6 @@ def run(parameter):
                         cond_key = cond_key + ":" + tmp_key
                     else:
                         element_position_map = get_element_position(cond_key)
-                    element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key), flush=True)
@@ -361,8 +360,16 @@ def run(parameter):
                 if len(cond_value) != 0:  # 不为空
                     cond_data = cond_value
                     for i in range(len(cond_data)):  # 遍历查询所有condition
+                        if cond_key == "protocol_filed":
+                            tmp_key = cond_data[i]["object_type"]
+                            if tmp_key == "boolean":  # "object_type": "boolean"时无需创建
+                                continue
+                            cond_key_out = tmp_key.replace("_", " ")
+                            element_position_map = get_element_position(tmp_key)
+                            cond_key = cond_key + ":" + tmp_key
+                        else:
+                            element_position_map = get_element_position(cond_key)
                         search_cond = SearchObject(driver)
-                        element_position_map = get_element_position(cond_key)
                         search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
                         if search_cond_code == 200:
                             delete_cond = DeleteObject(driver)
