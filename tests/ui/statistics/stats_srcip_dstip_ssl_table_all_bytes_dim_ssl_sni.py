@@ -441,7 +441,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_ssl_table_all_bytes_dim_ssl_sni",
+        "test_case_name": "stats_srcip_dstip_ssl_table_all_bytes_dim_ssl_sni",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

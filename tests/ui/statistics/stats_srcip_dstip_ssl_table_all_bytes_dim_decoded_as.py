@@ -187,10 +187,6 @@ def run(parameter):
                 "name": test_data["condition"]["destination_ip"][0]['name']
             },
             {
-                "type": test_data["condition"]["server_fqdn"][0]['object_type'],
-                "name": test_data["condition"]["server_fqdn"][0]['name']
-            },
-            {
                 "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
                 "name": test_data["action_parameter"]["statistics_template"][0]['name']
             }

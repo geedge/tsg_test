@@ -146,6 +146,8 @@ class TriggerTraffic:
             if "source_ip" in test_data["condition"].keys():
                 source_ip = test_data["condition"]["source_ip"]
                 for ip_item in source_ip:
+                    if ip_item["item"] == []:#UDP IP源目的方向不确定时把IP放到双方向时使用
+                        continue
                     if "-" in ip_item["item"][0]["item_value"]:
                         test_data["traffic"]["clients_start_ip"] = ip_item["item"][0]["item_value"].split("-")[0]
                         test_data["traffic"]["clients_end_ip"] = ip_item["item"][0]["item_value"].split("-")[-1]
@@ -155,6 +157,8 @@ class TriggerTraffic:
             if "destination_ip" in test_data["condition"].keys():
                 destination_ip = test_data["condition"]["destination_ip"]
                 for ip_item in destination_ip:
+                    if ip_item["item"] == []:#UDP IP源目的方向不确定时把IP放到双方向时使用
+                        continue
                     if "-" in ip_item["item"][0]["item_value"]:
                         test_data["traffic"]["servers_start_ip"] = ip_item["item"][0]["item_value"].split("-")[0]
                         test_data["traffic"]["servers_end_ip"] = ip_item["item"][0]["item_value"].split("-")[-1]
