@@ -417,11 +417,15 @@ class CreateRule:
                                 qtype = detail['qtype']
                                 if len(sub_action_data[0]['resolution']) == 1 and answer0_len == 1:
                                     answer_value_type = detail['answer'][0]['answer_value_type']
-                                    
+                                    atype = detail['answer'][0]['atype']
                                     ttl = detail['answer'][0]['ttl']
                                     # 点击切换qtype,默认即会选中qtype A
                                     if qtype == "AAAA":
                                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_dnsAnswerqTypeAAAA_posXpath"]).click()
+                                    # 切换Answer Type
+                                    self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerType0Choose_posId"]).click()
+                                    answer_type_posXpath = create_element_position["policyRulePage_dnsAnswerType0ChooseValue_posXpath"].format(replaceValue=atype)
+                                    self.driver.find_element(By.XPATH, answer_type_posXpath).click()
                                     # 点击切换answer的返回方式
                                     self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0ValueType_posId"]).click()
                                     choose_answer_type_posXpath = create_element_position["policyRulePage_dnsAnswer0ValueTypeChoose_posXpath"].format(replaceValue=answer_value_type)
@@ -434,12 +438,12 @@ class CreateRule:
                                         self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueNameSelect_posId"]).click()
                                     else:
                                         dns_text_value = detail['answer'][0]['answer_value']
-                                        if qtype == "A":
+                                        if atype == "A":
                                             self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0ATextPlaceholder_posId"]).send_keys(dns_text_value)
-                                        elif qtype == "AAAA":
+                                        elif atype == "AAAA":
                                             self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0AAAATextPlaceholder_posId"]).send_keys(dns_text_value)
-                                        elif qtype == "AAAA":
-                                            self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0AAAATextPlaceholder_posId"]).send_keys(dns_text_value)   
+                                        elif atype == "CNAME":
+                                            self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswer0CnameTextPlaceholder_posId"]).send_keys(dns_text_value)   
                                     self.driver.find_element(By.ID, create_element_position["policyRulePage_dnsAnswerValueTTL0_posId"]).send_keys(ttl)
 
                 elif sub_action_data[0]["type"] == "alert":
@@ -473,7 +477,7 @@ class CreateRule:
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_fairFactor_posId"]).clear()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_fairFactor_posId"]).send_keys(test_data["ruleFairFactor"])
             
-            # 添加statistics、shaping、sc的profile
+            # 添加statistics、shaping、sc、manipulation的profile
             if ("action_parameter" in test_data and len(test_data["action_parameter"]) != 0) or ("profile" in test_data and len(test_data["profile"]) != 0):
                 if test_data["policy_type"] == "shaping":
                     # 点profile的+
@@ -680,7 +684,13 @@ class CreateRule:
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationTimeouts_dropDownBox_posXpath"]).click()
                 temp_mitigation_timeout_element_position = create_element_position["policyRulePage_mitigationTimeouts_select_posXpath"].format(replaceValue=test_data["mitigation"]["timeout"])
                 self.driver.find_element(By.XPATH, temp_mitigation_timeout_element_position).click()
-                
+
+            # other options 操作
+            if test_data["policy_type"] == "pxy_manipulation":
+                # log option =》 log all
+                if "log_options" in test_data and test_data["log_options"] == "all":
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_logOptions_all_posXpath"]).click()
+
             # 点enable
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
             

@@ -533,6 +533,8 @@ manipulationRulePage_editElement_addRemoveRadio_posXpath = "//label[normalize-sp
 manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath = manipulationRulePage_insert_addInsertProfileSelectBox_posXpath   # run script  选择框  定位
 manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
 manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+# other options
+manipulationRulePage_logOptions_all_posXpath = '//*[@id="manipulation_logOption-_Edit_Home_App_anonymousComponent"]//span[normalize-space(text())="All"]'
 
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
