@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_extip_ftp_drop_reset",
+            "rule_name": "secy_deny_extip_ftp_drop_rst",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -115,7 +115,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_deny_extip_ftp_drop_reset"
+                "name": "secy_deny_extip_ftp_drop_rst"
             },
             {
                 "type": "ip",

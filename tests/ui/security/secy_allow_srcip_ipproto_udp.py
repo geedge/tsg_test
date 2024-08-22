@@ -104,7 +104,7 @@ def run(parameter):
         name_list = [
             {
                 "type": "security",
-                "name": "secy_allow_srcip_ippro_udp"
+                "name": "secy_allow_srcip_ipproto_udp"
             },
             {
                 "type": "ip",
