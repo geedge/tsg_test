@@ -123,7 +123,7 @@ def run(parameter):
                           "dimensions": [
                             "decoded_as"
                           ],
-                          "order_by": "all bytes",
+                          "order_by": "sessions",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "max_out_size": "0"

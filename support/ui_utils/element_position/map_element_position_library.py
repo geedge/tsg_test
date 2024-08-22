@@ -967,6 +967,25 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
         "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        #add boolean
+        "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
+        "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
+        "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
+        "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
+        "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
+        "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
+        # san
+        "policyRulePage_addConditionSan_posXpath": monitorRulePage_addCondition_san_posXpath,
+        "policyRulePage_addSan_posXpath": monitorRulePage_addSan_posXpath,
+        "policyRulePage_searchSan_posXpath": monitorRulePage_searchSan_posXpath,
+        "policyRulePage_selectSan_posXpath": monitorRulePage_selectSan_posXpath,
+        "policyRulePage_closeSan_posXpath": monitorRulePage_closeSan_posXpath,
+        # cn
+        "policyRulePage_addConditionCn_posXpath": monitorRulePage_addCondition_cn_posXpath,
+        "policyRulePage_addCn_posXpath": monitorRulePage_addCn_posXpath,
+        "policyRulePage_searchCn_posXpath": monitorRulePage_searchCn_posXpath,
+        "policyRulePage_selectCn_posXpath": monitorRulePage_selectCn_posXpath,
+        "policyRulePage_closeCn_posXpath": monitorRulePage_closeCn_posXpath,
         # 添加Template按钮
         "plicyRulePage_addStatisticsTemplate_posXpath": statisticsRulePage_add_template_posXpath,
         "policyRulePage_searchProfile_posXpath": statisticsRulePage_search_template_posXpath,
