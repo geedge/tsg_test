@@ -129,14 +129,14 @@ def run(parameter):
                           "chart_name": "stats_ssl_pre_fqdn_table_all_sessions_dim_direction",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:incoming bytes",
-                            "out_bytes:SUM:outgoing bytes",
-                            "in_bytes+out_bytes:SUM:all bytes"
+                            "new_in_sessions:SUM:new in sessions",
+                            "new_out_sessions:SUM:new out sessions",
+                            "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
                           "dimensions": [
                             "direction"
                           ],
-                          "order_by": "all bytes",
+                          "order_by": "sessions",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "max_out_size": "0"
