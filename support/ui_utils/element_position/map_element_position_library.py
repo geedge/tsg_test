@@ -785,7 +785,12 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchMailSubject_posXpath": monitorRulePage_searchmailSubject_posXpath,
                     "policyRulePage_selectMailSubject_posXpath": monitorRulePage_selectmailSubject_posXpath,
                     "policyRulePage_closeMailSubject_posXpath": monitorRulePage_closemailSubject_posXpath,
-
+                    # qname
+                    "policyRulePage_addConditionQname_posXpath": monitorRulePage_addCondition_qname_posXpath,
+                    "policyRulePage_addQname_posXpath": monitorRulePage_addQname_posXpath,
+                    "policyRulePage_searchQname_posXpath": monitorRulePage_searchQname_posXpath,
+                    "policyRulePage_selectQname_posXpath": monitorRulePage_selectQname_posXpath,
+                    "policyRulePage_closeQname_posXpath": monitorRulePage_closeQname_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
