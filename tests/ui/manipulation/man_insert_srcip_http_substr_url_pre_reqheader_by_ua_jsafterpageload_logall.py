@@ -20,6 +20,7 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
+
 from support.report import *
 from datetime import datetime
 
@@ -43,8 +44,9 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
             "rule_name": parameter["test_case_name"],
-            "rule_action": "redirect",
+            "rule_action": "insert",
             "rule_type": "create",
+            "log_options": "all",
             "condition": {
                 "source_ip": [
                     {
@@ -79,7 +81,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "baidu"
+                                "item_value": "40.206"
                             }
                         ],
                     },
@@ -97,7 +99,7 @@ def run(parameter):
                                 "item_key": "User-Agent",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "$Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36"
+                                    "Wget (Win*"
                                 ]
                             }
                         ],
@@ -105,21 +107,27 @@ def run(parameter):
                 ],
             },
             "action_parameter": {
-                "redirect_url": [
+                "insert_script": [
                     {
-                        "profile_type": "redirect_response",
-                        "response_code": 301,
-                        "redirect_url": "https://www.jd.com"
+                        "profile_type": "insert_script",
+                        "profile_file": {
+                            "name": "manipulation_insert_profile",
+                            "model": "create",
+                            "script": "test_js_1.js",
+                            "script_type":  "js",
+                            "insert_position": "After Page Load"
+                            }
                     }
                 ]
             },
-            "expected_return": "https://www.jd.com",
+            "expected_return": "test_case_javascript",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "http_user_agent", "query_value": "Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "decoded_as", "query_value": "HTTP"},
+                                {"query_field_key": "http_request_body", "query_value": True}, {"query_field_key": "http_response_body", "query_value": True}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 30 -m 60  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\"  https://www.baidu.com"
+                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443/go"
             },
             "token": ""
         }
@@ -354,7 +362,6 @@ def run(parameter):
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
     
-
 
 if __name__ == '__main__':
     parameter = {

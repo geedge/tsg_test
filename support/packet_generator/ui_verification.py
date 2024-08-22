@@ -94,7 +94,7 @@ class UiVerification:
                                         else:
                                             temp_log_result = False
                                         temp_log_result_list.append(temp_log_result)
-                                    elif log_query_key  in {"packet_capture_file","http_response_body,http_request_body"}:
+                                    elif log_query_key  in {"packet_capture_file","http_response_body,http_request_body"}:   #日志中非结构文件断言
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                         element_exist_flag = my_driver.is_exist_element(log_item_pos_xpath)
                                         # 验证开关开启

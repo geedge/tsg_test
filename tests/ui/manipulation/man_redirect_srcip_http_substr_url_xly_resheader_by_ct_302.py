@@ -97,7 +97,7 @@ def run(parameter):
                                 "item_key": "Content-Type",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "text/html*"
+                                    "$text/html;charset=UTF-8"
                                 ]
                             }
                         ],
@@ -108,7 +108,7 @@ def run(parameter):
                 "redirect_url": [
                     {
                         "profile_type": "redirect_response",
-                        "response_code": 301,
+                        "response_code": 302,
                         "redirect_url": "https://www.jd.com"
                     }
                 ]

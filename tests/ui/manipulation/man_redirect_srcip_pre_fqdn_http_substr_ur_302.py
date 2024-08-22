@@ -20,7 +20,6 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
-
 from support.report import *
 from datetime import datetime
 
@@ -44,7 +43,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
             "rule_name": parameter["test_case_name"],
-            "rule_action": "deny",
+            "rule_action": "redirect",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -69,6 +68,21 @@ def run(parameter):
                         "negate": False
                     }
                 ],
+                "server_fqdn": [
+                    {
+                        "name": "manipulation_fqdn_node",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "fqdn",
+                                "item_value": "www.baidu.*",
+                            }
+                        ]
+                    }
+                ],
                 "protocol_filed": [
                     {
                         "name": "manipulation_url",
@@ -83,30 +97,25 @@ def run(parameter):
                                 "item_value": "baidu"
                             }
                         ],
-                    },
+                    }
                 ],
             },
             "action_parameter": {
-                "response_page": [
+                "redirect_url": [
                     {
-                        "profile_type": "response_page",
-                        "response_code": 404,
-                        "response_content_type": "Profile",
-                        "profile_file": {
-                            "name": "manipulation_profile_page",
-                            "model": "create",
-                            "file": "testa.html"
-                        },
+                        "profile_type": "redirect_response",
+                        "response_code": 302,
+                        "redirect_url": "https://www.jd.com"
                     }
                 ]
             },
-            "expected_return": "https://www.daixiaorui.com",
+            "expected_return": "https://www.jd.com",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "http_url", "query_value": "www.baidu.com/"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
+                "command": "curl -kv https://www.baidu.com"
             },
             "token": ""
         }
@@ -341,7 +350,6 @@ def run(parameter):
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
     
-
 
 
 if __name__ == '__main__':

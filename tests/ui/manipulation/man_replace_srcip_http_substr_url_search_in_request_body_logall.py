@@ -2,6 +2,7 @@
 import time
 import os
 import sys
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -20,7 +21,9 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
+
 from support.report import *
+
 from datetime import datetime
 
 def run(parameter):
@@ -28,7 +31,7 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         result, exception_result = "", ""
-        
+
         # 脚本启动时间
         start_time = time.time()
 
@@ -43,8 +46,9 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
             "rule_name": parameter["test_case_name"],
-            "rule_action": "redirect",
+            "rule_action": "replace",
             "rule_type": "create",
+            "log_options": "all",
             "condition": {
                 "source_ip": [
                     {
@@ -83,39 +87,23 @@ def run(parameter):
                             }
                         ],
                     },
-                    {
-                        "name": "manipulation_res_header_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "$text/html;charset=UTF-8"
-                                ]
-                            }
-                        ],
-                    }
                 ],
             },
             "action_parameter": {
-                "redirect_url": [
+                "replace_parameter": [
                     {
-                        "profile_type": "redirect_response",
-                        "response_code": 301,
-                        "redirect_url": "https://www.jd.com"
+                        "profile_type": "replace",
+                        "regex": "off",
+                        "search_in": "HTTP Request Body",
+                        "find": "test_request_body",
+                        "replace_with": "replace_test_req_content"
                     }
                 ]
             },
-            "expected_return": "https://www.jd.com",
+            "expected_return": "replace_test_req_content",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "http_response_content_type", "query_value": "text/html;charset=UTF-8"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "decoded_as", "query_value": "HTTP"},
+                                {"query_field_key": "http_request_body", "query_value": True}, {"query_field_key": "http_response_body", "query_value": True}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
@@ -141,7 +129,7 @@ def run(parameter):
         if "condition" in test_data.keys():
             for cond_key, cond_value in (test_data["condition"].items()):
                 if cond_key in manipulation_object_no_create_list:
-                    continue   # 直接跳过
+                    continue  # 直接跳过
                 cond_status = 0
                 cond_key_out = cond_key.replace("_", " ")
                 if len(cond_value) != 0:  # 不为空
@@ -161,21 +149,21 @@ def run(parameter):
                             result = "Fail to create {} object.".format(cond_key_out)
                             cond_status = 1
                             break
-                if cond_status == 1:   # 创建失败，退出遍历创建
+                if cond_status == 1:  # 创建失败，退出遍历创建
                     break
 
         # 创建profile
         prfi_code = 200
         if "action_parameter" in test_data.keys():
-            for prfi_key, prfi_value in(test_data["action_parameter"]).items():
+            for prfi_key, prfi_value in (test_data["action_parameter"]).items():
                 if prfi_key in manipulation_profile_no_create_list:
                     continue  # 直接跳过
                 prfi_status = 0
                 prfi_key_out = prfi_key.replace("_", " ")
-                if len(prfi_value) != 0:   # 需要创建profile数据
+                if len(prfi_value) != 0:  # 需要创建profile数据
                     prfi_data = prfi_value
                     prfi = CreateProfile(driver)
-                    for i in range(len(prfi_data)): # 遍历创建所有 profile
+                    for i in range(len(prfi_data)):  # 遍历创建所有 profile
                         element_position_map = get_element_position(prfi_key)
                         prfi_code = prfi.create(prfi_data[i], element_position_map)
                         if prfi_code == 200:
@@ -332,7 +320,7 @@ def run(parameter):
         delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
+        if os.path.exists(file_path) and os.path.isfile(file_path):
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
                 report_data.append(parameter["test_case_name"])
@@ -353,7 +341,6 @@ def run(parameter):
                 report_data.append("")
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
-    
 
 
 if __name__ == '__main__':

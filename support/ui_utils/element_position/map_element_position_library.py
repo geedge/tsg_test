@@ -548,6 +548,8 @@ test_manipulation_rule_element_position = {
         "policyRulePage_runScript_addrunScriptProfileSelectBox_posXpath": manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath,
         "policyRulePage_runScript_searchrunScriptProfile_posXpath": manipulationRulePage_insert_searchrunScriptProfile_posXpath,
         "policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath": manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath,
+        # other options
+        "policyRulePage_logOptions_all_posXpath": manipulationRulePage_logOptions_all_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": manipulationRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": manipulationRulePage_okButton_yes_posId,

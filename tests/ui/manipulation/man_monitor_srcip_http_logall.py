@@ -20,6 +20,7 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
+
 from support.report import *
 from datetime import datetime
 
@@ -43,8 +44,9 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
             "rule_name": parameter["test_case_name"],
-            "rule_action": "redirect",
+            "rule_action": "monitor",
             "rule_type": "create",
+            "log_options": "all",
             "condition": {
                 "source_ip": [
                     {
@@ -68,54 +70,11 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "protocol_filed": [
-                    {
-                        "name": "manipulation_url",
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "192.168"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_res_header_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "text&html&charset&UTF-8&text/html&;char&set=&=UTF"
-                                ]
-                            }
-                        ],
-                    }
-                ],
             },
-            "action_parameter": {
-                "redirect_url": [
-                    {
-                        "profile_type": "redirect_response",
-                        "response_code": 301,
-                        "redirect_url": "https://www.jd.com"
-                    }
-                ]
-            },
-            "expected_return": "https://www.jd.com",
+            "expected_return": "test_resbody,CN=TSG",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "http_response_content_type", "query_value": "text/html;charset=UTF-8"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "decoded_as", "query_value": "HTTP"},
+                                {"query_field_key": "http_request_body", "query_value": True}, {"query_field_key": "http_response_body", "query_value": True}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
@@ -354,7 +313,6 @@ def run(parameter):
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
     
-
 
 if __name__ == '__main__':
     parameter = {

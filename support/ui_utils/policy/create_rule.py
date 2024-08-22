@@ -477,7 +477,7 @@ class CreateRule:
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_fairFactor_posId"]).clear()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_fairFactor_posId"]).send_keys(test_data["ruleFairFactor"])
             
-            # 添加statistics、shaping、sc的profile
+            # 添加statistics、shaping、sc、manipulation的profile
             if ("action_parameter" in test_data and len(test_data["action_parameter"]) != 0) or ("profile" in test_data and len(test_data["profile"]) != 0):
                 if test_data["policy_type"] == "shaping":
                     # 点profile的+
@@ -684,7 +684,13 @@ class CreateRule:
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationTimeouts_dropDownBox_posXpath"]).click()
                 temp_mitigation_timeout_element_position = create_element_position["policyRulePage_mitigationTimeouts_select_posXpath"].format(replaceValue=test_data["mitigation"]["timeout"])
                 self.driver.find_element(By.XPATH, temp_mitigation_timeout_element_position).click()
-                
+
+            # other options 操作
+            if test_data["policy_type"] == "pxy_manipulation":
+                # log option =》 log all
+                if "log_options" in test_data and test_data["log_options"] == "all":
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_logOptions_all_posXpath"]).click()
+
             # 点enable
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
             

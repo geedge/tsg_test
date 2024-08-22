@@ -20,6 +20,7 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
+
 from support.report import *
 from datetime import datetime
 
@@ -43,7 +44,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
             "rule_name": parameter["test_case_name"],
-            "rule_action": "redirect",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -70,21 +71,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_url",
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "baidu"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_http_signature",
+                        "name": "manipulation_res_header_http_signature",
                         "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
@@ -93,11 +80,11 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
+                                "item_type": "response_header",
+                                "item_key": "Content-Type",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "*Safari/537.36"
+                                    "text/html"
                                 ]
                             }
                         ],
@@ -105,21 +92,26 @@ def run(parameter):
                 ],
             },
             "action_parameter": {
-                "redirect_url": [
+                "response_page": [
                     {
-                        "profile_type": "redirect_response",
-                        "response_code": 301,
-                        "redirect_url": "https://www.jd.com"
+                        "profile_type": "response_page",
+                        "response_code": 451,
+                        "response_content_type": "Profile",
+                        "profile_file": {
+                            "name": "manipulation_profile_page",
+                            "model": "create",
+                            "file": "testa.html"
+                        },
                     }
                 ]
             },
-            "expected_return": "https://www.jd.com",
+            "expected_return": "https://www.daixiaorui.com",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "http_user_agent", "query_value": "Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 30 -m 60  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\"  https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }
@@ -354,6 +346,7 @@ def run(parameter):
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
     
+
 
 
 if __name__ == '__main__':

@@ -61,6 +61,21 @@ def run(parameter):
                         ]
                     }
                 ],
+                "internal_port": [
+                    {
+                        "name": "manipulation_internal_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "1000-65530",
+                            },
+                        ]
+                    }
+                ],
                 "application": [
                     {
                         "name": "http",  #
@@ -79,26 +94,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "192.168.40"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "Cookie",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "tmp_tsg_cookie"
-                                ]
+                                "item_value": "baidu"
                             }
                         ],
                     }
@@ -108,18 +104,18 @@ def run(parameter):
                 "redirect_url": [
                     {
                         "profile_type": "redirect_response",
-                        "response_code": 301,
+                        "response_code": 302,
                         "redirect_url": "https://www.jd.com"
                     }
                 ]
             },
             "expected_return": "https://www.jd.com",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "http_cookie", "query_value": "test_name=tmp_tsg_cookie"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -b \"test_name=tmp_tsg_cookie\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443/go"
+                "command": "curl -kv https://www.baidu.com"
             },
             "token": ""
         }
