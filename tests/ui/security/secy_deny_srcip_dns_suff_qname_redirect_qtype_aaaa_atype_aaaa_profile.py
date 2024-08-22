@@ -14,9 +14,13 @@ from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.packet_generator.verification import Verification
+from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
+from support.ui_utils.profile.create_dns_records_profile import CreateProfile
+from support.ui_utils.profile.search_profile import SearchProfile
+from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env
 
 from support.report import *
@@ -41,17 +45,13 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_internal_ip_substr_serverfqdn_http_substr_url_reqheader_by_ua_drop_rst",
+            "rule_name": "secy_deny_srcip_dns_suff_qname_redirect_qtype_aaaa_atype_aaaa_profile",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [
+                "source_ip": [
                     {
-                        "name": "secy_intip",
+                        "name": "secy_srcip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -59,11 +59,15 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
+                                "item_value": parameter['test_pc_ip'],
                             }
                         ]
                     }
                 ],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
                 "internal_port": [],
                 "external_ip": [],
                 "external_port": [],
@@ -76,57 +80,24 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http", #
+                        "name": "dns", #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
+                "server_fqdn": [],
+                "protocol_filed": [
                     {
                         "name": "secy_fqdn",
                         "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "fqdn",
-                                "item_value": "open.node.com",
-                            }
-                        ]
-                    }
-                ],
-                "protocol_filed": [
-                    {
-                        "name": "secy_url",
-                        "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "open.node"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "secy_http_sig",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "curl"
-                                ]
+                                "item_type": "qname",
+                                "item_value": "*facebook.com"
                             }
                         ],
                     }
@@ -134,22 +105,40 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "drop",
-                        "send_tcp_rst": True,
-                        "drop_packet": 0,
-                        "send_icmp_unreachable": False
+                        "type": "redirect",
+                        "resolution":[
+                            {
+                                "qtype": "AAAA",
+                                "answer":[
+                                    {
+                                        "atype": "AAAA",
+                                        "answer_value_type": "Profile",
+                                        "profile_name": "secy_dns_type_AAAA",
+                                        "ttl": "300-333"
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ],
                 "packet_capture": []
             },
-            "profile": [],
-            "expected_return": "reset",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
+            "profile": [
+                {
+                    "name": "secy_dns_type_AAAA",
+                    "type": "AAAA",
+                    "items": ["1::1:1:1"]
+                }
+            ],
+            "expected_return": "1::1:1:1",
+            "counters": {"hits": 2},
+            "log_query_param": [{"query_field_key":"server_ip", "query_value": "8.8.8.8"},
+                                {"query_field_key":"decoded_as", "query_value": "DNS"},
+                                {"query_field_key":"dns_qname", "query_value": "www.facebook.com"}],
             "traffic": {
-                "protocol": "http",
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+                "protocol": "dns",
+                "type": "nslookup",
+                "command": "nslookup www.facebook.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }
@@ -161,24 +150,20 @@ def run(parameter):
         # name_list汇总
         name_list = [
             {
-                "type": "security",
-                "name": "secy_deny_internal_ip_substr_serverfqdn_http_substr_url_reqheader_by_ua_drop_rst"
+                "type": test_data["policy_type"],
+                "name": test_data["rule_name"]
             },
             {
-                "type": "ip",
-                "name": "secy_intip"
-            },
-                        {
-                "type": "fqdn",
-                "name": "secy_fqdn"
+                "type": test_data["condition"]["source_ip"][0]['object_type'],
+                "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": "url",
-                "name": "secy_url"
+                "type":"dns_records",
+                "name":test_data["profile"][0]['name']
             },
             {
-                "type": "http_signature",
-                "name": "secy_http_sig"
+                "type": test_data["condition"]["protocol_filed"][0]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][0]['name']
             }
         ]
         
@@ -246,70 +231,39 @@ def run(parameter):
                     "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-
-            test_url_object_element_position = {
+            test_dns_records_profile_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
+                    "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+                    "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_dnsRecords_posId
                 },
                 "create": {
-                    "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": urlObjectPage_addItem_posId,
-                    # item简单定位
-                    "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
-                    "objectPage_okButton_posId": urlObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
+                    "profileListPage_createButton_posId": listPage_profile_dnsRecords_createButton_posId,
+                    "profilePage_inputName_posId": dnsRecordsProfilePage_input_Name_posId,
+                    "profilePage_Type_AAAA_posId": dnsRecordsProfilePage_radioButton_typeAAAA_posId,
+                    "dnsRecordsProfiles_input_item_posXpath": dnsRecordsProfilePage_input_addItem_posXpath,
+                    "dnsRecordsProfile_save_item_posXpath": dnsRecordsProfilePage_button_saveItemByIndex_posXpath,
+                    "profilePage_button_oK_posCss": dnsRecordsProfilePage_button_oK_posCss,
+                    "profilePage_button_cancel_posCss": dnsRecordsProfilePage_button_cancel_posCss,
+                    "profilePage_button_warningSaveYes_posCss": dnsRecordsProfilePage_button_warningSaveYes_posCss,
+                    # action
+                },
+                "edit": {
+                    "templates_button_chartEdit_posXpath": listPage_profile_dnsRecords_editButton_posId
                 },
                 "search": {
-                    "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
+                    "profileListPage_searchLabel_posId": listPage_profileSearch_dnsRecords_selectLabel_posId,
+                    "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_dnsRecords_dropDown_item_posXpath,
+                    "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_dnsRecords_input_itemContent_posXpath,
+                    "profileListPage_tableTbody_posXpath": listPage_profilTable_dnsRecords_tableTbody_posXpath
                 },
                 "delete": {
-                    "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
-                }
-            }
-            test_http_signature_object_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_httpSignature_posId
-                },
-                "create": {
-                    "objectListPage_createButton_posId": httpSignatureObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": httpSignatureObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": httpSignatureObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": httpSignatureObjectPage_addItem_posId,
-                    "objectPage_item_key_dropDown_posXpath": httpSignatureObjectPage_item_key_dropDown_posXpath,
-                    "objectPage_item_key_dropDown_select_posXpath": httpSignatureObjectPage_item_key_dropDown_select_posXpath,
-                    "objectPage_item_value_select_posXpath": httpSignatureObjectPage_item_value_select_posXpath,
-                    "objectPage_inputItem_posXpath": httpSignatureObjectPage_inputItem_posXpath,
-                    "objectPage_item_value_plus_posXpath": httpSignatureObjectPage_item_value_plus_posXpath,
-                    "objectPage_button_saveItem_posXpath": httpSignatureObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": httpSignatureObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": httpSignatureObjectPage_okButton_warningYes_posXpath
-                },
-                "search": {
-                    "objectListPage_searchLabel_posId": httpSignatureObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": httpSignatureObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": httpSignatureObjectListPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "objectListPage_allSelect_posXpath": httpSignatureObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": httpSignatureObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+                    "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+                    "profileListPage_deleteButton_posId": listPage_profile_dnsRecords_delButton_posId,
+                    "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_dnsRecords_button_yes_posXpath
                 }
             }
             test_rule_element_position = {
@@ -325,43 +279,39 @@ def run(parameter):
                     "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                     "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
-                    "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
-                    "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
-                    "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
-                    "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
-                    "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                    # srcip
+                    "policyRulePage_addSrcIP_posXpath": securityRulePage_addSrcIP_posXpath,
+                    "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
+                    "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
+                    "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
                     "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                     "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": securityRulePage_closeApplication_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath": securityRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_addCondition_posXpath": securityRulePage_addCondition_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
-                    # fqdn
                     "policyRulePage_addConditionServerFqdn_posXpath": securityRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": securityRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
-                    # url
-                    "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_url_posXpath,
-                    "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
-                    "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
-                    "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
-                    "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
-                    # req header
-                    "policyRulePage_addConditionRequestHeader_posXpath": securityRulePage_addCondition_requestHeader_posXpath,
-                    "policyRulePage_addRequestHeader_posXpath": manipulationRulePage_addRequestHeader_posXpath,
-                    "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
-                    "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
-                    "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
                     "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+                    # qname
+                    "policyRulePage_addConditionQname_posXpath": securityRulePage_addCondition_qname_posXpath,
+                    "policyRulePage_addQname_posXpath": securityRulePage_addQname_posXpath,
+                    "policyRulePage_searchQname_posXpath": securityRulePage_searchQname_posXpath,
+                    "policyRulePage_selectQname_posXpath": securityRulePage_selectQname_posXpath,
+                    "policyRulePage_closeQname_posXpath": securityRulePage_closeQname_posXpath,
                     "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
-                    # sub action
-                    "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
-                    "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
-                    "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
-                    "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+                    "policyRulePage_subAction_redirect_posXpath": securityRulePage_subAction_redirect_posXpath,
+                    # dns redirect
+                    "policyRulePage_dnsAnswerqTypeAAAA_posXpath": securityRulePage_subAction_redirect_qtypeAAAA_posXpath,
+                    "policyRulePage_dnsAnswer0ValueType_posId":  securityRulePage_subAction_redirect_answer0ValueType_posId,
+                    "policyRulePage_dnsAnswer0ValueTypeChoose_posXpath":  securityRulePage_subAction_redirect_answer0ValueTypeChoose_posXpath,
+                    "policyRulePage_dnsAnswerType0Choose_posId": securityRulePage_subAction_redirect_dnsAnswerType0choose_posId,
+                    "policyRulePage_dnsAnswerType0ChooseValue_posXpath": securityRulePage_subAction_redirect_dnsAnswerType0chooseValue_posXpath,
+                    "policyRulePage_dnsAnswerValueSelectPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswerValueSelectPlaceholder_posId,
+                    "policyRulePage_dnsAnswerValueNameSearch_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSearch_posId,
+                    "policyRulePage_dnsAnswerValueNameSelect_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSelect_posId,
+                    "policyRulePage_dnsAnswer0ATextPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswer0ATextPlaceholder_posId,
+                    "policyRulePage_dnsAnswer0AAAATextPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswer0AAAATextPlaceholder_posId,
+                    "policyRulePage_dnsAnswerValueTTL0_posId": securityRulePage_subAction_redirect_dnsAnswerValueTTL0_posId,
                     "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                     "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                     "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -382,43 +332,44 @@ def run(parameter):
             }
         
         # 创建object
-        if "internal_ip" in test_data["condition"] and len(test_data["condition"]["internal_ip"]) != 0:
-            ip_data = test_data["condition"]["internal_ip"]
-            create_port = CreateObject(driver)
+        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+            ip_data = test_data["condition"]["source_ip"]
+            create_ip = CreateObject(driver)
             for i in range(len(ip_data)):
-                create_port_code = create_port.create(ip_data[i], test_ip_object_element_position)
-                if create_port_code == 200:
+                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+                if create_ip_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
-                elif create_port_code != 200:
-                    result = "Fail to create ip object."
+                elif create_ip_code != 200:
+                    result = "Fail to create ip."
                     break
-        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
-            fqdn_data = test_data["condition"]["server_fqdn"]
-            create_fqdn = CreateObject(driver)
-            for i in range(len(fqdn_data)):
-                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
-                if create_fqdn_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create fqdn object successfully.", flush=True)
-                elif create_fqdn_code != 200:
-                    result = "Fail to create fqdn."
-                    break
-        # 创建url+req header       
+        
+        # 创建protocol_filed        
         if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
             protocol_field_data = test_data["condition"]["protocol_filed"]
             create_protocol_filed = CreateObject(driver)
             for x in range(len(protocol_field_data)):
                 object_type = protocol_field_data[x]['object_type']
-                if object_type == 'url':
-                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_url_object_element_position)
-                elif object_type == 'http_signature':
-                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_http_signature_object_element_position)
+                if object_type == 'fqdn':
+                    create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_fqdn_object_element_position)
                 if create_protocol_filed_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
                 elif create_protocol_filed_code != 200:
                     result = "Fail to create {}.".format(object_type)
                     break
+
+        if "profile" in test_data  and len(test_data["profile"]) != 0:
+            profile_data = test_data["profile"]
+            dnsRecords_profile = CreateProfile(driver,test_dns_records_profile_element_position)
+            for i in range(len(profile_data)):
+                create_profile_code = dnsRecords_profile.create_dns_records_profile(profile_data[i],test_dns_records_profile_element_position,test_data["profile"][i]["name"])
+                if create_profile_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create traffic mirroring profile successfully.", flush=True)
+                elif create_profile_code != 200:
+                    result = "Fail to create Dns Records Profiles profile."
+                    break
+
         # 创建rule
-        if create_port_code == 200:
+        if create_profile_code == 200:
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -448,7 +399,7 @@ def run(parameter):
                 # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             # elif len(result) != 0:
                 # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
-        
+                
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -480,36 +431,16 @@ def run(parameter):
                 else:
                     result = result + " In addition, fail to search ip object."
                     break
-        # 删除fqdn
-            for x in range(len(fqdn_data)):
-                search_fqdn = SearchObject(driver)
-                search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"], test_fqdn_object_element_position)
-                if search_fqdn_code == 200:
-                    delete_fqdn = DeleteObject(driver)
-                    delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
-                    if delete_fqdn_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn object successfully.", flush=True)
-                    elif delete_fqdn_code != 200:
-                        result = result + " In addition, fail to delete fqdn object."
-                        break
-                else:
-                    result = result + " In addition, fail to search fqdn object."
-                    break
-        
-        # 删除protocol_filed
+            # 删除protocol_filed
             for q in range(len(protocol_field_data)):
                 search_protocol_filed = SearchObject(driver)
                 object_type = protocol_field_data[q]['object_type']
-                if object_type == 'url':
-                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_url_object_element_position)
-                elif object_type == 'http_signature':
-                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_http_signature_object_element_position)
+                if object_type == 'fqdn':
+                    search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(protocol_field_data[q]["name"], test_fqdn_object_element_position)
                 if search_protocol_filed_code == 200:
                     delete_protocol_filed = DeleteObject(driver)
-                    if object_type == 'url':
-                        delete_protocol_filed_code = delete_protocol_filed.delete(test_url_object_element_position, first_row_checkbox_element, True)
-                    elif object_type == 'http_signature':
-                        delete_protocol_filed_code = delete_protocol_filed.delete(test_http_signature_object_element_position, first_row_checkbox_element, True)
+                    if object_type == 'fqdn':
+                        delete_protocol_filed_code = delete_protocol_filed.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
                     if delete_protocol_filed_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)
                     elif delete_protocol_filed_code != 200:
@@ -517,6 +448,24 @@ def run(parameter):
                         break
                 else:
                     result = result + " In addition, fail to search {} object.".format(object_type)
+                    break
+        #删除profile
+        delete_rule_code = 200
+        profile_data = test_data["profile"]
+        if delete_rule_code == 200:
+            for x in range(len(profile_data)):
+                search_dns_records_profile = SearchProfile(driver)
+                profile_return_code,first_row_checkbox_element=search_dns_records_profile.search(profile_data[x]['name'],test_dns_records_profile_element_position)
+                if profile_return_code == 200:
+                    delete_mirror_profile = DeleteProfile(driver)
+                    delete_profile_code = delete_mirror_profile.delete(test_dns_records_profile_element_position,first_row_checkbox_element,True)
+                    if delete_profile_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns records profile successfully.", flush=True)
+                    elif delete_profile_code != 200:
+                        result = result + " In addition, fail to delete profile."
+                        break
+                else:
+                    result = result + " In addition, fail to search profile."
                     break
         
         # 脚本结束时间和耗时
@@ -564,17 +513,18 @@ if __name__ == '__main__':
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.65",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test",
         "script_type": "ui",
+        "debug_flag": "local",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys_id": 1,
         "is_log": 1,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/ui",
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+        "test_case_name": "allow_positive_ip_http_not_host"
     }
     run(parameter)
     """
