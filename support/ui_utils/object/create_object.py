@@ -21,7 +21,7 @@ class CreateObject:
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_object_page(page_jump_element_position)
             # 点击create
-            self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"]).click()
+            self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"], find_after_wait_time=0.5).click()
             self.driver.find_element(By.ID, create_element_position["objectListPage_dropDown_createButton_posId"]).click()
             time.sleep(1)
             # 输入name

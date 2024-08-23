@@ -134,9 +134,9 @@ def run(parameter):
                             "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
                           "dimensions": [
-                            "ssl_ja3"
+                            "ssl_ja3_hash"
                           ],
-                          "order_by": "all bytes",
+                          "order_by": "sessions",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "max_out_size": "0"

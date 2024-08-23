@@ -528,6 +528,7 @@ test_manipulation_rule_element_position = {
         "policyRulePage_replace_addSearchInSelectDropItem_posXpath": manipulationRulePage_replace_addSearchInSelectDropItem_posXpath,
         "policyRulePage_replace_addFindInput_posXpath": manipulationRulePage_replace_addFindInput_posXpath,
         "policyRulePage_replace_addReplaceWithInput_posXpath": manipulationRulePage_replace_addReplaceWithInput_posXpath,
+        "policyRulePage_replace_add_posXpath": manipulationRulePage_replace_add_posXpath,
         # hijack profile action parameter
         "policyRulePage_hijack_addHijackProfileSelectBox_posXpath": manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath,
         "policyRulePage_hijack_searchHijackProfile_posXpath": manipulationRulePage_hijack_searchHijackProfile_posXpath,
@@ -544,6 +545,7 @@ test_manipulation_rule_element_position = {
         "policyRulePage_editElement_addSDistanceFromAnchorInput_posXpath": manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath,
         "policyRulePage_editElement_addMarkRadio_posXpath": manipulationRulePage_editElement_addMarkRadio_posXpath,
         "policyRulePage_editElement_addRemoveRadio_posXpath": manipulationRulePage_editElement_addRemoveRadio_posXpath,
+        "policyRulePage_editElement_add_posXpath": manipulationRulePage_editElement_add_posXpath,
         # insert script action parameter
         "policyRulePage_runScript_addrunScriptProfileSelectBox_posXpath": manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath,
         "policyRulePage_runScript_searchrunScriptProfile_posXpath": manipulationRulePage_insert_searchrunScriptProfile_posXpath,

@@ -121,7 +121,7 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:all bytes"
                           ],
                           "dimensions": [
-                            "ssl_ja3"
+                            "ssl_ja3_hash"
                           ],
                           "order_by": "all bytes",
                           "row_limit": "100",
