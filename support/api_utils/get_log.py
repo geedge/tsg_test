@@ -150,11 +150,19 @@ class GetLog:
                                         num_vlans = len(vlan_ids)
                                         mirror_bytes_value *= num_vlans
                                         mirror_pkts_value *= num_vlans
-                                elif test_data["mirror_type"] in {"dns", "mail"}:
+                                elif test_data["mirror_type"] in {"mail"}:
                                     if log[query_field_key] == query_value:
                                         log_reult = True
                                     else:
                                         log_reult = False
+                                elif test_data["mirror_type"] == "dns":
+                                    mirror_bytes_value = actual_bytes_value - 8
+                                    mirror_pkts_value = actual_pkts_value
+                                    if "profile" in test_data and test_data["profile"] != "":
+                                        vlan_ids = test_data['profile'][0]['vlan_id']
+                                        num_vlans = len(vlan_ids)
+                                        mirror_bytes_value *= num_vlans
+                                        mirror_pkts_value *= num_vlans
                                 elif test_data["mirror_type"] == "":
                                     mirror_bytes_value = actual_bytes_value
                                     mirror_pkts_value = actual_pkts_value

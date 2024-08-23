@@ -505,7 +505,6 @@ if __name__ == '__main__':
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 1,
-        "debug_flag":"local",
         "is_log": 1,
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",

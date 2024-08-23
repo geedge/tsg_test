@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_ssl_table_all_bytes_dim_seld_ip",
+            "rule_name": "stats_srcip_dstip_ssl_suff_fqdn_xly_cn_pre_san_table_all_sessions_dim_app",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_ssl_table_all_bytes_dim_seld_ip",
+                        "name": "stats_srcip_ssl_suff_fqdn_xly_cn_pre_san_table_all_sessions_dim_app",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_ssl_table_all_bytes_dim_seld_ip",
+                        "name": "stats_dstip_ssl_suff_fqdn_xly_cn_pre_san_table_all_sessions_dim_app",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -100,30 +100,70 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
-                "protocol_filed": [],
-                "sub_action_override": True,
-                "sub_action": [
+                "server_fqdn": [
+                    {
+                        "name": "stats_ssl_suff_fqdn_xly_cn_pre_san_table_all_sessions_dim_app",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_value": "*twitter.com",
+                            }
+                        ]
+                    }
                 ],
+                "protocol_filed": [{
+                        "name": "stats_ssl_xly_cn_table_all_sessions_dim_app",
+                        "object_type": "fqdn",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "cn",
+                                "item_value": "$twitter.com"
+                            }
+                        ],
+                    },{
+                        "name": "stats_ssl_pre_san_table_all_sessions_dim_app",
+                        "object_type": "fqdn",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "san",
+                                "item_value": "twitter.com*"
+                            }
+                        ],
+                    }
+                ],
+                "sub_action_override": True,
+                "sub_action": [],
                 "packet_capture": []
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_ssl_table_all_bytes_dim_seld_ip",
+                    "name": "stats_ssl_suff_fqdn_xly_cn_pre_san_table_all_sessions_dim_app",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "stats_ssl_table_all_bytes_dim_seld_ip",
+                          "chart_name": "stats_ssl_suff_fqdn_xly_cn_pre_san_table_all_sessions_dim_app",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:incoming bytes",
-                            "out_bytes:SUM:outgoing bytes",
-                            "in_bytes+out_bytes:SUM:all bytes"
+                            "new_in_sessions:SUM:new in sessions",
+                            "new_out_sessions:SUM:new out sessions",
+                            "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
                           "dimensions": [
-                            "seld_ip"
+                            "app"
                           ],
-                          "order_by": "all bytes",
+                          "order_by": "sessions",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "max_out_size": "0"
@@ -134,7 +174,7 @@ def run(parameter):
             "expected_return": "reset",
             "counters": {"hits": 1},
             "log_query_param": [
-                {"query_field_key": "ssl_sni", "query_value": "www.bbc.com"}
+                {"query_field_key": "ssl_sni", "query_value": "twitter.com"}
             ],
             "traffic": {
                 "protocol": "",
@@ -146,7 +186,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "ssl_tls13"
+                "pcap_name": "twitter"
             },
             "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
                 {"client_ip": "10.64.14.213", "in_bytes": 13209, "out_bytes": 454788, "bytes": 3743976}
@@ -187,6 +227,18 @@ def run(parameter):
                 "name": test_data["condition"]["destination_ip"][0]['name']
             },
             {
+                "type": test_data["condition"]["server_fqdn"][0]['object_type'],
+                "name": test_data["condition"]["server_fqdn"][0]['name']
+            },
+            {
+                "type": test_data["condition"]["protocol_filed"][0]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][0]['name']
+            },
+            {
+                "type": test_data["condition"]["protocol_filed"][1]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][1]['name']
+            },
+            {
                 "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
                 "name": test_data["action_parameter"]["statistics_template"][0]['name']
             }
@@ -200,7 +252,7 @@ def run(parameter):
         template_path["trex_workpath"] = "/opt/trex/v3.03"
         template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
-                # 创建object
+        # 创建object
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
@@ -212,12 +264,19 @@ def run(parameter):
                 cond_data = cond_value
                 create_ip = CreateObject(driver)
                 for i in range(len(cond_data)):  # 遍历创建所有condition
-                    element_position_map = get_element_position(cond_key)
+                    tmp_key = ""
+                    if cond_key == "protocol_filed":
+                        tmp_key = cond_data[i]["object_type"]
+                        cond_key_out = tmp_key.replace("_", " ")
+                        element_position_map = get_element_position(tmp_key)
+                        #cond_key = cond_key + ":" + tmp_key
+                    else:
+                        element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} {} object successfully.".format(cond_key, tmp_key), flush=True)
                     else:
-                        result = "Fail to create {} object.".format(cond_key)
+                        result = "Fail to create {} {} object.".format(cond_key, tmp_key)
                         cond_status = 1
                         break
             if cond_status == 1:   # 创建失败，退出遍历创建
@@ -317,8 +376,7 @@ def run(parameter):
                         search_prfi = SearchProfile(driver)
                         element_position_map = get_element_position(prfi_key)
                         prfi_name = prfi_value[i]["name"].strip()
-                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name,
-                                                                                          element_position_map)
+                        search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
                         if search_prfi_code == 200:
                             delete_prfi = DeleteProfile(driver)
                             delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
@@ -347,15 +405,22 @@ def run(parameter):
                     cond_data = cond_value
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
-                        element_position_map = get_element_position(cond_key)
+                        tmp_key = ""
+                        if cond_key == "protocol_filed":
+                            tmp_key = cond_data[i]["object_type"]
+                            cond_key_out = tmp_key.replace("_", " ")
+                            element_position_map = get_element_position(tmp_key)
+                            #cond_key = cond_key + ":" + tmp_key
+                        else:
+                            element_position_map = get_element_position(cond_key)
                         search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
                         if search_cond_code == 200:
                             delete_cond = DeleteObject(driver)
                             delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                             if delete_cond_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(cond_key), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} {}object successfully.".format(cond_key,tmp_key), flush=True)
                             else:
-                                result = result + " In addition, fail to delete {} object.".format(cond_key)
+                                result = result + " In addition, fail to delete {} {}object.".format(cond_key,tmp_key)
                                 break
                         else:
                             result = result + " In addition, fail to search {} object.".format(cond_key)
@@ -423,7 +488,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_ssl_table_all_bytes_dim_seld_ip",
+        "test_case_name": "stats_srcip_dstip_ssl_suff_fqdn_xly_cn_pre_san_table_all_sessions_dim_app",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

@@ -66,11 +66,16 @@ class CreateMonitorProfile():
 
 
     def process_vlan_ids(self,data):
-        vlan_ids = data["vlan_id"]
+        vlan_count = data["vlan_count"]
         vlan_ids_create = []  # 创建的vlan id
-        for i in vlan_ids:
-            if i.strip().split("->")[0] != "":
-                vlan_ids_create.append(i.strip().split("->")[0])
+        vlan_ids_random = []
+        # 生成 3-66 范围内的随机 VLAN ID，并确保没有重复
+        if vlan_count > 0:
+            vlan_ids_random = random.sample(range(3, 67), vlan_count)  # 生成 vlan_count 个随机的 VLAN ID
+
+        for i in vlan_ids_random:
+            vlan_ids_create.append(str(i))
+
         # 循环输入vlan id
         if len(vlan_ids_create) > 32:
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "vlan id 数据超出32个，仅保留前32个")

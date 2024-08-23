@@ -63,7 +63,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.38.240",
+                                "item_value": "10.64.38.240",
                             },
                         ]
                     }
@@ -160,8 +160,8 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "192.168.38.240",
-                "clients_end_ip": "192.168.38.240",
+                "clients_start_ip": "10.64.38.240",
+                "clients_end_ip": "10.64.38.240",
                 "servers_start_ip": "2.1.1.31",
                 "servers_end_ip": "2.1.1.31",
                 "m": 1,
