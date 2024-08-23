@@ -129,35 +129,35 @@ def run(parameter):
         # 添加定位库集合
         test_rule_element_position = {}
         if test_data["policy_type"] == "security":
-            test_phone_number_object_element_position = {
+            test_ip_object_element_position = {
                 "page_jump":{
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                     "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
+                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
                 },
                 "create": {
-                    "objectListPage_createButton_posId": mobile_identitiesObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": mobile_identitiesObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": mobile_identitiesObjectPage_inputName_posXpath,
-                    "objectPage_phnoeNumberType_posId": phoneNumberObjectPage_phoneNumberType_posId,
-                    "objectPage_addItem_posId": phoneNumberObjectPage_addItem_posId,
-                    "objectPage_inputItem_posXpath": phoneNumberObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": phoneNumberObjectPage_button_saveItem_posXpath,
-                    "objectPage_okButton_posId": phoneNumberObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": phoneNumberObjectPage_okButton_warningYes_posXpath
+                    "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
+                    "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
+                    "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
+                    "objectPage_ipType_posId": ipObjectPage_ipType_posId,
+                    "objectPage_addItem_posId": ipObjectPage_addItem_posId,
+                    "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posId": ipObjectPage_okButton_posId,
+                    "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath
                 },
                 "search": {
-                    "objectListPage_searchLabel_posId": imsiObjectListPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": imsiObjectListPage_searchLabel_selectName_posXpath,
+                    "objectListPage_searchLabel_posId": ipObjectListPage_searchLabel_posId,
+                    "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
                     "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath
                 },
                 "delete": {
-                    "objectListPage_allSelect_posXpath": imsiObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": imsiObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
+                    "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posId": ipObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
             test_rule_element_position = {

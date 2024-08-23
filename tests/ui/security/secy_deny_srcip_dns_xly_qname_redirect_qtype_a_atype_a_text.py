@@ -125,7 +125,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "1.1.1.1",
-            "counters": {"hits": 2},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "8.8.8.8"},
                                 {"query_field_key":"decoded_as", "query_value": "DNS"},
                                 {"query_field_key":"dns_qname", "query_value": "www.facebook.com"}],

@@ -97,7 +97,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "qname",
-                                "item_value": "*w.facebook.com"
+                                "item_value": "*c10r.facebook.com"
                             }
                         ],
                     }
