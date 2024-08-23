@@ -133,7 +133,7 @@ def run(parameter):
             "expected_return": "303",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},
-                                {"query_field_key":"http_url", "query_value": "open.node.com:180/"},
+                                {"query_field_key":"http_url", "query_value": "open.node.com:180/go"},
                                 {"query_field_key": "http_cookie", "query_value": "test_name=secy_cookie"}],
             "traffic": {
                 "protocol": "http",
