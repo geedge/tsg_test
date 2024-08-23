@@ -426,7 +426,8 @@ class UiVerification:
                                     temp_log_result = True
                                 else:
                                     temp_log_result = False
-                            elif log_query_key == "ssl_esni_flag" or log_query_key == "ssl_ech_flag" or log_query_key == "ssl_sni":
+                            elif log_query_key == "ssl_esni_flag" or log_query_key == "ssl_ech_flag" or log_query_key == "ssl_sni" \
+                                or log_query_key == "ip_protocol":
                                 log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                 temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                 if temp_value == test_data["log_query_param"][t]["query_value"]:
