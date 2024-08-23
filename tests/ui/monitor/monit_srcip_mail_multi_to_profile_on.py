@@ -96,6 +96,7 @@ def run(parameter):
             "profile": [
 
                         {
+                            "profile_type": "traffic_mirror",
                             "name":"profile1",
                             "vlan_count": random.randint(3, 66)
 
