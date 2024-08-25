@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 import os
+import random
 import sys
 
 from support.api_utils.organize_config import OrganizeConfig
@@ -96,17 +97,11 @@ def run(parameter):
             "mirror_type": "ftp",
             "profile": [
                     {
+                        "profile_type": "traffic_mirror",
                     "name":"profile1",
-                    "vlan_id":[
-                                "19",
-                                "20",
-                                "21",
-                                "22",
-                                "23"
-                              ]
-                    #vlan的范围：应该是在3-66
+                    "vlan_count": random.randint(3, 66)
                     }
-             ],
+            ],
              "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [

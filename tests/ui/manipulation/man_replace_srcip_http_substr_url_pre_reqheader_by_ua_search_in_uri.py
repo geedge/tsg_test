@@ -113,10 +113,18 @@ def run(parameter):
                         "search_in": "HTTP Request-URI",
                         "find": "doc",
                         "replace_with": "community"
+                    },
+                    {
+                        "profile_type": "replace",
+                        "regex": "off",
+                        "search_in": "HTTP Response Body",
+                        "find": "PyPI",
+                        "replace_with": "replace_pypi"
                     }
                 ]
             },
-            "expected_return": "Weekly",
+            "expected_return": "replace_pypi",
+            #"expected_return": "Weekly",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}, {"query_field_key": "http_user_agent", "query_value": "Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36"}],
             "traffic": {

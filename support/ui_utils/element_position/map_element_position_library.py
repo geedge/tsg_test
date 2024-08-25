@@ -528,6 +528,7 @@ test_manipulation_rule_element_position = {
         "policyRulePage_replace_addSearchInSelectDropItem_posXpath": manipulationRulePage_replace_addSearchInSelectDropItem_posXpath,
         "policyRulePage_replace_addFindInput_posXpath": manipulationRulePage_replace_addFindInput_posXpath,
         "policyRulePage_replace_addReplaceWithInput_posXpath": manipulationRulePage_replace_addReplaceWithInput_posXpath,
+        "policyRulePage_replace_add_posXpath": manipulationRulePage_replace_add_posXpath,
         # hijack profile action parameter
         "policyRulePage_hijack_addHijackProfileSelectBox_posXpath": manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath,
         "policyRulePage_hijack_searchHijackProfile_posXpath": manipulationRulePage_hijack_searchHijackProfile_posXpath,
@@ -544,10 +545,13 @@ test_manipulation_rule_element_position = {
         "policyRulePage_editElement_addSDistanceFromAnchorInput_posXpath": manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath,
         "policyRulePage_editElement_addMarkRadio_posXpath": manipulationRulePage_editElement_addMarkRadio_posXpath,
         "policyRulePage_editElement_addRemoveRadio_posXpath": manipulationRulePage_editElement_addRemoveRadio_posXpath,
+        "policyRulePage_editElement_add_posXpath": manipulationRulePage_editElement_add_posXpath,
         # insert script action parameter
         "policyRulePage_runScript_addrunScriptProfileSelectBox_posXpath": manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath,
         "policyRulePage_runScript_searchrunScriptProfile_posXpath": manipulationRulePage_insert_searchrunScriptProfile_posXpath,
         "policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath": manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath,
+        # other options
+        "policyRulePage_logOptions_all_posXpath": manipulationRulePage_logOptions_all_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": manipulationRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": manipulationRulePage_okButton_yes_posId,
@@ -785,7 +789,12 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchMailSubject_posXpath": monitorRulePage_searchmailSubject_posXpath,
                     "policyRulePage_selectMailSubject_posXpath": monitorRulePage_selectmailSubject_posXpath,
                     "policyRulePage_closeMailSubject_posXpath": monitorRulePage_closemailSubject_posXpath,
-
+                    # qname
+                    "policyRulePage_addConditionQname_posXpath": monitorRulePage_addCondition_qname_posXpath,
+                    "policyRulePage_addQname_posXpath": monitorRulePage_addQname_posXpath,
+                    "policyRulePage_searchQname_posXpath": monitorRulePage_searchQname_posXpath,
+                    "policyRulePage_selectQname_posXpath": monitorRulePage_selectQname_posXpath,
+                    "policyRulePage_closeQname_posXpath": monitorRulePage_closeQname_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
@@ -965,6 +974,25 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
         "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        #add boolean
+        "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
+        "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
+        "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
+        "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
+        "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
+        "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
+        # san
+        "policyRulePage_addConditionSan_posXpath": monitorRulePage_addCondition_san_posXpath,
+        "policyRulePage_addSan_posXpath": monitorRulePage_addSan_posXpath,
+        "policyRulePage_searchSan_posXpath": monitorRulePage_searchSan_posXpath,
+        "policyRulePage_selectSan_posXpath": monitorRulePage_selectSan_posXpath,
+        "policyRulePage_closeSan_posXpath": monitorRulePage_closeSan_posXpath,
+        # cn
+        "policyRulePage_addConditionCn_posXpath": monitorRulePage_addCondition_cn_posXpath,
+        "policyRulePage_addCn_posXpath": monitorRulePage_addCn_posXpath,
+        "policyRulePage_searchCn_posXpath": monitorRulePage_searchCn_posXpath,
+        "policyRulePage_selectCn_posXpath": monitorRulePage_selectCn_posXpath,
+        "policyRulePage_closeCn_posXpath": monitorRulePage_closeCn_posXpath,
         # 添加Template按钮
         "plicyRulePage_addStatisticsTemplate_posXpath": statisticsRulePage_add_template_posXpath,
         "policyRulePage_searchProfile_posXpath": statisticsRulePage_search_template_posXpath,

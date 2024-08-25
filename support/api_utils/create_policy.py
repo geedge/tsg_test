@@ -69,6 +69,8 @@ class CreatePolicy:
             temp_profile_condition = "profile_condition_{}".format(create_number)
             if temp_profile_condition in test_data.keys():
                 profile_condition_value = test_data[temp_profile_condition]
+            elif "profile_condition" not in test_data:
+                profile_condition_value = ""
             else:
                 profile_condition_value = test_data["profile_condition"]
             if len(profile_condition_value) > 0:

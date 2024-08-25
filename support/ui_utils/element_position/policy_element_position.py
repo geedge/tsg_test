@@ -508,11 +508,12 @@ manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulati
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
 manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//input[@id='undefined1']"   # redirect url 输入框 定位
 # action parameter replace
-manipulationRulePage_replace_addRegex_posXpath = "//ul[@class='replacelist']//div[@zs-label='regexEnable']//div[contains(@class, 'el-switch')]"   # regex 开关定位
-manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='replacelist']//div[@zs-label='搜索区域']//i"   # search in 选择框 定位
+manipulationRulePage_replace_addRegex_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='regexEnable']//div[contains(@class, 'el-switch')]"   # regex 开关定位， replace_sort替换为实际的个数
+manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='搜索区域']//i"   # search in 选择框 定位, replace_sort替换为实际的个数
 manipulationRulePage_replace_addSearchInSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li[normalize-space(text())='{replace_type}']"   # search in 下拉框item 定位
-manipulationRulePage_replace_addFindInput_posXpath = "//ul[@class='replacelist']//div[@zs-label='Fined']//input"   # find 输入框 定位
-manipulationRulePage_replace_addReplaceWithInput_posXpath = "//ul[@class='replacelist']//div[@zs-label='Replace']//input"   # replace with 输入框 定位
+manipulationRulePage_replace_addFindInput_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='Fined']//input"   # find 输入框 定位， replace_sort替换为实际的个数
+manipulationRulePage_replace_addReplaceWithInput_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='Replace']//input"   # replace with 输入框 定位， replace_sort替换为实际的个数
+manipulationRulePage_replace_add_posXpath = "//*[@id='replaceadd_btn']//i"   # replace add 加号添加 定位
 # action parameter hijack
 manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath = "//div[@zs-label='劫持文件']//i"   # hijack profile  选择框  定位
 manipulationRulePage_hijack_searchHijackProfile_posXpath = "//body/div/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # hijack search profile 对话框查询输入框
@@ -522,17 +523,20 @@ manipulationRulePage_insert_addInsertProfileSelectBox_posXpath = "//div[@zs-labe
 manipulationRulePage_insert_searchInsertProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
 manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
 # action parameter edit element
-manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath = "//div[@role='radiogroup']//span[normalize-space(text())='whole file']"
-manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath = "//div[@role='radiogroup']//span[normalize-space(text())='inside element']"
-manipulationRulePage_editElement_addStartIndicatorInput_posXpath = "//label[normalize-space(text())='Start Indicator']/parent::*//input[@id='undefined1']"
-manipulationRulePage_editElement_addContainedKeywordInput_posXpath = "//label[normalize-space(text())='Contained Keyword']/parent::*//input[@id='undefined1']"
-manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath = "//label[normalize-space(text())='Distance from Anchor']/parent::*//input[@class='el-input__inner']"
-manipulationRulePage_editElement_addMarkRadio_posXpath = "//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Mark']"
-manipulationRulePage_editElement_addRemoveRadio_posXpath = "//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Remove']"
+manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//span[normalize-space(text())='whole file']"   # replace_sort替换为实际的个数
+manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//span[normalize-space(text())='inside element']"
+manipulationRulePage_editElement_addStartIndicatorInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Start Indicator']/parent::*//input[@id='undefined1']"
+manipulationRulePage_editElement_addContainedKeywordInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Contained Keyword']/parent::*//input[@id='undefined1']"
+manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Distance from Anchor']/parent::*//input[@class='el-input__inner']"
+manipulationRulePage_editElement_addMarkRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Mark']"
+manipulationRulePage_editElement_addRemoveRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Remove']"
+manipulationRulePage_editElement_add_posXpath = "//div[@class='man-add-action']//li[contains(@class, 'replaceadd')]//i"
 # action parameter run script profile
 manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath = manipulationRulePage_insert_addInsertProfileSelectBox_posXpath   # run script  选择框  定位
 manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
 manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+# other options
+manipulationRulePage_logOptions_all_posXpath = '//*[@id="manipulation_logOption-_Edit_Home_App_anonymousComponent"]//span[normalize-space(text())="All"]'
 
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath

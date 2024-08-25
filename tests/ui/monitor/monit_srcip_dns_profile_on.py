@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 import os
+import random
 import sys
 
 from support.api_utils.organize_config import OrganizeConfig
@@ -97,14 +98,9 @@ def run(parameter):
             "profile": [
 
                         {
+                            "profile_type": "traffic_mirror",
                             "name":"profile1",
-                            "vlan_id":[
-                                "24",
-                                "25",
-                                "26",
-                                "27",
-                                "28"
-                              ]
+                            "vlan_count": random.randint(3, 66)
                             #vlan的范围：应该是在3-66
                         }
              ],
