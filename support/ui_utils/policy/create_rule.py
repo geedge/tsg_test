@@ -358,7 +358,6 @@ class CreateRule:
                         elif protocol_field_data[x]["object_type"] == 'boolean':
                             self.add_protocol_field(protocol_field_data, "Boolean", create_element_position, temp)
 
-            
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0 and "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) == 0:
                 override_flag = True
             else:
@@ -678,7 +677,7 @@ class CreateRule:
                         selectProfileXpath = create_element_position["policyRulePage_selectMirrorProfile_posXpath"].format(replaceValue=test_data["profile"][flag]["name"])
                         self.driver.find_element(By.XPATH,selectProfileXpath, find_after_wait_time=0.5).click()
 
-            # 配置Threshold和Mitigation
+            # 配置DoS的Threshold和Mitigation
             if test_data["policy_type"] == "dos_protection":
                 self.driver.find_element(By.ID, create_element_position["policyRulePage_thresholdType_posId"]).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_groupBy_dropDownBox_posXpath"]).click()
