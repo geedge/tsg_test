@@ -177,8 +177,16 @@ class GetLog:
                             if "mirror_type" in test_data and test_data["mirror_type"] in {"ftp", "http", "ssl","dns","quic",""}:
                                 if query_field_key == "monitor_mirrored_pkts" and log[query_field_key] == mirror_pkts_value:
                                     log_reult = True
+                                    # 更新 test_data["log_query_param"] 中相应的 query_value
+                                    for log_query_param in test_data["log_query_param"]:
+                                        if log_query_param["query_field_key"] == "monitor_mirrored_pkts":
+                                            log_query_param["query_value"] = mirror_pkts_value  # 将值修改为5
                                 elif query_field_key == "monitor_mirrored_bytes" and log[query_field_key] == mirror_bytes_value:
                                     log_reult = True
+                                    # 更新 test_data["log_query_param"] 中相应的 query_value
+                                    for log_query_param in test_data["log_query_param"]:
+                                        if log_query_param["query_field_key"] == "monitor_mirrored_bytes":
+                                            log_query_param["query_value"] = mirror_bytes_value  # 将值修改为5
                                 else:
                                     log_reult = False
                         # 验证范围类型的client port

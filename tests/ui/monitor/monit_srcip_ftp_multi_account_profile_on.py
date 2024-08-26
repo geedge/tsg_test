@@ -78,14 +78,14 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ftp_account",
-                                "item_value": ""
+                                "item_value": "anon&ymous"
                             }
                         ],
                     }
                  ],
                 "application": [
                     {
-                        "name": "quic",  #
+                        "name": "ftp",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -95,7 +95,7 @@ def run(parameter):
                 {
                     "profile_type": "traffic_mirror",
                     "name": "profile1",
-                    "vlan_count": random.randint(3, 66)
+                    "vlan_count": random.randint(1, 10)
                     # vlan的范围：应该是在3-66
                 }
             ],
@@ -104,7 +104,7 @@ def run(parameter):
              "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [
-                                {"query_field_key": "ftp_account", "query_value": "ftpuser"},
+                                {"query_field_key": "ftp_account", "query_value": "anonymous"},
                                 {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
                                 {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
                             ],
@@ -139,7 +139,7 @@ def run(parameter):
                 "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": test_data["profile"][0]["traffic_mirror"],
+                "type": test_data["profile"][0]["profile_type"],
                 "name": test_data["profile"][0]['name']
             },
         ]

@@ -82,7 +82,7 @@ def run(parameter):
                                 "item_type": "ftp_content",
                                 "item_value": "HEX",
                                 "value": [
-                                    ""
+                                    "706f6f6c"  # pool
                                 ]
                             }
                         ],
@@ -90,7 +90,7 @@ def run(parameter):
                 ],
                 "application": [
                     {
-                        "name": "quic",  #
+                        "name": "ftp",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -100,7 +100,7 @@ def run(parameter):
                 {
                     "profile_type": "traffic_mirror",
                     "name": "profile1",
-                    "vlan_count": random.randint(3, 66)
+                    "vlan_count": random.randint(1, 10)
                     # vlan的范围：应该是在3-66
                 }
             ],
@@ -144,7 +144,7 @@ def run(parameter):
                 "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": test_data["profile"][0]["traffic_mirror"],
+                "type": test_data["profile"][0]["profile_type"],
                 "name": test_data["profile"][0]['name']
             },
         ]
@@ -375,7 +375,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",

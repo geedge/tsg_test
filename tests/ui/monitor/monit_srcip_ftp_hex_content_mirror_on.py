@@ -88,7 +88,7 @@ def run(parameter):
                                 "item_type": "ftp_content",
                                 "item_value": "HEX",
                                 "value": [
-                                    ""
+                                    "706f6f6c" #pool
                                 ]
                             }
                         ],
