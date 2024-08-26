@@ -7,9 +7,14 @@ from datetime import datetime
 def install_chrome():
     try:
         os.chdir("/opt")
-        subprocess.check_call(["wget", "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-122.0.6261.111-1.x86_64.rpm"])
-        subprocess.check_call(["yum", "localinstall", "-y", "google-chrome-stable-122.0.6261.111-1.x86_64.rpm"])
-        subprocess.check_call(["wget", "https://storage.googleapis.com/chrome-for-testing-public/122.0.6261.111/linux64/chromedriver-linux64.zip"])
+        subprocess.check_call(["wget", "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm"])
+        subprocess.check_call(["yum", "localinstall", "-y", "google-chrome-stable_current_x86_64.rpm"])
+        # subprocess.check_call(["wget", "https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-122.0.6261.111-1.x86_64.rpm"])
+        # subprocess.check_call(["yum", "localinstall", "-y", "google-chrome-stable-122.0.6261.111-1.x86_64.rpm"])
+        result = subprocess.run(['google-chrome', '--version'], stdout=subprocess.PIPE)
+        version = result.stdout.split()[2].decode("utf-8")
+        chrome_driver_link = "https://storage.googleapis.com/chrome-for-testing-public/{}/linux64/chromedriver-linux64.zip".format(version)
+        subprocess.check_call(["wget", chrome_driver_link])
         subprocess.check_call(["unzip", "chromedriver-linux64.zip"])
         subprocess.check_call(["mv", "chromedriver-linux64/chromedriver", "/usr/local/bin"])
         subprocess.check_call(["chmod", "777", "/usr/local/bin/chromedriver"])
