@@ -132,7 +132,6 @@ class CreateRule:
                         # 通过imsi搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
                     elif device_data[t]['item'][0]["item_type"] == "phone_number":
@@ -150,7 +149,6 @@ class CreateRule:
                         # 通过phone number搜索并选中(与imsi共用)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
                     elif device_data[t]['item'][0]["item_type"] ==  "imei":
@@ -168,7 +166,6 @@ class CreateRule:
                         # 通过phone number搜索并选中(与imsi共用)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        time.sleep(3)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
 
@@ -698,8 +695,15 @@ class CreateRule:
             # other options 操作
             if test_data["policy_type"] == "pxy_manipulation":
                 # log option =》 log all
-                if "log_options" in test_data and test_data["log_options"] == "all":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_logOptions_all_posXpath"]).click()
+                if "log_options" in test_data:
+                    if test_data["log_options"] == "all":
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_logOptions_all_posXpath"]).click()
+                    elif test_data["log_options"] == "off":
+                        pass
+                    else:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: todo...")
+                if "effective_devices" in test_data:
+                    self.add_effective_devices(test_data["effective_devices"], create_element_position)
 
             # 点enable
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
@@ -789,5 +793,16 @@ class CreateRule:
             self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
             is_first_iteration = False
+
+    def add_effective_devices(self, effective_device_data, create_element_position):
+        # 点击 add effective devices按钮
+        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addEffectiveDevices_posXpath"]).click()
+        # 从侧滑中选择数据
+        for i in range(len(effective_device_data)):
+            replace_device = effective_device_data[i].strip()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEffectiveDevices_posXpath"].format(replace_device=replace_device), find_after_wait_time=1).click()
+        # 关闭侧滑
+        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeEffectiveDevices_posXpath"]).click()
+
 
 

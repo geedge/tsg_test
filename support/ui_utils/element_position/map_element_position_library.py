@@ -116,6 +116,39 @@ test_port_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+test_mobile_identity_object_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
+    },
+    "create": {
+        "objectListPage_createButton_posId": mobile_identitiesObjectListPage_createButton_posId,
+        "objectListPage_dropDown_createButton_posId": mobile_identitiesObjectListPage_dropDown_createButton_posId,
+        "objectPage_inputName_posXpath": mobile_identitiesObjectPage_inputName_posXpath,
+        "objectPage_imsiType_posId": imsiObjectPage_imsiType_posId,
+        "objectPage_imeiType_posId": imeiObjectPage_imsiType_posId,
+        "objectPage_phnoeNumberType_posId": phoneNumberObjectPage_phoneNumberType_posId,
+        "objectPage_addItem_posId": imsiObjectPage_addItem_posId,
+        "objectPage_inputItem_posXpath": imsiObjectPage_inputItem_posXpath,
+        "objectPage_button_saveItem_posXpath": imsiObjectPage_button_saveItem_posXpath,
+        "objectPage_okButton_posId": imsiObjectPage_okButton_posId,
+        "objectPage_okButton_warningYes_posXpath": imsiObjectPage_okButton_warningYes_posXpath
+
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": imsiObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": imsiObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": imsiObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posId": imsiObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
+    }
+}
 test_fqdn_object_element_position = {
     "page_jump":{
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -466,6 +499,14 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchExternalIP_posXpath": manipulationRulePage_searchExternalIP_posXpath,
         "policyRulePage_selectExternalIP_posXpath": manipulationRulePage_selectExternalIP_posXpath,
         "policyRulePage_closeExternalIP_posXpath": manipulationRulePage_closeExternalIP_posXpath,
+        # Device imsi imei phone number
+        "policyRulePage_addConditionImsi_posXpath": manipulationRulePage_addCondition_imsi_posXpath,
+        "policyRulePage_addImsi_posXpath": manipulationRulePage_addImsi_posXpath,
+        "policyRulePage_searchImsi_posXpath": manipulationRulePage_searchImsi_posXpath,
+        "policyRulePage_selectImsi_posXpath": manipulationRulePage_selectImsi_posXpath,
+        "policyRulePage_closeImsi_posXpath": manipulationRulePage_closeImsi_posXpath,
+        "policyRulePage_chooseImei_posXpath": policyRulePage_chooseImei_posXpath,
+        "policyRulePage_choosePhoneNumber_posXpath": policyRulePage_choosePhoneNumber_posXpath,
         # Application
         "policyRulePage_addApplication_posXpath": manipulationRulePage_addApplication_posXpath,
         "policyRulePage_searchApplication_posXpath": manipulationRulePage_searchApplication_posXpath,
@@ -552,6 +593,10 @@ test_manipulation_rule_element_position = {
         "policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath": manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath,
         # other options
         "policyRulePage_logOptions_all_posXpath": manipulationRulePage_logOptions_all_posXpath,
+        # effective devices
+        "policyRulePage_addEffectiveDevices_posXpath": manipulationRulePage_addEffectiveDevices_posXpath,
+        "policyRulePage_selectEffectiveDevices_posXpath": manipulationRulePage_selectEffectiveDevices_posXpath,
+        "policyRulePage_closeEffectiveDevices_posXpath": manipulationRulePage_closeEffectiveDevices_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": manipulationRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posId": manipulationRulePage_okButton_yes_posId,
@@ -1240,6 +1285,7 @@ test_ip_group_object_element_position = test_ip_group_object_element_position
 test_port_object_element_position = test_port_object_element_position
 test_fqdn_object_element_position = test_fqdn_object_element_position
 test_http_signature_object_element_position = test_http_signature_object_element_position
+test_mobile_identity_object_element_position = test_mobile_identity_object_element_position
 test_http_url_object_element_position = test_http_url_object_element_position
 test_keywords_object_element_position = test_keywords_object_element_position
 test_response_page_element_position = test_response_page_element_position
@@ -1256,6 +1302,8 @@ def get_element_position(key_name):
         element_position_map = test_ip_object_element_position
     elif key_name == "source_port" or key_name == "destination_port" or key_name == "external_port" or key_name == "internal_port":
         element_position_map = test_port_object_element_position
+    elif key_name == "mobile_identity":
+        element_position_map = test_mobile_identity_object_element_position
     elif key_name == "http_signature":
         element_position_map = test_http_signature_object_element_position
     elif key_name == "keywords":

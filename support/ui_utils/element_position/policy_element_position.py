@@ -415,6 +415,7 @@ manipulationRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceL
 manipulationRulePage_addCondition_destinationPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='IP Address']"
+manipulationRulePage_addCondition_imsi_posXpath = "//div[@class='SourceList list-box']/parent::*//div[normalize-space(text())='Device']"
 manipulationRulePage_addCondition_Protocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol']"
 manipulationRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URL']"
 manipulationRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Header']"
@@ -457,6 +458,11 @@ manipulationRulePage_addExternalIP_posXpath = policyRulePage_addExternalIP_posXp
 manipulationRulePage_searchExternalIP_posXpath = policyRulePage_searchExternalIP_posXpath
 manipulationRulePage_selectExternalIP_posXpath = policyRulePage_selectExternalIP_posXpath
 manipulationRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
+# Device imsi 的添加、查询、选中、关闭操作
+manipulationRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
+manipulationRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
+manipulationRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
+manipulationRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
 # Application的添加、查询、选中、关闭操作
 manipulationRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 manipulationRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
@@ -537,6 +543,10 @@ manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePa
 manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
 # other options
 manipulationRulePage_logOptions_all_posXpath = '//*[@id="manipulation_logOption-_Edit_Home_App_anonymousComponent"]//span[normalize-space(text())="All"]'
+# effective devices
+manipulationRulePage_addEffectiveDevices_posXpath = "//*[@id='manipulation_deviceadd-_DevicesSelect_ElFormItem_ElForm_VPanel_VEditPanel_Edit_Home_App_anonymousComponent']"
+manipulationRulePage_selectEffectiveDevices_posXpath = "//div[@class='rm-top']//span[normalize-space(text())='Effective Devices']/ancestor::div[@class='right-menu-content']//ul[@class='device-row-box']//div[normalize-space(text())='{replace_device}']"
+manipulationRulePage_closeEffectiveDevices_posXpath = "//div[@class='rm-top']//span[normalize-space(text())='Effective Devices']/ancestor::div[@class='right-menu-content']//div[@class='rigth-menu-button-info']/button/span"
 
 # 保存策略时，ok cancel warnging定位
 manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath

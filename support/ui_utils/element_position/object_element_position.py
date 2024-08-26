@@ -81,7 +81,8 @@ ipGroupObjectPage_addExcludeObject_posId = "temporary_form"
 # imsi object
 imsiObjectPage_imsiType_posId = "IMSIimsi"
 imsiObjectPage_addItem_posId = ipObjectPage_addItem_posId  # 添加item_id
-imsiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
+#imsiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
+imsiObjectPage_inputItem_posXpath = '//div[@class="item-box"]//div[contains(@class, "el-input el-input--small")]//input'
 imsiObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
 imsiObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
 imsiObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
