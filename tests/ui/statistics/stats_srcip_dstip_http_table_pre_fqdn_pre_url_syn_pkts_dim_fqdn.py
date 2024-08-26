@@ -25,15 +25,13 @@ import traceback
 from support.report import *
 from datetime import datetime
 
-
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
-        
         # 参数初始化
         result, exception_result = "", ""
-		
-		# 脚本启动时间
+        
+        # 脚本启动时间
         start_time = time.time()
 
         # 环境初始化
@@ -46,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
+            "rule_name": "stats_srcip_dstip_http_table_pre_fqdn_pre_url_syn_pkts_dim_fqdn",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -55,15 +53,16 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_table_uniq_metrics_client_server_dim_by_self_part1",
+                        "name": "stats_srcip_http_table_pre_fqdn_pre_url_syn_pkts_dim_fqdn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.38.240",
+                                "item_value": "10.64.224.11",
                             },
                         ]
                     }
@@ -71,19 +70,19 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
+                        "name": "stats_dstip_http_table_pre_fqdn_pre_url_syn_pkts_dim_fqdn",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.3",
+                                "item_value": "2.1.1.9",
                             },
                         ]
-                    }
-                ],
+                    }],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -104,8 +103,36 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [
+                    {
+                        "name": "stats_http_table_pre_fqdn_syn_pkts_dim_fqdn",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_value": "www.yumi.*",
+                            }
+                        ]
+                    }
                 ],
-                "protocol_filed": [],
+                "protocol_filed": [
+                    {
+                        "name": "stats_http_table_pre_url_syn_pkts_dim_fqdn",
+                        "object_type": "url",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "url",
+                                "item_value": "www.yumi.*"
+                            }
+                        ],
+                    }
+                ],
                 "sub_action_override": True,
                 "sub_action": [
                 ],
@@ -113,94 +140,24 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_http_table_uniq_metrics_client_server_dim_by_self_part1",
+                    "name": "stats_http_table_pre_fqdn_pre_url_syn_pkts_dim_fqdn",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Client IP Object List)",
-                            "visualization_type": "Bar",
-                            "metrics": [
-                                "client_ip_object_list:UNIQUE_COUNT:UNIQUECOUNT(Client IP Object List)"
-                            ],
-                            "dimensions": ["client_ip_object_list"],
-                            "order_by": "UNIQUECOUNT(Client IP Object List)",
-                            "row_limit": "20",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Server IP Object List)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "server_ip_object_list:UNIQUE_COUNT:UNIQUECOUNT(Server IP Object List)"
-                            ],
-                            "dimensions": ["server_ip_object_list"],
-                            "order_by": "UNIQUECOUNT(Server IP Object List)",
-                            "row_limit": "50",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Server FQDN)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "server_fqdn:UNIQUE_COUNT:UNIQUECOUNT(Server FQDN)"
-                            ],
-                            "dimensions": ["server_fqdn"],
-                            "order_by": "UNIQUECOUNT(Server FQDN)",
-                            "row_limit": "200",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Server Domain)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "server_domain:UNIQUE_COUNT:UNIQUECOUNT(Server Domain)"
-                            ],
-                            "dimensions": ["server_domain"],
-                            "order_by": "UNIQUECOUNT(Server Domain)",
-                            "row_limit": "500",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(HTTP.Host)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "http_host:UNIQUE_COUNT:UNIQUECOUNT(HTTP.Host)"
-                            ],
-                            "dimensions": ["http_host"],
-                            "order_by": "UNIQUECOUNT(HTTP.Host)",
-                            "row_limit": "1000",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Application)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "app:UNIQUE_COUNT:UNIQUECOUNT(Application)"
-                            ],
-                            "dimensions": ["app"],
-                            "order_by": "UNIQUECOUNT(Application)",
-                            "row_limit": "20",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Application Category)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "app_category:UNIQUE_COUNT:UNIQUECOUNT(Application Category)"
-                            ],
-                            "dimensions": ["app_category"],
-                            "order_by": "UNIQUECOUNT(Application Category)",
-                            "row_limit": "20",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
+                          "chart_name": "stats_http_table_pre_fqdn_pre_url_syn_pkts_dim_fqdn",
+                          "visualization_type": "Table",
+                          "metrics": [
+                            "syn_pkts:SUM:Syn Pkts"
+                          ],
+                          "dimensions": [
+                            "server_fqdn"
+                          ],
+                          "order_by": "Syn Pkts",
+                          "row_limit": "10",
+                          "min_in_size": "0",
+                          "max_out_size": "0"
                         }
-                    ]
+                      ]
                 }]
             },
             "expected_return": "reset",
@@ -209,10 +166,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.38.240",
-                "clients_end_ip": "10.64.38.240",
-                "servers_start_ip": "2.1.1.31",
-                "servers_end_ip": "2.1.1.31",
+                "clients_start_ip": "10.64.224.9",
+                "clients_end_ip": "10.64.224.9",
+                "servers_start_ip": "2.1.1.9",
+                "servers_end_ip": "2.1.1.9",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
@@ -248,9 +205,18 @@ def run(parameter):
             {
                 "type": test_data["condition"]["source_ip"][0]['object_type'],
                 "name": test_data["condition"]["source_ip"][0]['name']
-            },{
+            },
+            {
                 "type": test_data["condition"]["destination_ip"][0]['object_type'],
                 "name": test_data["condition"]["destination_ip"][0]['name']
+            },
+            {
+                "type": test_data["condition"]["server_fqdn"][0]['object_type'],
+                "name": test_data["condition"]["server_fqdn"][0]['name']
+            },
+            {
+                "type": test_data["condition"]["protocol_filed"][0]['object_type'],
+                "name": test_data["condition"]["protocol_filed"][0]['name']
             },
             {
                 "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
@@ -278,19 +244,24 @@ def run(parameter):
                 cond_data = cond_value
                 create_ip = CreateObject(driver)
                 for i in range(len(cond_data)):  # 遍历创建所有condition
-                    element_position_map = get_element_position(cond_key)
+                    tmp_key = ""
+                    if cond_key == "protocol_filed":
+                        tmp_key = cond_data[i]["object_type"]
+                        cond_key_out = tmp_key.replace("_", " ")
+                        element_position_map = get_element_position(tmp_key)
+                        #cond_key = cond_key + ":" + tmp_key
+                    else:
+                        element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} {} object successfully.".format(cond_key, tmp_key), flush=True)
                     else:
-                        result = "Fail to create {} object.".format(cond_key)
+                        result = "Fail to create {} {}object.".format(cond_key, tmp_key)
                         cond_status = 1
                         break
             if cond_status == 1:   # 创建失败，退出遍历创建
                 break
 
-        # 调试参数,正式运行需取消
-        #cond_code = 200
         # 创建Statistics Template
         create_statistics_template_code = 0
         if cond_code == 200:
@@ -298,19 +269,18 @@ def run(parameter):
             statistics_templates = profile["statistics_template"]
             for statistics_template in statistics_templates:
                 cond_status = 0
-                # create_statistics_template = CreateProfile(driver)
+                #create_statistics_template = CreateProfile(driver)
                 create_statistics_template = CreateStatisticsTemplate(driver)
                 element_position_map = get_profile_element_position("statistics_template")
                 cond_code = create_statistics_template.create(statistics_template, element_position_map)
                 create_statistics_template_code = cond_code
                 if cond_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Create {} Profile successfully.".format("statistics_template"), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} Profile successfully.".format("statistics_template"), flush=True)
                 else:
                     result = "Fail to create {} Profile.".format("statistics_template")
                     cond_status = 1
                     break
-                if cond_status == 1:  # 创建失败，退出遍历创建
+                if cond_status == 1:   # 创建失败，退出遍历创建
                     break
 
         # 创建rule
@@ -321,30 +291,35 @@ def run(parameter):
             element_position_map = get_element_position(test_data["policy_type"])
             create_rule_code = create_rule.create(test_data, element_position_map)
             if create_rule_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                      "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
             elif create_rule_code != 200:
                 result = "Fail to create {} rule.".format(test_data["policy_type"])
 
+
         # 触发流量验证
-        verification_result = {}
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
-            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],element_position_map)
+            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            edit_rule_code = 200
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
                 #config = OrganizeConfig()
                 #cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, None, element_position_map)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
-            # search_rule = SearchRule(driver)
-            # element_position_map = get_element_position(test_data["policy_type"])
-            # edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
-            # if search_rule_code == 200:
-            # rule_id = search_rule.get_rule_id()
-            # test_data["rule_id"] = rule_id
+            #search_rule = SearchRule(driver)
+            #element_position_map = get_element_position(test_data["policy_type"])
+            #edit_rule_code, rule_id = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            #if search_rule_code == 200:
+                # rule_id = search_rule.get_rule_id()
+               # test_data["rule_id"] = rule_id
+
 
         # 分析验证结果，并返回给flask
         if len(verification_result) != 0:
@@ -362,15 +337,12 @@ def run(parameter):
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
-            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
-                                                                              test_data["rule_name"],
-                                                                              element_position_map)
+            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Delete Statistics rule successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete Statistics rule successfully.", flush=True)
                 elif delete_rule_code != 200:
                     result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
             else:
@@ -392,8 +364,7 @@ def run(parameter):
                             delete_prfi = DeleteProfile(driver)
                             delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element)
                             if delete_prfi_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                                      "Delete {} profile successfully.".format(prfi_key_out), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
                             else:
                                 result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
                                 break
@@ -417,21 +388,25 @@ def run(parameter):
                     cond_data = cond_value
                     for i in range(len(cond_data)):  # 遍历查询所有condition
                         search_cond = SearchObject(driver)
-                        element_position_map = get_element_position(cond_key)
-                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"],
-                                                                                          element_position_map)
+                        tmp_key = ""
+                        if cond_key == "protocol_filed":
+                            tmp_key = cond_data[i]["object_type"]
+                            cond_key_out = tmp_key.replace("_", " ")
+                            element_position_map = get_element_position(tmp_key)
+                            #cond_key = cond_key + ":" + tmp_key
+                        else:
+                            element_position_map = get_element_position(cond_key)
+                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"], element_position_map)
                         if search_cond_code == 200:
                             delete_cond = DeleteObject(driver)
-                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element,
-                                                                  True)
+                            delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                             if delete_cond_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                                      "Delete {} object successfully.".format(cond_key), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} {}object successfully.".format(cond_key, tmp_key), flush=True)
                             else:
-                                result = result + " In addition, fail to delete {} object.".format(cond_key)
+                                result = result + " In addition, fail to delete {} {}object.".format(cond_key, tmp_key)
                                 break
                         else:
-                            result = result + " In addition, fail to search {} object.".format(cond_key)
+                            result = result + " In addition, fail to search {} {}object.".format(cond_key, tmp_key)
                             break
                         # 退出遍历标志
                         if cond_status == 1:  # 失败，退出遍历创建
@@ -442,16 +417,13 @@ def run(parameter):
         # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
 
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Finish test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
-              flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         traceback.print_exc()
         return "Error: " + str(e)
     finally:
@@ -462,7 +434,7 @@ def run(parameter):
         delete.delete_policy_by_name(token, parameter, name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):
+        if os.path.exists(file_path) and os.path.isfile(file_path):  
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
                 report_data.append(parameter["test_case_name"])
@@ -483,87 +455,30 @@ def run(parameter):
                 report_data.append("")
             new_report = GenerateReport()
             new_report.insert_data(parameter, report_data)
+    
 
 
 if __name__ == '__main__':
-    """56个Fields，其中3个不支持Unique_count,其他的按类别8个一组创建Test
-    client_ip_object_list
-    server_ip_object_list
-    server_fqdn
-    server_domain
-    fqdn_category_list
-    http_host
-    app
-    app_category
-     client_ip	
-     client_country	
-     server_ip	
-     server_country
-     client_asn
-     server_asn
-     client_port
-     server_port
-    device_group	
-    sled_ip 
-    decoded_as
-    c2s_ttl
-    s2c_ttl
-    c2s_link_id
-    s2c_link_id
-    session_id	
-     direction  	 
-     in_latency_ms	
-     out_latency_ms	
-     tcp_handshake_latency_ms
-     subscriber_id
-     duration_ms
-     syn_pkts
-     tcp_rtt_ms
-    sent_bytes	
-    received_bytes		
-    sent_pkts	
-    received_pkts
-    in_bytes	 
-    out_bytes	 
-    in_pkts	 
-    out_pkts 
-     new_c2s_flows	 
-     new_s2c_flows	 
-     new_in_sessions	 
-     new_out_sessions
-     closed_in_sessions
-     closed_out_sessions
-     c2s_ip_fragments 
-     s2c_ip_fragments
-    ssl_ja3_hash
-    ssl_sni	
-    ssl_handshake_latency_ms
-    dtls_handshake_latency_ms
-    flags
-    in_pkt_length_distribution	 	 
-    out_pkt_length_distribution	 	 
-    pkt_length_distribution	
-    """
     parameter = {
-        "username": "AutomationTestAccount",
-        "password": "1qaz@WSX",
-        "test_pc_ip": "192.168.64.38",
+
+        "username": "zhaokun",
+        "password": "zhaokun1",
+        "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 5,  # 5
+        "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
+        "test_case_name": "stats_srcip_dstip_http_table_pre_fqdn_pre_url_syn_pkts_dim_fqdn",
         "debug_flag": "local",
-        "test_subcriber_id": "test6438",
+        "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
    }
     parameter = replace_paras(parameter)
     run(parameter)
-
     """
     # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
