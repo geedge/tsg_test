@@ -200,10 +200,6 @@ def run(parameter):
                 "name": test_data["condition"]["destination_ip"][0]['name']
             },
             {
-                "type": test_data["condition"]["server_fqdn"][0]['object_type'],
-                "name": test_data["condition"]["server_fqdn"][0]['name']
-            },
-            {
                 "type": test_data["condition"]["protocol_filed"][0]['object_type'],
                 "name": test_data["condition"]["protocol_filed"][0]['name']
             },
