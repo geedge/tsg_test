@@ -97,7 +97,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "qname",
-                                "item_value": "facebook.com"
+                                "item_value": "example.com"
                             }
                         ],
                     }
@@ -128,11 +128,11 @@ def run(parameter):
             "counters": {"hits": 2},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "8.8.8.8"},
                                 {"query_field_key":"decoded_as", "query_value": "DNS"},
-                                {"query_field_key":"dns_qname", "query_value": "www.facebook.com"}],
+                                {"query_field_key":"dns_qname", "query_value": "www.example.com"}],
             "traffic": {
                 "protocol": "dns",
                 "type": "nslookup",
-                "command": "nslookup www.facebook.com -timeout=1 8.8.8.8"
+                "command": "nslookup www.example.com -timeout=1 8.8.8.8"
             },
             "token": ""
         }
