@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_ssl_table_uniq_client_port_dim_client_port",
+            "rule_name": "stats_srcip_dstip_ssl_table_uniq_c_ip_object_dim_c_ip_object",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,7 +53,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_ssl_table_uniq_client_port_dim_client_port",
+                        "name": "stats_srcip_ssl_table_uniq_c_ip_object_dim_c_ip_object",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_ssl_table_uniq_client_port_dim_client_port",
+                        "name": "stats_dstip_ssl_table_uniq_c_ip_object_dim_c_ip_object",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -123,19 +123,19 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_ssl_table_uniq_client_port_dim_client_port",
+                    "name": "stats_ssl_table_uniq_c_ip_object_dim_c_ip_object",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "stats_ssl_table_uniq_client_port_dim_client_port",
+                          "chart_name": "stats_ssl_table_uniq_c_ip_object_dim_c_ip_object",
                           "visualization_type": "Table",
                           "metrics": [
-                            "client_port:UNIQUE_COUNT:UNIQUECOUNT(Client Port)"
+                            "client_ip_object_list:UNIQUE_COUNT:UNIQUECOUNT(Client IP Object List)"
                           ],
                           "dimensions": [
-                            "decoded_as"
+                            "client_ip_object_list"
                           ],
-                          "order_by": "UNIQUECOUNT(Client Port)",
+                          "order_by": "UNIQUECOUNT(Client IP Object List)",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "max_out_size": "0"
@@ -197,10 +197,6 @@ def run(parameter):
             {
                 "type": test_data["condition"]["destination_ip"][0]['object_type'],
                 "name": test_data["condition"]["destination_ip"][0]['name']
-            },
-            {
-                "type": test_data["condition"]["server_fqdn"][0]['object_type'],
-                "name": test_data["condition"]["server_fqdn"][0]['name']
             },
             {
                 "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
@@ -439,7 +435,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_ssl_table_uniq_client_port_dim_client_port",
+        "test_case_name": "stats_srcip_dstip_ssl_table_uniq_c_ip_object_dim_c_ip_object",
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

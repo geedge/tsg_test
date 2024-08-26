@@ -140,7 +140,7 @@ def run(parameter):
             "expected_return": "reset",
             "counters": {"hits": 1},
             "log_query_param": [
-                {"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}
+                {"query_field_key": "ssl_sni", "query_value": "twitter.com"}
             ],
             "traffic": {
                 "protocol": "",
@@ -152,7 +152,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "test_https"
+                "pcap_name": "twitter"
             },
             "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
                 {"client_ip": "10.64.14.213", "in_bytes": 13209, "out_bytes": 454788, "bytes": 3743976}
