@@ -128,10 +128,63 @@ test_data = \
                         ]
                     }
                 ],
+                "device": [
+                    {
+                        "name": "manipulation_imsi",
+                        "object_type": "mobile_identity",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "imsi",
+                                "item_value": '$' + 'test_imsi',
+                            }
+                        ]
+                    },
+                    {
+                        "name": "manipulation_pn",
+                        "object_type": "mobile_identity",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "phone_number",
+                                "item_value": '$' + 'test_phone_number',
+                            }
+                        ]
+                    },
+                    {
+                        "name": "manipulation_imei",
+                        "object_type": "mobile_identity",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "imei",
+                                "item_value": '$' + 'imei',
+                            }
+                        ]
+                    },
+                    {
+                        "name": "manipulation_apn",
+                        "object_type": "apn",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "apn",
+                                "item_value": '$' + 'apn',
+                            }
+                        ]
+                    }
+                ],
                 "source_geography": [],
                 "destination_geography": [],
                 "sub_id": [],
-                "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],

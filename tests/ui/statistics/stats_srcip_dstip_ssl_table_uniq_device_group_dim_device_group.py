@@ -46,7 +46,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
+            "rule_name": "stats_srcip_dstip_ssl_table_uniq_device_group_dim_device_group",
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -55,7 +55,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_table_uniq_metrics_client_server_dim_by_self_part1",
+                        "name": "stats_srcip_ssl_table_uniq_device_group_dim_device_group",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -71,7 +71,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
+                        "name": "stats_dstip_ssl_table_uniq_device_group_dim_device_group",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -98,7 +98,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "ssl",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -113,89 +113,17 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_http_table_uniq_metrics_client_server_dim_by_self_part1",
+                    "name": "stats_ssl_table_uniq_device_group_dim_device_group",
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Client IP Object List)",
+                            "chart_name": "UNIQUECOUNT(Direction)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "client_ip_object_list:UNIQUE_COUNT:UNIQUECOUNT(Client IP Object List)"
+                                "device_group:UNIQUE_COUNT:UNIQUECOUNT(Device Group)"
                             ],
-                            "dimensions": ["client_ip_object_list"],
-                            "order_by": "UNIQUECOUNT(Client IP Object List)",
-                            "row_limit": "20",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Server IP Object List)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "server_ip_object_list:UNIQUE_COUNT:UNIQUECOUNT(Server IP Object List)"
-                            ],
-                            "dimensions": ["server_ip_object_list"],
-                            "order_by": "UNIQUECOUNT(Server IP Object List)",
-                            "row_limit": "50",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Server FQDN)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "server_fqdn:UNIQUE_COUNT:UNIQUECOUNT(Server FQDN)"
-                            ],
-                            "dimensions": ["server_fqdn"],
-                            "order_by": "UNIQUECOUNT(Server FQDN)",
-                            "row_limit": "200",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Server Domain)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "server_domain:UNIQUE_COUNT:UNIQUECOUNT(Server Domain)"
-                            ],
-                            "dimensions": ["server_domain"],
-                            "order_by": "UNIQUECOUNT(Server Domain)",
-                            "row_limit": "500",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(HTTP.Host)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "http_host:UNIQUE_COUNT:UNIQUECOUNT(HTTP.Host)"
-                            ],
-                            "dimensions": ["http_host"],
-                            "order_by": "UNIQUECOUNT(HTTP.Host)",
-                            "row_limit": "1000",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Application)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "app:UNIQUE_COUNT:UNIQUECOUNT(Application)"
-                            ],
-                            "dimensions": ["app"],
-                            "order_by": "UNIQUECOUNT(Application)",
-                            "row_limit": "20",
-                            "min_in_size": "0",
-                            "max_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Application Category)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "app_category:UNIQUE_COUNT:UNIQUECOUNT(Application Category)"
-                            ],
-                            "dimensions": ["app_category"],
-                            "order_by": "UNIQUECOUNT(Application Category)",
+                            "dimensions": ["device_group"],
+                            "order_by": "UNIQUECOUNT(Device Group)",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "max_out_size": "0"
@@ -216,7 +144,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "http_87pkts"
+                "pcap_name": "test_https"
             },
             # "traffic": {
             #     "type": "trex",
@@ -277,7 +205,9 @@ def run(parameter):
             if len(cond_value) != 0:  # 不为空
                 cond_data = cond_value
                 create_ip = CreateObject(driver)
-                for i in range(len(cond_data)):  # 遍历创建所有condition
+                for i in range(len(cond_data)):
+                    if cond_data[i]["item"] == []:# UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
+                        continue# 遍历创建所有condition
                     element_position_map = get_element_position(cond_key)
                     cond_code = create_ip.create(cond_data[i], element_position_map)
                     if cond_code == 200:
@@ -486,64 +416,6 @@ def run(parameter):
 
 
 if __name__ == '__main__':
-    """56个Fields，其中3个不支持Unique_count,其他的按类别8个一组创建Test
-    client_ip_object_list
-    server_ip_object_list
-    server_fqdn
-    server_domain
-    fqdn_category_list
-    http_host
-    app
-    app_category
-     client_ip	
-     client_country	
-     server_ip	
-     server_country
-     client_asn
-     server_asn
-     client_port
-     server_port
-    device_group	
-    sled_ip 
-    decoded_as
-    c2s_ttl
-    s2c_ttl
-    c2s_link_id
-    s2c_link_id
-    session_id	
-     direction  	 
-     in_latency_ms	
-     out_latency_ms	
-     tcp_handshake_latency_ms
-     subscriber_id
-     duration_ms
-     syn_pkts
-     tcp_rtt_ms
-    sent_bytes	
-    received_bytes		
-    sent_pkts	
-    received_pkts
-    in_bytes	 
-    out_bytes	 
-    in_pkts	 
-    out_pkts 
-     new_c2s_flows	 
-     new_s2c_flows	 
-     new_in_sessions	 
-     new_out_sessions
-     closed_in_sessions
-     closed_out_sessions
-     c2s_ip_fragments 
-     s2c_ip_fragments
-    ssl_ja3_hash
-    ssl_sni	
-    ssl_handshake_latency_ms
-    dtls_handshake_latency_ms
-    flags
-    in_pkt_length_distribution	 	 
-    out_pkt_length_distribution	 	 
-    pkt_length_distribution	
-    """
     parameter = {
         "username": "AutomationTestAccount",
         "password": "1qaz@WSX",
@@ -555,7 +427,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_table_uniq_metrics_client_server_dim_by_self_part1",
+        "test_case_name": "stats_srcip_dstip_ssl_table_uniq_device_group_dim_device_group",
         "debug_flag": "local",
         "test_subcriber_id": "test6438",
         "script_type": "ui",

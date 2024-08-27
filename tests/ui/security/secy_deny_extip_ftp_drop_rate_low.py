@@ -87,7 +87,7 @@ def run(parameter):
                 "sub_action": [
                     {
                         "type": "rate_limit",
-                        "rate_value": "10",
+                        "rate_value": "0.01",
                     }
                 ],
                 "packet_capture": []

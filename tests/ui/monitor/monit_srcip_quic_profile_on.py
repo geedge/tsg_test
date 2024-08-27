@@ -79,7 +79,7 @@ def run(parameter):
                 {
                     "profile_type": "traffic_mirror",
                     "name": "profile1",
-                    "vlan_count": random.randint(3, 66)
+                    "vlan_count": random.randint(1, 10)
                     # vlan的范围：应该是在3-66
                 }
             ],
@@ -122,7 +122,7 @@ def run(parameter):
                 "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": test_data["profile"][0]["traffic_mirror"],
+                "type": test_data["profile"][0]["profile_type"],
                 "name": test_data["profile"][0]['name']
             },
         ]
