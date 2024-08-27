@@ -77,13 +77,14 @@ class GetLog:
             log_condition_dict['identifier_name'] = identifier_name
             log_condition_dict['execution_mode'] = 'oneshot'
             # 从conditions中获取object_type判断是否存在subscriberid
-            if "obj_condition_1" in test_data.keys():
-                temp_obj_condition = test_data["obj_condition_1"]
-            elif "obj_condition" in test_data.keys():
-                temp_obj_condition = test_data["obj_condition"]
-            if len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
-                log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
-                log_condition_dict['filter'] = log_filter
+            if script_type == "api":
+                if "obj_condition_1" in test_data.keys():
+                    temp_obj_condition = test_data["obj_condition_1"]
+                elif "obj_condition" in test_data.keys():
+                    temp_obj_condition = test_data["obj_condition"]
+                if len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
+                    log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
+                    log_condition_dict['filter'] = log_filter
             else:
                 log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, {policy_id})"
                 log_condition_dict['filter'] = log_filter
