@@ -162,34 +162,50 @@ class DataTranslation:
             for i in range(len(temp_profile)):
                 temp = {
                     "profile_type": "service_function_forwarder",
-                    "name": "test_sc_api_mirror_block_vlan_none",
+                    "name": temp_profile[i]["name"],
                     "type": "2",
-                    "load_balance_method": "hash-int-ip",
-                    "load_balance_localization": "nearby",
-                    "failure_action": "block",
+                    "load_balance_method": temp_profile[i]["load_balance_method"],
+                    "load_balance_localization": temp_profile[i]["load_balance_localization"],
+                    "failure_action": temp_profile[i]["failure_action"],
                     "return_data": 1,
                     "op_action": "add",
-                    "sf_condition":[
+                    "sf_condition": [
                         {
                             "profile_type": "service_function",
                             "name": "test_sc_api_vlan_none",
-                            "profile_id":None,
-                            "device_group":{
-                                "tag":"device_group",
+                            "profile_id": None,
+                            "device_group": {
+                                "tag": "device_group",
                                 "value":"group-xxg-tsgx"
                             },
-                            "admin_status":1,
-                            "connectivity":{
-                                "method":"layer2_switch"
+                            "admin_status": 1,
+                            "connectivity": {
+                                "method": "vxlan_g",
+                                "dest_ip": "2.2.2.53"
                             },
-                            "health_check":{
-                                "method":"none"
+                            "health_check": {
+                                "method": "bfd",
+                                "interval_ms": 200,
+                                "retires": 5
                             },
-                            "is_valid":1,
-                            "vsys_id":1
+                            "is_valid": 1,
+                            "vsys_id": 1
                         }
                     ]
                 }
+                if temp_profile[i]["profile_type"] == "create":
+                    temp["op_action"] = "add"
+                    for x in range(len(temp_profile[i]["service_functions"])):
+                        temp["sf_condition"][x]["name"] = temp_profile[i]["service_functions"][x]["name"]
+                        temp["sf_condition"][x]["device_group"]["tag"] = temp_profile[i]["service_functions"][x]["device_group"].split(":")[0]
+                        temp["sf_condition"][x]["device_group"]["value"] = temp_profile[i]["service_functions"][x]["device_group"].split(":")[1]
+                        if temp_profile[i]["service_functions"][x]["connectivity"].split(":")[0] == "VXLAN-G":
+                            temp["sf_condition"][x]["connectivity"]["method"] = "vlan_g"
+                            temp["sf_condition"][x]["connectivity"]["dest_ip"] = temp_profile[i]["service_functions"][x]["connectivity"].split(":")[1]
+                        if temp_profile[i]["service_functions"][x]["health_check"].split(":")[0] == "Bfd":
+                            temp["sf_condition"][x]["health_check"]["method"] = "bfd"
+                            temp["sf_condition"][x]["health_check"]["interval_ms"] = temp_profile[i]["service_functions"][x]["health_check"].split(":")[1]
+                            temp["sf_condition"][x]["health_check"]["retires"] = temp_profile[i]["service_functions"][x]["health_check"].split(":")[2]
                 profile.append(temp)
         elif policy_type == "statistics":
             temp_profile = data[key]["statistics_template"]
@@ -222,6 +238,10 @@ class DataTranslation:
                         }
                     ]
                 }
+                for t in range(temp_profile["charts"]):
+                    for k in range(len(temp_profile["charts"][t]["metrics"])): 
+                        temp["chart_list"][t]["metrics"][k]["source_columns"] = temp_profile["charts"][t]["metrics"][k].split(":")[0]
+                        temp["chart_list"][t]["metrics"][k]["function"] = temp_profile["charts"][t]["metrics"][k].split(":")[1]
                 profile.append(temp)
         return profile
     
