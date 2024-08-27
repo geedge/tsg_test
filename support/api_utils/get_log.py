@@ -90,7 +90,7 @@ class GetLog:
                 log_condition_dict['filter'] = log_filter
                 log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
             if policy_type == "dos_protection":
-                log_condition_dict['filter'] = f"destination_ip='{test_data["traffic"]["servers_start_ip"]}'"
+                log_condition_dict['filter'] = f"destination_ip='{test_data['traffic']['servers_start_ip']}'"
             url = api_host + "/v1/log/query"
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
