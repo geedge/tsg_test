@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime 
 
 class MyWebDriver(webdriver.Remote):
-    def find_element(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.1, find_after_wait_time=0.2, wait_timeout=10):
+    def find_element(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.3, find_after_wait_time=0.3, wait_timeout=10):
         """
         封装find_element方法:
         :param by:
@@ -54,7 +54,7 @@ class MyWebDriver(webdriver.Remote):
             return 0
         return self.element
 
-    def find_elements(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.1, find_after_wait_time=0.2, wait_timeout=10):
+    def find_elements(self, by=By.ID, value: Optional[str] = None, find_before_wait_time=0.3, find_after_wait_time=0.3, wait_timeout=10):
         # 获取当前调用栈
         current_stack = inspect.stack()
         # 调用栈的第一个元素是当前的函数调用（my_function），

@@ -98,7 +98,7 @@ def run(parameter):
                                 {"query_field_key": "ip_protocol", "query_value": "tcp"}
                                 ],
             "traffic": {
-                "protocol": "ssl",
+                "protocol": "http",
                 "type": "curl",
                 "command": "curl -kv http://www.example.com"
             },
