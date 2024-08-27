@@ -1,6 +1,6 @@
 {
     "statistics_template": {
-        "name": "test",
+        "name": "automation_test_statistics_template",
         "id": "",
         "dataview": {
             "charts": [

@@ -1,45 +1,45 @@
 {
-  "type": "pxy_intercept",
-  "return_data": 1,
-  "vsys_id": 1,
-  "rule": {
-    "name": "python_api_auto_test_policy",
     "type": "pxy_intercept",
-    "action": "intercept",
-    "user_tag_ids": "",
-    "do_log": 1,
-    "effective_range": {},
-    "user_region": {
-      "protocol": "SSL",
-      "keyring_for_untrusted": 0,
-      "keyring_for_trusted": 1,
-      "decryption_profile": 1,
-      "tcp_option_profile": 1,
-      "traffic_mirror": {
-        "enable": 0
-      }
-    },
-    "sources": [],
-    "destinations": [],
-    "filters": "",
-    "application": {
-      "is_negate": 0,
-      "objects": [
-        {
-          "object_type": "application",
-          "object_ids": [
-            109,
-            163
-          ]
-        }
-      ],
-      "attribute_name": "ATTR_APP_ID",
-      "show": true
-    },
-    "is_enabled": 1,
-    "description": "test",
-    "vsys_id": 6,
-    "schedule_id": [
-    ]
-  }
+    "return_data": 1,
+    "vsys_id": 1,
+    "rule": {
+        "name": "intercept_policy",
+        "type": "pxy_intercept",
+        "action": "intercept",
+        "user_tag_ids": "",
+        "do_log": 1,
+        "effective_range": {},
+        "user_region": {
+            "protocol": "SSL",
+            "keyring_for_untrusted": 0,
+            "keyring_for_trusted": 1,
+            "decryption_profile": 1,
+            "tcp_option_profile": 1,
+            "traffic_mirror": {
+                "enable": 0
+            }
+        },
+        "sources": [],
+        "destinations": [],
+        "filters": "",
+        "application": {
+            "is_negate": 0,
+            "objects": [
+                {
+                    "object_type": "application",
+                    "object_ids": [
+                        109,
+                        163
+                    ]
+                }
+            ],
+            "attribute_name": "ATTR_APP_ID",
+            "show": true
+        },
+        "is_enabled": 1,
+        "description": "test",
+        "vsys_id": 6,
+        "schedule_id": [
+        ]
+    }
 }

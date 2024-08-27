@@ -1,17 +1,17 @@
 {
-  "op": "add",
-  "return_data": 1,
-  "vsys_id": 1,
-  "object": {
-    "type": "ip",
-    "sub_type": "ip",
-    "is_valid": 1,
-    "statistics_option": "elaborate",
-    "name": "python_api_auto_test_obj",
-    "description": "test",
-    "member": "object",
-    "iconColor": "#31739C"
-  },
-  "data": {},
-  "file": {}
+    "op": "add",
+    "return_data": 1,
+    "vsys_id": 1,
+    "object": {
+        "type": "ip",
+        "sub_type": "ip",
+        "is_valid": 1,
+        "statistics_option": "elaborate",
+        "name": "automation_test_object",
+        "description": "test",
+        "member": "object",
+        "iconColor": "#31739C"
+    },
+    "data": {},
+    "file": {}
 }
