@@ -91,7 +91,7 @@ class ApiVerification:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
                     for i in range(70):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
-                        if i == 30 and (script_type == "ui" or script_type == "all") and driver:
+                        if i == 30 and script_type == "ui" and driver:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
                             support.ui_utils.env.teardown()
                             support.ui_utils.env.initiate_selenium_request()
@@ -145,7 +145,7 @@ class ApiVerification:
             time.sleep(10)
             max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
             search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
-            if script_type == "ui" or script_type == "all":
+            if script_type == "ui":
                 #search_interval_time = 20    # 每次查询statistic metric的 间隔时间 单位秒
                 time.sleep(60)
             utc_tz = pytz.timezone('UTC')
@@ -158,7 +158,7 @@ class ApiVerification:
                 for statistics_info in statistics_template_chart_list:
                     fail_count = 0   #自增变量
                     while True:    # max_fail_count最大查询测试
-                        if script_type == "ui" or script_type == "all":
+                        if script_type == "ui":
                             # 点击 语言快捷切换按钮
                             element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
                             # 移动元素到页面，再执行点击
@@ -317,7 +317,7 @@ class ApiVerification:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_log' is True.", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
                     for i in range(150):
-                        if i == 30 and (script_type == "ui" or script_type == "all") and driver:
+                        if i == 30 and script_type == "ui" and driver:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
                             support.ui_utils.env.teardown()
                             support.ui_utils.env.initiate_selenium_request()

@@ -145,7 +145,11 @@ def run(parameter):
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
         
-        if parameter["script_type"] == "ui" or parameter["script_type"] == "all":
+        need_initialization = False
+        if len(parameter["script_type"]) == 0:
+            need_initialization = True
+        
+        if parameter["script_type"] == "ui" or need_initialization == True:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
             
             parameter["script_type"] = "ui"
@@ -322,8 +326,7 @@ def run(parameter):
                         result = result + " In addition, fail to search ip object."
                         break
         
-            parameter["script_type"] = "all"
-        if parameter["script_type"] == "api" or parameter["script_type"] == "all":
+        if parameter["script_type"] == "api" or need_initialization == True:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
             
             parameter["script_type"] = "api"
@@ -351,8 +354,6 @@ def run(parameter):
             # 删除配置
             delete = DeletePolicy()
             delete.delele_policy_by_cfg(token, parameter, cfg_list)
-            
-            parameter["script_type"] = "all"
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -370,10 +371,15 @@ def run(parameter):
         support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
-        delete.delete_policy_by_name(token, parameter, ui_name_list)
-        delete.delete_policy_by_name(token, parameter, api_name_list)
+        if isinstance(ui_name_list, list):
+            delete.delete_policy_by_name(token, parameter, ui_name_list)
+        if isinstance(api_name_list, list):
+            delete.delete_policy_by_name(token, parameter, api_name_list)
         # 生成csv报告
-        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
+        if len(parameter["script_type"]) == 0:
+            file_path = parameter["root_path"] + "/report/automation_test_report.csv"
+        else:
+            file_path = parameter["root_path"] + "/report/{}_automation_test_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
             if result is not None and result != "" and len(result) != 0:
                 report_data = []

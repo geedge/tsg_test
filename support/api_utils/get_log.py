@@ -77,7 +77,6 @@ class GetLog:
             log_condition_dict['identifier_name'] = identifier_name
             log_condition_dict['execution_mode'] = 'oneshot'
             # 从conditions中获取object_type判断是否存在subscriberid
-            # 加script_type判断条件的原因是:ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if "obj_condition_1" in test_data.keys():
                 temp_obj_condition = test_data["obj_condition_1"]
             elif "obj_condition" in test_data.keys():
