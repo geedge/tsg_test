@@ -148,10 +148,33 @@ class UiVerification:
                                         else:
                                             temp_log_result = False
                                         temp_log_result_list.append(temp_log_result)
-                                    elif log_query_key in ["monitor_mirrored_bytes", "monitor_mirrored_pkts"]:
-                                        #后续补充ui校验
-                                        temp_log_result = True
-                                        temp_log_result_list.append(temp_log_result)
+                                    elif log_query_key == "monitor_mirrored_pkts":
+                                            log_pkt_value = test_data["log_query_param"][t]["query_value"]
+                                            log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                            log_pkt_temp = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                            temp_value = int(log_pkt_temp.replace(",", ""))
+                                            if temp_value == log_pkt_value:
+                                                temp_log_result = True
+                                            else:
+                                                temp_log_result = False
+                                            temp_log_result_list.append(temp_log_result)
+                                    elif log_query_key == "monitor_mirrored_bytes":
+                                            log_byte_value = test_data["log_query_param"][t]["query_value"]
+                                            log_bytes_temp = "" #对于bytes，之后还要进行处理
+                                            if 1024 <= log_byte_value < 1048576:
+                                                log_bytes_temp = str(round(log_byte_value / 1024.0, 2)) + " KB"
+                                            elif log_byte_value < 1024:
+                                                log_bytes_temp = str(log_byte_value) + " B"
+                                            elif 1048576 <= log_byte_value < 1073741824:
+                                                log_bytes_temp = str(round(log_byte_value / 1048576.0, 2)) + " MB"
+                                            log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
+                                                replaceValue=log_str)
+                                            temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                            if temp_value == log_bytes_temp:
+                                                temp_log_result = True
+                                            else:
+                                                temp_log_result = False
+                                            temp_log_result_list.append(temp_log_result)
                                     elif log_query_key in ["client_port"]:
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
                                             replaceValue=log_str)
