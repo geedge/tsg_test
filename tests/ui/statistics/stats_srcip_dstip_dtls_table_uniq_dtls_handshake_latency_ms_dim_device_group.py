@@ -358,6 +358,8 @@ def run(parameter):
                 if len(cond_value) != 0:  # 不为空
                     cond_data = cond_value
                     for i in range(len(cond_data)):  # 遍历查询所有condition
+                        if cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
+                            continue  # 遍历创建所有condition
                         search_cond = SearchObject(driver)
                         element_position_map = get_element_position(cond_key)
                         search_cond_code, first_row_checkbox_element = search_cond.search(cond_value[i]["name"],
