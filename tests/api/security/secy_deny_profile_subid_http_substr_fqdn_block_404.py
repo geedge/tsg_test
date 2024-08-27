@@ -65,7 +65,7 @@ def run(parameter):
                 {
                 "profile_type": "response_page",
                 "format": "html",
-                "name": "auto_test_profile",
+                "name": "automation_test_profile",
                 "return_data": 1
                 }
             ],

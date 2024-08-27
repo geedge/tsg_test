@@ -3,7 +3,7 @@
     "return_data": 1,
     "vsys_id": 1,
     "rule": {
-        "name": "intercept_policy",
+        "name": "automation_test_policy",
         "type": "pxy_intercept",
         "action": "intercept",
         "user_tag_ids": "",

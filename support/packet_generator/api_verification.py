@@ -42,30 +42,23 @@ class ApiVerification:
         else:
             rule_num = 1
         
-        if script_type == "ui":
+        if len(cfg_list) == 0:
             if policy_type == "service_chaining":
-                statistics_sc_info_list = []
                 cfg_list["rule_id"] = test_data["rule_id"]
+                statistics_sc_info_list = []
                 statistics_sc_info_list.append(cfg_list)
-            #elif policy_type == "statistics":
-                #statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
-                #cfg_list["rule_id"] = test_data["rule_id"]
-                #statistics_sc_info_list.append(cfg_list)
             temp_list = {}
             temp_list[policy_type] = test_data["rule_id"]
             create_policies_ids = []
             create_policies_ids.append(temp_list)
-        elif script_type == "api":
-            if len(cfg_list) != 0:
-                create_policies_ids = cfg_list["create_policies_ids"]
-                statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
+        elif len(cfg_list) != 0:
+            create_policies_ids = cfg_list["create_policies_ids"]
+            statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
         policy_id_list = []
         for i in range(len(create_policies_ids)):
             policy_id_list.append(list(create_policies_ids[i].values())[0])
-        # 判断，如果condition中包含名为command的key，则读取command来执行，否则执行默认的
         
         log = support.api_utils.get_log.GetLog()
-        
         if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
             #如果是通过trex回放，需要替换src ip
             if test_data["policy_type"] == "monitor" and test_data["is_mirror"] == "on":
@@ -395,27 +388,21 @@ class ApiVerification:
         is_log_query = False
         for i in range(loop_num):
             index = i + 1
-            if script_type == "ui":
+            temp_counters = counters + '_' + str(index)
+            if temp_counters in test_data.keys():
+                counters_data = test_data[counters + '_' + str(index)]
+            else:
                 counters_data = test_data[counters]
-            elif script_type == "api":
-                temp_counters = counters + '_' + str(index)
-                if temp_counters in test_data.keys():
-                    counters_data = test_data[counters + '_' + str(index)]
-                else:
-                    counters_data = test_data[counters]
             if counters_data != {}:
                 is_counters = True
                 break
         for i in range(loop_num):
             index = i + 1
-            if script_type == "ui":
+            temp_log_query_param = log_query_param + '_' + str(index)
+            if temp_log_query_param in test_data.keys():
+                log_query_param_data = test_data[log_query_param + '_' + str(index)]
+            else:
                 log_query_param_data = test_data[log_query_param]
-            elif script_type == "api":
-                temp_log_query_param = log_query_param + '_' + str(index)
-                if temp_log_query_param in test_data.keys():
-                    log_query_param_data = test_data[log_query_param + '_' + str(index)]
-                else:
-                    log_query_param_data = test_data[log_query_param]
             if len(log_query_param_data) > 0:
                 is_log_query = True
                 break

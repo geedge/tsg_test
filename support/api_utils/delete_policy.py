@@ -240,11 +240,11 @@ class DeletePolicy:
         rule_url = api_server + "/v1/policy/rule"
         obj_url = api_server + "/v1/policy/object"
         template = {'type': 'security', 'name': '', 'with_sub_vsys': 0, 'vsys_id': vsys_id}
-        script_type = parameter["script_type"]
+        # script_type = parameter["script_type"]
         
-        if script_type == "api":
+        if len(name_list) == 0:
             # 删除security rule
-            template['name'] = 'python_api_auto_test_policy'
+            template['name'] = 'automation_test_policy'
             template['type'] = 'security'
             self.query_and_delete_by_name(rule_url, template, headers)
             # 删除monitor rule
@@ -262,9 +262,12 @@ class DeletePolicy:
             # 删除Service Chaining rule
             template['type'] = 'service_chaining'
             self.query_and_delete_by_name(rule_url, template, headers)
+            # 删除Service Chaining rule
+            template['type'] = 'dos_protection'
+            self.query_and_delete_by_name(rule_url, template, headers)
 
             # 删除IP Addresses
-            template['name'] = 'python_api_auto_test_obj'
+            template['name'] = 'automation_test_object'
             template['type'] = 'ip'
             self.query_and_delete_by_name(obj_url, template, headers)
             # 删除FQDNs
@@ -290,7 +293,7 @@ class DeletePolicy:
             self.query_and_delete_by_name(obj_url, template, headers)
             
             # 删除Response Pages
-            template['name'] = 'auto_test_profile'
+            template['name'] = 'automation_test_profile'
             profile_url = api_server + "/v1/policy/profile/response_page"
             if 'type' in template:
                 del template["type"]
@@ -324,28 +327,27 @@ class DeletePolicy:
             # geolocation_template = {'location_type': 'geoname_id', 'country': 'auto_geo_obj', 'vsys_id': vsys_id}
             # geolocation_url = api_server + "/v1/policy/library/geolocation"
             # self.delete_geolocation(geolocation_url, geolocation_template, headers, vsys_id)
-        elif script_type == "ui":
-            if len(name_list) > 0:
-                for name_item in name_list:
-                    if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept", "monitor","statistics"]:
-                        template['name'] = name_item["name"]
-                        template['type'] = name_item["type"]
-                        self.query_and_delete_by_name(rule_url, template, headers)
-                        
-                    if name_item["type"] in ["ip", "port", "url", "fqdn", "http_signature", "mobile_identity", "keywords", "account"]:
-                        template['name'] = name_item["name"]
-                        template['type'] = name_item["type"]
-                        self.query_and_delete_by_name(obj_url, template, headers)
+        elif len(name_list) > 0:
+            for name_item in name_list:
+                if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept", "monitor", "statistics", "dos_protection"]:
+                    template['name'] = name_item["name"]
+                    template['type'] = name_item["type"]
+                    self.query_and_delete_by_name(rule_url, template, headers)
                     
-                    if name_item["type"] in ["service_function_forwarder", "service_function", "statistics_template", "response_page", "hijack_file",
-                                             "insert_script","traffic_mirror","run_script", "dns_record"]:
-                        if 'type' in template:
-                            del template["type"]
-                        template['name'] = name_item["name"]
-                        profile_url = api_server + "/v1/policy/profile/" + name_item["type"]
-                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], profile_url)
-                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], template)
-                        self.query_and_delete_by_name(profile_url, template, headers)
+                if name_item["type"] in ["ip", "port", "url", "fqdn", "http_signature", "mobile_identity", "keywords", "account"]:
+                    template['name'] = name_item["name"]
+                    template['type'] = name_item["type"]
+                    self.query_and_delete_by_name(obj_url, template, headers)
+                
+                if name_item["type"] in ["service_function_forwarder", "service_function", "statistics_template", "response_page", "hijack_file",
+                                            "insert_script","traffic_mirror","run_script", "dns_record"]:
+                    if 'type' in template:
+                        del template["type"]
+                    template['name'] = name_item["name"]
+                    profile_url = api_server + "/v1/policy/profile/" + name_item["type"]
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], profile_url)
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], template)
+                    self.query_and_delete_by_name(profile_url, template, headers)
                                               
     def query_and_delete_by_name(self, url, template, headers):
         try:

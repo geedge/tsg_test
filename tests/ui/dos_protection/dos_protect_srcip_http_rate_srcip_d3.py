@@ -148,13 +148,15 @@ def run(parameter):
         if parameter["script_type"] == "ui" or parameter["script_type"] == "all":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
             
+            parameter["script_type"] = "ui"
+            
             # 环境初始化
             support.ui_utils.env.initiate_selenium_request()
             driver = support.ui_utils.env.my_driver()
             support.ui_utils.env.setup()
 
             # name_list汇总
-            name_list = [
+            ui_name_list = [
                 {
                     "type": test_data["policy_type"],
                     "name": test_data["rule_name"]
@@ -320,8 +322,13 @@ def run(parameter):
                         result = result + " In addition, fail to search ip object."
                         break
         
+            parameter["script_type"] = "all"
         if parameter["script_type"] == "api" or parameter["script_type"] == "all":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
+            
+            parameter["script_type"] = "api"
+            
+            api_name_list = []
             
             # 添加测试过程中涉及的template
             template_path = {}
@@ -344,6 +351,8 @@ def run(parameter):
             # 删除配置
             delete = DeletePolicy()
             delete.delele_policy_by_cfg(token, parameter, cfg_list)
+            
+            parameter["script_type"] = "all"
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -361,7 +370,8 @@ def run(parameter):
         support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
-        delete.delete_policy_by_name(token, parameter, name_list)
+        delete.delete_policy_by_name(token, parameter, ui_name_list)
+        delete.delete_policy_by_name(token, parameter, api_name_list)
         # 生成csv报告
         file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  

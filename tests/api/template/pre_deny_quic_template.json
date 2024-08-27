@@ -1,7 +1,7 @@
 {
     "return_data": 1,
     "rule": {
-        "name": "security_deny_quic_policy",
+        "name": "automation_test_policy",
         "type": "security",
         "action": "deny",
         "method": "drop",
