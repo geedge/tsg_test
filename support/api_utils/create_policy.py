@@ -213,130 +213,130 @@ class CreatePolicy:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
         return config
 
-    def generate_testdata(parameter, test_data):
-        # statistics中将ip改为随机
-        config = test_data
-        vsys_id = str(parameter["vsys_id"])
-        run_env = str(parameter["env"])
-        temp_obj_condition = "obj_condition_1"
-        if temp_obj_condition in config.keys():
-            object_condition_value = config[temp_obj_condition]
-        else:
-            object_condition_value = config["obj_condition"]
-        if len(object_condition_value) > 0:
-            for obj in object_condition_value:
-                if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
-                    src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
-                    traffic_replace_ip = 0
-                    if "default" in src_ip:
-                        traffic_replace_ip = 1
-                        src_ip = "10.64.77.11"
-                    if "-" not in src_ip and "/" not in src_ip:
-                        src_ip_list = src_ip.split(".")
-                        if str(vsys_id) == "1":   #根据vsys id，确认IP范围
-                            if obj["attribute_name"] == "ATTR_SOURCE_IP":
-                                src_ip_list[2] = str(random.randint(80, 89))
-                            else:
-                                src_ip_list[2] = str(random.randint(90, 99))
-                        elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
-                            if obj["attribute_name"] == "ATTR_SOURCE_IP":
-                                src_ip_list[2] = str(random.randint(200, 209))
-                            else:
-                                src_ip_list[2] = str(random.randint(210, 219))
+def generate_testdata(parameter, test_data):
+    # statistics中将ip改为随机
+    config = test_data
+    vsys_id = str(parameter["vsys_id"])
+    run_env = str(parameter["env"])
+    temp_obj_condition = "obj_condition_1"
+    if temp_obj_condition in config.keys():
+        object_condition_value = config[temp_obj_condition]
+    else:
+        object_condition_value = config["obj_condition"]
+    if len(object_condition_value) > 0:
+        for obj in object_condition_value:
+            if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
+                src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
+                traffic_replace_ip = 0
+                if "default" in src_ip:
+                    traffic_replace_ip = 1
+                    src_ip = "10.64.77.11"
+                if "-" not in src_ip and "/" not in src_ip:
+                    src_ip_list = src_ip.split(".")
+                    if str(vsys_id) == "1":   #根据vsys id，确认IP范围
+                        if obj["attribute_name"] == "ATTR_SOURCE_IP":
+                            src_ip_list[2] = str(random.randint(80, 89))
                         else:
-                            if obj["attribute_name"] == "ATTR_SOURCE_IP":
-                                src_ip_list[2] = str(random.randint(230, 239))
-                            else:
-                                src_ip_list[2] = str(random.randint(240, 249))
-                        src_ip_list[3] = str(random.randint(100, 250))
-                        if run_env == "9140":
-                            src_ip_list[0] = "172"
-                            src_ip_list[1] = "56"
-                        elif run_env == "tsgx":
-                            src_ip_list[0] = "10"
-                            src_ip_list[1] = "64"
-                        new_src_ip = ".".join(src_ip_list)
-                        start_ip = new_src_ip
-                        stop_ip = new_src_ip
-                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
-                    elif "-" in src_ip and "/" not in src_ip:
-                        two_ip_list = src_ip.split("-")
-                        ip_list_1 = two_ip_list[0].split(".")
-                        ip_list_2 = two_ip_list[1].split(".")
-                        if str(vsys_id) == "1":
-                            if obj["attribute_name"] == "ATTR_SOURCE_IP":
-                                ip_list_1[2] = str(random.randint(80, 89))
-                            else:
-                                ip_list_1[2] = str(random.randint(90, 99))
-                        elif str(vsys_id) == "4":
-                            if obj["attribute_name"] == "ATTR_SOURCE_IP":
-                                ip_list_1[2] = str(random.randint(200, 209))
-                            else:
-                                ip_list_1[2] = str(random.randint(210, 219))
+                            src_ip_list[2] = str(random.randint(90, 99))
+                    elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
+                        if obj["attribute_name"] == "ATTR_SOURCE_IP":
+                            src_ip_list[2] = str(random.randint(200, 209))
                         else:
-                            if obj["attribute_name"] == "ATTR_SOURCE_IP":
-                                ip_list_1[2] = str(random.randint(230, 239))
-                            else:
-                                ip_list_1[2] = str(random.randint(240, 249))
-                        ip_list_1[3] = str(random.randint(1, 50))
-                        ip_list_2[2] = ip_list_1[2]
-                        ip_list_2[3] = str(int(ip_list_1[3]) + 200)
-                        new_ip_1 = ".".join(ip_list_1)
-                        new_ip_2 = ".".join(ip_list_2)
-                        if run_env == "9140":
-                            ip_list_1[0] = "172"
-                            ip_list_1[1] = "56"
-                            ip_list_2[0] = "172"
-                            ip_list_2[1] = "56"
-                        elif run_env == "tsgx":
-                            ip_list_1[0] = "10"
-                            ip_list_1[1] = "64"
-                            ip_list_2[0] = "10"
-                            ip_list_2[1] = "64"
-                        new_two_ip_list = []
-                        new_two_ip_list.append(new_ip_1)
-                        new_two_ip_list.append(new_ip_2)
-                        start_ip = new_ip_1
-                        stop_ip = new_ip_2
-                        new_two_ip = "-".join(new_two_ip_list)
-                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
+                            src_ip_list[2] = str(random.randint(210, 219))
                     else:
-                        start_ip = stop_ip = "1.1.1.1"
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
-
-                    # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
-                    if obj["attribute_name"] == "ATTR_SOURCE_IP" and traffic_replace_ip == 1:
-                        config["traffic"]["clients_start_ip"] = start_ip
-                        config["traffic"]["clients_end_ip"] = stop_ip
-                    elif obj["attribute_name"] == "ATTR_DESTINATION_IP" and traffic_replace_ip == 1:
-                        config["traffic"]["servers_start_ip"] = start_ip
-                        config["traffic"]["servers_end_ip"] = stop_ip
+                        if obj["attribute_name"] == "ATTR_SOURCE_IP":
+                            src_ip_list[2] = str(random.randint(230, 239))
+                        else:
+                            src_ip_list[2] = str(random.randint(240, 249))
+                    src_ip_list[3] = str(random.randint(100, 250))
+                    if run_env == "9140":
+                        src_ip_list[0] = "172"
+                        src_ip_list[1] = "56"
+                    elif run_env == "tsgx":
+                        src_ip_list[0] = "10"
+                        src_ip_list[1] = "64"
+                    new_src_ip = ".".join(src_ip_list)
+                    start_ip = new_src_ip
+                    stop_ip = new_src_ip
+                    obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
+                elif "-" in src_ip and "/" not in src_ip:
+                    two_ip_list = src_ip.split("-")
+                    ip_list_1 = two_ip_list[0].split(".")
+                    ip_list_2 = two_ip_list[1].split(".")
+                    if str(vsys_id) == "1":
+                        if obj["attribute_name"] == "ATTR_SOURCE_IP":
+                            ip_list_1[2] = str(random.randint(80, 89))
+                        else:
+                            ip_list_1[2] = str(random.randint(90, 99))
+                    elif str(vsys_id) == "4":
+                        if obj["attribute_name"] == "ATTR_SOURCE_IP":
+                            ip_list_1[2] = str(random.randint(200, 209))
+                        else:
+                            ip_list_1[2] = str(random.randint(210, 219))
                     else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
-                        pass
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
-        test_data = config
-        #print(test_data)
-        return test_data
+                        if obj["attribute_name"] == "ATTR_SOURCE_IP":
+                            ip_list_1[2] = str(random.randint(230, 239))
+                        else:
+                            ip_list_1[2] = str(random.randint(240, 249))
+                    ip_list_1[3] = str(random.randint(1, 50))
+                    ip_list_2[2] = ip_list_1[2]
+                    ip_list_2[3] = str(int(ip_list_1[3]) + 200)
+                    new_ip_1 = ".".join(ip_list_1)
+                    new_ip_2 = ".".join(ip_list_2)
+                    if run_env == "9140":
+                        ip_list_1[0] = "172"
+                        ip_list_1[1] = "56"
+                        ip_list_2[0] = "172"
+                        ip_list_2[1] = "56"
+                    elif run_env == "tsgx":
+                        ip_list_1[0] = "10"
+                        ip_list_1[1] = "64"
+                        ip_list_2[0] = "10"
+                        ip_list_2[1] = "64"
+                    new_two_ip_list = []
+                    new_two_ip_list.append(new_ip_1)
+                    new_two_ip_list.append(new_ip_2)
+                    start_ip = new_ip_1
+                    stop_ip = new_ip_2
+                    new_two_ip = "-".join(new_two_ip_list)
+                    obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
+                else:
+                    start_ip = stop_ip = "1.1.1.1"
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
 
-    def replace_paras_api(parameter):
-        #print(workdir)
-        conf_path = os.path.join(workdir, "configuration_file.ini")
-        parse = configparser.ConfigParser()
-        parse.read(conf_path, encoding="utf-8")
-        parameter["username"] = parse.get("account", "username")
-        parameter["password"] = parse.get("account", "password")
-        parameter["api_server"] = parse.get("tsg_url", "login_url")
-        parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_api")
-        parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
-        parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
-        parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
-        parameter["vsys_id"] = parse.get("vsys", "id_for_api")
-        parameter["is_log"] = parse.get("is_log", "api")
-        #project_path = parse.get("root_path", "path")
-        #parameter["root_path"] = project_path
-        #print(parameter)
-        return parameter
+                # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
+                if obj["attribute_name"] == "ATTR_SOURCE_IP" and traffic_replace_ip == 1:
+                    config["traffic"]["clients_start_ip"] = start_ip
+                    config["traffic"]["clients_end_ip"] = stop_ip
+                elif obj["attribute_name"] == "ATTR_DESTINATION_IP" and traffic_replace_ip == 1:
+                    config["traffic"]["servers_start_ip"] = start_ip
+                    config["traffic"]["servers_end_ip"] = stop_ip
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip error.", flush=True)
+                    pass
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
+    test_data = config
+    #print(test_data)
+    return test_data
+
+def replace_paras_api(parameter):
+    #print(workdir)
+    conf_path = os.path.join(workdir, "configuration_file.ini")
+    parse = configparser.ConfigParser()
+    parse.read(conf_path, encoding="utf-8")
+    parameter["username"] = parse.get("account", "username")
+    parameter["password"] = parse.get("account", "password")
+    parameter["api_server"] = parse.get("tsg_url", "login_url")
+    parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_api")
+    parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
+    parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
+    parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
+    parameter["vsys_id"] = parse.get("vsys", "id_for_api")
+    parameter["is_log"] = parse.get("is_log", "api")
+    #project_path = parse.get("root_path", "path")
+    #parameter["root_path"] = project_path
+    #print(parameter)
+    return parameter
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
