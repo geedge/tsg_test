@@ -20,8 +20,7 @@ class GetLog:
         log_schema = ",".join([field['name'] for field in log_schema])
         return log_schema
 
-    def get_log_by_condition(self, token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data,
-                             api_host, vsys_id, script_type,output):
+    def get_log_by_condition(self, token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data, api_host, vsys_id, script_type, output):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         log_condition = {
             "page_no": 1,
@@ -43,6 +42,8 @@ class GetLog:
                 schema_type = 'proxy_event'
             elif policy_type == 'monitor':
                 schema_type = 'monitor_event'
+            elif policy_type == 'dos_protection':
+                schema_type = 'dos_event'
             policy_id = list(create_policies_ids[i].values())[0]
             fields = self.get_log_schema(token, schema_type, api_host, vsys_id)
             if policy_type == 'security':
@@ -65,6 +66,9 @@ class GetLog:
                 log_source = 'session_record'
                 identifier_name = 'session-record-list'
                 log_query_rule_type = 'statistics_rule_list'
+            elif policy_type == "dos_protection":
+                log_source = "dos_event"
+                identifier_name = "dos-event-list"
             log_condition_dict['columns'] = fields
             log_condition_dict['start_time'] = start_time
             log_condition_dict['end_time'] = end_time
@@ -72,21 +76,21 @@ class GetLog:
             log_condition_dict['source'] = log_source
             log_condition_dict['identifier_name'] = identifier_name
             log_condition_dict['execution_mode'] = 'oneshot'
-
             # 从conditions中获取object_type判断是否存在subscriberid
             # 加script_type判断条件的原因是:ui全流程test_data中没有obj_condition_1这种形式的数据，这种数据形式是api中
             if "obj_condition_1" in test_data.keys():
                 temp_obj_condition = test_data["obj_condition_1"]
             elif "obj_condition" in test_data.keys():
                 temp_obj_condition = test_data["obj_condition"]
-            if script_type == "api" and len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
+            if len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
                 log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
                 log_condition_dict['filter'] = log_filter
             else:
-                log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type},{policy_id})"
+                log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, {policy_id})"
                 log_condition_dict['filter'] = log_filter
-                log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}",
-                                                                                    f"client_ip='{test_pc_ip}'")
+                log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
+            if policy_type == "dos_protection":
+                log_condition_dict['filter'] = f"destination_ip='{test_data["traffic"]["servers_start_ip"]}'"
             url = api_host + "/v1/log/query"
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
@@ -94,14 +98,11 @@ class GetLog:
             log_list = json.loads(response.text)
             log_list = log_list['data']['result']
             log_index = i + 1
-            if script_type == "ui":
+            temp_log_query_param = 'log_query_param_' + str(log_index)
+            if temp_log_query_param in test_data.keys():
+                log_query_params = test_data[temp_log_query_param]
+            else:
                 log_query_params = test_data['log_query_param']
-            elif script_type == "api":
-                temp_log_query_param = 'log_query_param_' + str(log_index)
-                if temp_log_query_param in test_data.keys():
-                    log_query_params = test_data[temp_log_query_param]
-                else:
-                    log_query_params = test_data['log_query_param']
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare log with test data.", flush=True)
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
@@ -217,6 +218,8 @@ class GetLog:
                 dataset_identifier_name = "proxy-policy-rule-statistics"
             elif policy_type == 'monitor':
                 dataset_identifier_name = "monitor-policy-rule-statistics"
+            elif policy_type == 'dos_protection':
+                dataset_identifier_name = "dos-protection-rule-statistics"
             policy_id = list(create_policies_ids[i].values())[0]
             hit_query_condition = {"identifier_name": dataset_identifier_name, "rule_id": "", "start_time": "",
                                    "end_time": "", "vsys_id": 1, "execution_mode": "oneshot", "output_mode": "json",
@@ -230,14 +233,11 @@ class GetLog:
             assert response.status_code == 200
             response = json.loads(response.text)
             index = i + 1
-            if script_type == "ui":
+            temp_counters = 'counters_' + str(index)
+            if temp_counters in test_data.keys():
+                counter = test_data[temp_counters]
+            else:
                 counter = test_data['counters']
-            elif script_type == "api":
-                temp_counters = 'counters_' + str(index)
-                if temp_counters in test_data.keys():
-                    counter = test_data[temp_counters]
-                else:
-                    counter = test_data['counters']
             result_len = len(response['data']['result'])
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare metric with test data.", flush=True)
             # 需要hits == 0时，则验证，验证通过metric置为true
@@ -272,8 +272,7 @@ class GetLog:
                 metric_result = None
             return metric_result
 
-    def get_sc_metric(self, token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, host_api,
-                      vsys_id):
+    def get_sc_metric(self, token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, host_api, vsys_id):
         # 请求接口查询sc metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = "{}/v1/log/query".format(host_api)
@@ -427,7 +426,7 @@ class GetLog:
         ip_count = int(end_ip_obj) - int(start_ip_obj) + 1
         return ip_count
 
-    def get_livechart_statistics(self, token, start_time, end_time, statistics_info, statistics_metircs_except,host_api, vsys_id):
+    def get_livechart_statistics(self, token, start_time, end_time, statistics_info, statistics_metircs_except, host_api, vsys_id):
         """
         :param token:
         :param start_time:
@@ -682,7 +681,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Chart Visualization Type verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
     
-    def metric_value_verification(self, assert_key, metric_info,stats_value, test_traffic_statistics,time_dif_seconds):
+    def metric_value_verification(self, assert_key, metric_info, stats_value, test_traffic_statistics, time_dif_seconds):
         #metric_info:[{'function': {'name': 'UNIQUE_COUNT'}, 'label': 'UNIQUECOUNT(Client IP)', 'metric_name': 'unique_count_1', 'metric_type': 'unique_count', 'source_fields': ['client_ip']}]
         function_name = metric_info["function"]["name"]
         source_fields_tmp = metric_info["source_fields"]
@@ -710,7 +709,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Statistical metric data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds = 1):
+    def metric_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds = 1):
         failure_info_2 = ""
         metric_result = False
         try:
@@ -811,7 +810,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_unique_count_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds):
+    def metric_unique_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds):
         failure_info_2 = ""
         metric_result = False
         util = UtilStatisticsTemplate()
@@ -853,7 +852,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Unique Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_histogram_value_verification(self,source_fields, stats_value, rate_coefficient,test_traffic_statistics,time_dif_seconds):
+    def metric_histogram_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds):
         # 待重构
         failure_info_2 = ""
         util = UtilStatisticsTemplate()

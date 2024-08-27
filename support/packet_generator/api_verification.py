@@ -75,7 +75,6 @@ class ApiVerification:
             current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             
-            
             # 触发流量
             # if debug_flag == "local":
             #     temp_data = json.dumps(test_data["traffic"])
@@ -99,7 +98,7 @@ class ApiVerification:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
                     for i in range(70):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
-                        if i == 30 and script_type == "ui" and driver:
+                        if i == 30 and (script_type == "ui" or script_type == "all") and driver:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
                             support.ui_utils.env.teardown()
                             support.ui_utils.env.initiate_selenium_request()
@@ -153,7 +152,7 @@ class ApiVerification:
             time.sleep(10)
             max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
             search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
-            if script_type == "ui":
+            if script_type == "ui" or script_type == "all":
                 #search_interval_time = 20    # 每次查询statistic metric的 间隔时间 单位秒
                 time.sleep(60)
             utc_tz = pytz.timezone('UTC')
@@ -166,7 +165,7 @@ class ApiVerification:
                 for statistics_info in statistics_template_chart_list:
                     fail_count = 0   #自增变量
                     while True:    # max_fail_count最大查询测试
-                        if script_type == "ui":
+                        if script_type == "ui" or script_type == "all":
                             # 点击 语言快捷切换按钮
                             element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
                             # 移动元素到页面，再执行点击
@@ -309,6 +308,65 @@ class ApiVerification:
                     elif metric_result == 444:
                         metric_result = False
             return metric_result, cmd_result, metric_result, my_driver
+        elif policy_type == "dos_protection":
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
+            # 获取开始时间
+            utc_tz = pytz.timezone('UTC')
+            current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
+            start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            
+            loop_num = test_data["rule_num"]
+            is_counters, is_log_query = self.is_verify(script_type, test_data, loop_num, 'counters', 'log_query_param')
+            
+            log_result, metric_result = None, None
+            if int(is_log) == 1:
+                if is_log_query == True or is_counters == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_log' is True.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
+                    for i in range(150):
+                        if i == 30 and (script_type == "ui" or script_type == "all") and driver:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
+                            support.ui_utils.env.teardown()
+                            support.ui_utils.env.initiate_selenium_request()
+                            my_driver = support.ui_utils.env.my_driver()
+                            support.ui_utils.env.setup()
+                        utc_tz = pytz.timezone('UTC')
+                        current_utc_time = datetime.now(utc_tz)
+                        end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                        time.sleep(7)
+                        if is_log_query == True and log_result == None:
+                            log_result = log.get_log_by_condition(token, rule_num, start_time, end_time, test_pc_ip, test_sub_id, create_policies_ids, test_data, api_server, vsys_id, script_type,output)
+                        if is_log_query == False:
+                            log_result = "no_set"
+                        if is_counters == True and metric_result == None:
+                            metric_result = log.get_metric(token, rule_num, start_time, end_time, create_policies_ids, test_data, api_server, vsys_id, script_type)
+                        if is_counters == False:
+                            log_result = "no_set"
+                        if log_result != None and metric_result != None:
+                            break
+            else:
+                metric_result = "no_set"
+                log_result = "no_set"
+            
+            if metric_result == True:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is {}.'.format(metric_result), flush=True)
+            elif metric_result == False:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is {}.'.format(metric_result), flush=True)
+            elif metric_result == None:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is none.', flush=True)
+            elif metric_result == "no_set":
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is no_set.', flush=True)
+            
+            if log_result == True:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is {}.'.format(log_result), flush=True)
+            elif log_result == False:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is {}.'.format(log_result), flush=True)
+            elif log_result == None:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is none.', flush=True)
+            elif log_result == "no_set":
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is no_set.', flush=True)
+            
+            return True, log_result, metric_result, my_driver
         elif policy_type == "shaping":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.")
             return True, True, True
@@ -340,7 +398,11 @@ class ApiVerification:
             if script_type == "ui":
                 counters_data = test_data[counters]
             elif script_type == "api":
-                counters_data = test_data[counters + '_' + str(index)]
+                temp_counters = counters + '_' + str(index)
+                if temp_counters in test_data.keys():
+                    counters_data = test_data[counters + '_' + str(index)]
+                else:
+                    counters_data = test_data[counters]
             if counters_data != {}:
                 is_counters = True
                 break
@@ -349,7 +411,11 @@ class ApiVerification:
             if script_type == "ui":
                 log_query_param_data = test_data[log_query_param]
             elif script_type == "api":
-                log_query_param_data = test_data[log_query_param + '_' + str(index)]
+                temp_log_query_param = log_query_param + '_' + str(index)
+                if temp_log_query_param in test_data.keys():
+                    log_query_param_data = test_data[log_query_param + '_' + str(index)]
+                else:
+                    log_query_param_data = test_data[log_query_param]
             if len(log_query_param_data) > 0:
                 is_log_query = True
                 break

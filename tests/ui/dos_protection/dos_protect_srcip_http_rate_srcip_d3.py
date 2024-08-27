@@ -94,7 +94,7 @@ def run(parameter):
                 "timeout": "10s"
             },
             "expected_return": "",
-            "counters": {"hits": 1},
+            "counters": {"hits": "many"},
             "log_query_param": [
                 {
                     "query_field_key": "attack_type",
