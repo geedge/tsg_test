@@ -20,12 +20,17 @@ from support.api_utils.delete_policy import *
 import support.ui_utils.env
 from support.report import *
 from datetime import datetime
+from support.data_translation import DataTranslation
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
+        ui_result, api_result, exception_result = "", "", ""
+        result = {
+            "ui_result": "",
+            "api_result": ""
+        }
         
         # 脚本启动时间
         start_time = time.time()
@@ -63,24 +68,6 @@ def run(parameter):
                     }
                 ]
             },
-            "obj_condition": [
-                {
-                    "attribute_name": "ATTR_SOURCE_IP",
-                    "object_type": "ip",
-                    "object_sub_type": "ip",
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "ip_address": "default",
-                                    "port_range": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "application": ["http"],
             "threshold": {
                 "type": "rate",
                 "rate_threshold": {
@@ -263,7 +250,7 @@ def run(parameter):
                     if create_ip_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
                     elif create_ip_code != 200:
-                        result = "Fail to create ip."
+                        ui_result = "Fail to create ip."
                         break
             
             # 创建rule
@@ -273,7 +260,7 @@ def run(parameter):
                 if create_rule_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
                 elif create_rule_code != 200:
-                    result = "Fail to create security rule."
+                    ui_result = "Fail to create security rule."
 
             # 触发流量验证
             if create_rule_code == 200:
@@ -292,7 +279,7 @@ def run(parameter):
             # 分析验证结果，并返回给flask
             if len(verification_result) != 0:
                 analysis = AnalysisResult()
-                result = analysis.analysis_result(test_data, [], verification_result)
+                ui_result = analysis.analysis_result(test_data, [], verification_result)
             
             # 删除rule
             if create_rule_code == 200:
@@ -304,9 +291,9 @@ def run(parameter):
                     if delete_rule_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete security rule successfully.", flush=True)
                     elif delete_rule_code != 200:
-                        result = result + " In addition, fail to delete security rule."
+                        ui_result = ui_result + " In addition, fail to delete security rule."
                 else:
-                    result = result + " In addition, fail to search security rule."
+                    ui_result = ui_result + " In addition, fail to search security rule."
             
             # 删除object
             if delete_rule_code == 200:
@@ -320,11 +307,13 @@ def run(parameter):
                         if delete_ip_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
                         elif delete_ip_code != 200:
-                            result = result + " In addition, fail to delete ip object."
+                            ui_result = ui_result + " In addition, fail to delete ip object."
                             break
                     else:
-                        result = result + " In addition, fail to search ip object."
+                        ui_result = ui_result + " In addition, fail to search ip object."
                         break
+            
+            result["ui_result"] = ui_result
         
         if parameter["script_type"] == "api" or need_initialization == True:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
@@ -332,6 +321,12 @@ def run(parameter):
             parameter["script_type"] = "api"
             
             api_name_list = []
+            
+            # 数据转换，适配API的test_data
+            translation = DataTranslation()
+            temp_test_data = translation.data_translation(test_data["policy_type"], test_data["condition"])
+            test_data["obj_condition"] = temp_test_data["obj_condition"]
+            test_data["application"] = temp_test_data["application"]
             
             # 添加测试过程中涉及的template
             template_path = {}
@@ -345,15 +340,16 @@ def run(parameter):
             # 流量验证
             verify = Verification()
             verification_result = verify.verification("", parameter, test_data, cfg_list, "")
-            # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "verification result: ", verification_result, flush=True)
             
             # 分析验证结果，并返回给flask
             analysis = AnalysisResult()
-            result = analysis.analysis_result(test_data, cfg_list, verification_result)
+            api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
             
             # 删除配置
             delete = DeletePolicy()
             delete.delele_policy_by_cfg(token, parameter, cfg_list)
+            
+            result["api_result"] = api_result
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -386,7 +382,8 @@ def run(parameter):
                 report_data.append(parameter["test_case_name"])
                 result_flag = "Fail"
                 report_data.append(result_flag)
-                report_data.append(result)
+                temp_result = "UI automation result: " + result["ui_result"] + " API automation result: " + result["api_result"]
+                report_data.append(temp_result)
             elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
                 report_data = []
                 report_data.append("test_case_name")
