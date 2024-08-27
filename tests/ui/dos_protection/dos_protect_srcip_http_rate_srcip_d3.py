@@ -393,13 +393,13 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.87",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "script_type": "api",
         "env": "tsgx",
         "vsys_id": 5,
         "is_log": 1,
         "debug_flag": "local",
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_testtests/ui",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
         "module_name": "dos_protection",
         "test_case_name": "dos_protect_srcip_http_rate_srcip_d3"
     }

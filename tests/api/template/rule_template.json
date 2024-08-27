@@ -1,21 +1,21 @@
 {
-  "return_data": 1,
-  "rule": {
-    "name": "python_api_auto_test_policy",
-    "type": "security",
-    "action": "allow",
-    "user_tags": "",
-    "do_log": 1,
-    "effective_range": {},
-    "user_region": {},
-    "source": [],
-    "destination": [],
-    "filter": [],
-    "application": {},
-    "is_enabled": 1,
-    "description": "test",
-    "vsys_id": 1,
-    "schedule_id": [
-    ]
-  }
+    "return_data": 1,
+    "rule": {
+        "name": "automation_test_policy",
+        "type": "security",
+        "action": "allow",
+        "user_tags": "",
+        "do_log": 1,
+        "effective_range": {},
+        "user_region": {},
+        "source": [],
+        "destination": [],
+        "filter": [],
+        "application": {},
+        "is_enabled": 1,
+        "description": "test",
+        "vsys_id": 1,
+        "schedule_id": [
+        ]
+    }
 }

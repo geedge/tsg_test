@@ -4,7 +4,7 @@
     "id":"",
     "dns_record":{
         "id":"",
-        "name":"auto_test_profile",
+        "name":"automation_test_dns_profile",
         "type":"A",
         "values":[
             {

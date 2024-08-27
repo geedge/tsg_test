@@ -3,7 +3,7 @@
     "return_data":1,
     "id": "",
     "service_function": {
-        "name":"test",
+        "name":"automation_test_sf",
         "device_group":{
             "tag":"device_group",
             "value":"group-xxg-tsgx"

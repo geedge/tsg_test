@@ -2,7 +2,7 @@
     "vsys_id":1,
     "return_data":1,
     "service_function_forwarder": {
-        "name":"test11",
+        "name":"automation_test_sff",
         "type":"1",
         "load_balance_method":"hash-int-ip",
         "load_balance_localization":"nearby",
