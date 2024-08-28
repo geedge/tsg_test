@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import random
 import time
 import os
 import sys
@@ -66,40 +67,49 @@ def run(parameter):
                         ]
                     }
                 ],
-                "application": [
-                    {
-                        "name": "ftp",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
                 "protocol_filed": [
                     {
-                        "name": "monitor_ftp_content",
-                        "object_type": "keywords",
+                        "name": "monitor_http_request_header",
+                        "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
+                        "plus": True,
                         "Statistics": "None",
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "ftp_content",
-                                "item_value": "HEX",
+                                "item_type": "request_header",
+                                "item_key": "User-Agent",
+                                "item_value": "TEXT",
                                 "value": [
-                                    "706f6f6c" #pool
+                                    "curl"
                                 ]
-                            }
-                        ],
+                            },
+                        ]
+                    }
+                 ],
+                "application": [
+                    {
+                        "name": "http",  #
+                        "object_type": "application",
+                        "negate": False
                     }
                 ],
             },
+            "profile": [
+                {
+                    "profile_type": "traffic_mirror",
+                    "name": "profile1",
+                    "vlan_count": random.randint(1, 10)
+                    # vlan的范围：应该是在3-66
+                }
+            ],
             "is_mirror":"on",
-            "mirror_type": "ftp",
+            "mirror_type": "http",
              "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "FTP"},
+            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "HTTP"},
                                 {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
                                 {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
                             ],
@@ -113,7 +123,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "url_ftp"
+                "pcap_name": "http_87pkts"
             },
             "token":""
         }
@@ -134,9 +144,9 @@ def run(parameter):
                 "name": test_data["condition"]["source_ip"][0]['name']
             },
             {
-                "type": test_data["condition"]["protocol_filed"][0]['object_type'],
-                "name": test_data["condition"]["protocol_filed"][0]['name']
-            }
+                "type": test_data["profile"][0]["profile_type"],
+                "name": test_data["profile"][0]['name']
+            },
         ]
 
         # 将测试数据中的ip替换为随机ip
@@ -169,6 +179,25 @@ def run(parameter):
                             cond_status = 1
                             break
                 if cond_status == 1:  # 创建失败，退出遍历创建
+                    break
+
+        # 创建profile
+        prfi_code = 200
+        if "profile" in test_data.keys():
+            profile_data = test_data["profile"]
+            element_position_map = get_profile_element_position("monitor_profile")
+            create_monitor_profile = CreateMonitorProfile(driver, element_position_map)
+            for i in range(len(profile_data)):
+                create_monitor_profile_code = create_monitor_profile.create_monitor_profile(profile_data[i],
+                                                                                            test_monitor_profile_element_position,
+                                                                                            test_data[
+                                                                                                "profile"][i][
+                                                                                                "name"])
+                if create_monitor_profile_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create traffic mirroring profile successfully.", flush=True)
+                elif create_monitor_profile_code != 200:
+                    result = "Fail to create Traffic Mirroring Profiles profile."
                     break
 
         # 创建rule
@@ -266,6 +295,30 @@ def run(parameter):
                 # 退出遍历标志
                 if cond_status == 1:  # 失败，退出遍历创建
                     break
+
+        # 删除profile
+        if delete_rule_code == 200 and "profile" in test_data.keys():
+            # 删除
+            if delete_rule_code == 200:
+                for x in range(len(profile_data)):
+                    search_mirror_profile = SearchProfile(driver)
+                    profile_return_code, first_row_checkbox_element = search_mirror_profile.search(
+                        profile_data[x]['name'], test_monitor_profile_element_position)
+                    if profile_return_code == 200:
+                        delete_mirror_profile = DeleteProfile(driver)
+                        delete_profile_code = delete_mirror_profile.delete(
+                            test_monitor_profile_element_position,
+                            first_row_checkbox_element, True)
+                        if delete_profile_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                  str(datetime.now().microsecond)[:3],
+                                  "Delete monitor profile successfully.", flush=True)
+                        elif delete_profile_code != 200:
+                            result = result + " In addition, fail to delete profile."
+                            break
+                    else:
+                        result = result + " In addition, fail to search profile."
+                        break
 
         # 脚本结束时间和耗时
         end_time = time.time()

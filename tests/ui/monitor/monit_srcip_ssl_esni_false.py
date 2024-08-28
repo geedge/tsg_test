@@ -86,7 +86,7 @@ def run(parameter):
             "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [
-                                    {"query_field_key": "ssl_sni", "query_value": "www.google.com"},
+                                    {"query_field_key": "ssl_esni_flag", "query_value": "False"},
                             ],
             "traffic": {
                 "protocol": "",
