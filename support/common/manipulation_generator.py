@@ -13,6 +13,7 @@ from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.api_utils.delete_policy import DeletePolicy
+from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list, create_pre_policy, delete_pre_policy
 from support.ui_utils.element_position.map_element_position_library import manipulation_profile_no_create_list, manipulation_object_no_create_list
@@ -245,7 +246,29 @@ class ManipulationGenerator:
 
             self.api_name_list = []
 
-            "todo api 集成"
+            # 添加测试过程中涉及的template
+            template_path = {}
+            template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
+            template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+            template_path["pre_intercept_template_path"] = parameter["path"] + "/template/pre_intercept_template.json"
+            # 添加测试过程中涉及的response pages
+            template_path["profiles_hijack_file_path"] = parameter["path"] + "/profile_used_to_create_rule/Create-Hijack-Files-test-3.html"
+
+            # 创建Object、Profile、Rule
+            create = CreatePolicy()
+            cfg_list = create.create_policy(parameter, test_data, template_path)
+
+            # 流量验证
+            verify = Verification()
+            verification_result = verify.verification("", parameter, test_data, cfg_list, "")
+
+            # 分析验证结果，并返回给flask
+            analysis = AnalysisResult()
+            result = analysis.analysis_result(test_data, cfg_list, verification_result)
+
+            # 删除配置
+            delete = DeletePolicy()
+            delete.delele_policy_by_cfg(token, parameter, cfg_list)
 
         return result
 

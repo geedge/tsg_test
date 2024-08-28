@@ -122,7 +122,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "ui",
+        "script_type": "api",
         "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
@@ -133,10 +133,3 @@ if __name__ == '__main__':
     }
     parameter = replace_paras(parameter)
     run(parameter)
-    """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
-    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
-
-    # 执行如下命令生成测试报告（自动打开浏览器）：
-    allure serve allure
-    """
