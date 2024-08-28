@@ -116,8 +116,8 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client IP Object List)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "sent_bytes+received_bytes:SUM:SUM(Bytes Sent+Bytes Received)",
-                                "sent_pkts+received_pkts:SUM:SUM(Packets Sent+Packets Received)",
+                                "sent_bytes+received_bytes:SUM:SUM(Bytes Sent Bytes Received)",
+                                "sent_pkts+received_pkts:SUM:SUM(Packets Sent Packets Received)",
                                 "new_c2s_flows+new_s2c_flows:SUM:SUM(New Double Flows)",
                                 "new_in_sessions+new_out_sessions:SUM:SUM(New Sessions)",
                                 "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)",

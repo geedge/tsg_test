@@ -42,7 +42,12 @@ class ApiVerification:
         else:
             rule_num = 1
         
-        if cfg_list != None and len(cfg_list) == 0:
+        if cfg_list == None:
+            temp_list = {}
+            temp_list[policy_type] = test_data["rule_id"]
+            create_policies_ids = []
+            create_policies_ids.append(temp_list)
+        elif len(cfg_list) == 0:
             if policy_type == "service_chaining":
                 cfg_list["rule_id"] = test_data["rule_id"]
                 statistics_sc_info_list = []
@@ -51,7 +56,7 @@ class ApiVerification:
             temp_list[policy_type] = test_data["rule_id"]
             create_policies_ids = []
             create_policies_ids.append(temp_list)
-        elif cfg_list != None and len(cfg_list) != 0:
+        elif len(cfg_list) != 0:
             create_policies_ids = cfg_list["create_policies_ids"]
             statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
         policy_id_list = []
