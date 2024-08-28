@@ -24,7 +24,7 @@ import traceback
 
 from support.report import *
 from datetime import datetime
-
+#The traffic trend of clients accessing Google on the specific device group
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
