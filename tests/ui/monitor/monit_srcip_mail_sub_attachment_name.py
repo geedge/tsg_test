@@ -1,17 +1,16 @@
 # -*- coding: UTF-8 -*-
-import time
 import os
 import sys
 
 from support.api_utils.organize_config import OrganizeConfig
+from support.common.report import GenerateReport
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from support.api_utils.delete_policy import *
+from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
-from support.ui_utils.profile.search_profile import SearchProfile
-from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
@@ -20,10 +19,12 @@ from support.packet_generator.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
+from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
+from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env
 import traceback
-from support.api_utils.delete_policy import *
-from support.common.report import *
+
+#from support.report import *
 from datetime import datetime
 
 
@@ -48,8 +49,10 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": os.path.splitext(os.path.basename(__file__))[0],
-            "rule_action": "monitor",
+            "rule_action": "allow",
             "rule_type": "create",
+            "is_mirror": "on",
+            "mirror_type": "mail",
             "condition": {
                 "source_ip": [
                     {
@@ -61,49 +64,45 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.3",
+                                "item_value": "10.64.224.7",
                             },
                         ]
                     }
                 ],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "mail",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                 "protocol_filed": [
-                     {
-                         "name": "monitor_http_response_header",
-                         "object_type": "http_signature",
-                         "item_operation": "add",
-                         "select_type": False,
-                         "negate": False,
-                         "plus": True,
-                         "Statistics": "None",
-                         "item": [
-                             {
-                                 "item_operation": "add",
-                                 "item_type": "response_header",
-                                 "item_key": "Content-Type",
-                                 "item_value": "TEXT",
-                                 "value": [
-                                     "text/html",
-                                 ]
-                             }
-                         ],
-                     }
-                 ],
+                "protocol_filed": [
+                    {
+                        "name": "monitor_mail_attachment_name",
+                        "object_type": "keywords",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "mail_attachment_name",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "test"
+                                ]
+                            }
+                        ],
+                    }
+                ],
             },
-            "is_mirror":"on",
-            "mirror_type": "http",
-             "expected_return": "trex",
+            "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "HTTP"},
-                                {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
-                                {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
-                            ],
+            "log_query_param": [
+                {"query_field_key": "mail_attachment_name", "query_value": "test1214.txt"}
+            ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
@@ -114,11 +113,10 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "http_87pkts"
+                "pcap_name": "mail_imap"
             },
-            "token":""
+            "token": ""
         }
-
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -138,9 +136,9 @@ def run(parameter):
                 "type": test_data["condition"]["protocol_filed"][0]['object_type'],
                 "name": test_data["condition"]["protocol_filed"][0]['name']
             }
+
         ]
 
-        # 将测试数据中的ip替换为随机ip
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
 
@@ -316,22 +314,21 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "lina2024",
-        "password": "lina2024",
+        "username": "zhaokun",
+        "password": "zhaokun1",
         "test_pc_ip": "192.168.64.96",
-        "test_subcriber_id": "test6491",
+        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "ui",
         "is_log": 1,
         "env": "tsgx",
+        "script_type": "ui",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": ""
+        "test_case_name": "monitor_rule_mail_mirror_on"
     }
-
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

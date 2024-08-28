@@ -840,6 +840,24 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchQname_posXpath": monitorRulePage_searchQname_posXpath,
                     "policyRulePage_selectQname_posXpath": monitorRulePage_selectQname_posXpath,
                     "policyRulePage_closeQname_posXpath": monitorRulePage_closeQname_posXpath,
+                    # keywords:content
+                    "policyRulePage_addConditionFtpContent_posXpath": monitorRulePage_addCondition_ftpContent_posXpath,
+                    "policyRulePage_addFtpContent_posXpath": monitorRulePage_addftpContent_posXpath,
+                    "policyRulePage_searchFtpContent_posXpath": monitorRulePage_searchftpContent_posXpath,
+                    "policyRulePage_selectFtpContent_posXpath": monitorRulePage_selectftpContent_posXpath,
+                    "policyRulePage_closeFtpContent_posXpath": monitorRulePage_closeftpContent_posXpath,
+                    # 添加account
+                    "policyRulePage_addConditionFtpAccount_posXpath": monitorRulePage_addCondition_ftpAccount_posXpath,
+                    "policyRulePage_addFtpAccount_posXpath": monitorRulePage_addftpAccount_posXpath,
+                    "policyRulePage_searchFtpAccount_posXpath": monitorRulePage_searchftpAccount_posXpath,
+                    "policyRulePage_selectFtpAccount_posXpath": monitorRulePage_selectftpAccount_posXpath,
+                    "policyRulePage_closeFtpAccount_posXpath": monitorRulePage_closeftpAccount_posXpath,
+                    #添加mail attachment name
+                    "policyRulePage_addConditionMailAttachmentName_posXpath": policyRulePage_addCondition_mailAttachmentName_posXpath,
+                    "policyRulePage_addMailAttachmentName_posXpath": policyRulePage_addMailAttachmentName_posXpath,
+                    "policyRulePage_searchMailAttachmentName_posXpath": policyRulePage_searchMailAttachmentName_posXpath,
+                    "policyRulePage_selectMailAttachmentName_posXpath": policyRulePage_selectMailAttachmentName_posXpath,
+                    "policyRulePage_closeMailAttachmentName_posXpath": policyRulePage_closeMailAttachmentName_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
