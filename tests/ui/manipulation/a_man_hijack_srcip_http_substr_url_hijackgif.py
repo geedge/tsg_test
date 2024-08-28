@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 import traceback
 from datetime import datetime
 from support.common.case_generator import CaseGenerator
-from support.common.generate_csv import GenerateCSV
+from support.common.report_update import ReportUpdate
 
 def run(parameter):
     try:
@@ -110,8 +110,8 @@ def run(parameter):
         # 清理环境
         case_generator.delete_data()
         # 生成csv报告
-        generate = GenerateCSV()
-        generate.generate_csv(parameter, result, exception_result)
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
     
 if __name__ == '__main__':
     from support.ui_utils.element_position.map_element_position_library import replace_paras

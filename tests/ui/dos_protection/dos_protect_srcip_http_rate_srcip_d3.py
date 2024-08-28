@@ -4,7 +4,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from datetime import datetime
-from support.common.generate_csv import GenerateCSV
+from support.common.report_update import ReportUpdate
 from support.common.case_generator import CaseGenerator
 
 def run(parameter):
@@ -129,8 +129,8 @@ def run(parameter):
         # 清理环境并删除配置
         case_generator.delete_data()
         # 生成csv报告
-        generate = GenerateCSV()
-        generate.generate_csv(parameter, result, exception_result)
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
             
 if __name__ == '__main__':
     parameter = {
