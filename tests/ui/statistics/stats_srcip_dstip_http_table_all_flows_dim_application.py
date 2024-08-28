@@ -125,7 +125,7 @@ def run(parameter):
                           "order_by": "new c2s flows",
                           "row_limit": "1000",
                           "min_in_size": "1",
-                          "max_out_size": "1"
+                          "min_out_size": "1"
                         }
                       ]
                 }]

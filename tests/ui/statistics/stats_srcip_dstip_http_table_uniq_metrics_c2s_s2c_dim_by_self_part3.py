@@ -126,7 +126,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Device Group)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Sled IP)",
@@ -138,7 +138,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Sled IP)",
                             "row_limit": "50",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Decoded AS)",
@@ -150,7 +150,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Decoded AS)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Client-to-Server TTL)",
@@ -162,7 +162,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Client-to-Server TTL)",
                             "row_limit": "200",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },{
                             "chart_name": "UNIQUECOUNT(Server-to-Client TTL)",
                             "visualization_type": "Table",
@@ -173,7 +173,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Server-to-Client TTL)",
                             "row_limit": "200",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Server-to-Client Link ID)",
@@ -185,7 +185,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Server-to-Client Link ID)",
                             "row_limit": "500",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Client-to-Server Link ID)",
@@ -197,7 +197,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Client-to-Server Link ID)",
                             "row_limit": "1000",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Session ID)",
@@ -209,7 +209,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Session ID)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]

@@ -123,7 +123,7 @@ def run(parameter):
                           "order_by": "sessions",
                           "row_limit": "15",
                           "min_in_size": "1",
-                          "max_out_size": "1"
+                          "min_out_size": "1"
                         }
                       ]
                 }]
