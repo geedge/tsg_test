@@ -36,6 +36,9 @@ class CreateObject:
                     self.driver.find_element(By.XPATH, temp_element_position).click()
                     temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=data["item"][i]["item_value"])
                     self.driver.find_element(By.XPATH, temp_element_position).click()
+                    # 如果有range，则需要点击range
+                    if "range" in data["item"][i] and len(data["item"][i]["range"]) > 0:
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue="Range")).click()
                     if data["item"][i]["item_operation"] == "add":   # 直接 新增 模式
                         if "->" in data["item"][i]["value"][0]:   # -> 存在，需要拆分
                             item_value_str = data["item"][i]["value"][0].split("->")[0].strip()
@@ -51,12 +54,19 @@ class CreateObject:
                         item_values = [data["item"][i]["item_value"]]
                     for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
-                        temp_element_position = create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j+1)
+                        temp_element_position = create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j+1, replaceValueInput=1)
                         if j == 0:
                             self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
                         else:
                             self.driver.find_element(By.XPATH,create_element_position["objectPage_item_value_plus_posXpath"]).click()
                             self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
+                        # 如果有range，需要输入 offset depth
+                        if "range" in data["item"][i] and len(data["item"][i]["range"]) > 0:
+                            offset = data["item"][i]["range"][j]["offset"]
+                            depth =  data["item"][i]["range"][j]["depth"]
+                            self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j+1, replaceValueInput=2), find_after_wait_time=0.5).send_keys(offset)
+                            self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j+1, replaceValueInput=3), find_after_wait_time=0.5).send_keys(depth)
+
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] == "keywords":
                 for i in range(len(data["item"])):
