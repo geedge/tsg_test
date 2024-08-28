@@ -44,16 +44,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_bar_dim_server_ip",
+            "rule_name": parameter["test_case_name"],
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
-        "test_subcriber_id": "test6489",
-        "script_type": "ui",
+            "test_subcriber_id": "test6489",
+            "script_type": "ui",
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_bar_dim_server_ip",
+                        "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -69,7 +69,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_bar_dim_server_ip",
+                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -110,22 +110,20 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_http_bar_dim_server_ip",
+                    "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "in_bytes+out_bytes:SUM:bytes"
+                            "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
-                          "dimensions": [
-                            "server_ip"
-                          ],
-                          "order_by": "bytes",
-                          "row_limit": "20",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                          "dimensions": ["app"],
+                          "order_by": "sessions",
+                          "row_limit": "10",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
                         }
                       ]
                 }]
@@ -253,6 +251,7 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
+
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
@@ -261,10 +260,6 @@ def run(parameter):
                 #cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, None, element_position_map)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
@@ -286,6 +281,7 @@ def run(parameter):
 
         # 避免报错:stale element not found
         time.sleep(5)
+
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -411,13 +407,13 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_bar_dim_server_ip",
+        "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

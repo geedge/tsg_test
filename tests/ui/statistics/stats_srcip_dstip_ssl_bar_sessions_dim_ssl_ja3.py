@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_http_bar_sessions_dim_client_ip",
+            "rule_name": parameter["test_case_name"],
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -53,16 +53,15 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_http_bar_sessions_dim_client_ip",
+                        "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
-                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.31",
+                                "item_value": "10.64.224.3",
                             },
                         ]
                     }
@@ -70,16 +69,15 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_http_bar_sessions_dim_client_ip",
+                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
-                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.31",
+                                "item_value": "2.1.1.3",
                             },
                         ]
                     }],
@@ -97,13 +95,12 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "ssl",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
-                ],
+                "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [
@@ -112,39 +109,46 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_srcip_dstip_http_bar_sessions_dim_client_ip",
+                    "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Bar",
                           "metrics": [
-                            "new_in_sessions+new_out_sessions:SUM:sessions"
+                              "new_in_sessions+new_out_sessions:SUM:sessions"
                           ],
-                          "dimensions": ["client_ip"],
+                          "dimensions": [
+                            "ssl_ja3_hash"
+                          ],
                           "order_by": "sessions",
-                          "row_limit": "10",
-                          "min_in_size": "1",
-                          "min_out_size": "1"
+                          "row_limit": "100",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
                         }
                       ]
                 }]
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
+            "log_query_param": [
+                {"query_field_key": "ssl_sni", "query_value": "www.bbc.com"}
+            ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.31",
-                "clients_end_ip": "10.64.224.31",
-                "servers_start_ip": "2.1.1.31",
-                "servers_end_ip": "2.1.1.31",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "http_87pkts"
+                "pcap_name": "ssl_tls13"
             },
+            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
+                {"client_ip": "10.64.14.213", "in_bytes": 13209, "out_bytes": 454788, "bytes": 3743976}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -253,7 +257,6 @@ def run(parameter):
 
         # 触发流量验证
         if create_rule_code == 200:
-
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
             if search_rule_code == 200:
@@ -262,6 +265,10 @@ def run(parameter):
                 #cfg_list = config.organize_statistics_rule_cfg(parameter, test_data, template_path)
                 verify = Verification()
                 verification_result = verify.verification(driver, parameter, test_data, None, element_position_map)
+                if len(verification_result) == 4:
+                    driver = verification_result[3]
+                elif len(verification_result) == 5:
+                    driver = verification_result[4]
 
             # 编辑修改使用
             #search_rule = SearchRule(driver)
@@ -283,7 +290,6 @@ def run(parameter):
 
         # 避免报错:stale element not found
         time.sleep(5)
-
         # 删除rule
         if create_rule_code == 200:
             search_rule = SearchRule(driver)
@@ -415,7 +421,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_http_bar_sessions_dim_client_ip",
+        "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

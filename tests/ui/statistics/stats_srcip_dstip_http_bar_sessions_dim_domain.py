@@ -3,7 +3,8 @@ import os
 import sys
 
 from support.api_utils.organize_config import OrganizeConfig
-from support.data_translation import DataTranslation
+
+from support.common.data_translation import DataTranslation
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
@@ -23,7 +24,7 @@ from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 def run(parameter):
@@ -132,7 +133,7 @@ def run(parameter):
                               "metrics": [
                                 "new_in_sessions+new_out_sessions:SUM:sessions"
                               ],
-                              "dimensions": ["client_ip_object_list"],
+                              "dimensions": ["server_domain"],
                               "order_by": "sessions",
                               "row_limit": "5",
                               "min_in_size": "1",
