@@ -24,7 +24,7 @@ import support.ui_utils.env
 from datetime import datetime
 import time
 
-class StatisticsGenerator:
+class StatisticsInstanceGenerator:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter

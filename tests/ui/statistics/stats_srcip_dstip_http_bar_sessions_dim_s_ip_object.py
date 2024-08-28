@@ -4,7 +4,7 @@ import sys
 
 from support.api_utils.organize_config import OrganizeConfig
 
-from support.case_utils.data_translation import DataTranslation
+from support.instance_utils.data_translation import DataTranslation
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject

@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.case_utils.case_generator import CaseGenerator
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -91,9 +91,9 @@ def run(parameter):
             "token": ""
         }
 
-        # 生成测试用例
-        case_generator = CaseGenerator(test_data, parameter)
-        result = case_generator.run()
+        # 测试用例实例化
+        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
+        result = case_instance_generator.run()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -108,7 +108,7 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        case_generator.delete_data()
+        case_instance_generator.delete_data()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

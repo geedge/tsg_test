@@ -1,8 +1,8 @@
-from support.case_utils.manipulation_generator import ManipulationGenerator
-from support.case_utils.dos_protection_generator import DosProtectionGenerator
-from support.case_utils.statistics_generator import StatisticsGenerator
+from support.instance_utils.manipulation_instance_generator import ManipulationInstanceGenerator
+from support.instance_utils.dos_protection_instance_generator import DosProtectionInstanceGenerator
+from support.instance_utils.statistics_instance_generator import StatisticsInstanceGenerator
 
-class CaseGenerator:
+class CaseInstanceGenerator:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
@@ -39,12 +39,12 @@ class CaseGenerator:
         print("todo")
 
     def _run_statistics(self, test_data, parameter):
-        self.statistics = StatisticsGenerator(test_data, parameter)
+        self.statistics = StatisticsInstanceGenerator(test_data, parameter)
         result = self.statistics.run()
         return result
 
     def _run_dos_protection(self, test_data, parameter):
-        self.dos_protection = DosProtectionGenerator(test_data, parameter)
+        self.dos_protection = DosProtectionInstanceGenerator(test_data, parameter)
         result = self.dos_protection.run()
         return result
 
@@ -52,7 +52,7 @@ class CaseGenerator:
         print("todo")
 
     def _run_manipulation(self, test_data, parameter):
-        self.manipulation = ManipulationGenerator(test_data, parameter)
+        self.manipulation = ManipulationInstanceGenerator(test_data, parameter)
         result = self.manipulation.run()
         return result
 

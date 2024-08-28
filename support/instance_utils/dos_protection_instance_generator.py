@@ -19,9 +19,9 @@ from support.api_utils.delete_policy import DeletePolicy
 import support.ui_utils.env
 # from support.report import *
 from datetime import datetime
-from support.case_utils.data_translation import DataTranslation
+from support.instance_utils.data_translation import DataTranslation
 
-class DosProtectionGenerator:
+class DosProtectionInstanceGenerator:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter

@@ -23,7 +23,7 @@ from datetime import datetime
 import copy
 
 
-class ManipulationGenerator:
+class ManipulationInstanceGenerator:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
