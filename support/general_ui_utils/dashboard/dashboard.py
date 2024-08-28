@@ -75,7 +75,7 @@ class Dashboard:
 
 
         #校验Dimensions
-        if multiple_dimension == "true":
+        if multiple_dimension == True:
             for i in range(len(self.dimensions)):
                 dimension = self.dimensions[i]
                 dimension_text = self.driver.find_element(By.XPATH,dashboard_chart_dimension_text_posYpath.format(i + 1)).get_attribute("innerText")
@@ -209,7 +209,7 @@ class Dashboard:
         dimension_select = 1
         if data["dimensions"] != "":
             #dimensions选择多个
-            if multiple_dimension == "true":
+            if multiple_dimension == True:
                 if data["data_source"] == "Proxy Rule Hits" or data["data_source"] == "Service Chaining Rule Hits":
                    self.dimensions = random.sample(data["dimensions"],5)
                 else:
@@ -222,7 +222,7 @@ class Dashboard:
                     dimension_select += 1
                     self.driver.find_element(By.XPATH,f"//div[@x-placement='bottom-start']//span[text()='{dimension}']").click()
             # dimensions选择单个，随机选择
-            elif multiple_dimension == "false":
+            elif multiple_dimension == False:
                 self.dimension = random.choice(data["dimensions"])
                 if visualization_type == "Line" or visualization_type == "Area":
                     while self.dimension == "Time":
@@ -330,9 +330,9 @@ class Dashboard:
         self.add_metric(data,visualization_type,metric_type)
         self.delete_dimensions()
         if visualization_type == "Table":
-            if multiple_dimension == "true":
-                multiple_dimension = "false"
-            else: multiple_dimension = "true"
+            if multiple_dimension == True:
+                multiple_dimension = False
+            else: multiple_dimension = True
         self.add_dimensions(data,visualization_type,multiple_dimension)
         if visualization_type != "Line" and visualization_type != "Area":
             self.add_order_by(data)
