@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -11,15 +12,15 @@ from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
-from support.ui_utils.policy.edit_rule import EditRule
 from support.api_utils.delete_policy import DeletePolicy
 from support.packet_generator.verification import Verification
-from support.ui_utils.element_position.map_element_position_library import *
-from support.api_utils.analysis_result import *
-from support.api_utils.log_in import *
+from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list, create_pre_policy, delete_pre_policy
+from support.ui_utils.element_position.map_element_position_library import manipulation_profile_no_create_list, manipulation_object_no_create_list
+from support.api_utils.analysis_result import AnalysisResult
 import support.ui_utils.env
 from datetime import datetime
-import time
+import copy
+
 
 class ManipulationGenerator:
     def __init__(self, test_data, parameter):
@@ -36,7 +37,7 @@ class ManipulationGenerator:
             "ui_result": "",
             "api_result": ""
         }
-        
+
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -149,10 +150,6 @@ class ManipulationGenerator:
             if len(verification_result) != 0:
                 analysis = AnalysisResult()
                 ui_result = analysis.analysis_result(test_data, [], verification_result)
-                # if len(ui_result) == 0:
-                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
-                # elif len(ui_result) != 0:
-                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", ui_result, flush=True)
 
             # 删除rule
             if create_rule_code == 200:
