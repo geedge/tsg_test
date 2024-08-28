@@ -111,9 +111,8 @@ class StatisticsGenerator:
                     cond_status = 0
                     create_statistics_template = support.ui_utils.profile.create_profile.CreateStatisticsTemplate(driver)
                     element_position_map = get_profile_element_position("statistics_template")
-                    cond_code = create_statistics_template.create(statistics_template, element_position_map)
-                    create_statistics_template_code = cond_code
-                    if cond_code == 200:
+                    prfi_code = create_statistics_template.create(statistics_template, element_position_map)
+                    if prfi_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                               "Create {} Profile successfully.".format("statistics_template"), flush=True)
                     else:
@@ -122,20 +121,17 @@ class StatisticsGenerator:
                         break
                     if cond_status == 1:  # 创建失败，退出遍历创建
                         break
-
+            create_rule_code = 0
             # 创建rule
             if cond_code == 200 and prfi_code == 200:
                 create_rule = support.ui_utils.policy.create_rule.CreateRule(driver)
                 element_position_map = get_element_position(test_data["policy_type"])
-                # 添加deny quic 和 intercept
-                tmp_name_list = create_pre_policy(test_data, driver)
-                for tmp in tmp_name_list:
-                    self.ui_name_list.insert(0, copy.deepcopy(tmp))
                 create_rule_code = create_rule.create(test_data, element_position_map)
                 if create_rule_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create manipulation rule successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                          "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
                 elif create_rule_code != 200:
-                    ui_result = "Fail to create manipulation rule."
+                    result = "Fail to create {} rule.".format(test_data["policy_type"])
 
             # 触发流量验证
             if create_rule_code == 200:
@@ -164,8 +160,6 @@ class StatisticsGenerator:
 
             # 删除rule
             if create_rule_code == 200:
-                # 删除提前先发的security intercept策略
-                delete_pre_policy(tmp_name_list, driver)
                 search_rule = support.ui_utils.policy.search_rule.SearchRule(driver)
                 element_position_map = get_element_position(test_data["policy_type"])
                 search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
@@ -217,37 +211,39 @@ class StatisticsGenerator:
                     # 退出遍历标志
                     if cond_status == 1:  # 失败，退出遍历创建
                         break
-            # 删除profile
-            if delete_rule_code == 200 and "action_parameter" in test_data.keys():
-                # 删除
-                for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
-                    if prfi_key in manipulation_profile_no_create_list:
-                        continue  # 直接跳过
-                    prfi_status = 0
-                    prfi_key_out = prfi_key.replace("_", " ")
-                    if len(prfi_value) != 0:  # 不为空
-                        for i in range(len(prfi_value)):  # 遍历查询所有profile
-                            search_prfi = support.ui_utils.profile.search_profile.SearchProfile(driver)
-                            element_position_map = get_element_position(prfi_key)
-                            prfi_name = prfi_value[i]["profile_file"]["name"].strip()
-                            search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
-                            if search_prfi_code == 200:
-                                delete_prfi = support.ui_utils.profile.delete_profile.DeleteProfile(driver)
-                                delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element, True)
-                                if delete_prfi_code == 200:
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
-                                else:
-                                    ui_result = ui_result + " In addition, fail to delete {} profile.".format(prfi_key_out)
-                                    break
-                            else:
-                                ui_result = ui_result + " In addition, fail to search {} profile.".format(prfi_key_out)
-                                break
+                    # 删除Statistics Tesmplate
+                    if create_statistics_template_code == 200 and delete_rule_code == 200:
+                        for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
+                            prfi_status = 0
+                            prfi_key_out = prfi_key.replace("_", " ")
+                            if len(prfi_value) != 0:  # 不为空
+                                for i in range(len(prfi_value)):  # 遍历查询所有profile
+                                    search_prfi = SearchProfile(driver)
+                                    element_position_map = get_element_position(prfi_key)
+                                    prfi_name = prfi_value[i]["name"].strip()
+                                    search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name,
+                                                                                                      element_position_map)
+                                    if search_prfi_code == 200:
+                                        delete_prfi = DeleteProfile(driver)
+                                        delete_prfi_code = delete_prfi.delete(element_position_map,
+                                                                              first_row_checkbox_element)
+                                        if delete_prfi_code == 200:
+                                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                                  str(datetime.now().microsecond)[:3],
+                                                  "Delete {} profile successfully.".format(prfi_key_out), flush=True)
+                                        else:
+                                            result = result + " In addition, fail to delete {} profile.".format(
+                                                prfi_key_out)
+                                            break
+                                    else:
+                                        result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+                                        break
+                                    # 退出遍历标志
+                                    if prfi_status == 1:  # 失败，退出遍历创建
+                                        break
                             # 退出遍历标志
                             if prfi_status == 1:  # 失败，退出遍历创建
                                 break
-                    # 退出遍历标志
-                    if prfi_status == 1:  # 失败，退出遍历创建
-                        break
                     
             result["ui_result"] = ui_result
             
