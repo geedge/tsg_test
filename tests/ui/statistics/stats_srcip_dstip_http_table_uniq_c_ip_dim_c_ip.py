@@ -122,7 +122,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Client IP)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "default name",
@@ -134,7 +134,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Server IP)",
                             "row_limit": "200",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]

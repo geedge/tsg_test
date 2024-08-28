@@ -306,7 +306,7 @@ class CreateStatisticsTemplate():
                         repalceLabel = "Row Limit"
                 elif data_key == "min_in_size":
                     repalceLabel = "Minimum Incoming size"
-                elif data_key == "max_out_size":  # Minimum outgoing size
+                elif data_key == "min_out_size":  # Minimum outgoing size
                     repalceLabel = "Minimum Outgoing size"
                 else:  # chart name 输入框
                     repalceLabel = "Chart Name"

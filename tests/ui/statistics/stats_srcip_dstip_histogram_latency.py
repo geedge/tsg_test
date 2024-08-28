@@ -118,7 +118,7 @@ def run(parameter):
                           "order_by": "",
                           "row_limit": "",
                           "min_in_size": "0",
-                          "max_out_size": "0"
+                          "min_out_size": "0"
                         }
                       ]
                 }]

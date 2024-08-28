@@ -126,7 +126,7 @@ def run(parameter):
                             "order_by": "bytes",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]
