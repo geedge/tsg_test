@@ -113,7 +113,7 @@ class CreateStatisticsTemplate():
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # Thresholds - Minimum outgoing  size 操作
-                self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="max_out_size",
+                self._operate_input(charts[i], data_index=data_index, no_modify=no_modify, data_key="min_out_size",
                                     element_position=create_element_position["templates_input_other_posXpath"],
                                     chart_id=chart_id)
                 # 输入chart name
