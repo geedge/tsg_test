@@ -216,10 +216,6 @@ class GetLog:
                                     temp_log_result_list.append(True)
                                 else:
                                     temp_log_result_list.append(False)
-                            if False not in temp_log_result_list:
-                                temp_log_result_list.append(True)
-                            else:
-                                temp_log_result_list.append(False)
                         else:
                             temp_log_result_list.append(False)
             elif len(log_query_params) == 0:
