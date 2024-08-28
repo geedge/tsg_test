@@ -45,7 +45,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "statistics",
-            "rule_name": "stats_srcip_dstip_table_uniq_session_id_dim_fqdn",
+            "rule_name": parameter["test_case_name"],
             "rule_action": "statistics",
             "rule_type": "create",
             "debug_flag": "local",
@@ -54,7 +54,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "stats_srcip_table_uniq_session_id_dim_fqdn",
+                        "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -70,7 +70,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [
                     {
-                        "name": "stats_dstip_table_uniq_session_id_dim_fqdn",
+                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -105,19 +105,19 @@ def run(parameter):
             },
             "action_parameter": {
                 "statistics_template": [{
-                    "name": "stats_table_uniq_session_id_dim_fqdn",
+                    "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                     "profile_type": "statistics_template",
                     "charts": [
                         {
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions+new_out_sessions:UNIQUE_COUNT:sessions"
+                            "session_id:UNIQUE_COUNT:Sessions ID"
                           ],
                           "dimensions": [
                             "server_fqdn"
                           ],
-                          "order_by": "sessions",
+                          "order_by": "Sessions ID",
                           "row_limit": "50",
                           "min_in_size": "1",
                           "min_out_size": "1"
@@ -410,7 +410,7 @@ if __name__ == '__main__':
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
-        "test_case_name": "stats_srcip_dstip_table_uniq_session_id_dim_fqdn",
+        "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",
