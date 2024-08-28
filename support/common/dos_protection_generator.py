@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-import time
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -21,7 +20,6 @@ import support.ui_utils.env
 from support.common.report import *
 from datetime import datetime
 from support.common.data_translation import DataTranslation
-from support.common.generate_csv import GenerateCSV
 
 class DosProtectionGenerator:
     def __init__(self, test_data, parameter):
