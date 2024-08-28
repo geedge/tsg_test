@@ -23,7 +23,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 def run(parameter):
@@ -128,7 +128,7 @@ def run(parameter):
                           "order_by": "sessions",
                           "row_limit": "10",
                           "min_in_size": "1",
-                          "max_out_size": "1"
+                          "min_out_size": "1"
                         }
                       ]
                 }]

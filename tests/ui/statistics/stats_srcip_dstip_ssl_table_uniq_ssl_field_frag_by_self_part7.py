@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 
@@ -126,7 +126,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(SSL.SNI)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(SSL.JA3 Hash)",
@@ -138,7 +138,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(SSL.JA3 Hash)",
                             "row_limit": "50",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },{
                             "chart_name": "UNIQUECOUNT(SSL.Handshake Latency(ms))",
                             "visualization_type": "Bar",
@@ -149,7 +149,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(SSL.Handshake Latency(ms))",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]

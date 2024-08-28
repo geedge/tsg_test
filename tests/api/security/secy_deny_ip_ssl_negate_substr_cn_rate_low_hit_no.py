@@ -7,7 +7,7 @@ import time
 from support.packet_generator.verification import Verification
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 def run(parameter):
@@ -55,7 +55,7 @@ def run(parameter):
                 "add_item_list": [
                     {
                     "keyword_array": [
-                        "jd.com"
+                        "node"
                     ]
                     }
                 ]
@@ -64,13 +64,13 @@ def run(parameter):
             }
             ],
             "application_1": ["ssl"],
-            "expected_return": "京东",
+            "expected_return": "POST",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv https://www.jd.com"
+                "command": "curl -kv https://open.node.com:1443"
             },
             "token": ""
         }

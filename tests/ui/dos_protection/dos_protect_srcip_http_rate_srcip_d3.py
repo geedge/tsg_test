@@ -13,14 +13,14 @@ from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.packet_generator.verification import Verification
-from support.api_utils.create_policy import *
+from support.api_utils.create_policy import CreatePolicy
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.api_utils.delete_policy import *
+from support.api_utils.delete_policy import DeletePolicy
 import support.ui_utils.env
-from support.report import *
+from support.common.report import *
 from datetime import datetime
-from support.data_translation import DataTranslation
+from support.common.data_translation import DataTranslation
 
 def run(parameter):
     try:
@@ -82,6 +82,7 @@ def run(parameter):
             },
             "expected_return": "",
             "counters": {"hits": "many"},
+            "log_counter": 1,
             "log_query_param": [
                 {
                     "query_field_key": "attack_type",
@@ -92,7 +93,7 @@ def run(parameter):
                     "query_value": 2
                 },
                 {
-                    "query_field_key": "sessions/s",
+                    "query_field_key": "session_rate",
                     "query_value": 0
                 },
                 {
@@ -100,7 +101,7 @@ def run(parameter):
                     "query_value": 8
                 },
                 {
-                    "query_field_key": "packets/s",
+                    "query_field_key": "packet_rate",
                     "query_value": 1
                 },
                 {
@@ -108,7 +109,7 @@ def run(parameter):
                     "query_value": 1376
                 },
                 {
-                    "query_field_key": "bits/s",
+                    "query_field_key": "bit_rate",
                     "query_value": "1.83 K"
                 }
             ],

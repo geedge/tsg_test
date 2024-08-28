@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 
@@ -126,7 +126,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Bytes Sent)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Bytes Received)",
@@ -138,7 +138,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Bytes Received)",
                             "row_limit": "50",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },{
                             "chart_name": "UNIQUECOUNT(Incoming Bytes)",
                             "visualization_type": "Bar",
@@ -149,7 +149,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Incoming Bytes)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Outgoing Bytes)",
@@ -161,7 +161,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Outgoing Bytes)",
                             "row_limit": "50",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Packets Sent)",
@@ -173,7 +173,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Packets Sent)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Packets Received)",
@@ -185,7 +185,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Packets Received)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Incoming Packets)",
@@ -197,7 +197,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Incoming Packets)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Outgoing Packets)",
@@ -209,7 +209,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Outgoing Packets)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]

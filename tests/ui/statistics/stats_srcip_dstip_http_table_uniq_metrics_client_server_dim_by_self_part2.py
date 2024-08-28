@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 
@@ -126,7 +126,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Client IP)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Server IP)",
@@ -138,7 +138,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Server IP)",
                             "row_limit": "50",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Client Country)",
@@ -150,7 +150,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Client Country)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Server Country)",
@@ -162,7 +162,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Server Country)",
                             "row_limit": "200",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Client ASN)",
@@ -174,7 +174,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Client ASN)",
                             "row_limit": "500",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Server ASN)",
@@ -186,7 +186,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Server ASN)",
                             "row_limit": "1000",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Client Port)",
@@ -198,7 +198,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Client Port)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Server Port)",
@@ -210,7 +210,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Server Port)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]

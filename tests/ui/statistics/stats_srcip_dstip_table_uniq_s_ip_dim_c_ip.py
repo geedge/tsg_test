@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 #Monitor host scanning behavior
 def run(parameter):
@@ -120,7 +120,7 @@ def run(parameter):
                           "order_by": "Scanned IP",
                           "row_limit": "100",
                           "min_in_size": "0",
-                          "max_out_size": "0"
+                          "min_out_size": "0"
                         }
                       ]
                 }]

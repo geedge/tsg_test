@@ -23,7 +23,7 @@ from support.api_utils.delete_policy import *
 import support.ui_utils.env
 from support.ui_utils.element_position.map_element_position_library import *
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 def run(parameter):

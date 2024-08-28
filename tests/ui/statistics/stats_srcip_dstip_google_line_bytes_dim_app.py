@@ -22,14 +22,18 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 #The traffic trend of clients accessing Google on the specific device group
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
+        ui_result, api_result, exception_result = "", "", ""
+        result = {
+            "ui_result": "",
+            "api_result": ""
+        }
         
         # 脚本启动时间
         start_time = time.time()
@@ -126,11 +130,12 @@ def run(parameter):
                           "order_by": "AllBitRate",
                           "row_limit": "10",
                           "min_in_size": "0",
-                          "max_out_size": "0"
+                          "min_out_size": "0"
                         }
                       ]
                 }]
             },
+            "effective_devices": ["group-xxg-tsgx", "center-xxg-tsgx"],
             "expected_return": "reset",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.google.com"}],

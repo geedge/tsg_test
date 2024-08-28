@@ -11,18 +11,14 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
-
-from support.ui_utils.policy.edit_rule import EditRule
 from support.packet_generator.verification import Verification
-
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
-
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 
@@ -32,8 +28,8 @@ def run(parameter):
         
         # 参数初始化
         result, exception_result = "", ""
-		
-		# 脚本启动时间
+
+        # 脚本启动时间
         start_time = time.time()
 
         # 环境初始化
@@ -120,8 +116,8 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client IP Object List)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "sent_bytes+received_bytes:SUM:SUM(Bytes Sent+Bytes Received)",
-                                "sent_pkts+received_pkts:SUM:SUM(Packets Sent+Packets Received)",
+                                "sent_bytes+received_bytes:SUM:SUM(Bytes Sent Bytes Received)",
+                                "sent_pkts+received_pkts:SUM:SUM(Packets Sent Packets Received)",
                                 "new_c2s_flows+new_s2c_flows:SUM:SUM(New Double Flows)",
                                 "new_in_sessions+new_out_sessions:SUM:SUM(New Sessions)",
                                 "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)",
@@ -142,7 +138,7 @@ def run(parameter):
                             "order_by": "SUM(New Sessions)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]

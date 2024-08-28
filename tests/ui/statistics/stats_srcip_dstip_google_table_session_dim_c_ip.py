@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 #Top 50 client sessions accessing www.example.com
 def run(parameter):
@@ -126,7 +126,7 @@ def run(parameter):
                           "order_by": "All Session",
                           "row_limit": "50",
                           "min_in_size": "0",
-                          "max_out_size": "0"
+                          "min_out_size": "0"
                         }
                       ]
                 }]

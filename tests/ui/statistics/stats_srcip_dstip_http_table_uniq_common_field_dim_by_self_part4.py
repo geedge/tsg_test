@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 
@@ -126,7 +126,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Direction)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Incoming Latency)",
@@ -138,7 +138,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Incoming Latency)",
                             "row_limit": "50",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Outgoing Latency)",
@@ -150,7 +150,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Outgoing Latency)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(TCP Handshake Latency(ms))",
@@ -162,7 +162,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(TCP Handshake Latency(ms))",
                             "row_limit": "200",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Subscriber ID)",
@@ -174,7 +174,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Subscriber ID)",
                             "row_limit": "500",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Subscriber ID)",
@@ -186,7 +186,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Subscriber ID)",
                             "row_limit": "500",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(SYN Packets)",
@@ -198,7 +198,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(SYN Packets)",
                             "row_limit": "500",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]

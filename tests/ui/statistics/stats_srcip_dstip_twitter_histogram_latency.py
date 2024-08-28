@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 #The latency time for a specific client in Mytel 待添加Effective Devices操作
 def run(parameter):
@@ -123,7 +123,7 @@ def run(parameter):
                           "order_by": "",
                           "row_limit": "",
                           "min_in_size": "0",
-                          "max_out_size": "0"
+                          "min_out_size": "0"
                         }
                       ]
                 }]

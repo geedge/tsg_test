@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 
@@ -109,7 +109,7 @@ def run(parameter):
                             "order_by": "SUM(Sent Bytes Received Bytes)",
                             "row_limit": "500",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "default name",
@@ -121,7 +121,7 @@ def run(parameter):
                             "order_by": "BITRATE(Sent Bytes Received Bytes)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]

@@ -7,7 +7,7 @@ import time
 from support.packet_generator.verification import Verification
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 def run(parameter):
@@ -70,7 +70,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl --connect-timeout 5 -m 5 http://open.node.com:180"
+                "command": "curl --connect-timeout 10 -m 10 http://open.node.com:180"
             },
             "token": ""
         }
@@ -147,17 +147,19 @@ def run(parameter):
       
 if __name__ == "__main__":
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.65",
         "api_server": "http://192.168.44.72",
+        "test_subcriber_id": "test",
         "script_type": "api",
+        "debug_flag": "local",
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "vsys_id": 1,
+        "is_log": 1,
+        "root_path": "D:/python_engine/tsg_test",
+        "path": "D:/python_engine/tsg_test/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_alert_204_negative_not_ip_http"
+        "test_case_name": "allow_positive_ip_http_not_host"
     }
     run(parameter)

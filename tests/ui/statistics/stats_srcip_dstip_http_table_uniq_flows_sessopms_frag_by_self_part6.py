@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 
 
@@ -126,7 +126,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(New Client-to-Server Flows)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(New Server-to-Client Flows)",
@@ -138,7 +138,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(New Server-to-Client Flows)",
                             "row_limit": "50",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },{
                             "chart_name": "UNIQUECOUNT(New Incoming Sessions)",
                             "visualization_type": "Bar",
@@ -149,7 +149,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(New Incoming Sessions)",
                             "row_limit": "20",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(New Outgoing Sessions)",
@@ -161,7 +161,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(New Outgoing Sessions)",
                             "row_limit": "50",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Closed Incoming Sessions)",
@@ -173,7 +173,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Packets Sent)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Closed Outgoing Sessions)",
@@ -185,7 +185,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Closed Outgoing Sessions)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Client-to-Server IP Fragments)",
@@ -197,7 +197,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Client-to-Server IP Fragments)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         },
                         {
                             "chart_name": "UNIQUECOUNT(Server-to-Client IP Fragments)",
@@ -209,7 +209,7 @@ def run(parameter):
                             "order_by": "UNIQUECOUNT(Server-to-Client IP Fragments)",
                             "row_limit": "100",
                             "min_in_size": "0",
-                            "max_out_size": "0"
+                            "min_out_size": "0"
                         }
                     ]
                 }]
