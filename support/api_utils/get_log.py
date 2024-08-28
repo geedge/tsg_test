@@ -104,15 +104,15 @@ class GetLog:
             else:
                 log_query_params = test_data['log_query_param']
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare log with test data.", flush=True)
+            temp_log_result_list = []
             if len(log_list) > 0 and len(log_query_params) > 0:
                 for log in log_list:
                     for log_query_param in log_query_params:
-                        temp_log_result_list = []
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         # 传入值与日志的值相等时验证
                         if query_field_key in log and query_field_key not in {"packet_capture_file" , "http_response_body" , "http_request_body","monitor_mirrored_pkts","monitor_mirrored_bytes", "client_port"} and log[query_field_key] == query_value:
-                            log_result = True
+                            temp_log_result_list.append(True)
                         # 验证packet capture
                         elif query_field_key in {"packet_capture_file","http_response_body","http_request_body"}:
                             # 验证开关开启状态
@@ -124,19 +124,19 @@ class GetLog:
                                     url = api_host + "/v1/util/download_file" + "?vsys_id=" + str(vsys_id)
                                     response = requests.get(url, headers=headers, params=download_parameter, verify=False)
                                     if response.status_code == 200:
-                                        log_result = True
+                                        temp_log_result_list.append(True)
                                     else:
-                                        log_result = False
+                                        temp_log_result_list.append(False)
                                 # 开关开启， packet_capture_file长度小于0，结果失败       
                                 else:
-                                    log_result = False
+                                    temp_log_result_list.append(False)
                             # 验证开关关闭状态
                             elif query_value == False:
                                 # 查询结果中packet_capture_file不为空，进下一步骤
                                 if len(log[query_field_key]) > 0 :
-                                    log_result = False
+                                    temp_log_result_list.append(False)
                                 else:
-                                    log_result = True
+                                    temp_log_result_list.append(True)
                         # monitor 验证 "monitor_mirrored_pkts","monitor_mirrored_bytes"
                         elif query_field_key in {"monitor_mirrored_pkts","monitor_mirrored_bytes"}:
                             actual_bytes_value = output["total_bytes"]
@@ -154,9 +154,9 @@ class GetLog:
                                         mirror_pkts_value *= num_vlans
                                 elif test_data["mirror_type"] == "mail":
                                     if log[query_field_key] == query_value:
-                                        log_result = True
+                                        temp_log_result_list.append(True)
                                     else:
-                                        log_result = False
+                                        temp_log_result_list.append(False)
                                 elif test_data["mirror_type"] == "dns":
                                     mirror_bytes_value = actual_bytes_value - 8
                                     mirror_pkts_value = actual_pkts_value
@@ -174,30 +174,30 @@ class GetLog:
                                         mirror_bytes_value *= num_vlans
                                         mirror_pkts_value *= num_vlans
                                 else:
-                                    log_result = False
+                                    temp_log_result_list.append(False)
                                 # 统一处理逻辑
                             if "mirror_type" in test_data and test_data["mirror_type"] in {"ftp", "http", "ssl","dns","quic",""}:
                                 if query_field_key == "monitor_mirrored_pkts" and log[query_field_key] == mirror_pkts_value:
-                                    log_result = True
+                                    temp_log_result_list.append(True)
                                     # 更新 test_data["log_query_param"] 中相应的 query_value
                                     for log_query_param in test_data["log_query_param"]:
                                         if log_query_param["query_field_key"] == "monitor_mirrored_pkts":
                                             log_query_param["query_value"] = mirror_pkts_value  # 将值修改为5
                                 elif query_field_key == "monitor_mirrored_bytes" and log[query_field_key] == mirror_bytes_value:
-                                    log_result = True
+                                    temp_log_result_list.append(True)
                                     # 更新 test_data["log_query_param"] 中相应的 query_value
                                     for log_query_param in test_data["log_query_param"]:
                                         if log_query_param["query_field_key"] == "monitor_mirrored_bytes":
                                             log_query_param["query_value"] = mirror_bytes_value  # 将值修改为5
                                 else:
-                                    log_result = False
+                                    temp_log_result_list.append(False)
                         # 验证范围类型的client port
                         elif query_field_key in {"client_port"}:
                             start, end = map(int, query_value.split('-'))
                             if start <= log[query_field_key] <= end:
-                                log_result = True
+                                temp_log_result_list.append(True)
                             else:
-                                log_result = False
+                                temp_log_result_list.append(False)
                         elif query_field_key in {"attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"}:
                             if query_field_key == "attack_type":
                                 if query_value.replace("_", " ") == log[query_field_key].lower():
@@ -217,15 +217,19 @@ class GetLog:
                                 else:
                                     temp_log_result_list.append(False)
                             if False not in temp_log_result_list:
-                                log_result = True
+                                temp_log_result_list.append(True)
                             else:
-                                log_result = False
+                                temp_log_result_list.append(False)
                         else:
-                            log_result = False
+                            temp_log_result_list.append(False)
             elif len(log_query_params) == 0:
+                temp_log_result_list.append(True)
+            if False not in temp_log_result_list and len(log_list) > 0:
                 log_result = True
             elif len(log_list) == 0:
                 log_result = None
+            else:
+                log_result = False
         return log_result
 
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
