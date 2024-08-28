@@ -93,7 +93,7 @@ def run(parameter):
                     "query_value": 2
                 },
                 {
-                    "query_field_key": "sessions_per_second",
+                    "query_field_key": "session_rate",
                     "query_value": 0
                 },
                 {
@@ -101,7 +101,7 @@ def run(parameter):
                     "query_value": 8
                 },
                 {
-                    "query_field_key": "packets_per_second",
+                    "query_field_key": "packet_rate",
                     "query_value": 1
                 },
                 {
@@ -109,7 +109,7 @@ def run(parameter):
                     "query_value": 1376
                 },
                 {
-                    "query_field_key": "bits_per_second",
+                    "query_field_key": "bit_rate",
                     "query_value": "1.83 K"
                 }
             ],

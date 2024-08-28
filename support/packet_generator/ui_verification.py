@@ -498,14 +498,42 @@ class UiVerification:
                         temp_log_result_list = []
                         for i in range(len(test_data["log_query_param"])):
                             log_query_key = test_data["log_query_param"][i]["query_field_key"]
-                            if log_query_key in {"attack_type", "sessions", "sessions_per_second", "packets", "packets_per_second", "bytes", "bits_per_second"}:
+                            if log_query_key in {"attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"}:
+                                log_str = parse.get("log", log_query_key)
                                 log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                 temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                 log_query_value = test_data["log_query_param"][i]["query_value"]
-                                if temp_value == log_query_value:
-                                    temp_log_result_list.append(True)
+                                if log_query_key == "attack_type":
+                                    if log_query_value.replace("_", " ") == temp_value.lower():
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
+                                elif log_query_key == "bit_rate":
+                                    bytes_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Bytes")
+                                    bytes_value = my_driver.find_element(By.XPATH, bytes_pos_xpath).text
+                                    start_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Start Time")
+                                    start_time_value = my_driver.find_element(By.XPATH, start_time_pos_xpath).text
+                                    end_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="End Time")
+                                    end_time_value = my_driver.find_element(By.XPATH, end_time_pos_xpath).text
+                                    time1 = datetime.strptime(start_time_value, "%Y-%m-%d %H:%M:%S")
+                                    time2 = datetime.strptime(end_time_value, "%Y-%m-%d %H:%M:%S")
+                                    timestamp1 = datetime.timestamp(time1)
+                                    timestamp2 = datetime.timestamp(time2)
+                                    time_difference = timestamp2 - timestamp1
+                                    bits = bytes_value*8
+                                    if 1024 <= bits < 1048576:
+                                        temp_value = str(round((bytes_value*8)/time_difference, 2)) + " K"
+                                    else:
+                                        temp_value = round(bits/time_difference, 2)
+                                    if temp_value == log_query_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
                                 else:
-                                    temp_log_result_list.append(False)
+                                    if temp_value == log_query_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
                         if False not in temp_log_result_list:
                             log_result = True
                         else:
