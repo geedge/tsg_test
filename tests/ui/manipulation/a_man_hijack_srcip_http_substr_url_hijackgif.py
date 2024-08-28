@@ -3,11 +3,7 @@ import time
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from support.ui_utils.element_position.map_element_position_library import *
-import support.ui_utils.env
 import traceback
-from support.api_utils.delete_policy import *
-from support.common.report import *
 from datetime import datetime
 from support.common.case_generator import CaseGenerator
 from support.common.generate_csv import GenerateCSV
@@ -103,7 +99,6 @@ def run(parameter):
         end_time = time.time()
         duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
@@ -119,6 +114,7 @@ def run(parameter):
         generate.generate_csv(parameter, result, exception_result)
     
 if __name__ == '__main__':
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
