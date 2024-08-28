@@ -13,10 +13,10 @@ from support.ui_utils.policy.edit_rule import EditRule
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.packet_generator.verification import Verification
-from support.api_utils.create_policy import *
+from support.api_utils.create_policy import CreatePolicy
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
-from support.api_utils.delete_policy import *
+from support.api_utils.delete_policy import DeletePolicy
 import support.ui_utils.env
 from support.report import *
 from datetime import datetime
