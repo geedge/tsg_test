@@ -87,7 +87,7 @@ def receive_parameter():
                 parameter["env"] = "tsgx"
                 parameter["vsys_id"] = parse.get("vsys", "id_for_api")
                 parameter["is_log"] = parse.get("is_log", "api")
-            elif tag == "ui":
+            elif tag == "ui" or tag == "":
                 parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_ui_with_traffic")
                 parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
                 parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
@@ -95,8 +95,6 @@ def receive_parameter():
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
                 parameter["is_log"] = parse.get("is_log", "ui")
-            elif tag == "":
-                parameter["path"] = f"{project_path}/tests/ui"
             elif tag == "general_ui":
                 parameter["path"] = f"{project_path}/tests/ui"
                 parameter["sub_module_name"] = sub_module_name
@@ -139,13 +137,26 @@ def receive_parameter():
                     if len(result) == 0:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                         response_result["code"] = 200
-                        response_result["msg"] = "pass"
+                        if tag == "ui":
+                            response_result["ui_automation_result"] = "pass"
+                        elif tag == "api":
+                            response_result["api_automation_result"] = "pass"
+                        elif tag == "":
+                            response_result["ui_automation_result"] = "pass"
+                            response_result["api_automation_result"] = "pass"
                         response_result["data"] = None
                         response_result["success"] = True
                     elif len(result) != 0:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
                         response_result["code"] = 416
-                        response_result["msg"] = result
+                        if tag == "ui":
+                            response_result["ui_automation_result"] = result
+                        elif tag == "api":
+                            response_result["api_automation_result"] = result
+                        elif tag == "":
+                            response_result["ui_automation_result"] = result["ui_result"]
+                            response_result["api_automation_result"] = result["api_result"]
+                        response_result["result"] = result
                         response_result["data"] = None
                         response_result["success"] = False
                     break
@@ -178,7 +189,7 @@ def receive_parameter():
         else:
             response_result = {}
             response_result["code"] = 418
-            response_result["msg"] = "The run status code is False, do not run test case."
+            response_result["result"] = "The run status code is False, do not run test case."
             response_result["data"] = None
             response_result["success"] = False    
             response = jsonify(response_result)
@@ -191,7 +202,7 @@ def receive_parameter():
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to execute the command. The return code: {}".format(e.returncode), flush=True)
         response_result = {}
         response_result["code"] = 419
-        response_result["msg"] = "Fail to parse or build parameter."
+        response_result["result"] = "Fail to parse or build parameter."
         response_result["data"] = None
         response_result["success"] = False
         response = jsonify(response_result)

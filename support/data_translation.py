@@ -193,6 +193,10 @@ class DataTranslation:
                         }
                     ]
                 }
+                if temp_profile[i]["type"] == "steering":
+                    temp["type"] = "1"
+                elif temp_profile[i]["type"] == "mirroring":
+                    temp["type"] = "2"
                 if temp_profile[i]["profile_type"] == "create":
                     temp["op_action"] = "add"
                     for x in range(len(temp_profile[i]["service_functions"])):
