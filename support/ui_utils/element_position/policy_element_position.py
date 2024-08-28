@@ -103,7 +103,7 @@ policyRulePage_addCondition_mailContent_posXpath = "//div[@class='SourceList lis
 policyRulePage_addCondition_mailFrom_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='From']"
 policyRulePage_addCondition_mailTo_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='To']"
 policyRulePage_addCondition_mailAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
-
+policyRulePage_addCondition_mailAttachmentName_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Attachment Name']"
 
 policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -181,7 +181,11 @@ policyRulePage_addMailSubject_posXpath = "//div[@zs-label='FilterItem']//p[norma
 policyRulePage_searchMailSubject_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
 policyRulePage_selectMailSubject_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeMailSubject_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
-
+#mail attachment name
+policyRulePage_addMailAttachmentName_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Attachment Name']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchMailAttachmentName_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectMailAttachmentName_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeMailAttachmentName_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 # security
 securityRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
 securityRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"

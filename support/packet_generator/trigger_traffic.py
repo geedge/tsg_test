@@ -28,7 +28,7 @@ class TriggerTraffic:
         if "debug_flag" in parameter.keys():
             debug_flag = parameter["debug_flag"]
         if debug_flag == "local":
-            if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or (test_data["policy_type"] == "monitor" and test_data["is_mirror"] == "on"):
+            if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or (test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex"):
                 test_data = self.replace_trex_ip(test_data, script_type)
             temp_data = json.dumps(test_data["traffic"])
             parse = configparser.ConfigParser()
@@ -51,11 +51,11 @@ class TriggerTraffic:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "json loads failed:", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} {} \n{}".format(url, temp_data, response.text), flush=True)
                     jsonData["result"] = response.text
-                if test_data["policy_type"] == "statistics" or (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw")  or (test_data["policy_type"] == "monitor" and test_data["is_mirror"] == "on"):
+                if test_data["policy_type"] == "statistics" or (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw")  or (test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex"):
                     jsonData = jsonData["result"]
                 result = jsonData
         else:
-            if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or  (test_data["policy_type"] == "monitor" and test_data["is_mirror"] == "on") :
+            if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or  (test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex") :
                 test_data = self.replace_trex_ip(test_data, script_type)
             if len(test_data["traffic"]["protocol"]) > 0 and "command" in test_data["traffic"]:
                 temp_data = test_data["traffic"]["command"]
