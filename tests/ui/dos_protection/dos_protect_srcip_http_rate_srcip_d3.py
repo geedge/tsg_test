@@ -21,6 +21,7 @@ import support.ui_utils.env
 from support.common.report import *
 from datetime import datetime
 from support.common.data_translation import DataTranslation
+from support.common.generate_csv import GenerateCSV
 
 def run(parameter):
     try:
@@ -373,32 +374,8 @@ def run(parameter):
         if isinstance(api_name_list, list):
             delete.delete_policy_by_name(token, parameter, api_name_list)
         # 生成csv报告
-        if len(parameter["script_type"]) == 0:
-            file_path = parameter["root_path"] + "/report/automation_test_report.csv"
-        else:
-            file_path = parameter["root_path"] + "/report/{}_automation_test_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
-            if result is not None and result != "" and len(result) != 0:
-                report_data = []
-                report_data.append(parameter["test_case_name"])
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                temp_result = "UI automation result: " + result["ui_result"] + " API automation result: " + result["api_result"]
-                report_data.append(temp_result)
-            elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(exception_result)
-            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Pass"
-                report_data.append(result_flag)
-                report_data.append("")
-            new_report = GenerateReport()
-            new_report.insert_data(parameter, report_data)
+        generate = GenerateCSV()
+        generate.generate_csv(parameter, result, exception_result)
             
 if __name__ == '__main__':
     parameter = {
