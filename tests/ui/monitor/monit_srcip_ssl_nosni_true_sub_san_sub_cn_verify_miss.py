@@ -22,7 +22,7 @@ from support.api_utils.log_in import *
 import support.ui_utils.env
 import traceback
 from support.api_utils.delete_policy import *
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 
 

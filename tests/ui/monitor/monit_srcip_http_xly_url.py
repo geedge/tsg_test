@@ -3,7 +3,7 @@ import os
 import sys
 
 from support.api_utils.delete_policy import *
-from support.common.report import GenerateReport
+from support.report import GenerateReport
 from support.ui_utils.profile.search_profile import SearchProfile
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))

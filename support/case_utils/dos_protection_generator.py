@@ -17,9 +17,9 @@ from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import DeletePolicy
 import support.ui_utils.env
-from support.common.report import *
+# from support.report import *
 from datetime import datetime
-from support.common.data_translation import DataTranslation
+from support.case_utils.data_translation import DataTranslation
 
 class DosProtectionGenerator:
     def __init__(self, test_data, parameter):

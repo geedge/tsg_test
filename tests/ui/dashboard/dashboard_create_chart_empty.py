@@ -7,7 +7,7 @@ from support.general_ui_utils.dashboard.dashboard import Dashboard
 
 import random
 
-from support.common.report import GenerateReport
+from support.report import GenerateReport
 
 
 def run(parameter):

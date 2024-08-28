@@ -1,5 +1,5 @@
-from support.common.manipulation_generator import ManipulationGenerator
-from support.common.dos_protection_generator import DosProtectionGenerator
+from support.case_utils.manipulation_generator import ManipulationGenerator
+from support.case_utils.dos_protection_generator import DosProtectionGenerator
 
 class CaseGenerator:
     def __init__(self, test_data, parameter):

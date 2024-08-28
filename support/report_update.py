@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 import os
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 
 class ReportUpdate:

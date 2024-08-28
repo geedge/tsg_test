@@ -5,8 +5,8 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.common.case_generator import CaseGenerator
-from support.common.report_update import ReportUpdate
+from support.case_utils.case_generator import CaseGenerator
+from support.report_update import ReportUpdate
 
 def run(parameter):
     try:

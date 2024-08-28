@@ -4,7 +4,7 @@ import sys
 
 from support.api_utils.organize_config import OrganizeConfig
 
-from support.common.data_translation import DataTranslation
+from support.case_utils.data_translation import DataTranslation
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.object.search_object import SearchObject
@@ -23,7 +23,7 @@ from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 
 def run(parameter):

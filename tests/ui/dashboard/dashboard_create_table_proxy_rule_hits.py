@@ -8,7 +8,7 @@ from support.general_ui_utils.dashboard.edit_dashboard import EditDashboard
 from support.general_ui_utils.dashboard.delete_dashboard import DeleteDashboard
 import random
 from support.api_utils.delete_policy import *
-from support.common.report import GenerateReport
+from support.report import GenerateReport
 
 
 def run(parameter):
