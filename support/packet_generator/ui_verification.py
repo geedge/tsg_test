@@ -338,9 +338,9 @@ class UiVerification:
                                 else:
                                     metric_result = False   
                 if metric_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining ui is passed", flush=True)  
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is True', flush=True)  
                 else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining ui is failed", flush=True)      
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is False', flush=True)      
                 if int(is_log) == 1:
                     # 跳转至session record路径
                     sc_rule_id = int(test_data["rule_id"])
@@ -361,7 +361,7 @@ class UiVerification:
                     btn = my_driver.find_element(By.ID,"facedQuery")
                     my_driver.execute_script("arguments[0].click()", btn)
                     time.sleep(1.5)
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from ui log page.", flush=True)
                     for i in range(50) :
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
                         log_number = log_number_str.split(": ")[-1]
@@ -373,7 +373,7 @@ class UiVerification:
                             break
                     if int(log_number) == 0:
                         log_result = False
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Failed to get log value from log page.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to get log value from log page.", flush=True)
                     else:
                         # 点击展开
                         my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
@@ -463,9 +463,9 @@ class UiVerification:
                         else:
                                 log_result = False
                     if log_result == True:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining log is passed", flush=True)    
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is True', flush=True)    
                     else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining log is failed", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is False', flush=True)
                 return api_verification_result[0], log_result, metric_result, my_driver
     
     def extract_value(self, type, value):
