@@ -3,24 +3,8 @@ import time
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from support.ui_utils.object.create_object import CreateObject
-from support.ui_utils.object.search_object import SearchObject
-from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.policy.create_rule import CreateRule
-from support.ui_utils.policy.search_rule import SearchRule
-from support.ui_utils.policy.delete_rule import DeleteRule
-from support.ui_utils.policy.edit_rule import EditRule
-from support.ui_utils.element_position.policy_element_position import *
-from support.ui_utils.element_position.object_element_position import *
-from support.packet_generator.verification import Verification
-from support.api_utils.create_policy import CreatePolicy
-from support.api_utils.analysis_result import *
-from support.api_utils.log_in import *
-from support.api_utils.delete_policy import DeletePolicy
 import support.ui_utils.env
-from support.common.report import *
 from datetime import datetime
-from support.common.data_translation import DataTranslation
 from support.common.generate_csv import GenerateCSV
 from support.common.case_generator import CaseGenerator
 
@@ -143,9 +127,7 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         return "Error: " + str(e)
     finally:
-        # 清理环境
-        support.ui_utils.env.teardown()
-        # 删除配置
+        # 清理环境并删除配置
         case_generator.delete_data()
         # 生成csv报告
         generate = GenerateCSV()
