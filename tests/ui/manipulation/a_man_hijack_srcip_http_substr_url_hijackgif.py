@@ -9,13 +9,14 @@ import traceback
 from support.api_utils.delete_policy import *
 from support.common.report import *
 from datetime import datetime
-from support.common.test_generator import TestGenerator
+from support.common.case_generator import CaseGenerator
+from support.common.generate_csv import GenerateCSV
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
+        exception_result = ""
         
         # 脚本启动时间
         start_time = time.time()
@@ -93,8 +94,8 @@ def run(parameter):
             "token": ""
         }
 
-        test_generator = TestGenerator(test_data, parameter)
-        result = test_generator.run()
+        case_generator = CaseGenerator(test_data, parameter)
+        result = case_generator.run()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -110,30 +111,10 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        test_generator.delete_data()
+        case_generator.delete_data()
         # 生成csv报告
-        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):  
-            if result is not None and result != "" and len(result) != 0:
-                report_data = []
-                report_data.append(parameter["test_case_name"])
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(result)
-            elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(exception_result)
-            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Pass"
-                report_data.append(result_flag)
-                report_data.append("")
-            new_report = GenerateReport()
-            new_report.insert_data(parameter, report_data)
+        generate = GenerateCSV()
+        generate.generate_csv(parameter, result, exception_result)
     
 if __name__ == '__main__':
     parameter = {

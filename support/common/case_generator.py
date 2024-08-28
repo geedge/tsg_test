@@ -1,10 +1,10 @@
 from support.common.manipulation_generator import ManipulationGenerator
 
-class TestGenerator:
+class CaseGenerator:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
-
+    
     def run(self):
         result = self._run(self.test_data, self.parameter)
         return result
@@ -47,13 +47,13 @@ class TestGenerator:
 
     def _run_manipulation(self, test_data, parameter):
         self.manipulation = ManipulationGenerator(test_data, parameter)
-        result =self. manipulation.run()
+        result = self.manipulation.run()
         return result
 
     def _run_shaping(self, test_data, parameter):
         print("todo")
 
-    def service_chaining(self, test_data, parameter):
+    def _run_service_chaining(self, test_data, parameter):
         print("todo")
 
     def delete_data(self):
@@ -75,3 +75,4 @@ class TestGenerator:
             print("todo")
         else:
             pass
+        

@@ -27,10 +27,16 @@ class ManipulationGenerator:
         self.parameter = parameter
 
     def run(self):
-        result = self._run(self.test_data, self.parameter)
-        return result
+        ui_result = self._run(self.test_data, self.parameter)
+        return ui_result
 
     def _run(self, test_data, parameter):
+        ui_result, api_result = "", ""
+        result = {
+            "ui_result": "",
+            "api_result": ""
+        }
+        
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -80,7 +86,7 @@ class ManipulationGenerator:
                             if cond_code == 200:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key_out), flush=True)
                             else:
-                                result = "Fail to create {} object.".format(cond_key_out)
+                                ui_result = "Fail to create {} object.".format(cond_key_out)
                                 cond_status = 1
                                 break
                     if cond_status == 1:   # 创建失败，退出遍历创建
@@ -103,7 +109,7 @@ class ManipulationGenerator:
                             if prfi_code == 200:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(prfi_key_out), flush=True)
                             else:
-                                result = "Fail to create {} profile.".format(prfi_key_out)
+                                ui_result = "Fail to create {} profile.".format(prfi_key_out)
                                 prfi_status = 1
                                 break
                     if prfi_status == 1:  # 创建失败，退出遍历创建
@@ -121,7 +127,7 @@ class ManipulationGenerator:
                 if create_rule_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create manipulation rule successfully.", flush=True)
                 elif create_rule_code != 200:
-                    result = "Fail to create manipulation rule."
+                    ui_result = "Fail to create manipulation rule."
 
             # 触发流量验证
             if create_rule_code == 200:
@@ -142,11 +148,11 @@ class ManipulationGenerator:
             # 分析验证结果，并返回给flask
             if len(verification_result) != 0:
                 analysis = AnalysisResult()
-                result = analysis.analysis_result(test_data, [], verification_result)
-                # if len(result) == 0:
+                ui_result = analysis.analysis_result(test_data, [], verification_result)
+                # if len(ui_result) == 0:
                     # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
-                # elif len(result) != 0:
-                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
+                # elif len(ui_result) != 0:
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", ui_result, flush=True)
 
             # 删除rule
             if create_rule_code == 200:
@@ -161,9 +167,9 @@ class ManipulationGenerator:
                     if delete_rule_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete manipulation rule successfully.", flush=True)
                     elif delete_rule_code != 200:
-                        result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
+                        ui_result = ui_result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
                 else:
-                    result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
+                    ui_result = ui_result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
             # 删除object
             if delete_rule_code == 200 and "condition" in test_data.keys():
@@ -190,10 +196,10 @@ class ManipulationGenerator:
                                 if delete_cond_code == 200:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(cond_key_out), flush=True)
                                 else:
-                                    result = result + " In addition, fail to delete {} object.".format(cond_key_out)
+                                    ui_result = ui_result + " In addition, fail to delete {} object.".format(cond_key_out)
                                     break
                             else:
-                                result = result + " In addition, fail to search {} object.".format(cond_key_out)
+                                ui_result = ui_result + " In addition, fail to search {} object.".format(cond_key_out)
                                 break
                             # 退出遍历标志
                             if cond_status == 1:  # 失败，退出遍历创建
@@ -221,10 +227,10 @@ class ManipulationGenerator:
                                 if delete_prfi_code == 200:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} profile successfully.".format(prfi_key_out), flush=True)
                                 else:
-                                    result = result + " In addition, fail to delete {} profile.".format(prfi_key_out)
+                                    ui_result = ui_result + " In addition, fail to delete {} profile.".format(prfi_key_out)
                                     break
                             else:
-                                result = result + " In addition, fail to search {} profile.".format(prfi_key_out)
+                                ui_result = ui_result + " In addition, fail to search {} profile.".format(prfi_key_out)
                                 break
                             # 退出遍历标志
                             if prfi_status == 1:  # 失败，退出遍历创建
@@ -232,8 +238,9 @@ class ManipulationGenerator:
                     # 退出遍历标志
                     if prfi_status == 1:  # 失败，退出遍历创建
                         break
-
-
+                    
+            result["ui_result"] = ui_result
+            
         if parameter["script_type"] == "api" or need_initialization == True:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
 
