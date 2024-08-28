@@ -467,6 +467,61 @@ class UiVerification:
                     else:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is False', flush=True)
                 return api_verification_result[0], log_result, metric_result, my_driver
+            elif policy_type == "dos_protection":
+                if api_verification_result[2] == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get hit count from ui detail page.", flush=True)
+                    if int(is_log) == 1:
+                        hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span").text
+                        my_driver.find_element(By.ID, "Log").click()
+                        my_driver.find_element(By.ID, "Log_DosEventLogs").click()
+                        time.sleep(1)
+                        my_driver.find_element(By.ID, "addFilter").click()
+                        my_driver.find_element(By.XPATH, "//div[@class='el-input el-input--small el-input--suffix is-focus']//input").click()
+                        my_driver.find_element(By.XPATH, "//div[@class='el-input el-input--small el-input--suffix is-focus']//input").send_keys("destination")
+                        my_driver.find_element(By.ID, "Destination IP8-_Label_UnrecognizedExp_Expression_groupItem_TagsSearch_FacedtedSearch_Search_VPanel_DosLog_Home_App_anonymousComponent").click()
+                        my_driver.find_element(By.ID, "operator=").click()
+                        my_driver.find_element(By.XPATH, "//div[@class='el-tooltip el-input el-input--mini']//input").send_keys(test_data['traffic']['servers_start_ip'])
+                        btn = my_driver.find_element(By.ID, "facedQuery")
+                        my_driver.execute_script("arguments[0].click()", btn)
+                        
+                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
+                        log_number = log_number_str.split(": ")[-1]
+                        if int(hit_count) > 1 and test_data["counters"]["hits"] == "many" and int(log_number) == int(test_data["log_counter"]):
+                            metric_result = True
+                        else:
+                            metric_result = False
+                        
+                        my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
+                        parse = configparser.ConfigParser()
+                        parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")
+                        parse.read(parse_dir, encoding="utf-8")
+                        temp_log_result_list = []
+                        for i in range(len(test_data["log_query_param"])):
+                            log_query_key = test_data["log_query_param"][i]["query_field_key"]
+                            if log_query_key in {"attack_type", "sessions", "sessions_per_second", "packets", "packets_per_second", "bytes", "bits_per_second"}:
+                                log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                log_query_value = test_data["log_query_param"][i]["query_value"]
+                                if temp_value == log_query_value:
+                                    temp_log_result_list.append(True)
+                                else:
+                                    temp_log_result_list.append(False)
+                        if False not in temp_log_result_list:
+                            log_result = True
+                        else:
+                            log_result = False
+                        
+                        if metric_result == True:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is {}.'.format(metric_result), flush=True)
+                        elif metric_result == False:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is {}.'.format(metric_result), flush=True)
+
+                        if log_result == True:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is {}.'.format(log_result), flush=True)
+                        elif log_result == False:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is {}.'.format(log_result), flush=True)
+                        
+                        return True, log_result, metric_result, my_driver
     
     def extract_value(self, type, value):
         if type == "packets":

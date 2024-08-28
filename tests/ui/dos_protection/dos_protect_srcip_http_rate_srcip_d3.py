@@ -82,6 +82,7 @@ def run(parameter):
             },
             "expected_return": "",
             "counters": {"hits": "many"},
+            "log_counter": 1,
             "log_query_param": [
                 {
                     "query_field_key": "attack_type",
@@ -92,7 +93,7 @@ def run(parameter):
                     "query_value": 2
                 },
                 {
-                    "query_field_key": "sessions/s",
+                    "query_field_key": "sessions_per_second",
                     "query_value": 0
                 },
                 {
@@ -100,7 +101,7 @@ def run(parameter):
                     "query_value": 8
                 },
                 {
-                    "query_field_key": "packets/s",
+                    "query_field_key": "packets_per_second",
                     "query_value": 1
                 },
                 {
@@ -108,7 +109,7 @@ def run(parameter):
                     "query_value": 1376
                 },
                 {
-                    "query_field_key": "bits/s",
+                    "query_field_key": "bits_per_second",
                     "query_value": "1.83 K"
                 }
             ],
