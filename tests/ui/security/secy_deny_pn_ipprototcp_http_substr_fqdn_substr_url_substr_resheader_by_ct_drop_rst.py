@@ -18,7 +18,7 @@ from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 import support.ui_utils.env
-from support.report import *
+from support.common.report import *
 
 from datetime import datetime
 

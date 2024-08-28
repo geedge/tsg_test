@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 #The trend of client numbers that used WhatsApp暂时使用Facebook数据包，后使用WhatsApp数据包替换
 def run(parameter):

@@ -23,7 +23,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 #Top 50 FQDNs accessed by the specific client
 def run(parameter):

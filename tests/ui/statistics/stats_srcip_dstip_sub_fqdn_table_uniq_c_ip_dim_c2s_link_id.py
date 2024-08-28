@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.report import *
+from support.common.report import *
 from datetime import datetime
 #Identify the source of the DoS attack,暂时不允许配置Country，此处使用link ID代替
 def run(parameter):
