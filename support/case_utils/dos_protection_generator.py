@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-import time
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -18,10 +17,9 @@ from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
 from support.api_utils.delete_policy import DeletePolicy
 import support.ui_utils.env
-from support.common.report import *
+# from support.report import *
 from datetime import datetime
-from support.common.data_translation import DataTranslation
-from support.common.generate_csv import GenerateCSV
+from support.case_utils.data_translation import DataTranslation
 
 class DosProtectionGenerator:
     def __init__(self, test_data, parameter):
@@ -29,8 +27,8 @@ class DosProtectionGenerator:
         self.parameter = parameter
 
     def run(self):
-        ui_result = self._run(self.test_data, self.parameter)
-        return ui_result
+        result = self._run(self.test_data, self.parameter)
+        return result
 
     def _run(self, test_data, parameter):
         # 参数初始化

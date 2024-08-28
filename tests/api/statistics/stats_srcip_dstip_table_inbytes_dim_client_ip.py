@@ -8,7 +8,7 @@ from support.packet_generator.verification import Verification
 from support.api_utils.delete_policy import *
 from support.api_utils.analysis_result import *
 import traceback
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 
 def run(parameter):

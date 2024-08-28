@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 #Top 50 client sessions accessing www.example.com
 def run(parameter):

@@ -3,20 +3,17 @@ import time
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from support.ui_utils.element_position.map_element_position_library import *
-import support.ui_utils.env
 import traceback
-from support.api_utils.delete_policy import *
-from support.common.report import *
 from datetime import datetime
-from support.common.case_generator import CaseGenerator
-from support.common.generate_csv import GenerateCSV
+from support.case_utils.case_generator import CaseGenerator
+from support.report_update import ReportUpdate
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
+        result = {}
         
         # 脚本启动时间
         start_time = time.time()
@@ -102,7 +99,6 @@ def run(parameter):
         end_time = time.time()
         duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
@@ -114,10 +110,11 @@ def run(parameter):
         # 清理环境
         case_generator.delete_data()
         # 生成csv报告
-        generate = GenerateCSV()
-        generate.generate_csv(parameter, result, exception_result)
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
     
 if __name__ == '__main__':
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
@@ -125,7 +122,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "ui",
+        "script_type": "api",
         "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
@@ -136,10 +133,3 @@ if __name__ == '__main__':
     }
     parameter = replace_paras(parameter)
     run(parameter)
-    """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
-    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
-
-    # 执行如下命令生成测试报告（自动打开浏览器）：
-    allure serve allure
-    """

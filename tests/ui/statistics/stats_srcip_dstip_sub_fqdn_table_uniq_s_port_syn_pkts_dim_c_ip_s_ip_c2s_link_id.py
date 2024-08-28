@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 #Monitor port scanning behavior,暂时不允许配置Country，此处使用link ID代替
 def run(parameter):

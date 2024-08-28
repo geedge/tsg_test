@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 #The trend of client numbers that used WhatsApp暂时使用Facebook数据包，后使用WhatsApp数据包替换
 def run(parameter):
@@ -117,12 +117,12 @@ def run(parameter):
                           "chart_name": "stats_facebook_table_uniq_session_id_dim_c_ip",
                           "visualization_type": "Table",
                           "metrics": [
-                            "Session_ip:UNIQUE_COUNT:UNIQUE Session"
+                            "session_id:UNIQUE_COUNT:UNIQUE Session ID"
                           ],
                           "dimensions": [
                               "client_ip"
                           ],
-                          "order_by": "UNIQUE Session",
+                          "order_by": "UNIQUE Session ID",
                           "row_limit": "",
                           "min_in_size": "0",
                           "min_out_size": "0"

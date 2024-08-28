@@ -3,7 +3,7 @@ import os
 import sys
 
 from support.api_utils.organize_config import OrganizeConfig
-from support.common.report import GenerateReport
+from support.report import GenerateReport
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.delete_policy import *

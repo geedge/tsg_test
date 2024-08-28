@@ -22,7 +22,7 @@ import support.ui_utils.env
 from support.api_utils.delete_policy import *
 import traceback
 
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 #Domain access volume analysis
 def run(parameter):
@@ -95,13 +95,7 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [
-                    {
-                        "name": "http",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
+                "application": [],
                 "server_fqdn": [
                     {
                         "name": "stats_sub_fqdn_table_uniq_c_ip_ssl_ja3_bytes_session_id_dim_fqdn",

@@ -21,7 +21,7 @@ import support.ui_utils.env
 from datetime import datetime
 import time
 
-class ManipulationGenerator:
+class StatisticsGenerator:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
@@ -76,6 +76,8 @@ class ManipulationGenerator:
                         cond_data = cond_value
                         create_ip = CreateObject(driver)
                         for i in range(len(cond_data)):  # 遍历创建所有condition
+                            if cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
+                                continue  # 遍历创建所有condition
                             if cond_key == "protocol_filed":
                                 tmp_key = cond_data[i]["object_type"]
                                 cond_key_out = tmp_key.replace("_", " ")
@@ -182,6 +184,8 @@ class ManipulationGenerator:
                     if len(cond_value) != 0:  # 不为空
                         cond_data = cond_value
                         for i in range(len(cond_data)):  # 遍历查询所有condition
+                            if cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
+                                continue  # 遍历创建所有condition
                             search_cond = SearchObject(driver)
                             if cond_key == "protocol_filed":
                                 tmp_key = cond_data[i]["object_type"]

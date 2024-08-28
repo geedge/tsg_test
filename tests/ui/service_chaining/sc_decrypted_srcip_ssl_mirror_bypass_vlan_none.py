@@ -24,7 +24,7 @@ from support.api_utils.log_in import *
 from support.api_utils.delete_policy import *
 from support.ui_utils.object.generate_random_ip import *
 from support.ui_utils.element_position.map_element_position_library import *
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 
 def run(parameter):

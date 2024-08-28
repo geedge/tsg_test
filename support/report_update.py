@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
 import os
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 
-class GenerateCSV:
-    def generate_csv(parameter, result, exception_result):
+class ReportUpdate:
+    def write_result(parameter, result, exception_result):
         if len(parameter["script_type"]) == 0:
             file_path = parameter["root_path"] + "/report/automation_test_report.csv"
         else:

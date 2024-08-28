@@ -23,7 +23,7 @@ from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 import support.ui_utils.env
 
-from support.common.report import *
+from support.report import *
 from datetime import datetime
 
 def run(parameter):
