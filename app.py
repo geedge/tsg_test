@@ -29,6 +29,8 @@ app = Flask(__name__)
 @app.route('/v1/statistics_api', methods=["POST"])
 @app.route('/v1/service_chaining_api', methods=["POST"])
 @app.route('/v1/shaping_api', methods=["POST"])
+@app.route('/v1/dashboard', methods=["POST"])
+@app.route('/v1/object', methods=["POST"])
 @app.route('/v1/case_tag', methods=["POST"])
 def receive_parameter():
     try:

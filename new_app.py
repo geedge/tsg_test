@@ -22,6 +22,12 @@ app = Flask(__name__)
 @app.route('/v1/statistics', methods=["POST"])
 @app.route('/v1/service_chaining', methods=["POST"])
 @app.route('/v1/shaping', methods=["POST"])
+@app.route('/v1/dashboard', methods=["POST"])
+@app.route('/v1/object', methods=["POST"])
+@app.route('/v1/profile', methods=["POST"])
+@app.route('/v1/report', methods=["POST"])
+@app.route('/v1/system', methods=["POST"])
+@app.route('/v1/admin', methods=["POST"])
 @app.route('/v1/case_tag', methods=["POST"])
 def receive_parameter():
     try:
