@@ -29,8 +29,8 @@ class DosProtectionGenerator:
         self.parameter = parameter
 
     def run(self):
-        ui_result = self._run(self.test_data, self.parameter)
-        return ui_result
+        result = self._run(self.test_data, self.parameter)
+        return result
 
     def _run(self, test_data, parameter):
         # 参数初始化
