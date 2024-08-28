@@ -1,5 +1,8 @@
 import os
 import sys
+
+from support.api_utils.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
 from support.ui_utils.object.create_object import CreateObject
@@ -66,6 +69,9 @@ class StatisticsGenerator:
             #template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
             # 创建object
+            # Statistics Rule使用随机IP
+            organize_config = OrganizeConfig()
+            test_data = organize_config.generate_random_ip(test_data, parameter)
             if "condition" in test_data.keys():
                 for cond_key, cond_value in (test_data["condition"].items()):
                     if cond_key in manipulation_object_no_create_list:
