@@ -94,6 +94,7 @@ def run(parameter):
             "token": ""
         }
 
+        # 生成测试用例
         case_generator = CaseGenerator(test_data, parameter)
         result = case_generator.run()
 
