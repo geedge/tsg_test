@@ -95,13 +95,7 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [
-                    {
-                        "name": "http",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
+                "application": [],
                 "server_fqdn": [
                     {
                         "name": "stats_sub_fqdn_table_uniq_c_ip_ssl_ja3_bytes_session_id_dim_fqdn",

@@ -117,12 +117,12 @@ def run(parameter):
                           "chart_name": "stats_facebook_table_uniq_session_id_dim_c_ip",
                           "visualization_type": "Table",
                           "metrics": [
-                            "Session_ip:UNIQUE_COUNT:UNIQUE Session"
+                            "session_id:UNIQUE_COUNT:UNIQUE Session ID"
                           ],
                           "dimensions": [
                               "client_ip"
                           ],
-                          "order_by": "UNIQUE Session",
+                          "order_by": "UNIQUE Session ID",
                           "row_limit": "",
                           "min_in_size": "0",
                           "min_out_size": "0"

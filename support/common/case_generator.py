@@ -1,5 +1,7 @@
 from support.common.manipulation_generator import ManipulationGenerator
 from support.common.dos_protection_generator import DosProtectionGenerator
+from support.common.statistics_generator import StatisticsGenerator
+
 
 class CaseGenerator:
     def __init__(self, test_data, parameter):
@@ -16,7 +18,7 @@ class CaseGenerator:
         elif test_data["policy_type"] == "monitor":
             print("todo")
         elif test_data["policy_type"] == "statistics":
-            print("todo")
+            result = self._run_statistics(test_data, parameter)
         elif test_data["policy_type"] == "dos_protection":
             result = self._run_dos_protection(test_data, parameter)
         elif test_data["policy_type"] == "pxy_intercept":
@@ -38,7 +40,9 @@ class CaseGenerator:
         print("todo")
 
     def _run_statistics(self, test_data, parameter):
-        print("todo")
+        self.statistics = StatisticsGenerator(test_data, parameter)
+        result = self.statistics.run()
+        return result
 
     def _run_dos_protection(self, test_data, parameter):
         self.dos_protection = DosProtectionGenerator(test_data, parameter)
@@ -65,7 +69,7 @@ class CaseGenerator:
         elif self.test_data["policy_type"] == "monitor":
             print("todo")
         elif self.test_data["policy_type"] == "statistics":
-            print("todo")
+            self.statistics.delete_data()
         elif self.test_data["policy_type"] == "dos_protection":
             self.dos_protection.delete_data()
         elif self.test_data["policy_type"] == "pxy_intercept":
