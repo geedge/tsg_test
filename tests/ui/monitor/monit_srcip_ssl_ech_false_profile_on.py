@@ -94,7 +94,7 @@ def run(parameter):
             "mirror_type": "http",
              "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "SSL"},
+            "log_query_param": [{"query_field_key": "ssl_ech_flag", "query_value": "False"},
                                 {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
                                 {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
                             ],
