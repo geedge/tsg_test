@@ -61,23 +61,37 @@ class SecurityGenerator:
             support.ui_utils.env.initiate_selenium_request()
             driver = support.ui_utils.env.my_driver()
             support.ui_utils.env.setup()
-
-            # name_list汇总
-            self.ui_name_list = [
-                {
-                    "type": test_data["policy_type"],
-                    "name": test_data["rule_name"]
-                },
-                {
-                    "type": test_data["condition"]["source_ip"][0]['object_type'],
-                    "name": test_data["condition"]["source_ip"][0]['name']
-                },
-                {
-                    "type": test_data["condition"]["server_fqdn"][0]['object_type'],
-                    "name": test_data["condition"]["server_fqdn"][0]['name']
-                }
-            ]
-            
+            # 组织security 的name list
+            tmp_name_dict = {}
+            tmp_name_dict["type"] = test_data["policy_type"]
+            tmp_name_dict["name"] = test_data["rule_name"]
+            self.ui_name_list.append(tmp_name_dict)
+            # 构建source ip 的name list
+            if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+                object_data = test_data["condition"]["source_ip"]
+                for i in range(len(object_data)):
+                    tmp_name_dict = {}
+                    print(object_data[i])
+                    tmp_name_dict["type"] = object_data[i]['object_type']
+                    tmp_name_dict["name"] = object_data[i]['name']
+                    self.ui_name_list.append(tmp_name_dict)
+                    print(self.ui_name_list)
+            # 构建server fqdn 的name list
+            if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
+                object_data = test_data["condition"]["server_fqdn"]
+                for i in range(len(object_data)):
+                    tmp_name_dict = {}
+                    tmp_name_dict["type"] = test_data["condition"]["server_fqdn"][i]['object_type']
+                    tmp_name_dict["name"] = test_data["condition"]["server_fqdn"][i]['name']
+                    self.ui_name_list.append(tmp_name_dict)
+            # 构建protocol field 的name list
+            if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+                object_data = test_data["condition"]["protocol_filed"]
+                for i in range(len(object_data)):
+                    tmp_name_dict = {}
+                    tmp_name_dict["type"] = test_data["condition"]["protocol_filed"][i]['object_type']
+                    tmp_name_dict["name"] = test_data["condition"]["protocol_filed"][i]['name']
+                    self.ui_name_list.append(tmp_name_dict)
             # 添加定位库集合
             test_rule_element_position = {}
             if test_data["policy_type"] == "security":
@@ -142,6 +156,37 @@ class SecurityGenerator:
                         "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
                     }
                 }
+                test_url_object_element_position = {
+                    "page_jump": {
+                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
+                    },
+                    "create": {
+                        "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
+                        "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
+                        "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
+                        "objectPage_addItem_posId": urlObjectPage_addItem_posId,
+                        # item简单定位
+                        "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
+                        "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
+                        "objectPage_okButton_posId": urlObjectPage_okButton_posId,
+                        "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
+                    },
+                    "search": {
+                        "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
+                        "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
+                        "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
+                    },
+                    "delete": {
+                        "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
+                        "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
+                        "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
+                    }
+                }
                 test_rule_element_position = {
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -173,6 +218,7 @@ class SecurityGenerator:
                         "policyRulePage_searchServerFqdn_posXpath": securityRulePage_searchServerFqdn_posXpath,
                         "policyRulePage_selectServerFqdn_posXpath": securityRulePage_selectServerFqdn_posXpath,
                         "policyRulePage_closeServerFqdn_posXpath": securityRulePage_closeServerFqdn_posXpath,
+                        # http协议
                         # url
                         "policyRulePage_addConditionUrl_posXpath": securityRulePage_addCondition_url_posXpath,
                         "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
@@ -187,6 +233,17 @@ class SecurityGenerator:
                         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
                         "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                         "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
+                        # rate limit
+                        "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
+                        "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
+                        # tamper
+                        "policyRulePage_subAction_tamper_posXpath": securityRulePage_subAction_tamper_posXpath,
+                        # drop
+                        "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
+                        "policyRulePage_subAction_drop_posXpath": securityRulePage_subAction_drop_posXpath,
+                        "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
+                        "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
+                        "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
                         # block动作
                         "policyRulePage_subAction_block_posXpath": securityRulePage_subAction_block_posXpath,
                         "policyRulePage_subAction_block_responseCode_posXpath": securityRulePage_subAction_block_responseCode_posXpath,
@@ -196,6 +253,7 @@ class SecurityGenerator:
                         "policyRulePage_subAction_block_responseContent_clickProfile_posXpath": securityRulePage_subAction_block_responseContent_clickProfile_posXpath,
                         "policyRulePage_subAction_block_responseContent_searchProfile_posXpath": securityRulePage_subAction_block_responseContent_searchProfile_posXpath,
                         "policyRulePage_subAction_block_responseContent_selectProfile_posId": securityRulePage_subAction_block_responseContent_selectProfile_posId,
+                        # alert动作
                         "policyRulePage_subAction_alert_posXpath": securityRulePage_subAction_alert_posXpath,
                         "policyRulePage_subAction_alert_responseCode_posXpath": securityRulePage_subAction_alert_responseCode_posXpath,
                         "policyRulePage_subAction_alert_responseCode_change_posXpath": securityRulePage_subAction_alert_responseCode_change_posXpath,
@@ -262,6 +320,19 @@ class SecurityGenerator:
                                 prfi_status = 1
                                 break
                     if prfi_status == 1:  # 创建失败，退出遍历创建
+                        break
+            # 创建protocol_filed        
+            if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+                protocol_field_data = test_data["condition"]["protocol_filed"]
+                create_protocol_filed = CreateObject(driver)
+                for x in range(len(protocol_field_data)):
+                    object_type = protocol_field_data[x]['object_type']
+                    if object_type == 'url':
+                        create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_url_object_element_position)
+                    if create_protocol_filed_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                    elif create_protocol_filed_code != 200:
+                        result = "Fail to create {}.".format(object_type)
                         break
             # 创建rule
             if create_ip_code == 200:
