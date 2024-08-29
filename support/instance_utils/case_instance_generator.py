@@ -1,6 +1,7 @@
 from support.instance_utils.manipulation_instance_generator import ManipulationInstanceGenerator
 from support.instance_utils.dos_protection_instance_generator import DosProtectionInstanceGenerator
 from support.instance_utils.statistics_instance_generator import StatisticsInstanceGenerator
+from support.instance_utils.security_instance_generator import SecurityGenerator
 
 class CaseInstanceGenerator:
     def __init__(self, test_data, parameter):
@@ -33,7 +34,9 @@ class CaseInstanceGenerator:
         return result
 
     def _run_security(self, test_data, parameter):
-        print("todo")
+        self.security = SecurityGenerator(test_data, parameter)
+        result = self.security.run()
+        return result
 
     def _run_monitor(self, test_data, parameter):
         print("todo")
@@ -64,7 +67,7 @@ class CaseInstanceGenerator:
 
     def delete_data(self):
         if self.test_data["policy_type"] == "security":
-            pass
+             self.security.delete_data()
         elif self.test_data["policy_type"] == "monitor":
             print("todo")
         elif self.test_data["policy_type"] == "statistics":
