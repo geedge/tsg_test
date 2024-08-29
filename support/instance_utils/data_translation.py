@@ -3,164 +3,169 @@ import copy
 
 
 class DataTranslation:
-    def data_translation(self, policy_type, data):
+    def data_translation(self, parameter, data):
         temp_test_data = {
             "obj_condition": [],
             "profile_condition": [],
             "application": [],
+            "do_log_1": 2
         }
-        for key in data:
-            if key in {"source_ip", "source_port", "destination_ip", "destination_port", "internal_ip", "internal_port", "external_ip", "external_port", "sub_id", "device""tunnel", "tunnel_level", "flag", "server_fqdn", "protocol_filed"}:
-                object = self.push_object_data(key, data)
+        for key in data.keys():
+            if key in {"condition"}:
+                object = self.push_object_data(data)
+                if "application" in data["condition"].keys() and len(data["condition"]["application"]) > 0:
+                    for app_index in range(len(data["condition"]["application"])):
+                        temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
             if key in {"action_parameter", "profile"}:
-                profile = self.push_profile_data(policy_type, key, data)
-        if "application" in data.keys():
-            temp_test_data["application"] = data["application"]
-        temp_test_data = {
-            "obj_condition": object,
-            "profile_condition": profile,
-        }
+                profile = self.push_profile_data(parameter, data)
+        temp_test_data["obj_condition"] = object
+        temp_test_data["profile_condition"] = profile
         return temp_test_data
     
-    def push_object_data(self, key, data):
+    def push_object_data(self, data):
         object = []
-        if key == "source_ip":
-            temp = {
-                "attribute_name": "ATTR_SOURCE_IP",
-                "object_type": "ip",
-                "object_sub_type": "ip",
-                "is_negate": 0,
-                "object_list": [
-                    {
-                        "add_item_list": [
-                            {
-                                "ip_address": data["source_ip"][0]["item"][0]["item_value"],
-                                "port_range": "0-65535"
-                            }
-                        ]
-                    }
-                ]
-            }
-            object.append(temp)
-        elif key == "destination_ip":
-            temp = {
-                "attribute_name": "ATTR_DESTINATION_IP",
-                "object_type": "ip",
-                "object_sub_type": "ip",
-                "is_negate": 0,
-                "object_list": [
-                    {
-                        "add_item_list": [
-                            {
-                                "ip_address": data["source_ip"][0]["item"][0]["item_value"],
-                                "port_range": "0-65535"
-                            }
-                        ]
-                    }
-                ]
-            }
-            object.append(temp)
-        elif key == "server_fqdn":
-            temp = {
-                "attribute_name": "ATTR_SERVER_FQDN",
-                "object_type": "fqdn",
-                "object_sub_type": "fqdn",
-                "object_list": [
-                    {
-                        "add_item_list": [
-                            {
-                                "keyword_array": [
-                                    data["server_fqdn"][0]["item"][0]["item_value"]
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-            object.append(temp)
-        elif key == "sub_id":
-            temp = {
-                "attribute_name": "ATTR_SUBSCRIBER_ID",
-                "object_type": "subscriberid",
-                "object_sub_type": "subscriberid",
-                "object_list": [
-                    {
-                        "add_item_list": [
-                            {
-                                "keyword_array": [
-                                    data["sub_id"][0]["item"][0]["item_value"]
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-            object.append(temp)
-        elif key == "protocol_filed":
-            for i in range(len(data["protocol_filed"])):
-                if data["protocol_filed"][i]["object_type"] == "url":
-                    temp = {
-                        "attribute_name": "ATTR_HTTP_URL",
-                        "object_type": "url",
-                        "object_sub_type": "url",
-                        "object_list": [
-                            {
-                                "add_item_list": [
+        for k, v in data["condition"].items():
+            if len(v) == 0:   # 空跳过
+                continue
+            if k == "source_ip":
+                temp = {
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "object_type": "ip",
+                    "object_sub_type": "ip",
+                    "is_negate": 0,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "ip_address": v[0]["item"][0]["item_value"],
+                                    "port_range": "0-65535"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "destination_ip":
+                temp = {
+                    "attribute_name": "ATTR_DESTINATION_IP",
+                    "object_type": "ip",
+                    "object_sub_type": "ip",
+                    "is_negate": 0,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "ip_address": v[0]["item"][0]["item_value"],
+                                    "port_range": "0-65535"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "server_fqdn":
+                temp = {
+                    "attribute_name": "ATTR_SERVER_FQDN",
+                    "object_type": "fqdn",
+                    "object_sub_type": "fqdn",
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "keyword_array": [
+                                        v[0]["item"][0]["item_value"]
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "sub_id":
+                temp = {
+                    "attribute_name": "ATTR_SUBSCRIBER_ID",
+                    "object_type": "subscriberid",
+                    "object_sub_type": "subscriberid",
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "keyword_array": [
+                                        v[0]["item"][0]["item_value"]
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "protocol_filed":
+                for i in range(len(v)):
+                    if v[i]["object_type"] == "url":
+                        temp = {
+                            "attribute_name": "ATTR_HTTP_URL",
+                            "object_type": "url",
+                            "object_sub_type": "url",
+                            "object_list": [
+                                {
+                                    "add_item_list": [
+                                        {
+                                            "keyword_array": [
+                                                v[i]["items"][0]["item_value"]
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                        object.append(copy.deepcopy(temp))
+                    elif v[i]["object_type"] == "http_signature":
+                        if v[i]["item"][0]["item_type"] == "request_header":
+                            temp = {
+                                "attribute_name": "ATTR_HTTP_REQ_HDR",
+                                "object_type": "http_signature",
+                                "object_sub_type": "http_signature",
+                                "object_list": [
                                     {
-                                        "keyword_array": [
-                                            data["protocol_filed"][i]["items"][0]["item_value"]
+                                        "context_name": v[i]["item"][0]["item_key"],
+                                        "add_item_list": [
+                                            {
+                                                "keyword_array": [
+                                                    v[i]["item"][0]["value"][0]
+                                                ]
+                                            }
                                         ]
                                     }
                                 ]
                             }
-                        ]
-                    }
-                    object.append(temp)
-                elif data["protocol_filed"][i]["object_type"] == "http_signature":
-                    if data["protocol_filed"][i]["item"][0]["item_type"] == "request_header":
-                        temp = {
-                            "attribute_name": "ATTR_HTTP_REQ_HDR",
-                            "object_type": "http_signature",
-                            "object_sub_type": "http_signature",
-                            "object_list": [
-                                {
-                                    "context_name": data["protocol_filed"][i]["item"][0]["item_key"],
-                                    "add_item_list": [
-                                        {
-                                            "keyword_array": [
-                                                data["protocol_filed"][i]["item"][0]["value"][0]
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                        object.append(temp)
-                    elif data["protocol_filed"][i]["item"][0]["item_type"] == "response_header":
-                        temp = {
-                            "attribute_name": "ATTR_HTTP_RES_HDR",
-                            "object_type": "http_signature",
-                            "object_sub_type": "http_signature",
-                            "object_list": [
-                                {
-                                    "context_name": data["protocol_filed"][i]["item"][0]["item_key"],
-                                    "add_item_list": [
-                                        {
-                                            "keyword_array": [
-                                                data["protocol_filed"][i]["item"][0]["value"][0]
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                        object.append(temp)
+                            object.append(copy.deepcopy(temp))
+                        elif v[i]["item"][0]["item_type"] == "response_header":
+                            temp = {
+                                "attribute_name": "ATTR_HTTP_RES_HDR",
+                                "object_type": "http_signature",
+                                "object_sub_type": "http_signature",
+                                "object_list": [
+                                    {
+                                        "context_name": v[i]["item"][0]["item_key"],
+                                        "add_item_list": [
+                                            {
+                                                "keyword_array": [
+                                                    v[i]["item"][0]["value"][0]
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                            object.append(copy.deepcopy(temp))
         return object
     
-    def push_profile_data(self, policy_type, key, data):
+    def push_profile_data(self, parameter, data):
+        policy_type = data["policy_type"]
+        vsys_id = parameter["vsys_id"]
         profile = []
         if policy_type == "service_chaining":
-            temp_profile = data[key]
+            temp_profile = data["profile"]
             for i in range(len(temp_profile)):
                 temp = {
                     "profile_type": "service_function_forwarder",
@@ -214,7 +219,7 @@ class DataTranslation:
                             temp["sf_condition"][x]["health_check"]["retires"] = temp_profile[i]["service_functions"][x]["health_check"].split(":")[2]
                 profile.append(temp)
         elif policy_type == "statistics":
-            temp_profile = data[key]["statistics_template"]
+            temp_profile = data["action_parameter"]["statistics_template"]
             for j in range(len(temp_profile)):
                 temp = {
                     "profile_type": "Statistics_Templates",
@@ -249,16 +254,18 @@ class DataTranslation:
                         temp["chart_list"][t]["metrics"][k]["source_columns"] = temp_profile["charts"][t]["metrics"][k].split(":")[0]
                         temp["chart_list"][t]["metrics"][k]["function"] = temp_profile["charts"][t]["metrics"][k].split(":")[1]
                 profile.append(temp)
-        elif policy_type == "prx_manipulation":
-            temp_profile = data[key]
+        elif policy_type == "pxy_manipulation":
+            temp_profile = data["action_parameter"]
             for k, v in temp_profile.items():
                 if len(v) == 0:
                     continue
                 if k == "response_page":
                     pass
                 elif k == "hijack_file":
-                    element_type_replace_name = {'gif': 'image/gif', 'jpeg': 'image/jpeg', 'png': 'image/png', 'svg+xml': 'image/svg+xml', 'svg': 'image/svg+xml',
-                                                 'exe': 'application/x-msdos-program', 'apk': 'application/vnd.android.package-archive', 'html': 'text/html'}
+                    element_type_replace_name = {
+                        'gif': 'image/gif', 'jpeg': 'image/jpeg', 'png': 'image/png', 'svg+xml': 'image/svg+xml', 'svg': 'image/svg+xml',
+                        'exe': 'application/x-msdos-program', 'apk': 'application/vnd.android.package-archive', 'html': 'text/html'
+                    }
                     for t in range(len(v)):
                         temp = {
                             "profile_type": "hijack_files",
@@ -270,7 +277,8 @@ class DataTranslation:
                         }
                         temp["content_type"] = element_type_replace_name[v[t]["profile_file"]["file_type"]]
                         temp["name"] = v[t]["profile_file"]["name"]
-                        temp["content_name"] = v[t]["profile_file"]["content_name"]
+                        temp["content_name"] = v[t]["profile_file"]["download_name"]
+                        temp["vsys_id"] = vsys_id
                         profile.append(copy.deepcopy(temp))
                 elif k == "insert_script":
                     pass
