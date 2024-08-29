@@ -40,13 +40,13 @@ def run(parameter):
             "dimensions": ["Device Group"],
             "order_by": "",
             "filter": "",
-            "isallowdimensions": "0",
+
             "sub_type": "error_metric"
 
         }
 
         select_metric_type = ["single", "multiple"]
-        multiple_dimension = ["true", "false"]
+        multiple_dimension = [True,False]
         # 随机metric与dimension格式
         metric_type = random.choice(select_metric_type)
         multiple_dimension = random.choice(multiple_dimension)

@@ -78,7 +78,6 @@ def run(parameter):
             },
             "multiple_dimension": "true",
             "dimensions": ["Time","Rule","Device Group", "Data Center"],
-            "isallowdimensions": "0",
             "sub_type": "",
             "order_by":"verifyedit2",
             "filter": [
@@ -112,10 +111,10 @@ def run(parameter):
         ]
 
         select_metric_type = ["single", "multiple"]
-        multiple_dimension = ["true", "false"]
+        multiple_dimension = [True,False]
         #随机metric与dimension格式
         metric_type = random.choice(select_metric_type)
-        multiple_dimension = "false"
+        multiple_dimension = False
 
         #创建Dashboard-Chart
         create_dashboard = CreateDashboard(driver)

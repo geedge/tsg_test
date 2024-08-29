@@ -41,13 +41,13 @@ def run(parameter):
               "dimensions": ["Time", "Rule","Service Function Forwarder Profile ID","Service Function Profile ID","Device Group", "Data Center"],
               "order_by": "",
               "filter": "",
-              "isallowdimensions": "0",
+  
               "sub_type": "error_dimensions"
 
         }
 
         select_metric_type = ["single", "multiple"]
-        multiple_dimension = ["true", "false"]
+        multiple_dimension = [True,False]
         # 随机metric与dimension格式
         metric_type = random.choice(select_metric_type)
         multiple_dimension = random.choice(multiple_dimension)

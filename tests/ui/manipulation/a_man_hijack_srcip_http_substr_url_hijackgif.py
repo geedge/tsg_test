@@ -122,7 +122,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "api",
+        "script_type": "ui",
         "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
