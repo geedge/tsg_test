@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import copy
+
 
 class DataTranslation:
     def data_translation(self, policy_type, data):
@@ -247,6 +249,35 @@ class DataTranslation:
                         temp["chart_list"][t]["metrics"][k]["source_columns"] = temp_profile["charts"][t]["metrics"][k].split(":")[0]
                         temp["chart_list"][t]["metrics"][k]["function"] = temp_profile["charts"][t]["metrics"][k].split(":")[1]
                 profile.append(temp)
+        elif policy_type == "prx_manipulation":
+            temp_profile = data[key]
+            for k, v in temp_profile.items():
+                if len(v) == 0:
+                    continue
+                if k == "response_page":
+                    pass
+                elif k == "hijack_file":
+                    element_type_replace_name = {'gif': 'image/gif', 'jpeg': 'image/jpeg', 'png': 'image/png', 'svg+xml': 'image/svg+xml', 'svg': 'image/svg+xml',
+                                                 'exe': 'application/x-msdos-program', 'apk': 'application/vnd.android.package-archive', 'html': 'text/html'}
+                    for t in range(len(v)):
+                        temp = {
+                            "profile_type": "hijack_files",
+                            "content_type": "text/html",
+                            "name": "auto_test_obj",
+                            "content_name": "Create-hijack Files-test-5.png",
+                            "vsys_id": 6,
+                            "return_data": 1
+                        }
+                        temp["content_type"] = element_type_replace_name[v[t]["profile_file"]["file_type"]]
+                        temp["name"] = v[t]["profile_file"]["name"]
+                        temp["content_name"] = v[t]["profile_file"]["content_name"]
+                        profile.append(copy.deepcopy(temp))
+                elif k == "insert_script":
+                    pass
+                elif k == "run_script":
+                    pass
+                else:
+                    print("no match {}".format(k))
         return profile
     
 if __name__ == '__main__':
