@@ -150,19 +150,35 @@ class GetLog:
                                     elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "response_header":
                                         mirror_bytes_value = actual_bytes_value - 381
                                         mirror_pkts_value = actual_pkts_value - 5
-                                    else:
+                                    else:#除添加特定field之外的镜像转发
                                         mirror_bytes_value = actual_bytes_value - 192
                                         mirror_pkts_value = actual_pkts_value - 3
-                                        if "profile" in test_data and test_data["profile"] != "":
-                                            vlan_count = test_data['profile'][0]['vlan_count']
-                                            num_vlans = vlan_count
-                                            mirror_bytes_value *= num_vlans
-                                            mirror_pkts_value *= num_vlans
+                                    if "profile" in test_data and test_data["profile"] != "":
+                                        vlan_count = test_data['profile'][0]['vlan_count']
+                                        num_vlans = vlan_count
+                                        mirror_bytes_value *= num_vlans
+                                        mirror_pkts_value *= num_vlans
                                 elif test_data["mirror_type"] == "mail":
-                                    if log[query_field_key] == query_value:
-                                        temp_log_result_list.append(True)
-                                    else:
-                                        temp_log_result_list.append(False)
+                                    if "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["mail_from","mail_subject","mail_to"]:
+                                        mirror_bytes_value = actual_bytes_value - 19578
+                                        mirror_pkts_value = actual_pkts_value - 158
+                                    elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_attachment_content":
+                                        mirror_bytes_value = actual_bytes_value -66426
+                                        mirror_pkts_value = actual_pkts_value - 192
+                                    elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_attachment_name":
+                                        mirror_bytes_value = actual_bytes_value -38934
+                                        mirror_pkts_value = actual_pkts_value - 170
+                                    elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_content":
+                                        mirror_bytes_value = actual_bytes_value -1685
+                                        mirror_pkts_value = actual_pkts_value - 19
+                                    else: #除添加特定field之外的镜像转发
+                                        mirror_bytes_value = actual_bytes_value - 967
+                                        mirror_pkts_value = actual_pkts_value - 9
+                                    if "profile" in test_data and test_data["profile"] != "":
+                                        vlan_count = test_data['profile'][0]['vlan_count']
+                                        num_vlans = vlan_count
+                                        mirror_bytes_value *= num_vlans
+                                        mirror_pkts_value *= num_vlans
                                 elif test_data["mirror_type"] == "dns":
                                     mirror_bytes_value = actual_bytes_value - 8
                                     mirror_pkts_value = actual_pkts_value

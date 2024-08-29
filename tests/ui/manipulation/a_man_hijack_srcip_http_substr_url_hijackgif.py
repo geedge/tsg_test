@@ -115,6 +115,7 @@ def run(parameter):
     
 if __name__ == '__main__':
     from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
     parameter = {
         "username": "zcw3",
         "password": "qa111111",
@@ -122,12 +123,12 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "ui",
+        "script_type": "api",   # api  ui  空字符串
         "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
+        "root_path": workdir,
+        "path": workdir + "/testcase/ui",
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }

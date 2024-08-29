@@ -18,8 +18,10 @@ from support.packet_generator.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list, create_pre_policy, delete_pre_policy
 from support.ui_utils.element_position.map_element_position_library import manipulation_profile_no_create_list, manipulation_object_no_create_list
 from support.api_utils.analysis_result import AnalysisResult
+from support.instance_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
+
 import copy
 
 
@@ -248,13 +250,22 @@ class ManipulationInstanceGenerator:
 
             self.api_name_list = []
 
+            # 数据转换，适配API的test_data
+            translation = DataTranslation()
+            temp_test_data = translation.data_translation(parameter, test_data)
+            test_data["obj_condition"] = temp_test_data["obj_condition"]
+            test_data["application"] = temp_test_data["application"]
+            test_data["profile_condition"] = temp_test_data["profile_condition"]
+            test_data["do_log_1"] = temp_test_data["do_log_1"]
+
             # 添加测试过程中涉及的template
             template_path = {}
-            template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-            template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-            template_path["pre_intercept_template_path"] = parameter["path"] + "/template/pre_intercept_template.json"
+            template_path["rule_template"] = parameter["root_path"] + "/tests/api/template/rule_template.json"
+            template_path["object_template"] = parameter["root_path"] + "/tests/api/template/object_template.json"
+            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/tests/api/template/pre_intercept_template.json"
             # 添加测试过程中涉及的response pages
-            template_path["profiles_hijack_file_path"] = parameter["path"] + "/profile_used_to_create_rule/Create-Hijack-Files-test-3.html"
+            template_path["profiles_hijack_file_path"] = parameter["root_path"] + "/support/ui_utils/profile/profile_file/hijack_file/" + test_data["profile_condition"][0]["content_name"]
+
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()
