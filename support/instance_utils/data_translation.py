@@ -4,6 +4,7 @@ import copy
 
 class DataTranslation:
     def data_translation(self, parameter, data):
+        policy_type = data["policy_type"]
         temp_test_data = {
             "obj_condition": [],
             "profile_condition": [],
@@ -12,15 +13,28 @@ class DataTranslation:
         }
         for key in data.keys():
             if key in {"condition"}:
-                object = self.push_object_data(data)
+                temp_test_data["obj_condition"] = self.push_object_data(data)
                 if "application" in data["condition"].keys() and len(data["condition"]["application"]) > 0:
                     for app_index in range(len(data["condition"]["application"])):
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
             if key in {"action_parameter", "profile"}:
-                profile = self.push_profile_data(parameter, data)
-        temp_test_data["obj_condition"] = object
-        temp_test_data["profile_condition"] = profile
-        return temp_test_data
+                temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
+        if len(temp_test_data["obj_condition"]) > 0:
+            data["obj_condition"] = temp_test_data["obj_condition"]
+        if len(temp_test_data["application"]) > 0:
+            data["application"] = temp_test_data["application"]
+        if len(temp_test_data["profile_condition"]) > 0:
+            data["profile_condition"] = temp_test_data["profile_condition"]
+        data["do_log_1"] = temp_test_data["do_log_1"]
+        # 添加code_1 key
+        if policy_type == "pxy_manipulation":
+            if data["rule_action"] == "deny":
+                if "response_page" in data["action_parameter"]:
+                    data["code_1"] = data["action_parameter"]["response_page"][0]["response_code"]
+                else:
+                    data["code_1"] = data["action_parameter"]["deny_response_text"][0]["response_code"]
+                    data["message_1"] = "text"    # 匹配原有api test_data数据
+        return data
     
     def push_object_data(self, data):
         object = []
@@ -260,7 +274,24 @@ class DataTranslation:
                 if len(v) == 0:
                     continue
                 if k == "response_page":
-                    pass
+                    for t in range(len(v)):
+                        temp = {
+                            "profile_type": "response_page",
+                            "format": "html",
+                            "name": "auto_test_obj",
+                            "content_name": "testa.html",
+                            "return_data": 1
+                        }
+                        temp["name"] = v[t]["profile_file"]["name"]
+                        temp["content_name"] = v[t]["profile_file"]["file"]
+                        file_name = v[t]["profile_file"]["file"]
+                        if file_name.endswith(".html"):
+                            temp["format"] = "html"
+                        elif file_name.endswith(".htm"):
+                            temp["format"] = "htm"
+                        else:
+                            print("check file type: {}".format(file_name))
+                        profile.append(copy.deepcopy(temp))
                 elif k == "hijack_file":
                     element_type_replace_name = {
                         'gif': 'image/gif', 'jpeg': 'image/jpeg', 'png': 'image/png', 'svg+xml': 'image/svg+xml', 'svg': 'image/svg+xml',
@@ -271,7 +302,7 @@ class DataTranslation:
                             "profile_type": "hijack_files",
                             "content_type": "text/html",
                             "name": "auto_test_obj",
-                            "content_name": "Create-hijack Files-test-5.png",
+                            "content_name": "Files-test-5.png",
                             "vsys_id": 6,
                             "return_data": 1
                         }
@@ -281,9 +312,39 @@ class DataTranslation:
                         temp["vsys_id"] = vsys_id
                         profile.append(copy.deepcopy(temp))
                 elif k == "insert_script":
-                    pass
+                    insert_map = {
+                        "Before Page Load": "before_page_load", "After Page Load": "after_page_load"
+                    }
+                    for t in range(len(v)):
+                        temp = {
+                            "profile_type": "insert_profile",
+                            "is_enabled": 1,
+                            "format": "js",
+                            "name": "auto_test_obj",
+                            "opAction": "add",
+                            "insert_on": "before_page_load",
+                            "content_name": "Create-Insert-Script-test1.js",
+                            "isShared": 0,
+                            "return_data": 1
+                        }
+                        temp["format"] = v[t]["profile_file"]["script_type"]
+                        temp["name"] = v[t]["profile_file"]["name"]
+                        temp["insert_on"] = insert_map[v[t]["profile_file"]["insert_position"]]
+                        temp["content_name"] = v[t]["profile_file"]["script"]
+                        profile.append(copy.deepcopy(temp))
                 elif k == "run_script":
-                    pass
+                    for t in range(len(v)):
+                        temp = {
+                        "profile_type": "run_script",
+                        "max_exec_time": 1000,
+                        "name": "auto_test_obj",
+                        "content_name": "run_script_insert.lua",
+                        "return_data": 1
+                       }
+                        temp["max_exec_time"] = int(v[t]["profile_file"]["max_exec_time"])
+                        temp["name"] = v[t]["profile_file"]["name"]
+                        temp["content_name"] = v[t]["profile_file"]["script"]
+                        profile.append(copy.deepcopy(temp))
                 else:
                     print("no match {}".format(k))
         return profile

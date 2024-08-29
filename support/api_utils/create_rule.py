@@ -298,7 +298,9 @@ class CreatePolicyRule:
                 rules.append(rule_dict)
                 user_region["rules"] = rules
             rule_template_dict["rule"]["user_region"] = user_region
-        
+        # 添加用例名称
+        rule_template_dict["rule"]["name"] = condition["rule_name"]
+
         # 开始创建rule
         policy_id_list_temp = self.create_rule(rule_template_dict, headers, api_host)
         if condition["policy_type"] == "pxy_manipulation" or (condition["policy_type"] == "service_chaining" and condition["targeted_traffic"] == "decrypted"):
@@ -324,7 +326,7 @@ class CreatePolicyRule:
             pre_intercept_template_path['rule']['destination'] = dst_list
         else:
             pre_intercept_template_path['rule']['destination'] = []
-        
+        pre_intercept_template_path["rule"]["name"] = "manipulation_pre_intercept"
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host)
         pre_policy_id_list = pre_intercept_policy_id_dict
         

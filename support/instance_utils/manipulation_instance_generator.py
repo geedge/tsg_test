@@ -252,11 +252,8 @@ class ManipulationInstanceGenerator:
 
             # 数据转换，适配API的test_data
             translation = DataTranslation()
-            temp_test_data = translation.data_translation(parameter, test_data)
-            test_data["obj_condition"] = temp_test_data["obj_condition"]
-            test_data["application"] = temp_test_data["application"]
-            test_data["profile_condition"] = temp_test_data["profile_condition"]
-            test_data["do_log_1"] = temp_test_data["do_log_1"]
+            test_data = translation.data_translation(parameter, test_data)
+            print(test_data)
 
             # 添加测试过程中涉及的template
             template_path = {}
@@ -264,8 +261,19 @@ class ManipulationInstanceGenerator:
             template_path["object_template"] = parameter["root_path"] + "/tests/api/template/object_template.json"
             template_path["pre_intercept_template_path"] = parameter["root_path"] + "/tests/api/template/pre_intercept_template.json"
             # 添加测试过程中涉及的response pages
-            template_path["profiles_hijack_file_path"] = parameter["root_path"] + "/support/ui_utils/profile/profile_file/hijack_file/" + test_data["profile_condition"][0]["content_name"]
-
+            if "profile_condition" in test_data and len(test_data["profile_condition"]) > 0:
+                tmp_dir = parameter["root_path"] + "/support/ui_utils/profile/profile_file/"
+                profile_type = test_data["profile_condition"][0]["profile_type"].strip()
+                if profile_type == "response_page":
+                    template_path["profiles_deny_path"] = tmp_dir + "response_pages/" + test_data["profile_condition"][0]["content_name"]
+                elif profile_type == "hijack_files":
+                    template_path["profiles_hijack_file_path"] = tmp_dir + "hijack_file/" + test_data["profile_condition"][0]["content_name"]
+                elif profile_type == "insert_profile":
+                    template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
+                elif profile_type == "run_script":
+                    template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][0]["content_name"]
+                else:
+                    print("check profile path")
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()

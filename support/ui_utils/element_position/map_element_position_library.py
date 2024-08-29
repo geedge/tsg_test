@@ -1377,6 +1377,7 @@ def replace_paras(parameter):
     parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
     parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
     parameter["is_log"] = parse.get("is_log", "ui")
+    parameter["script_type"] = parse.get("debug_script_type", "script_type")
 
     #project_path = parse.get("root_path", "path")
     #parameter["root_path"] = project_path
