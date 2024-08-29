@@ -104,6 +104,7 @@ policyRulePage_addCondition_mailFrom_posXpath = "//div[@class='SourceList list-b
 policyRulePage_addCondition_mailTo_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='To']"
 policyRulePage_addCondition_mailAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
 policyRulePage_addCondition_mailAttachmentName_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Attachment Name']"
+policyRulePage_addCondition_mailAttachmentContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Attachment Content']"
 
 policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -186,6 +187,16 @@ policyRulePage_addMailAttachmentName_posXpath = "//div[@zs-label='FilterItem']//
 policyRulePage_searchMailAttachmentName_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
 policyRulePage_selectMailAttachmentName_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeMailAttachmentName_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+#mail attachment content
+policyRulePage_addMailAttachmentContent_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Attachment Content']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchMailAttachmentContent_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectMailAttachmentContent_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeMailAttachmentContent_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+#add mail content
+policyRulePage_addMailContent_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Content']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchMailContent_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
+policyRulePage_selectMailContent_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
+policyRulePage_closeMailContent_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 # security
 securityRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
 securityRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"

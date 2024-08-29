@@ -834,6 +834,24 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchMailSubject_posXpath": monitorRulePage_searchmailSubject_posXpath,
                     "policyRulePage_selectMailSubject_posXpath": monitorRulePage_selectmailSubject_posXpath,
                     "policyRulePage_closeMailSubject_posXpath": monitorRulePage_closemailSubject_posXpath,
+                    #添加mail attachment name
+                    "policyRulePage_addConditionMailAttachmentName_posXpath": policyRulePage_addCondition_mailAttachmentName_posXpath,
+                    "policyRulePage_addMailAttachmentName_posXpath": policyRulePage_addMailAttachmentName_posXpath,
+                    "policyRulePage_searchMailAttachmentName_posXpath": policyRulePage_searchMailAttachmentName_posXpath,
+                    "policyRulePage_selectMailAttachmentName_posXpath": policyRulePage_selectMailAttachmentName_posXpath,
+                    "policyRulePage_closeMailAttachmentName_posXpath": policyRulePage_closeMailAttachmentName_posXpath,
+                    #添加mail attachment content
+                    "policyRulePage_addConditionMailAttachmentContent_posXpath": policyRulePage_addCondition_mailAttachmentContent_posXpath,
+                    "policyRulePage_addMailAttachmentContent_posXpath": policyRulePage_addMailAttachmentContent_posXpath,
+                    "policyRulePage_searchMailAttachmentContent_posXpath": policyRulePage_searchMailAttachmentContent_posXpath,
+                    "policyRulePage_selectMailAttachmentContent_posXpath": policyRulePage_selectMailAttachmentContent_posXpath,
+                    "policyRulePage_closeMailAttachmentContent_posXpath": policyRulePage_closeMailAttachmentContent_posXpath,
+                    #添加mail content
+                    "policyRulePage_addConditionMailContent_posXpath": policyRulePage_addCondition_mailContent_posXpath,
+                    "policyRulePage_addMailContent_posXpath": policyRulePage_addMailContent_posXpath,
+                    "policyRulePage_searchMailContent_posXpath": policyRulePage_searchMailContent_posXpath,
+                    "policyRulePage_selectMailContent_posXpath": policyRulePage_selectMailContent_posXpath,
+                    "policyRulePage_closeMailContent_posXpath": policyRulePage_closeMailContent_posXpath,
                     # qname
                     "policyRulePage_addConditionQname_posXpath": monitorRulePage_addCondition_qname_posXpath,
                     "policyRulePage_addQname_posXpath": monitorRulePage_addQname_posXpath,
@@ -852,12 +870,6 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchFtpAccount_posXpath": monitorRulePage_searchftpAccount_posXpath,
                     "policyRulePage_selectFtpAccount_posXpath": monitorRulePage_selectftpAccount_posXpath,
                     "policyRulePage_closeFtpAccount_posXpath": monitorRulePage_closeftpAccount_posXpath,
-                    #添加mail attachment name
-                    "policyRulePage_addConditionMailAttachmentName_posXpath": policyRulePage_addCondition_mailAttachmentName_posXpath,
-                    "policyRulePage_addMailAttachmentName_posXpath": policyRulePage_addMailAttachmentName_posXpath,
-                    "policyRulePage_searchMailAttachmentName_posXpath": policyRulePage_searchMailAttachmentName_posXpath,
-                    "policyRulePage_selectMailAttachmentName_posXpath": policyRulePage_selectMailAttachmentName_posXpath,
-                    "policyRulePage_closeMailAttachmentName_posXpath": policyRulePage_closeMailAttachmentName_posXpath,
                 },
                 "search": {
                     "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,

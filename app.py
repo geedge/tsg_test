@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 import configparser
-import os
 import glob
 import importlib
 import subprocess

@@ -2,6 +2,7 @@ from support.instance_utils.manipulation_instance_generator import ManipulationI
 from support.instance_utils.dos_protection_instance_generator import DosProtectionInstanceGenerator
 from support.instance_utils.statistics_instance_generator import StatisticsInstanceGenerator
 from support.instance_utils.security_instance_generator import SecurityGenerator
+from support.instance_utils.monintor_instance_generator import MonitorInstanceGenerator
 
 class CaseInstanceGenerator:
     def __init__(self, test_data, parameter):
@@ -16,7 +17,7 @@ class CaseInstanceGenerator:
         if test_data["policy_type"] == "security":
             result = self._run_security(test_data, parameter)
         elif test_data["policy_type"] == "monitor":
-            print("todo")
+            result = self._run_monitor(test_data,parameter)
         elif test_data["policy_type"] == "statistics":
             result = self._run_statistics(test_data, parameter)
         elif test_data["policy_type"] == "dos_protection":
@@ -39,7 +40,9 @@ class CaseInstanceGenerator:
         return result
 
     def _run_monitor(self, test_data, parameter):
-        print("todo")
+        self.monitor = MonitorInstanceGenerator(test_data,parameter)
+        result = self.monitor.run()
+        return result
 
     def _run_statistics(self, test_data, parameter):
         self.statistics = StatisticsInstanceGenerator(test_data, parameter)
@@ -69,7 +72,7 @@ class CaseInstanceGenerator:
         if self.test_data["policy_type"] == "security":
              self.security.delete_data()
         elif self.test_data["policy_type"] == "monitor":
-            print("todo")
+             self.monitor.delete_data()
         elif self.test_data["policy_type"] == "statistics":
             self.statistics.delete_data()
         elif self.test_data["policy_type"] == "dos_protection":

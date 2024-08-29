@@ -71,11 +71,9 @@ class SecurityGenerator:
                 object_data = test_data["condition"]["source_ip"]
                 for i in range(len(object_data)):
                     tmp_name_dict = {}
-                    print(object_data[i])
                     tmp_name_dict["type"] = object_data[i]['object_type']
                     tmp_name_dict["name"] = object_data[i]['name']
                     self.ui_name_list.append(tmp_name_dict)
-                    print(self.ui_name_list)
             # 构建server fqdn 的name list
             if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
                 object_data = test_data["condition"]["server_fqdn"]
