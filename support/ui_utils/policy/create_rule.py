@@ -243,7 +243,7 @@ class CreateRule:
                 tmp_protocol_field_data_split_by_type = []   # 将 protocol_filed 分类临时存储
                 tmp_url, tmp_request_header, tmp_response_header, tmp_request_body, tmp_response_body, tmp_ftp_account, tmp_ftp_content, tmp_cn, tmp_san, tmp_qname = [], [], [], [], [], [], [], [], [], []
                 tmp_boolean= []
-                tmp_mail_account, tmp_mail_from, tmp_mail_to,tmp_mail_subject,tmp_mail_attachment_name= [],[],[],[],[]
+                tmp_mail_account, tmp_mail_from, tmp_mail_to,tmp_mail_subject,tmp_mail_attachment_name,tmp_mail_content,tmp_mail_attachment_content= [],[],[],[],[],[],[]
                 for _ in range(len(protocol_field_datas)):   # 将 rul、request_header等数据分类处理
                     tmp_item = protocol_field_datas[_]
                     if tmp_item["object_type"] == "url":
@@ -275,6 +275,10 @@ class CreateRule:
                             tmp_mail_subject.append(tmp_item)
                         elif tmp_item["item"][0]["item_type"] == "mail_attachment_name":
                             tmp_mail_attachment_name.append(tmp_item)
+                        elif tmp_item["item"][0]["item_type"] == "mail_attachment_content":
+                            tmp_mail_attachment_content.append(tmp_item)
+                        elif tmp_item["item"][0]["item_type"] == "mail_content":
+                            tmp_mail_content.append(tmp_item)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
                     elif tmp_item["object_type"] == "account":
@@ -306,6 +310,8 @@ class CreateRule:
                 if len(tmp_mail_account) > 0:tmp_protocol_field_data_split_by_type.append(tmp_mail_account)
                 if len(tmp_mail_subject) > 0:tmp_protocol_field_data_split_by_type.append(tmp_mail_subject)
                 if len(tmp_mail_attachment_name) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_attachment_name)
+                if len(tmp_mail_attachment_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_attachment_content)
+                if len(tmp_mail_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_content)
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], tmp_protocol_field_data_split_by_type)
                 for protocol_field_data in tmp_protocol_field_data_split_by_type:
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], protocol_field_data)
@@ -343,6 +349,10 @@ class CreateRule:
                                 self.add_protocol_field(protocol_field_data, "MailSubject", create_element_position, temp)
                             elif item_dict["item_type"] == "mail_attachment_name":
                                 self.add_protocol_field(protocol_field_data, "MailAttachmentName", create_element_position, temp)
+                            elif item_dict["item_type"] == "mail_attachment_content":
+                                self.add_protocol_field(protocol_field_data, "MailAttachmentContent", create_element_position, temp)
+                            elif item_dict["item_type"] == "mail_content":
+                                self.add_protocol_field(protocol_field_data, "MailContent", create_element_position, temp)
                             else:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == "account":
