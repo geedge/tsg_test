@@ -84,7 +84,7 @@ def run(parameter):
             },
             "multiple_dimension": "true",
             "dimensions": ["Time","Rule","Profile ID","Device Group", "Data Center"],
-            "isallowdimensions": "0",
+
             "sub_type": "",
             "order_by":"verifyedit2",
             "filter": [
@@ -129,7 +129,7 @@ def run(parameter):
         ]
 
         select_metric_type = ["single", "multiple"]
-        multiple_dimension = ["true", "false"]
+        multiple_dimension = [True,False]
         #随机metric与dimension格式
         metric_type = random.choice(select_metric_type)
         multiple_dimension = random.choice(multiple_dimension)
@@ -152,9 +152,9 @@ def run(parameter):
         if metric_type == "single":
             metric_type = "multiple"
         else: metric_type = "single"
-        if multiple_dimension == "true":
-            multiple_dimension = "false"
-        else: multiple_dimension = "true"
+        if multiple_dimension == True:
+            multiple_dimension = False
+        else: multiple_dimension = True
 
         #编辑操作
         edit_dashboard = EditDashboard(driver)

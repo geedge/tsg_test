@@ -40,7 +40,7 @@ def run(parameter):
             "dimensions": ["Device Group"],
             "order_by": "",
             "filter": "",
-            "isallowdimensions": "0",
+
             "sub_type": ""
         }
 
