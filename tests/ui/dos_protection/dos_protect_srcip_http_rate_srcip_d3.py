@@ -114,12 +114,6 @@ def run(parameter):
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
         
-        # 脚本结束时间和耗时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-        
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
         exception_result = str(e)
@@ -128,6 +122,11 @@ def run(parameter):
     finally:
         # 清理环境并删除配置
         case_instance_generator.delete_data()
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
