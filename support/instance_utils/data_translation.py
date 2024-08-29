@@ -281,6 +281,7 @@ class DataTranslation:
         return profile
     
 if __name__ == '__main__':
+    policy_type = "dos_protection"
     test_data =  {
         "condition": {
             "source_ip": [
@@ -340,34 +341,34 @@ if __name__ == '__main__':
                     ],
                 }
             ],
-            "action_parameter": {
-                "statistics_template": [
-                    {
-                        "name": "stats_table_all_bytes_dim_c_ip_s_ip",
-                        "profile_type": "statistics_template",
-                        "charts": [
-                            {
-                                "chart_name": "table_all_bytes_dim_c_ip_s_ip",
-                                "visualization_type": "Table",
-                                "metrics": [
-                                    "in_bytes:SUM:incoming bytes",
-                                    "out_bytes:SUM:outgoing bytes",
-                                    "in_bytes+out_bytes:SUM:all bytes"
-                                ],
-                                "dimensions": [
-                                    "client_ip",
-                                    "server_ip"
-                                ],
-                                "order_by": "all bytes",
-                                "row_limit": "100",
-                                "min_in_size": "0",
-                                "min_out_size": "0"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "profile": [
+        "action_parameter": {
+            "statistics_template": [
+                {
+                    "name": "stats_table_all_bytes_dim_c_ip_s_ip",
+                    "profile_type": "statistics_template",
+                    "charts": [
+                        {
+                            "chart_name": "table_all_bytes_dim_c_ip_s_ip",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:SUM:incoming bytes",
+                                "out_bytes:SUM:outgoing bytes",
+                                "in_bytes+out_bytes:SUM:all bytes"
+                            ],
+                            "dimensions": [
+                                "client_ip",
+                                "server_ip"
+                            ],
+                            "order_by": "all bytes",
+                            "row_limit": "100",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        }
+                    ]
+                }
+            ]
+        },
+        "profile": [
                 {
                     "name": "mirror_block_disabled_vxlan_activeip_bfd",
                     "profile_type": "create",
@@ -390,4 +391,4 @@ if __name__ == '__main__':
         }
     }
     translation = DataTranslation()
-    temp_test_data = translation.data_translation(test_data["condition"])
+    temp_test_data = translation.data_translation(policy_type, test_data)
