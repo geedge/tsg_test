@@ -1,49 +1,24 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
-
-from support.api_utils.organize_config import OrganizeConfig
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
-from support.report import GenerateReport
 from support.report_update import ReportUpdate
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from support.api_utils.delete_policy import *
-from support.ui_utils.profile.search_profile import SearchProfile
-from support.ui_utils.object.create_object import CreateObject
-from support.ui_utils.object.search_object import SearchObject
-from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.policy.create_rule import CreateRule
-from support.ui_utils.policy.search_rule import SearchRule
-from support.ui_utils.policy.delete_rule import DeleteRule
-from support.ui_utils.policy.edit_rule import EditRule
-from support.packet_generator.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
-from support.api_utils.analysis_result import *
-from support.api_utils.log_in import *
-from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
-from support.ui_utils.profile.delete_profile import DeleteProfile
-import support.ui_utils.env
-import traceback
-
-#from support.report import *
 from datetime import datetime
 
 
 def run(parameter):
     try:
+        case_instance_generator = None
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
+        exception_result = ""
+        result = {}
 
         # 脚本启动时间
         start_time = time.time()
-
-        # 环境初始化
-        support.ui_utils.env.initiate_selenium_request()
-        driver = support.ui_utils.env.my_driver()
-        support.ui_utils.env.setup()
 
         # 测试数据
         test_data = {
@@ -53,7 +28,7 @@ def run(parameter):
             "rule_name": os.path.splitext(os.path.basename(__file__))[0],
             "rule_action": "allow",
             "rule_type": "create",
-            "is_mirror": "on",
+            "is_mirror": "off",
             "mirror_type": "mail",
             "condition": {
                 "source_ip": [
@@ -80,7 +55,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monitor_mail_attachment_name",
+                        "name": "monitor_mail_content",
                         "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
@@ -90,10 +65,10 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_attachment_name",
+                                "item_type": "mail_attachment_content",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "test"
+                                    "172"
                                 ]
                             }
                         ],
@@ -103,7 +78,7 @@ def run(parameter):
             "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [
-                {"query_field_key": "mail_attachment_name", "query_value": "test1214.txt"}
+                {"query_field_key": "decoded_as", "query_value": "MAIL"}
             ],
             "traffic": {
                 "protocol": "",
