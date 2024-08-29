@@ -18,8 +18,10 @@ from support.packet_generator.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list, create_pre_policy, delete_pre_policy
 from support.ui_utils.element_position.map_element_position_library import manipulation_profile_no_create_list, manipulation_object_no_create_list
 from support.api_utils.analysis_result import AnalysisResult
+from support.instance_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
+
 import copy
 
 
@@ -247,6 +249,14 @@ class ManipulationInstanceGenerator:
             parameter["script_type"] = "api"
 
             self.api_name_list = []
+
+            # 数据转换，适配API的test_data
+            translation = DataTranslation()
+            temp_test_data = translation.data_translation(test_data["policy_type"], test_data)
+            test_data["obj_condition"] = temp_test_data["obj_condition"]
+            test_data["application"] = temp_test_data["application"]
+            test_data["profile_condition"] = temp_test_data["profile_condition"]
+            print(test_data)
 
             # 添加测试过程中涉及的template
             template_path = {}
