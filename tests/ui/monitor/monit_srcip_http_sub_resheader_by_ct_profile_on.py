@@ -69,24 +69,29 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monitor_ftp_uri",
-                        "object_type": "url",
+                        "name": "monitor_http_request_header",
+                        "object_type": "http_signature",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
-                        "items": [
+                        "plus": True,
+                        "Statistics": "None",
+                        "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "ftp://202.38.97.230/pub*"
-                                # 完整路径：ftp://202.38.97.230/pub/.mirror2/releases.ubuntu.com/robots.txt
-                            }
-                        ],
+                                "item_type": "request_header",
+                                "item_key": "User-Agent",
+                                "item_value": "TEXT",
+                                "value": [
+                                    "curl"
+                                ]
+                            },
+                        ]
                     }
                  ],
                 "application": [
                     {
-                        "name": "ftp",  #
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -101,11 +106,10 @@ def run(parameter):
                 }
             ],
             "is_mirror":"on",
-            "mirror_type": "ftp",
+            "mirror_type": "http",
              "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [
-                                {"query_field_key": "ftp_account", "query_value": "anonymous"},
+            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "HTTP"},
                                 {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
                                 {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
                             ],
@@ -119,9 +123,9 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "ftp_login_ftpuser"
+                "pcap_name": "http_87pkts"
             },
-            "token": ""
+            "token":""
         }
 
         log_in = LogIn()
@@ -371,7 +375,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "ui",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",

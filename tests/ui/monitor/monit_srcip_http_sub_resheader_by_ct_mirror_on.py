@@ -68,38 +68,39 @@ def run(parameter):
                 ],
                 "application": [
                     {
-                        "name": "ftp",  #
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                "protocol_filed": [
-                    {
-                        "name": "monitor_ftp_content",
-                        "object_type": "keywords",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ftp_content",
-                                "item_value": "HEX",
-                                "value": [
-                                    "706f6f6c" #pool
-                                ]
-                            }
-                        ],
-                    }
-                ],
+                 "protocol_filed": [
+                     {
+                         "name": "monitor_http_response_header",
+                         "object_type": "http_signature",
+                         "item_operation": "add",
+                         "select_type": False,
+                         "negate": False,
+                         "plus": True,
+                         "Statistics": "None",
+                         "item": [
+                             {
+                                 "item_operation": "add",
+                                 "item_type": "response_header",
+                                 "item_key": "Content-Type",
+                                 "item_value": "TEXT",
+                                 "value": [
+                                     "text/html",
+                                 ]
+                             }
+                         ],
+                     }
+                 ],
             },
             "is_mirror":"on",
-            "mirror_type": "ftp",
+            "mirror_type": "http",
              "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "FTP"},
+            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "HTTP"},
                                 {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
                                 {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
                             ],
@@ -113,7 +114,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "url_ftp"
+                "pcap_name": "http_87pkts"
             },
             "token":""
         }

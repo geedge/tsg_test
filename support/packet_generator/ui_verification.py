@@ -252,220 +252,222 @@ class UiVerification:
                 sc_active_ip_list = ip_str.split(",")
                 effective_device_tag = ["group-xxg-tsgx","center-xxg-tsgx"]
                 # traffic_result = {'total_packets': 175, 'total_packets_sent': 45, 'total_packets_received': 130, 'total_bytes': 180025, 'total_bytes_sent': 5799, 'total_bytes_received': 174226, 'total_syn_pkt': 1}
-                if len(traffic_result) > 0:
-                    if sent_pkts == 0 and received_pkts == 0:
-                        if cfg_list["sf_method"] == "vxlan_g":
-                            if cfg_list["sf_dest_ip"] not in sc_active_ip_list:
-                                metric_result = True
-                            elif cfg_list["sf_dest_ip"] in sc_active_ip_list and cfg_list["admin_status"] == 0:
-                                metric_result = True
-                            elif cfg_list["device_tag"] not in effective_device_tag and cfg_list["load_balance_localization"] == "nearby":
-                                metric_result = True
-                            else:
-                                metric_result = False
-                        elif cfg_list["sf_method"] == "layer2_switch":
-                            if cfg_list["admin_status"] == 0:
-                                metric_result = True
-                            elif cfg_list["device_tag"] not in effective_device_tag and cfg_list["load_balance_localization"] == "nearby":
-                                metric_result = True
-                            else:
-                                metric_result = False
+                statistics_sc_info_list = cfg_list["statistics_sc_info_list"]
+                for sc_info in statistics_sc_info_list:
+                    if len(traffic_result) > 0:
+                        if sent_pkts == 0 and received_pkts == 0:
+                            if sc_info["sf_method"] == "vxlan_g":
+                                if sc_info["sf_dest_ip"] not in sc_active_ip_list:
+                                    metric_result = True
+                                elif sc_info["sf_dest_ip"] in sc_active_ip_list and sc_info["admin_status"] == 0:
+                                    metric_result = True
+                                elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                    metric_result = True
+                                else:
+                                    metric_result = False
+                            elif sc_info["sf_method"] == "layer2_switch":
+                                if sc_info["admin_status"] == 0:
+                                    metric_result = True
+                                elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                    metric_result = True
+                                else:
+                                    metric_result = False
+                        else:
+                            if sc_info["targeted_traffic"] == "raw":
+                                byte_value = traffic_result["total_bytes"]
+                                pkt_value = traffic_result["total_packets"]
+                                if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in sc_active_ip_list:
+                                    if 1000 <= pkt_value < 10000:
+                                        pkt_value_temp = round(pkt_value/1000, 2)
+                                    elif pkt_value < 1000:
+                                        pkt_value_temp = pkt_value
+                                    if 1024 <= byte_value < 1048576:
+                                        total_bytes_temp = round(byte_value/1024.0, 2)
+                                    elif byte_value < 1024:
+                                        total_bytes_temp = byte_value
+                                    elif 1048576 <= byte_value < 1073741824:
+                                        total_bytes_temp = round(byte_value/1048576.0, 2)
+                                    if sc_info["type"] == 1:
+                                        if sent_bytes == received_bytes == total_bytes_temp and sent_pkts == received_pkts == pkt_value_temp:
+                                            metric_result = True
+                                        else:
+                                            metric_result = False
+                                    elif sc_info["type"] == 2:
+                                        if sent_bytes == total_bytes_temp and sent_pkts == pkt_value_temp and received_bytes == received_pkts == 0:
+                                            metric_result = True
+                                        else:
+                                            metric_result = False
+                                    else:
+                                        metric_result = False
+                                elif sc_info["sf_method"] == "layer2_switch":
+                                    if 1000 <= pkt_value < 10000:
+                                        pkt_value_temp = round(pkt_value/1000, 2)
+                                    elif pkt_value < 1000: 
+                                        pkt_value_temp = pkt_value
+                                    if 1024 <= byte_value < 1048576:
+                                        total_bytes_temp = round(byte_value/1024.0, 2)
+                                    elif byte_value < 1024:
+                                        total_bytes_temp = byte_value
+                                    elif 1048576 <= byte_value < 1073741824:
+                                        total_bytes_temp = round(byte_value/1048576.0, 2)
+                                    if sc_info["type"] == 2:
+                                        if sent_bytes == total_bytes_temp and sent_pkts == pkt_value_temp and received_bytes == received_pkts == 0:
+                                            metric_result = True
+                                        else:
+                                            metric_result = False
+                                    else:
+                                        metric_result = False
+                            elif sc_info["targeted_traffic"] == "decrypted":
+                                if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in sc_active_ip_list:
+                                    if sc_info["type"] == 1:
+                                        if sent_bytes == received_bytes and sent_pkts == received_pkts:
+                                            metric_result = True
+                                        else:
+                                            metric_result = False
+                                    elif sc_info["type"] == 2:
+                                        if sent_bytes != 0 and sent_pkts != 0 and received_bytes == received_pkts == 0:
+                                            metric_result = True
+                                        else:
+                                            metric_result = False
+                                    else:
+                                        metric_result = False
+                                elif sc_info["sf_method"] == "layer2_switch":
+                                    if sc_info["type"] == 2:
+                                        if sent_bytes != 0 and sent_pkts != 0 and received_bytes == received_pkts == 0:
+                                            metric_result = True
+                                        else:
+                                            metric_result = False
+                                    else:
+                                        metric_result = False   
+                    if metric_result == True:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is True', flush=True)  
                     else:
-                        if cfg_list["targeted_traffic"] == "raw":
-                            byte_value = traffic_result["total_bytes"]
-                            pkt_value = traffic_result["total_packets"]
-                            if cfg_list["sf_method"] == "vxlan_g" and cfg_list["sf_dest_ip"] in sc_active_ip_list:
-                                if 1000 <= pkt_value < 10000:
-                                    pkt_value_temp = round(pkt_value/1000, 2)
-                                elif pkt_value < 1000:
-                                    pkt_value_temp = pkt_value
-                                if 1024 <= byte_value < 1048576:
-                                    total_bytes_temp = round(byte_value/1024.0, 2)
-                                elif byte_value < 1024:
-                                    total_bytes_temp = byte_value
-                                elif 1048576 <= byte_value < 1073741824:
-                                    total_bytes_temp = round(byte_value/1048576.0, 2)
-                                if cfg_list["type"] == 1:
-                                    if sent_bytes == received_bytes == total_bytes_temp and sent_pkts == received_pkts == pkt_value_temp:
-                                        metric_result = True
-                                    else:
-                                        metric_result = False
-                                elif cfg_list["type"] == 2:
-                                    if sent_bytes == total_bytes_temp and sent_pkts == pkt_value_temp and received_bytes == received_pkts == 0:
-                                        metric_result = True
-                                    else:
-                                        metric_result = False
-                                else:
-                                    metric_result = False
-                            elif cfg_list["sf_method"] == "layer2_switch":
-                                if 1000 <= pkt_value < 10000:
-                                    pkt_value_temp = round(pkt_value/1000, 2)
-                                elif pkt_value < 1000: 
-                                    pkt_value_temp = pkt_value
-                                if 1024 <= byte_value < 1048576:
-                                    total_bytes_temp = round(byte_value/1024.0, 2)
-                                elif byte_value < 1024:
-                                    total_bytes_temp = byte_value
-                                elif 1048576 <= byte_value < 1073741824:
-                                    total_bytes_temp = round(byte_value/1048576.0, 2)
-                                if cfg_list["type"] == 2:
-                                    if sent_bytes == total_bytes_temp and sent_pkts == pkt_value_temp and received_bytes == received_pkts == 0:
-                                        metric_result = True
-                                    else:
-                                        metric_result = False
-                                else:
-                                    metric_result = False
-                        elif cfg_list["targeted_traffic"] == "decrypted":
-                            if cfg_list["sf_method"] == "vxlan_g" and cfg_list["sf_dest_ip"] in sc_active_ip_list:
-                                if cfg_list["type"] == 1:
-                                    if sent_bytes == received_bytes and sent_pkts == received_pkts:
-                                        metric_result = True
-                                    else:
-                                        metric_result = False
-                                elif cfg_list["type"] == 2:
-                                    if sent_bytes != 0 and sent_pkts != 0 and received_bytes == received_pkts == 0:
-                                        metric_result = True
-                                    else:
-                                        metric_result = False
-                                else:
-                                    metric_result = False
-                            elif cfg_list["sf_method"] == "layer2_switch":
-                                if cfg_list["type"] == 2:
-                                    if sent_bytes != 0 and sent_pkts != 0 and received_bytes == received_pkts == 0:
-                                        metric_result = True
-                                    else:
-                                        metric_result = False
-                                else:
-                                    metric_result = False   
-                if metric_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is True', flush=True)  
-                else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is False', flush=True)      
-                if int(is_log) == 1:
-                    # 跳转至session record路径
-                    sc_rule_id = int(test_data["rule_id"])
-                    my_driver.find_element(By.ID,"Log").click()
-                    time.sleep(1)
-                    my_driver.find_element(By.ID,"Log_SesssionRecords").click()
-                    time.sleep(1.5)
-                    # 以policy id作为filter查找命中策略的session
-                    my_driver.find_element(By.ID,"addFilter").click()
-                    time.sleep(1)
-                    my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").click()
-                    my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").send_keys("service")
-                    time.sleep(1.5)
-                    my_driver.find_element(By.ID,"Service Chaining Rule List26-_Label_UnrecognizedExp_Expression_groupItem_TagsSearch_FacedtedSearch_Search_VPanel_SessionLog_Home_App_anonymousComponent").click()
-                    my_driver.find_element(By.ID,"operatorhas").click()
-                    time.sleep(1)
-                    my_driver.find_element(By.XPATH,"//div[@class='el-tooltip el-input el-input--mini']//input").send_keys(sc_rule_id)
-                    btn = my_driver.find_element(By.ID,"facedQuery")
-                    my_driver.execute_script("arguments[0].click()", btn)
-                    time.sleep(1.5)
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from ui log page.", flush=True)
-                    for i in range(50) :
-                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
-                        log_number = log_number_str.split(": ")[-1]
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" at ui page is False', flush=True)      
+                    if int(is_log) == 1:
+                        # 跳转至session record路径
+                        sc_rule_id = int(test_data["rule_id"])
+                        my_driver.find_element(By.ID,"Log").click()
+                        time.sleep(1)
+                        my_driver.find_element(By.ID,"Log_SesssionRecords").click()
+                        time.sleep(1.5)
+                        # 以policy id作为filter查找命中策略的session
+                        my_driver.find_element(By.ID,"addFilter").click()
+                        time.sleep(1)
+                        my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").click()
+                        my_driver.find_element(By.XPATH,"//div[@class='el-input el-input--small el-input--suffix is-focus']//input").send_keys("service")
+                        time.sleep(1.5)
+                        my_driver.find_element(By.ID,"Service Chaining Rule List26-_Label_UnrecognizedExp_Expression_groupItem_TagsSearch_FacedtedSearch_Search_VPanel_SessionLog_Home_App_anonymousComponent").click()
+                        my_driver.find_element(By.ID,"operatorhas").click()
+                        time.sleep(1)
+                        my_driver.find_element(By.XPATH,"//div[@class='el-tooltip el-input el-input--mini']//input").send_keys(sc_rule_id)
+                        btn = my_driver.find_element(By.ID,"facedQuery")
+                        my_driver.execute_script("arguments[0].click()", btn)
+                        time.sleep(1.5)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from ui log page.", flush=True)
+                        for i in range(50) :
+                            log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
+                            log_number = log_number_str.split(": ")[-1]
+                            if int(log_number) == 0:
+                                i += 1
+                                my_driver.execute_script("arguments[0].click()", btn)
+                                time.sleep(7)
+                            elif int(log_number) > 0:
+                                break
                         if int(log_number) == 0:
-                            i += 1
-                            my_driver.execute_script("arguments[0].click()", btn)
-                            time.sleep(7)
-                        elif int(log_number) > 0:
-                            break
-                    if int(log_number) == 0:
-                        log_result = False
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to get log value from log page.", flush=True)
-                    else:
-                        # 点击展开
-                        my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
-                        time.sleep(2)
-                        parse = configparser.ConfigParser()
-                        parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")
-                        parse.read(parse_dir, encoding="utf-8")
-                        temp_log_result_list = []
-                        for t in range(len(test_data["log_query_param"])):
-                            log_query_key = test_data["log_query_param"][t]["query_field_key"]
-                            if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
-                                test_data["log_query_param"][t]["query_value"] = cfg_list["sf_id_list"]
-                            elif log_query_key == "sent_pkts":
-                                test_data["log_query_param"][t]["query_value"] = traffic_result["total_packets_sent"]
-                            elif log_query_key == "received_pkts":
-                                test_data["log_query_param"][t]["query_value"] = traffic_result["total_packets_received"]
-                            elif log_query_key == "sent_bytes":
-                                test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_sent"]
-                            elif log_query_key == "received_bytes":
-                                test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_received"] 
-                            log_str = parse.get("log", log_query_key)
-                            if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
-                                log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue1}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span \
-                                    | //div[normalize-space(text())='{replaceValue2}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//div[@style='white-space: nowrap;']".format(replaceValue1=log_str,replaceValue2=log_str)
-                                temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
-                                if temp_value == "[]":
-                                    if cfg_list["sf_method"] == "vxlan_g":
-                                        if cfg_list["sf_dest_ip"] not in sc_active_ip_list:
-                                            temp_log_result = True
-                                        elif cfg_list["sf_dest_ip"] in sc_active_ip_list and cfg_list["admin_status"] == 0:
-                                            temp_log_result = True
-                                        elif cfg_list["device_tag"] not in effective_device_tag and cfg_list["load_balance_localization"] == "nearby":
+                            log_result = False
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to get log value from log page.", flush=True)
+                        else:
+                            # 点击展开
+                            my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
+                            time.sleep(2)
+                            parse = configparser.ConfigParser()
+                            parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")
+                            parse.read(parse_dir, encoding="utf-8")
+                            temp_log_result_list = []
+                            for t in range(len(test_data["log_query_param"])):
+                                log_query_key = test_data["log_query_param"][t]["query_field_key"]
+                                if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
+                                    test_data["log_query_param"][t]["query_value"] = sc_info["sf_id_list"]
+                                elif log_query_key == "sent_pkts":
+                                    test_data["log_query_param"][t]["query_value"] = traffic_result["total_packets_sent"]
+                                elif log_query_key == "received_pkts":
+                                    test_data["log_query_param"][t]["query_value"] = traffic_result["total_packets_received"]
+                                elif log_query_key == "sent_bytes":
+                                    test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_sent"]
+                                elif log_query_key == "received_bytes":
+                                    test_data["log_query_param"][t]["query_value"] = traffic_result["total_bytes_received"] 
+                                log_str = parse.get("log", log_query_key)
+                                if log_query_key == "sc_rsp_raw" or log_query_key == "sc_rsp_decrypted":
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue1}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span \
+                                        | //div[normalize-space(text())='{replaceValue2}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//div[@style='white-space: nowrap;']".format(replaceValue1=log_str,replaceValue2=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                    if temp_value == "[]":
+                                        if sc_info["sf_method"] == "vxlan_g":
+                                            if sc_info["sf_dest_ip"] not in sc_active_ip_list:
+                                                temp_log_result = True
+                                            elif sc_info["sf_dest_ip"] in sc_active_ip_list and sc_info["admin_status"] == 0:
+                                                temp_log_result = True
+                                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                                temp_log_result = True
+                                            else:
+                                                temp_log_result = False
+                                        elif sc_info["sf_method"] == "layer2_switch":
+                                            if sc_info["admin_status"] == 0:
+                                                temp_log_result = True
+                                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                                temp_log_result = True
+                                            else:
+                                                temp_log_result = False 
+                                    else:
+                                        temp_value = temp_value.strip('[] ')   
+                                        temp_value_list = temp_value.split(',')
+                                        log_value_list = []
+                                        for item in temp_value_list:
+                                            log_value_list.append(int(item))
+                                        if log_value_list == test_data["log_query_param"][t]["query_value"]:
                                             temp_log_result = True
                                         else:
                                             temp_log_result = False
-                                    elif cfg_list["sf_method"] == "layer2_switch":
-                                        if cfg_list["admin_status"] == 0:
-                                            temp_log_result = True
-                                        elif cfg_list["device_tag"] not in effective_device_tag and cfg_list["load_balance_localization"] == "nearby":
-                                            temp_log_result = True
-                                        else:
-                                            temp_log_result = False 
-                                else:
-                                    temp_value = temp_value.strip('[] ')   
-                                    temp_value_list = temp_value.split(',')
-                                    log_value_list = []
-                                    for item in temp_value_list:
-                                        log_value_list.append(int(item))
-                                    if log_value_list == test_data["log_query_param"][t]["query_value"]:
+                                elif log_query_key == "sent_pkts" or log_query_key == "received_pkts":
+                                    log_pkt_value = test_data["log_query_param"][t]["query_value"]
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    log_pkt_temp = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                    temp_value = int(log_pkt_temp.replace(",",""))
+                                    if temp_value == log_pkt_value:
                                         temp_log_result = True
                                     else:
                                         temp_log_result = False
-                            elif log_query_key == "sent_pkts" or log_query_key == "received_pkts":
-                                log_pkt_value = test_data["log_query_param"][t]["query_value"]
-                                log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                log_pkt_temp = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
-                                temp_value = int(log_pkt_temp.replace(",",""))
-                                if temp_value == log_pkt_value:
-                                    temp_log_result = True
-                                else:
-                                    temp_log_result = False
-                            elif log_query_key == "sent_bytes" or log_query_key == "received_bytes":
-                                log_byte_value = test_data["log_query_param"][t]["query_value"]
-                                if 1024 <= log_byte_value < 1048576:
-                                    log_bytes_temp = str(round(log_byte_value/1024.0, 2)) + " KB"
-                                elif log_byte_value < 1024:
-                                    log_bytes_temp = str(log_byte_value) + " B"
-                                elif 1048576 <= log_byte_value < 1073741824:
-                                    log_bytes_temp = str(round(log_byte_value/1048576.0, 2)) + " MB"
-                                log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
-                                if temp_value == log_bytes_temp:
-                                    temp_log_result = True
-                                else:
-                                    temp_log_result = False
-                            elif log_query_key == "ssl_esni_flag" or log_query_key == "ssl_ech_flag" or log_query_key == "ssl_sni" \
-                                or log_query_key == "ip_protocol":
-                                log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
-                                if temp_value == test_data["log_query_param"][t]["query_value"]:
-                                    temp_log_result = True
-                                else:
-                                    temp_log_result = False
-                            temp_log_result_list.append(temp_log_result)
-                        if False not in temp_log_result_list:
-                                log_result = True
+                                elif log_query_key == "sent_bytes" or log_query_key == "received_bytes":
+                                    log_byte_value = test_data["log_query_param"][t]["query_value"]
+                                    if 1024 <= log_byte_value < 1048576:
+                                        log_bytes_temp = str(round(log_byte_value/1024.0, 2)) + " KB"
+                                    elif log_byte_value < 1024:
+                                        log_bytes_temp = str(log_byte_value) + " B"
+                                    elif 1048576 <= log_byte_value < 1073741824:
+                                        log_bytes_temp = str(round(log_byte_value/1048576.0, 2)) + " MB"
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                    if temp_value == log_bytes_temp:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                elif log_query_key == "ssl_esni_flag" or log_query_key == "ssl_ech_flag" or log_query_key == "ssl_sni" \
+                                    or log_query_key == "ip_protocol":
+                                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                                    temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                    if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                        temp_log_result = True
+                                    else:
+                                        temp_log_result = False
+                                temp_log_result_list.append(temp_log_result)
+                            if False not in temp_log_result_list:
+                                    log_result = True
+                            else:
+                                    log_result = False
+                        if log_result == True:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is True', flush=True)    
                         else:
-                                log_result = False
-                    if log_result == True:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is True', flush=True)    
-                    else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is False', flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" at ui page is False', flush=True)
                 return api_verification_result[0], log_result, metric_result, my_driver
             elif policy_type == "dos_protection":
                 if api_verification_result[2] == True:

@@ -144,14 +144,21 @@ class GetLog:
                             mirror_bytes_value = 0
                             mirror_pkts_value = 0
                             if "mirror_type" in test_data:
-                                if test_data["mirror_type"] in {"ftp", "http", "ssl"}:
-                                    mirror_bytes_value = actual_bytes_value - 192
-                                    mirror_pkts_value = actual_pkts_value - 3
-                                    if "profile" in test_data and test_data["profile"] != "":
-                                        vlan_count = test_data['profile'][0]['vlan_count']
-                                        num_vlans = vlan_count
-                                        mirror_bytes_value *= num_vlans
-                                        mirror_pkts_value *= num_vlans
+                                if test_data["mirror_type"] in {"ftp", "http","https","ssl"}:
+                                    if "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["san","cn"]:
+                                        mirror_bytes_value = actual_bytes_value - 4619
+                                        mirror_pkts_value = actual_pkts_value - 9
+                                    elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "response_header":
+                                        mirror_bytes_value = actual_bytes_value - 381
+                                        mirror_pkts_value = actual_pkts_value - 5
+                                    else:
+                                        mirror_bytes_value = actual_bytes_value - 192
+                                        mirror_pkts_value = actual_pkts_value - 3
+                                        if "profile" in test_data and test_data["profile"] != "":
+                                            vlan_count = test_data['profile'][0]['vlan_count']
+                                            num_vlans = vlan_count
+                                            mirror_bytes_value *= num_vlans
+                                            mirror_pkts_value *= num_vlans
                                 elif test_data["mirror_type"] == "mail":
                                     if log[query_field_key] == query_value:
                                         temp_log_result_list.append(True)

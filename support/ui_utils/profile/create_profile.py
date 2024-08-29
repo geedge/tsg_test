@@ -30,7 +30,7 @@ class CreateProfile:
             if profile_data["profile_type"] == "response_page":  # response page创建
                 self._create_response_page(profile_data["profile_file"])
             elif profile_data["profile_type"] == "statistics_template":  # response page创建
-                self._create_statistics_template_page(profile_data["profile_file"])
+                self._create_statistics_template_page(profile_data)
             elif profile_data["profile_type"] == "hijack_file":    # hijack file 创建
                 self._create_hijack_file(profile_data["profile_file"])
             elif profile_data["profile_type"] == "insert_script":    # insert script 创建
@@ -67,21 +67,12 @@ class CreateProfile:
         Pl.create_run_script_file(data)
 
     def _create_statistics_template_page(self, data):
-        statistics_templates = data["statistics_template"]
-        cond_status = 0
-        for statistics_template in statistics_templates:
-            # create_statistics_template = CreateProfile(driver)
+        cond_code = 0
+        # create_statistics_template = CreateProfile(driver)
+        if data != None and len(data) >= 0:
             create_statistics_template = CreateStatisticsTemplate(self.driver)
             element_position_map = get_profile_element_position("statistics_template")
-            cond_code = create_statistics_template.create(statistics_template, element_position_map)
-            if cond_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} Profile successfully.".format("statistics_template"), flush=True)
-            else:
-                result = "Fail to create {} Profile.".format("statistics_template")
-                cond_status = 1
-                break
-            if cond_status == 1:  # 创建失败，退出遍历创建
-                break
+            cond_code = create_statistics_template.create(data, element_position_map)
         return cond_code
 
 

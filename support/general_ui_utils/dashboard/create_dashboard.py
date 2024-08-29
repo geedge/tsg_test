@@ -50,7 +50,7 @@ class CreateDashboard:
                         self.driver.find_element(By.XPATH,f"(//div[@class='Metrics']//i[@class='el-select__caret el-input__icon el-icon-arrow-up'])[{select_count}]").click()
                         select_count += 2
                         if data['metric']['single_type'][metric_len]['aggregate'] == "random":
-                            self.select_random()
+                            self.random_select()
                         else:
                             self.driver.find_element(By.XPATH,f"//div[@x-placement='bottom-start']//span[text()='{data['metric']['single_type'][metric_len]['aggregate']}']").click()
                         row_count += 1
@@ -61,7 +61,7 @@ class CreateDashboard:
                     self.driver.find_element(By.XPATH,f"(//div[@class='Metrics']//i[@class='el-select__caret el-input__icon el-icon-arrow-up'])[{select_count}]").click()
                     select_count += 2
                     if self.metric['aggregate'] == "random":
-                        self.select_random()
+                        self.random_select()
                     else:
                         self.driver.find_element(By.XPATH,f"//div[@x-placement='bottom-start']//span[text()='{self.metric['aggregate']}']").click()
             elif metric_type == "multiple":
@@ -76,7 +76,7 @@ class CreateDashboard:
                         self.driver.find_element(By.XPATH,f"(//div[@class='Metrics']//i[@class='el-select__caret el-input__icon el-icon-arrow-up'])[{select_count}]").click()
                         select_count += 2
                         if data['metric']['multiple_type'][metric_len]['aggregate'] == "random":
-                            self.select_random()
+                            self.random_select()
                         else:
                             self.driver.find_element(By.XPATH,
                                                      f"//div[@x-placement='bottom-start']//span[text()='{data['metric']['single_type'][metric_len]['aggregate']}']").click()
@@ -92,7 +92,7 @@ class CreateDashboard:
                                              f"(//div[@class='Metrics']//i[@class='el-select__caret el-input__icon el-icon-arrow-up'])[{select_count}]").click()
                     select_count += 2
                     if self.metric['aggregate'] == "random":
-                        self.select_random()
+                        self.random_select()
                     else:
                         self.driver.find_element(By.XPATH,
                                                  f"//div[@x-placement='bottom-start']//span[text()='{self.metric['aggregate']}']").click()
@@ -102,7 +102,7 @@ class CreateDashboard:
             dimension_select = 1
             if data["dimensions"] != "":
                 # dimensions选择多个
-                if multiple_dimension == "true":
+                if multiple_dimension == True:
                     if data["data_source"] == "Proxy Rule Hits" or data["data_source"] == "Service Chaining Rule Hits":
                         self.dimensions = random.sample(data["dimensions"], 5)
                     else:
@@ -118,7 +118,7 @@ class CreateDashboard:
                         self.driver.find_element(By.XPATH,
                                                  f"//div[@x-placement='bottom-start']//span[text()='{dimension}']").click()
                 # dimensions选择单个，随机选择
-                elif multiple_dimension == "false":
+                elif multiple_dimension == False:
                     self.dimension = random.choice(data["dimensions"])
                     if visualization_type == "Line" or visualization_type == "Area":
                         while self.dimension == "Time":
@@ -135,12 +135,12 @@ class CreateDashboard:
             #添加order_by
             if visualization_type != "Line" and visualization_type != "Area":
                 self.driver.find_element(By.XPATH, dashboard_chart_order_by_posXpath).click()
-                self.select_random()
+                self.random_select()
 
 
             #添加limit
             self.driver.find_element(By.XPATH, dashboard_chart_limit_posXpath).click()
-            self.select_random()
+            self.random_select()
 
             #添加filter
             field_len = 1
@@ -159,7 +159,7 @@ class CreateDashboard:
                 filter_operator = data['filter'][filter_len]['operator']
                 self.driver.find_element(By.XPATH,f"(//div[@class='report-edit-filter-content'])[{field_len}]//div[@class='el-col el-col-6']").click()
                 if data['filter'][filter_len]['operator'] == "random":
-                    filter_operator = self.select_random()
+                    filter_operator = self.random_select()
                 else:
                     self.driver.find_element(By.XPATH,f"//div[contains(@x-placement,'start')]//span[text()='{data['filter'][filter_len]['operator']}']").click()
                 # 点击并添加value
@@ -167,7 +167,7 @@ class CreateDashboard:
                     self.driver.find_element(By.XPATH,f"((//div[@class='report-edit-filter-content'])[{field_len}]//div[@class='el-col el-col-8'])[{value_len}]").click()
                     for value in data['filter'][filter_len]['value']:
                         if value == "":
-                            self.select_random()
+                            self.random_select()
                         elif value == "text":
                             self.driver.find_element(By.XPATH,f"((//div[@class='report-edit-filter-content'])[{field_len}]//div[@class='el-col el-col-8'])[{value_len}]//input").send_keys("123456")
                         else:
@@ -203,7 +203,7 @@ class CreateDashboard:
         self.driver.execute_script("arguments[0].scrollIntoView();", scrollable_div)
 
     #选中随即元素
-    def select_random(self):
+    def random_select(self):
         time.sleep(1)
         limit_elements = self.driver.find_elements(By.XPATH, "//div[contains(@x-placement,'start')]//ul[@class='el-scrollbar__view el-select-dropdown__list']/li")
         limit_id = random.randint(1, len(limit_elements))
@@ -258,7 +258,7 @@ class CreateDashboard:
 
 
             #校验Dimensions
-            if multiple_dimension == "true":
+            if multiple_dimension == True:
                 for i in range(len(self.dimensions)):
                     dimension = self.dimensions[i]
                     dimension_text = self.driver.find_element(By.XPATH,dashboard_chart_dimension_text_posYpath.format(i + 1)).get_attribute("innerText")

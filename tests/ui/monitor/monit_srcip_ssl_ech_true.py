@@ -85,7 +85,7 @@ def run(parameter):
             "mirror_type": "ssl",
             "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.google.com"},
+            "log_query_param": [{"query_field_key": "ssl_ech_flag", "query_value": "True"},
                                 ],
             "traffic": {
                 "protocol": "",
