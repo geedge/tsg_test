@@ -250,6 +250,7 @@ class DataTranslation:
         return profile
     
 if __name__ == '__main__':
+    policy_type = "dos_protection"
     test_data =  {
         "condition": {
             "source_ip": [
@@ -359,4 +360,4 @@ if __name__ == '__main__':
         }
     }
     translation = DataTranslation()
-    temp_test_data = translation.data_translation(test_data["condition"])
+    temp_test_data = translation.data_translation(policy_type, test_data)
