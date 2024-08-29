@@ -107,8 +107,8 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "mail_account", "query_value": "zhangchengwei163fx@163.com"},
-                {"query_field_key": "monitor_mirrored_pkts", "query_value": 4344},
-                {"query_field_key": "monitor_mirrored_bytes", "query_value": 4697760}
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
+                {"query_field_key": "monitor_mirrored_bytes", "query_value": ""}
             ],
             "traffic": {
                 "protocol": "",

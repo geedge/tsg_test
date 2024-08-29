@@ -100,7 +100,10 @@ def run(parameter):
              ],
             "expected_return": "502",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
+            "log_query_param": [
+                {"query_field_key": "decoded_as", "query_value": "SSL"},
+                {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
+            ],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
