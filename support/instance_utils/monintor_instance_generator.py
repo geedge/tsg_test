@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.api_utils.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
 from support.ui_utils.object.create_object import CreateObject
@@ -50,6 +52,11 @@ class MonitorInstanceGenerator:
         test_data["token"] = token
         self.test_data["token"] = token
 
+        #使用随机ip
+        if test_data["traffic"]["type"] == "trex":
+            organize_config = OrganizeConfig()
+            test_data = organize_config.generate_random_ip(test_data, parameter)
+
         need_initialization = False
         if len(parameter["script_type"]) == 0:
             need_initialization = True
@@ -66,12 +73,37 @@ class MonitorInstanceGenerator:
             support.ui_utils.env.setup()
 
             # name_list汇总
-
-
-            # 添加测试过程中涉及的template
-            template_path = {}
-            template_path["trex_workpath"] = "/opt/trex/v3.03"
-            template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
+            tmp_name_dict = {}
+            tmp_name_dict["type"] = test_data["policy_type"]
+            tmp_name_dict["name"] = test_data["rule_name"]
+            self.ui_name_list.append(tmp_name_dict)
+            # 构建source ip 的name list
+            if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+                object_data = test_data["condition"]["source_ip"]
+                for i in range(len(object_data)):
+                    tmp_name_dict = {}
+                    tmp_name_dict["type"] = object_data[i]['object_type']
+                    tmp_name_dict["name"] = object_data[i]['name']
+                    self.ui_name_list.append(tmp_name_dict)
+            # 构建server fqdn 的name list
+            if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
+                object_data = test_data["condition"]["server_fqdn"]
+                for i in range(len(object_data)):
+                    tmp_name_dict = {}
+                    tmp_name_dict["type"] = test_data["condition"]["server_fqdn"][i]['object_type']
+                    tmp_name_dict["name"] = test_data["condition"]["server_fqdn"][i]['name']
+                    self.ui_name_list.append(tmp_name_dict)
+            # 构建protocol field 的name list
+            if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+                object_data = test_data["condition"]["protocol_filed"]
+                for i in range(len(object_data)):
+                    # 排除 boolean 类型的 protocol_filed
+                    if object_data[i]['object_type'] == 'boolean':
+                        continue
+                    tmp_name_dict = {}
+                    tmp_name_dict["type"] = test_data["condition"]["protocol_filed"][i]['object_type']
+                    tmp_name_dict["name"] = test_data["condition"]["protocol_filed"][i]['name']
+                    self.ui_name_list.append(tmp_name_dict)
 
             if "condition" in test_data.keys():
                 for cond_key, cond_value in (test_data["condition"].items()):
@@ -154,10 +186,6 @@ class MonitorInstanceGenerator:
             if len(verification_result) != 0:
                 analysis = AnalysisResult()
                 result = analysis.analysis_result(test_data, [], verification_result)
-                # if len(result) == 0:
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
-                # elif len(result) != 0:
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
 
             # 删除rule
             if create_rule_code == 200:
