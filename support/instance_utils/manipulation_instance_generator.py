@@ -33,7 +33,9 @@ class ManipulationInstanceGenerator:
         return ui_result
 
     def _run(self, test_data, parameter):
+        # 声明定义数据
         ui_result, api_result = "", ""
+        self.api_name_list, self.ui_name_list = [], []
         result = {
             "ui_result": "",
             "api_result": ""
@@ -264,8 +266,9 @@ class ManipulationInstanceGenerator:
 
             # 分析验证结果，并返回给flask
             analysis = AnalysisResult()
-            result = analysis.analysis_result(test_data, cfg_list, verification_result)
+            api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
 
+            result["api_result"] = api_result
             # 删除配置
             delete = DeletePolicy()
             delete.delele_policy_by_cfg(token, parameter, cfg_list)

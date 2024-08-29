@@ -4,7 +4,7 @@ from support.report import *
 from datetime import datetime
 
 class ReportUpdate:
-    def write_result(parameter, result, exception_result):
+    def write_result(self, parameter, result, exception_result):
         if len(parameter["script_type"]) == 0:
             file_path = parameter["root_path"] + "/report/automation_test_report.csv"
         else:
