@@ -451,10 +451,8 @@ class SecurityGenerator:
             
             # 数据转换，适配API的test_data
             translation = DataTranslation()
-            temp_test_data = translation.data_translation(test_data["policy_type"], test_data["condition"])
-            test_data["obj_condition"] = temp_test_data["obj_condition"]
-            test_data["application"] = temp_test_data["application"]
-            
+            test_data = translation.data_translation(parameter, test_data)
+
             # 添加测试过程中涉及的template
             template_path = {}
             template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"

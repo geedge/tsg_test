@@ -425,6 +425,108 @@ test_run_script_element_position = {
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_tsgProxyScripts_button_yes_posXpath
     }
 }
+test_service_chaining_rule_element_position = {
+    "page_jump":{
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_servicechaining_posId
+    },
+    "create": {
+        "policyRuleListPage_createButton_posId":serviceChainingRuleListPage_createButton_posId,
+        "policyRulePage_inputName_posXpath": serviceChainingRulePage_inputName_posXpath,
+        # Target Traffic
+        "policyRulePage_chooseTargetedTraffic_posXpath": serviceChainingRulePage_decryptedTrafficButton_posXpath,
+        "policyRulePage_addCondition_posXpath": policyRulePage_addCondition_posXpath,
+        "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
+        # Source IP
+        "policyRulePage_addSrcIP_posXpath": serviceChainingRulePage_addSrcIP_posXpath,
+        "policyRulePage_searchSrcIP_posXpath": serviceChainingRulePage_searchSrcIP_posXpath,
+        "policyRulePage_selectSrcIP_posXpath": serviceChainingRulePage_selectSrcIP_posXpath,
+        "policyRulePage_closeSrcIP_posXpath": serviceChainingRulePage_closeSrcIP_posXpath,
+        # Dest IP
+        "policyRulePage_addDstIP_posXpath": serviceChainingRulePage_addDstIP_posXpath,
+        "policyRulePage_searchDstIP_posXpath": serviceChainingRulePage_searchDstIP_posXpath,
+        "policyRulePage_selectDstIP_posXpath": serviceChainingRulePage_selectDstIP_posXpath,
+        "policyRulePage_closeDstIP_posXpath": serviceChainingRulePage_closeDstIP_posXpath,
+        # Server FQDN
+        "policyRulePage_addConditionServerFqdn_posXpath": serviceChainingRulePage_addCondition_serverFqdn_posXpath,
+        "policyRulePage_addServerFqdn_posXpath": serviceChainingRulePage_addServerFqdn_posXpath,
+        "policyRulePage_searchServerFqdn_posXpath": serviceChainingRulePage_searchServerFqdn_posXpath,
+        "policyRulePage_selectServerFqdn_posXpath": serviceChainingRulePage_selectServerFqdn_posXpath,
+        "policyRulePage_closeServerFqdn_posXpath": serviceChainingRulePage_closeServerFqdn_posXpath,
+        # Source Port
+        "policyRulePage_addConditionSrcPort_posXpath": policyRulePage_addCondition_srcPort_posXpath,
+        "policyRulePage_addSrcPort_posXpath": policyRulePage_addSrcPort_posXpath,
+        "policyRulePage_searchSrcPort_posXpath": policyRulePage_searchSrcPort_posXpath,
+        "policyRulePage_selectSrcPort_posXpath": policyRulePage_selectSrcPort_posXpath,
+        "policyRulePage_closeSrcPort_posXpath": policyRulePage_closeSrcPort_posXpath,
+        # Internal Port
+        "policyRulePage_addConditionInternalPort_posXpath": policyRulePage_addCondition_internalPort_posXpath,
+        "policyRulePage_addInternalPort_posXpath": policyRulePage_addInternalPort_posXpath,
+        "policyRulePage_searchInternalPort_posXpath": policyRulePage_searchInternalPort_posXpath,
+        "policyRulePage_selectInternalPort_posXpath": policyRulePage_selectInternalPort_posXpath,
+        "policyRulePage_closeInternalPort_posXpath": policyRulePage_closeInternalPort_posXpath,
+        # Destination Port
+        "policyRulePage_addConditionDstPort_posXpath": policyRulePage_addDstPort_posXpath,
+        "policyRulePage_addDstPort_posXpath": policyRulePage_addDstPort_posXpath,
+        "policyRulePage_searchDstPort_posXpath": policyRulePage_searchDstPort_posXpath,
+        "policyRulePage_selectDstPort_posXpath": policyRulePage_selectDstPort_posXpath,
+        "policyRulePage_closeDstPort_posXpath": policyRulePage_closeDstPort_posXpath,
+        # External Port
+        "policyRulePage_addConditionExternalPort_posXpath": policyRulePage_addCondition_externalPort_posXpath,
+        "policyRulePage_addExternalPort_posXpath": policyRulePage_addExternalPort_posXpath,
+        "policyRulePage_searchExternalPort_posXpath": policyRulePage_searchExternalPort_posXpath,
+        "policyRulePage_selectExternalPort_posXpath": policyRulePage_selectExternalPort_posXpath,
+        "policyRulePage_closeExternalPort_posXpath": policyRulePage_closeExternalPort_posXpath,
+        # Application
+        "policyRulePage_addApplication_posXpath": serviceChainingRulePage_addApplication_posXpath,
+        "policyRulePage_selectApplicationLabel_posXpath":serviceChainingRulePage_selectApplicationLabel_posXpath,
+        "policyRulePage_searchApplication_posXpath": serviceChainingRulePage_searchApplication_posXpath,
+        "policyRulePage_selectApplication_posXpath": serviceChainingRulePage_selectApplication_posXpath,
+        "policyRulePage_closeApplication_posXpath": serviceChainingRulePage_closeApplication_posXpath,
+        #Qname
+        "policyRulePage_addConditionQname_posXpath": serviceChainingRulePage_addConditionQname_posXpath,
+        "policyRulePage_addQname_posXpath": policyRulePage_addQname_posXpath,
+        "policyRulePage_searchQname_posXpath": policyRulePage_searchQname_posXpath,
+        "policyRulePage_selectQname_posXpath": policyRulePage_selectQname_posXpath,
+        "policyRulePage_closeQname_posXpath": policyRulePage_closeQname_posXpath,
+        # IP Protocol
+        "policyRulePage_addConditionIpProtocol_posXpath": policyRulePage_addCondition_IpProtocol_posXpath,
+        "policyRulePage_addIpProtocol_posXpath": policyRulePage_addIpProtocol_posXpath,
+        "policyRulePage_searchIpProtocol_posXpath": policyRulePage_searchIpProtocol_posXpath,
+        "policyRulePage_selectIpProtocol_posXpath": policyRulePage_selectIpProtocol_posXpath,
+        "policyRulePage_closeIpProtocol_posXpath": policyRulePage_closeIpProtocol_posXpath,
+        # URL
+        "policyRulePage_addConditionUrl_posXpath": policyRulePage_addCondition_url_posXpath,
+        "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
+        "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
+        "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
+        "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
+        # SFF Profile
+        "policyRulePage_addSFFProfile_posId": serviceChainingRulePage_addSFFProfile_posId,
+        "policyRulePage_searchSFFProfile_posXpath":serviceChainingRulePage_searchSFFProfile_posXpath,
+        "policyRulePage_selectSFFProfile_posXpath":serviceChainingRulePage_selectSFFProfile_posXpath,
+        "policyRulePage_closeSFFProfile_posXpath":serviceChainingRulePage_closeSFFProfile_posXpath,
+        "policyRulePage_enable_posXpath": serviceChainingRulePage_enable_posXpath,
+        "policyRulePage_okButton_yes_posId": serviceChainingRulePage_okButton_posId,
+        "policyRulePage_okButton_warningYes_posXpath": serviceChainingRulePage_warningYes_posXpath
+    },
+    "search": {
+        "policyRuleListPage_searchLable_posId": serviceChainingRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLable_dropDown_item_posXpath": serviceChainingRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLable_input_itemContent_posXpath": serviceChainingRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLable_searchButton_posId": serviceChainingRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_tableTbody_posXpath": serviceChainingRuleListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+        "policyRuleListPage_deleteButton_posId": serviceChainingRuleListPage_deleteButton_posId,
+        "policyRuleListPage_okButton_warningYes_posXpath": serviceChainingRuleListPage_warningYes_posXpath
+    }
+}
 #policy
 test_manipulation_rule_element_position = {
     "page_jump": {
@@ -1366,6 +1468,8 @@ def get_element_position(key_name):
         element_position_map = test_intercept_rule_element_position
     elif key_name == "statistics":
         element_position_map = test_statistics_rule_element_position
+    elif key_name == "service_chaining":
+        element_position_map = test_service_chaining_rule_element_position
     elif key_name == "session_log":
         element_position_map = test_session_log_element_position
     else:
@@ -1389,6 +1493,7 @@ def replace_paras(parameter):
     parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
     parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
     parameter["is_log"] = parse.get("is_log", "ui")
+    parameter["script_type"] = parse.get("debug_script_type", "script_type")
 
     #project_path = parse.get("root_path", "path")
     #parameter["root_path"] = project_path
