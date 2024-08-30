@@ -4,6 +4,7 @@ from support.instance_utils.statistics_instance_generator import StatisticsInsta
 from support.instance_utils.security_instance_generator import SecurityGenerator
 from support.instance_utils.service_chaining_instance_generator import ServiceChainingInstanceGenerator
 from support.instance_utils.monintor_instance_generator import MonitorInstanceGenerator
+from support.instance_utils.dashboard_instance_generator import DashbboardInstanceGenerator
 
 class CaseInstanceGenerator:
     def __init__(self, test_data, parameter):
@@ -15,22 +16,24 @@ class CaseInstanceGenerator:
         return result
 
     def _run(self, test_data, parameter):
-        if test_data["policy_type"] == "security":
+        if "policy_type" in test_data.keys() and test_data["policy_type"] == "security":
             result = self._run_security(test_data, parameter)
-        elif test_data["policy_type"] == "monitor":
+        elif "policy_type" in test_data.keys() and test_data["policy_type"] == "monitor":
             result = self._run_monitor(test_data,parameter)
-        elif test_data["policy_type"] == "statistics":
+        elif "policy_type" in test_data.keys() and test_data["policy_type"] == "statistics":
             result = self._run_statistics(test_data, parameter)
-        elif test_data["policy_type"] == "dos_protection":
+        elif "policy_type" in test_data.keys() and test_data["policy_type"] == "dos_protection":
             result = self._run_dos_protection(test_data, parameter)
-        elif test_data["policy_type"] == "pxy_intercept":
+        elif "policy_type" in test_data.keys() and test_data["policy_type"] == "pxy_intercept":
             print("todo")
-        elif test_data["policy_type"] == "pxy_manipulation":
+        elif "policy_type" in test_data.keys() and test_data["policy_type"] == "pxy_manipulation":
             result = self._run_manipulation(test_data, parameter)
-        elif test_data["policy_type"] == "shaping":
+        elif "policy_type" in test_data.keys() and test_data["policy_type"] == "shaping":
             print("todo")
-        elif test_data["policy_type"] == "service_chaining":
+        elif "policy_type" in test_data.keys() and test_data["policy_type"] == "service_chaining":
             result = self._run_service_chaining(test_data, parameter)
+        elif "type" in test_data.keys() and test_data["type"] == "dashboard":
+            result = self._run_dashboard(test_data, parameter)
         else:
             pass
         return result
@@ -66,6 +69,11 @@ class CaseInstanceGenerator:
     def _run_shaping(self, test_data, parameter):
         print("todo")
 
+    def _run_dashboard(self, test_data, parameter):
+        self.dashboard = DashbboardInstanceGenerator(test_data,parameter)
+        result = self.dashboard.run()
+        return result
+
     def _run_service_chaining(self, test_data, parameter):
         self.service_chaining =ServiceChainingInstanceGenerator(test_data, parameter)
         result = self.service_chaining.run()
@@ -88,6 +96,8 @@ class CaseInstanceGenerator:
             print("todo")
         elif self.test_data["policy_type"] == "service_chaining":
             self.service_chaining.delete_data()
+        elif self.test_data["policy_type"] == "dashboard":
+            self.dashboard.delete_data()
         else:
             pass
         
