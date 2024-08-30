@@ -12,7 +12,8 @@ class DeleteDashboard:
         try:
             edit_btn = self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath)
             self.driver.execute_script("arguments[0].click()", edit_btn)  # 强制点击
-            self.driver.find_element(By.XPATH, mainPage_delete_dashboard_posXpath).click()
+            delete_btn = self.driver.find_element(By.XPATH, mainPage_delete_dashboard_posXpath)
+            self.driver.execute_script("arguments[0].click()", delete_btn)  # 强制点击
             self.driver.find_element(By.XPATH, mainPage_delete_Delete_button_posXpath).click()
             return 200
         except Exception as e:
@@ -23,5 +24,6 @@ class DeleteDashboard:
         self.driver.refresh()
         edit_btn = self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath)
         self.driver.execute_script("arguments[0].click()", edit_btn)  # 强制点击
-        self.driver.find_element(By.XPATH, mainPage_delete_dashboard_posXpath).click()
+        delete_btn = self.driver.find_element(By.XPATH, mainPage_delete_dashboard_posXpath)
+        self.driver.execute_script("arguments[0].click()", delete_btn)  # 强制点击
         self.driver.find_element(By.XPATH, mainPage_delete_Delete_button_posXpath).click()
