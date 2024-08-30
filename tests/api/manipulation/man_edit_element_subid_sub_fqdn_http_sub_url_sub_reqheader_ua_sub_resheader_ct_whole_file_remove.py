@@ -24,11 +24,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
+            "rule_name": parameter["test_case_name"],
             "rule_action_1": "edit_element",
-            "search_scope": "whole_file",
-            "contained_keyword": "test",
-            "element_treatment": "mark",
-            "target_distance_from_matching": 0,
+            "user_region": [
+                {
+                    "search_scope": "whole_file",
+                    "contained_keyword": "test",
+                    "element_treatment": "mark",
+                    "target_distance_from_matching": 0,
+                }
+            ],
             "do_log_1": 2,
             "obj_condition_1": [
                 {

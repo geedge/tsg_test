@@ -18,7 +18,8 @@ class SearchRule:
         page_jump = PageJump(self.driver)
         page_jump.jump_sub_policy_page(page_jump_element_position)
         # 点击search查询框
-        self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"]).click()
+        btn = self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"])
+        self.driver.execute_script("arguments[0].click()", btn) 
         dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
         self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
         input_item_posXpath = search_element_position["policyRuleListPage_searchLable_input_itemContent_posXpath"].format(replaceValue="Name")
@@ -43,8 +44,7 @@ class SearchRule:
         # 打开该列表
         page_jump = PageJump(self.driver)
         page_jump.jump_sub_policy_page(page_jump_element_position)
-        # 点击search查询框
-        # self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"]).click()
+        # 强制点击search查询框
         btn = self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"])
         self.driver.execute_script("arguments[0].click()", btn) 
         dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")

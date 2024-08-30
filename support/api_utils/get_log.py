@@ -238,16 +238,31 @@ class GetLog:
                                     temp_log_result_list.append(True)
                                 else:
                                     temp_log_result_list.append(False)
+                        
                         else:
                             temp_log_result_list.append(False)
-            elif len(log_query_params) == 0:
-                temp_log_result_list.append(True)
-            if False not in temp_log_result_list and len(log_list) > 0:
-                log_result = True
-            elif len(log_list) == 0:
+                    
+                    if False not in temp_log_result_list and len(log_list) > 0:
+                        log_result = True
+                    
+                    # elif len(log_list) == 0 and len(log_query_params) == 0 and False not in temp_log_result_list:
+                    #     log_result = True
+                    else:
+                        log_result = False
+                        return log_result
+            elif len(log_list) == 0 and len(log_query_params) > 0:
                 log_result = None
-            else:
-                log_result = False
+            elif len(log_query_params) == 0:
+                log_result = True
+            
+            # if False not in temp_log_result_list and len(log_list) > 0:
+            #     log_result = True
+            # elif len(log_list) == 0 and len(log_query_params) > 0:
+            #     log_result = None
+            # elif len(log_list) == 0 and len(log_query_params) == 0 and False not in temp_log_result_list:
+            #     log_result = True
+            # else:
+            #     log_result = False
         return log_result
 
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):

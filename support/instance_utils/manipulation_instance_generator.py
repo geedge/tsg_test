@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
+import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
 from support.ui_utils.object.create_object import CreateObject
@@ -21,7 +22,6 @@ from support.api_utils.analysis_result import AnalysisResult
 from support.instance_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
-
 import copy
 
 
@@ -248,12 +248,14 @@ class ManipulationInstanceGenerator:
 
             parameter["script_type"] = "api"
 
-            self.api_name_list = []
 
             # 数据转换，适配API的test_data
             translation = DataTranslation()
             test_data = translation.data_translation(parameter, test_data)
-            print(test_data)
+            #print(test_data)
+
+            self.api_name_list = get_name_list(test_data)
+            self.api_name_list.insert(0, {'type': 'pxy_intercept', 'name': 'manipulation_pre_intercept'})
 
             # 添加测试过程中涉及的template
             template_path = {}
@@ -295,11 +297,12 @@ class ManipulationInstanceGenerator:
         return result
 
     def delete_data(self):
-        # 清理环境
-        support.ui_utils.env.teardown()
         # 删除配置
+        #print(self.api_name_list)
         delete = DeletePolicy()
-        if isinstance(self.ui_name_list, list):
+        if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
+            # 清理环境
+            support.ui_utils.env.teardown()
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        if isinstance(self.api_name_list, list):
+        if isinstance(self.api_name_list, list) and self.api_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)

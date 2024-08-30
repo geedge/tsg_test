@@ -110,6 +110,8 @@ class CreateObject:
         obj_sub_type = condition['object_sub_type']
         obj_template_dict['object']['sub_type'] = obj_sub_type
         obj_template_dict['object']['statistics_option'] = 'elaborate'
+        if "name" in condition:
+            obj_template_dict["object"]["name"] = condition["name"]
         
         if 'is_negate' in condition.keys():
             is_negate = condition['is_negate']

@@ -137,8 +137,7 @@ def run(parameter):
 
         #创建Dashboard-Chart
         create_dashboard = CreateDashboard(driver)
-        create_code,dashboard_id = create_dashboard.create(test_data,"Table",metric_type,multiple_dimension)
-        name_list[0]["name"] = dashboard_id
+        create_code = create_dashboard.create(test_data,"Table",metric_type,multiple_dimension)
         if create_code == 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create chart successfully.", flush=True)
         else:

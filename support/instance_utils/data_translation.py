@@ -19,6 +19,7 @@ class DataTranslation:
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
             if key in {"action_parameter", "profile"}:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
+
         if len(temp_test_data["obj_condition"]) > 0:
             data["obj_condition"] = temp_test_data["obj_condition"]
         if len(temp_test_data["application"]) > 0:
@@ -26,14 +27,50 @@ class DataTranslation:
         if len(temp_test_data["profile_condition"]) > 0:
             data["profile_condition"] = temp_test_data["profile_condition"]
         data["do_log_1"] = temp_test_data["do_log_1"]
-        # 添加code_1 key
+
+        # manipulation api test_data 数据补齐
         if policy_type == "pxy_manipulation":
             if data["rule_action"] == "deny":
                 if "response_page" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["response_page"][0]["response_code"]
-                else:
+                elif "deny_response_text" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["deny_response_text"][0]["response_code"]
                     data["message_1"] = "text"    # 匹配原有api test_data数据
+                else:
+                    data["code_1"] = 404
+                    data["message_1"] = "text"  # 匹配原有api test_data数据
+            elif data["rule_action"] == "redirect":
+                data["code_1"] = data["action_parameter"]["redirect_url"][0]["response_code"]
+                data["to_1"] = data["action_parameter"]["redirect_url"][0]["redirect_url"]
+            elif data["rule_action"] == "replace":
+                replace_parameter_list = data["action_parameter"]["replace_parameter"]
+                user_region = []
+                for i in range(len(replace_parameter_list)):
+                    rule_dict = {}
+                    regex_name = replace_parameter_list[i]["regex"]
+                    if regex_name == "on":
+                        rule_dict["regex_enable"] = 1
+                    else:
+                        rule_dict["regex_enable"] = 0
+                    rule_dict["search_in"] = replace_parameter_list[i]["search_in"]
+                    rule_dict["find"] = replace_parameter_list[i]["find"]
+                    rule_dict["replace_with"] = replace_parameter_list[i]["replace_with"]
+                    user_region.append(copy.deepcopy(rule_dict))
+                data["user_region"] = user_region
+            elif data["rule_action"] == "edit_element":
+                edit_element_parameter_list = data["action_parameter"]["edit_element_parameter"]
+                user_region = []
+                for i in range(len(edit_element_parameter_list)):
+                    rule_dict = {}
+                    search_scope = edit_element_parameter_list[i]["search_scope"]
+                    rule_dict["search_scope"] = search_scope
+                    if search_scope == "inside_element":
+                        rule_dict["start_indicator"] = edit_element_parameter_list[i]["start_indicator"]
+                    rule_dict["contained_keyword"] = edit_element_parameter_list[i]["contained_keyword"]
+                    rule_dict["target_distance_from_matching"] = edit_element_parameter_list[i]["distance_from_anchor"]
+                    rule_dict["element_treatment"] = edit_element_parameter_list[i]["treatment"]
+                    user_region.append(copy.deepcopy(rule_dict))
+                data["user_region"] = user_region
         return data
     
     def push_object_data(self, data):
@@ -43,6 +80,7 @@ class DataTranslation:
                 continue
             if k == "source_ip":
                 temp = {
+                    "name": v[0]["name"],
                     "attribute_name": "ATTR_SOURCE_IP",
                     "object_type": "ip",
                     "object_sub_type": "ip",
@@ -61,6 +99,7 @@ class DataTranslation:
                 object.append(copy.deepcopy(temp))
             elif k == "destination_ip":
                 temp = {
+                    "name": v[0]["name"],
                     "attribute_name": "ATTR_DESTINATION_IP",
                     "object_type": "ip",
                     "object_sub_type": "ip",
@@ -79,6 +118,7 @@ class DataTranslation:
                 object.append(copy.deepcopy(temp))
             elif k == "server_fqdn":
                 temp = {
+                    "name": v[0]["name"],
                     "attribute_name": "ATTR_SERVER_FQDN",
                     "object_type": "fqdn",
                     "object_sub_type": "fqdn",
@@ -87,7 +127,7 @@ class DataTranslation:
                             "add_item_list": [
                                 {
                                     "keyword_array": [
-                                        v[0]["item"][0]["item_value"]
+                                        v[0]["items"][0]["item_value"]
                                     ]
                                 }
                             ]
@@ -97,6 +137,7 @@ class DataTranslation:
                 object.append(copy.deepcopy(temp))
             elif k == "sub_id":
                 temp = {
+                    "name": v[0]["name"],
                     "attribute_name": "ATTR_SUBSCRIBER_ID",
                     "object_type": "subscriberid",
                     "object_sub_type": "subscriberid",
@@ -117,6 +158,7 @@ class DataTranslation:
                 for i in range(len(v)):
                     if v[i]["object_type"] == "url":
                         temp = {
+                            "name": v[0]["name"],
                             "attribute_name": "ATTR_HTTP_URL",
                             "object_type": "url",
                             "object_sub_type": "url",
@@ -136,6 +178,7 @@ class DataTranslation:
                     elif v[i]["object_type"] == "http_signature":
                         if v[i]["item"][0]["item_type"] == "request_header":
                             temp = {
+                                "name": v[0]["name"],
                                 "attribute_name": "ATTR_HTTP_REQ_HDR",
                                 "object_type": "http_signature",
                                 "object_sub_type": "http_signature",
@@ -155,6 +198,7 @@ class DataTranslation:
                             object.append(copy.deepcopy(temp))
                         elif v[i]["item"][0]["item_type"] == "response_header":
                             temp = {
+                                "name": v[0]["name"],
                                 "attribute_name": "ATTR_HTTP_RES_HDR",
                                 "object_type": "http_signature",
                                 "object_sub_type": "http_signature",
@@ -329,7 +373,10 @@ class DataTranslation:
                         }
                         temp["format"] = v[t]["profile_file"]["script_type"]
                         temp["name"] = v[t]["profile_file"]["name"]
-                        temp["insert_on"] = insert_map[v[t]["profile_file"]["insert_position"]]
+                        if temp["format"] == "js":
+                            temp["insert_on"] = insert_map[v[t]["profile_file"]["insert_position"]]
+                        else:
+                            temp["insert_on"] = None
                         temp["content_name"] = v[t]["profile_file"]["script"]
                         profile.append(copy.deepcopy(temp))
                 elif k == "run_script":
