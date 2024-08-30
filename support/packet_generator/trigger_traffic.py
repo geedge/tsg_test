@@ -30,7 +30,10 @@ class TriggerTraffic:
         if debug_flag == "local":
             if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or (test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex"):
                 test_data = self.replace_trex_ip(test_data, script_type)
-            temp_data = json.dumps(test_data["traffic"])
+            if len(test_data["traffic"]["protocol"]) > 0 and "command" in test_data["traffic"]:
+                temp_data = json.dumps(test_data["traffic"]["command"])
+            elif len(test_data["traffic"]["protocol"]) == 0 or "command" not in test_data["traffic"]: 
+                temp_data = json.dumps(test_data["traffic"])
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
             parse.read(parse_dir, encoding="utf-8")
