@@ -30,7 +30,10 @@ class TriggerTraffic:
         if debug_flag == "local":
             if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or (test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex"):
                 test_data = self.replace_trex_ip(test_data, script_type)
-            temp_data = json.dumps(test_data["traffic"])
+            if len(test_data["traffic"]["protocol"]) > 0 and "command" in test_data["traffic"]:
+                temp_data = json.dumps(test_data["traffic"]["command"])
+            elif len(test_data["traffic"]["protocol"]) == 0 or "command" not in test_data["traffic"]: 
+                temp_data = json.dumps(test_data["traffic"])
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
             parse.read(parse_dir, encoding="utf-8")
@@ -62,27 +65,27 @@ class TriggerTraffic:
             elif len(test_data["traffic"]["protocol"]) == 0 or "command" not in test_data["traffic"]: 
                 temp_data = test_data["traffic"]
             if test_data["traffic"]["protocol"] == "http":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic by {}.".format(test_data["traffic"]["type"]), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic.", flush=True)
                 player = HttpPlayer()
                 result = player.send_http_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "https" or test_data["traffic"]["protocol"] == "ssl":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ssl traffic.".format(test_data["traffic"]["type"]), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ssl traffic.", flush=True)
                 player = SSLPlayer()
                 result = player.send_ssl_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "ftp":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ftp traffic.".format(test_data["traffic"]["type"]), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ftp traffic.", flush=True)
                 player = FtpPlayer()
                 result = player.send_ftp_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "dns":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate dns traffic.".format(test_data["traffic"]["type"]), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate dns traffic.", flush=True)
                 player = DnsPlayer()
                 result = player.send_dns_query(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "mail":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mail traffic.".format(test_data["traffic"]["type"]), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mail traffic.", flush=True)
                 player = MailPlayer()
                 result = player.send_mail_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "doh":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate doh traffic.".format(test_data["traffic"]["type"]), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate doh traffic.", flush=True)
                 player = DohPlayer()
                 result = player.send_doh_query(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "dtls":
