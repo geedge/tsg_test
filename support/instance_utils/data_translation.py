@@ -31,9 +31,12 @@ class DataTranslation:
             if data["rule_action"] == "deny":
                 if "response_page" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["response_page"][0]["response_code"]
-                else:
+                elif "deny_response_text" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["deny_response_text"][0]["response_code"]
                     data["message_1"] = "text"    # 匹配原有api test_data数据
+                else:
+                    data["code_1"] = 404
+                    data["message_1"] = "text"  # 匹配原有api test_data数据
             elif data["rule_action"] == "redirect":
                 data["code_1"] = data["action_parameter"]["redirect_url"][0]["response_code"]
                 data["to_1"] = data["action_parameter"]["redirect_url"][0]["redirect_url"]

@@ -9,7 +9,7 @@ import importlib
 from contextlib import redirect_stdout
 from support.traffic_manager.workpath import workdir
 from support.ui_utils.element_position.map_element_position_library import *
-
+import re
 time.sleep(1)
 
 
@@ -248,6 +248,126 @@ def get_excel_formate_from_case(case_directory_path='C:/zcw/tsg_test/tests/ui/ma
     test_excel_info_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), file_path)
     print("完成。原数据保存路径：{}".format(test_excel_info_path))
 
+def replace_test_data_from_py(case_directory_path='C:/zcw/tsg_test/tests/ui/manipulation', file_startwith = "man_", file_endswith = ".py"):
+    # 替换源文件中test_data内容
+    #原始数据格式内容，替换其中的  “        replace_text”
+    resource_text = \
+"""# -*- coding: UTF-8 -*-
+import time
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+import traceback
+from datetime import datetime
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.report_update import ReportUpdate
+
+
+def run(parameter):
+    try:
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        # 参数初始化
+        exception_result = ""
+        result = {}
+
+        # 脚本启动时间
+        start_time = time.time()
+
+        # 测试数据
+        replace_text
+
+        # 测试用例实例化
+        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
+        result = case_instance_generator.run()
+
+        # 脚本结束时间和耗时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
+        return result
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
+        traceback.print_exc()
+        return "Error: " + str(e)
+    finally:
+        # 清理环境
+        case_instance_generator.delete_data()
+        # 生成csv报告
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
+
+
+if __name__ == '__main__':
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
+
+    parameter = {
+        "username": "zcw3",
+        "password": "qa111111",
+        "test_pc_ip": "192.168.64.93",
+        "test_subcriber_id": "test6491",
+        "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
+        "script_type": "api",  # api  ui  空字符串
+        "is_log": 1,
+        "env": "tsgx",
+        "vsys_id": 1,
+        "root_path": workdir,
+        "path": workdir + "/testcase/ui",
+        "module_name": "manipulation",
+        "test_case_name": os.path.basename(__file__)[:-3]
+    }
+    parameter = replace_paras(parameter)
+    run(parameter)
+    """
+    #resource_text = repr(resource_text)
+    #print(resource_text)
+
+    file_names = []
+    # 获取目录下所有文件的名称
+    for filename in os.listdir(case_directory_path):
+        if filename.endswith(file_endswith) and filename.startswith(file_startwith):
+            # 去掉.py后缀并添加到列表中
+            file_names.append(filename)
+
+    for i in range(len(file_names)):
+        file_0 = file_names[i]
+        print(file_0)
+        tmp_resource_text = copy.deepcopy(resource_text)
+        with open(file_0, "r", encoding="utf-8") as f:
+            text = f.read()
+        #print(text )
+
+        # 正则表达式匹配从# 测试数据到log_in = LogIn()之间的内容
+        pattern = re.compile(r'测试数据(.*?)log_in = LogIn\(\)', re.DOTALL)
+        matches = re.findall(pattern, text)
+        if len(matches) == 0:
+            print("{}，替换失败".format(file_0))
+            continue
+        match_text = matches[0]
+        match_text = match_text.rstrip()
+        match_text = match_text.lstrip("\n")
+        #match_text = repr(match_text)
+        # 输出匹配的内容
+        #print(match_text)
+        result_text = tmp_resource_text.replace("        replace_text", match_text)
+        #result_text = repr(result_text)
+        #print(1111)
+        #print(result_text)
+
+        # 覆盖源文件内容 谨慎执行
+
+        # with open(file_0, "w", encoding="utf-8") as f2:
+        #     f2.write(result_text)
+
+        print("{}，替换完成".format(file_0))
+
+        #break
+    #print(resource_text)
+    print("替换完成")
+
 if __name__ == '__main__':
     #local_run()     # 本地运行所有用例
 
@@ -257,7 +377,10 @@ if __name__ == '__main__':
     file_startwith = "man_"
     file_endswith = ".py"
     # 对比MS工具
-    diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+    #diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 生成excle使用数据工具
     #get_excel_formate_from_case(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+
+    # 替换test_data
+    replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
