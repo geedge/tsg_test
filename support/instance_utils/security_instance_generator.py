@@ -433,21 +433,22 @@ class SecurityGenerator:
                     else:
                         ui_result = ui_result + " In addition, fail to search ip object."
                         break
-                # 删除fqdn
-                for x in range(len(fqdn_data)):
-                    search_fqdn = SearchObject(driver)
-                    search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"], test_fqdn_object_element_position)
-                    if search_fqdn_code == 200:
-                        delete_fqdn = DeleteObject(driver)
-                        delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
-                        if delete_fqdn_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn object successfully.", flush=True)
-                        elif delete_fqdn_code != 200:
-                            result = result + " In addition, fail to delete fqdn object."
+                if len(test_data["condition"]["server_fqdn"]) != 0:
+                    # 删除fqdn
+                    for x in range(len(fqdn_data)):
+                        search_fqdn = SearchObject(driver)
+                        search_fqdn_code, first_row_checkbox_element = search_fqdn.search(fqdn_data[x]["name"], test_fqdn_object_element_position)
+                        if search_fqdn_code == 200:
+                            delete_fqdn = DeleteObject(driver)
+                            delete_fqdn_code = delete_fqdn.delete(test_fqdn_object_element_position, first_row_checkbox_element, True)
+                            if delete_fqdn_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn object successfully.", flush=True)
+                            elif delete_fqdn_code != 200:
+                                result = result + " In addition, fail to delete fqdn object."
+                                break
+                        else:
+                            result = result + " In addition, fail to search fqdn object."
                             break
-                    else:
-                        result = result + " In addition, fail to search fqdn object."
-                        break
             
             result["ui_result"] = ui_result
         
