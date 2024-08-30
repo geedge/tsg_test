@@ -80,23 +80,23 @@ class CaseInstanceGenerator:
         return result
 
     def delete_data(self):
-        if self.test_data["policy_type"] == "security":
+        if "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "security":
              self.security.delete_data()
-        elif self.test_data["policy_type"] == "monitor":
+        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "monitor":
              self.monitor.delete_data()
-        elif self.test_data["policy_type"] == "statistics":
+        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "statistics":
             self.statistics.delete_data()
-        elif self.test_data["policy_type"] == "dos_protection":
+        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "dos_protection":
             self.dos_protection.delete_data()
-        elif self.test_data["policy_type"] == "pxy_intercept":
+        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "pxy_intercept":
             print("todo")
-        elif self.test_data["policy_type"] == "pxy_manipulation":
+        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "pxy_manipulation":
             self.manipulation.delete_data()
-        elif self.test_data["policy_type"] == "shaping":
+        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "shaping":
             print("todo")
-        elif self.test_data["policy_type"] == "service_chaining":
+        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "service_chaining":
             self.service_chaining.delete_data()
-        elif self.test_data["policy_type"] == "dashboard":
+        elif "type" in self.test_data.keys() and self.test_data["policy_type"] == "dashboard":
             self.dashboard.delete_data()
         else:
             pass
