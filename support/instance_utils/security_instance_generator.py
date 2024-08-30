@@ -260,6 +260,17 @@ class SecurityGenerator:
                         "policyRulePage_subAction_alert_responseContent_clickProfile_posXpath": securityRulePage_subAction_alert_responseContent_clickProfile_posXpath,
                         "policyRulePage_subAction_alert_responseContent_searchProfile_posXpath": securityRulePage_subAction_alert_responseContent_searchProfile_posXpath,
                         "policyRulePage_subAction_alert_responseContent_selectProfile_posId": securityRulePage_subAction_alert_responseContent_selectProfile_posId,
+                        # dns redirect
+                        "policyRulePage_dnsAnswer0ValueType_posId":  securityRulePage_subAction_redirect_answer0ValueType_posId,
+                        "policyRulePage_dnsAnswer0ValueTypeChoose_posXpath":  securityRulePage_subAction_redirect_answer0ValueTypeChoose_posXpath,
+                        "policyRulePage_dnsAnswer0ValueTypeChoose_posXpath":  securityRulePage_subAction_redirect_answer0ValueTypeChoose_posXpath,
+                        "policyRulePage_dnsAnswerValueSelectPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswerValueSelectPlaceholder_posId,
+                        "policyRulePage_dnsAnswerValueNameSearch_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSearch_posId,
+                        "policyRulePage_dnsAnswerType0Choose_posId": securityRulePage_subAction_redirect_dnsAnswerType0choose_posId,
+                        "policyRulePage_dnsAnswerType0ChooseValue_posXpath": securityRulePage_subAction_redirect_dnsAnswerType0chooseValue_posXpath,
+                        "policyRulePage_dnsAnswerValueNameSelect_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSelect_posId,
+                        "policyRulePage_dnsAnswer0ATextPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswer0ATextPlaceholder_posId,
+                        "policyRulePage_dnsAnswerValueTTL0_posId": securityRulePage_subAction_redirect_dnsAnswerValueTTL0_posId,
                         "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
                         "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                         "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
@@ -340,8 +351,6 @@ class SecurityGenerator:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
                 elif create_rule_code != 200:
                     ui_result = "Fail to create security rule."
-
-            
 
             # 触发流量验证
             if create_rule_code == 200:
