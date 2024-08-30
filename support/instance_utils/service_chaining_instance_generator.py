@@ -22,7 +22,7 @@ from support.api_utils.analysis_result import AnalysisResult
 import support.ui_utils.env
 from datetime import datetime
 import copy
-
+from support.ui_utils.object.generate_random_ip import *
 
 class ServiceChainingInstanceGenerator:
     def __init__(self, test_data, parameter):
@@ -62,6 +62,11 @@ class ServiceChainingInstanceGenerator:
             driver = support.ui_utils.env.my_driver()
             support.ui_utils.env.setup()
 
+            # 将测试数据中的ip替换为随机ip
+            if test_data["targeted_traffic"] == "raw" and (len(test_data["condition"]["source_ip"]) != 0 or len(test_data["condition"]["destination_ip"]) != 0):
+                random_ip = GenerateRandomIP(driver)
+                test_data = random_ip.generate_random_ip(test_data,run_env=parameter["env"])
+            
             # name_list汇总
             temp_name_list = []
             policy_name_dict = {}
@@ -104,6 +109,8 @@ class ServiceChainingInstanceGenerator:
                     "profileListPage_createButton_posId": listPage_profile_serviceFunctionForwarders_createButton_posId,
                     "profilePge_inputName_posId": serviceFunctionForwarders_input_Name_posId,
                     "profilePage_operateRadio_posXpath": serviceFunctionForwarders_radio_labelAndRadioName_posXpath,
+                    "profilePage_operateUnavailabilityAction_Radio_posXpath":serviceFunctionForwarders_radio_unavailabilityAction_posXpath,
+                    "profilePage_inputMiniHealthServerFunctions_posXpath":serviceFunctionForwarders_input_minHealthServiceFunctions_posXpath,
                     "profilePage_addSF_posXpath": serviceFunctionForwarders_button_serviceFunctionsAdd_posXpath,
                     "profilePage_searchSF_posXpath":serviceFunctionForwarders_rightDrawer_input_sfDrawerSearch_posXpath,
                     "profilePage_chooseSF_posXpath":serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath,
@@ -138,11 +145,16 @@ class ServiceChainingInstanceGenerator:
                     "profilePage_operateDeviceRadio_posXpath":serviceFunctions_radio_selectDevice_posXpath,
                     "profilePage_addDeviceTag_posXpath": serviceFunctions_button_deviceGroupAdd_posXpath,
                     "profilePage_effectiveDevicesDrawerOk_posXpath": serviceFunctions_button_effectiveDevicesDrawerOk_posXpath,
+                    # vxlan
                     "profilePage_Vxlan_G_posXpath": serviceFunctions_radio_connectivityXvlan_posXpath,
                     "profilePage_inputDestIP_posXpath": serviceFunctions_input_destinationIpAddress_posXpath,
                     "profilePage_operateHealthCheckRadio_posXpath": serviceFunctions_radio_healthCheck_posXpath,
                     "profilePage_inputInterval_posXpath":serviceFunctions_input_interval_posXpath,
                     "profilePage_inputRetries_posXpath": serviceFunctions_input_retries_posXpath,
+                    # vlan
+                    "profilePage_layer2Switch_posXpath": serviceFunctions_radio_connectivityLayer2Switch_posXpath,
+                    "profilePage_intInternalVlan_posXpath": serviceFunctions_input_internalVlan_posXpath,
+                    "profilePage_intExternalVlan_posXpath": serviceFunctions_input_externalVlan_posXpath,
                     "profilePage_switch_enableButton_posXpath":serviceFunctions_switch_enalbe_posXpath,
                     "profilePage_okButton_posCss": serviceFunctions_button_oK_posCss,
                     "profilePage_okButton_warningYes_posCss": serviceFunctions_button_warningSaveYes_posCss
@@ -194,7 +206,7 @@ class ServiceChainingInstanceGenerator:
                 if create_profile_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create service function forwarder profile successfully.", flush=True)
                 elif create_profile_code != 200:
-                    result = "Fail to create service function forwarder profile."
+                    ui_result = "Fail to create service function forwarder profile."
 
             # 创建rule
             if cond_code == 200 and create_profile_code == 200:

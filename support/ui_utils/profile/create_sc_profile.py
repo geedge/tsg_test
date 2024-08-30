@@ -148,8 +148,8 @@ class CreateServiceFunctionForwarderProfile:
                 serviceFunctions_name= self.create_sf_profile(service_functions[sf],sf_profile_element_position)
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create service function profile successfully.", flush=True)
                 sf_name_list.append(serviceFunctions_name)
-            except:   # 给一次概率一样的机会
-                serviceFunctions_name = self.create_sf_profile(service_functions[sf],sf_profile_element_position)
+            except Exception as e:
+                return "Error: " + str(e)
         return sf_name_list
     
     def create_sf_profile(self,data, profile_element_position):
@@ -175,9 +175,10 @@ class CreateServiceFunctionForwarderProfile:
         self.driver.find_element(By.ID,"select-label").click()
         self.driver.find_element(By.ID,"2-_FilteredSearch_ElRow_Profile_Functions_Home_App_anonymousComponent").click()
         self.driver.find_element(By.XPATH,"//div[@class='rel-input v-input input el-input el-input--mini']//input").send_keys(sf_name)
-        self.driver.find_element(By.ID,"searchQuery").click()
-        sf_id = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']//span").text
+        btn = self.driver.find_element(By.ID,"searchQuery")
+        self.driver.execute_script("arguments[0].click()", btn)
         time.sleep(2)
+        sf_id = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']//span").text
         self.sc_info["sf_id_list"].append(int(sf_id))
         return sf_name
     

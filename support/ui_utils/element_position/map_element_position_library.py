@@ -470,7 +470,7 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_selectInternalPort_posXpath": policyRulePage_selectInternalPort_posXpath,
         "policyRulePage_closeInternalPort_posXpath": policyRulePage_closeInternalPort_posXpath,
         # Destination Port
-        "policyRulePage_addConditionDstPort_posXpath": policyRulePage_addDstPort_posXpath,
+        "policyRulePage_addConditionDstPort_posXpath": policyRulePage_addCondition_dstPort_posXpath,
         "policyRulePage_addDstPort_posXpath": policyRulePage_addDstPort_posXpath,
         "policyRulePage_searchDstPort_posXpath": policyRulePage_searchDstPort_posXpath,
         "policyRulePage_selectDstPort_posXpath": policyRulePage_selectDstPort_posXpath,
