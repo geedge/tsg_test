@@ -251,6 +251,7 @@ class SecurityGenerator:
                         "policyRulePage_subAction_block_responseContent_clickProfile_posXpath": securityRulePage_subAction_block_responseContent_clickProfile_posXpath,
                         "policyRulePage_subAction_block_responseContent_searchProfile_posXpath": securityRulePage_subAction_block_responseContent_searchProfile_posXpath,
                         "policyRulePage_subAction_block_responseContent_selectProfile_posId": securityRulePage_subAction_block_responseContent_selectProfile_posId,
+                        "policyRulePage_subAction_block_responseContent_text_posId": securityRulePage_subAction_block_responseContent_text_posId,
                         # alert动作
                         "policyRulePage_subAction_alert_posXpath": securityRulePage_subAction_alert_posXpath,
                         "policyRulePage_subAction_alert_responseCode_posXpath": securityRulePage_subAction_alert_responseCode_posXpath,
@@ -260,6 +261,7 @@ class SecurityGenerator:
                         "policyRulePage_subAction_alert_responseContent_clickProfile_posXpath": securityRulePage_subAction_alert_responseContent_clickProfile_posXpath,
                         "policyRulePage_subAction_alert_responseContent_searchProfile_posXpath": securityRulePage_subAction_alert_responseContent_searchProfile_posXpath,
                         "policyRulePage_subAction_alert_responseContent_selectProfile_posId": securityRulePage_subAction_alert_responseContent_selectProfile_posId,
+                        "policyRulePage_subAction_alert_responseContent_text_posId": securityRulePage_subAction_alert_responseContent_text_posId,
                         # dns redirect
                         "policyRulePage_dnsAnswer0ValueType_posId":  securityRulePage_subAction_redirect_answer0ValueType_posId,
                         "policyRulePage_dnsAnswer0ValueTypeChoose_posXpath":  securityRulePage_subAction_redirect_answer0ValueTypeChoose_posXpath,
