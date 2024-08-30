@@ -10,7 +10,8 @@ class DeleteDashboard:
 
     def delete(self):
         try:
-            self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath).click()
+            edit_btn = self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath)
+            self.driver.execute_script("arguments[0].click()", edit_btn)  # 强制点击
             self.driver.find_element(By.XPATH, mainPage_delete_dashboard_posXpath).click()
             self.driver.find_element(By.XPATH, mainPage_delete_Delete_button_posXpath).click()
             return 200
@@ -20,6 +21,7 @@ class DeleteDashboard:
 
     def delete_dashboard(self):
         self.driver.refresh()
-        self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath).click()
+        edit_btn = self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath)
+        self.driver.execute_script("arguments[0].click()", edit_btn)  # 强制点击
         self.driver.find_element(By.XPATH, mainPage_delete_dashboard_posXpath).click()
         self.driver.find_element(By.XPATH, mainPage_delete_Delete_button_posXpath).click()
