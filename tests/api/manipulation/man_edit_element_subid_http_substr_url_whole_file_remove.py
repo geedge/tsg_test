@@ -24,11 +24,16 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
+            "rule_name": parameter["test_case_name"],
             "rule_action_1": "edit_element",
-            "search_scope": "whole_file",
-            "contained_keyword": "test",
-            "element_treatment": "mark",
-            "target_distance_from_matching": 0,
+            "user_region": [
+                {
+                    "search_scope": "whole_file",
+                    "contained_keyword": "test",
+                    "element_treatment": "mark",
+                    "target_distance_from_matching": 0
+                }
+            ],
             "do_log_1": 2,
             "obj_condition_1": [
                 {
@@ -148,6 +153,8 @@ def run(parameter):
             new_report.insert_data(parameter, report_data)
           
 if __name__ == "__main__":
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
@@ -157,9 +164,10 @@ if __name__ == "__main__":
         "env": "tsgx",
         "vsys_id": 6,
         "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "root_path": workdir,
+        "path": workdir + "/tests/api",
         "module_name": "security",
         "test_case_name": "deny_alert_200_text_negative_ip_http_not_host"
     }
+    parameter = replace_paras(parameter)
     run(parameter)

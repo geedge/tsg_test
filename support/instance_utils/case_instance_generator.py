@@ -2,6 +2,7 @@ from support.instance_utils.manipulation_instance_generator import ManipulationI
 from support.instance_utils.dos_protection_instance_generator import DosProtectionInstanceGenerator
 from support.instance_utils.statistics_instance_generator import StatisticsInstanceGenerator
 from support.instance_utils.security_instance_generator import SecurityGenerator
+from support.instance_utils.service_chaining_instance_generator import ServiceChainingInstanceGenerator
 from support.instance_utils.monintor_instance_generator import MonitorInstanceGenerator
 
 class CaseInstanceGenerator:
@@ -29,7 +30,7 @@ class CaseInstanceGenerator:
         elif test_data["policy_type"] == "shaping":
             print("todo")
         elif test_data["policy_type"] == "service_chaining":
-            print("todo")
+            result = self._run_service_chaining(test_data, parameter)
         else:
             pass
         return result
@@ -66,7 +67,9 @@ class CaseInstanceGenerator:
         print("todo")
 
     def _run_service_chaining(self, test_data, parameter):
-        print("todo")
+        self.service_chaining =ServiceChainingInstanceGenerator(test_data, parameter)
+        result = self.service_chaining.run()
+        return result
 
     def delete_data(self):
         if self.test_data["policy_type"] == "security":
@@ -84,7 +87,7 @@ class CaseInstanceGenerator:
         elif self.test_data["policy_type"] == "shaping":
             print("todo")
         elif self.test_data["policy_type"] == "service_chaining":
-            print("todo")
+            self.service_chaining.delete_data()
         else:
             pass
         

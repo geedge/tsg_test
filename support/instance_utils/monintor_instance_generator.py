@@ -66,7 +66,6 @@ class MonitorInstanceGenerator:
                   "Begin to run ui test case", flush=True)
 
             parameter["script_type"] = "ui"
-
             # 环境初始化
             support.ui_utils.env.initiate_selenium_request()
             driver = support.ui_utils.env.my_driver()

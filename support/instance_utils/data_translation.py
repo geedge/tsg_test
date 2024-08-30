@@ -26,14 +26,34 @@ class DataTranslation:
         if len(temp_test_data["profile_condition"]) > 0:
             data["profile_condition"] = temp_test_data["profile_condition"]
         data["do_log_1"] = temp_test_data["do_log_1"]
-        # 添加code_1 key
+        # manipulation api test_data 数据补齐
         if policy_type == "pxy_manipulation":
             if data["rule_action"] == "deny":
                 if "response_page" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["response_page"][0]["response_code"]
-                else:
+                elif "deny_response_text" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["deny_response_text"][0]["response_code"]
                     data["message_1"] = "text"    # 匹配原有api test_data数据
+                else:
+                    data["code_1"] = 404
+                    data["message_1"] = "text"  # 匹配原有api test_data数据
+            elif data["rule_action"] == "redirect":
+                data["code_1"] = data["action_parameter"]["redirect_url"][0]["response_code"]
+                data["to_1"] = data["action_parameter"]["redirect_url"][0]["redirect_url"]
+            elif data["rule_action"] == "edit_element":
+                edit_element_parameter_list = data["action_parameter"]["edit_element_parameter"]
+                user_region = []
+                for i in range(len(edit_element_parameter_list)):
+                    rule_dict = {}
+                    search_scope = edit_element_parameter_list[i]["search_scope"]
+                    rule_dict["search_scope"] = search_scope
+                    if search_scope == "inside_element":
+                        rule_dict["start_indicator"] = edit_element_parameter_list[i]["start_indicator"]
+                    rule_dict["contained_keyword"] = edit_element_parameter_list[i]["contained_keyword"]
+                    rule_dict["target_distance_from_matching"] = edit_element_parameter_list[i]["distance_from_anchor"]
+                    rule_dict["element_treatment"] = edit_element_parameter_list[i]["treatment"]
+                    user_region.append(copy.deepcopy(rule_dict))
+                data["user_region"] = user_region
         return data
     
     def push_object_data(self, data):

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
+import copy
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -276,30 +277,46 @@ class CreatePolicyRule:
                 rule_dict["replace_with"] = condition["replace_with"]
                 rules.append(rule_dict)
                 user_region["rules"] = rules
-            elif action == "edit_element" and condition["search_scope"] == "whole_file":
-                user_region["method"] = "edit_element"
+            elif action == "edit_element":
+                user_region_data = condition["user_region"]
                 rules = []
-                rule_dict = {"anchor_element": {}, "target_element": {}}
-                rule_dict["anchor_element"]["search_scope"] = condition["search_scope"]
-                rule_dict["anchor_element"]["contained_keyword"] = condition["contained_keyword"]
-                rule_dict["target_element"]["target_distance_from_matching"] = condition["target_distance_from_matching"]
-                rule_dict["target_element"]["element_treatment"] = condition["element_treatment"]
-                rules.append(rule_dict)
+                for i in range(len(user_region_data)):
+                    rule_dict = {"anchor_element": {}, "target_element": {}}
+                    search_scope = user_region_data[i]["search_scope"]
+                    rule_dict["anchor_element"]["search_scope"] = search_scope
+                    if search_scope == "inside_element":
+                        rule_dict["anchor_element"]["start_indicator"] = user_region_data[i]["start_indicator"]
+                    rule_dict["anchor_element"]["contained_keyword"] = user_region_data[i]["contained_keyword"]
+                    rule_dict["target_element"]["target_distance_from_matching"] = int(user_region_data[i]["target_distance_from_matching"])
+                    rule_dict["target_element"]["element_treatment"] = user_region_data[i]["element_treatment"]
+                    rules.append(copy.deepcopy(rule_dict))
                 user_region["rules"] = rules
-            elif action == "edit_element" and condition["search_scope"] == "inside_element":
                 user_region["method"] = "edit_element"
-                rules = []
-                rule_dict = {"anchor_element": {}, "target_element": {}}
-                rule_dict["anchor_element"]["search_scope"] = condition["search_scope"]
-                rule_dict["anchor_element"]["contained_keyword"] = condition["contained_keyword"]
-                rule_dict["anchor_element"]["start_indicator"] = condition["start_indicator"]
-                rule_dict["target_element"]["target_distance_from_matching"] = condition["target_distance_from_matching"]
-                rule_dict["target_element"]["element_treatment"] = condition["element_treatment"]
-                rules.append(rule_dict)
-                user_region["rules"] = rules
+            # elif action == "edit_element" and condition["search_scope"] == "whole_file":
+            #     user_region["method"] = "edit_element"
+            #     rules = []
+            #     rule_dict = {"anchor_element": {}, "target_element": {}}
+            #     rule_dict["anchor_element"]["search_scope"] = condition["search_scope"]
+            #     rule_dict["anchor_element"]["contained_keyword"] = condition["contained_keyword"]
+            #     rule_dict["target_element"]["target_distance_from_matching"] = condition["target_distance_from_matching"]
+            #     rule_dict["target_element"]["element_treatment"] = condition["element_treatment"]
+            #     rules.append(rule_dict)
+            #     user_region["rules"] = rules
+            # elif action == "edit_element" and condition["search_scope"] == "inside_element":
+            #     user_region["method"] = "edit_element"
+            #     rules = []
+            #     rule_dict = {"anchor_element": {}, "target_element": {}}
+            #     rule_dict["anchor_element"]["search_scope"] = condition["search_scope"]
+            #     rule_dict["anchor_element"]["contained_keyword"] = condition["contained_keyword"]
+            #     rule_dict["anchor_element"]["start_indicator"] = condition["start_indicator"]
+            #     rule_dict["target_element"]["target_distance_from_matching"] = condition["target_distance_from_matching"]
+            #     rule_dict["target_element"]["element_treatment"] = condition["element_treatment"]
+            #     rules.append(rule_dict)
+            #     user_region["rules"] = rules
             rule_template_dict["rule"]["user_region"] = user_region
         # 添加用例名称
-        rule_template_dict["rule"]["name"] = condition["rule_name"]
+        if "rule_name" in condition:
+            rule_template_dict["rule"]["name"] = condition["rule_name"]
 
         # 开始创建rule
         policy_id_list_temp = self.create_rule(rule_template_dict, headers, api_host)
@@ -337,7 +354,6 @@ class CreatePolicyRule:
         try:
             url = api_host + "/v1/policy/rule"
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
-            assert response.status_code == 200
             return_json_data = json.loads(response.text)
             if response.status_code == 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(return_json_data['data']['rule']['type']), flush=True)
