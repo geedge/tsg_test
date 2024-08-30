@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
+import os.path
 import time
 import requests
 import json
@@ -718,7 +719,8 @@ class CreateProfile:
                 create_profile_id_dict["id"] = profile_id
                 return create_profile_id_dict
             elif profile_type == "insert_profile":
-                files = {"file": ("Create-Insert-Script-test1.js", open(path_dict["profiles_insert_profile_path"], 'rb'), "text/plain")}
+                file_name = os.path.basename(path_dict["profiles_insert_profile_path"])
+                files = {"file": (file_name, open(path_dict["profiles_insert_profile_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id

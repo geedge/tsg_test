@@ -26,8 +26,8 @@ def local_run():
         "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
+        "root_path": workdir,
+        "path": workdir + "/testcase/ui",
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
@@ -322,7 +322,6 @@ if __name__ == '__main__':
     parameter = replace_paras(parameter)
     run(parameter)
     """
-    #resource_text = repr(resource_text)
     #print(resource_text)
 
     file_names = []
@@ -338,7 +337,6 @@ if __name__ == '__main__':
         tmp_resource_text = copy.deepcopy(resource_text)
         with open(file_0, "r", encoding="utf-8") as f:
             text = f.read()
-        #print(text )
 
         # 正则表达式匹配从# 测试数据到log_in = LogIn()之间的内容
         pattern = re.compile(r'测试数据(.*?)log_in = LogIn\(\)', re.DOTALL)
@@ -349,33 +347,29 @@ if __name__ == '__main__':
         match_text = matches[0]
         match_text = match_text.rstrip()
         match_text = match_text.lstrip("\n")
-        #match_text = repr(match_text)
         # 输出匹配的内容
         #print(match_text)
         result_text = tmp_resource_text.replace("        replace_text", match_text)
-        #result_text = repr(result_text)
-        #print(1111)
-        #print(result_text)
 
         # 覆盖源文件内容 谨慎执行
-
         # with open(file_0, "w", encoding="utf-8") as f2:
         #     f2.write(result_text)
+        # 覆盖源文件内容 谨慎执行
 
         print("{}，替换完成".format(file_0))
-
         #break
-    #print(resource_text)
     print("替换完成")
 
 if __name__ == '__main__':
-    #local_run()     # 本地运行所有用例
-
     # 定义目录和目标文件  需要调整的变量
     ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (20).json'
     case_directory_path = 'C:/zcw/tsg_test/tests/ui/manipulation'
     file_startwith = "man_"
     file_endswith = ".py"
+
+    # 本地运行所有用例
+    local_run()
+
     # 对比MS工具
     #diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
@@ -383,4 +377,4 @@ if __name__ == '__main__':
     #get_excel_formate_from_case(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 替换test_data
-    replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+    #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)

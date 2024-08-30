@@ -267,16 +267,17 @@ class CreatePolicyRule:
                 user_region["code"] = condition["code_"+str(create_number)]
                 user_region["to"] = condition["to_"+str(create_number)]
             elif action == "replace":
-                user_region["method"] = "replace"
+                user_region_data = condition["user_region"]
                 rules = []
-                rule_dict = {}
-                rule_dict["regex_enable"] = condition["regex_enable"]
-                rule_dict["regexEnable"] = condition["regexEnable"]
-                rule_dict["search_in"] = condition["search_in"]
-                rule_dict["find"] = condition["find"]
-                rule_dict["replace_with"] = condition["replace_with"]
-                rules.append(rule_dict)
+                for i in range(len(user_region_data)):
+                    rule_dict = {}
+                    rule_dict["regex_enable"] = user_region_data[i]["regex_enable"]
+                    rule_dict["search_in"] =  user_region_data[i]["search_in"]
+                    rule_dict["find"] =  user_region_data[i]["find"]
+                    rule_dict["replace_with"] =  user_region_data[i]["replace_with"]
+                    rules.append(copy.deepcopy(rule_dict))
                 user_region["rules"] = rules
+                user_region["method"] = "replace"
             elif action == "edit_element":
                 user_region_data = condition["user_region"]
                 rules = []
