@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 import os
 import sys
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -9,6 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
 
+
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
@@ -16,6 +16,7 @@ def run(parameter):
         # 参数初始化
         exception_result = ""
         result = {}
+
         # 脚本启动时间
         start_time = time.time()
 
@@ -25,10 +26,8 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": os.path.splitext(os.path.basename(__file__))[0],
-            "rule_action": "allow",
+            "rule_action": "monitor",
             "rule_type": "create",
-            "is_mirror": "off",
-            "mirror_type": "mail",
             "condition": {
                 "source_ip": [
                     {
@@ -40,45 +39,38 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.7",
+                                "item_value": "10.64.224.3",
                             },
                         ]
                     }
                 ],
                 "application": [
                     {
-                        "name": "mail",  #
+                        "name": "ssl",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                "protocol_filed": [
-                    {
-                        "name": "monitor_mail_attachment_name",
-                        "object_type": "keywords",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "mail_content",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "*tent"
-                                ]
-                            }
-                        ],
-                    }
-                ],
+                 "protocol_filed": [
+                     {
+                         "name": "True",  #
+                         "object_type": "boolean",
+                         "boolean_type": "ESNI"
+                     },
+                     {
+                         "name": "False",  #
+                         "object_type": "boolean",
+                         "boolean_type": "ECH"
+                     }
+                 ],
             },
+            "is_mirror":"off",
+            "mirror_type": "ssl",
             "expected_return": "trex",
             "counters": {"hits": 1},
-            "log_query_param": [
-                {"query_field_key": "mail_attachment_name", "query_value": "test1214.txt"}
-            ],
+            "log_query_param": [{"query_field_key": "ssl_esni_flag", "query_value": "True"},
+                                {"query_field_key": "ssl_ech_flag", "query_value": "False"},
+                                ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
@@ -89,7 +81,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "mail_content"
+                "pcap_name": "esni"
             },
             "token": ""
         }
@@ -118,25 +110,24 @@ def run(parameter):
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
 
-
-
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "lina2024",
+        "password": "lina2024",
         "test_pc_ip": "192.168.64.96",
-        "test_subcriber_id": "test490",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
+        "script_type": "ui",
         "is_log": 1,
         "env": "tsgx",
-        "script_type": "ui",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_rule_mail_mirror_on"
+        "test_case_name": ""
     }
+
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

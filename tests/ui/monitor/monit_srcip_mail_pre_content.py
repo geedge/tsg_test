@@ -54,7 +54,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "monitor_mail_attachment_name",
+                        "name": "monitor_mail_content",
                         "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
@@ -67,7 +67,7 @@ def run(parameter):
                                 "item_type": "mail_content",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "con*"
+                                    "172*"
                                 ]
                             }
                         ],
@@ -89,7 +89,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "mail_content"
+                "pcap_name": "mail_imap"
             },
             "token": ""
         }

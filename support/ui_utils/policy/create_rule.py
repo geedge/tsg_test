@@ -368,7 +368,8 @@ class CreateRule:
                                 else:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
                         elif protocol_field_data[x]["object_type"] == 'boolean':
-                            self.add_protocol_field(protocol_field_data, "Boolean", create_element_position, temp)
+                            self.add_bool_type_protocol_field(protocol_field_data, "Boolean", create_element_position, temp)
+                            break
 
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0 and "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) == 0:
                 override_flag = True
@@ -769,14 +770,7 @@ class CreateRule:
     def add_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
         # 点add condition的+
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
-        # 选中protocol filed为Boolean类型的值
-        if filed_type == "Boolean":
-            var1 = protocol_field_data[0]["boolean_type"]
-            xpath_temp = create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]
-            xpath_last=xpath_temp.format(replaceValue=var1)
-            self.driver.find_element(By.XPATH,xpath_last).click()
-        else:
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
+        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
         # 点protocol filed的+
         temp_element_position = create_element_position["policyRulePage_add{}_posXpath".format(filed_type)].format(replaceValue=num)
@@ -787,6 +781,25 @@ class CreateRule:
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)], find_after_wait_time=0.5).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
+
+    def add_bool_type_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
+        for x in range(len(protocol_field_data)):
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+            var1 = protocol_field_data[x]["boolean_type"]
+            xpath_temp = create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]
+            xpath_last = xpath_temp.format(replaceValue=var1)
+            self.driver.find_element(By.XPATH, xpath_last).click()
+            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+            # 点protocol filed的+
+            temp_element_position = create_element_position["policyRulePage_add{}_posXpath".format(filed_type)].format(replaceValue=num)
+            self.driver.find_element(By.XPATH, temp_element_position).click()
+            # 通过protocol filed name搜索并选中
+            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_search{}_posXpath".format(filed_type)],find_after_wait_time=1).send_keys(protocol_field_data[x]["name"])
+            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_search{}_posXpath".format(filed_type)],find_after_wait_time=0.5).send_keys(Keys.ENTER)
+            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_select{}_posXpath".format(filed_type)],find_after_wait_time=0.5).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
+            num = num +1
+
 
     def add_ip_protocol(self, ip_protocol_data, filed_type, create_element_position):
         # 点add condition的+

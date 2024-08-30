@@ -198,7 +198,7 @@ class GetLog:
                                 else:
                                     temp_log_result_list.append(False)
                                 # 统一处理逻辑
-                            if "mirror_type" in test_data and test_data["mirror_type"] in {"ftp", "http", "ssl","dns","quic",""}:
+                            if "mirror_type" in test_data and test_data["mirror_type"] in {"ftp", "http", "ssl","dns","quic","","mail"}:
                                 if query_field_key == "monitor_mirrored_pkts" and log[query_field_key] == mirror_pkts_value:
                                     temp_log_result_list.append(True)
                                     # 更新 test_data["log_query_param"] 中相应的 query_value

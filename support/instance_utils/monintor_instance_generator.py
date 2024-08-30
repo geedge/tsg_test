@@ -198,7 +198,7 @@ class MonitorInstanceGenerator:
                     delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                     if delete_rule_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Delete manipulation rule successfully.", flush=True)
+                              "Delete monitor rule successfully.", flush=True)
                     elif delete_rule_code != 200:
                         result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
                 else:

@@ -893,7 +893,7 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchResponseBody_posXpath": monitorRulePage_searchRequestHeader_posXpath,
                     "policyRulePage_selectResponseBody_posXpath": monitorRulePage_selectRequestHeader_posXpath,
                     "policyRulePage_closeResponseBody_posXpath": monitorRulePage_closeRequestHeader_posXpath,
-                    #add ssl sni
+                    #add ssl boolean type
                     "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
                     "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
                     "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,

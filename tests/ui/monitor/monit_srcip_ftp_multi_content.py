@@ -99,8 +99,7 @@ def run(parameter):
                                 "item_type": "ftp_content",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "autotest",
-                                    "autotest"
+                                    "autotest&test"
                                 ]
                             }
                         ],

@@ -68,7 +68,7 @@ def run(parameter):
                                 "item_type": "mail_attachment_content",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "172"
+                                    "TRex"
                                 ]
                             }
                         ],
