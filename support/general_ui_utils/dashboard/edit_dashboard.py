@@ -13,7 +13,8 @@ class EditDashboard:
     def edit(self,data,visualization_type,metric_type,multiple_dimension):
         try:
             #进入chart编辑页面
-            self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath).click()
+            edit_btn = self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath)
+            self.driver.execute_script("arguments[0].click()", edit_btn)  # 强制点击
             self.driver.find_element(By.XPATH, dashboard_chart_up_button_posXpath).click()
             self.driver.find_element(By.XPATH, dashboard_chart_up_edit_button_posXpath).click()
             #清空metrci
@@ -275,7 +276,8 @@ class EditDashboard:
     
     def modify_data_verify(self,data,visualization_type):
         try:
-            self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath).click()
+            edit_btn = self.driver.find_element(By.XPATH, mainPage_edit_dashboard_button_posXpath)
+            self.driver.execute_script("arguments[0].click()", edit_btn)  # 强制点击
             self.driver.find_element(By.XPATH, dashboard_chart_up_button_posXpath).click()
             self.driver.find_element(By.XPATH, dashboard_chart_up_edit_button_posXpath).click()
             # if visualization_type != "Line" and visualization_type != "Area":
