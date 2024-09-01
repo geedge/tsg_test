@@ -41,7 +41,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_http_exactly_url_redirect",
+            "rule_name": "secy_deny_srcip_http_xly_url_redirect",
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -114,7 +114,9 @@ def run(parameter):
             "expected_return": "303",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},
-            {"query_field_key":"http_url", "query_value": "open.node.com:180/"}],
+                                {"query_field_key":"http_url", "query_value": "open.node.com:180/"},
+                                {"query_field_key": "decoded_as", "query_value": "HTTP"},
+                                {"query_field_key":"security_action","query_value":"Deny"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
