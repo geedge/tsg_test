@@ -26,7 +26,7 @@ class Dashboard:
         self.driver.find_element(By.XPATH,mainPage_create_button_dashboard_posXpath).click()
         self.driver.find_element(By.XPATH,mainPage_add_chart_button_posXpath).click()
         self.add_chart(data,visualization_type,metric_type,multiple_dimension)
-        if "error" in data["subtype"]:
+        if "error" in data["sub_type"]:
             self.model = "2"
         else:
             self.model = "1"
@@ -99,7 +99,7 @@ class Dashboard:
 
     def add_chart(self,data,visualization_type,metric_type,multiple_dimension):
         # 添加Name
-        if data["subtype"] == "name_error":
+        if data["sub_type"] == "name_error":
             self.driver.find_element(By.XPATH, dashboard_chart_name_text_input_posXpath).send_keys("")
         else:
             self.driver.find_element(By.XPATH, dashboard_chart_name_text_input_posXpath).send_keys("Create_" + data["data_source"])
@@ -305,14 +305,14 @@ class Dashboard:
     def confirm_creation(self,data):
         self.driver.find_element(By.XPATH, dashboard_chart_save_OK_button_posXpath).click()
         if self.model == "2":
-            if data["subtype"] == "name_error":
+            if data["sub_type"] == "name_error":
                 error_text = self.driver.find_element(By.XPATH,dashboard_chart_name_error_text_posYpath).text
                 assert self.driver.find_element(By.XPATH,dashboard_chart_name_error_text_posYpath).text == "Please enter"
-            elif data["subtype"] == "metric_error":
+            elif data["sub_type"] == "metric_error":
                 error_text = self.driver.find_element(By.XPATH,dashboard_chart_different_metric_error_text_posYpath).text
                 assert error_text == "The units of the composite fields are different and cannot be selected at the same time" or\
                        error_text == "The label cannot be empty or the same"
-            elif data["subtype"] == "dimensions_error":
+            elif data["sub_type"] == "dimensions_error":
                 error_text = self.driver.find_element(By.XPATH,dashboard_chart_dimensions_error_text_posXpath).text
                 assert error_text == "The dimensions cannot be empty and can only have one dimension"
         else:

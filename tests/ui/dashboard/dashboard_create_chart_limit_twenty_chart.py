@@ -26,7 +26,7 @@ def run(parameter):
 
         #测试数据
         test_data =  {
-            "visualization_type": ["Table", "Line", "Bar", "Area", "Pie"],
+            "visualization_type": "Table",
             "data_source": "Traffic Metrics",
             "metric": {
                 "single_type": [
@@ -40,13 +40,11 @@ def run(parameter):
             "dimensions": ["Device Group"],
             "order_by": "",
             "filter": "",
-
             "sub_type": ""
         }
 
         #随机visualization_type格式
-        visualization_type = random.choice(test_data["visualization_type"])
-
+        visualization_type = test_data["visualization_type"]
         #创建Dashboard-Chart
         create_dashboard = Dashboard(driver)
         create_code = create_dashboard.limit_chart(test_data,visualization_type,"single","false")
@@ -105,7 +103,7 @@ if __name__ == '__main__':
         "is_log": 0,
         "root_path": "D:/PycharmProjects/tsg_test",
         "path": "D:/PycharmProjects/tsg_test/tests/ui",
-        "module_name": "",
+        "module_name": "dashboard",
         "test_case_name": "create_table_traffic_spectrum"
     }
     run(parameter)

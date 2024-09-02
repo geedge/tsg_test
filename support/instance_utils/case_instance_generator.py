@@ -96,7 +96,7 @@ class CaseInstanceGenerator:
             print("todo")
         elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "service_chaining":
             self.service_chaining.delete_data()
-        elif "type" in self.test_data.keys() and self.test_data["policy_type"] == "dashboard":
+        elif "type" in self.test_data.keys() and self.test_data["type"] == "dashboard":
             self.dashboard.delete_data()
         else:
             pass
