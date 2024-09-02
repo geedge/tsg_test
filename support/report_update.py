@@ -5,10 +5,7 @@ from datetime import datetime
 
 class ReportUpdate:
     def write_result(self, parameter, result, exception_result):
-        if len(parameter["script_type"]) == 0:
-            file_path = parameter["root_path"] + "/report/automation_test_report.csv"
-        else:
-            file_path = parameter["root_path"] + "/report/{}_automation_test_report.csv".format(parameter["script_type"])
+        file_path = parameter["root_path"] + "/report/{}_automation_test_report.csv".format(parameter["module_name"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
             if result is not None and result != "" and len(result) != 0:
                 report_data = []
