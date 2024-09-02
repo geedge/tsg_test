@@ -262,6 +262,9 @@ class SecurityGenerator:
                         "policyRulePage_subAction_alert_responseContent_searchProfile_posXpath": securityRulePage_subAction_alert_responseContent_searchProfile_posXpath,
                         "policyRulePage_subAction_alert_responseContent_selectProfile_posId": securityRulePage_subAction_alert_responseContent_selectProfile_posId,
                         "policyRulePage_subAction_alert_responseContent_text_posId": securityRulePage_subAction_alert_responseContent_text_posId,
+                        # http redirect 动作
+                        "policyRulePage_subAction_redirect_posXpath": securityRulePage_subAction_redirect_posXpath,
+                        "policyRulePage_subAction_redirect_input_posId": securityRulePage_subAction_redirect_input_posXpath,
                         # dns redirect
                         "policyRulePage_dnsAnswer0ValueType_posId":  securityRulePage_subAction_redirect_answer0ValueType_posId,
                         "policyRulePage_dnsAnswer0ValueTypeChoose_posXpath":  securityRulePage_subAction_redirect_answer0ValueTypeChoose_posXpath,
