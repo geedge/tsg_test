@@ -7,7 +7,7 @@ class ReportUpdate:
     def write_result(self, parameter, result, exception_result):
         file_path = parameter["root_path"] + "/report/{}_automation_test_report.csv".format(parameter["module_name"])
         if os.path.exists(file_path) and os.path.isfile(file_path):  
-            if result is not None and result != "" and len(result) != 0:
+            if isinstance(result, str) and result is not None and result != "" and len(result) != 0 or isinstance(result, dict) and (len(result["ui_result"]) != 0 or len(result["api_result"]) != 0):
                 report_data = []
                 report_data.append(parameter["test_case_name"])
                 result_flag = "Fail"
@@ -20,7 +20,7 @@ class ReportUpdate:
                 result_flag = "Fail"
                 report_data.append(result_flag)
                 report_data.append(exception_result)
-            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
+            elif (isinstance(result, str) and result == "" and len(result) == 0 or isinstance(result, dict) and len(result["ui_result"]) == 0 and len(result["api_result"]) == 0) and exception_result == "" and len(exception_result) == 0:
                 report_data = []
                 report_data.append("test_case_name")
                 result_flag = "Pass"
