@@ -30,8 +30,8 @@ class ServiceChainingInstanceGenerator:
         self.parameter = parameter
 
     def run(self):
-        ui_result = self._run(self.test_data, self.parameter)
-        return ui_result
+        result = self._run(self.test_data, self.parameter)
+        return result
 
     def _run(self, test_data, parameter):
         # 声明定义数据
