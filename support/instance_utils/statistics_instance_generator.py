@@ -2,6 +2,7 @@ import os
 import sys
 
 from support.api_utils.organize_config import OrganizeConfig
+from support.instance_utils.data_translation import DataTranslation
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
@@ -16,6 +17,7 @@ from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.api_utils.delete_policy import DeletePolicy
+from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
@@ -35,6 +37,7 @@ class StatisticsInstanceGenerator:
 
     def _run(self, test_data, parameter):
         ui_result, api_result = "", ""
+        self.api_name_list, self.ui_name_list = [], []
         result = {
             "ui_result": "",
             "api_result": ""
@@ -248,13 +251,40 @@ class StatisticsInstanceGenerator:
             result["ui_result"] = ui_result
             
         if parameter["script_type"] == "api" or need_initialization == True:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                  "Begin to run api test case", flush=True)
 
             parameter["script_type"] = "api"
 
-            self.api_name_list = []
+            # 数据转换，适配API的test_data
+            translation = DataTranslation()
+            test_data = translation.data_translation(parameter, test_data)
+            # print(test_data)
 
-            "todo api 集成"
+            self.api_name_list = get_name_list(test_data)
+
+            # 添加测试过程中涉及的template
+            template_path = {}
+            template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
+            template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+            template_path["profile_statistics_template"] = parameter["path"] + "/template/profile_statistics_template.json"
+
+            # 创建Object、Profile、Rule
+            create = CreatePolicy()
+            cfg_list = create.create_policy(parameter, test_data, template_path)
+
+            # 流量验证
+            verify = Verification()
+            verification_result = verify.verification("", parameter, test_data, cfg_list, "")
+
+            # 分析验证结果，并返回给flask
+            analysis = AnalysisResult()
+            api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
+
+            result["api_result"] = api_result
+            # 删除配置
+            delete = DeletePolicy()
+            delete.delele_policy_by_cfg(token, parameter, cfg_list)
 
         return result
 

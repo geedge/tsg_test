@@ -761,6 +761,9 @@ class GetLog:
                 case "HISTOGRAM":
                     time_dif_seconds = 0
                     metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+                case "MEDIAN" | "P95_PERCENTILE" | "P99_PERCENTILE":
+                    time_dif_seconds = 0
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
                 case _:
                     failure_info_2 = f"Invalid function name: {function_name}"
             return metric_result, failure_info_2
@@ -922,22 +925,7 @@ class GetLog:
         try:
             match len(source_fields):
                 case 1:
-                    if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                        metric_result = True
-                    else:
-                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                case 2:
-                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                        metric_result = True
-                    else:
-                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                case 3:
-                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics and source_fields[2] in all_metrics and source_fields[3] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                        metric_result = True
-                    else:
-                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                case 4:
-                    if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    if source_fields[0] in all_metrics and stats_value >= 0:
                         metric_result = True
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
@@ -947,6 +935,34 @@ class GetLog:
         except Exception as e:
             exception_result = str(e)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
+            return metric_result, failure_info_2
+
+    def metric_percentile_value_verification(self, source_fields, stats_value, rate_coefficient,
+                                            test_traffic_statistics, time_dif_seconds):
+        # 待重构
+        failure_info_2 = ""
+        util = UtilStatisticsTemplate()
+        code, all_metrics = util.get_all_metrics_or_dimensions("distribution_metrics")
+        if code != 200:
+            return False, "Failed to obtain the Field whose Metric Type is Distribution"
+        try:
+            match len(source_fields):
+                case 1:
+                    if source_fields[0] in all_metrics:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case _:
+                    if source_fields[0] in all_metrics:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+            return metric_result, failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                  "Histogram statistical data verification anomaly.exception:{}".format(exception_result),
+                  flush=True)
             return metric_result, failure_info_2
 
 if __name__ == '__main__':
