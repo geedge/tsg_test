@@ -6,11 +6,11 @@ from ftplib import FTP
 class FtpPlayer:
     def send_ftp_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send ftp traffic for effect verification.", flush=True)
-        if "command" in traffic_data["traffic"]:
-            p = subprocess.Popen(traffic_data["traffic"]["command"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+        if "command" in traffic_data:
+            p = subprocess.Popen(traffic_data["command"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
             output, error = p.communicate()
             result = output + error
-        elif "command" not in traffic_data["traffic"]:
+        elif "command" not in traffic_data:
             try:
                 result = ""
                 ftp_server = traffic_data["host"]
