@@ -26,7 +26,7 @@ def run(parameter):
 
         #测试数据
         test_data =  {
-            "visualization_type": ["Line", "Bar", "Area", "Pie"],
+            "visualization_type": "Table",
             "data_source": "Service Chaining Rule Hits",
             "metric": {
                 "multiple_type": [
@@ -50,7 +50,7 @@ def run(parameter):
         # 随机metric与dimension格式
         metric_type = random.choice(select_metric_type)
         multiple_dimension = random.choice(multiple_dimension)
-        visualization_type = random.choice(test_data["visualization_type"])
+        visualization_type = test_data['visualization_type']
 
         #创建Dashboard-Chart
         create_dashboard = CreateDashboard(driver)
@@ -110,7 +110,7 @@ if __name__ == '__main__':
         "is_log": 0,
         "root_path": "D:/PycharmProjects/tsg_test",
         "path": "D:/PycharmProjects/tsg_test/tests/ui",
-        "module_name": "",
+        "module_name": "dashboard",
         "test_case_name": "create_table_traffic_spectrum"
     }
     run(parameter)

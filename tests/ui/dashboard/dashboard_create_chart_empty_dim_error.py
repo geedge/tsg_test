@@ -26,49 +26,22 @@ def run(parameter):
 
         #测试数据
         test_data =  {
-            "ids": "Name为空错误提示校验",
-            "visualization_type": ["Table", "Line", "Bar", "Area", "Pie"],
+            "ids": "Dimensions多个添加错误校验",
+            "visualization_type": ["Bar","Pie"],
             "data_source": "Service Chaining Rule Hits",
-            "metric": {
-                "single_type": [
-                    {
-                        "field": "Bytes Sent",
-                        "aggregate": "BITRATE",
-                        "label": "verifyedit"
-                    },
-                    {
-                        "field": "Bytes Received",
-                        "aggregate": "SUM",
-                        "label": ""
-                    },
-                    {
-                        "field": "Packets Sent",
-                        "aggregate": "SUM",
-                        "label": ""
-                    },
-                    {
-                        "field": "Packets Received",
-                        "aggregate": "SUM",
-                        "label": ""
-                    }
-                ],
-                "multiple_type": [
-                    {
-                        "field": ["Bytes Sent", "Bytes Received"],
-                        "aggregate": "random",
-                        "label": "verifyedit"
-                    },
-                    {
-                        "field": ["Packets Sent", "Packets Received"],
-                        "aggregate": "random",
-                        "label": ""
-                    }
-                ]
-            },
-            "dimensions": ["Device Group", "Data Center"],
-            "order_by": "",
-            "filter": "",
-            "sub_type": "error_name"
+              "metric": {
+                  "single_type": [
+                      {
+                          "field": "Bytes Sent",
+                          "aggregate": "random",
+                          "label": "verifyedit"
+                      }
+                  ]
+              },
+              "dimensions": ["Time", "Rule","Service Function Forwarder Profile ID","Service Function Profile ID","Device Group", "Data Center"],
+              "order_by": "",
+              "filter": "",
+              "sub_type": "error_dimensions"
 
         }
 
@@ -81,9 +54,9 @@ def run(parameter):
 
         #创建Dashboard-Chart
         create_dashboard = CreateDashboard(driver)
-        create_code = create_dashboard.create(test_data, visualization_type, metric_type, "false")
+        create_code = create_dashboard.create(test_data, visualization_type, "single", "true")
         if create_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Empty Name save hint right", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"More dimension error hint right", flush=True)
         else:
             result = "Fail to create chart"
 
@@ -137,7 +110,7 @@ if __name__ == '__main__':
         "is_log": 0,
         "root_path": "D:/PycharmProjects/tsg_test",
         "path": "D:/PycharmProjects/tsg_test/tests/ui",
-        "module_name": "",
+        "module_name": "dashboard",
         "test_case_name": "create_table_traffic_spectrum"
     }
     run(parameter)

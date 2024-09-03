@@ -339,8 +339,19 @@ def run(parameter):
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
             if search_rule_code == 200:
                 test_data["rule_id"] = rule_id
+                policy_type = test_data["policy_type"]
+                policy_id_dict_temp = {}
+                policy_id_dict_temp[policy_type] = rule_id
+                create_policies_ids = []
+                create_policies_ids.append(policy_id_dict_temp)
+                statistics_sc_info_list = []
+                sc_info["rule_id"] = rule_id
+                statistics_sc_info_list.append(sc_info)
+                cfg_list = {}
+                cfg_list["create_policies_ids"] = create_policies_ids
+                cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
                 verify = Verification()
-                verification_result = verify.verification(driver, parameter, test_data, sc_info, test_rule_element_position)
+                verification_result = verify.verification(driver, parameter, test_data, cfg_list, test_rule_element_position)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
                 elif len(verification_result) == 5:

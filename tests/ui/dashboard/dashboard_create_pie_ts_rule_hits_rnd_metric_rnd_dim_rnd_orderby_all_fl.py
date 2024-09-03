@@ -8,7 +8,9 @@ from support.general_ui_utils.dashboard.edit_dashboard import EditDashboard
 from support.general_ui_utils.dashboard.delete_dashboard import DeleteDashboard
 import random
 from support.api_utils.delete_policy import *
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report import GenerateReport
+from support.report_update import ReportUpdate
 
 
 def run(parameter):
@@ -20,14 +22,10 @@ def run(parameter):
         #脚本启动时间
         start_time = time.time()
 
-        # 环境初始化
-        support.ui_utils.env.initiate_selenium_request()
-        driver = support.ui_utils.env.my_driver()
-        support.ui_utils.env.setup()
-
         #测试数据
         test_data = {
-            "visualization_type": ["Table", "Line", "Bar","Area","Pie"],
+            "type":"dashboard",
+            "visualization_type": "Pie",
             "data_source": "Traffic Shaping Rule Hits",
             "select_metric_type": "single",
             "metric": {
@@ -114,102 +112,27 @@ def run(parameter):
                 }
             ]
         }
-        log_in = LogIn()
-        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-        test_data["token"] = token
 
-        name_list = [
-            {
-                "name": "New Dashboard",
-                "type": "dashboard",
-            }
-        ]
+        # 测试用例实例化
+        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
+        result = case_instance_generator.run()
 
-        select_metric_type = ["single", "multiple"]
-        multiple_dimension = [True,False]
-        #随机metric与dimension格式
-        metric_type = random.choice(select_metric_type)
-        multiple_dimension = False
-
-        #创建Dashboard-Chart
-        create_dashboard = CreateDashboard(driver)
-        create_code = create_dashboard.create(test_data,"Pie",metric_type,multiple_dimension)
-        if create_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create chart successfully.", flush=True)
-        else:
-            result = "Fail to create chart"
-        #新建chart输入数据校验
-        create_verify_code = create_dashboard.create_chart_data_verify(test_data,"Pie",metric_type,multiple_dimension)
-        if create_verify_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create chart data verify successfully.", flush=True)
-        else:
-            result = "Fail to chart data verify"
-
-        #修改metric与dimension格式
-        if metric_type == "single":
-            metric_type = "multiple"
-        else: metric_type = "single"
-
-        #编辑操作
-        edit_dashboard = EditDashboard(driver)
-        edit_dashboard_code = edit_dashboard.edit(test_data,"Pie",metric_type,multiple_dimension)
-        if edit_dashboard_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit chart successfully.", flush=True)
-        else:
-            result = "Fail to Edit chart"
-        #修改内容数据校验
-        edit_verify_code = edit_dashboard.modify_data_verify(test_data,"Pie")
-        if edit_verify_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit chart verify successfully.", flush=True)
-        else:
-            result = "Fail to Edit chart verify"
-
-        #删除dashboard
-        delete_dashboard = DeleteDashboard(driver)
-        delete_dashboard_code = delete_dashboard.delete()
-        if delete_dashboard_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete chart successfully.", flush=True)
-        else:
-            result = "Fail to Delete chart"
-        # 脚本结束时间和耗时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,flush=True)
         return "Error: " + str(e)
     finally:
-        #清理环境
-        support.ui_utils.env.teardown()
-        delete = DeletePolicy()
-        delete.delete_policy_by_name(token, parameter, name_list)
-        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):
-            if result is not None and result != "" and len(result) != 0:
-                report_data = []
-                report_data.append(parameter["test_case_name"])
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(result)
-            elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(exception_result)
-            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Pass"
-                report_data.append(result_flag)
-                report_data.append("")
-            new_report = GenerateReport()
-            new_report.insert_data(parameter, report_data)
+        # 清理环境并删除配置
+        case_instance_generator.delete_data()
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
+        # 生成csv报告
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
 
 if __name__ == '__main__':
     parameter = {
@@ -224,7 +147,7 @@ if __name__ == '__main__':
         "is_log": 0,
         "root_path": "D:/PycharmProjects/tsg_test",
         "path": "D:/PycharmProjects/tsg_test/tests/ui",
-        "module_name": "",
+        "module_name": "dashboard",
         "test_case_name": "create_table_traffic_spectrum"
     }
     run(parameter)

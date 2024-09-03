@@ -25,11 +25,15 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
             "rule_action_1": "replace",
-            "search_in": "http_req_uri",
-            "regexEnable": 0,
-            "regex_enable": 0,
-            "find": "explore",
-            "replace_with": "subscriptions",
+            "user_region": [
+                {
+                    "search_in": "http_req_uri",
+                    "regexEnable": 0,
+                    "regex_enable": 0,
+                    "find": "explore",
+                    "replace_with": "subscriptions",
+                }
+            ],
             "do_log_1": 2,
             "obj_condition_1": [
                 {

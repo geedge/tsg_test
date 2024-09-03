@@ -215,7 +215,7 @@ if __name__ == '__main__':
         "is_log": 0,
         "root_path": "D:/PycharmProjects/tsg_test",
         "path": "D:/PycharmProjects/tsg_test/tests/ui",
-        "module_name": "",
+        "module_name": "dashboard",
         "test_case_name": "create_table_traffic_spectrum"
     }
     run(parameter)
