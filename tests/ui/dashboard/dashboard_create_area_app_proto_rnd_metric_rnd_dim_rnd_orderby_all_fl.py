@@ -117,7 +117,7 @@ def run(parameter):
                 {
                     "field": "App Name",
                     "operator": "random",
-                    "value": [""]
+                    "value": ["dns"]
                 },
                 {
                     "field": "Device Group",
