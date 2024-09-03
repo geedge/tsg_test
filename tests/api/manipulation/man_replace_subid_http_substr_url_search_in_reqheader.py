@@ -25,11 +25,15 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "pxy_manipulation",
             "rule_action_1": "replace",
-            "search_in": "http_req_header",
-            "regexEnable": 1,
-            "regex_enable": 0,
-            "find": "Chrome",
-            "replace_with": "hello",
+            "user_region": [
+                {
+                    "search_in": "http_req_header",
+                    "regexEnable": 1,
+                    "regex_enable": 0,
+                    "find": "Chrome",
+                    "replace_with": "hello",
+                }
+            ],
             "do_log_1": 2,
             "obj_condition_1": [
                 {
