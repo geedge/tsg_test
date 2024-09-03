@@ -11,7 +11,7 @@ from support.packet_generator.ssl_player import SSLPlayer
 from support.packet_generator.ftp_player import FtpPlayer
 from support.packet_generator.dns_player import DnsPlayer
 from support.packet_generator.mail_player import MailPlayer
-from support.packet_generator.dtls_player import DtlsPlayer
+# from support.packet_generator.dtls_player import DtlsPlayer
 import support.packet_generator.quic_player as quic_player
 from support.packet_generator import trex_replay
 from support.packet_generator.doh_player import DohPlayer
@@ -84,8 +84,8 @@ class TriggerTraffic:
                 result = player.send_doh_query(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "dtls":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate dtls traffic by client.", flush=True)
-                player = DtlsPlayer()
-                result = player.send_dtls_traffic(temp_data, script_type, debug_flag)
+                # player = DtlsPlayer()
+                # result = player.send_dtls_traffic(temp_data, script_type, debug_flag)
             elif test_data["traffic"]["protocol"] == "quic":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate quic traffic by client.", flush=True)
                 result = quic_player.asyncio.run(quic_player.send_quic_traffic(temp_data, script_type, debug_flag))
