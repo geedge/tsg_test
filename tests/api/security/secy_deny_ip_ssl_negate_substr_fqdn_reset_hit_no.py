@@ -54,7 +54,7 @@ def run(parameter):
                     "add_item_list": [
                         {
                         "keyword_array": [
-                            "jd.com"
+                            "open.node"
                         ]
                         }
                     ]
@@ -63,13 +63,13 @@ def run(parameter):
                 }
             ],
             "application_1": ["ssl"],
-            "expected_return": "京东",
+            "expected_return": "POST",
             "counters_1": {"hits": 0},
             "log_query_param_1": [],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 -m 30 https://www.jd.com"
+                "command": "curl -kv --connect-timeout 30 -m 30 https://open.node.com:1443"
             },
             "token": ""
         }

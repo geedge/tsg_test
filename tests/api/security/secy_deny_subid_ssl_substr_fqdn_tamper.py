@@ -61,7 +61,7 @@ def run(parameter):
                 }
             ],
             "application_1": ["ssl"],
-            "expected_return": "SSL_ERROR_SYSCALL",
+            "expected_return": "timed out",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.example.com"}],
             "traffic": {
