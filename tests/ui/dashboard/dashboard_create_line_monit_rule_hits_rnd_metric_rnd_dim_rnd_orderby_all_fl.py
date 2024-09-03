@@ -79,7 +79,7 @@ def run(parameter):
             },
             "multiple_dimension": "true",
             "dimensions": ["Time","Rule","Device Group", "Data Center"],
-            "subt_ype": "",
+            "sub_type": "",
             "order_by":"verifyedit2",
             "filter": [
                 {
