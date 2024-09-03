@@ -20,6 +20,8 @@ def install_python():
         os.chdir("/opt/Python-3.12.4")
         subprocess.check_call(["./configure", "--enable-optimizations"])
         subprocess.check_call(["make", "altinstall"])
+        subprocess.check_call(["ln", "-s", "-f", "/usr/local/bin/python3.12", "/usr/bin/python3"])
+        subprocess.check_call(["ln", "-s", "-f", "/usr/local/bin/pip3.12", "/usr/bin/pip3"])
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Install python successfully.")
     except:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to install python.")
