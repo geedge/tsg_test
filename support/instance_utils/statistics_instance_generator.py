@@ -85,7 +85,7 @@ class StatisticsInstanceGenerator:
                         cond_data = cond_value
                         create_ip = support.ui_utils.object.create_object.CreateObject(driver)
                         for i in range(len(cond_data)):  # 遍历创建所有condition
-                            if cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
+                            if "item" in cond_data[i].keys() and cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
                                 continue  # 遍历创建所有condition
                             if cond_key == "protocol_filed":
                                 tmp_key = cond_data[i]["object_type"]
@@ -187,7 +187,7 @@ class StatisticsInstanceGenerator:
                     if len(cond_value) != 0:  # 不为空
                         cond_data = cond_value
                         for i in range(len(cond_data)):  # 遍历查询所有condition
-                            if cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
+                            if "item" in cond_data[i].keys() and cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
                                 continue  # 遍历创建所有condition
                             search_cond = support.ui_utils.object.search_object.SearchObject(driver)
                             if cond_key == "protocol_filed":
