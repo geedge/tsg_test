@@ -109,7 +109,6 @@ def run(parameter):
             },
             "multiple_dimension": "true",
             "dimensions": ["Time","App Name"],
-
             "sub_type": "",
             "order_by":"verifyedit2",
             "filter": [

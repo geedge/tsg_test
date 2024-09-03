@@ -18,7 +18,7 @@ def run(parameter):
 
         #测试数据
         test_data =   {
-            "policy_type":"dashboard",
+            "type":"dashboard",
             "visualization_type":  "Bar",
             "data_source": "Traffic Shaping Rule Hits",
             "select_metric_type": "single",
