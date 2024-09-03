@@ -78,7 +78,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "ssl",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -126,7 +126,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "ssl_tls13"
+                "pcap_name": "test_https"
             },
             # "traffic": {
             #     "type": "trex",
