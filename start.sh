@@ -12,6 +12,9 @@ chmod 777 /opt/tsg_test/package/requirements.txt
 chmod 777 /opt/tsg_test/package/tsg_ca.txt
 chmod 777 /etc/pki/tls/certs/ca-bundle.crt
 
+yum install -y perl
+perl /opt/tsg_test/package/update_mirror.pl /etc/yum.repos.d/centos*.repo
+
 python3 /opt/tsg_test/package/install_docker.py
 
 if [[ "$(docker images -q)" == "" ]] || [[ "$(docker images --format "{{.Repository}}:{{.Tag}}" | grep 'package')" != "package:base" ]]; then
