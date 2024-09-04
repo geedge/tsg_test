@@ -40,6 +40,7 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option": "Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -56,6 +57,7 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
+                        "statistics_option": "Brief",
                         "item": [
                             {
                                 "item_operation": "add",
