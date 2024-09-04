@@ -888,28 +888,36 @@ class GetLog:
         try:
             match len(source_fields):
                 case 1:
-                    if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                        metric_result = True
+                    if source_fields[0] in all_metrics:
+                        # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                        if source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","new_c2s_flows","new_s2c_flows"} and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                            metric_result = True
+                        elif stats_value >= 1:
+                            metric_result = True
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 2:
-                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics:
+                        if (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                            metric_result = True
+                        # * Flows处理逻辑new_c2s_flows、new_s2c_flows
+                        elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                            metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 3:#如有需定义3个的业务场景需补充相关逻辑
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and stats_value >= test_traffic_statistics["total_syn_pkt"]:
                         metric_result = True
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                case 3:
-                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics  and stats_value == test_traffic_statistics["total_syn_pkt"]:
-                        metric_result = True
-                    else:
-                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                case 4:
-                    if source_fields[0] in all_metrics and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                case 4:#如有需定义4个的业务场景需补充相关逻辑
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics and stats_value >= test_traffic_statistics["total_syn_pkt"]:
                         metric_result = True
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case _:
                     failure_info_2 = f"Meaningless source fields definition: {source_fields}"
-            return metric_result,failure_info_2
+            return metric_result, failure_info_2
         except Exception as e:
             exception_result = str(e)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Unique Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
@@ -920,6 +928,7 @@ class GetLog:
         failure_info_2 = ""
         util = UtilStatisticsTemplate()
         code, all_metrics = util.get_all_metrics_or_dimensions("distribution_metrics")
+        metric_result = False
         if code != 200:
             return False, "Failed to obtain the Field whose Metric Type is Distribution"
         try:
@@ -937,9 +946,9 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_percentile_value_verification(self, source_fields, stats_value, rate_coefficient,
-                                            test_traffic_statistics, time_dif_seconds):
+    def metric_percentile_value_verification(self, source_fields, stats_value, rate_coefficient,test_traffic_statistics, time_dif_seconds):
         # 待重构
+        metric_result = False
         failure_info_2 = ""
         util = UtilStatisticsTemplate()
         code, all_metrics = util.get_all_metrics_or_dimensions("distribution_metrics")
