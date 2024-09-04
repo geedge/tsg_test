@@ -158,7 +158,6 @@ def receive_parameter():
                         elif tag == "":
                             response_result["ui_automation_result"] = result["ui_result"]
                             response_result["api_automation_result"] = result["api_result"]
-                        response_result["result"] = result
                         response_result["data"] = None
                         response_result["success"] = False
                     break
