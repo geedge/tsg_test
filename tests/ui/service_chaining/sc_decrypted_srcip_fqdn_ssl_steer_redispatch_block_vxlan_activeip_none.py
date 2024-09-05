@@ -116,7 +116,7 @@ def run(parameter):
                     "failure_action": "Re-dispatch:Block",
                     "service_functions": [
                         {
-                            "name": "vxlan_activeip_bfd",
+                            "name": "vxlan_activeip_none",
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
                             "connectivity": "VXLAN-G:2.2.2.53",
@@ -399,6 +399,7 @@ def run(parameter):
             if test_data["targeted_traffic"] == "decrypted":
                 intercept_name_list = create_pre_policy(test_data,driver)
                 name_list.append(intercept_name_list[0])
+                time.sleep(2)
             create_rule = CreateRule(driver)
             create_rule_code = create_rule.create(test_data, test_rule_element_position)
             if create_rule_code == 200:
@@ -408,6 +409,7 @@ def run(parameter):
             
         # 触发流量验证
         if create_rule_code == 200:
+            time.sleep(1)
             search_rule = SearchRule(driver)
             search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
             if search_rule_code == 200:

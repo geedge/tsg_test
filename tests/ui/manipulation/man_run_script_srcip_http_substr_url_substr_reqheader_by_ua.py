@@ -27,7 +27,6 @@ def run(parameter):
             "rule_name": parameter["test_case_name"],
             "rule_action": "run_script",
             "rule_type": "create",
-            "log_options": "all",
             "condition": {
                 "source_ip": [
                     {

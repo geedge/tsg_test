@@ -44,7 +44,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "service_chaining",
-            "rule_name": "sc_raw_srcip_dstip_fqdn_ipprototcp_http_url_steer_bypass_vxlan_activeip_bfd",
+            "rule_name": "sc_raw_srcip_dstip_fqdn_all_ipproto_http_url_steer_bypass_vxlan_activeip_bfd",
             "rule_action": "service_chaining",
             "targeted_traffic": "raw",
             "rule_type": "create",
@@ -422,7 +422,7 @@ def run(parameter):
             name_list = [
                 {
                     "type": "service_chaining",
-                    "name": "sc_raw_srcip_dstip_fqdn_ipprototcp_http_url_steer_bypass_vxlan_activeip_bfd",
+                    "name": "sc_raw_srcip_dstip_fqdn_all_ipproto_http_url_steer_bypass_vxlan_activeip_bfd",
                 },
                 {
                     "type": "ip",
@@ -697,7 +697,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_srcip_dstip_fqdn_ipprototcp_http_url_steer_bypass_vxlan_activeip_bfd"
+        "test_case_name": "sc_raw_srcip_dstip_fqdn_all_ipproto_http_url_steer_bypass_vxlan_activeip_bfd"
     }
     run(parameter)
     """
