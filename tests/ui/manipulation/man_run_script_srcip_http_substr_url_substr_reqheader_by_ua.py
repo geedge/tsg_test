@@ -27,7 +27,6 @@ def run(parameter):
             "rule_name": parameter["test_case_name"],
             "rule_action": "run_script",
             "rule_type": "create",
-            "log_options": "all",
             "condition": {
                 "source_ip": [
                     {
@@ -102,8 +101,7 @@ def run(parameter):
             },
             "expected_return": "javascript",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"},
-                                {"query_field_key": "http_request_body", "query_value": True}, {"query_field_key": "http_response_body", "query_value": True}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
