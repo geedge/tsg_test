@@ -362,7 +362,7 @@ def run(parameter):
             for i in range(len(profile_data)):
                 create_profile_code = dnsRecords_profile.create_dns_records_profile(profile_data[i],test_dns_records_profile_element_position,test_data["profile"][i]["name"])
                 if create_profile_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create traffic mirroring profile successfully.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create traffic dns records profile successfully.", flush=True)
                 elif create_profile_code != 200:
                     result = "Fail to create Dns Records Profiles profile."
                     break
