@@ -127,7 +127,7 @@ class MonitorInstanceGenerator:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                                       "Create {} object successfully.".format(cond_key_out), flush=True)
                             else:
-                                result = "Fail to create {} object.".format(cond_key_out)
+                                ui_result = "Fail to create {} object.".format(cond_key_out)
                                 cond_status = 1
                                 break
                     if cond_status == 1:  # 创建失败，退出遍历创建
@@ -149,7 +149,7 @@ class MonitorInstanceGenerator:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                               "Create traffic mirroring profile successfully.", flush=True)
                     elif create_monitor_profile_code != 200:
-                        result = "Fail to create Traffic Mirroring Profiles profile."
+                        ui_result = "Fail to create Traffic Mirroring Profiles profile."
                         break
 
             # 创建rule
@@ -161,7 +161,7 @@ class MonitorInstanceGenerator:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                           "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
                 elif create_rule_code != 200:
-                    result = "Fail to create {} rule.".format(test_data["policy_type"])
+                    ui_result = "Fail to create {} rule.".format(test_data["policy_type"])
 
             # 触发流量验证
             if create_rule_code == 200:
@@ -184,7 +184,7 @@ class MonitorInstanceGenerator:
             # 分析验证结果，并返回给flask
             if len(verification_result) != 0:
                 analysis = AnalysisResult()
-                result = analysis.analysis_result(test_data, [], verification_result)
+                ui_result = analysis.analysis_result(test_data, [], verification_result)
 
             # 删除rule
             if create_rule_code == 200:
@@ -200,9 +200,9 @@ class MonitorInstanceGenerator:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                               "Delete monitor rule successfully.", flush=True)
                     elif delete_rule_code != 200:
-                        result = result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
+                        ui_result = ui_result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
                 else:
-                    result = result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
+                    ui_result = ui_result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
 
             # 删除object
             if delete_rule_code == 200 and "condition" in test_data.keys():
@@ -235,10 +235,10 @@ class MonitorInstanceGenerator:
                                           str(datetime.now().microsecond)[:3],
                                           "Delete {} object successfully.".format(cond_key_out), flush=True)
                                 else:
-                                    result = result + " In addition, fail to delete {} object.".format(cond_key_out)
+                                    ui_result = ui_result + " In addition, fail to delete {} object.".format(cond_key_out)
                                     break
                             else:
-                                result = result + " In addition, fail to search {} object.".format(cond_key_out)
+                                ui_result = ui_result + " In addition, fail to search {} object.".format(cond_key_out)
                                 break
                             # 退出遍历标志
                             if cond_status == 1:  # 失败，退出遍历创建
@@ -265,10 +265,10 @@ class MonitorInstanceGenerator:
                                       str(datetime.now().microsecond)[:3],
                                       "Delete monitor profile successfully.", flush=True)
                             elif delete_profile_code != 200:
-                                result = result + " In addition, fail to delete profile."
+                                ui_result = ui_result + " In addition, fail to delete profile."
                                 break
                         else:
-                            result = result + " In addition, fail to search profile."
+                            ui_result = ui_result + " In addition, fail to search profile."
                             break
 
             result["ui_result"] = ui_result
@@ -318,11 +318,11 @@ class MonitorInstanceGenerator:
         return result
 
     def delete_data(self):
-        # 清理环境
-        support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
-        if isinstance(self.ui_name_list, list):
+        if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
+            # 清理环境
+            support.ui_utils.env.teardown()
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        if isinstance(self.api_name_list, list):
+        if isinstance(self.api_name_list, list) and self.api_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)
