@@ -110,10 +110,10 @@ class GetLog:
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         # 传入值与日志的值相等时验证
-                        if query_field_key in log and query_field_key not in {"packet_capture_file" , "http_response_body" , "http_request_body","monitor_mirrored_pkts","monitor_mirrored_bytes", "client_port"} and log[query_field_key] == query_value:
+                        if query_field_key in log and query_field_key not in {"packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts", "monitor_mirrored_bytes", "client_port"} and log[query_field_key] == query_value:
                             temp_log_result_list.append(True)
                         # 验证packet capture
-                        elif query_field_key in {"packet_capture_file","http_response_body","http_request_body"}:
+                        elif query_field_key in {"packet_capture_file", "http_response_body", "http_request_body"}:
                             # 验证开关开启状态
                             if query_value == True:
                                 # 查询结果中packet_capture_file长度大于0，走下一步骤
@@ -137,13 +137,13 @@ class GetLog:
                                 else:
                                     temp_log_result_list.append(True)
                         # monitor 验证 "monitor_mirrored_pkts","monitor_mirrored_bytes"
-                        elif query_field_key in {"monitor_mirrored_pkts","monitor_mirrored_bytes"}:
+                        elif query_field_key in {"monitor_mirrored_pkts", "monitor_mirrored_bytes"}:
                             actual_bytes_value = output["total_bytes"]
                             actual_pkts_value = output["total_packets"]
                             mirror_bytes_value = 0
                             mirror_pkts_value = 0
                             if "mirror_type" in test_data:
-                                if test_data["mirror_type"] in {"ftp", "http","https","ssl"}:
+                                if test_data["mirror_type"] in {"ftp", "http", "https", "ssl"}:
                                     if "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["san","cn"]:
                                         mirror_bytes_value = actual_bytes_value - 4619
                                         mirror_pkts_value = actual_pkts_value - 9
@@ -198,7 +198,7 @@ class GetLog:
                                 else:
                                     temp_log_result_list.append(False)
                                 # 统一处理逻辑
-                            if "mirror_type" in test_data and test_data["mirror_type"] in {"ftp", "http", "ssl","dns","quic","","mail"}:
+                            if "mirror_type" in test_data and test_data["mirror_type"] in {"ftp", "http", "ssl", "dns", "quic", "", "mail"}:
                                 if query_field_key == "monitor_mirrored_pkts" and log[query_field_key] == mirror_pkts_value:
                                     temp_log_result_list.append(True)
                                     # 更新 test_data["log_query_param"] 中相应的 query_value
@@ -238,13 +238,10 @@ class GetLog:
                                     temp_log_result_list.append(True)
                                 else:
                                     temp_log_result_list.append(False)
-                        
                         else:
                             temp_log_result_list.append(False)
-                    
                     if False not in temp_log_result_list and len(log_list) > 0:
                         log_result = True
-                    
                     # elif len(log_list) == 0 and len(log_query_params) == 0 and False not in temp_log_result_list:
                     #     log_result = True
                     else:
@@ -254,7 +251,6 @@ class GetLog:
                 log_result = None
             elif len(log_query_params) == 0:
                 log_result = True
-            
             # if False not in temp_log_result_list and len(log_list) > 0:
             #     log_result = True
             # elif len(log_list) == 0 and len(log_query_params) > 0:

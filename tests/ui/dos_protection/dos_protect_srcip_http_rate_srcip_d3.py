@@ -64,7 +64,6 @@ def run(parameter):
             },
             "expected_return": "",
             "counters": {"hits": "many"},
-            "log_counter": 1,
             "log_query_param": [
                 {
                     "query_field_key": "attack_type",
@@ -93,6 +92,34 @@ def run(parameter):
                 {
                     "query_field_key": "bit_rate",
                     "query_value": "1.83 K"
+                },
+                {
+                    "query_field_key": "common_attack_type",
+                    "query_value": "tcp_syn_flood"
+                },
+                {
+                    "query_field_key": "common_sessions",
+                    "query_value": 4
+                },
+                {
+                    "query_field_key": "common_session_rate",
+                    "query_value": 0
+                },
+                {
+                    "query_field_key": "common_packets",
+                    "query_value": 4
+                },
+                {
+                    "query_field_key": "common_packet_rate",
+                    "query_value": 0
+                },
+                {
+                    "query_field_key": "common_bytes",
+                    "query_value": 264
+                },
+                {
+                    "query_field_key": "common_bit_rate",
+                    "query_value": "35"
                 }
             ],
             "traffic": {
