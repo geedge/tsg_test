@@ -22,6 +22,7 @@ from support.api_utils.analysis_result import AnalysisResult
 import support.ui_utils.env
 from datetime import datetime
 import copy
+import time
 from support.ui_utils.object.generate_random_ip import *
 
 class ServiceChainingInstanceGenerator:
@@ -289,6 +290,7 @@ class ServiceChainingInstanceGenerator:
                                 delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                                 if delete_cond_code == 200:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(cond_key_out), flush=True)
+                                    time.sleep(1)
                                 else:
                                     ui_result = ui_result + " In addition, fail to delete {} object.".format(cond_key_out)
                                     break

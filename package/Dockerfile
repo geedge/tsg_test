@@ -7,6 +7,10 @@ WORKDIR /package_base
 # 将当前目录内容复制到容器的/内
 COPY . /package_base
 
+# 更改rockylink镜像源
+# COPY ./rocky.repo /etc/yum.repos.d/rocky.repo
+# COPY ./rocky-extras.repo /etc/yum.repos.d/rocky-extras.repo
+
 # 安装基础包
 RUN yum clean all && yum makecache
 RUN yum -y update

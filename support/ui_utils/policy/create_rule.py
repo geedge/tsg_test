@@ -722,8 +722,9 @@ class CreateRule:
                     self.add_effective_devices(test_data["effective_devices"], create_element_position)
 
             # 点enable
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
-            
+            # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
+            btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
+            self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             # 确认创建
             self.driver.find_element(By.ID, create_element_position["policyRulePage_okButton_yes_posId"]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()

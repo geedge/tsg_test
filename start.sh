@@ -10,12 +10,29 @@ find . -type f -name "*.py" -exec chmod 777 {} \;
 chmod 777 /opt/tsg_test/supervisor.conf
 chmod 777 /opt/tsg_test/package/requirements.txt
 chmod 777 /opt/tsg_test/package/tsg_ca.txt
+chmod 777 /opt/tsg_test/package/rocky.repo
+chmod 777 /opt/tsg_test/package/rocky-extras.repo
 chmod 777 /etc/pki/tls/certs/ca-bundle.crt
 
 yum install -y perl
 perl /opt/tsg_test/package/update_mirror.pl /etc/yum.repos.d/centos*.repo
 
 python3 /opt/tsg_test/package/install_docker.py
+
+tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": [
+        "https://i3nc9nvv.mirror.aliyuncs.com",
+        "https://mirror.ccs.tencentyun.com",
+        "https://docker.mirrors.ustc.edu.cn",
+        "https://registry.docker-cn.com",
+        "https://hub-mirror.c.163.com",
+        "https://mirror.baidubce.com"
+  ]
+}
+EOF
+systemctl daemon-reload
+systemctl restart docker
 
 if [[ "$(docker images -q)" == "" ]] || [[ "$(docker images --format "{{.Repository}}:{{.Tag}}" | grep 'package')" != "package:base" ]]; then
     echo "No Docker images, start to building."
