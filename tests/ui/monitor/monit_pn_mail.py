@@ -91,7 +91,6 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror": "off",
-            "profile": [],
             "expected_return": "Ok",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"phone_number", "query_value": parameter['test_phone_number']},

@@ -99,7 +99,6 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"off",
-            "profile": [],
             "expected_return": "新闻",
             "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],

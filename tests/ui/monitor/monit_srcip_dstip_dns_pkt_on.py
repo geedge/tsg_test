@@ -108,7 +108,6 @@ def run(parameter):
                 ]
             },
             "is_mirror":"off",
-            "profile": [],
              "expected_return": "bport",
             "counters": {"hits": 2},
             "log_query_param": [

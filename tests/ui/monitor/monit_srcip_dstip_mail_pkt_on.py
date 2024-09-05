@@ -109,7 +109,6 @@ def run(parameter):
                 ]
             },
             "is_mirror":"off",
-            "profile": [],
             "expected_return": "Ok",
              "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "192.168.40.206"},

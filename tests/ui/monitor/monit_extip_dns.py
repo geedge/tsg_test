@@ -89,7 +89,6 @@ def run(parameter):
                 "sub_action": [],
                 "packet_capture": []
             },
-            "profile": [],
             "is_mirror": "off",
             "expected_return": "youtube",
             "counters": {"hits": 2},

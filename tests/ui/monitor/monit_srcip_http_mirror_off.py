@@ -104,7 +104,6 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"off",
-            "profile": [],
             "expected_return": "news",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},

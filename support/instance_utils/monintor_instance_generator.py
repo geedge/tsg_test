@@ -135,7 +135,7 @@ class MonitorInstanceGenerator:
 
             # 创建profile
             prfi_code = 200
-            if "profile" in test_data.keys():
+            if "profile" in test_data.keys()  and test_data["profile"] != "":
                 profile_data = test_data["profile"]
                 element_position_map = get_profile_element_position("monitor_profile")
                 create_monitor_profile = CreateMonitorProfile(driver, element_position_map)
@@ -248,7 +248,7 @@ class MonitorInstanceGenerator:
                         break
 
             # 删除profile
-            if delete_rule_code == 200 and "profile" in test_data.keys():
+            if delete_rule_code == 200 and "profile" in test_data.keys() and test_data["profile"] != "":
                 # 删除
                 if delete_rule_code == 200:
                     for x in range(len(profile_data)):
