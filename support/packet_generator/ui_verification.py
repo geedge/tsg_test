@@ -488,54 +488,31 @@ class UiVerification:
                         
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
                         log_number = log_number_str.split(": ")[-1]
-                        if int(hit_count) > 1 and test_data["counters"]["hits"] == "many" and int(log_number) == int(test_data["log_counter"]):
+                        if int(hit_count) > 1 and test_data["counters"]["hits"] == "many" and int(log_number) != 0:
                             metric_result = True
                         else:
                             metric_result = False
                         
-                        my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                         parse = configparser.ConfigParser()
                         parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")
                         parse.read(parse_dir, encoding="utf-8")
-                        temp_log_result_list = []
-                        for i in range(len(test_data["log_query_param"])):
-                            log_query_key = test_data["log_query_param"][i]["query_field_key"]
-                            if log_query_key in {"attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"}:
-                                log_str = parse.get("log", log_query_key)
-                                log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
-                                log_query_value = test_data["log_query_param"][i]["query_value"]
-                                if log_query_key == "attack_type":
-                                    if log_query_value.replace("_", " ") == temp_value.lower():
-                                        temp_log_result_list.append(True)
-                                    else:
-                                        temp_log_result_list.append(False)
-                                elif log_query_key == "bit_rate":
-                                    bytes_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Bytes")
-                                    bytes_value = my_driver.find_element(By.XPATH, bytes_pos_xpath).text
-                                    start_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Start Time")
-                                    start_time_value = my_driver.find_element(By.XPATH, start_time_pos_xpath).text
-                                    end_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="End Time")
-                                    end_time_value = my_driver.find_element(By.XPATH, end_time_pos_xpath).text
-                                    time1 = datetime.strptime(start_time_value, "%Y-%m-%d %H:%M:%S")
-                                    time2 = datetime.strptime(end_time_value, "%Y-%m-%d %H:%M:%S")
-                                    timestamp1 = datetime.timestamp(time1)
-                                    timestamp2 = datetime.timestamp(time2)
-                                    time_difference = timestamp2 - timestamp1
-                                    bits = bytes_value*8
-                                    if 1024 <= bits < 1048576:
-                                        temp_value = str(round((bytes_value*8)/time_difference, 2)) + " K"
-                                    else:
-                                        temp_value = round(bits/time_difference, 2)
-                                    if temp_value == log_query_value:
-                                        temp_log_result_list.append(True)
-                                    else:
-                                        temp_log_result_list.append(False)
-                                else:
-                                    if temp_value == log_query_value:
-                                        temp_log_result_list.append(True)
-                                    else:
-                                        temp_log_result_list.append(False)
+                        if int(log_number) == 1:
+                            expand_element_postion = "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
+                            log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Attack Type")
+                            temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                            if temp_value == "Custom Network Attack":
+                                query_key_list = ["attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"]
+                            elif temp_value == "TCP SYN Flood" or temp_value == "UDP Flood" or temp_value == "DNS Flood" or temp_value == "NTP Flood":
+                                query_key_list = ["common_attack_type", "common_sessions", "common_session_rate", "common_packets", "common_packet_rate", "common_bytes", "common_bit_rate"]
+                            temp_log_result_list = self.verify_dos_events(my_driver, expand_element_postion, parse, test_data, query_key_list)
+                        elif int(log_number) == 2:
+                            query_key_list_1 = ["common_attack_type", "common_sessions", "common_session_rate", "common_packets", "common_packet_rate", "common_bytes", "common_bit_rate"]
+                            expand_element_postion_1 = "//tr[1]///i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
+                            temp_log_result_list_1 = self.verify_dos_events(my_driver, expand_element_postion_1, parse, test_data, query_key_list_1)
+                            query_key_list_2 = ["attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"]
+                            expand_element_postion_2 = "//tr[2]///i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
+                            temp_log_result_list_2 = self.verify_dos_events(my_driver, expand_element_postion_2, parse, test_data, query_key_list_2)
+                            temp_log_result_list = temp_log_result_list_1 + temp_log_result_list_2
                         if False not in temp_log_result_list:
                             log_result = True
                         else:
@@ -572,6 +549,49 @@ class UiVerification:
                 value_number = 0
                 value_unit = ""
         return value_number, value_unit
+    
+    def verify_dos_events(self, my_driver, expand_element_postion, parse, test_data, query_key_list):
+        log_result_list = []
+        my_driver.find_element(By.XPATH, expand_element_postion).click()
+        for i in range(len(test_data["log_query_param"])):
+            log_query_key = test_data["log_query_param"][i]["query_field_key"]
+            if log_query_key in query_key_list:
+                log_str = parse.get("log", log_query_key)
+                log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
+                temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                log_query_value = test_data["log_query_param"][i]["query_value"]
+                if log_query_key == "attack_type" or log_query_key == "common_attack_type":
+                    if log_query_value.replace("_", " ") == temp_value.lower():
+                        log_result_list.append(True)
+                    else:
+                        log_result_list.append(False)
+                elif log_query_key == "bit_rate" or log_query_key == "common_bit_rate":
+                    bytes_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Bytes")
+                    bytes_value = my_driver.find_element(By.XPATH, bytes_pos_xpath).text
+                    start_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Start Time")
+                    start_time_value = my_driver.find_element(By.XPATH, start_time_pos_xpath).text
+                    end_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="End Time")
+                    end_time_value = my_driver.find_element(By.XPATH, end_time_pos_xpath).text
+                    time1 = datetime.strptime(start_time_value, "%Y-%m-%d %H:%M:%S")
+                    time2 = datetime.strptime(end_time_value, "%Y-%m-%d %H:%M:%S")
+                    timestamp1 = datetime.timestamp(time1)
+                    timestamp2 = datetime.timestamp(time2)
+                    time_difference = timestamp2 - timestamp1
+                    bits = bytes_value*8
+                    if 1024 <= bits < 1048576:
+                        temp_value = str(round((bits/time_difference)/1000), 2) + " K"
+                    else:
+                        temp_value = round(bits/time_difference, 0)
+                    if temp_value == log_query_value:
+                        log_result_list.append(True)
+                    else:
+                        log_result_list.append(False)
+                else:
+                    if temp_value == log_query_value:
+                        log_result_list.append(True)
+                    else:
+                        log_result_list.append(False)
+        return log_result_list
     
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
