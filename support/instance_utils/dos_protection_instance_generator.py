@@ -124,15 +124,16 @@ class DosProtectionInstanceGenerator:
                         "policyRulePage_searchApplication_posXpath": dosRulePage_searchApplication_posXpath,
                         "policyRulePage_selectApplication_posXpath": dosRulePage_selectApplication_posXpath,
                         "policyRulePage_closeApplication_posXpath": dosRulePage_closeApplication_posXpath,
-                        "policyRulePage_thresholdType_posId": dosRulePage_thresholdType_posId,
+                        "policyRulePage_thresholdType_posId": "",
                         "policyRulePage_groupBy_dropDownBox_posXpath": dosRulePage_groupBy_dropDownBox_posXpath,
                         "policyRulePage_groupBy_select_posXpath": dosRulePage_groupBy_select_posXpath,
                         "policyRulePage_requestPerPeriod_posXpath": dosRulePage_requestPerPeriod_posXpath,
                         "policyRulePage_countingPeriod_dropDownBox_posXpath": dosRulePage_countingPeriod_dropDownBox_posXpath,
                         "policyRulePage_countingPeriod_select_posXpath": dosRulePage_countingPeriod_select_posXpath,
-                        "policyRulePage_mitigationBehavior_deny_posId": dosRulePage_mitigationBehavior_deny_posId,
+                        "policyRulePage_concurrentSsessions_posXpath" : dosRulePage_concurrentSsessions_posXpath,
+                        "policyRulePage_mitigationBehavior_posId": "",
                         "policyRulePage_mitigationTimeouts_dropDownBox_posXpath": dosRulePage_mitigationTimeouts_dropDownBox_posXpath,
-                        "policyRulePage_mitigationTimeouts_select_posXpath": dosRulePage_mitigationTimeouts_select_posXpath,
+                        "policyRulePage_mitigationTimeouts_select_posXpath": "",
                         "policyRulePage_enable_posXpath": dosRulePage_enable_posXpath,
                         "policyRulePage_okButton_yes_posId": dosRulePage_ok_posId,
                         "policyRulePage_okButton_warningYes_posXpath": dosRulePage_okButton_warningYes_posXpath
@@ -151,7 +152,17 @@ class DosProtectionInstanceGenerator:
                         "policyRuleListPage_okButton_warningNo_posXpath":dosRuleListpage_okButton_warningNo_posXpath
                     }
                 }
-            
+                if test_data["threshold"]["type"] == "rate":
+                    test_rule_element_position["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdRateType_posId
+                    test_rule_element_position["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = dosRulePage_mitigationTimeouts_select_top_posXpath
+                elif test_data["threshold"]["type"] == "concurrency":
+                    test_rule_element_position["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdConcurrencyType_posId
+                    test_rule_element_position["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = dosRulePage_mitigationTimeouts_select_bottom_posXpath
+                if test_data["mitigation"]["behavior"] == "deny":
+                    test_rule_element_position["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_deny_posId
+                elif test_data["mitigation"]["behavior"] == "none":
+                    test_rule_element_position["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_none_posId
+                    
             # 创建object
             if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
                 ip_data = test_data["condition"]["source_ip"]
@@ -238,9 +249,11 @@ class DosProtectionInstanceGenerator:
             test_data = translation.data_translation(parameter, test_data)
             
             # 添加测试过程中涉及的template
+            if "ui" in parameter["path"]:
+                new_path = parameter["path"].replace("ui", "api")
             template_path = {}
-            template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-            template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+            template_path["rule_template"] = new_path + "/template/rule_template.json"
+            template_path["object_template"] = new_path + "/template/object_template.json"
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()
@@ -279,13 +292,13 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.87",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 5,
         "is_log": 1,
         "debug_flag": "local",
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "dos_protection",
         "test_case_name": "dos_protect_srcip_http_rate_srcip_d3"
     }
