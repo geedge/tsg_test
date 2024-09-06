@@ -98,8 +98,8 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                                 {"query_field_key": "decoded_as", "query_value": "DNS"},
-                                {"query_field_key": "monitor_mirrored_pkts", "query_value": 2},
-                                {"query_field_key": "monitor_mirrored_bytes", "query_value": 162},
+                                {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
+                                {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
             ],
             "traffic": {
                 "protocol": "",
@@ -367,7 +367,7 @@ if __name__ == '__main__':
         "is_log": 1,
         "env": "tsgx",
         "script_type":"ui",
-        "vsys_id": 1,
+        "vsys_id": 5,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",

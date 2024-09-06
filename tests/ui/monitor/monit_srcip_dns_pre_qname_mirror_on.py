@@ -84,7 +84,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "qname",
-                                "item_value": "www.cis*"
+                                "item_value": "www.you*"
                             }
                         ],
                     }

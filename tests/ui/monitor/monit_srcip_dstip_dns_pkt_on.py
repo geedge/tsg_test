@@ -392,7 +392,7 @@ if __name__ == '__main__':
         "is_log": 1,
         "env": "tsgx",
         "script_type":"ui",
-        "vsys_id": 1,
+        "vsys_id": 5,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
