@@ -91,7 +91,6 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror": "off",
-            "profile": [],
             "expected_return": "xiaohongshu",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.xiaohongshu.com"},

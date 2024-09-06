@@ -90,7 +90,6 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"off",
-            "profile": [],
             "expected_return": "bport",
             "counters": {"hits": 2},
             "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.bport.ru"}],

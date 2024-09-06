@@ -85,7 +85,6 @@ def run(parameter):
             },
             "is_mirror":"on",
             "mirror_type": "",
-            "profile": [],
             "expected_return": "trex",
             "counters": {"hits": 1},
             "log_query_param": [
@@ -337,7 +336,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.96",
+        "test_pc_ip": "192.168.64.99",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag" : "local",

@@ -112,7 +112,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.96",
+        "test_pc_ip": "192.168.64.99",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
@@ -120,10 +120,10 @@ if __name__ == '__main__':
         "env": "tsgx",
         "script_type": "ui",
         "vsys_id": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "monitor",
-        "test_case_name": "monitor_rule_mail_mirror_on"
+        "root_path": workdir,
+        "path": workdir + "/testcase/ui",
+        "module_name": "manipulation",
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)
     """

@@ -93,7 +93,6 @@ def run(parameter):
                 ]
             },
             "is_mirror":"off",
-            "profile": [],
             "expected_return": "www.example.com",
             "counters": {"hits": 0},
             "log_query_param": [],

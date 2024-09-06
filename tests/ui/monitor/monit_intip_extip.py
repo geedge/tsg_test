@@ -93,7 +93,6 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"off",
-            "profile": [],
             "expected_return": "Example Domain",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.example.com"},

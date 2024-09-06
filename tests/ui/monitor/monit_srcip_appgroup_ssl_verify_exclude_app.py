@@ -100,7 +100,6 @@ def run(parameter):
                 "packet_capture": []
             },
             "is_mirror":"off",
-            "profile": [],
             "expected_return": "yumi",
             "counters": {"hits": 0},
             "log_query_param": [],
