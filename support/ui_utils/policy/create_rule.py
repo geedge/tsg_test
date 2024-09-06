@@ -670,14 +670,13 @@ class CreateRule:
                     self.driver.find_element(By.ID,create_element_position["policyRulePage_addSFFProfile_posId"]).click()
                     #在侧滑框中搜索sff并选中
                     for sff in sff_data:
-                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"]).click()
-                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=1).send_keys(sff["name"])
-                        time.sleep(0.5)
-                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        time.sleep(1)
-                        selectSFFXpath = create_element_position["policyRulePage_selectSFFProfile_posXpath"].format(replaceValue=sff["name"])
-                        btn = self.driver.find_element(By.XPATH,selectSFFXpath)
+                        btn = self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"])
                         self.driver.execute_script("arguments[0].click()", btn)
+                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=1).send_keys(sff["name"])
+                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                        selectSFFXpath = create_element_position["policyRulePage_selectSFFProfile_posXpath"].format(replaceValue=sff["name"])
+                        self.driver.find_element(By.XPATH,selectSFFXpath).click()
+                        # self.driver.execute_script("arguments[0].click()", btn)
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_closeSFFProfile_posXpath"]).click()
                 elif test_data["policy_type"] == "monitor":
                     #步骤：开启vlan_button->选择select->输入name->搜索

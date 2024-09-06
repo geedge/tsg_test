@@ -21,7 +21,8 @@ class SearchRule:
         btn = self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"])
         self.driver.execute_script("arguments[0].click()", btn) 
         dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
-        self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
+        btn = self.driver.find_element(By.XPATH, dropdown_item_posXpath)
+        self.driver.execute_script("arguments[0].click()", btn)
         input_item_posXpath = search_element_position["policyRuleListPage_searchLable_input_itemContent_posXpath"].format(replaceValue="Name")
         self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
         # 强制点击js方法

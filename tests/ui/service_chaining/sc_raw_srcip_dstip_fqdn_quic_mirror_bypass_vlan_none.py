@@ -93,7 +93,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "dns",  
+                        "name": "quic",  
                         "object_type": "application",
                         "negate": False
                     }
@@ -316,17 +316,17 @@ def run(parameter):
                     "policyRulePage_selectDstIP_posXpath": serviceChainingRulePage_selectDstIP_posXpath,
                     "policyRulePage_closeDstIP_posXpath": serviceChainingRulePage_closeDstIP_posXpath,
                     "policyRulePage_addCondition_posXpath": policyRulePage_addCondition_posXpath,
-                    "policyRulePage_addConditionQname_posXpath": serviceChainingRulePage_addConditionQname_posXpath,
+                    "policyRulePage_addConditionServerFqdn_posXpath": serviceChainingRulePage_addCondition_serverFqdn_posXpath,
+                    "policyRulePage_addServerFqdn_posXpath": serviceChainingRulePage_addServerFqdn_posXpath,
+                    "policyRulePage_searchServerFqdn_posXpath": serviceChainingRulePage_searchServerFqdn_posXpath,
+                    "policyRulePage_selectServerFqdn_posXpath": serviceChainingRulePage_selectServerFqdn_posXpath,
+                    "policyRulePage_closeServerFqdn_posXpath": serviceChainingRulePage_closeServerFqdn_posXpath,
                     "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
                     "policyRulePage_addApplication_posXpath": serviceChainingRulePage_addApplication_posXpath,
                     "policyRulePage_selectApplicationLabel_posXpath":serviceChainingRulePage_selectApplicationLabel_posXpath,
                     "policyRulePage_searchApplication_posXpath": serviceChainingRulePage_searchApplication_posXpath,
                     "policyRulePage_selectApplication_posXpath": serviceChainingRulePage_selectApplication_posXpath,
                     "policyRulePage_closeApplication_posXpath": serviceChainingRulePage_closeApplication_posXpath,
-                    "policyRulePage_addQname_posXpath": policyRulePage_addQname_posXpath,
-                    "policyRulePage_searchQname_posXpath": policyRulePage_searchQname_posXpath,
-                    "policyRulePage_selectQname_posXpath": policyRulePage_selectQname_posXpath,
-                    "policyRulePage_closeQname_posXpath": policyRulePage_closeQname_posXpath,
                     "policyRulePage_addSFFProfile_posId": serviceChainingRulePage_addSFFProfile_posId,
                     "policyRulePage_searchSFFProfile_posXpath":serviceChainingRulePage_searchSFFProfile_posXpath,
                     "policyRulePage_selectSFFProfile_posXpath":serviceChainingRulePage_selectSFFProfile_posXpath,
