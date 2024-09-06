@@ -92,7 +92,7 @@ def run(parameter):
                 "tunnel_level": [],
                 "flag": [],
                 "ip_protocol":[
-                    "TCP"
+                    "UDP"
                 ],
                 "application": [
                     {
