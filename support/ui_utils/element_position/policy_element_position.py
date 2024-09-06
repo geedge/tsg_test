@@ -946,17 +946,20 @@ dosRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpa
 dosRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
 dosRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
 
-dosRulePage_thresholdType_posId = "custom0-_Counting_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
+dosRulePage_thresholdRateType_posId = "custom0-_Counting_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
+dosRulePage_thresholdConcurrencyType_posId = "custom1-_Counting_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
 dosRulePage_groupBy_dropDownBox_posXpath = "//label[normalize-space(text())='Group By']/parent::*//i"
 dosRulePage_groupBy_select_posXpath = "//li//span[normalize-space(text())='{replaceValue}']"
 dosRulePage_requestPerPeriod_posXpath = "//label[normalize-space(text())='Request Per Period']/parent::*//input"
 dosRulePage_countingPeriod_dropDownBox_posXpath = "//label[normalize-space(text())='Counting Period']/parent::*//i"
 dosRulePage_countingPeriod_select_posXpath = "//div[@x-placement='bottom-start']//li//span[normalize-space(text())='{replaceValue}']"
+dosRulePage_concurrentSsessions_posXpath = "//label[normalize-space(text())='Concurrent Sessions']/parent::*//input"
 
 dosRulePage_mitigationBehavior_deny_posId = "custom0-_ActionParameters_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
 dosRulePage_mitigationBehavior_none_posId = "custom1-_ActionParameters_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
 dosRulePage_mitigationTimeouts_dropDownBox_posXpath = "//label[normalize-space(text())='Mitigation Timeouts']/parent::*//i"
-dosRulePage_mitigationTimeouts_select_posXpath = "//div[@x-placement='top-start']//li//span[normalize-space(text())='{replaceValue}']"
+dosRulePage_mitigationTimeouts_select_top_posXpath = "//div[@x-placement='top-start']//li//span[normalize-space(text())='{replaceValue}']"
+dosRulePage_mitigationTimeouts_select_bottom_posXpath = "//div[@x-placement='bottom-start']//li//span[normalize-space(text())='{replaceValue}']"
 
 dosRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 dosRulePage_ok_posId = "OK-_Dos_protection_edit_Home_App_anonymousComponent"

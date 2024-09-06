@@ -23,8 +23,12 @@ class PageJump:
         btn = self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"])
         self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
         #self.change_vsys(vsys_name=vsys_name, page_jump_element_position=page_jump_element_position)   # 调整到页面登录时切换vsys
-        self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"]).click()
-        self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"]).click()
+        btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"])
+        self.driver.execute_script("arguments[0].click()", btn)
+        btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"])
+        self.driver.execute_script("arguments[0].click()", btn)
+        # self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"]).click()
+        # self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"]).click()
 
     def change_vsys(self, vsys_name="", page_jump_element_position=""):
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()

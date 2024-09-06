@@ -172,7 +172,8 @@ class CreateServiceFunctionForwarderProfile:
         self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_warningYes_posCss"]).click()
         time.sleep(2)
         # 在列表页以name搜索sf 获取sf id
-        self.driver.find_element(By.ID,"select-label").click()
+        btn = self.driver.find_element(By.ID,"select-label")
+        self.driver.execute_script("arguments[0].click()", btn)
         self.driver.find_element(By.ID,"2-_FilteredSearch_ElRow_Profile_Functions_Home_App_anonymousComponent").click()
         self.driver.find_element(By.XPATH,"//div[@class='rel-input v-input input el-input el-input--mini']//input").send_keys(sf_name)
         btn = self.driver.find_element(By.ID,"searchQuery")

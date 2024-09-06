@@ -378,7 +378,9 @@ class UiVerification:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to get log value from log page.", flush=True)
                         else:
                             # 点击展开
-                            my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
+                            btn = my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']")
+                            my_driver.execute_script("arguments[0].click()", btn)
+                            # my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                             time.sleep(2)
                             parse = configparser.ConfigParser()
                             parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")
@@ -503,10 +505,10 @@ class UiVerification:
                             if temp_value == "Custom Network Attack":
                                 query_key_list = ["attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"]
                             elif temp_value == "TCP SYN Flood" or temp_value == "UDP Flood" or temp_value == "DNS Flood" or temp_value == "NTP Flood":
-                                query_key_list = ["common_attack_type", "common_sessions", "common_session_rate", "common_packets", "common_packet_rate", "common_bytes", "common_bit_rate"]
+                                query_key_list = ["basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets", "basic_packet_rate", "basic_bytes", "basic_bit_rate"]
                             temp_log_result_list = self.verify_dos_events(my_driver, expand_element_postion, parse, test_data, query_key_list)
                         elif int(log_number) == 2:
-                            query_key_list_1 = ["common_attack_type", "common_sessions", "common_session_rate", "common_packets", "common_packet_rate", "common_bytes", "common_bit_rate"]
+                            query_key_list_1 = ["basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets", "basic_packet_rate", "basic_bytes", "basic_bit_rate"]
                             expand_element_postion_1 = "//tr[1]///i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
                             temp_log_result_list_1 = self.verify_dos_events(my_driver, expand_element_postion_1, parse, test_data, query_key_list_1)
                             query_key_list_2 = ["attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"]
@@ -560,12 +562,12 @@ class UiVerification:
                 log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                 temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                 log_query_value = test_data["log_query_param"][i]["query_value"]
-                if log_query_key == "attack_type" or log_query_key == "common_attack_type":
+                if log_query_key == "attack_type" or log_query_key == "basic_attack_type":
                     if log_query_value.replace("_", " ") == temp_value.lower():
                         log_result_list.append(True)
                     else:
                         log_result_list.append(False)
-                elif log_query_key == "bit_rate" or log_query_key == "common_bit_rate":
+                elif log_query_key == "bit_rate" or log_query_key == "basic_bit_rate":
                     bytes_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Bytes")
                     bytes_value = my_driver.find_element(By.XPATH, bytes_pos_xpath).text
                     start_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Start Time")

@@ -121,26 +121,32 @@ class CreatePolicyRule:
             else:
                 rule_template_dict["rule"]["user_region"]["traffic_mirror"] = {"enable":0}
         elif policy_type == "dos_protection" and action == "protect":
-            rule_template_dict['rule']['user_region'] = {
-               "threshold": {
-                    "type": "",
+            if condition["threshold"]["type"] == "rate":
+                rule_template_dict['rule']['user_region']["threshold"] = {
+                    "type": condition["threshold"]["type"],
                     "rate_threshold": {
-                        "group_by": "",
-                        "request_per_period": 1,
-                        "counting_period": ""
+                        "group_by": condition["threshold"]["rate_threshold"]["group_by"],
+                        "request_per_period": condition["threshold"]["rate_threshold"]["request_per_period"],
+                        "counting_period": condition["threshold"]["rate_threshold"]["counting_period"]
                     }
-                },
-                "mitigation": {
-                    "behavior": "",
-                    "timeout": ""
-                },
-            }
-            rule_template_dict['rule']['user_region']["threshold"]["type"] = condition["threshold"]["type"]
-            rule_template_dict['rule']['user_region']["threshold"]["rate_threshold"]["group_by"] = condition["threshold"]["rate_threshold"]["group_by"]
-            rule_template_dict['rule']['user_region']["threshold"]["rate_threshold"]["request_per_period"] = condition["threshold"]["rate_threshold"]["request_per_period"]
-            rule_template_dict['rule']['user_region']["threshold"]["rate_threshold"]["counting_period"] = condition["threshold"]["rate_threshold"]["counting_period"]
-            rule_template_dict['rule']['user_region']["mitigation"]["behavior"] = condition["mitigation"]["behavior"]
-            rule_template_dict['rule']['user_region']["mitigation"]["timeout"] = condition["mitigation"]["timeout"]
+                }
+            elif condition["threshold"]["type"] == "concurrency":
+                rule_template_dict['rule']['user_region']["threshold"] = {
+                    "type": condition["threshold"]["type"],
+                    "concurrency_threshold": {
+                        "group_by": condition["threshold"]["concurrency_threshold"]["group_by"],
+                        "concurrent_sessions": condition["threshold"]["concurrency_threshold"]["concurrent_sessions"]
+                    }
+                }
+            if condition["mitigation"]["behavior"] == "deny":
+                rule_template_dict['rule']['user_region']["mitigation"] = {
+                    "behavior": condition["mitigation"]["behavior"],
+                    "timeout": condition["mitigation"]["timeout"]
+                }
+            elif condition["mitigation"]["behavior"] == "none":
+                rule_template_dict['rule']['user_region']["mitigation"] = {
+                    "behavior": condition["mitigation"]["behavior"]
+                }
         
         temp_application = 'application_'+str(create_number)
         if temp_application in condition.keys():

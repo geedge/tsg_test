@@ -55,12 +55,12 @@ def run(parameter):
                 "rate_threshold": {
                     "group_by": "source_ip",
                     "request_per_period": 1,
-                    "counting_period": "10s"
+                    "counting_period": "1min"
                 }
             },
             "mitigation": {
                 "behavior": "deny",
-                "timeout": "10s"
+                "timeout": "2min"
             },
             "expected_return": "",
             "counters": {"hits": "many"},
@@ -94,31 +94,31 @@ def run(parameter):
                     "query_value": "1.83 K"
                 },
                 {
-                    "query_field_key": "common_attack_type",
+                    "query_field_key": "basic_attack_type",
                     "query_value": "tcp_syn_flood"
                 },
                 {
-                    "query_field_key": "common_sessions",
+                    "query_field_key": "basic_sessions",
                     "query_value": 4
                 },
                 {
-                    "query_field_key": "common_session_rate",
+                    "query_field_key": "basic_session_rate",
                     "query_value": 0
                 },
                 {
-                    "query_field_key": "common_packets",
+                    "query_field_key": "basic_packets",
                     "query_value": 4
                 },
                 {
-                    "query_field_key": "common_packet_rate",
+                    "query_field_key": "basic_packet_rate",
                     "query_value": 0
                 },
                 {
-                    "query_field_key": "common_bytes",
+                    "query_field_key": "basic_bytes",
                     "query_value": 264
                 },
                 {
-                    "query_field_key": "common_bit_rate",
+                    "query_field_key": "basic_bit_rate",
                     "query_value": "35"
                 }
             ],
@@ -165,13 +165,13 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.87",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 5,
         "is_log": 1,
         "debug_flag": "local",
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
         "module_name": "dos_protection",
         "test_case_name": "dos_protect_srcip_http_rate_srcip_d3"
     }
