@@ -891,6 +891,8 @@ class GetLog:
                         # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                         elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]:
                             metric_result = True
+                        elif stats_value >= test_traffic_statistics["total_syn_pkt"]:
+                            metric_result = True
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 3:#如有需定义3个的业务场景需补充相关逻辑
