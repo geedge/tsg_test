@@ -151,8 +151,8 @@ class ApiVerification:
             max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
             search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
             if script_type == "ui":
-                search_interval_time = 20    # 每次查询statistic metric的 间隔时间 单位秒
-                time.sleep(60)
+                max_fail_count = 35    # 每次查询statistic metric的 间隔时间 单位秒
+                #time.sleep(60)
             utc_tz = pytz.timezone('UTC')
             cmd_return = expected_return = test_data["expected_return"]
             code, statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)

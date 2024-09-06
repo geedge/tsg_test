@@ -146,7 +146,8 @@ def run(parameter):
             #     "command": "wget -q -O- http://open.node.com:180"
             # },
             "token": ""
-        }# 测试用例实例化
+        }
+        # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
 
