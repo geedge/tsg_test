@@ -378,7 +378,9 @@ class UiVerification:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to get log value from log page.", flush=True)
                         else:
                             # 点击展开
-                            my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
+                            btn = my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']")
+                            my_driver.execute_script("arguments[0].click()", btn)
+                            # my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']").click()
                             time.sleep(2)
                             parse = configparser.ConfigParser()
                             parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")

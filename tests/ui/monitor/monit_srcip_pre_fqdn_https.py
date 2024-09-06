@@ -72,12 +72,12 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
                                 {"query_field_key": "decoded_as", "query_value": "SSL"},
-                                {"query_field_key": "server_fqdn", "query_value": "www.mtv.ru"}
+                                {"query_field_key": "server_fqdn", "query_value": "www.mtv.com"}
             ],
              "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv https://www.mtv.ru/"
+                "command": "curl -kv https://www.mtv.com/"
             },
             "token": ""
         }

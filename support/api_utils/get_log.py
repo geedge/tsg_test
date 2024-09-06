@@ -144,10 +144,10 @@ class GetLog:
                             mirror_pkts_value = 0
                             if "mirror_type" in test_data:
                                 if test_data["mirror_type"] in {"ftp", "http", "https", "ssl"}:
-                                    if "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["san","cn"]:
+                                    if "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["san","cn"]:
                                         mirror_bytes_value = actual_bytes_value - 4619
                                         mirror_pkts_value = actual_pkts_value - 9
-                                    elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "response_header":
+                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "response_header":
                                         mirror_bytes_value = actual_bytes_value - 381
                                         mirror_pkts_value = actual_pkts_value - 5
                                     else:#除添加特定field之外的镜像转发
@@ -159,16 +159,16 @@ class GetLog:
                                         mirror_bytes_value *= num_vlans
                                         mirror_pkts_value *= num_vlans
                                 elif test_data["mirror_type"] == "mail":
-                                    if "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["mail_from","mail_subject","mail_to"]:
+                                    if "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["mail_from","mail_subject","mail_to"]:
                                         mirror_bytes_value = actual_bytes_value - 19578
                                         mirror_pkts_value = actual_pkts_value - 158
-                                    elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_attachment_content":
+                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_attachment_content":
                                         mirror_bytes_value = actual_bytes_value -66426
                                         mirror_pkts_value = actual_pkts_value - 192
-                                    elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_attachment_name":
+                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_attachment_name":
                                         mirror_bytes_value = actual_bytes_value -38934
                                         mirror_pkts_value = actual_pkts_value - 170
-                                    elif "protocol_field" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_content":
+                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_content":
                                         mirror_bytes_value = actual_bytes_value -1685
                                         mirror_pkts_value = actual_pkts_value - 19
                                     else: #除添加特定field之外的镜像转发
@@ -179,15 +179,7 @@ class GetLog:
                                         num_vlans = vlan_count
                                         mirror_bytes_value *= num_vlans
                                         mirror_pkts_value *= num_vlans
-                                elif test_data["mirror_type"] == "dns":
-                                    mirror_bytes_value = actual_bytes_value - 8
-                                    mirror_pkts_value = actual_pkts_value
-                                    if "profile" in test_data and test_data["profile"] != "":
-                                        vlan_count = test_data['profile'][0]['vlan_count']
-                                        num_vlans = vlan_count
-                                        mirror_bytes_value *= num_vlans
-                                        mirror_pkts_value *= num_vlans
-                                elif test_data["mirror_type"] in  {"","quic"}:
+                                elif test_data["mirror_type"] in  {"","quic","dns"}:
                                     mirror_bytes_value = actual_bytes_value
                                     mirror_pkts_value = actual_pkts_value
                                     if "profile" in test_data and test_data["profile"] != "":

@@ -92,7 +92,7 @@ def run(parameter):
                         "plus": False,
                         "items": [
                             {
-                                "item_value": "*mtv.ru",
+                                "item_value": "*mtv.com",
                                 "item_operation": "add"
                             }
                         ]
@@ -109,14 +109,14 @@ def run(parameter):
             "is_mirror": "off",
             "expected_return": "mtv",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"},
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.com"},
                                 {"query_field_key": "decoded_as", "query_value": "SSL"},
                                 {"query_field_key": "packet_capture_file", "query_value": True}
                                 ],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv https://www.mtv.ru/"
+                "command": "curl -kv https://www.mtv.com/"
             },
             "token": ""
         }

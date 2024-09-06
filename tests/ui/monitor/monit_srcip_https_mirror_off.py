@@ -92,11 +92,11 @@ def run(parameter):
             "is_mirror": "off",
             "expected_return": "mtv",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.ru"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -N -kv https://www.mtv.ru/"
+                "command": "curl -N -kv https://www.mtv.com/"
             },
             "token": ""
         }
