@@ -33,7 +33,7 @@ def run(parameter):
             "obj_condition_2": [],
             "application_1": ["ssl"],
             "application_2": ["ssl"],
-            "expected_return": "SSL_ERROR_SYSCALL",
+            "expected_return": "reset",
             "counters_1": {"hits": 0},
             "counters_2": {"hits": 1},
             "log_query_param_1": [],
