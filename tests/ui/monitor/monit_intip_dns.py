@@ -299,8 +299,8 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "lina2024",
+        "password": "lina2024",
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",

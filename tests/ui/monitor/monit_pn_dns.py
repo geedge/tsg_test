@@ -93,7 +93,7 @@ def run(parameter):
             "is_mirror": "off",
             "expected_return": "skype",
             "counters": {"hits": 2},
-            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "DNS"},
+            "log_query_param": [
                                 {"query_field_key": "phone_number", "query_value": parameter['test_phone_number']}
                                 ],
             "traffic": {
@@ -345,8 +345,8 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "lina2024",
+        "password": "lina2024",
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",

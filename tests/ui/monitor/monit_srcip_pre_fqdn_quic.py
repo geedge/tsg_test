@@ -61,7 +61,7 @@ def run(parameter):
                         "plus": False,
                         "items": [
                             {
-                                "item_value": "you*",
+                                "item_value": "www.you*",
                                 "item_operation": "add"
                             }
                         ]

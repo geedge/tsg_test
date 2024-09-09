@@ -92,7 +92,7 @@ def run(parameter):
             "is_mirror":"off",
             "expected_return": "bport",
             "counters": {"hits": 2},
-            "log_query_param": [{"query_field_key": "dns_qname", "query_value": "www.bport.ru"}],
+            "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
                 "protocol": "dns",
                 "type": "nslookup",
