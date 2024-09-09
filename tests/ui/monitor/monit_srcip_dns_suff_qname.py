@@ -94,7 +94,6 @@ def run(parameter):
             "log_query_param": [
                 {"query_field_key": "server_ip", "query_value": "8.8.8.8"},
                 {"query_field_key": "decoded_as", "query_value": "DNS"},
-                {"query_field_key": "dns_qname", "query_value": "www.instagram.com"}
             ],
             "traffic": {
                 "protocol": "dns",

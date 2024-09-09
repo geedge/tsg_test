@@ -110,7 +110,7 @@ class GetLog:
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         # 传入值与日志的值相等时验证
-                        if query_field_key in log and query_field_key not in {"packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts", "monitor_mirrored_bytes", "client_port"} and log[query_field_key] == query_value:
+                        if query_field_key in log and query_field_key not in {"packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts", "monitor_mirrored_bytes", "client_port","ssl_ech_flag","ssl_esni_flag"} and log[query_field_key] == query_value:
                             temp_log_result_list.append(True)
                         # 验证packet capture
                         elif query_field_key in {"packet_capture_file", "http_response_body", "http_request_body"}:
@@ -209,6 +209,18 @@ class GetLog:
                         elif query_field_key in {"client_port"}:
                             start, end = map(int, query_value.split('-'))
                             if start <= log[query_field_key] <= end:
+                                temp_log_result_list.append(True)
+                            else:
+                                temp_log_result_list.append(False)
+                        #验证ssl_ech_flag和ssl_esni_flag
+                        elif query_field_key in {"ssl_ech_flag","ssl_esni_flag"}:
+                            # 将 "True" 替换为 1，将 "False" 替换为 0
+                            if query_value == "True":
+                                query_value = 1
+                            elif query_value == "False":
+                                query_value = 0
+
+                            if log[query_field_key] == query_value:
                                 temp_log_result_list.append(True)
                             else:
                                 temp_log_result_list.append(False)

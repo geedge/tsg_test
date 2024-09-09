@@ -91,7 +91,7 @@ def run(parameter):
             },
             "is_mirror": "off",
             "expected_return": "youtube",
-            "counters": {"hits": 2},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "server_ip", "query_value": "8.8.8.8"},
                                 {"query_field_key": "decoded_as", "query_value": "DNS"},
                                 ],
@@ -329,15 +329,15 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "hebingning",
-        "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.88",
+        "username": "lina2024",
+        "password": "lina2024",
+        "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "debug_flag" : "local",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 10,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

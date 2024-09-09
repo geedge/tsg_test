@@ -99,7 +99,7 @@ def run(parameter):
                     {
                         "profile_type": "traffic_mirror",
                     "name":"profile1",
-                    "vlan_count": random.randint(1, 10)
+                    "vlan_count": random.randint(1, 5)
                     }
             ],
              "expected_return": "trex",

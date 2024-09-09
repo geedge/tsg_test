@@ -84,7 +84,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ftp_account",
-                                "item_value": "anon&ymous"
+                                "item_value": "ftp&user"
                             }
                         ],
                     }
