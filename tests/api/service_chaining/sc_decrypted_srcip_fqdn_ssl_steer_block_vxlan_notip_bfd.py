@@ -94,7 +94,7 @@ def run(parameter):
                 }               
             ],
             "application_1": ["ssl"],
-            "expected_return":"Empty,reply",
+            "expected_return":"vip",
             "traffic":{
                 "protocol": "ssl",
                 "type": "curl",
