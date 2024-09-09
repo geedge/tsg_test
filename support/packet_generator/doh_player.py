@@ -20,13 +20,14 @@ class DohPlayer:
         }
         response = requests.post(doh_server_url, json=query, headers=headers)
         
-        data = ""
+        response_data = ""
         if response.status_code == 200:
-            data = response.json()
-            for answer in data.get('Answer', []):
-                # DNS记录类型1代表A记录
-                if answer['type'] == 1:
-                    return data
+            response_data = response.json()
+            if 'Answer' in response_data:
+                for answer in response_data['Answer']:
+                    return f"Name: {answer['name']}, Type: {answer['type']}, Data: {answer['data']}"
+            else:  
+                return "No answer found."
         else:
             return f"Error querying DoH server: {response.status_code}"
     
@@ -36,8 +37,8 @@ if __name__ == "__main__":
         "traffic": {
             "protocol": "doh",
             "type": "client",
-            "domain": "www.baidu.com",
-            "query_type": "A",
+            "domain": "www.baidu.com", # ipv6.google.com
+            "query_type": "A", # AAAA
             "doh_server_url": "https://dns9.quad9.net"
         }
     }

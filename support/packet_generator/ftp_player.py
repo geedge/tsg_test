@@ -26,9 +26,9 @@ class FtpPlayer:
                 if action == "list":
                     self.list_directory(ftp, path)
                 elif action == "upload":
-                    self.upload_file(ftp, local_file, remote_file)
+                    self.upload_file(ftp, path, local_file, remote_file)
                 elif action == "download":
-                    self.download_file(ftp, remote_file, local_file)
+                    self.download_file(ftp, path, remote_file, local_file)
                 result += "FTP traffic sent successfully"
             except Exception as e:
                 result += f"Exception: {e}"
@@ -46,14 +46,16 @@ class FtpPlayer:
         ftp.cwd(path)  # 切换到指定目录
         ftp.retrlines('LIST')
     
-    def upload_file(self, ftp, local_file, remote_file):
-        # 上传文件到FTP服务器
+    def upload_file(self, ftp, path, local_file, remote_file):
+        # 上传文件到FTP服务器，将local_file中的内容写入到remote_file中
+        ftp.cwd(path)
         with open(local_file, 'rb') as f:
             ftp.storbinary(f'STOR {remote_file}', f)
         # print(f"File {local_file} uploaded successfully as {remote_file}")  
     
-    def download_file(self, ftp, remote_file, local_file):
-        # 从FTP服务器下载文件
+    def download_file(self, ftp, path, remote_file, local_file):
+        # 从FTP服务器下载文件，将remote_file中的内容写入到local_file中
+        ftp.cwd(path)
         with open(local_file, 'wb') as f:
             ftp.retrbinary(f'RETR {remote_file}', f.write)
         # print(f"File {remote_file} downloaded successfully as {local_file}")
@@ -64,13 +66,13 @@ if __name__ == "__main__":
         "traffic": {
             "protocol": "ftp",
             "type": "client", # client/curl
-            "host": "192.168.40.206",
+            "host": "192.168.40.206", # 路径是/Ftpfile/ftpuser/autoFtp/
             "user": "ftpuser",
             "password": "111111",
-            "action": "list", # "list", "upload" or "download"
+            "action": "upload", # "list", "upload" or "download"
             "path": "/autoFtp",
-            "local_file": "test.py",
-            "remote_file": "test.txt"
+            "local_file": "d:/test.txt",
+            "remote_file": "english.txt"
         }
     }
     traffic_data = test_data["traffic"]
