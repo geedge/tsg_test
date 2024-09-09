@@ -87,7 +87,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "Ok",
+            "expected_return": "Email sent successfully",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"imsi", "query_value":parameter['test_imsi']},
             {"query_field_key":"phone_number", "query_value": parameter['test_phone_number']}],

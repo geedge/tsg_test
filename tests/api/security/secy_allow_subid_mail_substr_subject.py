@@ -60,7 +60,7 @@ def run(parameter):
                 }
             ],
             "application_1": ["mail"],
-            "expected_return": "Ok",
+            "expected_return": "Email sent successfully",
             "counters_1": {"hits": 1},
             "log_query_param_1": [{"query_field_key":"mail_account","query_value":"hbn@163.com"}],
             "traffic": {

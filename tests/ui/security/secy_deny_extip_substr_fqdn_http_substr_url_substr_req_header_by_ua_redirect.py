@@ -151,7 +151,7 @@ def run(parameter):
             "expected_return": "303",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},
-                                {"query_field_key": "http_user_agent", "query_value": "curl/7.61.1"}],
+                                {"query_field_key": "http_user_agent", "query_value": "curl/7.76.1"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
