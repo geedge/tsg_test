@@ -55,7 +55,7 @@ def run(parameter):
                      {
                          "name": "True",  #
                          "object_type": "boolean",
-                         "boolean_type": "ECH"
+                         "boolean_type": "ECH",
                      }
                  ],
             },

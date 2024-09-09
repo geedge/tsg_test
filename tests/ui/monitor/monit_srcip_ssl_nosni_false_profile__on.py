@@ -71,7 +71,8 @@ def run(parameter):
                     {
                         "name": "False",  #
                         "object_type": "boolean",
-                        "boolean_type": "NO SNI"
+                        "boolean_type": "NO SNI",
+                        "items": []
                     }
                  ],
                 "application": [

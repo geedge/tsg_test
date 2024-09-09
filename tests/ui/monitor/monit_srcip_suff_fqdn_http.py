@@ -61,7 +61,7 @@ def run(parameter):
                         "plus": False,
                         "items": [
                             {
-                                "item_value": "*ru",
+                                "item_value": "*pe.ru",
                                 "item_operation": "add"
                             }
                         ]

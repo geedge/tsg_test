@@ -88,7 +88,6 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [],
-                "protocol_filed":[],
                 "sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []

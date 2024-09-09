@@ -144,12 +144,25 @@ class GetLog:
                             mirror_pkts_value = 0
                             if "mirror_type" in test_data:
                                 if test_data["mirror_type"] in {"ftp", "http", "https", "ssl"}:
-                                    if "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["san","cn"]:
-                                        mirror_bytes_value = actual_bytes_value - 4619
-                                        mirror_pkts_value = actual_pkts_value - 9
-                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "response_header":
-                                        mirror_bytes_value = actual_bytes_value - 381
-                                        mirror_pkts_value = actual_pkts_value - 5
+                                    if "protocol_filed" in test_data["condition"]:
+                                        protocol_filed = test_data["condition"]["protocol_filed"][0]
+                                        # 检查 items 是否存在，并确保 items 列表中至少有一个元素
+                                        if "items" in protocol_filed and len(protocol_filed["items"]) > 0:
+                                            item_type = protocol_filed["items"][0].get("item_type")
+
+                                            # 根据 item_type 的不同值进行相应处理
+                                            if item_type in ["san", "cn"]:
+                                                mirror_bytes_value = actual_bytes_value - 4619
+                                                mirror_pkts_value = actual_pkts_value - 9
+                                        elif "item" in protocol_filed and len(protocol_filed["item"]) > 0:
+                                            item_type = protocol_filed["item"][0].get("item_type")
+
+                                            if item_type == "response_header":
+                                                mirror_bytes_value = actual_bytes_value - 381
+                                                mirror_pkts_value = actual_pkts_value - 5
+                                        else: # ssl sni、ech、esni的情况
+                                            mirror_bytes_value = actual_bytes_value - 192
+                                            mirror_pkts_value = actual_pkts_value - 3
                                     else:#除添加特定field之外的镜像转发
                                         mirror_bytes_value = actual_bytes_value - 192
                                         mirror_pkts_value = actual_pkts_value - 3
@@ -159,16 +172,19 @@ class GetLog:
                                         mirror_bytes_value *= num_vlans
                                         mirror_pkts_value *= num_vlans
                                 elif test_data["mirror_type"] == "mail":
-                                    if "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["mail_from","mail_subject","mail_to"]:
+                                    if "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] in ["mail_from","mail_to"]:
                                         mirror_bytes_value = actual_bytes_value - 19578
                                         mirror_pkts_value = actual_pkts_value - 158
-                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_attachment_content":
+                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["item"][0]["item_type"] == "mail_attachment_content":
                                         mirror_bytes_value = actual_bytes_value -66426
                                         mirror_pkts_value = actual_pkts_value - 192
-                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_attachment_name":
+                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["item"][0]["item_type"] == "mail_subject" : #和mail from 、mail to 一致
+                                        mirror_bytes_value = actual_bytes_value - 19578
+                                        mirror_pkts_value = actual_pkts_value - 158
+                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["item"][0]["item_type"] == "mail_attachment_name":
                                         mirror_bytes_value = actual_bytes_value -38934
                                         mirror_pkts_value = actual_pkts_value - 170
-                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["items"][0]["item_type"] == "mail_content":
+                                    elif "protocol_filed" in test_data["condition"] and test_data["condition"]["protocol_filed"][0]["item"][0]["item_type"] == "mail_content":
                                         mirror_bytes_value = actual_bytes_value -1685
                                         mirror_pkts_value = actual_pkts_value - 19
                                     else: #除添加特定field之外的镜像转发

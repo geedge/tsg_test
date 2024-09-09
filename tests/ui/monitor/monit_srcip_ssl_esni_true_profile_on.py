@@ -56,7 +56,8 @@ def run(parameter):
                      {
                          "name": "True",  #
                          "object_type": "boolean",
-                         "boolean_type": "ESNI"
+                         "boolean_type": "ESNI",
+                         "items": []
                      }
                  ],
             },

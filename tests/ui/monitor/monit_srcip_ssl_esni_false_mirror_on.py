@@ -77,7 +77,8 @@ def run(parameter):
                      {
                          "name": "False",  #
                          "object_type": "boolean",
-                         "boolean_type": "ESNI"
+                         "boolean_type": "ESNI",
+                         "items": []
                      }
                  ],
             },
