@@ -23,18 +23,28 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "service_chaining",
-            "rule_name": "sc_raw_internal_port_range_steer_bypass_vxlan_activeip_bfd",
+            "rule_name": "sc_raw_srcip_dstip_multiple_port_mirror_bypass_vlan_none",
             "rule_action": "service_chaining",
             "targeted_traffic": "raw",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [{
-                        "name": "sc_ui_port",
+                "source_ip": [
+                    {
+                        "name": "service_chaining_source_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "10.64.224.25"
+                            }
+                        ]
+                    }
+                ],
+                "source_port": [{
+                        "name": "sc_source_port",
                         "object_type": "port",
                         "select_type": False,
                         "negate": False,
@@ -47,8 +57,67 @@ def run(parameter):
                         ]
                     }
                 ],
+                "destination_ip": [
+                    {
+                        "name": "service_chaining_destination_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "10.64.224.25"
+                            }
+                        ]
+                    }
+                ],
+                "destination_port": [{
+                        "name": "sc_dst_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "443-445",
+                            },
+                        ]
+                    }
+                ],
+                "internal_ip": [],
+                "internal_port": [
+                    {
+                        "name": "sc_internal_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "1-65535",
+                            },
+                        ]
+                    }
+                
+                ],
                 "external_ip": [],
-                "external_port": [],
+                "external_port": [{
+                        "name": "sc_external_port",
+                        "object_type": "port",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "port",
+                                "item_value": "443",
+                            },
+                        ]
+                    }
+                ],
                 "geography": [],
                 "sub_id": [],
                 "device": [],
@@ -65,19 +134,19 @@ def run(parameter):
             "multiProfile": True,
             "profile": [
                 {
-                    "name": "steer_bypass_vxlan_activeip_bfd",
+                    "name": "mirror_bypass_vlan_none",
                     "profile_type": "create",
-                    "type": "Steering",
+                    "type": "mirroring",
                     "load_balance_method": "hash_int-ip",
                     "load_balance_localization": "nearby",
                     "failure_action": "Bypass",
                     "service_functions": [
                         {
-                            "name": "vxlan_activeip_bfd",
+                            "name": "vlan_none",
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
-                            "connectivity": "VXLAN-G:2.2.2.53",
-                            "health_check": "BFD:200:5",
+                            "connectivity": "Layer_2_Switch:random:random",
+                            "health_check": "none",
                             "enable": "on"
                         }
                     ]
@@ -88,6 +157,7 @@ def run(parameter):
                                 {"query_field_key": "received_pkts", "query_value": ""},
                                 {"query_field_key": "sent_bytes", "query_value": ""},
                                 {"query_field_key": "received_bytes", "query_value": ""},
+                                {"query_field_key": "server_port", "query_value": "443"},
                                 {"query_field_key": "client_port", "query_value": "41668"}],
             "traffic":{
                     "protocol": "",
@@ -145,7 +215,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_internal_port_range_steer_bypass_vxlan_activeip_bfd"
+        "test_case_name": "sc_raw_srcip_dstip_multiple_port_mirror_bypass_vlan_none"
     }
     run(parameter)
     """
