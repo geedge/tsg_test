@@ -70,7 +70,7 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "sessions",
-                    "query_value": 1 #并发数要与trex的cps*m相同
+                    "query_value": 1 # 对于custom network attack来说，该值不固定
                 },
                 {
                     "query_field_key": "session_rate",
@@ -98,7 +98,7 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "basic_sessions",
-                    "query_value": 4
+                    "query_value": 5
                 },
                 {
                     "query_field_key": "basic_session_rate",
@@ -106,7 +106,7 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "basic_packets",
-                    "query_value": 4
+                    "query_value": 5
                 },
                 {
                     "query_field_key": "basic_packet_rate",

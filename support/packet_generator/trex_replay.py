@@ -77,6 +77,7 @@ class TrafficReplay:
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Replay packet {sum_count} time, replay cps: {m}, replay duration: {d}. The expected statistical results are as follows: ", flush=True)
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Actual replay packet {open_flows} time", flush=True)
         metric_info_dict = {key:(value*open_flows) for key, value in pcap_info_dict.items()}
+        metric_info_dict["session"] = open_flows
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], metric_info_dict, flush=True)
         return metric_info_dict
 
