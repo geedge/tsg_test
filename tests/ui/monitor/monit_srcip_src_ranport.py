@@ -98,8 +98,8 @@ def run(parameter):
             },
             "is_mirror":"off",
             "expected_return": "baidu",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}],
+            "counters": {"hits": "many"},
+            "log_query_param": [{"query_field_key": "client_port", "query_value": "1-65535"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

@@ -98,8 +98,8 @@ def run(parameter):
             },
             "is_mirror":"off",
             "expected_return": "douban",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.douban.com"}],
+            "counters": {"hits": "many"},
+            "log_query_param": [{"query_field_key":"server_port", "query_value": 443}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

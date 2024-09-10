@@ -67,7 +67,7 @@ def run(parameter):
                                 "item_type": "mail_content",
                                 "item_value": "HEX",
                                 "value": [
-                                    "0xAC10" #172.16
+                                    "AC.10" #172.16
                                 ]
                             }
                         ],
