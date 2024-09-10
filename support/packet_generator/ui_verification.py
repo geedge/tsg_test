@@ -88,9 +88,14 @@ class UiVerification:
                                     # elif log_query_key == "ssl_cn" or log_query_key == "ssl_san" or log_query_key == "ssl_sni" or log_query_key == "ftp_account" or log_query_key == "security_action" or log_query_key == "ftp_url" or log_query_key == "ftp_link_type":
                                     elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from","mail_attachment_name","imsi", "phone_number", "server_fqdn", "ip_protocol", "mail_to", "mail_to_cmd", "mail_from_cmd", "mail_subject", "dns_qname"]:
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                        temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
-                                        if temp_value == test_data["log_query_param"][t]["query_value"]:
-                                            temp_log_result = True
+                                        # 当不存在此定位时,value为空,日志查询与预期不符,置为false
+                                        log_item_pos_exist = my_driver.is_exist_element(log_item_pos_xpath)
+                                        if log_item_pos_exist == True:
+                                            temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
+                                            if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                                temp_log_result = True
+                                            else:
+                                                temp_log_result = False
                                         else:
                                             temp_log_result = False
                                         temp_log_result_list.append(temp_log_result)
