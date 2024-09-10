@@ -16,7 +16,7 @@ from support.ui_utils.policy.delete_rule import DeleteRule
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verification import Verification
-from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list
+from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list, create_pre_policy, delete_pre_policy
 from support.ui_utils.element_position.map_element_position_library import manipulation_object_no_create_list
 from support.api_utils.analysis_result import AnalysisResult
 import support.ui_utils.env
@@ -211,6 +211,12 @@ class ServiceChainingInstanceGenerator:
 
             # 创建rule
             if cond_code == 200 and create_profile_code == 200:
+                if test_data["targeted_traffic"] == "decrypted":
+                    element_position_map = get_element_position(test_data["policy_type"])
+                    # 添加intercept
+                    tmp_name_list = create_pre_policy(test_data, driver)
+                    for tmp in tmp_name_list:
+                        self.ui_name_list.insert(0, copy.deepcopy(tmp))
                 create_rule = CreateRule(driver)
                 element_position_map = get_element_position(test_data["policy_type"])
                 create_rule_code = create_rule.create(test_data, element_position_map)

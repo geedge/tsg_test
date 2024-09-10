@@ -113,7 +113,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "port",
-                                "item_value": "443",
+                                "item_value": "1-65535",
                             },
                         ]
                     }

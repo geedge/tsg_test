@@ -46,7 +46,7 @@ def run(parameter):
                 "source_port": [],
                 "destination_ip": [],
                 "destination_port": [{
-                        "name": "sc_ui_port",
+                        "name": "sc_dst_port",
                         "object_type": "port",
                         "select_type": False,
                         "negate": False,
@@ -63,7 +63,7 @@ def run(parameter):
                 "internal_port": [],
                 "external_ip": [],
                 "external_port": [{
-                        "name": "sc_ui_port",
+                        "name": "sc_ext_port",
                         "object_type": "port",
                         "select_type": False,
                         "negate": False,
