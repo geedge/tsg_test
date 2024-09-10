@@ -72,7 +72,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_value": "$www.facebook.com",
+                                "item_value": "$www.vip.com",
                             }
                         ]
                     }
@@ -107,9 +107,9 @@ def run(parameter):
             "traffic":{
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.facebook.com"
+                "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.vip.com"
                 },
-            "expected_return":"facebook",
+            "expected_return":"vip",
             "token": ""
         }
 
