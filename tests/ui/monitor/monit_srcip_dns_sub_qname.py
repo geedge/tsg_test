@@ -90,7 +90,7 @@ def run(parameter):
                 ],
             },
             "expected_return": "ins",
-            "counters": {"hits": 1},
+            "counters": {"hits": 2},
             "log_query_param": [
                 {"query_field_key": "server_ip", "query_value": "8.8.8.8"},
                 {"query_field_key": "decoded_as", "query_value": "DNS"},

@@ -67,7 +67,7 @@ def run(parameter):
                                 "item_type": "mail_content",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "172"
+                                    "172.16"
                                 ]
                             }
                         ],

@@ -144,6 +144,7 @@ class GetLog:
                             mirror_pkts_value = 0
                             if "mirror_type" in test_data:
                                 if test_data["mirror_type"] in {"ftp", "http", "https", "ssl"}:
+                                # ftp:packets28 bytes1926; mail p:1095 1175407
                                     if test_data["mirror_type"] in {"ftp", "http", "https", "ssl"}:
                                         if "protocol_filed" in test_data["condition"]:
                                             protocol_filed = test_data["condition"]["protocol_filed"][0]
@@ -160,6 +161,9 @@ class GetLog:
                                                 elif item_type == "response_header":
                                                     mirror_bytes_value = actual_bytes_value - 381
                                                     mirror_pkts_value = actual_pkts_value - 5
+                                                elif item_type == "ftp_account":
+                                                    mirror_bytes_value = actual_bytes_value - 266
+                                                    mirror_pkts_value = actual_pkts_value - 4
                                                 else:
                                                     # 其他protocol field的情况，如ftp account
                                                     mirror_bytes_value = actual_bytes_value - 192
@@ -195,18 +199,15 @@ class GetLog:
                                         # 如果有 "item" 列表，并且列表不为空
                                         elif "item" in protocol_filed and protocol_filed["item"]:
                                             item_type = protocol_filed["item"][0].get("item_type", "")
-                                            if item_type == "mail_attachment_content":
-                                                mirror_bytes_value = actual_bytes_value - 66426
-                                                mirror_pkts_value = actual_pkts_value - 192
+                                            if item_type in ["mail_attachment_content","mail_attachment_name"]:
+                                                mirror_bytes_value = actual_bytes_value - 34554
+                                                mirror_pkts_value = actual_pkts_value - 170
                                             elif item_type == "mail_subject":
                                                 mirror_bytes_value = actual_bytes_value - 19578
                                                 mirror_pkts_value = actual_pkts_value - 158
-                                            elif item_type == "mail_attachment_name":
-                                                mirror_bytes_value = actual_bytes_value - 38934
-                                                mirror_pkts_value = actual_pkts_value - 170
                                             elif item_type == "mail_content":
-                                                mirror_bytes_value = actual_bytes_value - 1685
-                                                mirror_pkts_value = actual_pkts_value - 19
+                                                mirror_bytes_value = actual_bytes_value - 21092
+                                                mirror_pkts_value = actual_pkts_value - 159
                                             else:  # 如果有 "item"，但不符合特定类型时的默认行为
                                                 mirror_bytes_value = actual_bytes_value - 967
                                                 mirror_pkts_value = actual_pkts_value - 9
