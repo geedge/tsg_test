@@ -221,6 +221,7 @@ class ServiceChainingInstanceGenerator:
 
             # 触发流量验证
             if create_rule_code == 200:
+                time.sleep(1.5)
                 search_rule = SearchRule(driver)
                 element_position_map = get_element_position(test_data["policy_type"])
                 search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)

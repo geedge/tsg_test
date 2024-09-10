@@ -30,9 +30,12 @@ class MailPlayer:
                 body = traffic_data["body"]
                 attach = traffic_data["attach"]
                 msg = MIMEMultipart()
-                msg['From'] = Header(sender, 'utf-8')
-                msg['To'] = Header(receiver, 'utf-8')
-                msg['Subject'] = Header(subject, 'utf-8')
+                # msg['From'] = Header(sender, 'utf-8')
+                # msg['To'] = Header(receiver, 'utf-8')
+                # msg['Subject'] = Header(subject, 'utf-8')
+                msg['From'] = sender
+                msg['To'] = receiver
+                msg['Subject'] = subject
                 msg['Date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 # 邮件正文内容，MIMEText是纯文本
                 msg.attach(MIMEText(body, 'plain', 'utf-8'))

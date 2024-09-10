@@ -23,12 +23,26 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "service_chaining",
-            "rule_name": "sc_raw_internal_port_range_mirror_bypass_vlan_none",
+            "rule_name": "sc_raw_srcip_internal_port_range_steer_bypass_vxlan_activeip_bfd",
             "rule_action": "service_chaining",
             "targeted_traffic": "raw",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
+                "source_ip": [
+                    {
+                        "name": "service_chaining_source_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "10.64.224.25"
+                            }
+                        ]
+                    }
+                ],
                 "source_port": [],
                 "destination_ip": [],
                 "destination_port": [],
@@ -65,19 +79,19 @@ def run(parameter):
             "multiProfile": True,
             "profile": [
                 {
-                    "name": "mirror_bypass_vlan_none",
+                    "name": "steer_bypass_vxlan_activeip_bfd",
                     "profile_type": "create",
-                    "type": "mirroring",
+                    "type": "Steering",
                     "load_balance_method": "hash_int-ip",
                     "load_balance_localization": "nearby",
                     "failure_action": "Bypass",
                     "service_functions": [
                         {
-                            "name": "vlan_none",
+                            "name": "vxlan_activeip_bfd",
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
-                            "connectivity": "Layer_2_Switch:random:random",
-                            "health_check": "none",
+                            "connectivity": "VXLAN-G:2.2.2.53",
+                            "health_check": "BFD:200:5",
                             "enable": "on"
                         }
                     ]
@@ -145,7 +159,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_internal_port_range_mirror_bypass_vlan_none"
+        "test_case_name": "sc_raw_srcip_internal_port_range_steer_bypass_vxlan_activeip_bfd"
     }
     run(parameter)
     """
