@@ -78,7 +78,7 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "packets",
-                    "query_value": 4
+                    "query_value": 4 # 对于custom network attack来说，该值不固定
                 },
                 {
                     "query_field_key": "packet_rate",
@@ -86,7 +86,7 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "bytes",
-                    "query_value": 688
+                    "query_value": 688 # 对于custom network attack来说，该值不固定
                 },
                 {
                     "query_field_key": "bit_rate",

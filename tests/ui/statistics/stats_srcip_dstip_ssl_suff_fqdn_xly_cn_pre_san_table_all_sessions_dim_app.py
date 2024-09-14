@@ -99,7 +99,7 @@ def run(parameter):
                     }
                 ],
                 "protocol_filed": [{
-                        "name": parameter["test_case_name"].replace("_srcip_dstip_ssl_suff_fqdn", "", 1),
+                        "name": parameter["test_case_name"].replace("_srcip_dstip_ssl_suff_fqdn", "", 1).replace("_pre_san", "", 1),
                         "object_type": "fqdn",
                         "item_operation": "add",
                         "select_type": False,
@@ -112,7 +112,7 @@ def run(parameter):
                             }
                         ],
                     },{
-                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                        "name": parameter["test_case_name"].replace("_srcip_dstip_ssl_suff_fqdn_xly_c", "", 1),
                         "object_type": "fqdn",
                         "item_operation": "add",
                         "select_type": False,

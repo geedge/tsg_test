@@ -30,7 +30,7 @@ class GreOverGrePlayer:
             pcap_root_path = packet_generator_path + "/traffic_pcap/"
             pcap_path = packet_generator_path + "/traffic_pcap/" + pcap
             pkts = rdpcap(pcap_path)
-            first_client_ip = pkts[0][MPLS][MPLS][IP].src
+            first_client_ip = pkts[0][GRE][GRE][IP].src
 
             new_pkts_list, new_pkts_list_sum = [], []
             current_time = time.time()

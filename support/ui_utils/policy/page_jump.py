@@ -20,7 +20,9 @@ class PageJump:
         self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
         #self.change_vsys(vsys_name=vsys_name)     # 调整到页面登录时切换vsys
         self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()
-        self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"]).click()
+        btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"])
+        self.driver.execute_script("arguments[0].click()", btn) 
+        time.sleep(1)
         
     def change_vsys(self, vsys_name=""):
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the current vsys: {current_vsys_name}")

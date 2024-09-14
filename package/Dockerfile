@@ -22,6 +22,7 @@ RUN yum install -y tcpdump pciutils bind-utils
 RUN yum install -y kernel-devel kernel-headers
 RUN yum install -y libffi-devel hping3
 RUN yum group install -y "Development tools"
+RUN yum install -y tcpreplay
 
 RUN find . -type f -name "*.py" -exec chmod 777 {} \;
 
