@@ -12,6 +12,7 @@ class DeletePolicy:
             api_server = parameter["api_server"]
             vsys_id = parameter["vsys_id"]
             create_ip_ids = cfg_list["create_ip_ids"]
+            create_port_ids = cfg_list["create_port_ids"]
             create_subid_ids = cfg_list["create_subid_ids"]
             create_fqdn_ids = cfg_list["create_fqdn_ids"]
             create_url_ids = cfg_list["create_url_ids"]
@@ -49,6 +50,17 @@ class DeletePolicy:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip successfully.", flush=True)
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip failed.", flush=True)
+            if len(create_port_ids) > 0:
+                delete_object_template['type'] = "port"
+                delete_object_template['ids'] = create_port_ids
+                delete_object_template["vsys_id"] = vsys_id
+                url = api_server + "/v1/policy/object"
+                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete port successfully.", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete port failed.", flush=True)
             if len(create_subid_ids) > 0:
                 delete_object_template['type'] = "subscriberid"
                 delete_object_template['ids'] = create_subid_ids
@@ -365,7 +377,7 @@ class DeletePolicy:
                 tmp_type = template['type']
             if '/policy/rule' in url:    
                 data_list = return_json_data['data']['rules']
-                delete_info = tmp_type + ' ' + 'rule'
+                delete_info = tmp_type.title() + ' ' + 'rule'
             elif '/policy/object' in url:
                 data_list = return_json_data['data']['objects']
                 delete_info = tmp_type

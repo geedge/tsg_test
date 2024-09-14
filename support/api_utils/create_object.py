@@ -12,6 +12,7 @@ from datetime import datetime
 class CreateObject:
     def __init__(self):
         self.ip_ids = []
+        self.port_ids = []
         self.subid_ids = []
         self.fqdn_ids = []
         self.flag_ids = []
@@ -29,8 +30,11 @@ class CreateObject:
             obj_template_dict = json.load(f)
         source_list = []
         dst_list = []
+        internal_list = []
+        external_list = []
         filter_list = []
         flag_list = []
+        condition_ids_by_api_dict = {}  # 搜集所有object通过api创建时返回的id字典
         timeout_result = True
 
         test_pc_ip = parameter['test_pc_ip']
@@ -47,12 +51,18 @@ class CreateObject:
                 for i in range(repeat_time):
                     index = i + 1
                     objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, test_subcriber_id, vsys_id, index, repeat_time)
-                    if attribute_name == 'ATTR_SOURCE_IP' or attribute_name == 'ATTR_SUBSCRIBER_ID':
+                    if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT"]:
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
-                    elif attribute_name == 'ATTR_DESTINATION_IP' or attribute_name == "ATTR_DESTINATION_GEO_COUNTRY" or attribute_name == "ATTR_SERVER_FQDN":
+                    elif attribute_name in ["ATTR_DESTINATION_IP", "ATTR_DESTINATION_PORT", "ATTR_DESTINATION_GEO_COUNTRY", "ATTR_SERVER_FQDN"]:
                         for obj_dict in objects_list:
                             dst_list.append(obj_dict)
+                    elif attribute_name in ["ATTR_EXTERNAL_IP", "ATTR_EXTERNAL_PORT"]:
+                        for obj_dict in objects_list:
+                            external_list.append(obj_dict)
+                    elif attribute_name in ["ATTR_INTERNAL_IP", "ATTR_INTERNAL_PORT"]:
+                        for obj_dict in objects_list:
+                            internal_list.append(obj_dict)
                     elif attribute_name == 'ATTR_FLAG':
                         for obj_dict in objects_list:
                             flag_list.append(obj_dict)
@@ -64,9 +74,10 @@ class CreateObject:
                     if repeat_time > 1:
                         time.sleep(60)
                         if index < repeat_time:
-                            create_ip_ids, create_fqdn_ids, create_url_ids = [], [], []
+                            create_ip_ids, create_fqdn_ids, create_url_ids, create_port_ids = [], [], [], []
                             cfg_list = {
                                 "create_ip_ids": [],
+                                "create_port_ids": [],
                                 "create_fqdn_ids": [],
                                 "create_url_ids": [],
                                 "create_subid_ids": [],
@@ -88,10 +99,29 @@ class CreateObject:
                             if obj_template_dict["object"]["type"] == "url" and len(self.url_ids) > 0:
                                 create_url_ids.extend(self.url_ids)
                                 cfg_list["create_url_ids"] = create_url_ids
+                            if obj_template_dict["object"]["type"] == "port" and len(self.port_ids) > 0:
+                                create_port_ids.extend(self.port_ids)
+                                cfg_list["create_port_ids"] = create_port_ids
                             delete = DeletePolicy()
                             delete.delele_policy_by_cfg(token, parameter, cfg_list)
-        
-        return timeout_result, source_list, dst_list, filter_list, flag_list, self.ip_ids, self.subid_ids, self.fqdn_ids, self.url_ids, self.flag_ids, self.keywords_ids, self.account_ids, self.http_signature_ids, self.geo_name_ids
+
+        condition_ids_by_api_dict["src_list"] = source_list
+        condition_ids_by_api_dict["dst_list"] = dst_list
+        condition_ids_by_api_dict["int_list"] = internal_list
+        condition_ids_by_api_dict["ext_list"] = external_list
+        condition_ids_by_api_dict["filter_list"] = filter_list
+        condition_ids_by_api_dict["flag_list"] = flag_list
+        condition_ids_by_api_dict["ip_ids"] = self.ip_ids
+        condition_ids_by_api_dict["subid_ids"] = self.subid_ids
+        condition_ids_by_api_dict["port_ids"] = self.port_ids
+        condition_ids_by_api_dict["fqdn_ids"] = self.fqdn_ids
+        condition_ids_by_api_dict["url_ids"] = self.url_ids
+        condition_ids_by_api_dict["flag_ids"] = self.flag_ids
+        condition_ids_by_api_dict["keywords_ids"] = self.keywords_ids
+        condition_ids_by_api_dict["account_ids"] = self.account_ids
+        condition_ids_by_api_dict["http_signature_ids"] = self.http_signature_ids
+        condition_ids_by_api_dict["geo_name_ids"] = self.geo_name_ids
+        return timeout_result, condition_ids_by_api_dict
     
     # 对多个objects的处理（处理之后要调用create_object）
     def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, test_subcriber_id, vsys_id, index, repeat_time):
@@ -190,7 +220,19 @@ class CreateObject:
                         object_dict['mask'] = item['mask']
                     object_dict = dict(flag=object_dict, op='add')
                     items.append(object_dict)
-                member = dict(items=items, type="item")            
+                member = dict(items=items, type="item")
+            elif obj_type == "port":
+                for item in add_item_list:
+                    if 'port' in item:
+                        if "-" not in str(item['port']):  # 单个端口
+                            object_dict['port'] = str(item['port'])
+                            object_dict['port_format'] = "port"
+                        else:    # 范围端口
+                            object_dict['port_range'] = str(item['port'])
+                            object_dict['port_format'] = "range"
+                    object_dict = dict(port=object_dict, op='add')
+                    items.append(object_dict)
+                member = dict(items=items, type="item")
             elif obj_type == "http_signature":
                 for item in add_item_list:
                     patterns = []
@@ -334,6 +376,8 @@ class CreateObject:
             obj_type = obj_template_dict['object']['type'] 
             if obj_type == 'ip':
                 self.ip_ids = self.handle_ids(object_ids, self.ip_ids)
+            elif obj_type == 'port':
+                self.port_ids = self.handle_ids(object_ids, self.port_ids)
             elif obj_type == 'subscriberid':
                 self.subid_ids = self.handle_ids(object_ids, self.subid_ids)
             elif obj_type == 'fqdn':
