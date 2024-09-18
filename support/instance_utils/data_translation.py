@@ -116,6 +116,116 @@ class DataTranslation:
                     ]
                 }
                 object.append(copy.deepcopy(temp))
+            elif k == "internal_ip":
+                temp = {
+                    "name": v[0]["name"],
+                    "attribute_name": "ATTR_INTERNAL_IP",
+                    "object_type": "ip",
+                    "object_sub_type": "ip",
+                    "is_negate": 0,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "ip_address": v[0]["item"][0]["item_value"],
+                                    "port_range": "0-65535"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "external_ip":
+                temp = {
+                    "name": v[0]["name"],
+                    "attribute_name": "ATTR_EXTERNAL_IP",
+                    "object_type": "ip",
+                    "object_sub_type": "ip",
+                    "is_negate": 0,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "ip_address": v[0]["item"][0]["item_value"],
+                                    "port_range": "0-65535"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "source_port":
+                temp = {
+                    "name": v[0]["name"],
+                    "attribute_name": "ATTR_SOURCE_PORT",
+                    "object_type": "port",
+                    "object_sub_type": "port",
+                    "is_negate": 0,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "port": v[0]["item"][0]["item_value"]
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "destination_port":
+                temp = {
+                    "name": v[0]["name"],
+                    "attribute_name": "ATTR_DESTINATION_PORT",
+                    "object_type": "port",
+                    "object_sub_type": "port",
+                    "is_negate": 0,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "port": v[0]["item"][0]["item_value"]
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "internal_port":
+                temp = {
+                    "name": v[0]["name"],
+                    "attribute_name": "ATTR_INTERNAL_PORT",
+                    "object_type": "port",
+                    "object_sub_type": "port",
+                    "is_negate": 0,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "port": v[0]["item"][0]["item_value"]
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
+            elif k == "external_port":
+                temp = {
+                    "name": v[0]["name"],
+                    "attribute_name": "ATTR_EXTERNAL_PORT",
+                    "object_type": "port",
+                    "object_sub_type": "port",
+                    "is_negate": 0,
+                    "object_list": [
+                        {
+                            "add_item_list": [
+                                {
+                                    "port": v[0]["item"][0]["item_value"]
+                                }
+                            ]
+                        }
+                    ]
+                }
+                object.append(copy.deepcopy(temp))
             elif k == "server_fqdn":
                 temp = {
                     "name": v[0]["name"],

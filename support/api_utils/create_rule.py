@@ -11,9 +11,24 @@ from datetime import datetime
 
 class CreatePolicyRule:       
     # 拼接json数据，拼接完成后请求创建策略接口
-    def create_rule_from_template(self, token, source_list, dst_list, filter_list, flag_list, condition, create_number, path_dict, api_host, vsys_id, create_profile_ids=[]):
+    def create_rule_from_template(self, token, condition_ids_by_api_dict, condition, create_number, path_dict, api_host, vsys_id, create_profile_ids=[]):
+        # condition_ids_by_api_dict 所有api创建的condition id 都通过dict传递
         headers = {"Content-Type": "application/json", "Authorization": token}
-        
+
+        source_list, dst_list, filter_list, flag_list = [], [], [], []
+        for k, v in condition_ids_by_api_dict.items():
+            if k == "src_list":
+                source_list = v
+            elif k == "dst_list":
+                dst_list = v
+            elif k == "int_list":
+                int_list = v
+            elif k == "ext_list":
+                ext_list = v
+            elif k == "filter_list":
+                filter_list = v
+            elif k == "flag_list":
+                flag_list = v
         template = path_dict["rule_template"]
         with open(template, 'r', encoding='utf-8') as f:
             rule_template_dict = json.load(f)
@@ -27,6 +42,16 @@ class CreatePolicyRule:
             rule_template_dict['rule']['destination'] = dst_list
         else:
             rule_template_dict['rule']['destination'] = []
+
+        if len(int_list) > 0:
+            rule_template_dict['rule']['internal'] = int_list
+        else:
+            rule_template_dict['rule']['internal'] = []
+
+        if len(ext_list) > 0:
+            rule_template_dict['rule']['external'] = ext_list
+        else:
+            rule_template_dict['rule']['external'] = []
         
         if len(filter_list) > 0:
             filter_list = filter_list

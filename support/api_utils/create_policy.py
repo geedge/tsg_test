@@ -1,3 +1,4 @@
+import copy
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +18,7 @@ class CreatePolicy:
         run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
         token = test_data["token"]
-        create_ip_ids, create_subid_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], []
+        create_ip_ids, create_subid_ids, create_port_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
         
         # sc需要随机ip
@@ -44,25 +45,29 @@ class CreatePolicy:
             # 创建object
             create_object = CreateObject()
             object_template = template_path["object_template"]
-            timeout_result, src_list, dst_list, filter_list, flag_list, ip_ids, subid_ids, fqdn_ids, url_ids, flag_ids, keywords_ids, account_ids, http_signature_ids, geo_name_ids = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, vsys_id)
-            if len(ip_ids) > 0:
-                create_ip_ids.extend(ip_ids)
-            if len(subid_ids) > 0:
-                create_subid_ids.extend(subid_ids)
-            if len(fqdn_ids) > 0:
-                create_fqdn_ids.extend(fqdn_ids)
-            if len(url_ids) > 0:
-                create_url_ids.extend(url_ids)
-            if len(flag_ids) > 0:
-                create_flag_ids.extend(flag_ids)
-            if len(keywords_ids) > 0:
-                create_keywords_ids.extend(keywords_ids)
-            if len(account_ids) > 0:
-                create_account_ids.extend(account_ids)
-            if len(http_signature_ids) > 0:
-                create_http_signature_ids.extend(http_signature_ids)
-            if len(geo_name_ids) > 0:
-                create_geo_name_ids.extend(geo_name_ids)
+            timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, vsys_id)
+            for k, v_0 in condition_ids_by_api_dict.items():
+                v = copy.deepcopy(v_0)
+                if k == "ip_ids" and len(v) > 0:
+                    create_ip_ids.extend(v)
+                if k == "subid_ids" and len(v) > 0:
+                    create_subid_ids.extend(v)
+                if k == "port_ids" and len(v) > 0:
+                    create_port_ids.extend(v)
+                if k == "fqdn_ids" and len(v) > 0:
+                    create_fqdn_ids.extend(v)
+                if k == "url_ids" and len(v) > 0:
+                    create_url_ids.extend(v)
+                if k == "flag_ids" and len(v) > 0:
+                    create_flag_ids.extend(v)
+                if k == "keywords_ids" and len(v) > 0:
+                    create_keywords_ids.extend(v)
+                if k == "account_ids" and len(v) > 0:
+                    create_account_ids.extend(v)
+                if k == "http_signature_ids" and len(v) > 0:
+                    create_http_signature_ids.extend(v)
+                if k == "geo_name_ids" and len(v) > 0:
+                    create_geo_name_ids.extend(v)
 
             # 创建profile
             temp_profile_condition = "profile_condition_{}".format(create_number)
@@ -82,7 +87,7 @@ class CreatePolicy:
             
             # 创建rule
             create_rule = CreatePolicyRule()
-            policy_id_list = create_rule.create_rule_from_template(token, src_list, dst_list, filter_list, flag_list, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
+            policy_id_list = create_rule.create_rule_from_template(token, condition_ids_by_api_dict, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
             # policy_id = list(policy_id_list[0].values())[0]
             if len(create_profile_ids) > i:
                 if test_data["policy_type"] == "statistics":
@@ -132,6 +137,7 @@ class CreatePolicy:
         cfg_list = {}
         cfg_list["create_ip_ids"] = create_ip_ids
         cfg_list["create_subid_ids"] = create_subid_ids
+        cfg_list["create_port_ids"] = create_port_ids
         cfg_list["create_fqdn_ids"] = create_fqdn_ids
         cfg_list["create_url_ids"] = create_url_ids
         cfg_list["create_flag_ids"] = create_flag_ids
