@@ -965,3 +965,6 @@ dosRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switc
 dosRulePage_ok_posId = "OK-_Dos_protection_edit_Home_App_anonymousComponent"
 dosRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 dosRulePage_cancel_posId = "Cancle-_Dos_protection_edit_Home_App_anonymousComponent"
+
+policyRulePage_mitigationTimeouts_select_posXpath =  "//div[@x-placement='top-start']//span[normalize-space(text())='{replaceValue}']  | //div[@x-placement='bottom-start']//span[normalize-space(text())='{replaceValue}']"
+

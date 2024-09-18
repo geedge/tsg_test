@@ -33,6 +33,7 @@ class DosProtectionInstanceGenerator:
     def _run(self, test_data, parameter):
         # 参数初始化
         ui_result, api_result= "", ""
+        self.api_name_list, self.ui_name_list = [], []
         result = {
             "ui_result": "",
             "api_result": ""
@@ -154,7 +155,7 @@ class DosProtectionInstanceGenerator:
                 }
                 if test_data["threshold"]["type"] == "rate":
                     test_rule_element_position["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdRateType_posId
-                    test_rule_element_position["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = dosRulePage_mitigationTimeouts_select_top_posXpath
+                    test_rule_element_position["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = policyRulePage_mitigationTimeouts_select_posXpath
                 elif test_data["threshold"]["type"] == "concurrency":
                     test_rule_element_position["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdConcurrencyType_posId
                     test_rule_element_position["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = dosRulePage_mitigationTimeouts_select_bottom_posXpath

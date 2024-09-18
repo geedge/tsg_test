@@ -70,5 +70,8 @@ class SearchRule:
         elif type == "statistics":
             rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
             return 200, rule_id
+        elif type == "dos_protection":
+            rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+            return 200, rule_id
         else:
             return 400, ""
