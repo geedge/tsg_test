@@ -248,7 +248,7 @@ def get_excel_formate_from_case(case_directory_path='C:/zcw/tsg_test/tests/ui/ma
     test_excel_info_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), file_path)
     print("完成。原数据保存路径：{}".format(test_excel_info_path))
 
-def replace_test_data_from_py(case_directory_path='C:/zcw/tsg_test/tests/ui/manipulation', file_startwith = "man_", file_endswith = ".py"):
+def replace_test_data_from_py(case_directory_path='C:/zcw/tsg_test/tests/ui/目录名', file_startwith = "man_", file_endswith = ".py"):
     # 替换源文件中test_data内容
     #原始数据格式内容，替换其中的  “        replace_text”
     resource_text = \
@@ -352,8 +352,8 @@ if __name__ == '__main__':
         result_text = tmp_resource_text.replace("        replace_text", match_text)
 
         # 覆盖源文件内容 谨慎执行
-        # with open(file_0, "w", encoding="utf-8") as f2:
-        #     f2.write(result_text)
+        with open(file_0, "w", encoding="utf-8") as f2:
+            f2.write(result_text)
         # 覆盖源文件内容 谨慎执行
 
         print("{}，替换完成".format(file_0))
