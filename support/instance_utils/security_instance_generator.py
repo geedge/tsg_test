@@ -66,30 +66,20 @@ class SecurityGenerator:
             tmp_name_dict["type"] = test_data["policy_type"]
             tmp_name_dict["name"] = test_data["rule_name"]
             self.ui_name_list.append(tmp_name_dict)
-            # 构建source ip 的name list
-            if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
-                object_data = test_data["condition"]["source_ip"]
-                for i in range(len(object_data)):
-                    tmp_name_dict = {}
-                    tmp_name_dict["type"] = object_data[i]['object_type']
-                    tmp_name_dict["name"] = object_data[i]['name']
-                    self.ui_name_list.append(tmp_name_dict)
-            # 构建server fqdn 的name list
-            if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
-                object_data = test_data["condition"]["server_fqdn"]
-                for i in range(len(object_data)):
-                    tmp_name_dict = {}
-                    tmp_name_dict["type"] = test_data["condition"]["server_fqdn"][i]['object_type']
-                    tmp_name_dict["name"] = test_data["condition"]["server_fqdn"][i]['name']
-                    self.ui_name_list.append(tmp_name_dict)
-            # 构建protocol field 的name list
-            if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
-                object_data = test_data["condition"]["protocol_filed"]
-                for i in range(len(object_data)):
-                    tmp_name_dict = {}
-                    tmp_name_dict["type"] = test_data["condition"]["protocol_filed"][i]['object_type']
-                    tmp_name_dict["name"] = test_data["condition"]["protocol_filed"][i]['name']
-                    self.ui_name_list.append(tmp_name_dict)
+            # 组织object类的name list
+            for key in ["source_ip", "external_ip", "internal_ip", "device", "server_fqdn", "protocol_filed", "internal_port"]:  
+                if key in test_data["condition"] and len(test_data["condition"][key]) != 0:  
+                    object_data = test_data["condition"][key]  
+                    for i in range(len(object_data)):  
+                        # 针对 protocol_filed 进行特殊处理，排除 boolean 类型  
+                        if key == "protocol_filed" and object_data[i]['object_type'] == 'boolean':  
+                            continue  
+                        
+                        tmp_name_dict = {  
+                            "type": object_data[i]['object_type'],  
+                            "name": object_data[i]['name']  
+                        }  
+                        self.ui_name_list.append(tmp_name_dict)
             # 添加定位库集合
             test_rule_element_position = {}
             if test_data["policy_type"] == "security":
@@ -185,6 +175,130 @@ class SecurityGenerator:
                         "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
                     }
                 }
+                test_imsi_object_element_position = {
+                    "page_jump":{
+                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
+                    },
+                    "create": {
+                        "objectListPage_createButton_posId": mobile_identitiesObjectListPage_createButton_posId,
+                        "objectListPage_dropDown_createButton_posId": mobile_identitiesObjectListPage_dropDown_createButton_posId,
+                        "objectPage_inputName_posXpath": mobile_identitiesObjectPage_inputName_posXpath,
+                        "objectPage_imsiType_posId": imsiObjectPage_imsiType_posId,
+                        "objectPage_addItem_posId": imsiObjectPage_addItem_posId,
+                        "objectPage_inputItem_posXpath": imsiObjectPage_inputItem_posXpath,
+                        "objectPage_button_saveItem_posXpath": imsiObjectPage_button_saveItem_posXpath,
+                        "objectPage_okButton_posId": imsiObjectPage_okButton_posId,
+                        "objectPage_okButton_warningYes_posXpath": imsiObjectPage_okButton_warningYes_posXpath
+                    },
+                    "search": {
+                        "objectListPage_searchLabel_posId": imsiObjectListPage_searchLabel_posId,
+                        "objectListPage_searchLabel_selectName_posXpath": imsiObjectListPage_searchLabel_selectName_posXpath,
+                        "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath
+                    },
+                    "delete": {
+                        "objectListPage_allSelect_posXpath": imsiObjectListPage_allSelect_posXpath,
+                        "objectListPage_deleteButton_posId": imsiObjectListPage_deleteButton_posId,
+                        "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
+                    }
+                }
+                test_port_object_element_position = {
+                    "page_jump":{
+                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_port_posId
+                    },
+                    "create": {
+                        "objectListPage_createButton_posId": portObjectListPage_createButton_posId,
+                        "objectListPage_dropDown_createButton_posId": portObjectListPage_dropDown_createButton_posId,
+                        "objectPage_inputName_posXpath": portObjectPage_inputName_posXpath,
+                        "objectPage_addItem_posId": portObjectPage_addItem_posId,
+                        "objectPage_inputItem_posXpath": portObjectPage_inputItem_posXpath,
+                        "objectPage_button_saveItem_posXpath": portObjectPage_button_saveItem_posXpath,
+                        "objectPage_okButton_posId": portObjectPage_okButton_posId,
+                        "objectPage_okButton_warningYes_posXpath": portObjectPage_okButton_warningYes_posXpath
+                    },
+                    "search": {
+                        "objectListPage_searchLabel_posId": portObjectListPage_searchLabel_posId,
+                        "objectListPage_searchLabel_selectName_posXpath": portObjectListPage_searchLabel_selectName_posXpath,
+                        "objectListPage_tableTbody_posXpath": portObjectListPage_tableTbody_posXpath
+                    },
+                    "delete": {
+                        "objectListPage_allSelect_posXpath": portObjectListPage_allSelect_posXpath,
+                        "objectListPage_deleteButton_posId": portObjectListPage_deleteButton_posId,
+                        "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
+                    }
+                }
+                test_keywords_object_element_position = {
+                    "page_jump": {
+                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
+                    },
+                    "create": {
+                        "objectListPage_createButton_posId": keywordsObjectListPage_createButton_posId,
+                        "objectListPage_dropDown_createButton_posId": keywordsObjectListPage_dropDown_createButton_posId,
+                        "objectPage_inputName_posXpath": keywordsObjectPage_inputName_posXpath,
+                        "objectPage_addItem_posId": keywordsObjectPage_addItem_posId,
+                        "objectPage_item_value_select_posXpath": keywordsObjectPage_item_value_select_posXpath,
+                        "objectPage_inputItem_posXpath": keywordsObjectPage_inputItem_posXpath,
+                        "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
+                        "objectPage_button_saveItem_posXpath": keywordsObjectPage_button_saveItem_posXpath,
+                        "objectPage_okButton_posId": keywordsObjectPage_okButton_posId,
+                        "objectPage_okButton_warningYes_posXpath": keywordsObjectPage_okButton_warningYes_posXpath
+                    },
+                    "search": {
+                        "objectListPage_searchLabel_posId": keywordsObjectListPage_searchLabel_posId,
+                        "objectListPage_searchLabel_selectName_posXpath": keywordsObjectListPage_searchLabel_selectName_posXpath,
+                        "objectListPage_tableTbody_posXpath": keywordsObjectListPage_tableTbody_posXpath
+                    },
+                    "delete": {
+                        "objectListPage_allSelect_posXpath": keywordsObjectListPage_allSelect_posXpath,
+                        "objectListPage_deleteButton_posId": keywordsObjectListPage_deleteButton_posId,
+                        "objectListPage_deleteButton_warningYes_posXpath": keywordsObjectListPage_deleteButton_warningYes_posXpath
+                    }
+                }
+                test_account_object_element_position = {
+                    "page_jump": {
+                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_account_posId
+                    },
+                    "create": {
+                        "objectListPage_createButton_posId": accountObjectListPage_createButton_posId,
+                        "objectListPage_dropDown_createButton_posId": accountObjectListPage_dropDown_createButton_posId,
+                        "objectPage_inputName_posXpath": accountObjectPage_inputName_posXpath,
+                        "objectPage_addItem_posId": accountObjectPage_addItem_posId,
+                        # item简单定位
+                        "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
+                        "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
+                        "objectPage_okButton_posId": accountObjectPage_okButton_posId,
+                        "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath
+                    },
+                    "search": {
+                        "objectListPage_searchLabel_posId": accountObjectPage_searchLabel_posId,
+                        "objectListPage_searchLabel_selectName_posXpath": accountObjectListPage_searchLabel_selectName_posXpath,
+                        "objectListPage_tableTbody_posXpath": accountObjectPage_tableTbody_posXpath
+                    },
+                    "delete": {
+                        "objectListPage_allSelect_posXpath": accountObjectPage_allSelect_posXpath,
+                        "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                        "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
+                    }
+                }
                 test_rule_element_position = {
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -203,6 +317,31 @@ class SecurityGenerator:
                         "policyRulePage_searchSrcIP_posXpath": securityRulePage_searchSrcIP_posXpath,
                         "policyRulePage_selectSrcIP_posXpath": securityRulePage_selectSrcIP_posXpath,
                         "policyRulePage_closeSrcIP_posXpath": securityRulePage_closeSrcIP_posXpath,
+                        # external ip
+                        "policyRulePage_addConditionExternalIP_posXpath": securityRulePage_addCondition_externalIP_posXpath,
+                        "policyRulePage_addExternalIP_posXpath": securityRulePage_addExternalIP_posXpath,
+                        "policyRulePage_searchExternalIP_posXpath": securityRulePage_searchExternalIP_posXpath,
+                        "policyRulePage_selectExternalIP_posXpath": securityRulePage_selectExternalIP_posXpath,
+                        "policyRulePage_closeExternalIP_posXpath": securityRulePage_closeExternalIP_posXpath,
+                        # imsi
+                        "policyRulePage_addConditionImsi_posXpath": securityRulePage_addCondition_imsi_posXpath,
+                        "policyRulePage_addImsi_posXpath": securityRulePage_addImsi_posXpath,
+                        "policyRulePage_searchImsi_posXpath": policyRulePage_searchImsi_posXpath,
+                        "policyRulePage_selectImsi_posXpath": policyRulePage_selectImsi_posXpath,
+                        "policyRulePage_closeImsi_posXpath": policyRulePage_closeImsi_posXpath,
+                        # internal ip 
+                        "policyRulePage_addConditionInternalIP_posXpath": securityRulePage_addCondition_internalIP_posXpath,
+                        "policyRulePage_addInternalIP_posXpath": securityRulePage_addInternalIP_posXpath,
+                        "policyRulePage_searchInternalIP_posXpath": securityRulePage_searchInternalIP_posXpath,
+                        "policyRulePage_selectInternalIP_posXpath": securityRulePage_selectInternalIP_posXpath,
+                        "policyRulePage_closeInternalIP_posXpath": securityRulePage_closeInternalIP_posXpath,
+                        # internal port
+                        "policyRulePage_addConditionInternalPort_posXpath": securityRulePage_addCondition_internalPort_posXpath,
+                        "policyRulePage_addInternalPort_posXpath": securityRulePage_addInternalPort_posXpath,
+                        "policyRulePage_searchInternalPort_posXpath": securityRulePage_searchInternalPort_posXpath,
+                        "policyRulePage_selectInternalPort_posXpath": securityRulePage_selectInternalPort_posXpath,
+                        "policyRulePage_closeInternalPort_posXpath": securityRulePage_closeInternalPort_posXpath,
+                        # application
                         "policyRulePage_addApplication_posXpath": securityRulePage_addApplication_posXpath,
                         "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
                         "policyRulePage_selectApplication_posXpath": securityRulePage_selectApplication_posXpath,
@@ -231,6 +370,58 @@ class SecurityGenerator:
                         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
                         "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
                         "policyRulePage_subAction_override_posXpath": securityRulePage_subAction_override_posXpath,
+                        # ip protocol
+                        "policyRulePage_addConditionIpProtocol_posXpath": policyRulePage_addCondition_IpProtocol_posXpath,
+                        "policyRulePage_addIpProtocol_posXpath": policyRulePage_addIpProtocol_posXpath,
+                        "policyRulePage_searchIpProtocol_posXpath": policyRulePage_searchIpProtocol_posXpath,
+                        "policyRulePage_selectIpProtocol_posXpath": policyRulePage_selectIpProtocol_posXpath,
+                        "policyRulePage_closeIpProtocol_posXpath": policyRulePage_closeIpProtocol_posXpath,
+                        # mail协议
+                        #mail attachment name
+                        "policyRulePage_addConditionMailAttachmentName_posXpath": policyRulePage_addCondition_mailAttachmentName_posXpath,
+                        "policyRulePage_addMailAttachmentName_posXpath": policyRulePage_addMailAttachmentName_posXpath,
+                        "policyRulePage_searchMailAttachmentName_posXpath": policyRulePage_searchMailAttachmentName_posXpath,
+                        "policyRulePage_selectMailAttachmentName_posXpath": policyRulePage_selectMailAttachmentName_posXpath,
+                        "policyRulePage_closeMailAttachmentName_posXpath": policyRulePage_closeMailAttachmentName_posXpath,
+                        #mail attachment content
+                        "policyRulePage_addConditionMailAttachmentContent_posXpath": policyRulePage_addCondition_mailAttachmentContent_posXpath,
+                        "policyRulePage_addMailAttachmentContent_posXpath": policyRulePage_addMailAttachmentContent_posXpath,
+                        "policyRulePage_searchMailAttachmentContent_posXpath": policyRulePage_searchMailAttachmentContent_posXpath,
+                        "policyRulePage_selectMailAttachmentContent_posXpath": policyRulePage_selectMailAttachmentContent_posXpath,
+                        "policyRulePage_closeMailAttachmentContent_posXpath": policyRulePage_closeMailAttachmentContent_posXpath,
+                        #mail content
+                        "policyRulePage_addConditionMailContent_posXpath": policyRulePage_addCondition_mailContent_posXpath,
+                        "policyRulePage_addMailContent_posXpath": policyRulePage_addMailContent_posXpath,
+                        "policyRulePage_searchMailContent_posXpath": policyRulePage_searchMailContent_posXpath,
+                        "policyRulePage_selectMailContent_posXpath": policyRulePage_selectMailContent_posXpath,
+                        "policyRulePage_closeMailContent_posXpath": policyRulePage_closeMailContent_posXpath,
+                        # mail to
+                        "policyRulePage_addConditionMailTo_posXpath": policyRulePage_addCondition_mailTo_posXpath,
+                        "policyRulePage_addMailTo_posXpath": monitorRulePage_addmailTo_posXpath,
+                        "policyRulePage_searchMailTo_posXpath": monitorRulePage_searchmailTo_posXpath,
+                        "policyRulePage_selectMailTo_posXpath": monitorRulePage_selectmailTo_posXpath,
+                        "policyRulePage_closeMailTo_posXpath": monitorRulePage_closemailTo_posXpath,
+                        # ssl 协议
+                        # san
+                        "policyRulePage_addConditionSan_posXpath": monitorRulePage_addCondition_san_posXpath,
+                        "policyRulePage_addSan_posXpath": monitorRulePage_addSan_posXpath,
+                        "policyRulePage_searchSan_posXpath": monitorRulePage_searchSan_posXpath,
+                        "policyRulePage_selectSan_posXpath": monitorRulePage_selectSan_posXpath,
+                        "policyRulePage_closeSan_posXpath": monitorRulePage_closeSan_posXpath,
+                        # cn
+                        "policyRulePage_addConditionCn_posXpath": monitorRulePage_addCondition_cn_posXpath,
+                        "policyRulePage_addCn_posXpath": monitorRulePage_addCn_posXpath,
+                        "policyRulePage_searchCn_posXpath": monitorRulePage_searchCn_posXpath,
+                        "policyRulePage_selectCn_posXpath": monitorRulePage_selectCn_posXpath,
+                        "policyRulePage_closeCn_posXpath": monitorRulePage_closeCn_posXpath,
+                        #add ssl no sni
+                        "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
+                        "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
+                        "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
+                        "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
+                        "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
+                        "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
+                        # deny子动作
                         # rate limit
                         "policyRulePage_subAction_rateLimit_posXpath": securityRulePage_subAction_rateLimit_posXpath,
                         "policyRulePage_subAction_rateLimit_rate_posXpath": securityRulePage_subAction_rateLimit_rate_posXpath,
@@ -276,7 +467,9 @@ class SecurityGenerator:
                         "policyRulePage_dnsAnswerValueNameSelect_posId": securityRulePage_subAction_redirect_dnsAnswerValueNameSelect_posId,
                         "policyRulePage_dnsAnswer0ATextPlaceholder_posId": securityRulePage_subAction_redirect_dnsAnswer0ATextPlaceholder_posId,
                         "policyRulePage_dnsAnswerValueTTL0_posId": securityRulePage_subAction_redirect_dnsAnswerValueTTL0_posId,
+                        # enable 按钮
                         "policyRulePage_enable_posXpath": securityRulePage_enable_posXpath,
+                        # ok按钮
                         "policyRulePage_okButton_yes_posId": securityRulePage_okButton_yes_posId,
                         "policyRulePage_okButton_warningYes_posXpath": securityRulePage_okButton_warningYes_posXpath
                     },
@@ -294,9 +487,13 @@ class SecurityGenerator:
                         "policyRuleListPage_okButton_warningNo_posXpath":securityRuleListpage_okButton_warningNo_posXpath
                     }
                 }
+                if test_data["rule_action"] == "allow":
+                    test_rule_element_position["create"]["policyRulePage_selectAction_posId"] = securityRulePage_selectAllow_posId
+                if "application" in test_data['condition'] and len(test_data['condition']["application"]) == 1 and test_data['condition']["application"][0]['name'] == "ftp":
+                    test_rule_element_position["create"]["policyRulePage_addConditionUrl_posXpath"] = securityRulePage_addCondition_uri_posXpath
             
-            
-            # 创建object
+            # 创建IP
+            create_ip_code = 200
             if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
                 ip_data = test_data["condition"]["source_ip"]
                 create_ip = CreateObject(driver)
@@ -306,6 +503,27 @@ class SecurityGenerator:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
                     elif create_ip_code != 200:
                         ui_result = "Fail to create ip."
+                        break
+            if "external_ip" in test_data["condition"] and len(test_data["condition"]["external_ip"]) != 0:
+                ip_data = test_data["condition"]["external_ip"]
+                create_ip = CreateObject(driver)
+                for i in range(len(ip_data)):
+                    create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
+                    if create_ip_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
+                    elif create_ip_code != 200:
+                        ui_result = "Fail to create ip."
+                        break
+            # 创建object
+            if "internal_port" in test_data["condition"] and len(test_data["condition"]["internal_port"]) != 0:
+                port_data = test_data["condition"]["internal_port"]
+                create_port = CreateObject(driver)
+                for i in range(len(port_data)):
+                    create_port_code = create_port.create(port_data[i], test_port_object_element_position)
+                    if create_port_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create port object successfully.", flush=True)
+                    elif create_port_code != 200:
+                        result = "Fail to create port object."
                         break
             if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
                 fqdn_data = test_data["condition"]["server_fqdn"]
@@ -317,6 +535,21 @@ class SecurityGenerator:
                     elif create_fqdn_code != 200:
                         result = "Fail to create fqdn."
                         break
+
+            # 创建imsi
+            if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
+                device_data = test_data["condition"]["device"]
+                create_device = CreateObject(driver)
+                for i in range(len(device_data)):
+                    object_sub_type = device_data[i]['item'][0]['item_type']
+                    if object_sub_type == 'imsi':
+                        create_device_code = create_device.create(device_data[i], test_imsi_object_element_position)
+                    if create_device_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_sub_type), flush=True)
+                    elif create_device_code != 200:
+                        result = "Fail to create {} object.".format(object_sub_type)
+                        break
+            
             if "action_parameter" in test_data.keys():
                 for prfi_key, prfi_value in(test_data["action_parameter"]).items():
                     prfi_status = 0
@@ -343,6 +576,14 @@ class SecurityGenerator:
                     object_type = protocol_field_data[x]['object_type']
                     if object_type == 'url':
                         create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_url_object_element_position)
+                    elif object_type == 'fqdn':
+                        create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_fqdn_object_element_position)
+                    elif object_type == 'keywords':
+                        create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_keywords_object_element_position)
+                    elif object_type == 'account':
+                        create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_account_object_element_position)
+                    else:
+                        create_protocol_filed_code = 200
                     if create_protocol_filed_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
                     elif create_protocol_filed_code != 200:
@@ -424,20 +665,40 @@ class SecurityGenerator:
             # 删除object
             if delete_rule_code == 200:
                 # 删除ip
-                for x in range(len(ip_data)):
-                    search_ip = SearchObject(driver)
-                    search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
-                    if search_ip_code == 200:
-                        delete_ip = DeleteObject(driver)
-                        delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
-                        if delete_ip_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
-                        elif delete_ip_code != 200:
-                            ui_result = ui_result + " In addition, fail to delete ip object."
-                            break
-                    else:
-                        ui_result = ui_result + " In addition, fail to search ip object."
-                        break
+                for ip_key in ["source_ip", "external_ip", "internal_ip"]:  
+                    if ip_key in test_data["condition"] and len(test_data["condition"][ip_key]) != 0:  
+                        for x in range(len(ip_data)):
+                            search_ip = SearchObject(driver)
+                            search_ip_code, first_row_checkbox_element = search_ip.search(ip_data[x]["name"], test_ip_object_element_position)
+                            if search_ip_code == 200:
+                                delete_ip = DeleteObject(driver)
+                                delete_ip_code = delete_ip.delete(test_ip_object_element_position, first_row_checkbox_element, True)
+                                if delete_ip_code == 200:
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip object successfully.", flush=True)
+                                elif delete_ip_code != 200:
+                                    ui_result = ui_result + " In addition, fail to delete ip object."
+                                    break
+                            else:
+                                ui_result = ui_result + " In addition, fail to search ip object."
+                                break
+                
+                # 删除port
+                for port_key in ["internal_port"]:  
+                    if port_key in test_data["condition"] and len(test_data["condition"][port_key]) != 0:  
+                        for x in range(len(ip_data)):
+                            search_port = SearchObject(driver)
+                            search_port_code, first_row_checkbox_element = search_port.search(ip_data[x]["name"], test_port_object_element_position)
+                            if search_port_code == 200:
+                                delete_port = DeleteObject(driver)
+                                delete_port_code = delete_port.delete(test_port_object_element_position, first_row_checkbox_element, True)
+                                if delete_port_code == 200:
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete port object successfully.", flush=True)
+                                elif delete_port_code != 200:
+                                    ui_result = ui_result + " In addition, fail to delete port object."
+                                    break
+                            else:
+                                ui_result = ui_result + " In addition, fail to search port object."
+                                break
                 if len(test_data["condition"]["server_fqdn"]) != 0:
                     # 删除fqdn
                     for x in range(len(fqdn_data)):
@@ -454,7 +715,57 @@ class SecurityGenerator:
                         else:
                             result = result + " In addition, fail to search fqdn object."
                             break
-            
+                if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+                    object_positions = {  
+                        'url': test_url_object_element_position,  
+                        'http_signature': test_http_signature_object_element_position,  
+                        'fqdn': test_fqdn_object_element_position,  
+                        'keywords': test_keywords_object_element_position,
+                        'account': test_account_object_element_position
+                    }
+                    # protocol_filed
+                    for q in range(len(protocol_field_data)):
+                        object_type = protocol_field_data[q]['object_type']
+                        if object_type != 'boolean':
+                            search_protocol_filed = SearchObject(driver)
+                            if object_type in object_positions:  
+                                search_protocol_filed_code, first_row_checkbox_element = search_protocol_filed.search(  
+                                    protocol_field_data[q]["name"], object_positions[object_type]  
+                                )  
+
+                                if search_protocol_filed_code == 200:  
+                                    delete_protocol_filed = DeleteObject(driver)  
+
+                                    delete_protocol_filed_code = delete_protocol_filed.delete(  
+                                        object_positions[object_type], first_row_checkbox_element, True  
+                                    )  
+
+                                    if delete_protocol_filed_code == 200:  
+                                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_type), flush=True)  
+                                    else:  
+                                        result += " In addition, fail to delete {} object.".format(object_type)  
+                                        break  
+                            else:
+                                result = result + " In addition, fail to search {} object.".format(object_type)
+                                break
+                # 删除device相关的object
+                if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
+                    for y in range(len(device_data)):
+                        search_device = SearchObject(driver)
+                        object_sub_type = device_data[i]['item'][0]['item_type']
+                        if object_sub_type == 'imsi':
+                            search_device_code, first_row_checkbox_element = search_device.search(device_data[y]["name"], test_imsi_object_element_position)
+                        if search_device_code == 200:
+                            delete_device = DeleteObject(driver)
+                            if object_sub_type == 'imsi':
+                                delete_device_code = delete_device.delete(test_imsi_object_element_position, first_row_checkbox_element, True)
+                            if delete_device_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(object_sub_type), flush=True)
+                            elif delete_device_code != 200:
+                                result = result + " In addition, fail to delete {} object.".format(object_sub_type)
+                                break
+                        else:
+                            result = result + " In addition, fail to search {} object.".format(object_sub_type)
             result["ui_result"] = ui_result
         
         if parameter["script_type"] == "api" or need_initialization == True:
