@@ -78,7 +78,7 @@ class ServiceChainingInstanceGenerator:
             temp_name_list.append(policy_name_dict)
             for con_key, conditions in test_data["condition"].items():  
                 if conditions:  # 确保conditions不为空  
-                    if con_key == "ip_protocol":
+                    if con_key in service_chaining_no_create_list:
                         continue
                     for condition in conditions:  
                         # 为每个条件项创建一个新的字典  

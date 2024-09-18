@@ -215,6 +215,7 @@ class CreateRule:
                     if server_fqdn_data[t]["object_type"] == "fqdn":
                         # 点add condition的+
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        time.sleep(1)
                         # 选中server fqdn
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
