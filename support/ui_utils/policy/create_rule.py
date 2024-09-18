@@ -222,6 +222,7 @@ class CreateRule:
                         temp = t + 2
                         temp_element_position = create_element_position["policyRulePage_addServerFqdn_posXpath"].format(replaceValue=temp)
                         self.driver.find_element(By.XPATH, temp_element_position).click()
+                        time.sleep(1)
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
@@ -668,6 +669,7 @@ class CreateRule:
                     sff_data = test_data["profile"]
                     # 点击SFF Profile添加按钮
                     self.driver.find_element(By.ID,create_element_position["policyRulePage_addSFFProfile_posId"]).click()
+                    time.sleep(1)
                     #在侧滑框中搜索sff并选中
                     for sff in sff_data:
                         btn = self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=1)
