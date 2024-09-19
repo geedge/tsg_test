@@ -93,7 +93,7 @@ if __name__ == '__main__':
     clients_end = clients_start
     # servers_start = "123.151.49.188"
     # servers_end = "123.151.49.188"
-    active_flows = 11
+    active_flows = 0
     m = 100
     d = 1
     yaml_name = "http_50.yaml"
