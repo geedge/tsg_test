@@ -76,6 +76,8 @@ class DataTranslation:
     def push_object_data(self, data):
         object = []
         for k, v in data["condition"].items():
+            if type(v) == bool:
+                continue
             if len(v) == 0:   # 空跳过
                 continue
             if k == "source_ip":
