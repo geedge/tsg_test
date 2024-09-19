@@ -237,11 +237,48 @@ class CreateObject:
                 for item in add_item_list:
                     patterns = []
                     keywords = item["keyword_array"][0]
-                    object_dict = dict(keywords=keywords)
-                    patterns.append(object_dict)
-                    patterns = dict(patterns=patterns)
-                    string = dict(string=patterns, op='add')
-                    items.append(string)
+                    if "&" not in keywords:
+                        object_dict = dict(keywords=keywords)
+                        patterns.append(object_dict)
+                        patterns = dict(patterns=patterns)
+                        string = dict(string=patterns, op='add')
+                        items.append(string)
+                    else:    #有and模式
+                        keywords_list = keywords.split("&")
+                        string = {}
+                        contextual_string = {}
+                        for i in range(len(keywords_list)):
+                            object_dict = {}
+                            object_dict["keywords"] = keywords_list[i]
+                            patterns.append(copy.deepcopy(object_dict))
+                        contextual_string["patterns"] = patterns
+                        contextual_string['expr_type'] = 1
+                        string["op"] = "add"
+                        string["string"] = contextual_string
+                        items.append(string)
+            elif obj_type == "keywords":
+                for item in add_item_list:
+                    patterns = []
+                    keywords = item["keyword_array"][0]
+                    if "&" not in keywords:
+                        object_dict = dict(keywords=keywords)
+                        patterns.append(object_dict)
+                        patterns = dict(patterns=patterns)
+                        string = dict(string=patterns, op='add')
+                        items.append(string)
+                    else:    #有and模式
+                        keywords_list = keywords.split("&")
+                        string = {}
+                        contextual_string = {}
+                        for i in range(len(keywords_list)):
+                            object_dict = {}
+                            object_dict["keywords"] = keywords_list[i]
+                            patterns.append(copy.deepcopy(object_dict))
+                        contextual_string["patterns"] = patterns
+                        contextual_string['expr_type'] = 1
+                        string["op"] = "add"
+                        string["string"] = contextual_string
+                        items.append(string)
             elif obj_type == "http_signature":
                 for item in add_item_list:
                     patterns = []

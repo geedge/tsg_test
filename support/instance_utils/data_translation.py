@@ -229,24 +229,32 @@ class DataTranslation:
                 }
                 object.append(copy.deepcopy(temp))
             elif k == "server_fqdn":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_SERVER_FQDN",
-                    "object_type": "fqdn",
-                    "object_sub_type": "fqdn",
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "keyword_array": [
-                                        v[0]["items"][0]["item_value"]
-                                    ]
-                                }
-                            ]
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[i]["name"],
+                        "attribute_name": "ATTR_SERVER_FQDN",
+                        "object_type": "fqdn",
+                        "object_sub_type": "fqdn",
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "keyword_array": [
+                                    #         v[0]["items"][0]["item_value"]
+                                    #     ]
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["items"])):
+                        # 添加多个item
+                        add_item_dict = {
+                            "keyword_array": []
                         }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                        add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "sub_id":
                 temp = {
                     "name": v[0]["name"],
@@ -270,27 +278,34 @@ class DataTranslation:
                 for i in range(len(v)):
                     if v[i]["object_type"] == "url":
                         temp = {
-                            "name": v[0]["name"],
+                            "name": v[i]["name"],
                             "attribute_name": "ATTR_HTTP_URL",
                             "object_type": "url",
                             "object_sub_type": "url",
                             "object_list": [
                                 {
                                     "add_item_list": [
-                                        {
-                                            "keyword_array": [
-                                                v[i]["items"][0]["item_value"]
-                                            ]
-                                        }
+                                        # {
+                                        #     "keyword_array": [
+                                        #         v[i]["items"][0]["item_value"]
+                                        #     ]
+                                        # }
                                     ]
                                 }
                             ]
                         }
+                        for u in range(len(v[i]["items"])):
+                            # 添加多个item
+                            add_item_dict = {
+                                "keyword_array": []
+                            }
+                            add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "http_signature":
                         if v[i]["item"][0]["item_type"] == "request_header":
                             temp = {
-                                "name": v[0]["name"],
+                                "name": v[i]["name"],
                                 "attribute_name": "ATTR_HTTP_REQ_HDR",
                                 "object_type": "http_signature",
                                 "object_sub_type": "http_signature",
@@ -298,19 +313,26 @@ class DataTranslation:
                                     {
                                         "context_name": v[i]["item"][0]["item_key"],
                                         "add_item_list": [
-                                            {
-                                                "keyword_array": [
-                                                    v[i]["item"][0]["value"][0]
-                                                ]
-                                            }
+                                            # {
+                                            #     "keyword_array": [
+                                            #         v[i]["item"][0]["value"][0]
+                                            #     ]
+                                            # }
                                         ]
                                     }
                                 ]
                             }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": []
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
                         elif v[i]["item"][0]["item_type"] == "response_header":
                             temp = {
-                                "name": v[0]["name"],
+                                "name": v[i]["name"],
                                 "attribute_name": "ATTR_HTTP_RES_HDR",
                                 "object_type": "http_signature",
                                 "object_sub_type": "http_signature",
@@ -318,54 +340,75 @@ class DataTranslation:
                                     {
                                         "context_name": v[i]["item"][0]["item_key"],
                                         "add_item_list": [
-                                            {
-                                                "keyword_array": [
-                                                    v[i]["item"][0]["value"][0]
-                                                ]
-                                            }
+                                            # {
+                                            #     "keyword_array": [
+                                            #         v[i]["item"][0]["value"][0]
+                                            #     ]
+                                            # }
                                         ]
                                     }
                                 ]
                             }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": []
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "keywords":
                         if v[i]["item"][0]["item_type"] == "request_body":
                             temp = {
-                                "name": v[0]["name"],
+                                "name": v[i]["name"],
                                 "attribute_name": "ATTR_HTTP_REQ_BODY",
                                 "object_type": "keywords",
                                 "object_sub_type": "keywords",
                                 "object_list": [
                                     {
                                         "add_item_list": [
-                                            {
-                                                "keyword_array": [
-                                                    v[i]["item"][0]["value"][0]
-                                                ]
-                                            }
+                                            # {
+                                            #     "keyword_array": [
+                                            #         v[i]["item"][0]["value"][0]
+                                            #     ]
+                                            # }
                                         ]
                                     }
                                 ]
                             }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": []
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
                         elif v[i]["item"][0]["item_type"] == "response_body":
                             temp = {
-                                "name": v[0]["name"],
+                                "name": v[i]["name"],
                                 "attribute_name": "ATTR_HTTP_RES_BODY",
                                 "object_type": "keywords",
                                 "object_sub_type": "keywords",
                                 "object_list": [
                                     {
                                         "add_item_list": [
-                                            {
-                                                "keyword_array": [
-                                                    v[i]["item"][0]["value"][0]
-                                                ]
-                                            }
+                                            # {
+                                            #     "keyword_array": [
+                                            #         v[i]["item"][0]["value"][0]
+                                            #     ]
+                                            # }
                                         ]
                                     }
                                 ]
                             }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": []
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
         return object
     
