@@ -67,7 +67,9 @@ class ServiceChainingInstanceGenerator:
             if test_data["targeted_traffic"] == "raw" and (len(test_data["condition"]["source_ip"]) != 0 or len(test_data["condition"]["destination_ip"]) != 0):
                 random_ip = GenerateRandomIP(driver)
                 test_data = random_ip.generate_random_ip(test_data,run_env=parameter["env"])
-            
+                
+            # 无需创建的condition
+            service_chaining_no_create_list = ["application", "ip_protocol","sub_action_override"]
             # name_list汇总
             temp_name_list = []
             policy_name_dict = {}
@@ -76,6 +78,8 @@ class ServiceChainingInstanceGenerator:
             temp_name_list.append(policy_name_dict)
             for con_key, conditions in test_data["condition"].items():  
                 if conditions:  # 确保conditions不为空  
+                    if con_key in service_chaining_no_create_list:
+                        continue
                     for condition in conditions:  
                         # 为每个条件项创建一个新的字典  
                         obj_name_dict = {  
@@ -176,7 +180,7 @@ class ServiceChainingInstanceGenerator:
             # 创建object
             if "condition" in test_data.keys():
                 for cond_key, cond_value in (test_data["condition"].items()):
-                    if cond_key in manipulation_object_no_create_list:
+                    if cond_key in service_chaining_no_create_list:
                         continue   # 直接跳过
                     cond_status = 0
                     cond_key_out = cond_key.replace("_", " ")
@@ -280,7 +284,7 @@ class ServiceChainingInstanceGenerator:
             if delete_rule_code == 200 and "condition" in test_data.keys():
                 # 删除
                 for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
-                    if cond_key in manipulation_object_no_create_list:
+                    if cond_key in service_chaining_no_create_list:
                         continue  # 直接跳过
                     cond_status = 0
                     cond_key_out = cond_key.replace("_", " ")

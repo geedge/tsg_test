@@ -215,6 +215,7 @@ class CreateRule:
                     if server_fqdn_data[t]["object_type"] == "fqdn":
                         # 点add condition的+
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        time.sleep(1)
                         # 选中server fqdn
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
@@ -222,6 +223,7 @@ class CreateRule:
                         temp = t + 2
                         temp_element_position = create_element_position["policyRulePage_addServerFqdn_posXpath"].format(replaceValue=temp)
                         self.driver.find_element(By.XPATH, temp_element_position).click()
+                        time.sleep(1)
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
@@ -668,6 +670,7 @@ class CreateRule:
                     sff_data = test_data["profile"]
                     # 点击SFF Profile添加按钮
                     self.driver.find_element(By.ID,create_element_position["policyRulePage_addSFFProfile_posId"]).click()
+                    time.sleep(1)
                     #在侧滑框中搜索sff并选中
                     for sff in sff_data:
                         btn = self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=1)
@@ -709,7 +712,7 @@ class CreateRule:
                         temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source ASN")
                     self.driver.find_element(By.XPATH, temp_group_by_element_position).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_concurrentSsessions_posXpath"]).send_keys(test_data["threshold"]["concurrency_threshold"]["concurrent_sessions"])
-                self.driver.find_element(By.ID, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
+                #self.driver.find_element(By.ID, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
                 if test_data["mitigation"]["behavior"] == "deny":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationTimeouts_dropDownBox_posXpath"]).click()
                     temp_mitigation_timeout_element_position = create_element_position["policyRulePage_mitigationTimeouts_select_posXpath"].format(replaceValue=test_data["mitigation"]["timeout"])

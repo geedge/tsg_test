@@ -22,7 +22,8 @@ class EditRule:
             page_jump.jump_sub_policy_page(page_jump_element_position)
             # 点击search查询框
             btn = self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_posId"])
-            self.driver.execute_script("arguments[0].click()", btn) 
+            self.driver.execute_script("arguments[0].click()", btn)
+            time.sleep(1) 
             dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
             btn = self.driver.find_element(By.XPATH, dropdown_item_posXpath)
             self.driver.execute_script("arguments[0].click()", btn) 
@@ -45,9 +46,11 @@ class EditRule:
                 rule_id = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
                 edit_button_position = "appEdit-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
             elif type == "statistics":
-                rule_id = self.driver.find_element(By.XPATH,
-                                                   "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+                rule_id = self.driver.find_element(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span").text
                 edit_button_position = "appEdit-_OperateBtns_ElRow_policy_statistics_Home_App_anonymousComponent"
+            elif type == "dos_protection":
+                rule_id = self.driver.find_element(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+                edit_button_position = "appEdit-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
             all_button_position = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
             all_selectBox_position = "//table//*[@class='el-checkbox']//span//span"
             self.driver.find_elements(By.XPATH, all_selectBox_position)[0].click()

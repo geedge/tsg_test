@@ -326,6 +326,45 @@ class DataTranslation:
                                 ]
                             }
                             object.append(copy.deepcopy(temp))
+                    elif v[i]["object_type"] == "keywords":
+                        if v[i]["item"][0]["item_type"] == "request_body":
+                            temp = {
+                                "name": v[0]["name"],
+                                "attribute_name": "ATTR_HTTP_REQ_BODY",
+                                "object_type": "keywords",
+                                "object_sub_type": "keywords",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [
+                                            {
+                                                "keyword_array": [
+                                                    v[i]["item"][0]["value"][0]
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                            object.append(copy.deepcopy(temp))
+                        elif v[i]["item"][0]["item_type"] == "response_body":
+                            temp = {
+                                "name": v[0]["name"],
+                                "attribute_name": "ATTR_HTTP_RES_BODY",
+                                "object_type": "keywords",
+                                "object_sub_type": "keywords",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [
+                                            {
+                                                "keyword_array": [
+                                                    v[i]["item"][0]["value"][0]
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                            object.append(copy.deepcopy(temp))
         return object
     
     def push_profile_data(self, parameter, data):

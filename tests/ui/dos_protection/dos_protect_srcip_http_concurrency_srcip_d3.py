@@ -159,15 +159,15 @@ def run(parameter):
             
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.87",
+        "username": "lina2024",
+        "password": "lina2024",
+        "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 5,
-        "is_log": 1,
+        "vsys_id": 1,
+        "is_log": 0,
         "debug_flag": "local",
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

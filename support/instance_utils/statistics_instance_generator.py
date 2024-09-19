@@ -80,24 +80,28 @@ class StatisticsInstanceGenerator:
                     if cond_key in manipulation_object_no_create_list:
                         continue   # 直接跳过
                     cond_status = 0
-                    cond_key_out = cond_key.replace("_", " ")
+                    #cond_key_out = cond_key.replace("_", " ")
                     if len(cond_value) != 0:  # 不为空
                         cond_data = cond_value
                         create_ip = support.ui_utils.object.create_object.CreateObject(driver)
                         for i in range(len(cond_data)):  # 遍历创建所有condition
                             if "item" in cond_data[i].keys() and cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
                                 continue  # 遍历创建所有condition
+                            tem_key = ""
                             if cond_key == "protocol_filed":
                                 tmp_key = cond_data[i]["object_type"]
-                                cond_key_out = tmp_key.replace("_", " ")
-                                element_position_map = get_element_position(tmp_key)
+                                #cond_key_out = tmp_key.replace("_", " ")
+                                if tmp_key == "boolean":
+                                    continue
+                                else:
+                                    element_position_map = get_element_position(tmp_key)
                             else:
                                 element_position_map = get_element_position(cond_key)
                             cond_code = create_ip.create(cond_data[i], element_position_map)
                             if cond_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key_out), flush=True)
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {}{} object successfully.".format(cond_key, tem_key), flush=True)
                             else:
-                                ui_result = "Fail to create {} object.".format(cond_key_out)
+                                ui_result = "Fail to create {}{} object.".format(cond_key, tem_key)
                                 cond_status = 1
                                 break
                     if cond_status == 1:   # 创建失败，退出遍历创建
@@ -183,17 +187,20 @@ class StatisticsInstanceGenerator:
                     if cond_key in manipulation_object_no_create_list:
                         continue  # 直接跳过
                     cond_status = 0
-                    cond_key_out = cond_key.replace("_", " ")
+                    #cond_key_out = cond_key.replace("_", " ")
                     if len(cond_value) != 0:  # 不为空
                         cond_data = cond_value
+                        tmp_key = ""
                         for i in range(len(cond_data)):  # 遍历查询所有condition
                             if "item" in cond_data[i].keys() and cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
                                 continue  # 遍历创建所有condition
                             search_cond = support.ui_utils.object.search_object.SearchObject(driver)
                             if cond_key == "protocol_filed":
                                 tmp_key = cond_data[i]["object_type"]
-                                cond_key_out = tmp_key.replace("_", " ")
-                                element_position_map = get_element_position(tmp_key)
+                                if tmp_key == "boolean":
+                                    continue
+                                else:
+                                    element_position_map = get_element_position(tmp_key)
                             else:
                                 element_position_map = get_element_position(cond_key)
                             search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"], element_position_map)
@@ -201,12 +208,12 @@ class StatisticsInstanceGenerator:
                                 delete_cond = support.ui_utils.object.delete_object.DeleteObject(driver)
                                 delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
                                 if delete_cond_code == 200:
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(cond_key_out), flush=True)
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {}{} object successfully.".format(cond_key, tmp_key), flush=True)
                                 else:
-                                    ui_result = ui_result + " In addition, fail to delete {} object.".format(cond_key_out)
+                                    ui_result = ui_result + " In addition, fail to delete {}{} object.".format(cond_key, tmp_key)
                                     break
                             else:
-                                ui_result = ui_result + " In addition, fail to search {} object.".format(cond_key_out)
+                                ui_result = ui_result + " In addition, fail to search {}{} object.".format(cond_key, tmp_key)
                                 break
                             # 退出遍历标志
                             if cond_status == 1:  # 失败，退出遍历创建

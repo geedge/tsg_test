@@ -988,6 +988,58 @@ test_monitor_rule_element_position = {
                 }
             }
 
+
+test_dos_protection_rule_element_position = {
+                    "page_jump":{
+                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+                        "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_dos_posId
+                    },
+                    "create": {
+                        "policyRuleListPage_createButton_posId": dosRuleListPage_createButton_posId,
+                        "policyRulePage_inputName_posXpath": dosRulePage_inputName_posXpath,
+                        "policyRulePage_selectAction_posId": dosRulePage_selectShunt_posId,
+                        "policyRulePage_addSrcIP_posXpath": dosRulePage_addSrcIP_posXpath,
+                        "policyRulePage_searchSrcIP_posXpath": dosRulePage_searchSrcIP_posXpath,
+                        "policyRulePage_selectSrcIP_posXpath": dosRulePage_selectSrcIP_posXpath,
+                        "policyRulePage_closeSrcIP_posXpath": dosRulePage_closeSrcIP_posXpath,
+                        "policyRulePage_addApplication_posXpath": dosRulePage_addApplication_posXpath,
+                        "policyRulePage_selectApplicationLabel_posXpath": dosRulePage_selectApplicationLabel_posXpath,
+                        "policyRulePage_searchApplication_posXpath": dosRulePage_searchApplication_posXpath,
+                        "policyRulePage_selectApplication_posXpath": dosRulePage_selectApplication_posXpath,
+                        "policyRulePage_closeApplication_posXpath": dosRulePage_closeApplication_posXpath,
+                        "policyRulePage_thresholdType_posId": "",
+                        "policyRulePage_groupBy_dropDownBox_posXpath": dosRulePage_groupBy_dropDownBox_posXpath,
+                        "policyRulePage_groupBy_select_posXpath": dosRulePage_groupBy_select_posXpath,
+                        "policyRulePage_requestPerPeriod_posXpath": dosRulePage_requestPerPeriod_posXpath,
+                        "policyRulePage_countingPeriod_dropDownBox_posXpath": dosRulePage_countingPeriod_dropDownBox_posXpath,
+                        "policyRulePage_countingPeriod_select_posXpath": dosRulePage_countingPeriod_select_posXpath,
+                        "policyRulePage_concurrentSsessions_posXpath" : dosRulePage_concurrentSsessions_posXpath,
+                        "policyRulePage_mitigationBehavior_posId": "",
+                        "policyRulePage_mitigationTimeouts_dropDownBox_posXpath": dosRulePage_mitigationTimeouts_dropDownBox_posXpath,
+                        "policyRulePage_mitigationTimeouts_select_posXpath": "",
+                        "policyRulePage_enable_posXpath": dosRulePage_enable_posXpath,
+                        "policyRulePage_okButton_yes_posId": dosRulePage_ok_posId,
+                        "policyRulePage_okButton_warningYes_posXpath": dosRulePage_okButton_warningYes_posXpath
+                    },
+                    "search": {
+                        "policyRuleListPage_searchLable_posId": dosRuleListPage_searchLable_posId,
+                        "policyRuleListPage_searchLable_dropDown_item_posXpath": dosRuleListPage_searchLable_dropDown_item_posXpath,
+                        "policyRuleListPage_searchLable_input_itemContent_posXpath": dosRuleListPage_searchLable_input_itemContent_posXpath,
+                        "policyRuleListPage_searchLable_searchButton_posId": dosRuleListPage_searchLable_searchButton_posId,
+                        "policyRuleListPage_tableTbody_posXpath": dosRuleListPage_tableTbody_posXpath
+                    },
+                    "delete": {
+                        "policyRuleListPage_allSelect_posXpath": dosRuleListPage_allSelect_posXpath,
+                        "policyRuleListPage_deleteButton_posId": dosRuleListPage_deleteButton_posId,
+                        "policyRuleListPage_okButton_warningYes_posXpath": dosRuleListpage_okButton_warningYes_posXpath,
+                        "policyRuleListPage_okButton_warningNo_posXpath":dosRuleListpage_okButton_warningNo_posXpath
+                    }
+                }
+
+
 test_intercept_rule_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1427,6 +1479,7 @@ test_manipulation_rule_element_position = test_manipulation_rule_element_positio
 test_security_rule_element_position = test_security_rule_element_position
 test_intercept_rule_element_position = test_intercept_rule_element_position
 test_monitor_rule_element_position = test_monitor_rule_element_position
+test_dos_protection_rule_element_position = test_dos_protection_rule_element_position
 
 def get_element_position(key_name):
     # object
@@ -1464,6 +1517,8 @@ def get_element_position(key_name):
         element_position_map = test_security_rule_element_position
     elif key_name == "monitor":
         element_position_map = test_monitor_rule_element_position
+    elif key_name == "dos_protection":
+        element_position_map = test_dos_protection_rule_element_position
     elif key_name == "pxy_intercept":
         element_position_map = test_intercept_rule_element_position
     elif key_name == "statistics":
