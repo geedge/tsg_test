@@ -294,6 +294,8 @@ class DataTranslation:
                                 }
                             ]
                         }
+                        if v[i]["items"][0]["item_type"] == "ftp_url":
+                            temp["attribute_name"] = "ATTR_FTP_URI"
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
                             add_item_dict = {
