@@ -435,6 +435,31 @@ class DataTranslation:
                             }
                         object.append(copy.deepcopy(filter_temp))
 
+                    elif v[i]["object_type"] == "fqdn":
+                        if v[i]["items"][0]["item_type"] == "cn" or v[i]["items"][0]["item_type"] == "san" or v[i]["items"][0]["item_type"] == "qname":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_SSL_CN",
+                                "object_type": "fqdn",
+                                "object_sub_type": "fqdn",
+                                "object_list": [
+                                    {
+                                        "add_item_list": []
+                                    }
+                                ]
+                            }
+                            if v[i]["items"][0]["item_type"] == "san":
+                                temp["attribute_name"] = "ATTR_SSL_SAN"
+                            if v[i]["items"][0]["item_type"] == "qname":
+                                temp["attribute_name"] = "ATTR_DNS_QNAME"
+                            for u in range(len(v[i]["items"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": []
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                            object.append(copy.deepcopy(temp))
         return object
     
     def push_profile_data(self, parameter, data):
