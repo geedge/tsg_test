@@ -21,7 +21,6 @@ class DataTranslation:
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
             if key in {"action_parameter", "profile"}:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
-
         if len(temp_test_data["obj_condition"]) > 0:
             data["obj_condition"] = temp_test_data["obj_condition"]
         if len(temp_test_data["application"]) > 0:
@@ -30,8 +29,34 @@ class DataTranslation:
             data["profile_condition"] = temp_test_data["profile_condition"]
         data["do_log_1"] = temp_test_data["do_log_1"]
         data["obj_condition_1"] = copy.deepcopy(temp_test_data["obj_condition"])
-        #data["profile_condition_1"] = copy.deepcopy(temp_test_data["profile_condition"])
-
+        if "effective_devices" in data.keys() and len(data["effective_devices"]) > 0:
+            effective_range = {"tag_sets": [
+                                      # [
+                                      #     {
+                                      #         "value": [
+                                      #             # "center-xxg-tsgx"
+                                      #         ],
+                                      #         "tag": "data_center"
+                                      #     }
+                                      # ]
+                                  ]
+                              }
+            for i in range(len(data["effective_devices"])):
+                temp = {
+                    "value": [
+                        # "center-xxg-tsgx"
+                    ],
+                    "tag": "data_center"
+                }
+                effective_devices = data["effective_devices"][i].split(",")
+                for j in range(len(effective_devices)):
+                    temp["value"].append(effective_devices[j])
+                if "center" in data["effective_devices"][i]:
+                    temp["tag"] = "data_center"
+                else:
+                    temp["tag"] = "device_group"
+                effective_range["tag_sets"].append(copy.deepcopy([temp]))
+            data["effective_range"] = effective_range
         # manipulation api test_data 数据补齐
         if policy_type == "pxy_manipulation":
             if data["rule_action"] == "deny":
