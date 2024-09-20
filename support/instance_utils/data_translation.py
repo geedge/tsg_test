@@ -81,153 +81,205 @@ class DataTranslation:
             if len(v) == 0:   # 空跳过
                 continue
             if k == "source_ip":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_SOURCE_IP",
-                    "object_type": "ip",
-                    "object_sub_type": "ip",
-                    "is_negate": 0,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "ip_address": v[0]["item"][0]["item_value"],
-                                    "port_range": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[i]["name"],
+                        "attribute_name": "ATTR_SOURCE_IP",
+                        "object_type": "ip",
+                        "object_sub_type": "ip",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "ip_address": v[0]["item"][0]["item_value"],
+                                    #     "port_range": "0-65535"
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 添加多个item
+                        add_item_dict = {}
+                        add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
+                        add_item_dict["port_range"] = "0-65535"
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "destination_ip":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_DESTINATION_IP",
-                    "object_type": "ip",
-                    "object_sub_type": "ip",
-                    "is_negate": 0,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "ip_address": v[0]["item"][0]["item_value"],
-                                    "port_range": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[i]["name"],
+                        "attribute_name": "ATTR_DESTINATION_IP",
+                        "object_type": "ip",
+                        "object_sub_type": "ip",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "ip_address": v[0]["item"][0]["item_value"],
+                                    #     "port_range": "0-65535"
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 添加多个item
+                        add_item_dict = {}
+                        add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
+                        add_item_dict["port_range"] = "0-65535"
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "internal_ip":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_INTERNAL_IP",
-                    "object_type": "ip",
-                    "object_sub_type": "ip",
-                    "is_negate": 0,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "ip_address": v[0]["item"][0]["item_value"],
-                                    "port_range": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[i]["name"],
+                        "attribute_name": "ATTR_INTERNAL_IP",
+                        "object_type": "ip",
+                        "object_sub_type": "ip",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "ip_address": v[0]["item"][0]["item_value"],
+                                    #     "port_range": "0-65535"
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 添加多个item
+                        add_item_dict = {}
+                        add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
+                        add_item_dict["port_range"] = "0-65535"
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "external_ip":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_EXTERNAL_IP",
-                    "object_type": "ip",
-                    "object_sub_type": "ip",
-                    "is_negate": 0,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "ip_address": v[0]["item"][0]["item_value"],
-                                    "port_range": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[i]["name"],
+                        "attribute_name": "ATTR_EXTERNAL_IP",
+                        "object_type": "ip",
+                        "object_sub_type": "ip",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "ip_address": v[0]["item"][0]["item_value"],
+                                    #     "port_range": "0-65535"
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 添加多个item
+                        add_item_dict = {}
+                        add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
+                        add_item_dict["port_range"] = "0-65535"
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "source_port":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_SOURCE_PORT",
-                    "object_type": "port",
-                    "object_sub_type": "port",
-                    "is_negate": 0,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "port": v[0]["item"][0]["item_value"]
-                                }
-                            ]
-                        }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[0]["name"],
+                        "attribute_name": "ATTR_SOURCE_PORT",
+                        "object_type": "port",
+                        "object_sub_type": "port",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "port": v[0]["item"][0]["item_value"]
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 添加多个item
+                        add_item_dict = {}
+                        add_item_dict["port"] = v[i]["item"][u]["item_value"]
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "destination_port":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_DESTINATION_PORT",
-                    "object_type": "port",
-                    "object_sub_type": "port",
-                    "is_negate": 0,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "port": v[0]["item"][0]["item_value"]
-                                }
-                            ]
-                        }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[0]["name"],
+                        "attribute_name": "ATTR_DESTINATION_PORT",
+                        "object_type": "port",
+                        "object_sub_type": "port",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "port": v[0]["item"][0]["item_value"]
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 添加多个item
+                        add_item_dict = {}
+                        add_item_dict["port"] = v[i]["item"][u]["item_value"]
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "internal_port":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_INTERNAL_PORT",
-                    "object_type": "port",
-                    "object_sub_type": "port",
-                    "is_negate": 0,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "port": v[0]["item"][0]["item_value"]
-                                }
-                            ]
-                        }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[0]["name"],
+                        "attribute_name": "ATTR_INTERNAL_PORT",
+                        "object_type": "port",
+                        "object_sub_type": "port",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "port": v[0]["item"][0]["item_value"]
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 添加多个item
+                        add_item_dict = {}
+                        add_item_dict["port"] = v[i]["item"][u]["item_value"]
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "external_port":
-                temp = {
-                    "name": v[0]["name"],
-                    "attribute_name": "ATTR_EXTERNAL_PORT",
-                    "object_type": "port",
-                    "object_sub_type": "port",
-                    "is_negate": 0,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "port": v[0]["item"][0]["item_value"]
-                                }
-                            ]
-                        }
-                    ]
-                }
-                object.append(copy.deepcopy(temp))
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[i]["name"],
+                        "attribute_name": "ATTR_EXTERNAL_PORT",
+                        "object_type": "port",
+                        "object_sub_type": "port",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "port": v[0]["item"][0]["item_value"]
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 添加多个item
+                        add_item_dict = {}
+                        add_item_dict["port"] = v[i]["item"][u]["item_value"]
+                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    object.append(copy.deepcopy(temp))
             elif k == "server_fqdn":
                 for i in range(len(v)):
                     temp = {

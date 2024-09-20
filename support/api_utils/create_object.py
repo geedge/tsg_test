@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
+import copy
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -192,6 +193,7 @@ class CreateObject:
         if is_repeat == 0:
             if obj_type == "ip":
                 for item in add_item_list:
+                    object_dict = {}
                     if 'ip_cidr' in item:
                         object_dict['ip_cidr'] = item['ip_cidr']
                     if 'ip_range' in item:
@@ -211,7 +213,7 @@ class CreateObject:
                     if 'addr_type' in item:
                         object_dict['addr_type'] = item['addr_type']
                     object_dict = dict(ip=object_dict, op='add')
-                    items.append(object_dict)
+                    items.append(copy.deepcopy(object_dict))
             elif obj_type == "flag":
                 for item in add_item_list:
                     if 'flag' in item:
@@ -223,6 +225,7 @@ class CreateObject:
                 member = dict(items=items, type="item")
             elif obj_type == "port":
                 for item in add_item_list:
+                    object_dict = {}
                     if 'port' in item:
                         if "-" not in str(item['port']):  # 单个端口
                             object_dict['port'] = str(item['port'])
@@ -231,7 +234,7 @@ class CreateObject:
                             object_dict['port_range'] = str(item['port'])
                             object_dict['port_format'] = "range"
                     object_dict = dict(port=object_dict, op='add')
-                    items.append(object_dict)
+                    items.append(copy.deepcopy(object_dict))
                 member = dict(items=items, type="item")
             elif obj_type == "url":
                 for item in add_item_list:
