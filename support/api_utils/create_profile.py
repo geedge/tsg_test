@@ -465,9 +465,12 @@ class CreateProfile:
                     label = label + tmp_label_source + " "
                     metrics_dict["source_fields"].append(tmp_source)
                 label = label.strip()
-                function_name =  post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["function"]
+                function_name = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["function"]
                 metrics_dict["function"]["name"] = function_name
-                metrics_dict["label"] = label
+                if "label" in post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index].keys():
+                    metrics_dict["label"] = post_statistics_data["chart_list"][chart_idex]["metrics"][metric_index]["label"]
+                else:
+                    metrics_dict["label"] = label
                 metrics_0 = metrics_dict["source_fields"][0]
                 for key, value in metrics_source_fields_map.items():
                     if value["source_columns"] == metrics_0:
@@ -516,7 +519,8 @@ class CreateProfile:
                         function_name = post_statistics_data["chart_list"][chart_idex]["metrics"][_]["function"]
                         break
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "order_by参数错误:{}".format(post_order_by))
-                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
+                #f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
+                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = post_order_by.lower()
             # 重组 limit、 drilldown_limit
             f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = str(post_statistics_data["chart_list"][chart_idex]["limit"])
             # 重组threshold
