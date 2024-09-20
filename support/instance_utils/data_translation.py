@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import copy
 
+from support.api_utils.util_statistics_template import UtilStatisticsTemplate
+
 
 class DataTranslation:
     def data_translation(self, parameter, data):
@@ -27,6 +29,8 @@ class DataTranslation:
         if len(temp_test_data["profile_condition"]) > 0:
             data["profile_condition"] = temp_test_data["profile_condition"]
         data["do_log_1"] = temp_test_data["do_log_1"]
+        data["obj_condition_1"] = copy.deepcopy(temp_test_data["obj_condition"])
+        #data["profile_condition_1"] = copy.deepcopy(temp_test_data["profile_condition"])
 
         # manipulation api test_data 数据补齐
         if policy_type == "pxy_manipulation":
@@ -464,6 +468,50 @@ class DataTranslation:
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
+                    elif v[i]["object_type"] == "boolean":
+                        boolean_id_tmps = 3
+                        if v[i]["name"] == 'True':
+                            boolean_id_tmps = 2
+                        filter_temp = {
+                                "is_negate": 0,
+                                "attribute_name": "ATTR_SSL_{}".format(v[i]["boolean_type"]),
+                                "objects": [
+                                    {
+                                        "object_type": "boolean",
+                                        "object_ids": [boolean_id_tmps]
+                                    }
+                                ],
+                                "library_tags": [
+
+                                ]
+                            }
+                        object.append(copy.deepcopy(filter_temp))
+
+                    elif v[i]["object_type"] == "fqdn":
+                        if v[i]["items"][0]["item_type"] == "cn" or v[i]["items"][0]["item_type"] == "san" or v[i]["items"][0]["item_type"] == "qname":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_SSL_CN",
+                                "object_type": "fqdn",
+                                "object_sub_type": "fqdn",
+                                "object_list": [
+                                    {
+                                        "add_item_list": []
+                                    }
+                                ]
+                            }
+                            if v[i]["items"][0]["item_type"] == "san":
+                                temp["attribute_name"] = "ATTR_SSL_SAN"
+                            if v[i]["items"][0]["item_type"] == "qname":
+                                temp["attribute_name"] = "ATTR_DNS_QNAME"
+                            for u in range(len(v[i]["items"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": []
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                            object.append(copy.deepcopy(temp))
         return object
     
     def push_profile_data(self, parameter, data):
@@ -526,39 +574,66 @@ class DataTranslation:
                 profile.append(temp)
         elif policy_type == "statistics":
             temp_profile = data["action_parameter"]["statistics_template"]
+            util = UtilStatisticsTemplate()
+            code, all_metrics = util.get_all_metrics_or_dimensions("metrics")
+            if code != 200:
+                return False, "Failed to obtain all Metric Field!"
+            code, all_dimensions = util.get_all_metrics_or_dimensions("dimensions")
+            if code != 200:
+                return False, "Failed to obtain all Dimensions Field!"
+
             for j in range(len(temp_profile)):
+                charts_tmp = []
+                for m in range(len(temp_profile[j]["charts"])):
+                    metrics_tmp = []
+                    for n in temp_profile[j]["charts"][m]["metrics"]:
+                        metric_tmp_array = n.split(":")
+                        metric_tmp_source_columns_array = metric_tmp_array[0].split("+")
+                        metric_tmp_source_columns_str = ""
+                        for x in metric_tmp_source_columns_array:
+                            if metric_tmp_source_columns_str == "":
+                                metric_tmp_source_columns_str = all_metrics[x]
+                            else:
+                                metric_tmp_source_columns_str = "{}+{}".format(metric_tmp_source_columns_str, all_metrics[x])
+                        metric_tmp = {"source_columns": metric_tmp_source_columns_str, "function": metric_tmp_array[1], "label": metric_tmp_array[2]}
+                        metrics_tmp.append(metric_tmp)
+
+                    dimensions_tmp = []
+                    if "dimensions" in temp_profile[j]["charts"][m].keys():
+                        dimension_array_tmp = []
+                        for y in temp_profile[j]["charts"][m]["dimensions"]:
+                            dimension_array_tmp.append(all_dimensions[y])
+                        dimension_tmp = {
+                            "source_columns": dimension_array_tmp,
+                            "is_drilldown": 0
+                        }
+                        dimensions_tmp.append(dimension_tmp)
+                    chart_tmp = {
+                                "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
+                                "metrics": metrics_tmp,
+                                "dimensions": dimensions_tmp,
+                                "order_by": temp_profile[j]["charts"][m]["order_by"],
+                                #"order_by": None,#为适配后面API Metrics的Label随机生成,此处order_by设置为None
+                                "limit": temp_profile[j]["charts"][m]["row_limit"],
+                                "drilldown_limit": None,
+                                "threshold": {
+                                    "in_bytes": temp_profile[j]["charts"][m]["min_in_size"],
+                                    "out_bytes": temp_profile[j]["charts"][m]["min_out_size"]
+                                }
+                            }
+                    charts_tmp.append(chart_tmp)
+
                 temp = {
                     "profile_type": "Statistics_Templates",
                     "name": temp_profile[j]["name"],
-                    "chart_list": [
-                        {
-                            "type": temp_profile[j]["charts"][0]["visualization_type"].lower(),
-                            "metrics": [
-                                {
-                                    "source_columns": "",
-                                    "function": ""
-                                }
-                            ],
-                            "dimensions": [
-                                {
-                                    "source_columns": temp_profile[j]["charts"][0]["dimensions"][0],
-                                    "is_drilldown": 0
-                                }
-                            ],
-                            "order_by": temp_profile[j]["charts"][0]["order_by"],
-                            "limit": temp_profile[j]["charts"][0]["row_limit"],
-                            "drilldown_limit": None,
-                            "threshold": {
-                                "in_bytes": temp_profile[j]["charts"][0]["min_in_size"],
-                                "out_bytes": temp_profile[j]["charts"][0]["min_out_size"]
-                            }
-                        }
-                    ]
+                    "chart_list": charts_tmp
                 }
+                """
                 for t in range(temp_profile["charts"]):
                     for k in range(len(temp_profile["charts"][t]["metrics"])): 
                         temp["chart_list"][t]["metrics"][k]["source_columns"] = temp_profile["charts"][t]["metrics"][k].split(":")[0]
                         temp["chart_list"][t]["metrics"][k]["function"] = temp_profile["charts"][t]["metrics"][k].split(":")[1]
+                """
                 profile.append(temp)
         elif policy_type == "pxy_manipulation":
             temp_profile = data["action_parameter"]

@@ -53,6 +53,9 @@ class StatisticsInstanceGenerator:
         if len(parameter["script_type"]) == 0:
             need_initialization = True
 
+        # Statistics Rule使用随机IP
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter)
         if parameter["script_type"] == "ui" or need_initialization == True:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
 
@@ -72,9 +75,6 @@ class StatisticsInstanceGenerator:
             #template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
             # 创建object
-            # Statistics Rule使用随机IP
-            organize_config = OrganizeConfig()
-            test_data = organize_config.generate_random_ip(test_data, parameter)
             if "condition" in test_data.keys():
                 for cond_key, cond_value in (test_data["condition"].items()):
                     if cond_key in manipulation_object_no_create_list:
@@ -272,9 +272,9 @@ class StatisticsInstanceGenerator:
 
             # 添加测试过程中涉及的template
             template_path = {}
-            template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-            template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-            template_path["profile_statistics_template"] = parameter["path"] + "/template/profile_statistics_template.json"
+            template_path["rule_template"] = parameter["root_path"] + "/tests/api/template/rule_template.json"
+            template_path["object_template"] = parameter["root_path"] + "/tests/api/template/object_template.json"
+            template_path["profile_statistics_template"] = parameter["root_path"] + "/tests/api/template/profile_statistics_template.json"
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()
