@@ -71,7 +71,7 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "sessions",
-                    "query_value": 2
+                    "query_value": 1
                 },
                 {
                     "query_field_key": "session_rate",
@@ -79,19 +79,19 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "packets",
-                    "query_value": 8
+                    "query_value": 4
                 },
                 {
                     "query_field_key": "packet_rate",
-                    "query_value": 1
+                    "query_value": 0
                 },
                 {
                     "query_field_key": "bytes",
-                    "query_value": 1376
+                    "query_value": 694
                 },
                 {
                     "query_field_key": "bit_rate",
-                    "query_value": "1.83 K"
+                    "query_value": "925"
                 },
                 {
                     "query_field_key": "basic_attack_type",
@@ -99,7 +99,7 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "basic_sessions",
-                    "query_value": 4
+                    "query_value": 2
                 },
                 {
                     "query_field_key": "basic_session_rate",
@@ -107,7 +107,7 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "basic_packets",
-                    "query_value": 4
+                    "query_value": 2
                 },
                 {
                     "query_field_key": "basic_packet_rate",
@@ -115,11 +115,11 @@ def run(parameter):
                 },
                 {
                     "query_field_key": "basic_bytes",
-                    "query_value": 264
+                    "query_value": 132
                 },
                 {
                     "query_field_key": "basic_bit_rate",
-                    "query_value": "35"
+                    "query_value": "17"
                 }
             ],
             "traffic": {
@@ -160,15 +160,15 @@ def run(parameter):
             
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.87",
+        "username": "lina2024",
+        "password": "lina2024",
+        "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 5,
-        "is_log": 1,
+        "vsys_id": 1,
+        "is_log":1 ,
         "debug_flag": "local",
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",

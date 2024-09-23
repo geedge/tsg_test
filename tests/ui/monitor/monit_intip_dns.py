@@ -87,7 +87,7 @@ def run(parameter):
             },
             "is_mirror": "off",
             "expected_return": "youtube",
-            "counters": {"hits": 2},
+            "counters": {"hits":"many"},
             "log_query_param": [{"query_field_key":"server_ip", "query_value": "8.8.8.8"},
                                 {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
                                 ],

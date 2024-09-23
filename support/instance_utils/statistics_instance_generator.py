@@ -258,8 +258,7 @@ class StatisticsInstanceGenerator:
             result["ui_result"] = ui_result
             
         if parameter["script_type"] == "api" or need_initialization == True:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                  "Begin to run api test case", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
 
             parameter["script_type"] = "api"
 

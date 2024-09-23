@@ -495,7 +495,7 @@ class UiVerification:
                         
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
                         log_number = log_number_str.split(": ")[-1]
-                        if int(hit_count) == test_data["counters"]["hits"] == "many" and int(log_number) != 0:
+                        if (int(hit_count) == test_data["counters"]["hits"])or (test_data["counters"]["hits"]== "many" and int(log_number) )!= 0:
                             metric_result = True
                         else:
                             metric_result = False

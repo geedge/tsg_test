@@ -100,6 +100,33 @@ class DataTranslation:
                     rule_dict["element_treatment"] = edit_element_parameter_list[i]["treatment"]
                     user_region.append(copy.deepcopy(rule_dict))
                 data["user_region"] = user_region
+        elif policy_type == "security":
+            if data["rule_action"] == "deny":
+                if data["condition"]["sub_action"][0]["type"] == "drop":
+                    data["method_1"] = "drop"
+                    if data["condition"]["sub_action"][0]["send_tcp_rst"] == False:
+                        data["send_tcp_reset_1"] = 0
+                    if data["condition"]["sub_action"][0]["send_icmp_unreachable"] == True:
+                        data["send_icmp_unreachable_1"] = 1
+                elif data["condition"]["sub_action"][0]["type"] == "rate_limit":
+                    data["method_1"] = "rate_limit"
+                    data["bps_1"] = data["condition"]["sub_action"][0]["rate_value"]
+                elif data["condition"]["sub_action"][0]["type"] == "tamper":
+                    data["method_1"] = "tamper"
+                elif data["condition"]["sub_action"][0]["type"] == "block":
+                    if data["condition"]["application"][0]["name"] == "mail":
+                        data["method_1"] = "block"
+                        data["code_1"] = data["condition"]["sub_action"][0]["code"]
+                    elif data["condition"]["application"][0]["name"] == "http":
+                        data["method_1"] = "block"
+                        data["code_1"] = data["condition"]["sub_action"][0]["code"]
+                        if "action_parameter" not in data:
+                            data["message_1"] = data["condition"]["sub_action"][0]["content"]
+                elif data["condition"]["sub_action"][0]["type"] == "alert":
+                    data["method_1"] = "alert"
+                    data["code_1"] = data["condition"]["sub_action"][0]["code"]
+                    if "action_parameter" not in data and data["code_1"] == 200:
+                            data["message_1"] = data["condition"]["sub_action"][0]["content"]
         return data
     
     def push_object_data(self, data):
@@ -493,6 +520,60 @@ class DataTranslation:
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
+                        elif v[i]["item"][0]["item_type"] == "mail_subject":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_MAIL_SUBJECT",
+                                "object_type": "keywords",
+                                "object_sub_type": "keywords",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [
+                                            # {
+                                            #     "keyword_array": [
+                                            #         v[i]["item"][0]["value"][0]
+                                            #     ]
+                                            # }
+                                        ]
+                                    }
+                                ]
+                            }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": []
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                            object.append(copy.deepcopy(temp))
+                    elif v[i]["object_type"] == "account":
+                        temp = {
+                            "name": v[i]["name"],
+                            "attribute_name": "ATTR_MAIL_ACCOUNT",
+                            "object_type": "account",
+                            "object_sub_type": "account",
+                            "object_list": [
+                                {
+                                    "add_item_list": [
+                                        # {
+                                        #     "keyword_array": [
+                                        #         v[i]["items"][0]["item_value"]
+                                        #     ]
+                                        # }
+                                    ]
+                                }
+                            ]
+                        }
+                        if v[i]["items"][0]["item_type"] == "ftp_url":
+                            temp["attribute_name"] = "ATTR_FTP_URI"
+                        for u in range(len(v[i]["items"])):
+                            # 添加多个item
+                            add_item_dict = {
+                                "keyword_array": []
+                            }
+                            add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "boolean":
                         boolean_id_tmps = 3
                         if v[i]["name"] == 'True':
@@ -742,6 +823,30 @@ class DataTranslation:
                         profile.append(copy.deepcopy(temp))
                 else:
                     print("no match {}".format(k))
+        elif policy_type == "security" and "action_parameter" in data:
+            temp_profile = data["action_parameter"]
+            for k, v in temp_profile.items():
+                if len(v) == 0:
+                    continue
+                if k == "response_page":
+                    for t in range(len(v)):
+                        temp = {
+                            "profile_type": "response_page",
+                            "format": "html",
+                            "name": "auto_test_obj",
+                            "content_name": "testa.html",
+                            "return_data": 1
+                        }
+                        temp["name"] = v[t]["profile_file"]["name"]
+                        temp["content_name"] = v[t]["profile_file"]["file"]
+                        file_name = v[t]["profile_file"]["file"]
+                        if file_name.endswith(".html"):
+                            temp["format"] = "html"
+                        elif file_name.endswith(".htm"):
+                            temp["format"] = "htm"
+                        else:
+                            print("check file type: {}".format(file_name))
+                        profile.append(copy.deepcopy(temp))
         return profile
     
 if __name__ == '__main__':

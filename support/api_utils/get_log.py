@@ -269,6 +269,7 @@ class GetLog:
                                 temp_log_result_list.append(False)
                         elif query_field_key in {"attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"}:
                             if query_field_key == "attack_type":
+                                #eg:query_value为custom_network_attack——>custom network attack
                                 if query_value.replace("_", " ") == log[query_field_key].lower():
                                     temp_log_result_list.append(True)
                                 else:
