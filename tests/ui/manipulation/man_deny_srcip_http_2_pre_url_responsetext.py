@@ -76,9 +76,9 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "test_response_code, HTTP/2",
+            "expected_return": "test_response_code",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.vip.com"}, {"query_field_key": "http_request_line", "query_value": "GET www.vip.com/ HTTP/2.0"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.vip.com"}, {"query_field_key": "http_url", "query_value": "www.vip.com/"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

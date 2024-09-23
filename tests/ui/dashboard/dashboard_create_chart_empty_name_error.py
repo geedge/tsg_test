@@ -26,7 +26,6 @@ def run(parameter):
 
         #测试数据
         test_data =  {
-            "ids": "Name为空错误提示校验",
             "visualization_type": ["Table", "Line", "Bar", "Area", "Pie"],
             "data_source": "Service Chaining Rule Hits",
             "metric": {

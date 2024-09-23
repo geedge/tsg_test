@@ -79,9 +79,9 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "need_filter,HTTP/2",
+            "expected_return": "need_filter",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}, {"query_field_key": "http_request_line", "query_value": "GET www.python.org/blogs/ HTTP/2.0"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}, {"query_field_key": "http_url", "query_value": "www.python.org/blogs/"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

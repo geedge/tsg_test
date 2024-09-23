@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
+import copy
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -133,54 +134,58 @@ class CreateObject:
             is_import = 1
         
         attribute_name = condition['attribute_name']
-        
-        obj_type = condition["object_type"]
-        obj_template_dict['object']['type'] = obj_type
-        
-        obj_sub_type = condition['object_sub_type']
-        obj_template_dict['object']['sub_type'] = obj_sub_type
-        obj_template_dict['object']['statistics_option'] = 'elaborate'
-        if "name" in condition:
-            obj_template_dict["object"]["name"] = condition["name"]
-        
-        if 'is_negate' in condition.keys():
-            is_negate = condition['is_negate']
+        if "objects" in condition.keys():# 如果是SSL相关True False相关属性则不进行新增操作,直接使用数据
+            object_temp_list = []
+            object_temp_list.append(copy.deepcopy(condition))
+            timeout_result = True
         else:
-            is_negate = 0
+            obj_type = condition["object_type"]
+            obj_template_dict['object']['type'] = obj_type
 
-        obj_template_dict['vsys_id'] = vsys_id
-        
-        obj_list = condition["object_list"]
-        for obj in obj_list:
-            add_item_list = obj["add_item_list"]
-            if "context_name" in obj.keys():
-                context_name = obj['context_name']
+            obj_sub_type = condition['object_sub_type']
+            obj_template_dict['object']['sub_type'] = obj_sub_type
+            obj_template_dict['object']['statistics_option'] = 'elaborate'
+            if "name" in condition:
+                obj_template_dict["object"]["name"] = condition["name"]
+
+            if 'is_negate' in condition.keys():
+                is_negate = condition['is_negate']
             else:
-                context_name = ''
-            if is_import == 0:
-                type = "create"
-                member = self.combine_object_data(obj_type, obj_sub_type, add_item_list, test_pc_ip, test_subcriber_id, context_name, is_repeat)
-                obj_template_dict['object']['member'] = member
-            else:
-                type = "import"
-                obj_template_dict['object']['statistics_option'] = 'none'
-                obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'statistics_option': 'elaborate'}
-                obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
-                for item in add_item_list:
-                    object_file = item["keyword_array"][0]
-                    file_name = object_file.split("/")[-1]
-                    obj_template_dict["file_dry"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
-                    obj_template_dict["file_import"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
-            object_ids_temp_list, timeout_result = self.create_or_import_object(type, obj_template_dict, headers, api_host, is_repeat)
-        
-        objects_list = []
-        object_temp_list = []
-        if attribute_name != '' and len(object_ids_temp_list) != 0:
-            objects_list = self.obj_ids_to_policy_obj_list(object_ids_temp_list, attribute_name, is_negate)
-        if len(objects_list) > 0 and is_repeat == 0:
-            object_temp_list.append(objects_list)
-        elif len(objects_list) > 0 and is_repeat == 1 and index > repeat_time-1:
-            object_temp_list.append(objects_list)
+                is_negate = 0
+
+            obj_template_dict['vsys_id'] = vsys_id
+
+            obj_list = condition["object_list"]
+            for obj in obj_list:
+                add_item_list = obj["add_item_list"]
+                if "context_name" in obj.keys():
+                    context_name = obj['context_name']
+                else:
+                    context_name = ''
+                if is_import == 0:
+                    type = "create"
+                    member = self.combine_object_data(obj_type, obj_sub_type, add_item_list, test_pc_ip, test_subcriber_id, context_name, is_repeat)
+                    obj_template_dict['object']['member'] = member
+                else:
+                    type = "import"
+                    obj_template_dict['object']['statistics_option'] = 'none'
+                    obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'statistics_option': 'elaborate'}
+                    obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
+                    for item in add_item_list:
+                        object_file = item["keyword_array"][0]
+                        file_name = object_file.split("/")[-1]
+                        obj_template_dict["file_dry"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
+                        obj_template_dict["file_import"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
+                object_ids_temp_list, timeout_result = self.create_or_import_object(type, obj_template_dict, headers, api_host, is_repeat)
+
+            objects_list = []
+            object_temp_list = []
+            if attribute_name != '' and len(object_ids_temp_list) != 0:
+                objects_list = self.obj_ids_to_policy_obj_list(object_ids_temp_list, attribute_name, is_negate)
+            if len(objects_list) > 0 and is_repeat == 0:
+                object_temp_list.append(objects_list)
+            elif len(objects_list) > 0 and is_repeat == 1 and index > repeat_time-1:
+                object_temp_list.append(objects_list)
         
         return object_temp_list, timeout_result 
     
@@ -192,6 +197,7 @@ class CreateObject:
         if is_repeat == 0:
             if obj_type == "ip":
                 for item in add_item_list:
+                    object_dict = {}
                     if 'ip_cidr' in item:
                         object_dict['ip_cidr'] = item['ip_cidr']
                     if 'ip_range' in item:
@@ -211,7 +217,7 @@ class CreateObject:
                     if 'addr_type' in item:
                         object_dict['addr_type'] = item['addr_type']
                     object_dict = dict(ip=object_dict, op='add')
-                    items.append(object_dict)
+                    items.append(copy.deepcopy(object_dict))
             elif obj_type == "flag":
                 for item in add_item_list:
                     if 'flag' in item:
@@ -223,6 +229,7 @@ class CreateObject:
                 member = dict(items=items, type="item")
             elif obj_type == "port":
                 for item in add_item_list:
+                    object_dict = {}
                     if 'port' in item:
                         if "-" not in str(item['port']):  # 单个端口
                             object_dict['port'] = str(item['port'])
@@ -231,18 +238,79 @@ class CreateObject:
                             object_dict['port_range'] = str(item['port'])
                             object_dict['port_format'] = "range"
                     object_dict = dict(port=object_dict, op='add')
-                    items.append(object_dict)
+                    items.append(copy.deepcopy(object_dict))
                 member = dict(items=items, type="item")
+            elif obj_type == "url":
+                for item in add_item_list:
+                    patterns = []
+                    keywords = item["keyword_array"][0]
+                    if "&" not in keywords:
+                        object_dict = dict(keywords=keywords)
+                        patterns.append(object_dict)
+                        patterns = dict(patterns=patterns)
+                        string = dict(string=patterns, op='add')
+                        items.append(string)
+                    else:    #有and模式
+                        keywords_list = keywords.split("&")
+                        string = {}
+                        contextual_string = {}
+                        for i in range(len(keywords_list)):
+                            object_dict = {}
+                            object_dict["keywords"] = keywords_list[i]
+                            patterns.append(copy.deepcopy(object_dict))
+                        contextual_string["patterns"] = patterns
+                        contextual_string['expr_type'] = 1
+                        string["op"] = "add"
+                        string["string"] = contextual_string
+                        items.append(string)
+            elif obj_type == "keywords":
+                for item in add_item_list:
+                    patterns = []
+                    keywords = item["keyword_array"][0]
+                    if "&" not in keywords:
+                        object_dict = dict(keywords=keywords)
+                        patterns.append(object_dict)
+                        patterns = dict(patterns=patterns)
+                        string = dict(string=patterns, op='add')
+                        items.append(string)
+                    else:    #有and模式
+                        keywords_list = keywords.split("&")
+                        string = {}
+                        contextual_string = {}
+                        for i in range(len(keywords_list)):
+                            object_dict = {}
+                            object_dict["keywords"] = keywords_list[i]
+                            patterns.append(copy.deepcopy(object_dict))
+                        contextual_string["patterns"] = patterns
+                        contextual_string['expr_type'] = 1
+                        string["op"] = "add"
+                        string["string"] = contextual_string
+                        items.append(string)
             elif obj_type == "http_signature":
                 for item in add_item_list:
                     patterns = []
                     keywords = item["keyword_array"][0]
-                    object_dict = dict(keywords=keywords)
-                    patterns.append(object_dict)
-                    patterns = dict(patterns=patterns)
-                    string = dict(contextual_string=patterns, op='add')
-                    string['contextual_string']['context_name'] = context_name
-                    items.append(string)
+                    if "&" not in keywords:
+                        object_dict = dict(keywords=keywords)
+                        patterns.append(object_dict)
+                        patterns = dict(patterns=patterns)
+                        string = dict(contextual_string=patterns, op='add')
+                        string['contextual_string']['context_name'] = context_name
+                        items.append(string)
+                    else:    #有and模式
+                        keywords_list = keywords.split("&")
+                        string = {}
+                        contextual_string = {}
+                        for i in range(len(keywords_list)):
+                            object_dict = {}
+                            object_dict["keywords"] = keywords_list[i]
+                            patterns.append(copy.deepcopy(object_dict))
+                        contextual_string["patterns"] = patterns
+                        contextual_string['context_name'] = context_name
+                        contextual_string['expr_type'] = 1
+                        string["op"] = "add"
+                        string["contextual_string"] = contextual_string
+                        items.append(string)
             elif obj_type == "geolocation":
                 geo_ip_address = []
                 # geo_ip_address_dict = {}

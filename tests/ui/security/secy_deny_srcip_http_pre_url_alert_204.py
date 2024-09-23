@@ -88,6 +88,7 @@ def run(parameter):
                 ],
                 "packet_capture": []
             },
+            "profile": [],
             "expected_return": "204",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},
@@ -129,6 +130,8 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.65",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "test_phone_number": "11111",
+        "test_imsi": "fasfsf",
         "debug_flag": "local",
         "script_type": "ui",
         "env": "tsgx",

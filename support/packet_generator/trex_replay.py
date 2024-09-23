@@ -26,7 +26,7 @@ class TrafficReplay:
         self.traffic_playback_workpath = path_dict["traffic_playback_workpath"]
         self.pcap_yaml_path = os.path.join(self.traffic_playback_workpath, "traffic_pcap")
 
-    def trex_playback(self, yaml_name, pcap_name, m=1, d=1, clients_start="10.50.36.1", clients_end="10.50.36.1", servers_start="10.50.66.1", servers_end="10.50.66.1"):
+    def trex_playback(self, yaml_name, pcap_name, active_flows=0, m=1, d=1, clients_start="10.50.36.1", clients_end="10.50.36.1", servers_start="10.50.66.1", servers_end="10.50.66.1"):
         """
         :param yaml_name:  yaml文件名称
         :param pcap_name:  数据包文件名称
@@ -42,7 +42,10 @@ class TrafficReplay:
         overwrite_yaml.replace_from_yaml(yaml_name, pcap_name, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
         # cd /opt/trex/v3.03/ && /opt/trex/v3.03/t-rex-64 -f /opt/trex/v3.03/cap2_my/http_50.yaml -m 1 -d 100
         # 重组trex执行命令
-        template_trex_command = "cd {trex_workpath} && {trex_workpath}/t-rex-64 -f {yaml_abs_path} -m {m} -d {d}"
+        if active_flows == 0:
+            template_trex_command = "cd {trex_workpath} && {trex_workpath}/t-rex-64 -f {yaml_abs_path} -m {m} -d {d}"
+        elif active_flows > 0:
+            template_trex_command = "cd {trex_workpath} && {trex_workpath}/t-rex-64 -f {yaml_abs_path} --active-flows {active_flows} -d {d}"
         self.yaml_abs_path = os.path.join(self.pcap_yaml_path, yaml_name)
         trex_command = template_trex_command.format(trex_workpath=self.traffic_trex_workpath, yaml_abs_path=self.yaml_abs_path, m=m, d=d)
         # 执行trex命令
@@ -90,6 +93,7 @@ if __name__ == '__main__':
     clients_end = clients_start
     # servers_start = "123.151.49.188"
     # servers_end = "123.151.49.188"
+    active_flows = 0
     m = 100
     d = 1
     yaml_name = "http_50.yaml"
@@ -104,4 +108,4 @@ if __name__ == '__main__':
     }
 
     tp = TrafficReplay(path_dict)
-    metric_info_dict = tp.trex_playback(yaml_name, pcap_name, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
+    metric_info_dict = tp.trex_playback(yaml_name, pcap_name, active_flows=active_flows, m=m, d=d, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
