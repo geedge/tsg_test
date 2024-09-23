@@ -376,7 +376,7 @@ class CreatePolicyRule:
             pre_intercept_template_path['rule']['destination'] = dst_list
         else:
             pre_intercept_template_path['rule']['destination'] = []
-        pre_intercept_template_path["rule"]["name"] = "manipulation_pre_intercept"
+        pre_intercept_template_path["rule"]["name"] = "pre_intercept"
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host)
         pre_policy_id_list = pre_intercept_policy_id_dict
         

@@ -628,15 +628,17 @@ class DataTranslation:
         vsys_id = parameter["vsys_id"]
         profile = []
         if policy_type == "service_chaining":
+            load_balance_dict = {"hash_int-ip": "hash-int-ip", "hash_ext-ip" : "hash-ext-ip",
+                "hash_innermost_int-ip" : "hash-innermost-int-ip", "hash_int-ip_and_ext-ip": "hash-int-ip-and-ext-ip"}
             temp_profile = data["profile"]
             for i in range(len(temp_profile)):
                 temp = {
                     "profile_type": "service_function_forwarder",
                     "name": temp_profile[i]["name"],
                     "type": "2",
-                    "load_balance_method": temp_profile[i]["load_balance_method"],
+                    "load_balance_method": "",
                     "load_balance_localization": temp_profile[i]["load_balance_localization"],
-                    "failure_action": temp_profile[i]["failure_action"],
+                    "failure_action": "",
                     "return_data": 1,
                     "op_action": "add",
                     "sf_condition": [
@@ -655,14 +657,22 @@ class DataTranslation:
                             },
                             "health_check": {
                                 "method": "bfd",
-                                "interval_ms": 200,
-                                "retires": 5
                             },
                             "is_valid": 1,
                             "vsys_id": 1
                         }
                     ]
                 }
+                load_balance_method = temp_profile[i]["load_balance_method"]
+                temp["load_balance_method"] = load_balance_dict[load_balance_method]
+                temp["failure_action"] = temp_profile[i]["failure_action"].split(":")[0].lower()
+                if temp["failure_action"] == "re-dispatch":
+                    temp["unavailability_action"] = {}
+                    temp["unavailability_action"]["action"] = temp_profile[i]["failure_action"].split(":")[1].lower()
+                    if temp["unavailability_action"]["action"] == "bypass":
+                        temp["unavailability_action"]["health_service_func_lt"] = int(temp_profile[i]["failure_action"].split(":")[2])
+                    else:
+                        temp["unavailability_action"]["health_service_func_lt"] = 0
                 if temp_profile[i]["type"] == "steering":
                     temp["type"] = "1"
                 elif temp_profile[i]["type"] == "mirroring":
@@ -671,15 +681,24 @@ class DataTranslation:
                     temp["op_action"] = "add"
                     for x in range(len(temp_profile[i]["service_functions"])):
                         temp["sf_condition"][x]["name"] = temp_profile[i]["service_functions"][x]["name"]
-                        temp["sf_condition"][x]["device_group"]["tag"] = temp_profile[i]["service_functions"][x]["device_group"].split(":")[0]
+                        temp["sf_condition"][x]["device_group"]["tag"] = temp_profile[i]["service_functions"][x]["device_group"].split(":")[0].lower()
                         temp["sf_condition"][x]["device_group"]["value"] = temp_profile[i]["service_functions"][x]["device_group"].split(":")[1]
                         if temp_profile[i]["service_functions"][x]["connectivity"].split(":")[0] == "VXLAN-G":
-                            temp["sf_condition"][x]["connectivity"]["method"] = "vlan_g"
+                            temp["sf_condition"][x]["connectivity"]["method"] = "vxlan_g"
                             temp["sf_condition"][x]["connectivity"]["dest_ip"] = temp_profile[i]["service_functions"][x]["connectivity"].split(":")[1]
-                        if temp_profile[i]["service_functions"][x]["health_check"].split(":")[0] == "Bfd":
+                        if temp_profile[i]["service_functions"][x]["connectivity"].split(":")[0] == "Layer_2_Switch":
+                            temp["sf_condition"][x]["connectivity"]["method"] = "layer2_switch"
+                        if temp_profile[i]["service_functions"][x]["health_check"].split(":")[0] == "BFD":
                             temp["sf_condition"][x]["health_check"]["method"] = "bfd"
                             temp["sf_condition"][x]["health_check"]["interval_ms"] = temp_profile[i]["service_functions"][x]["health_check"].split(":")[1]
                             temp["sf_condition"][x]["health_check"]["retires"] = temp_profile[i]["service_functions"][x]["health_check"].split(":")[2]
+                        else:
+                            temp["sf_condition"][x]["health_check"]["method"] = temp_profile[i]["service_functions"][x]["health_check"]
+
+                        if temp_profile[i]["service_functions"][x]["enable"] == "on":
+                            temp["sf_condition"][x]["admin_status"] = 1
+                        else:
+                            temp["sf_condition"][x]["admin_status"] = 0
                 profile.append(temp)
         elif policy_type == "statistics":
             temp_profile = data["action_parameter"]["statistics_template"]
@@ -954,7 +973,7 @@ if __name__ == '__main__':
                             "profile_type": "create",
                             "device_group": "Device_Group:group-xxg-tsgx",
                             "connectivity": "VXLAN-G:2.2.2.53",
-                            "health_check": "Bfd:10:2",
+                            "health_check": "BFD:10:2",
                             "enable": "off"
                         }
                     ]
