@@ -95,8 +95,9 @@ def run(parameter):
             "is_mirror":"off",
             "expected_return": "www.example.com",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "DNS"},
-                                {"query_field_key": "ip_protocol", "query_value": "udp"}
+            "log_query_param": [
+                                {"query_field_key": "ip_protocol", "query_value": "udp"},
+                {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
                                 ],
             "traffic": {
                 "protocol": "dns",
