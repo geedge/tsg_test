@@ -26,8 +26,8 @@ class CreatePolicy:
             test_data = self.generate_random_ip(test_data, run_env, vsys_id)
         
         # 指定循环次数
-        isMultiPriority = test_data["is_multi_priority"]
-        if isMultiPriority:
+        is_multi_priority = test_data["is_multi_priority"]
+        if is_multi_priority:
             rule_num = test_data["rule_num"]
         else:
             rule_num = 1
