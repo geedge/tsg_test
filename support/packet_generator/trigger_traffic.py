@@ -135,7 +135,7 @@ class TriggerTraffic:
                 parse.read(parse_dir, encoding="utf-8")
                 path_dict["traffic_playback_workpath"] = parse.get("traffic_playback", "traffic_playback_workpath")
                 tr = trex_replay.TrafficReplay(path_dict)
-                result = tr.trex_playback(yaml_name, pcap_name, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
+                result = tr.trex_playback(yaml_name, pcap_name, 0, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
         return result
     
     def replace_trex_ip(self, test_data, script_type):
