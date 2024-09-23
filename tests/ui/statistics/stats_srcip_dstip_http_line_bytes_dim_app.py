@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_bytes+out_bytes:BITRATE:bytes"
+                            "sent_bytes+received_bytes:RATE:bytes"
                           ],
                           "dimensions": ["app"],
                           "order_by": "bytes",

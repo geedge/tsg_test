@@ -190,7 +190,6 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
@@ -199,12 +198,12 @@ if __name__ == '__main__':
         "env": "tsgx",
         "vsys_id": 1,  # 6
         "root_path": "D:/tsgcode/tsg_test",
-        "path": "tsgcode/tsg_test/testcase/ui",
+        "path": "D:/tsgcode/tsg_test/test/ui",
         "module_name": "statistics",
         "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
-        "script_type": "ui",
+        "script_type": "api",
         "policy_type": "statistics"
    }
     parameter = replace_paras(parameter)

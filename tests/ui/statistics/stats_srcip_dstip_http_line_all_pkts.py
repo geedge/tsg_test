@@ -99,9 +99,9 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_pkts:RATE:in pkts",
-                            "out_pkts:RATE:out pkts",
-                            "in_pkts+out_pkts:RATE:pkts"
+                            "sent_pkts:RATE:in pkts",
+                            "received_pkts:RATE:out pkts",
+                            "sent_pkts+received_pkts:RATE:pkts"
                           ],
                           "dimensions": [],
                           "order_by": "",

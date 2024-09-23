@@ -202,7 +202,7 @@ if __name__ == '__main__':
         "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6438",
-        "script_type": "ui",
+        "script_type": "api",
         "policy_type": "statistics"
    }
     parameter = replace_paras(parameter)
