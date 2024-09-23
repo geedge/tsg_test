@@ -99,7 +99,7 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                             "visualization_type": "Line",
                             "metrics": [
-                                "in_bytes+out_bytes:BITRATE:bytes"
+                                "sent_bytes+received_bytes:RATE:bytes"
                             ],
                             "dimensions": [
                                 "s2c_link_id"

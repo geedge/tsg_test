@@ -495,6 +495,7 @@ class CreateProfile:
             for dimension_index in range(len(post_statistics_data["chart_list"][chart_idex]["dimensions"])):
                 source_fields_str = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["source_columns"][0].lower().strip()
                 tmp_source = dimensions_source_fields_map[source_fields_str]
+                dimensions_dict["source_fields"].clear()
                 dimensions_dict["source_fields"].append(tmp_source)
                 label = tmp_source.replace("_", " ")
                 dimensions_dict["is_drilldown"] = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["is_drilldown"]

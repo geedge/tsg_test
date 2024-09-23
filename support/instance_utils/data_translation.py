@@ -728,14 +728,22 @@ class DataTranslation:
 
                     dimensions_tmp = []
                     if "dimensions" in temp_profile[j]["charts"][m].keys():
-                        dimension_array_tmp = []
                         for y in temp_profile[j]["charts"][m]["dimensions"]:
+                            dimension_array_tmp = []
                             dimension_array_tmp.append(all_dimensions[y])
-                        dimension_tmp = {
-                            "source_columns": dimension_array_tmp,
-                            "is_drilldown": 0
-                        }
-                        dimensions_tmp.append(dimension_tmp)
+                            dimension_tmp = {
+                                "source_columns": copy.deepcopy(dimension_array_tmp),
+                                "is_drilldown": 0
+                            }
+                            dimensions_tmp.append(copy.deepcopy(dimension_tmp))
+                        if temp_profile[j]["charts"][m]["visualization_type"].lower() == "line":
+                            dimension_array_tmp = []
+                            dimension_array_tmp.append("__time")
+                            dimension_tmp = {
+                                "source_columns": copy.deepcopy(dimension_array_tmp),
+                                "is_drilldown": 0
+                            }
+                            dimensions_tmp.append(copy.deepcopy(dimension_tmp))
                     chart_tmp = {
                                 "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
                                 "metrics": metrics_tmp,
