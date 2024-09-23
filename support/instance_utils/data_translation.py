@@ -57,6 +57,9 @@ class DataTranslation:
                     temp["tag"] = "device_group"
                 effective_range["tag_sets"].append(copy.deepcopy([temp]))
             data["effective_range"] = effective_range
+        if "log_options" in data.keys():
+            if data["log_options"] == "all":    # 1
+                data["do_log_1"] = 1
         # manipulation api test_data 数据补齐
         if policy_type == "pxy_manipulation":
             if data["rule_action"] == "deny":
