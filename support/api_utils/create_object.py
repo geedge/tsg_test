@@ -14,6 +14,8 @@ class CreateObject:
     def __init__(self):
         self.ip_ids = []
         self.port_ids = []
+        self.imsi_ids = []
+        self.phone_number_ids = []
         self.subid_ids = []
         self.fqdn_ids = []
         self.flag_ids = []
@@ -52,7 +54,7 @@ class CreateObject:
                 for i in range(repeat_time):
                     index = i + 1
                     objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, test_subcriber_id, vsys_id, index, repeat_time)
-                    if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT"]:
+                    if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT", "ATTR_GTP_IMSI", "ATTR_GTP_PHONE_NUMBER"]:
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
                     elif attribute_name in ["ATTR_DESTINATION_IP", "ATTR_DESTINATION_PORT", "ATTR_DESTINATION_GEO_COUNTRY", "ATTR_SERVER_FQDN"]:
@@ -115,6 +117,8 @@ class CreateObject:
         condition_ids_by_api_dict["ip_ids"] = self.ip_ids
         condition_ids_by_api_dict["subid_ids"] = self.subid_ids
         condition_ids_by_api_dict["port_ids"] = self.port_ids
+        condition_ids_by_api_dict["imsi_ids"] = self.imsi_ids
+        condition_ids_by_api_dict["phone_number_ids"] = self.phone_number_ids
         condition_ids_by_api_dict["fqdn_ids"] = self.fqdn_ids
         condition_ids_by_api_dict["url_ids"] = self.url_ids
         condition_ids_by_api_dict["flag_ids"] = self.flag_ids
@@ -265,52 +269,98 @@ class CreateObject:
                         items.append(string)
             elif obj_type == "keywords":
                 for item in add_item_list:
-                    patterns = []
+                    tmp_item = {
+                        "op": "add",
+                        "string": {
+                            "patterns": [
+                                # {
+                                #     "keywords": "text"
+                                # }
+                            ],
+                            "expr_type": 0,
+                            "is_hexbin": 0
+                        }
+                    }
                     keywords = item["keyword_array"][0]
-                    if "&" not in keywords:
-                        object_dict = dict(keywords=keywords)
-                        patterns.append(object_dict)
-                        patterns = dict(patterns=patterns)
-                        string = dict(string=patterns, op='add')
-                        items.append(string)
-                    else:    #有and模式
+                    is_hexbin = item["is_hexbin"]
+                    expr_type = item["expr_type"]
+                    tmp_item["string"]["expr_type"] = expr_type
+                    tmp_item["string"]["is_hexbin"] = is_hexbin
+                    if expr_type == 1:    # 多个and 模式
                         keywords_list = keywords.split("&")
-                        string = {}
-                        contextual_string = {}
                         for i in range(len(keywords_list)):
-                            object_dict = {}
-                            object_dict["keywords"] = keywords_list[i]
-                            patterns.append(copy.deepcopy(object_dict))
-                        contextual_string["patterns"] = patterns
-                        contextual_string['expr_type'] = 1
-                        string["op"] = "add"
-                        string["string"] = contextual_string
-                        items.append(string)
+                            tmp = {}
+                            tmp["keywords"] = keywords_list[i]
+                            tmp_item["string"]["patterns"].append(copy.deepcopy(tmp))
+                    elif expr_type != 1:
+                        tmp = {}
+                        tmp["keywords"] = keywords
+                        tmp_item["string"]["patterns"].append(copy.deepcopy(tmp))
+                        if expr_type == 3:    # range 模式
+                            range_offset = item["range"]
+                            tmp_item["string"]["patterns"][0]["offset"] = range_offset[0]["offset"]
+                            tmp_item["string"]["patterns"][0]["depth"] = range_offset[0]["depth"]
+                    items.append(copy.deepcopy(tmp_item))
+
+
+
+                    # patterns = []
+                    # keywords = item["keyword_array"][0]
+                    # if "&" not in keywords:
+                    #     object_dict = dict(keywords=keywords)
+                    #     patterns.append(object_dict)
+                    #     patterns = dict(patterns=patterns)
+                    #     string = dict(string=patterns, op='add')
+                    #     items.append(string)
+                    # else:    #有and模式
+                    #     keywords_list = keywords.split("&")
+                    #     string = {}
+                    #     contextual_string = {}
+                    #     for i in range(len(keywords_list)):
+                    #         object_dict = {}
+                    #         object_dict["keywords"] = keywords_list[i]
+                    #         patterns.append(copy.deepcopy(object_dict))
+                    #     contextual_string["patterns"] = patterns
+                    #     contextual_string['expr_type'] = 1
+                    #     string["op"] = "add"
+                    #     string["string"] = contextual_string
+                    #     items.append(string)
             elif obj_type == "http_signature":
                 for item in add_item_list:
-                    patterns = []
+                    tmp_item = {
+                        "op": "add",
+                        "contextual_string": {
+                            "context_name": "Set-Cookie",
+                            "patterns": [
+                                # {
+                                #     "keywords": "text"
+                                # }
+                            ],
+                            "expr_type": 0,
+                            "is_hexbin": 0
+                        }
+                    }
                     keywords = item["keyword_array"][0]
-                    if "&" not in keywords:
-                        object_dict = dict(keywords=keywords)
-                        patterns.append(object_dict)
-                        patterns = dict(patterns=patterns)
-                        string = dict(contextual_string=patterns, op='add')
-                        string['contextual_string']['context_name'] = context_name
-                        items.append(string)
-                    else:    #有and模式
+                    is_hexbin = item["is_hexbin"]
+                    expr_type = item["expr_type"]
+                    tmp_item["contextual_string"]["context_name"] = context_name
+                    tmp_item["contextual_string"]["expr_type"] = expr_type
+                    tmp_item["contextual_string"]["is_hexbin"] = is_hexbin
+                    if expr_type == 1:    # 多个and 模式
                         keywords_list = keywords.split("&")
-                        string = {}
-                        contextual_string = {}
                         for i in range(len(keywords_list)):
-                            object_dict = {}
-                            object_dict["keywords"] = keywords_list[i]
-                            patterns.append(copy.deepcopy(object_dict))
-                        contextual_string["patterns"] = patterns
-                        contextual_string['context_name'] = context_name
-                        contextual_string['expr_type'] = 1
-                        string["op"] = "add"
-                        string["contextual_string"] = contextual_string
-                        items.append(string)
+                            tmp = {}
+                            tmp["keywords"] = keywords_list[i]
+                            tmp_item["contextual_string"]["patterns"].append(copy.deepcopy(tmp))
+                    elif expr_type != 1:
+                        tmp = {}
+                        tmp["keywords"] = keywords
+                        tmp_item["contextual_string"]["patterns"].append(copy.deepcopy(tmp))
+                        if expr_type == 3:    # range 模式
+                            range_offset = item["range"]
+                            tmp_item["contextual_string"]["patterns"][0]["offset"] = range_offset[0]["offset"]
+                            tmp_item["contextual_string"]["patterns"][0]["depth"] = range_offset[0]["depth"]
+                    items.append(copy.deepcopy(tmp_item))
             elif obj_type == "geolocation":
                 geo_ip_address = []
                 # geo_ip_address_dict = {}
@@ -441,11 +491,19 @@ class CreateObject:
             elif is_repeat == 1 and obj_type == 'ip':
                 self.ip_ids = []
                 
-            obj_type = obj_template_dict['object']['type'] 
+            obj_type = obj_template_dict['object']['type']
+            if "sub_type" in obj_template_dict['object']:
+                object_sub_type = obj_template_dict['object']['sub_type']
+            else:
+                object_sub_type = ''
             if obj_type == 'ip':
                 self.ip_ids = self.handle_ids(object_ids, self.ip_ids)
             elif obj_type == 'port':
                 self.port_ids = self.handle_ids(object_ids, self.port_ids)
+            elif obj_type == 'mobile_identity' and object_sub_type == "imsi":
+                self.imsi_ids = self.handle_ids(object_ids, self.imsi_ids)
+            elif obj_type == 'mobile_identity' and object_sub_type == "phone_number":
+                self.phone_number_ids = self.handle_ids(object_ids, self.phone_number_ids)
             elif obj_type == 'subscriberid':
                 self.subid_ids = self.handle_ids(object_ids, self.subid_ids)
             elif obj_type == 'fqdn':

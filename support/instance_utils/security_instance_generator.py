@@ -507,6 +507,18 @@ class SecurityGenerator:
                         "policyRulePage_searchMailContent_posXpath": policyRulePage_searchMailContent_posXpath,
                         "policyRulePage_selectMailContent_posXpath": policyRulePage_selectMailContent_posXpath,
                         "policyRulePage_closeMailContent_posXpath": policyRulePage_closeMailContent_posXpath,
+                        # mail from
+                        "policyRulePage_addConditionMailFrom_posXpath": policyRulePage_addCondition_mailFrom_posXpath,
+                        "policyRulePage_addMailFrom_posXpath": monitorRulePage_addmailFrom_posXpath,
+                        "policyRulePage_searchMailFrom_posXpath": monitorRulePage_searchmailFrom_posXpath,
+                        "policyRulePage_selectMailFrom_posXpath": monitorRulePage_selectmailFrom_posXpath,
+                        "policyRulePage_closeMailFrom_posXpath": monitorRulePage_closemailFrom_posXpath,
+                        #添加mail subject
+                        "policyRulePage_addConditionMailSubject_posXpath": policyRulePage_addCondition_mailSubject_posXpath,
+                        "policyRulePage_addMailSubject_posXpath": monitorRulePage_addmailSubject_posXpath,
+                        "policyRulePage_searchMailSubject_posXpath": monitorRulePage_searchmailSubject_posXpath,
+                        "policyRulePage_selectMailSubject_posXpath": monitorRulePage_selectmailSubject_posXpath,
+                        "policyRulePage_closeMailSubject_posXpath": monitorRulePage_closemailSubject_posXpath,
                         # mail to
                         "policyRulePage_addConditionMailTo_posXpath": policyRulePage_addCondition_mailTo_posXpath,
                         "policyRulePage_addMailTo_posXpath": monitorRulePage_addmailTo_posXpath,
@@ -608,6 +620,8 @@ class SecurityGenerator:
                 }
                 if test_data["rule_action"] == "allow":
                     test_rule_element_position["create"]["policyRulePage_selectAction_posId"] = securityRulePage_selectAllow_posId
+                elif test_data["rule_action"] == "shunt":
+                    test_rule_element_position["create"]["policyRulePage_selectAction_posId"] = securityRulePage_selectShunt_posId
                 if "application" in test_data['condition'] and len(test_data['condition']["application"]) == 1 and test_data['condition']["application"][0]['name'] == "ftp":
                     test_rule_element_position["create"]["policyRulePage_addConditionUrl_posXpath"] = securityRulePage_addCondition_uri_posXpath
             
@@ -936,15 +950,13 @@ class SecurityGenerator:
             template_path = {}
             template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
             template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-
+            template_path["profile_dns_record_template"] = parameter["path"] + "/template/profile_dns_record_template.json"
             # 添加测试过程中涉及的response pages
             if "profile_condition" in test_data and len(test_data["profile_condition"]) > 0:
                 tmp_dir = parameter["root_path"] + "/support/ui_utils/profile/profile_file/"
                 profile_type = test_data["profile_condition"][0]["profile_type"].strip()
                 if profile_type == "response_page":
                     template_path["profiles_deny_path"] = tmp_dir + "response_pages/" + test_data["profile_condition"][0]["content_name"]
-                else:
-                    print("check profile path")
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()

@@ -99,9 +99,9 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_bytes:BITRATE:in bytes",
-                            "out_bytes:BITRATE:out bytes",
-                            "in_bytes+out_bytes:BITRATE:bytes"
+                            "sent_bytes:BITRATE:in bytes",
+                            "received_bytes:BITRATE:out bytes",
+                            "sent_bytes+received_bytes:BITRATE:bytes"
                           ],
                           "dimensions": [],
                           "order_by": "",

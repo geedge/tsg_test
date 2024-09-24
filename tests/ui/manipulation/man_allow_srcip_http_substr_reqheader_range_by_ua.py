@@ -66,7 +66,7 @@ def run(parameter):
                                 "item_key": "User-Agent",
                                 "item_value": "TEXT",
                                 "range": [
-                                    {"offset": 0, "depth": 500000}
+                                    {"offset": 0, "depth": 50000}
                                 ],
                                 "value": [
                                     "curl"

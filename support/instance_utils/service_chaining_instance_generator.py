@@ -24,6 +24,7 @@ from datetime import datetime
 import copy
 import time
 from support.ui_utils.object.generate_random_ip import *
+from support.instance_utils.data_translation import DataTranslation
 
 class ServiceChainingInstanceGenerator:
     def __init__(self, test_data, parameter):
@@ -354,13 +355,17 @@ class ServiceChainingInstanceGenerator:
 
             parameter["script_type"] = "api"
 
-            self.api_name_list = []
+            # 数据转换，适配API的test_data
+            translation = DataTranslation()
+            test_data = translation.data_translation(parameter, test_data)
 
             # 添加测试过程中涉及的template
             template_path = {}
-            template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-            template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-            template_path["pre_intercept_template_path"] = parameter["path"] + "/template/pre_intercept_template.json"
+            template_path["rule_template"] = parameter["root_path"] + "/tests/api/template/rule_template.json"
+            template_path["object_template"] = parameter["root_path"] + "/tests/api/template/object_template.json"
+            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/tests/api/template/pre_intercept_template.json"
+            template_path["profile_sf_template"] =  parameter["root_path"] + "/tests/api/template/profile_sf_template.json"
+            template_path["profile_sff_template"] =  parameter["root_path"] + "/tests/api/template/profile_sff_template.json"
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()
@@ -374,10 +379,11 @@ class ServiceChainingInstanceGenerator:
             analysis = AnalysisResult()
             api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
 
-            result["api_result"] = api_result
             # 删除配置
             delete = DeletePolicy()
             delete.delele_policy_by_cfg(token, parameter, cfg_list)
+
+            result["api_result"] = api_result
 
         return result
 

@@ -18,7 +18,7 @@ class CreatePolicy:
         run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
         token = test_data["token"]
-        create_ip_ids, create_subid_ids, create_port_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], [], []
+        create_ip_ids, create_subid_ids, create_port_ids, create_imsi_ids, create_phone_number_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
         
         # sc需要随机ip
@@ -26,8 +26,8 @@ class CreatePolicy:
             test_data = self.generate_random_ip(test_data, run_env, vsys_id)
         
         # 指定循环次数
-        isMultiPriority = test_data["is_multi_priority"]
-        if isMultiPriority:
+        is_multi_priority = test_data["is_multi_priority"]
+        if is_multi_priority:
             rule_num = test_data["rule_num"]
         else:
             rule_num = 1
@@ -54,6 +54,10 @@ class CreatePolicy:
                     create_subid_ids.extend(v)
                 if k == "port_ids" and len(v) > 0:
                     create_port_ids.extend(v)
+                if k == "imsi_ids" and len(v) > 0:
+                    create_imsi_ids.extend(v)
+                if k == "phone_number_ids" and len(v) > 0:
+                    create_phone_number_ids.extend(v)
                 if k == "fqdn_ids" and len(v) > 0:
                     create_fqdn_ids.extend(v)
                 if k == "url_ids" and len(v) > 0:
@@ -138,6 +142,8 @@ class CreatePolicy:
         cfg_list["create_ip_ids"] = create_ip_ids
         cfg_list["create_subid_ids"] = create_subid_ids
         cfg_list["create_port_ids"] = create_port_ids
+        cfg_list["create_imsi_ids"] = create_imsi_ids
+        cfg_list["create_phone_number_ids"] = create_phone_number_ids
         cfg_list["create_fqdn_ids"] = create_fqdn_ids
         cfg_list["create_url_ids"] = create_url_ids
         cfg_list["create_flag_ids"] = create_flag_ids

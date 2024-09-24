@@ -35,9 +35,9 @@ class ApiVerification:
             debug_flag = parameter["debug_flag"]
         token = test_data["token"]
         policy_type = test_data["policy_type"]
-        isMultiPriority = test_data["is_multi_priority"]
+        is_multi_priority = test_data["is_multi_priority"]
 
-        if isMultiPriority:
+        if is_multi_priority:
             rule_num = test_data["rule_num"]
         else:
             rule_num = 1

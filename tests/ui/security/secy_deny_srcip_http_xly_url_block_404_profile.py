@@ -104,6 +104,7 @@ def run(parameter):
                     }
                 ]
             },
+            "profile": [],
             "expected_return": "404",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},

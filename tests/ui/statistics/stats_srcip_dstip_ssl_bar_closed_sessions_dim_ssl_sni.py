@@ -149,25 +149,6 @@ def run(parameter):
             # },
             "token": ""
         }
-        # name_list汇总
-        name_list = [
-            {
-                "type": test_data["policy_type"],
-                "name": test_data["rule_name"]
-            },
-            {
-                "type": test_data["condition"]["source_ip"][0]['object_type'],
-                "name": test_data["condition"]["source_ip"][0]['name']
-            },
-            {
-                "type": test_data["condition"]["destination_ip"][0]['object_type'],
-                "name": test_data["condition"]["destination_ip"][0]['name']
-            },
-            {
-                "type": test_data["action_parameter"]["statistics_template"][0]['profile_type'],
-                "name": test_data["action_parameter"]["statistics_template"][0]['name']
-            }
-        ]
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
@@ -212,7 +193,7 @@ if __name__ == '__main__':
         "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
-        "script_type": "",
+        "script_type": "ui",
         "policy_type": "statistics"
    }
     parameter = replace_paras(parameter)
