@@ -916,7 +916,8 @@ class DataTranslation:
                             "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
                             "metrics": metrics_tmp,
                             "dimensions": dimensions_tmp,
-                            "order_by": temp_profile[j]["charts"][m]["order_by"],
+                            "order_by": "",
+                            #"order_by": temp_profile[j]["charts"][m]["order_by"],
                             #"custom.statistics.subquery.topk": dimension_temp_json,
                             "series_limit": temp_profile[j]["charts"][m]["row_limit"],
                             "drilldown_limit": None,
@@ -926,11 +927,14 @@ class DataTranslation:
                             }
                         }
                     else:
+                        order_by_tmp = temp_profile[j]["charts"][m]["order_by"]
+                        if temp_profile[j]["charts"][m]["visualization_type"].lower() == "line":
+                            order_by_tmp = ""
                         chart_tmp = {
                                     "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
                                     "metrics": metrics_tmp,
                                     "dimensions": dimensions_tmp,
-                                    "order_by": temp_profile[j]["charts"][m]["order_by"],
+                                    "order_by": order_by_tmp,
                                     #"order_by": None,#为适配后面API Metrics的Label随机生成,此处order_by设置为None
                                     "limit": temp_profile[j]["charts"][m]["row_limit"],
                                     "drilldown_limit": None,
