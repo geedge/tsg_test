@@ -19,12 +19,16 @@ class DataTranslation:
                 if "application" in data["condition"].keys() and len(data["condition"]["application"]) > 0:
                     for app_index in range(len(data["condition"]["application"])):
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
+                if "ip_protocol" in data["condition"].keys() :
+                    temp_test_data["ip_protocol"] = data["condition"]["ip_protocol"]
             if key in {"action_parameter", "profile"}:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
         if len(temp_test_data["obj_condition"]) > 0:
             data["obj_condition"] = temp_test_data["obj_condition"]
-        if len(temp_test_data["application"]) > 0:
+        if len(temp_test_data["application"]) >= 0:
             data["application"] = temp_test_data["application"]
+        if "ip_protocol" in data["condition"].keys() and len(temp_test_data["ip_protocol"]) >= 0:
+            data["ip_protocol"] = temp_test_data["ip_protocol"]
         if len(temp_test_data["profile_condition"]) > 0:
             data["profile_condition"] = temp_test_data["profile_condition"]
         data["do_log_1"] = temp_test_data["do_log_1"]
@@ -865,7 +869,7 @@ class DataTranslation:
                     for x in range(len(temp_profile[i]["service_functions"])):
                         temp["sf_condition"][x]["name"] = temp_profile[i]["service_functions"][x]["name"]
                         temp["sf_condition"][x]["device_group"]["tag"] = temp_profile[i]["service_functions"][x]["device_group"].split(":")[0].lower()
-                        temp["sf_condition"][x]["device_group"]["value"] = temp_profile[i]["service_functions"][x]["device_group"].split(":")[1]
+                        temp["sf_condition"][x]["device_group"]["value"] = temp_profile[i]["service_functions"][x]["device_group"].split(":")[1].lower()
                         if temp_profile[i]["service_functions"][x]["connectivity"].split(":")[0] == "VXLAN-G":
                             temp["sf_condition"][x]["connectivity"]["method"] = "vxlan_g"
                             temp["sf_condition"][x]["connectivity"]["dest_ip"] = temp_profile[i]["service_functions"][x]["connectivity"].split(":")[1]

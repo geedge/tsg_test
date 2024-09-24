@@ -570,6 +570,8 @@ class CreateProfile:
         sf_template_dict["vsys_id"] = vsys_id
         sf_template_dict["service_function"]["vsys_id"] = vsys_id
         sf_template_dict["service_function"]["name"] = sf_post_data["name"]
+        sf_template_dict["service_function"]["device_group"]["tag"] = sf_post_data["device_group"]["tag"]
+        sf_template_dict["service_function"]["device_group"]["value"] = sf_post_data["device_group"]["value"]
         sf_template_dict["service_function"]["connectivity"]["method"] = sf_post_data["connectivity"]["method"]
         sf_template_dict["service_function"]["admin_status"] = sf_post_data["admin_status"]
         if sf_post_data["connectivity"]["method"] == "vxlan_g":
