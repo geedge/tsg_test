@@ -950,7 +950,7 @@ class SecurityGenerator:
             template_path = {}
             template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
             template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-
+            template_path["profile_dns_record_template"] = parameter["path"] + "/template/profile_dns_record_template.json"
             # 添加测试过程中涉及的response pages
             if "profile_condition" in test_data and len(test_data["profile_condition"]) > 0:
                 tmp_dir = parameter["root_path"] + "/support/ui_utils/profile/profile_file/"

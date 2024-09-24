@@ -13,6 +13,8 @@ class DeletePolicy:
             vsys_id = parameter["vsys_id"]
             create_ip_ids = cfg_list["create_ip_ids"]
             create_port_ids = cfg_list["create_port_ids"]
+            create_imsi_ids = cfg_list["create_imsi_ids"]
+            create_phone_number_ids = cfg_list["create_phone_number_ids"]
             create_subid_ids = cfg_list["create_subid_ids"]
             create_fqdn_ids = cfg_list["create_fqdn_ids"]
             create_url_ids = cfg_list["create_url_ids"]
@@ -61,6 +63,29 @@ class DeletePolicy:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete port successfully.", flush=True)
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete port failed.", flush=True)
+            if len(create_imsi_ids) > 0:
+                delete_object_template['type'] = "mobile_identity"
+                delete_object_template['ids'] = create_imsi_ids
+                delete_object_template["vsys_id"] = vsys_id
+                url = api_server + "/v1/policy/object"
+                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete imsi successfully.", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete imsi failed.", flush=True)
+            if len(create_phone_number_ids) > 0:
+                delete_object_template['type'] = "mobile_identity"
+                delete_object_template['ids'] = create_phone_number_ids
+                delete_object_template["vsys_id"] = vsys_id
+                url = api_server + "/v1/policy/object"
+                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete phone number successfully.", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete phone number failed.", flush=True)
+                    
             if len(create_subid_ids) > 0:
                 delete_object_template['type'] = "subscriberid"
                 delete_object_template['ids'] = create_subid_ids
@@ -224,7 +249,7 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete run script failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "dns_record": # 删除dns_record
                         profile_id = create_profile_ids[del_porfile_index]["id"]
-                        url = "{}/v1/policy/profile/run_script".format(api_server)
+                        url = "{}/v1/policy/profile/dns_record".format(api_server)
                         del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
                         response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
                         assert response.status_code == 200

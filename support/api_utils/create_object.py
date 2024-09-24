@@ -14,6 +14,8 @@ class CreateObject:
     def __init__(self):
         self.ip_ids = []
         self.port_ids = []
+        self.imsi_ids = []
+        self.phone_number_ids = []
         self.subid_ids = []
         self.fqdn_ids = []
         self.flag_ids = []
@@ -52,7 +54,7 @@ class CreateObject:
                 for i in range(repeat_time):
                     index = i + 1
                     objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, test_subcriber_id, vsys_id, index, repeat_time)
-                    if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT"]:
+                    if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT", "ATTR_GTP_IMSI", "ATTR_GTP_PHONE_NUMBER"]:
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
                     elif attribute_name in ["ATTR_DESTINATION_IP", "ATTR_DESTINATION_PORT", "ATTR_DESTINATION_GEO_COUNTRY", "ATTR_SERVER_FQDN"]:
@@ -115,6 +117,8 @@ class CreateObject:
         condition_ids_by_api_dict["ip_ids"] = self.ip_ids
         condition_ids_by_api_dict["subid_ids"] = self.subid_ids
         condition_ids_by_api_dict["port_ids"] = self.port_ids
+        condition_ids_by_api_dict["imsi_ids"] = self.imsi_ids
+        condition_ids_by_api_dict["phone_number_ids"] = self.phone_number_ids
         condition_ids_by_api_dict["fqdn_ids"] = self.fqdn_ids
         condition_ids_by_api_dict["url_ids"] = self.url_ids
         condition_ids_by_api_dict["flag_ids"] = self.flag_ids
@@ -487,11 +491,19 @@ class CreateObject:
             elif is_repeat == 1 and obj_type == 'ip':
                 self.ip_ids = []
                 
-            obj_type = obj_template_dict['object']['type'] 
+            obj_type = obj_template_dict['object']['type']
+            if "sub_type" in obj_template_dict['object']:
+                object_sub_type = obj_template_dict['object']['sub_type']
+            else:
+                object_sub_type = ''
             if obj_type == 'ip':
                 self.ip_ids = self.handle_ids(object_ids, self.ip_ids)
             elif obj_type == 'port':
                 self.port_ids = self.handle_ids(object_ids, self.port_ids)
+            elif obj_type == 'mobile_identity' and object_sub_type == "imsi":
+                self.imsi_ids = self.handle_ids(object_ids, self.imsi_ids)
+            elif obj_type == 'mobile_identity' and object_sub_type == "phone_number":
+                self.phone_number_ids = self.handle_ids(object_ids, self.phone_number_ids)
             elif obj_type == 'subscriberid':
                 self.subid_ids = self.handle_ids(object_ids, self.subid_ids)
             elif obj_type == 'fqdn':

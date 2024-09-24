@@ -130,6 +130,57 @@ class DataTranslation:
                     data["code_1"] = data["condition"]["sub_action"][0]["code"]
                     if "action_parameter" not in data and data["code_1"] == 200:
                             data["message_1"] = data["condition"]["sub_action"][0]["content"]
+                elif data["condition"]["sub_action"][0]["type"] == "redirect":
+                    data["method_1"] = "redirect"
+                    if data["condition"]["application"][0]["name"] == "http":
+                        data["code_1"] = 303
+                        data["to_1"] = data["condition"]["sub_action"][0]["to_url"]
+                    elif data["condition"]["application"][0]["name"] == "dns":
+                        if len(data["profile"]) == 0:
+                            resolution = []
+                            resolution_dict = {}
+                            answer = []
+                            answer_dict = {}
+                            for resolution_item in data["condition"]["sub_action"][0]["resolution"]:
+                                resolution_dict["qtype"] = resolution_item["qtype"]
+                                for answer_item in resolution_item["answer"]:
+                                    answer_dict["atype"] = answer_item["atype"]
+                                    answer_dict["value"] = answer_item["answer_value"]
+                                    ttl_range = answer_item["ttl"]
+                                    ttl_split = ttl_range.split('-')
+                                    answer_dict["ttl"] = {}
+                                    answer_dict["ttl"]["min"] = int(ttl_split[0])
+                                    answer_dict["ttl"]["max"] = int(ttl_split[1])
+                                    answer.append(copy.deepcopy(answer_dict))
+                                resolution_dict["answer"] = answer
+                        else:
+                            resolution = []
+                            resolution_dict = {}
+                            answer = []
+                            answer_dict = {}
+                            # resolution 部分
+                            for resolution_item in data["condition"]["sub_action"][0]["resolution"]:
+                                resolution_dict["qtype"] = resolution_item["qtype"]
+                                for answer_item in resolution_item["answer"]:
+                                    answer_dict["atype"] = answer_item["atype"]
+                                    answer_dict["record_id"] = ""
+                                    answer_dict["selected_num"] = 1
+                                    ttl_range = answer_item["ttl"]
+                                    ttl_split = ttl_range.split('-')
+                                    answer_dict["ttl"] = {}
+                                    answer_dict["ttl"]["min"] = int(ttl_split[0])
+                                    answer_dict["ttl"]["max"] = int(ttl_split[1])
+                                    answer.append(copy.deepcopy(answer_dict))
+                                resolution_dict["answer"] = answer
+                        resolution.append(copy.deepcopy(resolution_dict))
+                        data["resolution_1"] = resolution
+                        # profile 部分
+                        data["profile_condition_1"] = []
+                        data["profile_condition_1"].append({})
+                        data["profile_condition_1"][0]["profile_type"] = "dns_record"
+                        data["profile_condition_1"][0]["type"] = data["profile"][0]["type"]
+                        data["profile_condition_1"][0]["value"] = data["profile"][0]["items"][0]
+
         return data
     
     def push_object_data(self, data):
@@ -339,6 +390,52 @@ class DataTranslation:
                         add_item_dict["port"] = v[i]["item"][u]["item_value"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     object.append(copy.deepcopy(temp))
+            elif k == "device":
+                for i in range(len(v)):
+                    if v[i]["item"][0]["item_type"] == "imsi":
+                        temp = {
+                            "name": v[i]["name"],
+                            "attribute_name": "ATTR_GTP_IMSI",
+                            "object_type": "mobile_identity",
+                            "object_sub_type": "imsi",
+                            "is_negate": 0,
+                            "object_list": [
+                                {
+                                    "add_item_list": [
+                                    ]
+                                }
+                            ]
+                        }
+                        for u in range(len(v[i]["item"])):
+                            # 添加多个item
+                            add_item_dict = {
+                                "keyword_array": []
+                            }
+                            add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        object.append(copy.deepcopy(temp))
+                    if v[i]["item"][0]["item_type"] == "phone_number":
+                        temp = {
+                            "name": v[i]["name"],
+                            "attribute_name": "ATTR_GTP_PHONE_NUMBER",
+                            "object_type": "mobile_identity",
+                            "object_sub_type": "phone_number",
+                            "is_negate": 0,
+                            "object_list": [
+                                {
+                                    "add_item_list": [
+                                    ]
+                                }
+                            ]
+                        }
+                        for u in range(len(v[i]["item"])):
+                            # 添加多个item
+                            add_item_dict = {
+                                "keyword_array": []
+                            }
+                            add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        object.append(copy.deepcopy(temp))
             elif k == "server_fqdn":
                 for i in range(len(v)):
                     temp = {
