@@ -12,7 +12,6 @@ from threading import Thread
 
 class Verification:
     def verification(self, driver, parameter, test_data, cfg_list, test_rule_element_position):
-        #return (True, True, True, "", "")
         try:
             my_driver = driver
             script_type = parameter["script_type"]
