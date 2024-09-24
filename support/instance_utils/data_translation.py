@@ -727,8 +727,11 @@ class DataTranslation:
                         metrics_tmp.append(metric_tmp)
 
                     dimensions_tmp = []
+                    chart_tmp = {}
+                    series_limit_flag = False
                     if "dimensions" in temp_profile[j]["charts"][m].keys():
                         for y in temp_profile[j]["charts"][m]["dimensions"]:
+                            series_limit_flag = True
                             dimension_array_tmp = []
                             dimension_array_tmp.append(all_dimensions[y])
                             dimension_tmp = {
@@ -744,19 +747,41 @@ class DataTranslation:
                                 "is_drilldown": 0
                             }
                             dimensions_tmp.append(copy.deepcopy(dimension_tmp))
-                    chart_tmp = {
-                                "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
-                                "metrics": metrics_tmp,
-                                "dimensions": dimensions_tmp,
-                                "order_by": temp_profile[j]["charts"][m]["order_by"],
-                                #"order_by": None,#为适配后面API Metrics的Label随机生成,此处order_by设置为None
-                                "limit": temp_profile[j]["charts"][m]["row_limit"],
-                                "drilldown_limit": None,
-                                "threshold": {
-                                    "in_bytes": temp_profile[j]["charts"][m]["min_in_size"],
-                                    "out_bytes": temp_profile[j]["charts"][m]["min_out_size"]
-                                }
+                            #dimension_temp_json = {
+                            #            "dimensions": [
+                            #                all_dimensions[temp_profile[j]["charts"][m]["dimensions"][0]]
+                            #            ],
+                            #            "metric": all_dimensions[temp_profile[j]["charts"][m]["dimensions"][0]],
+                            #            "limit": temp_profile[j]["charts"][m]["row_limit"],
+                            #        }
+                    if temp_profile[j]["charts"][m]["visualization_type"].lower() == "line" and series_limit_flag == True:
+                        chart_tmp = {
+                            "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
+                            "metrics": metrics_tmp,
+                            "dimensions": dimensions_tmp,
+                            "order_by": temp_profile[j]["charts"][m]["order_by"],
+                            #"custom.statistics.subquery.topk": dimension_temp_json,
+                            "series_limit": temp_profile[j]["charts"][m]["row_limit"],
+                            "drilldown_limit": None,
+                            "threshold": {
+                                "in_bytes": temp_profile[j]["charts"][m]["min_in_size"],
+                                "out_bytes": temp_profile[j]["charts"][m]["min_out_size"]
                             }
+                        }
+                    else:
+                        chart_tmp = {
+                                    "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
+                                    "metrics": metrics_tmp,
+                                    "dimensions": dimensions_tmp,
+                                    "order_by": temp_profile[j]["charts"][m]["order_by"],
+                                    #"order_by": None,#为适配后面API Metrics的Label随机生成,此处order_by设置为None
+                                    "limit": temp_profile[j]["charts"][m]["row_limit"],
+                                    "drilldown_limit": None,
+                                    "threshold": {
+                                        "in_bytes": temp_profile[j]["charts"][m]["min_in_size"],
+                                        "out_bytes": temp_profile[j]["charts"][m]["min_out_size"]
+                                    }
+                                }
                     charts_tmp.append(chart_tmp)
 
                 temp = {
