@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "in_bytes+out_bytes:SUM:bytes"
+                            "sent_bytes+received_bytes:SUM:bytes"
                           ],
                           "dimensions": [
                             "http_host"
