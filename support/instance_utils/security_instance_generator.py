@@ -238,6 +238,40 @@ class SecurityGenerator:
                         "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
                     }
                 }
+                test_http_signature_object_element_position = {
+                    "page_jump": {
+                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_httpSignature_posId
+                    },
+                    "create": {
+                        "objectListPage_createButton_posId": httpSignatureObjectListPage_createButton_posId,
+                        "objectListPage_dropDown_createButton_posId": httpSignatureObjectListPage_dropDown_createButton_posId,
+                        "objectPage_inputName_posXpath": httpSignatureObjectPage_inputName_posXpath,
+                        "objectPage_addItem_posId": httpSignatureObjectPage_addItem_posId,
+                        "objectPage_item_key_dropDown_posXpath": httpSignatureObjectPage_item_key_dropDown_posXpath,
+                        "objectPage_item_key_dropDown_select_posXpath": httpSignatureObjectPage_item_key_dropDown_select_posXpath,
+                        "objectPage_item_value_select_posXpath": httpSignatureObjectPage_item_value_select_posXpath,
+                        "objectPage_inputItem_posXpath": httpSignatureObjectPage_inputItem_posXpath,
+                        "objectPage_item_value_plus_posXpath": httpSignatureObjectPage_item_value_plus_posXpath,
+                        "objectPage_button_saveItem_posXpath": httpSignatureObjectPage_button_saveItem_posXpath,
+                        "objectPage_okButton_posId": httpSignatureObjectPage_okButton_posId,
+                        "objectPage_okButton_warningYes_posXpath": httpSignatureObjectPage_okButton_warningYes_posXpath
+                    },
+                    "search": {
+                        "objectListPage_searchLabel_posId": httpSignatureObjectListPage_searchLabel_posId,
+                        "objectListPage_searchLabel_selectName_posXpath": httpSignatureObjectListPage_searchLabel_selectName_posXpath,
+                        "objectListPage_tableTbody_posXpath": httpSignatureObjectListPage_tableTbody_posXpath
+                    },
+                    "delete": {
+                        "objectListPage_allSelect_posXpath": httpSignatureObjectListPage_allSelect_posXpath,
+                        "objectListPage_deleteButton_posId": httpSignatureObjectListPage_deleteButton_posId,
+                        "objectListPage_deleteButton_warningYes_posXpath": httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+                    }
+                }
                 test_port_object_element_position = {
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,

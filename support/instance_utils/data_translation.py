@@ -109,82 +109,87 @@ class DataTranslation:
                 data["user_region"] = user_region
         elif policy_type == "security":
             if data["rule_action"] == "deny":
-                if data["condition"]["sub_action"][0]["type"] == "drop":
-                    data["method_1"] = "drop"
-                    if data["condition"]["sub_action"][0]["send_tcp_rst"] == False:
-                        data["send_tcp_reset_1"] = 0
-                    if data["condition"]["sub_action"][0]["send_icmp_unreachable"] == True:
-                        data["send_icmp_unreachable_1"] = 1
-                elif data["condition"]["sub_action"][0]["type"] == "rate_limit":
-                    data["method_1"] = "rate_limit"
-                    data["bps_1"] = data["condition"]["sub_action"][0]["rate_value"]
-                elif data["condition"]["sub_action"][0]["type"] == "tamper":
-                    data["method_1"] = "tamper"
-                elif data["condition"]["sub_action"][0]["type"] == "block":
-                    if data["condition"]["application"][0]["name"] == "mail":
-                        data["method_1"] = "block"
-                        data["code_1"] = data["condition"]["sub_action"][0]["code"]
-                    elif data["condition"]["application"][0]["name"] == "http":
-                        data["method_1"] = "block"
-                        data["code_1"] = data["condition"]["sub_action"][0]["code"]
-                        if "action_parameter" not in data:
-                            data["message_1"] = data["condition"]["sub_action"][0]["content"]
-                elif data["condition"]["sub_action"][0]["type"] == "alert":
-                    data["method_1"] = "alert"
-                    data["code_1"] = data["condition"]["sub_action"][0]["code"]
-                    if "action_parameter" not in data and data["code_1"] == 200:
-                            data["message_1"] = data["condition"]["sub_action"][0]["content"]
-                elif data["condition"]["sub_action"][0]["type"] == "redirect":
-                    data["method_1"] = "redirect"
-                    if data["condition"]["application"][0]["name"] == "http":
-                        data["code_1"] = 303
-                        data["to_1"] = data["condition"]["sub_action"][0]["to_url"]
-                    elif data["condition"]["application"][0]["name"] == "dns":
-                        if len(data["profile"]) == 0:
-                            resolution = []
-                            resolution_dict = {}
-                            answer = []
-                            answer_dict = {}
-                            for resolution_item in data["condition"]["sub_action"][0]["resolution"]:
-                                resolution_dict["qtype"] = resolution_item["qtype"]
-                                for answer_item in resolution_item["answer"]:
-                                    answer_dict["atype"] = answer_item["atype"]
-                                    answer_dict["value"] = answer_item["answer_value"]
-                                    ttl_range = answer_item["ttl"]
-                                    ttl_split = ttl_range.split('-')
-                                    answer_dict["ttl"] = {}
-                                    answer_dict["ttl"]["min"] = int(ttl_split[0])
-                                    answer_dict["ttl"]["max"] = int(ttl_split[1])
-                                    answer.append(copy.deepcopy(answer_dict))
-                                resolution_dict["answer"] = answer
-                        else:
-                            resolution = []
-                            resolution_dict = {}
-                            answer = []
-                            answer_dict = {}
-                            # resolution 部分
-                            for resolution_item in data["condition"]["sub_action"][0]["resolution"]:
-                                resolution_dict["qtype"] = resolution_item["qtype"]
-                                for answer_item in resolution_item["answer"]:
-                                    answer_dict["atype"] = answer_item["atype"]
-                                    answer_dict["record_id"] = ""
-                                    answer_dict["selected_num"] = 1
-                                    ttl_range = answer_item["ttl"]
-                                    ttl_split = ttl_range.split('-')
-                                    answer_dict["ttl"] = {}
-                                    answer_dict["ttl"]["min"] = int(ttl_split[0])
-                                    answer_dict["ttl"]["max"] = int(ttl_split[1])
-                                    answer.append(copy.deepcopy(answer_dict))
-                                resolution_dict["answer"] = answer
-                        resolution.append(copy.deepcopy(resolution_dict))
-                        data["resolution_1"] = resolution
-                        # profile 部分
-                        data["profile_condition_1"] = []
-                        data["profile_condition_1"].append({})
-                        data["profile_condition_1"][0]["profile_type"] = "dns_record"
-                        data["profile_condition_1"][0]["type"] = data["profile"][0]["type"]
-                        data["profile_condition_1"][0]["value"] = data["profile"][0]["items"][0]
+                if len(data["condition"]["sub_action"])>0:
+                    if data["condition"]["sub_action"][0]["type"] == "drop":
+                        data["method_1"] = "drop"
+                        if data["condition"]["sub_action"][0]["send_tcp_rst"] == False:
+                            data["send_tcp_reset_1"] = 0
+                        if data["condition"]["sub_action"][0]["send_icmp_unreachable"] == True:
+                            data["send_icmp_unreachable_1"] = 1
+                    elif data["condition"]["sub_action"][0]["type"] == "rate_limit":
+                        data["method_1"] = "rate_limit"
+                        bps = int(float(data["condition"]["sub_action"][0]["rate_value"])*1000)
+                        data["bps_1"] = bps
+                    elif data["condition"]["sub_action"][0]["type"] == "tamper":
+                        data["method_1"] = "tamper"
 
+                    elif data["condition"]["sub_action"][0]["type"] == "block":
+                        if data["condition"]["application"][0]["name"] == "mail":
+                            data["method_1"] = "block"
+                            data["code_1"] = data["condition"]["sub_action"][0]["code"]
+                        elif data["condition"]["application"][0]["name"] == "http":
+                            data["method_1"] = "block"
+                            data["code_1"] = data["condition"]["sub_action"][0]["code"]
+                            if "action_parameter" not in data:
+                                data["message_1"] = data["condition"]["sub_action"][0]["content"]
+                    elif data["condition"]["sub_action"][0]["type"] == "alert":
+                        data["method_1"] = "alert"
+                        data["code_1"] = data["condition"]["sub_action"][0]["code"]
+                        if "action_parameter" not in data and data["code_1"] == 200:
+                                data["message_1"] = data["condition"]["sub_action"][0]["content"]
+                    elif data["condition"]["sub_action"][0]["type"] == "redirect":
+                        data["method_1"] = "redirect"
+                        if data["condition"]["application"][0]["name"] == "http":
+                            data["code_1"] = 303
+                            data["to_1"] = data["condition"]["sub_action"][0]["to_url"]
+                        elif data["condition"]["application"][0]["name"] == "dns":
+                            if len(data["profile"]) == 0:
+                                resolution = []
+                                resolution_dict = {}
+                                answer = []
+                                answer_dict = {}
+                                for resolution_item in data["condition"]["sub_action"][0]["resolution"]:
+                                    resolution_dict["qtype"] = resolution_item["qtype"]
+                                    for answer_item in resolution_item["answer"]:
+                                        answer_dict["atype"] = answer_item["atype"]
+                                        answer_dict["value"] = answer_item["answer_value"]
+                                        ttl_range = answer_item["ttl"]
+                                        ttl_split = ttl_range.split('-')
+                                        answer_dict["ttl"] = {}
+                                        answer_dict["ttl"]["min"] = int(ttl_split[0])
+                                        answer_dict["ttl"]["max"] = int(ttl_split[1])
+                                        answer.append(copy.deepcopy(answer_dict))
+                                    resolution_dict["answer"] = answer
+                            else:
+                                resolution = []
+                                resolution_dict = {}
+                                answer = []
+                                answer_dict = {}
+                                # resolution 部分
+                                for resolution_item in data["condition"]["sub_action"][0]["resolution"]:
+                                    resolution_dict["qtype"] = resolution_item["qtype"]
+                                    for answer_item in resolution_item["answer"]:
+                                        answer_dict["atype"] = answer_item["atype"]
+                                        answer_dict["record_id"] = ""
+                                        answer_dict["selected_num"] = 1
+                                        ttl_range = answer_item["ttl"]
+                                        ttl_split = ttl_range.split('-')
+                                        answer_dict["ttl"] = {}
+                                        answer_dict["ttl"]["min"] = int(ttl_split[0])
+                                        answer_dict["ttl"]["max"] = int(ttl_split[1])
+                                        answer.append(copy.deepcopy(answer_dict))
+                                    resolution_dict["answer"] = answer
+                                # profile 部分
+                                data["profile_condition_1"] = []
+                                data["profile_condition_1"].append({})
+                                data["profile_condition_1"][0]["profile_type"] = "dns_record"
+                                data["profile_condition_1"][0]["type"] = data["profile"][0]["type"]
+                                data["profile_condition_1"][0]["value"] = data["profile"][0]["items"][0]
+                            resolution.append(copy.deepcopy(resolution_dict))
+                            data["resolution_1"] = resolution
+                else:
+                    if data["condition"]["sub_action_override"] == False:
+                        data["method_1"] = "default"
         return data
     
     def push_object_data(self, data):
@@ -705,7 +710,9 @@ class DataTranslation:
                             for u in range(len(v[i]["item"])):
                                 # 添加多个item
                                 add_item_dict = {
-                                    "keyword_array": []
+                                    "keyword_array": [],
+                                    "is_hexbin": 0,
+                                    "expr_type": 0
                                 }
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
@@ -754,7 +761,7 @@ class DataTranslation:
                             temp["attribute_name"] = "ATTR_FTP_ACCOUNT"
                         if v[i]["items"][0]["item_type"] == "mail_from":
                             temp["attribute_name"] = "ATTR_MAIL_FROM"
-                        if v[i]["items"][0]["item_type"] == "ftp_account":
+                        if v[i]["items"][0]["item_type"] == "mail_to":
                             temp["attribute_name"] = "ATTR_MAIL_TO"
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
@@ -781,6 +788,8 @@ class DataTranslation:
 
                                 ]
                             }
+                        if filter_temp["attribute_name"] == "ATTR_SSL_NO SNI":
+                            filter_temp["attribute_name"] = "ATTR_SSL_NO_SNI"
                         object.append(copy.deepcopy(filter_temp))
 
                     elif v[i]["object_type"] == "fqdn":
