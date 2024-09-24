@@ -748,6 +748,10 @@ class DataTranslation:
                         }
                         if v[i]["items"][0]["item_type"] == "ftp_account":
                             temp["attribute_name"] = "ATTR_FTP_ACCOUNT"
+                        if v[i]["items"][0]["item_type"] == "mail_from":
+                            temp["attribute_name"] = "ATTR_MAIL_FROM"
+                        if v[i]["items"][0]["item_type"] == "ftp_account":
+                            temp["attribute_name"] = "ATTR_MAIL_TO"
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
                             add_item_dict = {
