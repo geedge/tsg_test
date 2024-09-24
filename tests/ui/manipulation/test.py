@@ -368,10 +368,10 @@ if __name__ == '__main__':
     file_endswith = ".py"
 
     # 本地运行所有用例
-    local_run()
+    #local_run()
 
     # 对比MS工具
-    #diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+    diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 生成excle使用数据工具
     #get_excel_formate_from_case(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
