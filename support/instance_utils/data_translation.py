@@ -706,6 +706,28 @@ class DataTranslation:
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
+                        elif v[i]["item"][0]["item_type"] == "ftp_content":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_FTP_CONTENT",
+                                "object_type": "keywords",
+                                "object_sub_type": "keywords",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [],
+                                    }
+                                ]
+                            }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": [],
+                                    "is_hexbin": 0,
+                                    "expr_type": 0
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                            object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "account":
                         temp = {
                             "name": v[i]["name"],
@@ -724,8 +746,8 @@ class DataTranslation:
                                 }
                             ]
                         }
-                        if v[i]["items"][0]["item_type"] == "ftp_url":
-                            temp["attribute_name"] = "ATTR_FTP_URI"
+                        if v[i]["items"][0]["item_type"] == "ftp_account":
+                            temp["attribute_name"] = "ATTR_FTP_ACCOUNT"
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
                             add_item_dict = {
