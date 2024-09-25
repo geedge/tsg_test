@@ -190,6 +190,8 @@ class DataTranslation:
                 else:
                     if data["condition"]["sub_action_override"] == False:
                         data["method_1"] = "default"
+            if data["rule_action"] == "shunt":
+                data["do_log_1"] = 0
         return data
     
     def push_object_data(self, data):
