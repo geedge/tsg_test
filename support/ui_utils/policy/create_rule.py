@@ -115,6 +115,10 @@ class CreateRule:
                 external_port_group_data = test_data["condition"]["external_port_group"]
                 self.add_port(external_port_group_data, "ExternalPort", create_element_position)
 
+            if "sub_id" in test_data["condition"] and len(test_data["condition"]["sub_id"]) != 0:
+                subid_data = test_data["condition"]["sub_id"]
+                self.add_subid(subid_data, "User", create_element_position)
+
             # 添加device
             if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
                 device_data = test_data["condition"]["device"]
@@ -777,7 +781,9 @@ class CreateRule:
             temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(port_condition_type)].format(replaceValue=port_data[z]["name"])
             self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(port_condition_type)]).click()
-            
+
+    add_subid = add_port
+
     def add_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
         # 点add condition的+
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()

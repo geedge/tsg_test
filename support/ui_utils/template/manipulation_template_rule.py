@@ -184,7 +184,21 @@ test_data = \
                 ],
                 "source_geography": [],
                 "destination_geography": [],
-                "sub_id": [],
+                "sub_id": [
+                    {
+                        "name": "manipulation_subid",
+                        "object_type": "subscriberid",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "subscriberid",
+                                "item_value": "$test6493",
+                            }
+                        ]
+                    }
+                ],
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
@@ -197,11 +211,10 @@ test_data = \
                 ],
                 "server_fqdn": [
                     {
-                        "name": "manipulation_fqdn_node",
+                        "name": "manipulation_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
-                        "plus": False,
                         "items": [
                             {
                                 "item_operation": "add",
