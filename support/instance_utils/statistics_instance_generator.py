@@ -256,7 +256,9 @@ class StatisticsInstanceGenerator:
                                 break
                     
             result["ui_result"] = ui_result
-            
+
+            # 清理环境
+            support.ui_utils.env.teardown()
         if parameter["script_type"] == "api" or need_initialization == True:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
 
