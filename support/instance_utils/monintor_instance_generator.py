@@ -76,38 +76,38 @@ class MonitorInstanceGenerator:
             tmp_name_dict["type"] = test_data["policy_type"]
             tmp_name_dict["name"] = test_data["rule_name"]
             self.ui_name_list.append(tmp_name_dict)
-            # 构建source ip 的name list
-            if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
-                object_data = test_data["condition"]["source_ip"]
-                for i in range(len(object_data)):
-                    tmp_name_dict = {}
-                    tmp_name_dict["type"] = object_data[i]['object_type']
-                    tmp_name_dict["name"] = object_data[i]['name']
-                    self.ui_name_list.append(tmp_name_dict)
-            # 构建server fqdn 的name list
-            if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
-                object_data = test_data["condition"]["server_fqdn"]
-                for i in range(len(object_data)):
-                    tmp_name_dict = {}
-                    tmp_name_dict["type"] = test_data["condition"]["server_fqdn"][i]['object_type']
-                    tmp_name_dict["name"] = test_data["condition"]["server_fqdn"][i]['name']
-                    self.ui_name_list.append(tmp_name_dict)
-            # 构建protocol field 的name list
-            if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
-                object_data = test_data["condition"]["protocol_filed"]
-                for i in range(len(object_data)):
-                    # 排除 boolean 类型的 protocol_filed
-                    if object_data[i]['object_type'] == 'boolean':
-                        continue
-                    tmp_name_dict = {}
-                    tmp_name_dict["type"] = test_data["condition"]["protocol_filed"][i]['object_type']
-                    tmp_name_dict["name"] = test_data["condition"]["protocol_filed"][i]['name']
-                    self.ui_name_list.append(tmp_name_dict)
+            # # 构建source ip 的name list
+            # if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
+            #     object_data = test_data["condition"]["source_ip"]
+            #     for i in range(len(object_data)):
+            #         tmp_name_dict = {}
+            #         tmp_name_dict["type"] = object_data[i]['object_type']
+            #         tmp_name_dict["name"] = object_data[i]['name']
+            #         self.ui_name_list.append(tmp_name_dict)
+            # # 构建server fqdn 的name list
+            # if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
+            #     object_data = test_data["condition"]["server_fqdn"]
+            #     for i in range(len(object_data)):
+            #         tmp_name_dict = {}
+            #         tmp_name_dict["type"] = test_data["condition"]["server_fqdn"][i]['object_type']
+            #         tmp_name_dict["name"] = test_data["condition"]["server_fqdn"][i]['name']
+            #         self.ui_name_list.append(tmp_name_dict)
+            # # 构建protocol field 的name list
+            # if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
+            #     object_data = test_data["condition"]["protocol_filed"]
+            #     for i in range(len(object_data)):
+            #         # 排除 boolean 类型的 protocol_filed
+            #         if object_data[i]['object_type'] == 'boolean':
+            #             continue
+            #         tmp_name_dict = {}
+            #         tmp_name_dict["type"] = test_data["condition"]["protocol_filed"][i]['object_type']
+            #         tmp_name_dict["name"] = test_data["condition"]["protocol_filed"][i]['name']
+            #         self.ui_name_list.append(tmp_name_dict)
 
             if "condition" in test_data.keys():
                 for cond_key, cond_value in (test_data["condition"].items()):
                     cond_status = 0
-                    if cond_key == "application":
+                    if cond_key == "application" or cond_key == "ip_protocol" or cond_key =="packet_capture":
                         continue  # 直接跳过
                     cond_key_out = cond_key.replace("_", " ")
                     if len(cond_value) != 0:  # 不为空

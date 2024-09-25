@@ -85,7 +85,6 @@ def run(parameter):
             },
             "token": ""
         }
-
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
