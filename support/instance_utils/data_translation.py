@@ -81,6 +81,13 @@ class DataTranslation:
             elif data["rule_action"] == "replace":
                 replace_parameter_list = data["action_parameter"]["replace_parameter"]
                 user_region = []
+                map_search_in = {
+                    "HTTP Request-URI": "http_req_uri",
+                    "HTTP Request Body": "http_req_body",
+                    "HTTP Response Body": "http_resp_body",
+                    "HTTP Request Header": "http_req_header",
+                    "HTTP Response Header": "http_resp_header"
+                }
                 for i in range(len(replace_parameter_list)):
                     rule_dict = {}
                     regex_name = replace_parameter_list[i]["regex"]
@@ -88,7 +95,8 @@ class DataTranslation:
                         rule_dict["regex_enable"] = 1
                     else:
                         rule_dict["regex_enable"] = 0
-                    rule_dict["search_in"] = replace_parameter_list[i]["search_in"]
+                    search_in = replace_parameter_list[i]["search_in"]
+                    rule_dict["search_in"] = map_search_in[search_in]
                     rule_dict["find"] = replace_parameter_list[i]["find"]
                     rule_dict["replace_with"] = replace_parameter_list[i]["replace_with"]
                     user_region.append(copy.deepcopy(rule_dict))

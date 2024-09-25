@@ -146,6 +146,36 @@ test_subscriberid_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": subscriberiObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+test_apn_object_element_position = {
+    "page_jump":{
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_apn_posId
+    },
+    "create": {
+        "objectListPage_createButton_posId": apnObjectListPage_createButton_posId,
+        "objectListPage_dropDown_createButton_posId": apnObjectListPage_dropDown_createButton_posId,
+        "objectPage_inputName_posXpath": apnObjectPage_inputName_posXpath,
+        "objectPage_addItem_posId": apnObjectPage_addItem_posId,
+        "objectPage_inputItem_posXpath": apnObjectPage_inputItem_posXpath,
+        "objectPage_button_saveItem_posXpath": apnPage_button_saveItem_posXpath,
+        "objectPage_okButton_posId": apnObjectPage_okButton_posId,
+        "objectPage_okButton_warningYes_posXpath": apnObjectPage_okButton_warningYes_posXpath
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": apnObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": apnObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": apnObjectListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": apnObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posId": apnObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_warningYes_posXpath": apnObjectListPage_deleteButton_warningYes_posXpath
+    }
+}
 test_mobile_identity_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -645,6 +675,7 @@ test_manipulation_rule_element_position = {
         "policyRulePage_closeImsi_posXpath": manipulationRulePage_closeImsi_posXpath,
         "policyRulePage_chooseImei_posXpath": policyRulePage_chooseImei_posXpath,
         "policyRulePage_choosePhoneNumber_posXpath": policyRulePage_choosePhoneNumber_posXpath,
+        "policyRulePage_chooseApn_posXpath": policyRulePage_chooseApn_posXpath,
         # Application
         "policyRulePage_addApplication_posXpath": manipulationRulePage_addApplication_posXpath,
         "policyRulePage_searchApplication_posXpath": manipulationRulePage_searchApplication_posXpath,
@@ -1525,6 +1556,8 @@ def get_element_position(key_name):
         element_position_map = test_port_object_element_position
     elif key_name == "sub_id":
         element_position_map = test_subscriberid_object_element_position
+    elif key_name == "apn":
+        element_position_map = test_apn_object_element_position
     elif key_name == "device":
         element_position_map = test_mobile_identity_object_element_position
     elif key_name == "mobile_identity":

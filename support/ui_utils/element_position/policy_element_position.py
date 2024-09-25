@@ -80,6 +80,9 @@ policyRulePage_choosePhoneNumber_posXpath = "//*[@id='tab-phone_number' and cont
 # imei
 policyRulePage_chooseImei_posXpath = "//*[@id='tab-imei' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'IMEI')]"
 
+# apn
+policyRulePage_chooseApn_posXpath = "//*[@id='tab-apn' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'APN')]"
+
 policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
