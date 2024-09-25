@@ -14,6 +14,7 @@ mainPage_secondLevelMenu_url_posId = "Objects_url"
 mainPage_secondLevelMenu_mobileIdentify_posId = "Objects_mobile_identity"
 mainPage_secondLevelMenu_fqdn_posId = "Objects_fqdn"  # 二级菜单 fqdn
 mainPage_secondLevelMenu_subid_posId = "Objects_subscriberid"  # 二级菜单sub id
+mainPage_secondLevelMenu_apn_posId = "Objects_apn"  # 二级菜单apn
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
 mainPage_secondLevelMenu_account_posId = "Objects_account"
 
@@ -167,6 +168,22 @@ subscriberidObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-tabl
 subscriberidObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
 subscriberidObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_subscriberid_Home_App_anonymousComponent"
 subscriberiObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+
+# subid
+apnObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_apn_Home_App_anonymousComponent"
+apnObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_apn_Home_App_anonymousComponent"
+apnObjectPage_inputName_posXpath = "//*[@class='biFangName']//input"
+apnObjectPage_addItem_posId = "temporary_form"
+apnObjectPage_inputItem_posXpath = '//div[@class="edit-row"]//input'
+apnPage_button_saveItem_posXpath = '//div[@class="edit-row"]//div[@class="IconBtn"]//i[contains(class, icon-save)]'
+apnObjectPage_okButton_posId = "OK-_apnDetail_Home_App_anonymousComponent"
+apnObjectPage_okButton_warningYes_posXpath = "//div[@class='el-message-box__wrapper']//button[contains(@class, 'el-button--primary operation-confirm')]//span"
+apnObjectListPage_searchLabel_posId = "select-label"  # 查询框id
+apnObjectListPage_searchLabel_selectName_posXpath = '//li[@id="2-_FilteredSearch_ElRow_Objects_apn_Home_App_anonymousComponent"]'  # 查询Name
+apnObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
+apnObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
+apnObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_apn_Home_App_anonymousComponent"
+apnObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 
 # http signature
 httpSignatureObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_http_signature_Home_App_anonymousComponent"

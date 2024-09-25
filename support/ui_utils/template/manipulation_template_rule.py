@@ -224,6 +224,21 @@ test_data = \
                         ]
                     }
                 ],
+                "apn": [
+                    {
+                        "name": "manipulation_apn",
+                        "object_type": "apn",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "apn",
+                                "item_value": "*.baidu.com",
+                            }
+                        ]
+                    }
+                ],
                 "protocol_filed": [
                     {
                         "name": "manipulation_url",

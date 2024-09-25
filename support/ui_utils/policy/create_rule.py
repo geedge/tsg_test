@@ -171,8 +171,27 @@ class CreateRule:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
-                    elif device_data[t]["object_type"] == "apn":
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+            # 添加apn
+            if "apn" in test_data["condition"] and len(test_data["condition"]["apn"]) != 0:
+                device_data = test_data["condition"]["apn"]
+                for t in range(len(device_data)):
+                    if device_data[t]['items'][0]["item_type"] == "apn":
+                        # 点add condition的+
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        # 都属于device，所以调用apn的定位即可
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                        # 点device的+
+                        temp_element_position = create_element_position["policyRulePage_addImsi_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 选中apn
+                        temp_element_position = create_element_position["policyRulePage_chooseApn_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 通过apn搜索并选中(与imsi共用)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
 
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
