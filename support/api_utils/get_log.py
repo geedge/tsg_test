@@ -107,8 +107,10 @@ class GetLog:
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare log with test data.", flush=True)
             temp_log_result_list = []
             if len(log_list) > 0 and len(log_query_params) > 0:
+                time = -1
                 for log in log_list:
                     for log_query_param in log_query_params:
+                        time += 1
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         # 传入值与日志的值相等时验证
@@ -285,8 +287,10 @@ class GetLog:
                             start_time_value = log["start_time"]
                             end_time_value = log["end_time"]
                             time_difference = end_time_value - start_time_value
-                            exp_sessions_count = log["sessions"]
-                            self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference, exp_sessions_count)
+
+                            deny_session_count = self.get_dos_deny_sessions_count(token,api_host,start_time,end_time,vsys_id,test_data)
+                            exp_sessions_count = output["total_syn_pkt"] - deny_session_count
+                            self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference, exp_sessions_count,test_data,time)
 
                         else:
                             temp_log_result_list.append(False)
@@ -311,7 +315,41 @@ class GetLog:
             #     log_result = False
         return log_result
 
-    def validate_dos_values(self,log, query_field_key, query_value, temp_log_result_list,time_difference,exp_sessions_count):
+    def get_dos_deny_sessions_count(self, token,  api_host, start_time, end_time, v_id, test_data):
+        headers = {'Content-Type': 'application/json', 'Authorization': token}
+        log_condition = {
+            "page_no": 1,
+            "page_size": 20,
+            "source": "session_record",
+            "columns": None,
+            "start_time": "",
+            "end_time": "",
+            "filter": "",
+            "vsys_id": 1
+        }
+        schema_type = "session_record"
+        log_condition_dict = json.loads(json.dumps(log_condition))
+        fields = self.get_log_schema(token, schema_type, api_host, v_id)
+        log_condition_dict['columns'] = fields
+        log_condition_dict['start_time'] = start_time
+        log_condition_dict['end_time'] = end_time
+        log_condition_dict['vsys_id'] = v_id
+        log_condition_dict['source'] = "session_record"
+        log_condition_dict['identifier_name'] = "session-record-list"
+        log_condition_dict['execution_mode'] = 'oneshot'
+
+        log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts=1"
+
+        url = api_host + "/v1/log/query"
+        response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
+        assert response.status_code == 200
+        log_list = json.loads(response.text)
+        log_list = log_list['data']['result']
+        dos_deny_sessions_count = len(log_list)
+        return dos_deny_sessions_count
+
+
+    def validate_dos_values(self,log, query_field_key, query_value, temp_log_result_list,time_difference,exp_sessions_count,test_data,time):
         exp_packets_count = exp_sessions_count * 4
         exp_bytes_count = exp_packets_count * 173.5
         #attack_type和sessions的值 是 query_value和接口返回的值比较
@@ -322,20 +360,23 @@ class GetLog:
                 temp_log_result_list.append(False)
 
         elif query_field_key == "sessions":
-            if exp_sessions_count == query_value:
+            if exp_sessions_count == log[query_field_key]:
                 temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key] #time,第几次循环，则给log_query_param中的第几次-1的数赋值
             else:
                 temp_log_result_list.append(False)
         #其余值比较：基于sessions计算出的值和接口返回的值比较
         elif query_field_key == "packets":
             if exp_packets_count == log[query_field_key]:
                 temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
 
         elif query_field_key == "bytes":
             if exp_bytes_count == log[query_field_key]:
                 temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
 
@@ -344,6 +385,7 @@ class GetLog:
 
             if bits_rate_value == log[query_field_key]:
                 temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
 
@@ -352,6 +394,7 @@ class GetLog:
 
             if int(session_rate) == log[query_field_key]:
                 temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
 
@@ -360,15 +403,18 @@ class GetLog:
 
             if int(packet_rate) == log[query_field_key]:
                 temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"]= log[query_field_key]
             else:
                 temp_log_result_list.append(False)
 
         elif query_field_key in {"basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets",
                                  "basic_packet_rate", "basic_bytes", "basic_bit_rate"}:
-            # 基本类型的校验暂未添加
+            # 基本攻击类型的校验暂未添加：
+            # 1个session 对应 1个packet;1个packet对应66个Byte
             temp_log_result_list.append(True)
         else:
             temp_log_result_list.append(False)
+        print(temp_log_result_list)
         return temp_log_result_list
 
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
