@@ -50,6 +50,40 @@ class ServiceChainingInstanceGenerator:
         test_data["token"] = token
         self.test_data["token"] = token
 
+        # 无需创建的condition
+        service_chaining_no_create_list = ["application", "ip_protocol","sub_action_override"]
+        # name_list汇总
+        temp_name_list = []
+        policy_name_dict = {}
+        policy_name_dict["type"] = test_data["policy_type"]
+        policy_name_dict["name"] = test_data["rule_name"]
+        temp_name_list.append(policy_name_dict)
+        for con_key, conditions in test_data["condition"].items():  
+            if conditions:  # 确保conditions不为空  
+                if con_key in service_chaining_no_create_list:
+                    continue
+                for condition in conditions:  
+                    # 为每个条件项创建一个新的字典  
+                    obj_name_dict = {  
+                        "type": condition["object_type"],  
+                        "name": condition["name"]  
+                    }  
+                    temp_name_list.append(obj_name_dict) 
+        for sff in test_data["profile"]:
+            sff_name_dict = {
+                "type": "service_function_forwarder",
+                "name": sff["name"]
+            }
+            temp_name_list.append(sff_name_dict) 
+            for sf in sff["service_functions"]:
+                    sf_name_dict = {
+                "type": "service_function",
+                "name": sf["name"]
+            }
+            temp_name_list.append(sf_name_dict)
+        self.ui_name_list = temp_name_list
+        self.api_name_list = temp_name_list
+
         need_initialization = False
         if len(parameter["script_type"]) == 0:
             need_initialization = True
@@ -68,39 +102,6 @@ class ServiceChainingInstanceGenerator:
             if test_data["targeted_traffic"] == "raw" and (len(test_data["condition"]["source_ip"]) != 0 or len(test_data["condition"]["destination_ip"]) != 0):
                 random_ip = GenerateRandomIP(driver)
                 test_data = random_ip.generate_random_ip(test_data,run_env=parameter["env"])
-                
-            # 无需创建的condition
-            service_chaining_no_create_list = ["application", "ip_protocol","sub_action_override"]
-            # name_list汇总
-            temp_name_list = []
-            policy_name_dict = {}
-            policy_name_dict["type"] = test_data["policy_type"]
-            policy_name_dict["name"] = test_data["rule_name"]
-            temp_name_list.append(policy_name_dict)
-            for con_key, conditions in test_data["condition"].items():  
-                if conditions:  # 确保conditions不为空  
-                    if con_key in service_chaining_no_create_list:
-                        continue
-                    for condition in conditions:  
-                        # 为每个条件项创建一个新的字典  
-                        obj_name_dict = {  
-                            "type": condition["object_type"],  
-                            "name": condition["name"]  
-                        }  
-                        temp_name_list.append(obj_name_dict) 
-            for sff in test_data["profile"]:
-                sff_name_dict = {
-                    "type": "service_function_forwarder",
-                    "name": sff["name"]
-                }
-                temp_name_list.append(sff_name_dict) 
-                for sf in sff["service_functions"]:
-                     sf_name_dict = {
-                    "type": "service_function",
-                    "name": sf["name"]
-                }
-                temp_name_list.append(sf_name_dict)
-            self.ui_name_list = temp_name_list
             
             test_service_function_forwarder_profile_element_position = {
                 "page_jump":{
@@ -358,14 +359,15 @@ class ServiceChainingInstanceGenerator:
             # 数据转换，适配API的test_data
             translation = DataTranslation()
             test_data = translation.data_translation(parameter, test_data)
+            # print(test_data)
 
             # 添加测试过程中涉及的template
             template_path = {}
-            template_path["rule_template"] = parameter["root_path"] + "/tests/api/template/rule_template.json"
-            template_path["object_template"] = parameter["root_path"] + "/tests/api/template/object_template.json"
-            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/tests/api/template/pre_intercept_template.json"
-            template_path["profile_sf_template"] =  parameter["root_path"] + "/tests/api/template/profile_sf_template.json"
-            template_path["profile_sff_template"] =  parameter["root_path"] + "/tests/api/template/profile_sff_template.json"
+            template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
+            template_path["object_template"] = parameter["root_path"] + "/support/api_utils/template/object_template.json"
+            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/support/api_utils/template/pre_intercept_template.json"
+            template_path["profile_sf_template"] =  parameter["root_path"] + "/support/api_utils/template/profile_sf_template.json"
+            template_path["profile_sff_template"] =  parameter["root_path"] + "/support/api_utils/template/profile_sff_template.json"
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()

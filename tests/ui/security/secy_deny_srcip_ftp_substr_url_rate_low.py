@@ -73,7 +73,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "url",
+                                "item_type": "ftp_url",
                                 "item_value": "ftp://192.168.40.206/autoFtp/english.txt"
                             }
                         ],
@@ -123,29 +123,43 @@ def run(parameter):
         update.write_result(parameter, result, exception_result)
             
 if __name__ == '__main__':
+    # ui
+    # parameter = {
+    #     "username": "hebingning",
+    #     "password": "hbn66AAA",
+    #     "test_pc_ip": "192.168.64.65",
+    #     "test_subcriber_id": "test6776",
+    #     "api_server": "http://192.168.44.72",
+    #     "debug_flag": "local",
+    #     "script_type": "ui",
+    #     "env": "tsgx",
+    #     "vsys_id": 1,
+    #     "is_log": 1,
+    #     "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+    #     "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+    #     "module_name": "security",
+    #     "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+    # }
+    # run(parameter)
+    # api
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
+
     parameter = {
         "username": "hebingning",
         "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.65",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.93",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
-        "test_phone_number": "11111",
-        "test_imsi": "fasfsf",
         "debug_flag": "local",
-        "script_type": "ui",
+        "script_type": "api",  # api  ui  空字符串
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
-        "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "root_path": workdir,
+        "path": workdir + "/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
-    """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
-    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
-
-    # 执行如下命令生成测试报告（自动打开浏览器）：
-    allure serve allure
-    """

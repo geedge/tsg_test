@@ -38,7 +38,7 @@ def run(parameter):
                             "add_item_list": [
                                 {
                                     "keyword_array": [
-                                        "/app/tests/api/profile_used_to_create_rule/fqdn_import.txt"
+                                        "/app/tests/api/preset_profile/fqdn_import.txt"
                                     ]
                                 }
                             ]

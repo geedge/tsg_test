@@ -99,15 +99,15 @@ class CreateProfile:
                 "source_columns": "server_port",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "HTTP.Host": {
+            "HTTP Host": {
                 "source_columns": "http_host",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "SSL.JA3 Hash": {
+            "SSL JA3 Hash": {
                 "source_columns": "ssl_ja3_hash",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "SSL.SNI": {
+            "SSL SNI": {
                 "source_columns": "ssl_sni",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
@@ -384,7 +384,6 @@ class CreateProfile:
             "__time": "__time",
             "Client IP Object List": "client_ip_object_list",
             "Server IP Object List": "server_ip_object_list",
-            "WebSketch Categories": "fqdn_category_list",
             "Client IP": "client_ip",
             "Client Country": "client_country",
             "Server IP": "server_ip",
@@ -401,9 +400,9 @@ class CreateProfile:
             "Outgoing Link ID": "out_link_id",
             "Client Port": "client_port",
             "Server Port": "server_port",
-            "HTTP.Host": "http_host",
-            "SSL.JA3 Hash": "ssl_ja3_hash",
-            "SSL.SNI": "ssl_sni",
+            "HTTP Host": "http_host",
+            "SSL JA3 Hash": "ssl_ja3_hash",
+            "SSL SNI": "ssl_sni",
             "Subscriber ID": "subscriber_id",
             "Decoded AS": "decoded_as",
             "Sled IP": "sled_ip",
@@ -570,6 +569,8 @@ class CreateProfile:
         sf_template_dict["vsys_id"] = vsys_id
         sf_template_dict["service_function"]["vsys_id"] = vsys_id
         sf_template_dict["service_function"]["name"] = sf_post_data["name"]
+        sf_template_dict["service_function"]["device_group"]["tag"] = sf_post_data["device_group"]["tag"]
+        sf_template_dict["service_function"]["device_group"]["value"] = sf_post_data["device_group"]["value"]
         sf_template_dict["service_function"]["connectivity"]["method"] = sf_post_data["connectivity"]["method"]
         sf_template_dict["service_function"]["admin_status"] = sf_post_data["admin_status"]
         if sf_post_data["connectivity"]["method"] == "vxlan_g":

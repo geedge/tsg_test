@@ -81,15 +81,17 @@ class GetLog:
                     temp_obj_condition = test_data["obj_condition_1"]
             elif "obj_condition" in test_data.keys():
                 temp_obj_condition = test_data["obj_condition"]
-            if script_type == "api" and len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
-                log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
-                log_condition_dict['filter'] = log_filter
-            else:
-                log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, {policy_id})"
-                log_condition_dict['filter'] = log_filter
-                log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
             if policy_type == "dos_protection":
-                log_condition_dict['filter'] = f"destination_ip='{test_data['traffic']['servers_start_ip']}'"
+                attack_type = "Custom Network Attack"
+                log_condition_dict['filter'] = f"destination_ip='{test_data['traffic']['servers_start_ip']}'AND attack_type='{attack_type}'"
+            else:
+                if script_type == "api" and len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
+                    log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
+                    log_condition_dict['filter'] = log_filter
+                else:
+                    log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, {policy_id})"
+                    log_condition_dict['filter'] = log_filter
+                    log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
             url = api_host + "/v1/log/query"
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
@@ -110,7 +112,16 @@ class GetLog:
                         query_field_key = log_query_param['query_field_key']
                         query_value = log_query_param['query_value']
                         # 传入值与日志的值相等时验证
-                        if query_field_key in log and query_field_key not in {"packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts", "monitor_mirrored_bytes", "client_port","ssl_ech_flag","ssl_esni_flag"} and log[query_field_key] == query_value:
+                        exclude_fields = {
+                            "packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts",
+                            "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
+                            "attack_type", "sessions", "session_rate", "packets", "packet_rate",
+                            "bytes", "bit_rate", "basic_attack_type", "basic_sessions",
+                            "basic_session_rate", "basc_packets", "basic_packet_rate",
+                            "basic_bytes", "basic_bit_rate"
+                        }
+                        # 优化后的条件判断
+                        if query_field_key in log and query_field_key not in exclude_fields and log[query_field_key] == query_value:
                             temp_log_result_list.append(True)
                         # 验证packet capture
                         elif query_field_key in {"packet_capture_file", "http_response_body", "http_request_body"}:
@@ -267,25 +278,16 @@ class GetLog:
                                 temp_log_result_list.append(True)
                             else:
                                 temp_log_result_list.append(False)
-                        elif query_field_key in {"attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"}:
-                            if query_field_key == "attack_type":
-                                #eg:query_value为custom_network_attack——>custom network attack
-                                if query_value.replace("_", " ") == log[query_field_key].lower():
-                                    temp_log_result_list.append(True)
-                                else:
-                                    temp_log_result_list.append(False)
-                            elif query_field_key == "bit_rate":
-                                start_time_value = log["start_time"]
-                                end_time_value = log["end_time"]
-                                timestamp1 = datetime.timestamp(start_time_value)
-                                timestamp2 = datetime.timestamp(end_time_value)
-                                time_difference = timestamp2 - timestamp1
-                                bytes_value = log["bytes"]
-                                bits_rate_value = round((bytes_value*8)/time_difference, 0)
-                                if bits_rate_value == log[query_field_key]:
-                                    temp_log_result_list.append(True)
-                                else:
-                                    temp_log_result_list.append(False)
+                        elif query_field_key in {
+                                                "attack_type", "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
+                                               "basic_attack_type", "basic_sessions", "basic_session_rate","basic_packets","basic_packet_rate", "basic_bytes", "basic_bit_rate"
+                        }:
+                            start_time_value = log["start_time"]
+                            end_time_value = log["end_time"]
+                            time_difference = end_time_value - start_time_value
+                            exp_sessions_count = log["sessions"]
+                            self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference, exp_sessions_count)
+
                         else:
                             temp_log_result_list.append(False)
                     if False not in temp_log_result_list and len(log_list) > 0:
@@ -308,6 +310,66 @@ class GetLog:
             # else:
             #     log_result = False
         return log_result
+
+    def validate_dos_values(self,log, query_field_key, query_value, temp_log_result_list,time_difference,exp_sessions_count):
+        exp_packets_count = exp_sessions_count * 4
+        exp_bytes_count = exp_packets_count * 173.5
+        #attack_type和sessions的值 是 query_value和接口返回的值比较
+        if query_field_key == "attack_type":
+            if query_value.replace("_", " ") == log[query_field_key].lower():
+                temp_log_result_list.append(True)
+            else:
+                temp_log_result_list.append(False)
+
+        elif query_field_key == "sessions":
+            if exp_sessions_count == query_value:
+                temp_log_result_list.append(True)
+            else:
+                temp_log_result_list.append(False)
+        #其余值比较：基于sessions计算出的值和接口返回的值比较
+        elif query_field_key == "packets":
+            if exp_packets_count == log[query_field_key]:
+                temp_log_result_list.append(True)
+            else:
+                temp_log_result_list.append(False)
+
+        elif query_field_key == "bytes":
+            if exp_bytes_count == log[query_field_key]:
+                temp_log_result_list.append(True)
+            else:
+                temp_log_result_list.append(False)
+
+        elif query_field_key == "bit_rate":
+            bits_rate_value = int((exp_bytes_count * 8) / time_difference)
+
+            if bits_rate_value == log[query_field_key]:
+                temp_log_result_list.append(True)
+            else:
+                temp_log_result_list.append(False)
+
+        elif query_field_key == "session_rate":
+            session_rate = exp_sessions_count / time_difference
+
+            if int(session_rate) == log[query_field_key]:
+                temp_log_result_list.append(True)
+            else:
+                temp_log_result_list.append(False)
+
+        elif query_field_key == "packet_rate":
+            packet_rate = exp_packets_count / time_difference
+
+            if int(packet_rate) == log[query_field_key]:
+                temp_log_result_list.append(True)
+            else:
+                temp_log_result_list.append(False)
+
+        elif query_field_key in {"basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets",
+                                 "basic_packet_rate", "basic_bytes", "basic_bit_rate"}:
+            # 基本类型的校验暂未添加
+            temp_log_result_list.append(True)
+        else:
+            temp_log_result_list.append(False)
+        return temp_log_result_list
 
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
         # 请求接口查询metric
@@ -581,7 +643,21 @@ class GetLog:
         post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
         post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_id = {} and template_id = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
-        post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
+        if statistics_info["chart_type"] == "bar":
+            variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
+            metrics_tmp = []
+            for metric in statistics_info["metrics"]:
+                function_tmp = {
+                    "name": metric["function"]["name"],
+                    "variables": [
+                        variables_tmp
+                    ]
+                }
+                metric["function"] = copy.deepcopy(function_tmp)
+                metrics_tmp.append(metric)
+            post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
+        else:
+            post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
         post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"]
         if statistics_info["topk"] != "" and statistics_info["topk"] != None:
             post_data_ori_dict_dsl["custom.statistics.subquery.topk"] = statistics_info["topk"]
@@ -768,6 +844,8 @@ class GetLog:
                         metric_result = True
                     elif chart_type == "table" or chart_type == "bar":
                         failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                        if chart_type == "bar":
+                            time_dif_seconds = 0  # Bar图搜索时间范围内总量，前面添加了dsl的metrics-function-variables参数，此处不再平均
                         metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
                     else:
                         failure_info_1 = f"Chart Type Error:{chart_type}"
@@ -831,6 +909,7 @@ class GetLog:
             total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
             if total_bytes > 0 and time_dif_seconds > 1:
                 total_bytes = round(total_bytes / time_dif_seconds, 2)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes rate_coefficient Rate:{}".format(total_bytes), flush=True)
 
             total_packets_sent = test_traffic_statistics["total_packets_sent"]
             if total_packets_sent > 0 and time_dif_seconds > 1:
