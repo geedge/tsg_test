@@ -643,7 +643,21 @@ class GetLog:
         post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
         post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_id = {} and template_id = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
-        post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
+        if statistics_info["chart_type"] == "bar":
+            variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
+            metrics_tmp = []
+            for metric in statistics_info["metrics"]:
+                function_tmp = {
+                    "name": metric["function"]["name"],
+                    "variables": [
+                        variables_tmp
+                    ]
+                }
+                metric["function"] = copy.deepcopy(function_tmp)
+                metrics_tmp.append(metric)
+            post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
+        else:
+            post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
         post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"]
         if statistics_info["topk"] != "" and statistics_info["topk"] != None:
             post_data_ori_dict_dsl["custom.statistics.subquery.topk"] = statistics_info["topk"]
@@ -830,6 +844,8 @@ class GetLog:
                         metric_result = True
                     elif chart_type == "table" or chart_type == "bar":
                         failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                        if chart_type == "bar":
+                            time_dif_seconds = 0  # Bar图搜索时间范围内总量，前面添加了dsl的metrics-function-variables参数，此处不再平均
                         metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
                     else:
                         failure_info_1 = f"Chart Type Error:{chart_type}"
@@ -893,6 +909,7 @@ class GetLog:
             total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
             if total_bytes > 0 and time_dif_seconds > 1:
                 total_bytes = round(total_bytes / time_dif_seconds, 2)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes rate_coefficient Rate:{}".format(total_bytes), flush=True)
 
             total_packets_sent = test_traffic_statistics["total_packets_sent"]
             if total_packets_sent > 0 and time_dif_seconds > 1:
