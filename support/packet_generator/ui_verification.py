@@ -480,7 +480,7 @@ class UiVerification:
                 if api_verification_result[2] == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get hit count from ui detail page.", flush=True)
                     if int(is_log) == 1:
-                        hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span").text
+                        hit_count = my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/following-sibling::td").text
                         my_driver.find_element(By.ID, "Log").click()
                         my_driver.find_element(By.ID, "Log_DosEventLogs").click()
                         time.sleep(1)
@@ -492,6 +492,10 @@ class UiVerification:
                         my_driver.find_element(By.XPATH, "//div[@class='el-tooltip el-input el-input--mini']//input").send_keys(test_data['traffic']['servers_start_ip'])
                         btn = my_driver.find_element(By.ID, "facedQuery")
                         my_driver.execute_script("arguments[0].click()", btn)
+
+                        #切换时间范围:仅调试代码时使用
+                        my_driver.find_element(By.XPATH,"//p[normalize-space(text())='Last 1 hour']").click()
+                        my_driver.find_element(By.XPATH,"//div[normalize-space(text())='Last 6 hours']").click()
                         
                         log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
                         log_number = log_number_str.split(": ")[-1]
@@ -503,7 +507,7 @@ class UiVerification:
                         parse = configparser.ConfigParser()
                         parse_dir = os.path.join(workdir, "support", "packet_generator", "log_query_list.ini")
                         parse.read(parse_dir, encoding="utf-8")
-                        if int(log_number) == 1:
+                        if int(log_number) == 2: #暂未添加tcp_syn_flood的校验
                             expand_element_postion = "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
                             log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Attack Type")
                             temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
@@ -512,12 +516,12 @@ class UiVerification:
                             elif temp_value == "TCP SYN Flood" or temp_value == "UDP Flood" or temp_value == "DNS Flood" or temp_value == "NTP Flood":
                                 query_key_list = ["basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets", "basic_packet_rate", "basic_bytes", "basic_bit_rate"]
                             temp_log_result_list = self.verify_dos_events(my_driver, expand_element_postion, parse, test_data, query_key_list)
-                        elif int(log_number) == 2:
-                            query_key_list_1 = ["basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets", "basic_packet_rate", "basic_bytes", "basic_bit_rate"]
-                            expand_element_postion_1 = "//tr[1]///i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
+                        elif int(log_number) == 1:
+                            query_key_list_1 = ["attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"]
+                            expand_element_postion_1 = "//tr[1]//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
                             temp_log_result_list_1 = self.verify_dos_events(my_driver, expand_element_postion_1, parse, test_data, query_key_list_1)
-                            query_key_list_2 = ["attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"]
-                            expand_element_postion_2 = "//tr[2]///i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
+                            query_key_list_2 = ["basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets", "basic_packet_rate", "basic_bytes", "basic_bit_rate"]
+                            expand_element_postion_2 = "//tr[2]//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
                             temp_log_result_list_2 = self.verify_dos_events(my_driver, expand_element_postion_2, parse, test_data, query_key_list_2)
                             temp_log_result_list = temp_log_result_list_1 + temp_log_result_list_2
                         if False not in temp_log_result_list:
@@ -573,28 +577,25 @@ class UiVerification:
                     else:
                         log_result_list.append(False)
                 elif log_query_key == "bit_rate" or log_query_key == "basic_bit_rate":
-                    bytes_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Bytes")
-                    bytes_value = my_driver.find_element(By.XPATH, bytes_pos_xpath).text
-                    start_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="Start Time")
-                    start_time_value = my_driver.find_element(By.XPATH, start_time_pos_xpath).text
-                    end_time_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue="End Time")
-                    end_time_value = my_driver.find_element(By.XPATH, end_time_pos_xpath).text
-                    time1 = datetime.strptime(start_time_value, "%Y-%m-%d %H:%M:%S")
-                    time2 = datetime.strptime(end_time_value, "%Y-%m-%d %H:%M:%S")
-                    timestamp1 = datetime.timestamp(time1)
-                    timestamp2 = datetime.timestamp(time2)
-                    time_difference = timestamp2 - timestamp1
-                    bits = bytes_value*8
-                    if 1024 <= bits < 1048576:
-                        temp_value = str(round((bits/time_difference)/1000), 2) + " K"
+                    log_str = parse.get("log", log_query_key)
+                    api_bit_rate_value = test_data["log_query_param"][i]["query_value"]
+
+                    if api_bit_rate_value < 1024:
+                        api_bit_rate_value = f"{round(api_bit_rate_value, 0)} b"
+                    elif 1024 <= api_bit_rate_value < 1048576:
+                        api_bit_rate_value = f"{round(api_bit_rate_value / 1000, 2)} K"
+                    elif 1048576 <= api_bit_rate_value < 1073741824:
+                        api_bit_rate_value = f"{round(api_bit_rate_value / 1048576, 2)} M"
                     else:
-                        temp_value = round(bits/time_difference, 0)
-                    if temp_value == log_query_value:
+                        api_bit_rate_value = f"{round(api_bit_rate_value / 1073741824, 2)} G"
+
+                    if api_bit_rate_value == temp_value: #String类型的比较
                         log_result_list.append(True)
                     else:
                         log_result_list.append(False)
+
                 else:
-                    if temp_value == log_query_value:
+                    if temp_value == str(log_query_value):
                         log_result_list.append(True)
                     else:
                         log_result_list.append(False)

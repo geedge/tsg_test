@@ -240,73 +240,73 @@ class DosProtectionInstanceGenerator:
                 analysis = AnalysisResult()
                 ui_result = analysis.analysis_result(test_data, [], verification_result)
 
-            # 删除rule
-            if create_rule_code == 200:
-                search_rule = SearchRule(driver)
-                element_position_map = get_element_position(test_data["policy_type"])
-                search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
-                                                                                  test_data["rule_name"],
-                                                                                  element_position_map)
-                if search_rule_code == 200:
-                    delete_rule = DeleteRule(driver)
-                    delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element,
-                                                          True)
-                    if delete_rule_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Delete monitor rule successfully.", flush=True)
-                    elif delete_rule_code != 200:
-                        ui_result = ui_result + " In addition, fail to delete {} rule.".format(
-                            test_data["policy_type"])
-                else:
-                    ui_result = ui_result + " In addition, fail to search {} rule.".format(
-                        test_data["policy_type"])
-
-            # 删除object
-            if delete_rule_code == 200 and "condition" in test_data.keys():
-                # 删除
-                for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
-                    if cond_key == "application":
-                        continue  # 直接跳过
-                    cond_status = 0
-                    cond_key_out = cond_key.replace("_", " ")
-                    if len(cond_value) != 0:  # 不为空
-                        cond_data = cond_value
-                        for i in range(len(cond_data)):  # 遍历查询所有condition
-                            search_cond = SearchObject(driver)
-                            if cond_key == "protocol_filed":
-                                tmp_key = cond_data[i]["object_type"]
-                                if tmp_key == "boolean":  # "object_type": "boolean"时无需删除
-                                    continue
-                                cond_key_out = tmp_key.replace("_", " ")
-                                element_position_map = get_element_position(tmp_key)
-                            else:
-                                element_position_map = get_element_position(cond_key)
-                            search_cond_code, first_row_checkbox_element = search_cond.search(
-                                cond_data[i]["name"],
-                                element_position_map)
-                            if search_cond_code == 200:
-                                delete_cond = DeleteObject(driver)
-                                delete_cond_code = delete_cond.delete(element_position_map,
-                                                                      first_row_checkbox_element,
-                                                                      True)
-                                if delete_cond_code == 200:
-                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                          str(datetime.now().microsecond)[:3],
-                                          "Delete {} object successfully.".format(cond_key_out), flush=True)
-                                else:
-                                    ui_result = ui_result + " In addition, fail to delete {} object.".format(
-                                        cond_key_out)
-                                    break
-                            else:
-                                ui_result = ui_result + " In addition, fail to search {} object.".format(
-                                    cond_key_out)
-                                break
-                            # 退出遍历标志
-                            if cond_status == 1:  # 失败，退出遍历创建
-                                break
-                    # 退出遍历标志
-                    if cond_status == 1:  # 失败，退出遍历创建
-                        break
+            # # 删除rule
+            # if create_rule_code == 200:
+            #     search_rule = SearchRule(driver)
+            #     element_position_map = get_element_position(test_data["policy_type"])
+            #     search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
+            #                                                                       test_data["rule_name"],
+            #                                                                       element_position_map)
+            #     if search_rule_code == 200:
+            #         delete_rule = DeleteRule(driver)
+            #         delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element,
+            #                                               True)
+            #         if delete_rule_code == 200:
+            #             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+            #                   "Delete monitor rule successfully.", flush=True)
+            #         elif delete_rule_code != 200:
+            #             ui_result = ui_result + " In addition, fail to delete {} rule.".format(
+            #                 test_data["policy_type"])
+            #     else:
+            #         ui_result = ui_result + " In addition, fail to search {} rule.".format(
+            #             test_data["policy_type"])
+            #
+            # # 删除object
+            # if delete_rule_code == 200 and "condition" in test_data.keys():
+            #     # 删除
+            #     for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
+            #         if cond_key == "application":
+            #             continue  # 直接跳过
+            #         cond_status = 0
+            #         cond_key_out = cond_key.replace("_", " ")
+            #         if len(cond_value) != 0:  # 不为空
+            #             cond_data = cond_value
+            #             for i in range(len(cond_data)):  # 遍历查询所有condition
+            #                 search_cond = SearchObject(driver)
+            #                 if cond_key == "protocol_filed":
+            #                     tmp_key = cond_data[i]["object_type"]
+            #                     if tmp_key == "boolean":  # "object_type": "boolean"时无需删除
+            #                         continue
+            #                     cond_key_out = tmp_key.replace("_", " ")
+            #                     element_position_map = get_element_position(tmp_key)
+            #                 else:
+            #                     element_position_map = get_element_position(cond_key)
+            #                 search_cond_code, first_row_checkbox_element = search_cond.search(
+            #                     cond_data[i]["name"],
+            #                     element_position_map)
+            #                 if search_cond_code == 200:
+            #                     delete_cond = DeleteObject(driver)
+            #                     delete_cond_code = delete_cond.delete(element_position_map,
+            #                                                           first_row_checkbox_element,
+            #                                                           True)
+            #                     if delete_cond_code == 200:
+            #                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            #                               str(datetime.now().microsecond)[:3],
+            #                               "Delete {} object successfully.".format(cond_key_out), flush=True)
+            #                     else:
+            #                         ui_result = ui_result + " In addition, fail to delete {} object.".format(
+            #                             cond_key_out)
+            #                         break
+            #                 else:
+            #                     ui_result = ui_result + " In addition, fail to search {} object.".format(
+            #                         cond_key_out)
+            #                     break
+            #                 # 退出遍历标志
+            #                 if cond_status == 1:  # 失败，退出遍历创建
+            #                     break
+            #         # 退出遍历标志
+            #         if cond_status == 1:  # 失败，退出遍历创建
+            #             break
 
 
                 result["ui_result"] = ui_result
