@@ -164,6 +164,7 @@ class DataTranslation:
                         add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
                         add_item_dict["port_range"] = "0-65535"
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "destination_ip":
                 for i in range(len(v)):
@@ -365,6 +366,7 @@ class DataTranslation:
                         }
                         add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "sub_id":
                 temp = {
