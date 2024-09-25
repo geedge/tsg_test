@@ -19,6 +19,7 @@ policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSel
 policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
 policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_negateSrcIP_posXpath = "//label[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']//span[@class='el-checkbox__input']"
 
 policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//input[contains(@id, 'object_ip_search')]"
@@ -62,6 +63,11 @@ policyRulePage_addExternalPort_posXpath = "//div[@zs-label='External']//p[normal
 policyRulePage_searchExternalPort_posXpath = "//div[@class='ExternalsList list-box']//input[@id='object_ip_search']"
 policyRulePage_selectExternalPort_posXpath = "//div[@class='ExternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeExternalPort_posXpath = "//div[@class='ExternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+policyRulePage_addUser_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='User']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchUser_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
+policyRulePage_selectUser_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeUser_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 policyRulePage_addImsi_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Device']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchImsi_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
@@ -122,6 +128,7 @@ policyRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect Destinatio
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
 policyRulePage_selectServerFqdn_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeServerFqdn_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_negateServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//label[@id='policy_not_negate-_PolicySwitch_ElFormItem_DestinationsItem_DestinationsModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']//span[@class='el-checkbox__input']"
 
 # cn
 policyRulePage_addCn_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='CN']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
@@ -430,6 +437,7 @@ manipulationRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceL
 manipulationRulePage_addCondition_destinationPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='IP Address']"
+manipulationRulePage_addCondition_user_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='User']/parent::*//div[normalize-space(text())='User']"
 manipulationRulePage_addCondition_imsi_posXpath = "//div[@class='SourceList list-box']/parent::*//div[normalize-space(text())='Device']"
 manipulationRulePage_addCondition_Protocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol']"
 manipulationRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URL']"
@@ -473,6 +481,11 @@ manipulationRulePage_addExternalIP_posXpath = policyRulePage_addExternalIP_posXp
 manipulationRulePage_searchExternalIP_posXpath = policyRulePage_searchExternalIP_posXpath
 manipulationRulePage_selectExternalIP_posXpath = policyRulePage_selectExternalIP_posXpath
 manipulationRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
+# subid user的添加、查询、选中、关闭操作
+manipulationRulePage_addUser_posXpath = policyRulePage_addUser_posXpath
+manipulationRulePage_searchUser_posXpath = policyRulePage_searchUser_posXpath
+manipulationRulePage_selectUser_posXpath = policyRulePage_selectUser_posXpath
+manipulationRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
 # Device imsi 的添加、查询、选中、关闭操作
 manipulationRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
 manipulationRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath

@@ -54,7 +54,7 @@ def run(parameter):
                             "add_item_list": [
                                 {
                                     "keyword_array": [
-                                        "/app/tests/api/profile_used_to_create_rule/url_import.txt"
+                                        "/app/tests/api/preset_profile/url_import.txt"
                                     ]
                                 }
                             ]

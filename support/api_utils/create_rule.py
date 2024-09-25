@@ -287,7 +287,8 @@ class CreatePolicyRule:
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":
             # 创建manipulation策略前先下发一条deny_quic策略和一条intercept策略
-            pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, dst_list, path_dict, vsys_id)
+            tmp_list = []   # 前置拦截策略，只添加src ip
+            pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, tmp_list, path_dict, vsys_id)
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             # 填写不同动作的user_region
@@ -391,7 +392,7 @@ class CreatePolicyRule:
             pre_intercept_template_path['rule']['destination'] = dst_list
         else:
             pre_intercept_template_path['rule']['destination'] = []
-        pre_intercept_template_path["rule"]["name"] = "pre_intercept"
+        pre_intercept_template_path["rule"]["name"] = "manipulation_pre_intercept"
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host)
         pre_policy_id_list = pre_intercept_policy_id_dict
         

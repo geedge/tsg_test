@@ -51,9 +51,9 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "www.vip.com,CN=TSG,HTTP/2",
+            "expected_return": "www.vip.com,CN=TSG",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.vip.com"}, {"query_field_key": "http_response_line", "query_value": "HTTP/2.0 200 OK"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.vip.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

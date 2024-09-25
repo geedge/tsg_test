@@ -71,7 +71,7 @@ class DataTranslation:
                     data["code_1"] = data["action_parameter"]["response_page"][0]["response_code"]
                 elif "deny_response_text" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["deny_response_text"][0]["response_code"]
-                    data["message_1"] = "text"    # 匹配原有api test_data数据
+                    data["message_1"] = data["action_parameter"]["deny_response_text"][0]["response_content"]   # 匹配原有api test_data数据
                 else:
                     data["code_1"] = 404
                     data["message_1"] = "text"  # 匹配原有api test_data数据
@@ -190,6 +190,8 @@ class DataTranslation:
                 else:
                     if data["condition"]["sub_action_override"] == False:
                         data["method_1"] = "default"
+            if data["rule_action"] == "shunt":
+                data["do_log_1"] = 0
         return data
     
     def push_object_data(self, data):
@@ -224,6 +226,7 @@ class DataTranslation:
                         add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
                         add_item_dict["port_range"] = "0-65535"
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "destination_ip":
                 for i in range(len(v)):
@@ -471,6 +474,7 @@ class DataTranslation:
                         }
                         add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "sub_id":
                 temp = {
