@@ -115,6 +115,10 @@ class CreateRule:
                 external_port_group_data = test_data["condition"]["external_port_group"]
                 self.add_port(external_port_group_data, "ExternalPort", create_element_position)
 
+            if "sub_id" in test_data["condition"] and len(test_data["condition"]["sub_id"]) != 0:
+                subid_data = test_data["condition"]["sub_id"]
+                self.add_subid(subid_data, "User", create_element_position)
+
             # 添加device
             if "device" in test_data["condition"] and len(test_data["condition"]["device"]) != 0:
                 device_data = test_data["condition"]["device"]
@@ -167,8 +171,27 @@ class CreateRule:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
-                    elif device_data[t]["object_type"] == "apn":
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+            # 添加apn
+            if "apn" in test_data["condition"] and len(test_data["condition"]["apn"]) != 0:
+                device_data = test_data["condition"]["apn"]
+                for t in range(len(device_data)):
+                    if device_data[t]['items'][0]["item_type"] == "apn":
+                        # 点add condition的+
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        # 都属于device，所以调用apn的定位即可
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                        # 点device的+
+                        temp_element_position = create_element_position["policyRulePage_addImsi_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 选中apn
+                        temp_element_position = create_element_position["policyRulePage_chooseApn_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 通过apn搜索并选中(与imsi共用)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
 
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
@@ -231,6 +254,8 @@ class CreateRule:
                         self.driver.execute_script("arguments[0].click()", btn)
                         # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
+                        if server_fqdn_data[t]["negate"] == True:
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negateServerFqdn_posXpath"].format(replaceValue=temp)).click()
                     elif server_fqdn_data[t]["object_type"] == "category":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
 
@@ -388,7 +413,7 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_dropPkt_posXpath"]).clear()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_dropPkt_posXpath"]).send_keys(sub_action_data[0]["drop_packet"])
                     # quic不支持tcp rst；默认tcp rst是选中，不需要操作，只有当sendTcpRst为false时
-                    if (override_flag == False and len(test_data["condition"]["application"]) == 1 and test_data["condition"]["application"][0]['name'] == "quic")or sub_action_data[0]["send_tcp_rst"] == False:
+                    if (override_flag == False and len(test_data["condition"]["application"]) == 1 and test_data["condition"]["application"][0]['name'] == "quic")or (sub_action_data[0]["send_tcp_rst"] == False and test_data["condition"]["application"][0]['name'] != "quic" and test_data["condition"]["application"][0]['name'] != "dns"):
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendTcpRst_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_drop_sendIcmp_posXpath"]).click()
                 elif sub_action_data[0]["type"] == "rate_limit":
@@ -761,6 +786,9 @@ class CreateRule:
             temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(ip_condition_type)].format(replaceValue=ip_data[i]["name"])
             self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(ip_condition_type)]).click()
+        for j in range(len(ip_data)):
+            if ip_data[j]["negate"] == True:
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)]).click()
     
     def add_port(self, port_data, port_condition_type, create_element_position):
         # 点add condition的+
@@ -777,7 +805,9 @@ class CreateRule:
             temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(port_condition_type)].format(replaceValue=port_data[z]["name"])
             self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(port_condition_type)]).click()
-            
+
+    add_subid = add_port
+
     def add_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
         # 点add condition的+
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
@@ -810,7 +840,6 @@ class CreateRule:
             self.driver.find_element(By.XPATH,create_element_position["policyRulePage_select{}_posXpath".format(filed_type)],find_after_wait_time=0.5).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
             num = num +1
-
 
     def add_ip_protocol(self, ip_protocol_data, filed_type, create_element_position):
         # 点add condition的+

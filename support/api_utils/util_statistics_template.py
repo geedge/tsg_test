@@ -15,7 +15,7 @@ class UtilStatisticsTemplate():
         time_difference = time2 - time1
 
         # 将时间差转换为秒
-        difference_in_seconds = time_difference.total_seconds()
+        difference_in_seconds = int(time_difference.total_seconds())
 
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"时间差为: {difference_in_seconds}秒")
         return difference_in_seconds

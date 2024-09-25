@@ -64,7 +64,7 @@ class ApiVerification:
             policy_id_list.append(list(create_policies_ids[i].values())[0])
         
         log = support.api_utils.get_log.GetLog()
-        if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
+        if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor" :
             #如果是通过trex回放，需要替换src ip
             if test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex":
                 test_pc_ip = test_data["condition"]["source_ip"][0]["item"][0]["item_value"]
@@ -308,6 +308,7 @@ class ApiVerification:
             return metric_result, cmd_result, metric_result, my_driver
         elif policy_type == "dos_protection":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
+            output = traffic_result
             # 获取开始时间
             utc_tz = pytz.timezone('UTC')
             current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
@@ -322,7 +323,7 @@ class ApiVerification:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_log' is True.", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
                     for i in range(150):
-                        if i == 30 and script_type == "ui" and driver:
+                        if i in {30,60,90} and script_type == "ui" and driver:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
                             support.ui_utils.env.teardown()
                             support.ui_utils.env.initiate_selenium_request()

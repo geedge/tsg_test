@@ -271,9 +271,9 @@ class StatisticsInstanceGenerator:
 
             # 添加测试过程中涉及的template
             template_path = {}
-            template_path["rule_template"] = parameter["root_path"] + "/tests/api/template/rule_template.json"
-            template_path["object_template"] = parameter["root_path"] + "/tests/api/template/object_template.json"
-            template_path["profile_statistics_template"] = parameter["root_path"] + "/tests/api/template/profile_statistics_template.json"
+            template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
+            template_path["object_template"] = parameter["root_path"] + "/support/api_utils/template/object_template.json"
+            template_path["profile_statistics_template"] = parameter["root_path"] + "/support/api_utils/template/profile_statistics_template.json"
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()

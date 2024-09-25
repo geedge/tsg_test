@@ -154,6 +154,66 @@ test_port_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+test_subscriberid_object_element_position = {
+    "page_jump":{
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_subid_posId
+    },
+    "create": {
+        "objectListPage_createButton_posId": subscriberidObjectListPage_createButton_posId,
+        "objectListPage_dropDown_createButton_posId": subscriberidObjectListPage_dropDown_createButton_posId,
+        "objectPage_inputName_posXpath": subscriberidObjectPage_inputName_posXpath,
+        "objectPage_addItem_posId": subscriberidObjectPage_addItem_posId,
+        "objectPage_inputItem_posXpath": subscriberidObjectPage_inputItem_posXpath,
+        "objectPage_button_saveItem_posXpath": subscriberidPage_button_saveItem_posXpath,
+        "objectPage_okButton_posId": subscriberidObjectPage_okButton_posId,
+        "objectPage_okButton_warningYes_posXpath": subscriberidObjectPage_okButton_warningYes_posXpath
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": subscriberidObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": subscriberidObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": subscriberidObjectListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": subscriberidObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posId": subscriberidObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_warningYes_posXpath": subscriberiObjectListPage_deleteButton_warningYes_posXpath
+    }
+}
+test_apn_object_element_position = {
+    "page_jump":{
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+        "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_apn_posId
+    },
+    "create": {
+        "objectListPage_createButton_posId": apnObjectListPage_createButton_posId,
+        "objectListPage_dropDown_createButton_posId": apnObjectListPage_dropDown_createButton_posId,
+        "objectPage_inputName_posXpath": apnObjectPage_inputName_posXpath,
+        "objectPage_addItem_posId": apnObjectPage_addItem_posId,
+        "objectPage_inputItem_posXpath": apnObjectPage_inputItem_posXpath,
+        "objectPage_button_saveItem_posXpath": apnPage_button_saveItem_posXpath,
+        "objectPage_okButton_posId": apnObjectPage_okButton_posId,
+        "objectPage_okButton_warningYes_posXpath": apnObjectPage_okButton_warningYes_posXpath
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": apnObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": apnObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": apnObjectListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": apnObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posId": apnObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_warningYes_posXpath": apnObjectListPage_deleteButton_warningYes_posXpath
+    }
+}
 test_mobile_identity_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -639,6 +699,12 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchExternalIP_posXpath": manipulationRulePage_searchExternalIP_posXpath,
         "policyRulePage_selectExternalIP_posXpath": manipulationRulePage_selectExternalIP_posXpath,
         "policyRulePage_closeExternalIP_posXpath": manipulationRulePage_closeExternalIP_posXpath,
+        # subid
+        "policyRulePage_addConditionUser_posXpath": manipulationRulePage_addCondition_user_posXpath,
+        "policyRulePage_addUser_posXpath": manipulationRulePage_addUser_posXpath,
+        "policyRulePage_searchUser_posXpath": manipulationRulePage_searchUser_posXpath,
+        "policyRulePage_selectUser_posXpath": manipulationRulePage_selectUser_posXpath,
+        "policyRulePage_closeUser_posXpath": manipulationRulePage_closeUser_posXpath,
         # Device imsi imei phone number
         "policyRulePage_addConditionImsi_posXpath": manipulationRulePage_addCondition_imsi_posXpath,
         "policyRulePage_addImsi_posXpath": manipulationRulePage_addImsi_posXpath,
@@ -647,6 +713,7 @@ test_manipulation_rule_element_position = {
         "policyRulePage_closeImsi_posXpath": manipulationRulePage_closeImsi_posXpath,
         "policyRulePage_chooseImei_posXpath": policyRulePage_chooseImei_posXpath,
         "policyRulePage_choosePhoneNumber_posXpath": policyRulePage_choosePhoneNumber_posXpath,
+        "policyRulePage_chooseApn_posXpath": policyRulePage_chooseApn_posXpath,
         # Application
         "policyRulePage_addApplication_posXpath": manipulationRulePage_addApplication_posXpath,
         "policyRulePage_searchApplication_posXpath": manipulationRulePage_searchApplication_posXpath,
@@ -1633,9 +1700,14 @@ def get_element_position(key_name):
         element_position_map = test_ip_object_element_position
     elif key_name == "source_port" or key_name == "destination_port" or key_name == "external_port" or key_name == "internal_port":
         element_position_map = test_port_object_element_position
-    #elif key_name == "mobile_identity":
+    elif key_name == "sub_id":
+        element_position_map = test_subscriberid_object_element_position
+    elif key_name == "apn":
+        element_position_map = test_apn_object_element_position
     elif key_name == "device":
         element_position_map = test_mobile_identity_object_element_position
+    # elif key_name == "mobile_identity":
+    #     element_position_map = test_mobile_identity_object_element_position
     elif key_name == "http_signature":
         element_position_map = test_http_signature_object_element_position
     elif key_name == "keywords":
@@ -1646,10 +1718,6 @@ def get_element_position(key_name):
         element_position_map = test_http_url_object_element_position
     elif key_name == "account":
         element_position_map =test_account_object_element_position
-   
-
-
-
     # profile
     elif key_name == "response_page":
         element_position_map = test_response_page_element_position
@@ -1697,6 +1765,8 @@ def replace_paras(parameter):
     parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
     parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
     parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
+    parameter['test_imei'] = parse.get("test_pc", "imei_for_ui_with_traffic")
+    parameter['test_apn'] = parse.get("test_pc", "apn_ui_with_traffic")
     parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
     parameter["is_log"] = parse.get("is_log", "ui")
     parameter["script_type"] = parse.get("debug_script_type", "script_type")

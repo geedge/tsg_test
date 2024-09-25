@@ -187,7 +187,22 @@ class CreatePolicyRule:
             rule_template_dict['rule']['application'] = application_dict
         else:
             rule_template_dict['rule']['application'] = None
-            
+
+        if "ip_protocol" in condition.keys():
+            ip_protocol_id_dict = {"ICMP": 5, "TCP": 6, "UDP": 7}
+            if len(condition["ip_protocol"]) > 0:
+                ip_protocol_id_list = []
+                for ip_protocol in condition["ip_protocol"]:
+                    ip_protocol_id = int(ip_protocol_id_dict.get(ip_protocol))
+                    ip_protocol_id_list.append(ip_protocol_id)
+                objects_list = []
+                object_ids = dict(object_ids = ip_protocol_id_list)
+                objects_list.append(object_ids)
+                ip_protocol_dict = dict(objects = objects_list, attribute_name = 'ATTR_IP_PROTOCOL', is_negate = 0)
+                rule_template_dict['rule']['ip_protocol'] = ip_protocol_dict
+            else:
+                rule_template_dict['rule']['ip_protocol'] = None
+
         temp_do_log = 'do_log_' + str(create_number)
         if temp_do_log in condition.keys():
             rule_template_dict['rule']['do_log'] = condition[temp_do_log]
@@ -272,7 +287,8 @@ class CreatePolicyRule:
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":
             # 创建manipulation策略前先下发一条deny_quic策略和一条intercept策略
-            pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, dst_list, path_dict, vsys_id)
+            tmp_list = []   # 前置拦截策略，只添加src ip
+            pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, tmp_list, path_dict, vsys_id)
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             # 填写不同动作的user_region
@@ -376,7 +392,7 @@ class CreatePolicyRule:
             pre_intercept_template_path['rule']['destination'] = dst_list
         else:
             pre_intercept_template_path['rule']['destination'] = []
-        pre_intercept_template_path["rule"]["name"] = "pre_intercept"
+        pre_intercept_template_path["rule"]["name"] = "manipulation_pre_intercept"
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host)
         pre_policy_id_list = pre_intercept_policy_id_dict
         

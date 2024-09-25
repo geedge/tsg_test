@@ -15,6 +15,7 @@ time.sleep(1)
 
 def local_run():
     """本地执行所有用例"""
+    print("Get-Content result.txt -Encoding UTF8  -Wait")
     parameter = {
         "username": "zcw3",
         "password": "qa111111",

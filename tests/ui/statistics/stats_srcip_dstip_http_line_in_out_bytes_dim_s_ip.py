@@ -105,14 +105,14 @@ def run(parameter):
                             "server_ip"
                           ],
                           "order_by": "bytes",
-                          "row_limit": "100",
+                          "row_limit": "5",
                           "min_in_size": "1",
                           "min_out_size": "1"
                         }
                       ]
                 }]
             },
-            "expected_return": "reset",
+            "expected_return": "",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
