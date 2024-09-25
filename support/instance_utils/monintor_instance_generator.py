@@ -110,7 +110,7 @@ class MonitorInstanceGenerator:
                     if cond_key == "application" or cond_key == "ip_protocol" or cond_key =="packet_capture":
                         continue  # 直接跳过
                     cond_key_out = cond_key.replace("_", " ")
-                    if len(cond_value) != 0:  # 不为空
+                    if len(cond_value) != 0:
                         cond_data = cond_value
                         create_ip = CreateObject(driver)
                         for i in range(len(cond_data)):  # 遍历创建所有condition
