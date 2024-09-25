@@ -363,11 +363,11 @@ class ServiceChainingInstanceGenerator:
 
             # 添加测试过程中涉及的template
             template_path = {}
-            template_path["rule_template"] = parameter["root_path"] + "/tests/api/template/rule_template.json"
-            template_path["object_template"] = parameter["root_path"] + "/tests/api/template/object_template.json"
-            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/tests/api/template/pre_intercept_template.json"
-            template_path["profile_sf_template"] =  parameter["root_path"] + "/tests/api/template/profile_sf_template.json"
-            template_path["profile_sff_template"] =  parameter["root_path"] + "/tests/api/template/profile_sff_template.json"
+            template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
+            template_path["object_template"] = parameter["root_path"] + "/support/api_utils/template/object_template.json"
+            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/support/api_utils/template/pre_intercept_template.json"
+            template_path["profile_sf_template"] =  parameter["root_path"] + "/support/api_utils/template/profile_sf_template.json"
+            template_path["profile_sff_template"] =  parameter["root_path"] + "/support/api_utils/template/profile_sff_template.json"
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()

@@ -291,12 +291,12 @@ class MonitorInstanceGenerator:
 
             # 添加测试过程中涉及的template
             template_path = {}
-            template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-            template_path["object_template"] = parameter["path"] + "/template/object_template.json"
-            template_path["pre_intercept_template_path"] = parameter["path"] + "/template/pre_intercept_template.json"
+            template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
+            template_path["object_template"] = parameter["root_path"] + "/support/api_utils/template/object_template.json"
+            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/support/api_utils/template/pre_intercept_template.json"
             # 添加测试过程中涉及的response pages
             template_path["profiles_hijack_file_path"] = parameter[
-                                                             "path"] + "/profile_used_to_create_rule/Create-Hijack-Files-test-3.html"
+                                                             "root_path"] + "/support/api_utils/preset_profile/Create-Hijack-Files-test-3.html"
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()

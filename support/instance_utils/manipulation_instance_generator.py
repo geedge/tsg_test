@@ -259,9 +259,9 @@ class ManipulationInstanceGenerator:
 
             # 添加测试过程中涉及的template
             template_path = {}
-            template_path["rule_template"] = parameter["root_path"] + "/tests/api/template/rule_template.json"
-            template_path["object_template"] = parameter["root_path"] + "/tests/api/template/object_template.json"
-            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/tests/api/template/pre_intercept_template.json"
+            template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
+            template_path["object_template"] = parameter["root_path"] + "/support/api_utils/template/object_template.json"
+            template_path["pre_intercept_template_path"] = parameter["root_path"] + "/support/api_utils/template/pre_intercept_template.json"
             # 添加测试过程中涉及的response pages
             if "profile_condition" in test_data and len(test_data["profile_condition"]) > 0:
                 tmp_dir = parameter["root_path"] + "/support/ui_utils/profile/profile_file/"
