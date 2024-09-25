@@ -187,7 +187,22 @@ class CreatePolicyRule:
             rule_template_dict['rule']['application'] = application_dict
         else:
             rule_template_dict['rule']['application'] = None
-            
+
+        if "ip_protocol" in condition.keys():
+            ip_protocol_id_dict = {"ICMP": 5, "TCP": 6, "UDP": 7}
+            if len(condition["ip_protocol"]) > 0:
+                ip_protocol_id_list = []
+                for ip_protocol in condition["ip_protocol"]:
+                    ip_protocol_id = int(ip_protocol_id_dict.get(ip_protocol))
+                    ip_protocol_id_list.append(ip_protocol_id)
+                objects_list = []
+                object_ids = dict(object_ids = ip_protocol_id_list)
+                objects_list.append(object_ids)
+                ip_protocol_dict = dict(objects = objects_list, attribute_name = 'ATTR_IP_PROTOCOL', is_negate = 0)
+                rule_template_dict['rule']['ip_protocol'] = ip_protocol_dict
+            else:
+                rule_template_dict['rule']['ip_protocol'] = None
+
         temp_do_log = 'do_log_' + str(create_number)
         if temp_do_log in condition.keys():
             rule_template_dict['rule']['do_log'] = condition[temp_do_log]

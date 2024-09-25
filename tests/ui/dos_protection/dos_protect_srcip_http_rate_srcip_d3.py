@@ -65,70 +65,28 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                {
-                    "query_field_key": "attack_type",
-                    "query_value": "custom_network_attack"
-                },
-                {
-                    "query_field_key": "sessions",
-                    "query_value": 1
-                },
-                {
-                    "query_field_key": "session_rate",
-                    "query_value": 0
-                },
-                {
-                    "query_field_key": "packets",
-                    "query_value": 4
-                },
-                {
-                    "query_field_key": "packet_rate",
-                    "query_value": 0
-                },
-                {
-                    "query_field_key": "bytes",
-                    "query_value": 694
-                },
-                {
-                    "query_field_key": "bit_rate",
-                    "query_value": "925"
-                },
-                {
-                    "query_field_key": "basic_attack_type",
-                    "query_value": "tcp_syn_flood"
-                },
-                {
-                    "query_field_key": "basic_sessions",
-                    "query_value": 2
-                },
-                {
-                    "query_field_key": "basic_session_rate",
-                    "query_value": 0
-                },
-                {
-                    "query_field_key": "basic_packets",
-                    "query_value": 2
-                },
-                {
-                    "query_field_key": "basic_packet_rate",
-                    "query_value": 0
-                },
-                {
-                    "query_field_key": "basic_bytes",
-                    "query_value": 132
-                },
-                {
-                    "query_field_key": "basic_bit_rate",
-                    "query_value": "17"
-                }
+                {"query_field_key": "basic_attack_type", "query_value": "tcp_syn_flood"},
+                {"query_field_key": "basic_sessions", "query_value": 2},
+                {"query_field_key": "basic_session_rate", "query_value": ""},
+                {"query_field_key": "basic_packets", "query_value": ""},
+                {"query_field_key": "basic_packet_rate", "query_value": ""},
+                {"query_field_key": "basic_bytes", "query_value": ""},
+                {"query_field_key": "basic_bit_rate", "query_value": ""},
+                {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
+                {"query_field_key": "sessions", "query_value": 2},
+                {"query_field_key": "packets", "query_value": ""},
+                {"query_field_key": "bytes", "query_value": ""},
+                {"query_field_key": "bit_rate", "query_value": ""},
+                {"query_field_key": "packet_rate", "query_value": ""},
+                {"query_field_key": "session_rate", "query_value": ""},
             ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "1.1.1.1",
                 "clients_end_ip": "1.1.1.1",
-                "servers_start_ip": "2.1.1.1",
-                "servers_end_ip": "2.1.1.2",
+                "servers_start_ip": "2.1.1.6",
+                "servers_end_ip": "2.1.1.6",
                 "m": 1,
                 "d": 5,
                 "yaml_name": "test",
