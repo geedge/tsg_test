@@ -1,43 +1,23 @@
-# -*- coding: UTF-8 -*-
 import os
 import sys
-
-from support.api_utils.delete_policy import *
-from support.report import GenerateReport
-from support.ui_utils.profile.search_profile import SearchProfile
-
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.report_update import ReportUpdate
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from support.ui_utils.object.create_object import CreateObject
-from support.ui_utils.object.search_object import SearchObject
-from support.ui_utils.object.delete_object import DeleteObject
-from support.ui_utils.policy.create_rule import CreateRule
-from support.ui_utils.policy.search_rule import SearchRule
-from support.ui_utils.policy.delete_rule import DeleteRule
-from support.ui_utils.policy.edit_rule import EditRule
-from support.packet_generator.verification import Verification
 from support.ui_utils.element_position.map_element_position_library import *
-from support.api_utils.analysis_result import *
-from support.api_utils.log_in import *
-from support.ui_utils.profile.create_monitor_profile import CreateMonitorProfile
-from support.ui_utils.profile.delete_profile import DeleteProfile
-import support.ui_utils.env
-import traceback
-
 from datetime import datetime
+
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        case_instance_generator = None
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
+        exception_result = ""
+        result = {}
 
         # 脚本启动时间
         start_time = time.time()
-
-        # 环境初始化
-        support.ui_utils.env.initiate_selenium_request()
-        driver = support.ui_utils.env.my_driver()
-        support.ui_utils.env.setup()
 
         # 测试数据
         test_data = {
@@ -145,337 +125,122 @@ def run(parameter):
             },
             "token": ""
         }
-        log_in = LogIn()
-        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-        test_data["token"] = token
-
-        # name_list汇总
-        name_list = [
-            {
-                "type": "monitor",
-                "name": "monit_srcip_http_suff_url_substr_reqheader_by_ua_multi_resheader_by_ct"
+        # 测试数据
+        test_data = {
+            "is_multi_priority": False,
+            "rule_num": 1,
+            "policy_type": "monitor",
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
+            "rule_action": "allow",
+            "rule_type": "create",
+            "is_mirror": "off",
+            "mirror_type": "mail",
+            "condition": {
+                "source_ip": [
+                    {
+                        "name": "monitor_source_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "10.64.224.7",
+                            },
+                        ]
+                    }
+                ],
+                "application": [
+                    {
+                        "name": "mail",  #
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
+                "protocol_filed": [
+                    {
+                        "name": "monitor_mail_att_content",
+                        "object_type": "keywords",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "Statistics": "None",
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "mail_attachment_content",
+                                "item_value": "HEX",
+                                "value": [
+                                    "54526578"#TRex
+                                ]
+                            }
+                        ],
+                    }
+                ],
             },
-            {
-                "type": "ip",
-                "name": "monitor_source_ip"
+            "expected_return": "trex",
+            "counters": {"hits": 1},
+            "log_query_param": [
+                {"query_field_key": "decoded_as", "query_value": "MAIL"}
+            ],
+            "traffic": {
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
+                "m": 1,
+                "d": 1,
+                "yaml_name": "test",
+                "pcap_name": "mail_imap"
             },
-            {
-                "type": "url",
-                "name": "monitor_http_url"
-            },
-            {
-                "type": "http_signature",
-                "name": "monitor_http_request_header"
-            },
-            {
-                "type": "http_signature",
-                "name": "monitor_http_response_header"
-            },
+            "token": ""
+        }
 
-        ]
+        # 测试用例实例化
+        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
+        result = case_instance_generator.run()
 
-        # 添加定位库集合
-        test_rule_element_position = {}
-        if test_data["policy_type"] == "monitor":
-            test_rule_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_monitor_posId
-                },
-                "create": {
-                    "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
-                    "policyRulePage_inputName_posXpath": monitorRulePage_inputName_posXpath,
-                    "policyRulePage_addSrcIP_posXpath": monitorRulePage_addSrcIP_posXpath,
-                    "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
-                    "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
-                    "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
-                    "policyRulePage_addApplication_posXpath": monitorRulePage_addApplication_posXpath,
-                    "policyRulePage_searchApplication_posXpath": monitorRulePage_searchApplication_posXpath,
-                    "policyRulePage_selectApplication_posXpath": monitorRulePage_selectApplication_posXpath,
-                    "policyRulePage_closeApplication_posXpath": monitorRulePage_closeApplication_posXpath,
-                    "policyRulePage_selectApplicationLabel_posXpath": monitorRulePage_selectApplicationLabel_posXpath,
-                    "policyRulePage_addCondition_posXpath": monitorRulePage_addCondition_posXpath,
-                    "policyRulePage_enable_posXpath": monitorRulePage_enable_posXpath,
-                    "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
-                    "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,
-                    # profile
-                    "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
-                    "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
-                    "policyRulePage_firstSelectMirrorProfile_posXpath": monitorRulePage_firstSelectMirrorProfile_posXpath,
-                    "policyRulePage_searchMirrorProfile_posXpath": monitorRulePage_searchMirrorProfile_posXpath,
-                    "policyRulePage_selectMirrorProfile_posXpath": monitorRulePage_selectMirrorProfile_posXpath,
-                    "policyRulePage_saveProile_ok_posXpath": monitorRulePage_saveProile_ok_posXpath,
-                    "policyRulePage_saveProile_warningYes_posXpath": monitorRulePage_saveProile_warningYes_posXpath,
-                    # url
-                    "policyRulePage_addConditionUrl_posXpath": monitorRulePage_addCondition_url_posXpath,
-                    "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
-                    "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
-                    "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
-                    "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
-                    # packet capture depth
-                    "policyRulePage_packetCapture_posXpath": monitorRulePage_packetCapture_posXpath,
-                    "policyRulePage_packetCapture_depth_posXpath": monitorRulePage_packetCapture_depth_posXpath,
-                    # 添加Server FQDN
-                    "policyRulePage_addConditionServerFqdn_posXpath": policyRulePage_addCondition_serverFqdn_posXpath,
-                    "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
-                    "policyRulePage_addServerFqdn_posXpath": policyRulePage_addServerFqdn_posXpath,
-                    "policyRulePage_searchServerFqdn_posXpath": policyRulePage_searchServerFqdn_posXpath,
-                    "policyRulePage_selectServerFqdn_posXpath": policyRulePage_selectServerFqdn_posXpath,
-                    "policyRulePage_closeServerFqdn_posXpath": policyRulePage_closeServerFqdn_posXpath,
-                    #添加request header
-                    "policyRulePage_addConditionRequestHeader_posXpath": monitorRulePage_addCondition_requestHeader_posXpath,
-                    "policyRulePage_addRequestHeader_posXpath": monitorRulePage_addRequestHeader_posXpath,
-                    "policyRulePage_searchRequestHeader_posXpath": monitorRulePage_searchRequestHeader_posXpath,
-                    "policyRulePage_selectRequestHeader_posXpath": monitorRulePage_selectRequestHeader_posXpath,
-                    "policyRulePage_closeRequestHeader_posXpath": monitorRulePage_closeRequestHeader_posXpath,
-                    #添加response header
-                    "policyRulePage_addConditionResponseHeader_posXpath": policyRulePage_addCondition_responseHeader_posXpath,
-                    "policyRulePage_addResponseHeader_posXpath": monitorRulePage_addResponseHeader_posXpath,
-                    "policyRulePage_searchResponseHeader_posXpath": monitorRulePage_searchResponseHeader_posXpath,
-                    "policyRulePage_selectResponseHeader_posXpath": monitorRulePage_selectResponseHeader_posXpath,
-                    "policyRulePage_closeResponseHeader_posXpath": monitorRulePage_closeResponseHeader_posXpath,
-                },
-                "search": {
-                    "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
-                    "policyRuleListPage_searchLable_dropDown_item_posXpath": monitorRuleListPage_searchLable_dropDown_item_posXpath,
-                    "policyRuleListPage_searchLable_input_itemContent_posXpath": monitorRuleListPage_searchLable_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLable_searchButton_posId": monitorRuleListPage_searchLable_searchButton_posId,
-                    "policyRuleListPage_tableTbody_posXpath": monitorRuleListPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "policyRuleListPage_allSelect_posXpath": monitorRulelistPage_allSelect_posXpath,
-                    "policyRuleListPage_deleteButton_posId": monitorRuleListPage_deleteButton_posId,
-                    "policyRuleListPage_okButton_warningYes_posXpath": monitorRuleListpage_okButton_warningYes_posXpath,
-                    "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
-                }
-            }
-
-            test_url_object_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                    "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
-                },
-                "create": {
-                    "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
-                    "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
-                    "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
-                    "objectPage_addItem_posId": urlObjectPage_addItem_posId,
-                    # item简单定位
-                    "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
-                    "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
-                    "objectPage_okButton_posId": urlObjectPage_okButton_posId,
-                    "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath
-                },
-                "search": {
-                    "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
-                    "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": urlObjectPage_tableTbody_posXpath
-                },
-                "delete": {
-                    "objectListPage_allSelect_posXpath": urlObjectPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
-                    "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
-                }
-            }
-        # 创建object
-        if "source_ip" in test_data["condition"] and len(test_data["condition"]["source_ip"]) != 0:
-            ip_data = test_data["condition"]["source_ip"]
-            create_ip = CreateObject(driver)
-            for i in range(len(ip_data)):
-                create_ip_code = create_ip.create(ip_data[i], test_ip_object_element_position)
-                if create_ip_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create ip object successfully.", flush=True)
-                elif create_ip_code != 200:
-                    result = "Fail to create ip object."
-                    break
-
-        # 创建Server FQDN
-        if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
-            fqdn_data = test_data["condition"]["server_fqdn"]
-            create_fqdn = CreateObject(driver)
-            for i in range(len(fqdn_data)):
-                create_fqdn_code = create_fqdn.create(fqdn_data[i], test_fqdn_object_element_position)
-                if create_fqdn_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create fqdn object successfully.", flush=True)
-                elif create_fqdn_code != 200:
-                    result = "Fail to create fqdn."
-                    break
-
-        # 创建url 、request header、response header
-        if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
-            protocol_field_data = test_data["condition"]["protocol_filed"]
-            for i in range(len(protocol_field_data)):
-                create_field = CreateObject(driver)
-                tmp_key = protocol_field_data[i]["object_type"]
-                cond_key_out = tmp_key.replace("_"," ")
-                element_position_map = get_element_position(tmp_key)
-                create_field_code = create_field.create(protocol_field_data[i], element_position_map)
-                if create_field_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(cond_key_out), flush=True)
-                elif create_field_code != 200:
-                    result = "Fail to create {} object.".format(cond_key_out)
-                    break
-
-        # 创建rulecond_key_out
-        if create_field_code == 200:
-            create_rule = CreateRule(driver)
-            create_rule_code = create_rule.create(test_data, test_rule_element_position)
-            if create_rule_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create monitor rule successfully.", flush=True)
-            elif create_rule_code != 200:
-                result = "Fail to create monitor rule."
-
-
-        # 触发流量验证
-        if create_rule_code == 200:
-            search_rule = SearchRule(driver)
-            search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
-            if search_rule_code == 200:
-                # rule_id = search_rule.get_rule_id()
-                test_data["rule_id"] = rule_id
-                verify = Verification()
-                verification_result = verify.verification(driver, parameter, test_data, [], test_rule_element_position)
-                if len(verification_result) == 4:
-                    driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
-
-        # 分析验证结果，并返回给flask
-        if len(verification_result) != 0:
-            analysis = AnalysisResult()
-            result = analysis.analysis_result(test_data, [], verification_result)
-            # if len(result) == 0:
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
-            # elif len(result) != 0:
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
-
-        # 删除rule
-        if create_rule_code == 200:
-            search_rule = SearchRule(driver)
-            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"],
-                                                                              test_data["rule_name"],
-                                                                              test_rule_element_position)
-            if search_rule_code == 200:
-                delete_rule = DeleteRule(driver)
-                delete_rule_code = delete_rule.delete(test_rule_element_position, first_row_checkbox_element, True)
-                if delete_rule_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete monitor rule successfully.", flush=True)
-                elif delete_rule_code != 200:
-                    result = result + " In addition, fail to delete monitor rule."
-            else:
-                result = result + " In addition, fail to search monitor rule."
-
-
-        # 删除object
-        if delete_rule_code == 200 and "condition" in test_data.keys():
-            # 删除
-            for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
-                if cond_key == "application":
-                    continue  # 直接跳过
-                cond_status = 0
-                cond_key_out = cond_key.replace("_", " ")
-                if len(cond_value) != 0:  # 不为空
-                    cond_data = cond_value
-                    for i in range(len(cond_data)):  # 遍历查询所有condition
-                        search_cond = SearchObject(driver)
-                        if cond_key == "protocol_filed":
-                            tmp_key = cond_data[i]["object_type"]
-                            cond_key_out = tmp_key.replace("_", " ")
-                            element_position_map = get_element_position(tmp_key)
-                        else:
-                            element_position_map = get_element_position(cond_key)
-                        search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"],
-                                                                                          element_position_map)
-                        if search_cond_code == 200:
-                            delete_cond = DeleteObject(driver)
-                            delete_cond_code = delete_cond.delete(element_position_map,
-                                                                  first_row_checkbox_element,
-                                                                  True)
-                            if delete_cond_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                      str(datetime.now().microsecond)[:3],
-                                      "Delete {} object successfully.".format(cond_key_out), flush=True)
-                            else:
-                                result = result + " In addition, fail to delete {} object.".format(cond_key_out)
-                                break
-                        else:
-                            result = result + " In addition, fail to search {} object.".format(cond_key_out)
-                            break
-                        # 退出遍历标志
-                        if cond_status == 1:  # 失败，退出遍历创建
-                            break
-                # 退出遍历标志
-                if cond_status == 1:  # 失败，退出遍历创建
-                    break
-
-
-
-        # 脚本结束时间和耗时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
+              flush=True)
         return "Error: " + str(e)
     finally:
-        # 清理环境
-        support.ui_utils.env.teardown()
-        # 删除配置
-        delete = DeletePolicy()
-        delete.delete_policy_by_name(token, parameter, name_list)
+        # 清理环境并删除配置
+        case_instance_generator.delete_data()
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Finish test case: " + parameter["test_case_name"], flush=True)
         # 生成csv报告
-        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):
-            if result is not None and result != "" and len(result) != 0:
-                report_data = []
-                report_data.append(parameter["test_case_name"])
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(result)
-            elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(exception_result)
-            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Pass"
-                report_data.append(result_flag)
-                report_data.append("")
-            new_report = GenerateReport()
-            new_report.insert_data(parameter, report_data)
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
 
 
 if __name__ == '__main__':
     parameter = {
-        "username": "lina2024",
-        "password": "lina2024",
-        "test_pc_ip": "192.168.64.96",
+        "username": "zhaokun",
+        "password": "zhaokun1",
+        "test_pc_ip": "192.168.64.105",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
-        "debug_flag" : "local",
-        "is_log": 0,
+        "debug_flag": "local",
+        "is_log": 1,
         "env": "tsgx",
         "script_type": "ui",
         "vsys_id": 1,
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
         "module_name": "monitor",
-        "test_case_name": "monitor_app_http_url_request_heaser_response_header"
+        "test_case_name": "monitor_rule_mail_mirror_on"
     }
     run(parameter)
     """

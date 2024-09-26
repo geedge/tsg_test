@@ -20,6 +20,7 @@ driver = None  # 全局变量用户保存webdirver实例
 
 def my_driver():
     global driver
+    global driver_flag
     # 初始化
     chrome_option = webdriver.ChromeOptions()
     os_name = platform.system()
@@ -57,6 +58,7 @@ def my_driver():
     )
     # driver.implicitly_wait(2)
     driver.maximize_window()
+    driver_flag = True
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been initialized successfully.", flush=True)
     return driver
 
@@ -75,10 +77,27 @@ def setup():
 
 def teardown():
     global driver
+    global driver_flag
     if driver:
-        driver.quit()
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been closed successfully.", flush=True)
-        time.sleep(1)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Web Driver driver_flag:{}".format(driver_flag), flush=True)
+        if driver_flag:
+            driver.quit()
+            driver_flag = False
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been closed successfully.", flush=True)
+            time.sleep(1)
+        else:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been,there is nothing to do.", flush=True)
+        """
+        try:
+            driver.quit()
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been closed successfully.", flush=True)
+            time.sleep(1)
+        except Exception as e:
+            exception_result = str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
+        """
+
+
         
 def initiate_selenium_request():
     for i in range(5):
@@ -107,8 +126,11 @@ def get_docker_ip():
 # 处理ctrl+c中断
 def handle_interrupt(sinnum, frame):
     global driver
+    global driver_flag
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Web Driver driver_flag:{}".format(driver_flag), flush=True)
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], driver, "主动中断")
     time.sleep(1)
     if driver:
         driver.close()
+        driver_flag = False
     exit(1)

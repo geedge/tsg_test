@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 import os
 import sys
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -40,7 +39,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value":  parameter["test_pc_ip"]
+                                "item_value": parameter["test_pc_ip"]
                             },
                         ]
                     }
@@ -70,11 +69,11 @@ def run(parameter):
             },
             "expected_return": "mtv",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
+            "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter["test_pc_ip"]},
                                 {"query_field_key": "decoded_as", "query_value": "SSL"},
                                 {"query_field_key": "server_fqdn", "query_value": "www.mtv.com"}
-            ],
-             "traffic": {
+                                ],
+            "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://www.mtv.com/"
@@ -112,7 +111,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.96",
+        "test_pc_ip": "192.168.64.105",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
@@ -120,10 +119,10 @@ if __name__ == '__main__':
         "env": "tsgx",
         "script_type": "ui",
         "vsys_id": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "monitor",
-        "test_case_name": "monitor_rule_mail_mirror_on"
+        "root_path": workdir,
+        "path": workdir + "/testcase/ui",
+        "module_name": "manipulation",
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)
     """

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 import os
 import sys
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -40,7 +39,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value":  parameter["test_pc_ip"],
+                                "item_value": parameter["test_pc_ip"],
                             },
                         ]
                     }
@@ -70,10 +69,10 @@ def run(parameter):
             },
             "expected_return": "No handshake operation",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
+            "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter["test_pc_ip"]},
                                 {"query_field_key": "decoded_as", "query_value": "QUIC"},
                                 {"query_field_key": "server_fqdn", "query_value": "www.youtube.com"}
-            ],
+                                ],
             "traffic": {
                 "protocol": "quic",
                 "type": "",
@@ -113,7 +112,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.96",
+        "test_pc_ip": "192.168.64.105",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",

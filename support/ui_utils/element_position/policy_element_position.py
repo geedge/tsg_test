@@ -80,6 +80,9 @@ policyRulePage_choosePhoneNumber_posXpath = "//*[@id='tab-phone_number' and cont
 # imei
 policyRulePage_chooseImei_posXpath = "//*[@id='tab-imei' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'IMEI')]"
 
+# apn
+policyRulePage_chooseApn_posXpath = "//*[@id='tab-apn' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'APN')]"
+
 policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
@@ -600,6 +603,12 @@ serviceChainingRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 serviceChainingRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
+
+serviceChainingRulePage_addCondition_user_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='User']/parent::*//div[normalize-space(text())='User']"
+serviceChainingRulePage_addUser_posXpath = policyRulePage_addUser_posXpath
+serviceChainingRulePage_searchUser_posXpath = policyRulePage_searchUser_posXpath
+serviceChainingRulePage_selectUser_posXpath = policyRulePage_selectUser_posXpath
+serviceChainingRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
 
 serviceChainingRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 serviceChainingRulePage_searchDstIP_posXpath =  "//div[@class='destinations list-box']//div[contains(@class, 'object-item-seach')]//input"

@@ -1,6 +1,6 @@
 import os
-import random
 import sys
+import random
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
@@ -52,14 +52,14 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                 "protocol_filed": [
-                     {
-                         "name": "True",  #
-                         "object_type": "boolean",
-                         "boolean_type": "ESNI",
-                         "items": []
-                     }
-                 ],
+                "protocol_filed": [
+                    {
+                        "name": "True",  #
+                        "object_type": "boolean",
+                        "boolean_type": "ESNI",
+                        "items": []
+                    }
+                ],
             },
             "profile": [
                 {
@@ -69,7 +69,7 @@ def run(parameter):
                     # vlan的范围：应该是在3-66
                 }
             ],
-            "is_mirror":"on",
+            "is_mirror": "on",
             "mirror_type": "ssl",
             "expected_return": "trex",
             "counters": {"hits": 1},

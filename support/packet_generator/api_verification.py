@@ -151,7 +151,7 @@ class ApiVerification:
             max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
             search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
             if script_type == "ui":
-                max_fail_count = 35    # 每次查询statistic metric的 间隔时间 单位秒
+                max_fail_count = 20    # 每次查询statistic metric的 间隔时间 单位秒
                 #time.sleep(60)
             utc_tz = pytz.timezone('UTC')
             cmd_return = expected_return = test_data["expected_return"]
@@ -421,10 +421,7 @@ class ApiVerification:
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
             parse.read(parse_dir, encoding="utf-8")
-            if script_type == "api":
-                traffic_server = parse.get("traffic_server", "api_server_url")
-            elif script_type == "ui":
-                traffic_server = parse.get("traffic_server", "ui_server_url")
+            traffic_server = parse.get("traffic_server", "url")
             port = parse.get("traffic_port", "server_port")
             url = traffic_server + ":" + port + "/v1/traffic"
             headers = {"Content-Type": "application/json"}

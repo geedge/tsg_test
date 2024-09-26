@@ -75,20 +75,20 @@ class CreateProfile:
                 "source_columns": "app_category",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Client to Server TTL": {
+            "Client-to-Server TTL": {
                 "source_columns": "c2s_ttl",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Server to Client TT": {
+            "Server-to-Client TTL": {
                 "source_columns": "s2c_ttl",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Incoming Link ID": {
-                "source_columns": "in_link_id",
+            "Client-to-Server Link ID": {
+                "source_columns": "c2s_link_id",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Outgoing Link ID": {
-                "source_columns": "out_link_id",
+            "Server-to-Client Link ID": {
+                "source_columns": "s2c_link_id",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
             "Client Port": {
@@ -139,7 +139,8 @@ class CreateProfile:
                 "source_columns": "in_pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Outgoing Packet Length": {
                 "source_columns": "out_pkt_length_distribution",
@@ -151,9 +152,10 @@ class CreateProfile:
                 "source_columns": "pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "Incoming Latency": {
+            "Incoming Latency(ms)": {
                 "source_columns": "in_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
@@ -161,9 +163,10 @@ class CreateProfile:
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
-            "Outgoing Latency": {
+            "Outgoing Latency(ms)": {
                 "source_columns": "out_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
@@ -171,25 +174,28 @@ class CreateProfile:
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
-            "DTLS.Handshake Latency(ms)": {
+            "DTLS Handshake Latency(ms)": {
                 "source_columns": "dtls_handshake_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
-            "SSL.Handshake Latency(ms)": {
+            "SSL Handshake Latency(ms)": {
                 "source_columns": "ssl_handshake_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
             "TCP Handshake Latency(ms)": {
                 "source_columns": "tcp_handshake_latency_ms",
@@ -198,25 +204,28 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
-            "Duration(ms)": {
+            "Duration": {
                 "source_columns": "duration_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
-            "Round-trip Time(ms)": {
+            "Round-trip Time": {
                 "source_columns": "tcp_rtt_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
             "Bytes Sent": {
                 "source_columns": "sent_bytes",
@@ -226,7 +235,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "bytes", "metric_type": "distribution"}]
             },
             "Packets Sent": {
                 "source_columns": "sent_pkts",
@@ -236,7 +246,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Packets Received": {
                 "source_columns": "received_pkts",
@@ -246,7 +257,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Bytes Received": {
                 "source_columns": "received_bytes",
@@ -256,7 +268,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "bytes", "metric_type": "distribution"}]
             },
             "Incoming Bytes": {
                 "source_columns": "in_bytes",
@@ -266,7 +279,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "bytes", "metric_type": "distribution"}]
             },
             "Outgoing Bytes": {
                 "source_columns": "out_bytes",
@@ -276,7 +290,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "bytes", "metric_type": "distribution"}]
             },
             "Incoming Packets": {
                 "source_columns": "in_pkts",
@@ -286,7 +301,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Outgoing Packets":  {
                 "source_columns": "out_pkts",
@@ -296,25 +312,28 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "New Client to Server Flows": {
+            "New Client-to-Server Flows": {
                 "source_columns": "new_c2s_flows",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "flows", "metric_type": "count"},
                              {"function": "RATE", "unit": "fps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "flows", "metric_type": "distribution"}]
             },
-            "New Server to Client Flows":  {
+            "New Server-to-Client Flows":  {
                 "source_columns": "new_s2c_flows",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "flows", "metric_type": "count"},
                              {"function": "RATE", "unit": "fps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "flows", "metric_type": "distribution"}]
             },
             "New Incoming Sessions": {
                 "source_columns": "new_in_sessions",
@@ -323,7 +342,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
             },
             "New Outgoing Sessions": {
                 "source_columns": "new_out_sessions",
@@ -332,7 +352,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
             },
             "Closed Incoming Sessions": {
                 "source_columns": "closed_in_sessions",
@@ -341,7 +362,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
             },
             "Closed Outgoing Sessions": {
                 "source_columns": "closed_out_sessions",
@@ -350,7 +372,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
             },
             "SYN Packets": {
                 "source_columns": "syn_pkts",
@@ -359,25 +382,28 @@ class CreateProfile:
                              {"function": "RATE", "unit": "pps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "Client to Server IP Fragments": {
+            "Client-to-Server IP Fragments": {
                 "source_columns": "c2s_ip_fragments",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "packets", "metric_type": "count"},
                              {"function": "RATE", "unit": "pps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "Server to Client IP Fragments": {
+            "Server-to-Client IP Fragments": {
                 "source_columns": "s2c_ip_fragments",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "packets", "metric_type": "count"},
                              {"function": "RATE", "unit": "pps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
         }
         dimensions_source_fields_map = {
@@ -394,10 +420,10 @@ class CreateProfile:
             "Server Domain": "server_domain",
             "Application": "app",
             "Application Category": "app_category",
-            "Client to Server TTL": "c2s_ttl",
-            "Server to Client TTL": "s2c_ttl",
-            "Incoming Link ID": "in_link_id",
-            "Outgoing Link ID": "out_link_id",
+            "Client-to-Server TTL": "c2s_ttl",
+            "Server-to-Client TTL": "s2c_ttl",
+            "Client-to-Server Link ID": "c2s_link_id",
+            "Server-to-Client Link ID": "s2c_link_id",
             "Client Port": "client_port",
             "Server Port": "server_port",
             "HTTP Host": "http_host",
@@ -520,13 +546,21 @@ class CreateProfile:
                         break
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "order_by参数错误:{}".format(post_order_by))
                 #f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
-                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = post_order_by.lower()
+                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = post_order_by.strip()
             # 重组 limit、 drilldown_limit
             if "line" == chart_type:
                 if len(post_statistics_data["chart_list"][chart_idex]["dimensions"]) > 1: # 如果是Line+Dimensions图表，需要添加重组TOP参数，而无Limit参数
                     f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["series_limit"] = int(post_statistics_data["chart_list"][chart_idex]["series_limit"])
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = 65536
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = ""
+            elif "histogram" == chart_type:
+                # 不加Limit接口报错，故此处统一对histogramChart添加limit值:'{
+                #   "code" : 400,
+                #   "msg" : "INVALID REQUEST:The limit cannot be empty.",
+                #   "data" : null,
+                #   "success" : false
+                # }'
+                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = 65536
             else:
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = str(post_statistics_data["chart_list"][chart_idex]["limit"])
             # 重组threshold

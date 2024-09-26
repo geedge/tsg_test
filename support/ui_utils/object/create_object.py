@@ -95,7 +95,7 @@ class CreateObject:
                             self.driver.find_element(By.XPATH,create_element_position["objectPage_item_value_plus_posXpath"]).click()
                             self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
-            elif data["object_type"] == "url" or data["object_type"] == "account" or data["object_type"] == "phone_number" or data["object_type"] == "fqdn" or data["object_type"] == "subscriberid":
+            elif data["object_type"] in ["url", "account", "phone_number", "fqdn", "subscriberid", "apn"]:
                 for i in range(len(data["items"])):   #
                     self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
                     if data["items"][i]["item_operation"] == "add":   # 直接 新增 模式

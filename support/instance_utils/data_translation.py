@@ -81,6 +81,13 @@ class DataTranslation:
             elif data["rule_action"] == "replace":
                 replace_parameter_list = data["action_parameter"]["replace_parameter"]
                 user_region = []
+                map_search_in = {
+                    "HTTP Request-URI": "http_req_uri",
+                    "HTTP Request Body": "http_req_body",
+                    "HTTP Response Body": "http_resp_body",
+                    "HTTP Request Header": "http_req_header",
+                    "HTTP Response Header": "http_resp_header"
+                }
                 for i in range(len(replace_parameter_list)):
                     rule_dict = {}
                     regex_name = replace_parameter_list[i]["regex"]
@@ -88,7 +95,8 @@ class DataTranslation:
                         rule_dict["regex_enable"] = 1
                     else:
                         rule_dict["regex_enable"] = 0
-                    rule_dict["search_in"] = replace_parameter_list[i]["search_in"]
+                    search_in = replace_parameter_list[i]["search_in"]
+                    rule_dict["search_in"] = map_search_in[search_in]
                     rule_dict["find"] = replace_parameter_list[i]["find"]
                     rule_dict["replace_with"] = replace_parameter_list[i]["replace_with"]
                     user_region.append(copy.deepcopy(rule_dict))
@@ -146,9 +154,9 @@ class DataTranslation:
                             if len(data["profile"]) == 0:
                                 resolution = []
                                 resolution_dict = {}
-                                answer = []
-                                answer_dict = {}
                                 for resolution_item in data["condition"]["sub_action"][0]["resolution"]:
+                                    answer_dict = {}
+                                    answer = []
                                     resolution_dict["qtype"] = resolution_item["qtype"]
                                     for answer_item in resolution_item["answer"]:
                                         answer_dict["atype"] = answer_item["atype"]
@@ -160,6 +168,7 @@ class DataTranslation:
                                         answer_dict["ttl"]["max"] = int(ttl_split[1])
                                         answer.append(copy.deepcopy(answer_dict))
                                     resolution_dict["answer"] = answer
+                                    resolution.append(copy.deepcopy(resolution_dict))
                             else:
                                 resolution = []
                                 resolution_dict = {}
@@ -185,7 +194,6 @@ class DataTranslation:
                                 data["profile_condition_1"][0]["profile_type"] = "dns_record"
                                 data["profile_condition_1"][0]["type"] = data["profile"][0]["type"]
                                 data["profile_condition_1"][0]["value"] = data["profile"][0]["items"][0]
-                            resolution.append(copy.deepcopy(resolution_dict))
                             data["resolution_1"] = resolution
                 else:
                     if data["condition"]["sub_action_override"] == False:
@@ -220,6 +228,8 @@ class DataTranslation:
                             }
                         ]
                     }
+                    if "negate" in v[i]:
+                        temp["is_negate"] = v[i]["negate"]
                     for u in range(len(v[i]["item"])):
                         # 添加多个item
                         add_item_dict = {}
@@ -467,6 +477,8 @@ class DataTranslation:
                             }
                         ]
                     }
+                    if "negate" in v[i]:
+                        temp["is_negate"] = v[i]["negate"]
                     for u in range(len(v[i]["items"])):
                         # 添加多个item
                         add_item_dict = {
@@ -487,7 +499,7 @@ class DataTranslation:
                             "add_item_list": [
                                 {
                                     "keyword_array": [
-                                        v[0]["item"][0]["item_value"]
+                                        v[0]["items"][0]["item_value"]
                                     ]
                                 }
                             ]

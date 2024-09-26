@@ -174,7 +174,7 @@ class StatisticsInstanceGenerator:
                     delete_rule = support.ui_utils.policy.delete_rule.DeleteRule(driver)
                     delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                     if delete_rule_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete manipulation rule successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} rule successfully.".format(test_data["policy_type"]), flush=True)
                     elif delete_rule_code != 200:
                         ui_result = ui_result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
                 else:
@@ -256,10 +256,14 @@ class StatisticsInstanceGenerator:
                                 break
                     
             result["ui_result"] = ui_result
-            
+
+            # 清理环境
+            support.ui_utils.env.teardown()
         if parameter["script_type"] == "api" or need_initialization == True:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
-
+            # Statistics Rule使用随机IP
+            #organize_config = OrganizeConfig()
+            test_data = organize_config.generate_random_ip(test_data, parameter)
             parameter["script_type"] = "api"
 
             # 数据转换，适配API的test_data
