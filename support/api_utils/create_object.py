@@ -28,7 +28,9 @@ class CreateObject:
         self.geo_ids = []
         self.geo_name_ids = []
 
-    def create_object_from_template(self, token, parameter, condition, template, api_host, vsys_id):
+    def create_object_from_template(self, token, parameter, condition, template):
+        api_host = parameter["api_server"]
+        vsys_id = parameter["vsys_id"]
         # 此处的condition为测试用例json中obj_condition_{i}的相关数据
         headers = {"Content-Type": "application/json", "Authorization": token}
         with open(template, 'r', encoding='utf-8') as f:
@@ -55,7 +57,7 @@ class CreateObject:
                     repeat_time = key["repeat_time"]
                 for i in range(repeat_time):
                     index = i + 1
-                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, test_subcriber_id, vsys_id, index, repeat_time)
+                    objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, parameter, index, repeat_time)
                     if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT", "ATTR_GTP_IMSI", "ATTR_GTP_PHONE_NUMBER", "ATTR_GTP_IMEI", "ATTR_GTP_APN"]:
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
@@ -133,7 +135,11 @@ class CreateObject:
         return timeout_result, condition_ids_by_api_dict
     
     # 对多个objects的处理（处理之后要调用create_object）
-    def organize_objects_data(self, obj_template_dict, condition, headers, api_host, test_pc_ip, test_subcriber_id, vsys_id, index, repeat_time):
+    def organize_objects_data(self, obj_template_dict, condition, headers, parameter, index, repeat_time):
+        test_pc_ip = parameter["test_pc_ip"]
+        test_subcriber_id = parameter["test_subcriber_id"]
+        api_host = parameter["api_server"]
+        vsys_id = parameter["vsys_id"]
         # object中的is_repeat，用于判定是否需要将数据组建为按照文件读取为多个items的形式
         is_repeat = 0
         is_import = 0
@@ -161,7 +167,7 @@ class CreateObject:
             else:
                 is_negate = 0
 
-            obj_template_dict['vsys_id'] = vsys_id
+            #obj_template_dict['vsys_id'] = vsys_id
 
             obj_list = condition["object_list"]
             for obj in obj_list:
@@ -171,11 +177,11 @@ class CreateObject:
                 else:
                     context_name = ''
                 if is_import == 0:
-                    type = "create"
-                    member = self.combine_object_data(obj_type, obj_sub_type, add_item_list, test_pc_ip, test_subcriber_id, context_name, is_repeat)
-                    obj_template_dict['object']['member'] = member
+                    type_op = "create"
+                    member = self.combine_object_data(parameter, obj_type, add_item_list, context_name, is_repeat)
+                    obj_template_dict['object']['items'] = member
                 else:
-                    type = "import"
+                    type_op = "import"
                     obj_template_dict['object']['statistics_option'] = 'none'
                     obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'statistics_option': 'elaborate'}
                     obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
@@ -184,7 +190,7 @@ class CreateObject:
                         file_name = object_file.split("/")[-1]
                         obj_template_dict["file_dry"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
                         obj_template_dict["file_import"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
-                object_ids_temp_list, timeout_result = self.create_or_import_object(type, obj_template_dict, headers, api_host, is_repeat)
+                object_ids_temp_list, timeout_result = self.create_or_import_object(type_op, obj_template_dict, headers, parameter, is_repeat)
 
             objects_list = []
             object_temp_list = []
@@ -198,34 +204,23 @@ class CreateObject:
         return object_temp_list, timeout_result 
     
     # 组织创建通过items进行新增的object的数据
-    def combine_object_data(self, obj_type, obj_sub_type, add_item_list, test_pc_ip, test_subcriber_id, context_name, is_repeat):
+    def combine_object_data(self, parameter, obj_type, add_item_list, context_name, is_repeat):
+        test_subcriber_id = parameter["test_subcriber_id"]
         items = []
         object_dict = {}
         geolocation = {}
         if is_repeat == 0:
             if obj_type == "ip":
                 for item in add_item_list:
-                    object_dict = {}
-                    if 'ip_cidr' in item:
-                        object_dict['ip_cidr'] = item['ip_cidr']
-                    if 'ip_range' in item:
-                        object_dict['ip_range'] = item['ip_range']
-                    if 'ip_address' in item:
-                        ip_temp = item['ip_address']
-                        if ip_temp == 'default':
-                            object_dict['ip_address'] = test_pc_ip
-                        else:
-                            object_dict['ip_address'] = item['ip_address']
-                    if 'port' in item:
-                        object_dict['port'] = item['port']
-                    # if 'port_range' in item:
-                    #     object_dict['port_range'] = item['port_range']
-                    if 'protocol' in item:
-                        object_dict['protocol'] = item['protocol']
-                    if 'addr_type' in item:
-                        object_dict['addr_type'] = item['addr_type']
-                    object_dict = dict(ip=object_dict, op='add')
-                    items.append(copy.deepcopy(object_dict))
+                    tmp_item = {
+                        "op": "add",
+                        "ip": "5.5.5.6",
+                        "interval": "0-65535"
+                    }
+                    tmp_item["op"] = item["op"]
+                    tmp_item["ip"] = item["ip"]
+                    tmp_item["interval"] = item["interval"]
+                    items.append(copy.deepcopy(tmp_item))
             elif obj_type == "flag":
                 for item in add_item_list:
                     if 'flag' in item:
@@ -305,30 +300,6 @@ class CreateObject:
                             tmp_item["string"]["patterns"][0]["offset"] = range_offset[0]["offset"]
                             tmp_item["string"]["patterns"][0]["depth"] = range_offset[0]["depth"]
                     items.append(copy.deepcopy(tmp_item))
-
-
-
-                    # patterns = []
-                    # keywords = item["keyword_array"][0]
-                    # if "&" not in keywords:
-                    #     object_dict = dict(keywords=keywords)
-                    #     patterns.append(object_dict)
-                    #     patterns = dict(patterns=patterns)
-                    #     string = dict(string=patterns, op='add')
-                    #     items.append(string)
-                    # else:    #有and模式
-                    #     keywords_list = keywords.split("&")
-                    #     string = {}
-                    #     contextual_string = {}
-                    #     for i in range(len(keywords_list)):
-                    #         object_dict = {}
-                    #         object_dict["keywords"] = keywords_list[i]
-                    #         patterns.append(copy.deepcopy(object_dict))
-                    #     contextual_string["patterns"] = patterns
-                    #     contextual_string['expr_type'] = 1
-                    #     string["op"] = "add"
-                    #     string["string"] = contextual_string
-                    #     items.append(string)
             elif obj_type == "http_signature":
                 for item in add_item_list:
                     tmp_item = {
@@ -431,16 +402,19 @@ class CreateObject:
                             object_dict['ip_address'] = ip
                             object_dict = dict(ip=object_dict, op='add')
                             items.append(object_dict)
-        if obj_type == 'geolocation':
-            member = dict(geolocation = geolocation, type = 'library')
-        else:
-            member = dict(items=items, type="item")
-        return member
+        # if obj_type == 'geolocation':
+        #     member = dict(geolocation = geolocation, type = 'library')
+        # else:
+        #     member = dict(items=items, type="item")
+        return items
            
-    def create_or_import_object(self, type, obj_template_dict, headers, api_host, is_repeat):
+    def create_or_import_object(self, type_op, obj_template_dict, headers, parameter, is_repeat):
         try:
-            if type == "create":
-                url = api_host + "/v1/policy/object"
+            api_host = parameter["api_server"]
+            vsys_id = parameter["vsys_id"]
+            obj_type = obj_template_dict['object']['type']
+            if type_op == "create":
+                url = api_host + "/v1/vsys{}/policy/object/{}".format(vsys_id, obj_type)
                 time1 = datetime.now()
                 response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
                 assert response.status_code == 200
@@ -456,7 +430,7 @@ class CreateObject:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Creating {} object takes too long.".format(obj_template_dict['object']['type']), flush=True)
                 else:
                     timeout_result = True
-            elif type == "import":
+            elif type_op == "import":
                 import_url = api_host + "/v1/policy/object/import"
                 if 'Content-Type' in headers:
                     del headers['Content-Type']
@@ -483,8 +457,7 @@ class CreateObject:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Importing {} object takes too long.".format(obj_template_dict['object']['type']), flush=True)
                 else:
                     timeout_result = True
-            
-            obj_type = obj_template_dict['object']['type']
+
             response_dict = json.loads(response.text)
             object_ids, geo_name_id_list = self.get_object_ids(response_dict, obj_type)
             
@@ -543,7 +516,7 @@ class CreateObject:
             geoname_id = response_dict['data']['object']['member']['geolocation']['geoname_id']
             temp_geo_name_id_list.append(geoname_id)
         else:
-            object_id = response_dict['data']['object']['id']      
+            object_id = response_dict['data']['object']['uuid']
         temp_list.append(object_id)
         return temp_list, temp_geo_name_id_list
     
@@ -551,7 +524,6 @@ class CreateObject:
     def obj_ids_to_policy_obj_list(self, object_ids, attribute_name, is_negate):
         temp_list = []
         for obj in object_ids:
-            obj = int(obj)
             object_id_list = []
             object_id_list.append(obj)
             object_dict = dict(object_ids=object_id_list)

@@ -8,10 +8,20 @@ from datetime import datetime
 def get_group_id(app, api_host):
     mysql_host = api_host[7:]
     # mysql_host = "192.168.40.198"
-    db = pymysql.connect(host=mysql_host,
-                        user='test',
-                        password='test',
-                        database='tsg-bifang')
+    # db = pymysql.connect(host=mysql_host,
+    #                     user='test',
+    #                     password='test',
+    #                     database='tsg-bifang')
+    if "192.168.44.3" in mysql_host:
+        db = pymysql.connect(host=mysql_host,
+                             user='test',
+                             password='test@cm',
+                             database='tsg-bifang')
+    else:
+        db = pymysql.connect(host=mysql_host,
+                             user='test',
+                             password='test',
+                             database='tsg-bifang')
     group_id_list=[]
     # 该方法用于将字符串类型的['ssl', 'http']转换为list类型的['ssl', 'http']（在无法使用list函数直接转换的情况下）
     app = ast.literal_eval(app)

@@ -45,7 +45,7 @@ class CreatePolicy:
             # 创建object
             create_object = CreateObject()
             object_template = template_path["object_template"]
-            timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, vsys_id)
+            timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template)
             for k, v_0 in condition_ids_by_api_dict.items():
                 v = copy.deepcopy(v_0)
                 if k == "ip_ids" and len(v) > 0:
@@ -76,7 +76,7 @@ class CreatePolicy:
                     create_http_signature_ids.extend(v)
                 if k == "geo_name_ids" and len(v) > 0:
                     create_geo_name_ids.extend(v)
-
+            """
             # 创建profile
             temp_profile_condition = "profile_condition_{}".format(create_number)
             if temp_profile_condition in test_data.keys():
@@ -92,6 +92,7 @@ class CreatePolicy:
                     create_profile_ids.append(create_profile_ids_dict)
                     if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining":
                         temp_profile_list.append(create_profile_ids_dict)
+
             
             # 创建rule
             create_rule = CreatePolicyRule()
@@ -141,7 +142,8 @@ class CreatePolicy:
                             statistics_sc_info_list.append(sc_info)
             if len(policy_id_list) > 0:
                 create_policies_ids.extend(policy_id_list)
-        
+            """
+
         cfg_list = {}
         cfg_list["create_ip_ids"] = create_ip_ids
         cfg_list["create_subid_ids"] = create_subid_ids

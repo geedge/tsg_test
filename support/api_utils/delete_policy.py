@@ -47,7 +47,7 @@ class DeletePolicy:
                 delete_object_template['type'] = "ip"
                 delete_object_template['ids'] = create_ip_ids
                 delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                url = api_server + "/v1/vsys_{}/policy/object/{}".format(vsys_id, "ip")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:

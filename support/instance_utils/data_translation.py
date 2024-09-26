@@ -221,8 +221,9 @@ class DataTranslation:
                             {
                                 "add_item_list": [
                                     # {
-                                    #     "ip_address": v[0]["item"][0]["item_value"],
-                                    #     "port_range": "0-65535"
+                                    #     "op": "add",
+                                    #     "ip": v[0]["item"][0]["item_value"],
+                                    #     "interval": "0-65535"
                                     # }
                                 ]
                             }
@@ -233,8 +234,9 @@ class DataTranslation:
                     for u in range(len(v[i]["item"])):
                         # 添加多个item
                         add_item_dict = {}
-                        add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
-                        add_item_dict["port_range"] = "0-65535"
+                        add_item_dict["ip"] = v[i]["item"][u]["item_value"]
+                        add_item_dict["interval"] = "0-65535"
+                        add_item_dict["op"] =  v[i]["item"][u]["item_operation"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
