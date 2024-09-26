@@ -158,7 +158,7 @@ class ApiVerification:
             code, statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
             if code != 200:
                 return False, False, False, "Exception when getting Statistics Template information from the interface", my_driver  # 匹配其它策略模式
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：The expect result: {}'.format(statistics_metircs_expect), flush=True)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：The expect result: {}'.format(statistics_metircs_expect), flush=True)
             if len(statistics_template_chart_list) > 0:  # 非空
                 for statistics_info in statistics_template_chart_list:
                     fail_count = 0   #自增变量
@@ -186,7 +186,7 @@ class ApiVerification:
                             if fail_count >= max_fail_count:
                                 break
                             time.sleep(search_interval_time)
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：Traffic Metric Verify Result:{}'.format(metric_result), flush=True)
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：Traffic Metric Verify Result:{}'.format(metric_result), flush=True)
             return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
         elif policy_type == "service_chaining":
             #从配置文件中获取active ip list
