@@ -43,7 +43,7 @@ def run(parameter):
                         "object_type": "subscriberid",
                         "select_type": False,
                         "negate": False,
-                        "item": [
+                        "items": [
                             {
                                 "item_operation": "add",
                                 "item_type": "subscriberid",
