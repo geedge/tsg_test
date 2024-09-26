@@ -79,7 +79,7 @@ def teardown():
     global driver
     global driver_flag
     if driver:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Web Driver driver_flag:{}".format(driver_flag), flush=True)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Web Driver driver_flag:{}".format(driver_flag), flush=True)
         if driver_flag:
             driver.quit()
             driver_flag = False

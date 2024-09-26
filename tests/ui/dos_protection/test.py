@@ -94,126 +94,96 @@ def main():
     end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     test_data = {
-    'is_multi_priority': False,
-    'rule_num': 1,
-    'policy_type': 'dos_protection',
-    'rule_name': 'dos_protect_srcip_http_rate_srcip_d3',
-    'rule_action': 'protect',
-    'rule_type': 'create',
-    'do_log': 2,
-    'condition': {
-        'source_ip': [{
-            'name': 'dos_srcip',
-            'object_type': 'ip',
-            'select_type': False,
-            'negate': False,
-            'item': [{
-                'item_operation': 'add',
-                'item_type': 'ipv4',
-                'item_value': '10.64.24.173'
-            }]
-        }],
-        'application': [{
-            'name': 'http',
-            'object_type': 'application',
-            'negate': False
-        }]
-    },
-    'threshold': {
-        'type': 'rate',
-        'rate_threshold': {
-            'group_by': 'source_ip',
-            'request_per_period': 1,
-            'counting_period': '1min'
-        }
-    },
-    'mitigation': {
-        'behavior': 'deny',
-        'timeout': '2min'
-    },
-    'expected_return': '',
-    'counters': {
-        'hits': 'many'
-    },
-    'log_query_param': [
-        # {'query_field_key': 'basic_attack_type', 'query_value': 'tcp_syn_flood'},
-        # {'query_field_key': 'basic_sessions', 'query_value': ''},
-        # {'query_field_key': 'basic_session_rate', 'query_value': ''},
-        # {'query_field_key': 'basic_packets', 'query_value': ''},
-        # {'query_field_key': 'basic_packet_rate', 'query_value': ''},
-        # {'query_field_key': 'basic_bytes', 'query_value': ''},
-        # {'query_field_key': 'basic_bit_rate', 'query_value': ''},
-        {'query_field_key': 'attack_type', 'query_value': 'custom_network_attack'},
-        {'query_field_key': 'sessions', 'query_value': 2},
-        {'query_field_key': 'packets', 'query_value': 8},
-        {'query_field_key': 'bytes', 'query_value': 1388},
-        {'query_field_key': 'bit_rate', 'query_value': 1850},
-        {'query_field_key': 'packet_rate', 'query_value': 1},
-        {'query_field_key': 'session_rate', 'query_value': 0}
-    ],
-    'traffic': {
-        'protocol': '',
-        'type': 'trex',
-        'clients_start_ip': '10.64.24.173',
-        'clients_end_ip': '10.64.24.173',
-        'servers_start_ip': '2.1.1.9',
-        'servers_end_ip': '2.1.1.9',
-        'm': 1,
-        'd': 5,
-        'yaml_name': 'test',
-        'pcap_name': 'http'
-    },
-    'token': '2cce287b-615f-4f1d-850a-31068dbf7b29&27&',
-    'rule_id': '153317'
-}
-
+        'is_multi_priority': False,
+        'rule_num': 1,
+        'policy_type': 'dos_protection',
+        'rule_name': 'dos_protect_srcip_http_concurrency_srcip_d3',
+        'rule_action': 'protect',
+        'rule_type': 'create',
+        'do_log': 2,
+        'condition': {
+            'source_ip': [{'name': 'dos_srcip', 'object_type': 'ip', 'select_type': False, 'negate': False,
+                           'item': [{'item_operation': 'add', 'item_type': 'ipv4', 'item_value': '10.64.20.210'}]}],
+            'application': [{'name': 'ssl', 'object_type': 'application', 'negate': False}]
+        },
+        'threshold': {
+            'type': 'concurrency',
+            'concurrency_threshold': {'group_by': 'source_ip', 'concurrent_sessions': 2}
+        },
+        'mitigation': {'behavior': 'deny', 'timeout': '5min'},
+        'expected_return': '',
+        'counters': {'hits': 'many'},
+        'log_query_param': [
+            {'query_field_key': 'attack_type', 'query_value': 'custom_network_attack'},
+            {'query_field_key': 'sessions', 'query_value': ''},
+            {'query_field_key': 'packets', 'query_value': ''},
+            {'query_field_key': 'bytes', 'query_value': ''},
+            {'query_field_key': 'bit_rate', 'query_value': ''},
+            {'query_field_key': 'packet_rate', 'query_value': ''},
+            {'query_field_key': 'session_rate', 'query_value': ''}
+        ],
+        'traffic': {
+            'protocol': '',
+            'type': 'trex',
+            'clients_start_ip': '10.64.20.210',
+            'clients_end_ip': '10.64.20.210',
+            'servers_start_ip': '2.1.1.18',
+            'servers_end_ip': '2.1.1.18',
+            'active_flows': 3,
+            'd': 5,
+            'm': 1,
+            'yaml_name': 'test',
+            'pcap_name': 'tls_long'
+        },
+        'token': 'd21627b9-cb69-4c83-b111-8c8a2149cf26&27&',
+        'rule_id': '157553'
+    }
 
     log_in = LogIn()
     pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
     token = log_in.login(parameter["username"], pwd, parameter["api_server"])
     test_data["token"] = token
 
-    support.ui_utils.env.initiate_selenium_request()
-    driver = support.ui_utils.env.my_driver()
-    support.ui_utils.env.setup()
+    # support.ui_utils.env.initiate_selenium_request()
+    # driver = support.ui_utils.env.my_driver()
+    # support.ui_utils.env.setup()
 
-    output = {'total_packets': 388, 'total_packets_sent': 88, 'total_packets_received': 300, 'total_bytes': 435032, 'total_bytes_sent': 34164, 'total_bytes_received': 400868, 'total_syn_pkt': 4}  # 示例的输出
 
-    # #1.api校验
-    # api_server = parameter["api_server"]
-    # vsys_id = parameter["vsys_id"]
-    # script_type = parameter["script_type"]
-    # create_policies_ids = [{'dos_protection': test_data['rule_id']}]
-    # output = {'total_packets': 388, 'total_packets_sent': 88, 'total_packets_received': 300, 'total_bytes': 435032, 'total_bytes_sent': 34164, 'total_bytes_received': 400868, 'total_syn_pkt': 4}  # 示例的输出
+    #1.api校验
+    api_server = parameter["api_server"]
+    vsys_id = parameter["vsys_id"]
+    script_type = parameter["script_type"]
+    create_policies_ids = [{'dos_protection': test_data['rule_id']}]
+    output = {'total_bytes': 19027648, 'total_bytes_received': 18671260, 'total_bytes_sent': 356388, 'total_packets': 18056, 'total_packets_received': 12368, 'total_packets_sent': 5688, 'total_syn_pkt': 4}  # 示例的输出
+
+    # 调用 GetLog 的 get_log_by_condition 函数
+    log = support.api_utils.get_log.GetLog()
+
+    log_result = log.get_log_by_condition(
+        token,
+        rule_num,
+        start_time,
+        end_time,
+        parameter["test_pc_ip"],
+        parameter["test_subcriber_id"],
+        create_policies_ids,
+        test_data,
+        api_server,
+        vsys_id,
+        script_type,
+        output
+    )
+    #打印 log_result 结果
+    print("log_result:", log_result)
+    print(test_data)
+
+    # #2.ui校验
+    # api_verification_result = [True,True,True]
     #
-    # # 调用 GetLog 的 get_log_by_condition 函数
-    # log = support.api_utils.get_log.GetLog()
+    # ui_verification = UiVerification()
     #
-    # log_result = log.get_log_by_condition(
-    #     token,
-    #     rule_num,
-    #     start_time,
-    #     end_time,
-    #     parameter["test_pc_ip"],
-    #     parameter["test_subcriber_id"],
-    #     create_policies_ids,
-    #     test_data,
-    #     api_server,
-    #     vsys_id,
-    #     script_type,
-    #     output
-    # )
-    # #打印 log_result 结果
-    # print("log_result:", log_result)
-    # print(test_data)
-
-    #2.ui校验
-    api_verification_result = [True,True,True]
-
-    ui_verification = UiVerification()
-
-    ui_verification_result = ui_verification.ui_verification(driver,parameter, test_data, api_verification_result,test_rule_element_position, output,111111)
-    print("ui_verification_result:", ui_verification_result)
+    # ui_verification_result = ui_verification.ui_verification(driver,parameter, test_data, api_verification_result,test_rule_element_position, output,111111)
+    # print("ui_verification_result:", ui_verification_result)
 
 
 if __name__ == "__main__":

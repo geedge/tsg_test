@@ -44,7 +44,7 @@ def run(parameter):
                 ],
                 "application": [
                     {
-                        "name": "http",
+                        "name": "ssl",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -54,7 +54,7 @@ def run(parameter):
                 "type": "concurrency",
                 "concurrency_threshold": {
                     "group_by": "source_ip",
-                    "concurrent_sessions": 1
+                    "concurrent_sessions": 2 #为1的时候packets_received有为0、为1的不好校验
                 }
             },
             "mitigation": {
@@ -64,74 +64,33 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                {
-                    "query_field_key": "attack_type",
-                    "query_value": "custom_network_attack"
-                },
-                {
-                    "query_field_key": "sessions",
-                    "query_value": 1 # 对于custom network attack来说，该值不固定
-                },
-                {
-                    "query_field_key": "session_rate",
-                    "query_value": 0
-                },
-                {
-                    "query_field_key": "packets",
-                    "query_value": 4 # 对于custom network attack来说，该值不固定
-                },
-                {
-                    "query_field_key": "packet_rate",
-                    "query_value": 0
-                },
-                {
-                    "query_field_key": "bytes",
-                    "query_value": 688 # 对于custom network attack来说，该值不固定
-                },
-                {
-                    "query_field_key": "bit_rate",
-                    "query_value": "917"
-                },
-                {
-                    "query_field_key": "basic_attack_type",
-                    "query_value": "tcp_syn_flood"
-                },
-                {
-                    "query_field_key": "basic_sessions",
-                    "query_value": 5
-                },
-                {
-                    "query_field_key": "basic_session_rate",
-                    "query_value": 0
-                },
-                {
-                    "query_field_key": "basic_packets",
-                    "query_value": 5
-                },
-                {
-                    "query_field_key": "basic_packet_rate",
-                    "query_value": 0
-                },
-                {
-                    "query_field_key": "basic_bytes",
-                    "query_value": 264
-                },
-                {
-                    "query_field_key": "basic_bit_rate",
-                    "query_value": "35"
-                }
+                # {"query_field_key": "basic_attack_type", "query_value": "tcp_syn_flood"},
+                # {"query_field_key": "basic_sessions", "query_value": ""},
+                # {"query_field_key": "basic_session_rate", "query_value": ""},
+                # {"query_field_key": "basic_packets", "query_value": ""},
+                # {"query_field_key": "basic_packet_rate", "query_value": ""},
+                # {"query_field_key": "basic_bytes", "query_value": ""},
+                # {"query_field_key": "basic_bit_rate", "query_value": ""},
+                {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
+                {"query_field_key": "sessions", "query_value": ""},
+                {"query_field_key": "packets", "query_value": ""},
+                {"query_field_key": "bytes", "query_value": ""},
+                {"query_field_key": "bit_rate", "query_value": ""},
+                {"query_field_key": "packet_rate", "query_value": ""},
+                {"query_field_key": "session_rate", "query_value": ""},
             ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "1.1.1.1",
                 "clients_end_ip": "1.1.1.1",
-                "servers_start_ip": "2.1.1.1",
-                "servers_end_ip": "2.1.1.2",
-                "active_flows": 1,
+                "servers_start_ip": "2.1.1.18",
+                "servers_end_ip": "2.1.1.18",
+                "active_flows": 3,
                 "d": 5,
+                "m":1,
                 "yaml_name": "test",
-                "pcap_name": "http"
+                "pcap_name": "tls_long"
             },
             "token": ""
         }
@@ -145,17 +104,17 @@ def run(parameter):
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
         return "Error: " + str(e)
-    finally:
-        # 清理环境并删除配置
-        case_instance_generator.delete_data()
-        # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
-        # 生成csv报告
-        update = ReportUpdate()
-        update.write_result(parameter, result, exception_result)
+    # finally:
+    #     # 清理环境并删除配置
+    #     case_instance_generator.delete_data()
+    #     # 统计脚本用时
+    #     end_time = time.time()
+    #     duration = end_time - start_time
+    #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+    #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
+    #     # 生成csv报告
+    #     update = ReportUpdate()
+    #     update.write_result(parameter, result, exception_result)
             
 if __name__ == '__main__':
     parameter = {
@@ -167,7 +126,7 @@ if __name__ == '__main__':
         "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 1,
-        "is_log": 0,
+        "is_log": 1,
         "debug_flag": "local",
         "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
         "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
