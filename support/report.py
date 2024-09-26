@@ -5,6 +5,8 @@ import pandas as pd
 class GenerateReport:
     def generate_report(self, module_name, root_path):
         report_folder_path = root_path + "/report"
+        if "/" in module_name:
+            module_name = module_name.replace("/", "_")
         bool = self.is_file_in_directory(report_folder_path, "{}_automation_test_report.csv".format(module_name))
         if bool == False:
             report_path = report_folder_path + "/{}_automation_test_report.csv".format(module_name)
