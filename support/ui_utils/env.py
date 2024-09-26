@@ -78,14 +78,15 @@ def setup():
 def teardown():
     global driver
     global driver_flag
-    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Web Driver driver_flag:{}".format(driver_flag), flush=True)
-    if driver and driver_flag:
-        driver.quit()
-        driver_flag = False
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been closed successfully.", flush=True)
-        time.sleep(1)
-    else:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been,there is nothing to do.", flush=True)
+    if driver:
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Web Driver driver_flag:{}".format(driver_flag), flush=True)
+        if driver_flag:
+            driver.quit()
+            driver_flag = False
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been closed successfully.", flush=True)
+            time.sleep(1)
+        else:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been,there is nothing to do.", flush=True)
         """
         try:
             driver.quit()

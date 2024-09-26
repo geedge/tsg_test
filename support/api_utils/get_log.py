@@ -693,13 +693,14 @@ class GetLog:
             variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
             metrics_tmp = []
             for metric in statistics_info["metrics"]:
-                function_tmp = {
-                    "name": metric["function"]["name"],
-                    "variables": [
-                        variables_tmp
-                    ]
-                }
-                metric["function"] = copy.deepcopy(function_tmp)
+                if metric["function"]["name"] in ["RATE", "BITRATE"]:
+                    function_tmp = {
+                        "name": metric["function"]["name"],
+                        "variables": [
+                            variables_tmp
+                        ]
+                    }
+                    metric["function"] = copy.deepcopy(function_tmp)
                 metrics_tmp.append(metric)
             post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
         else:
