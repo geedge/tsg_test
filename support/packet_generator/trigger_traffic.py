@@ -116,6 +116,10 @@ class TriggerTraffic:
                 yaml_name = temp_data.get("yaml_name") + ".yaml"
                 m = temp_data.get("m")
                 d = temp_data.get("d")
+                if test_data.get("policy_type") == "dos_protection" and test_data.get("threshold") and test_data["threshold"].get("type") == "concurrency":
+                    active_flows = temp_data.get("active_flows")
+                else:
+                    active_flows = 0
                 clients_start_ip = temp_data.get("clients_start_ip")
                 clients_end_ip = temp_data.get("clients_end_ip")
                 servers_start_ip = temp_data.get("servers_start_ip")
@@ -135,7 +139,7 @@ class TriggerTraffic:
                 parse.read(parse_dir, encoding="utf-8")
                 path_dict["traffic_playback_workpath"] = parse.get("traffic_playback", "traffic_playback_workpath")
                 tr = trex_replay.TrafficReplay(path_dict)
-                result = tr.trex_playback(yaml_name, pcap_name, 0, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
+                result = tr.trex_playback(yaml_name, pcap_name, active_flows, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
         return result
     
     def replace_trex_ip(self, test_data, script_type):
@@ -181,4 +185,101 @@ class TriggerTraffic:
         return test_data
     
 if __name__ == "__main__":
-    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
+    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test"
+
+    parameter = {
+        "username": "lina2024",
+        "password": "lina2024",
+        "test_pc_ip": "192.168.64.96",
+        "test_subcriber_id": "test6776",
+        "api_server": "http://192.168.44.72",
+        "script_type": "ui",
+        "env": "tsgx",
+        "vsys_id": 1,
+        "is_log": 1,
+        "debug_flag": "local",
+        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "module_name": "dos_protection",
+        "test_case_name":"dos_trex_replay_test"
+    }
+
+    test_data = {
+        "is_multi_priority": False,
+        "rule_num": 1,
+        "policy_type": "dos_protection",
+        "rule_name": "dos_protect_srcip_http_concurrency_srcip_d3",
+        "rule_action": "protect",
+        "rule_type": "create",
+        "do_log": 2,
+        "condition": {
+            "source_ip": [
+                {
+                    "name": "dos_srcip",
+                    "object_type": "ip",
+                    "select_type": False,
+                    "negate": False,
+                    "item": [
+                        {
+                            "item_operation": "add",
+                            "item_type": "ipv4",
+                            "item_value": "10.64.9.1",
+                        }
+                    ]
+                }
+            ],
+            "application": [
+                {
+                    "name": "http",
+                    "object_type": "application",
+                    "negate": False
+                }
+            ]
+        },
+        "threshold": {
+            "type": "concurrency",
+            "concurrency_threshold": {
+                "group_by": "source_ip",
+                "concurrent_sessions": 1
+            }
+        },
+        "mitigation": {
+            "behavior": "deny",
+            "timeout": "5min"
+        },
+        "expected_return": "",
+        "counters": {"hits": "many"},
+        "log_query_param": [
+            # {"query_field_key": "basic_attack_type", "query_value": "tcp_syn_flood"},
+            # {"query_field_key": "basic_sessions", "query_value": ""},
+            # {"query_field_key": "basic_session_rate", "query_value": ""},
+            # {"query_field_key": "basic_packets", "query_value": ""},
+            # {"query_field_key": "basic_packet_rate", "query_value": ""},
+            # {"query_field_key": "basic_bytes", "query_value": ""},
+            # {"query_field_key": "basic_bit_rate", "query_value": ""},
+            {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
+            {"query_field_key": "sessions", "query_value": ""},
+            {"query_field_key": "packets", "query_value": ""},
+            {"query_field_key": "bytes", "query_value": ""},
+            {"query_field_key": "bit_rate", "query_value": ""},
+            {"query_field_key": "packet_rate", "query_value": ""},
+            {"query_field_key": "session_rate", "query_value": ""},
+        ],
+         "traffic": {
+                "protocol": "",
+                "type": "trex",
+                "clients_start_ip": "1.1.1.1",
+                "clients_end_ip": "1.1.1.1",
+                "servers_start_ip": "2.1.1.9",
+                "servers_end_ip": "2.1.1.9",
+                "active_flows":2,
+                "m": 1,
+                "d": 5,
+                "yaml_name": "test",
+                "pcap_name": "http"
+
+            },
+        "token": ""
+    }
+    trigger = TriggerTraffic()
+    result = trigger.trigger_traffic(parameter, test_data)

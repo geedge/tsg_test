@@ -85,9 +85,9 @@ def run(parameter):
                 "type": "trex",
                 "clients_start_ip": "1.1.1.1",
                 "clients_end_ip": "1.1.1.1",
-                "servers_start_ip": "2.1.1.9",
-                "servers_end_ip": "2.1.1.9",
-                "m": 1,
+                "servers_start_ip": "2.1.1.17",
+                "servers_end_ip": "2.1.1.17",
+                "m": 2,
                 "d": 5,
                 "yaml_name": "test",
                 "pcap_name": "http"

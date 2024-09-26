@@ -289,8 +289,9 @@ class GetLog:
                             time_difference = end_time_value - start_time_value
 
                             deny_session_count = self.get_dos_deny_sessions_count(token,api_host,start_time,end_time,vsys_id,test_data)
-                            exp_sessions_count = output["total_syn_pkt"] - deny_session_count
-                            self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference, exp_sessions_count,test_data,time)
+                            exp_sessions_count = deny_session_count
+                            exp_packets_count = exp_sessions_count * 4 #application不为空的情况4个；application为空是1个
+                            self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference, exp_sessions_count,exp_packets_count,test_data,time)
 
                         else:
                             temp_log_result_list.append(False)
@@ -337,8 +338,10 @@ class GetLog:
         log_condition_dict['source'] = "session_record"
         log_condition_dict['identifier_name'] = "session-record-list"
         log_condition_dict['execution_mode'] = 'oneshot'
-
-        log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts=1"
+        query_pkt = 1 #默认情况有application,为1
+        if not test_data["condition"].get("application", []): #application为空的情况重新判断
+            query_pkt = 0
+        log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts='{query_pkt}'"
 
         url = api_host + "/v1/log/query"
         response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
@@ -349,71 +352,42 @@ class GetLog:
         return dos_deny_sessions_count
 
 
-    def validate_dos_values(self,log, query_field_key, query_value, temp_log_result_list,time_difference,exp_sessions_count,test_data,time):
-        exp_packets_count = exp_sessions_count * 4
-        exp_bytes_count = exp_packets_count * 173.5
-        #attack_type和sessions的值 是 query_value和接口返回的值比较
-        if query_field_key == "attack_type":
-            if query_value.replace("_", " ") == log[query_field_key].lower():
+    def validate_dos_values(self, log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,exp_packets_count,test_data, time):
+        one_packet_have_bytes = 0
+        if test_data["traffic"]["pcap_name"] == "http":
+            one_packet_have_bytes = 173.5
+        elif test_data["traffic"]["pcap_name"] == "tls_long":
+            one_packet_have_bytes = 211.25
+        exp_bytes_count = exp_packets_count * one_packet_have_bytes
+
+        # 定义条件检查的映射
+        checks = {
+            "attack_type": lambda: query_value.replace("_", " ") == log[query_field_key].lower(),
+            "sessions": lambda: exp_sessions_count == log[query_field_key],
+            "packets": lambda: exp_packets_count == log[query_field_key],
+            "bytes": lambda: exp_bytes_count == log[query_field_key],
+            "bit_rate": lambda: int((exp_bytes_count * 8) / time_difference) == log[query_field_key],
+            "session_rate": lambda: int(exp_sessions_count / time_difference) == log[query_field_key],
+            "packet_rate": lambda: int(exp_packets_count / time_difference) == log[query_field_key],
+            "basic_attack_type": lambda: True,
+            "basic_sessions": lambda: True,
+            "basic_session_rate": lambda: True,
+            "basic_packets": lambda: True,
+            "basic_packet_rate": lambda: True,
+            "basic_bytes": lambda: True,
+            "basic_bit_rate": lambda: True,
+        }
+
+        if query_field_key in checks:
+            if checks[query_field_key]():
                 temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key] if query_field_key in {
+                    "sessions", "packets", "bytes", "bit_rate", "session_rate", "packet_rate"} else None
             else:
                 temp_log_result_list.append(False)
-
-        elif query_field_key == "sessions":
-            if exp_sessions_count == log[query_field_key]:
-                temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key] #time,第几次循环，则给log_query_param中的第几次-1的数赋值
-            else:
-                temp_log_result_list.append(False)
-        #其余值比较：基于sessions计算出的值和接口返回的值比较
-        elif query_field_key == "packets":
-            if exp_packets_count == log[query_field_key]:
-                temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
-            else:
-                temp_log_result_list.append(False)
-
-        elif query_field_key == "bytes":
-            if exp_bytes_count == log[query_field_key]:
-                temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
-            else:
-                temp_log_result_list.append(False)
-
-        elif query_field_key == "bit_rate":
-            bits_rate_value = int((exp_bytes_count * 8) / time_difference)
-
-            if bits_rate_value == log[query_field_key]:
-                temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
-            else:
-                temp_log_result_list.append(False)
-
-        elif query_field_key == "session_rate":
-            session_rate = exp_sessions_count / time_difference
-
-            if int(session_rate) == log[query_field_key]:
-                temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
-            else:
-                temp_log_result_list.append(False)
-
-        elif query_field_key == "packet_rate":
-            packet_rate = exp_packets_count / time_difference
-
-            if int(packet_rate) == log[query_field_key]:
-                temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"]= log[query_field_key]
-            else:
-                temp_log_result_list.append(False)
-
-        elif query_field_key in {"basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets",
-                                 "basic_packet_rate", "basic_bytes", "basic_bit_rate"}:
-            # 基本攻击类型的校验暂未添加：
-            # 1个session 对应 1个packet;1个packet对应66个Byte
-            temp_log_result_list.append(True)
         else:
             temp_log_result_list.append(False)
+
         print(temp_log_result_list)
         return temp_log_result_list
 
