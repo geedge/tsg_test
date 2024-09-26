@@ -191,7 +191,7 @@ if __name__ == '__main__':
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
         "test_case_name": os.path.basename(__file__)[:-3],
-        "debug_flag": "api",
+        "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "",
         "policy_type": "statistics"
