@@ -20,9 +20,9 @@ class SearchObjects:
         page_jump = PageJump(self.driver)
         time.sleep(0.5)
         page_jump.jump_sub_object_page(page_jump_element_position)
-        search_types = data["search_type"].split('&')
+        search_types = data["search"]["type"].split('&')
         for search_type in search_types:
-            search_value = self.get_search_value(object_info,search_type,data["fuzzy_search"])
+            search_value = self.get_search_value(object_info,search_type,data["search"]["is_fuzzy"])
             if search_type == "id":
                 self.driver.find_element(By.ID, listPage_objectSearch_ip_address_selectLabel_posId).click()
                 self.driver.find_element(By.ID, listPage_objectSearch_ip_address_selectLabel_posId).send_keys(search_value)

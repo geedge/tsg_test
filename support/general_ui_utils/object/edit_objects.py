@@ -38,12 +38,12 @@ class EditObjects:
             if "objectPage_Group_edit_subObject_Button_posXpath" in edit_element_position.keys():
                 self.is_group = True
                 self.driver.find_element(By.XPATH, edit_element_position["objectPage_Group_edit_subObject_Button_posXpath"]).click()
-            for i in range(len(data['item'])):
-                if data['item'][i]['item_operation'] == 'add':
+            for i in range(len(data["object_operation"]['edit'])):
+                if data["object_operation"]['edit'][i]['item_operation'] == 'add':
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
-                    self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(data['item'][i]['item_value'][0])
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(data["object_operation"]['edit'][i]['item_value'][0])
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
-                elif data['item'][i]['item_operation'] == 'modify':
+                elif data["object_operation"]['edit'][i]['item_operation'] == 'modify':
                     modify_item = data['item'][i]['item_value'][0].split('->')
                     self.driver.find_element(By.ID, mainPage_ObjectSearch_buttonSearch_Item_posId).send_keys(modify_item[0] + Keys.ENTER) #查找需要修改的item
                     self.item_check_content = self.driver.find_element(By.XPATH,edit_element_position["objectPage_addItem_first_item_posXpath"]).text
@@ -53,11 +53,11 @@ class EditObjects:
                     description_elem.clear()
                     description_elem.send_keys(modify_item[1])
                     self.driver.find_element(By.XPATH, edit_element_position["objectPage_editItem_Save_Button_posXpath"]).click()
-                elif data['item'][i]['item_operation'] == "modify_import":
+                elif data["object_operation"]['edit'][i]['item_operation'] == "import":
                     self.is_import = True
                     self.driver.find_element(By.XPATH,create_element_position["objectPage_importItem_posXpath"]).click()
-                    self.driver.find_element(By.XPATH,create_element_position["importPage_uploadFile_posXpath"]).send_keys(self.my_files._obj_files_path(file_name=data['item'][i]['item_value']))
-
+                    self.driver.find_element(By.XPATH,create_element_position["importPage_uploadFile_posXpath"]).send_keys(self.my_files._obj_files_path(file_name=data["object_operation"]['edit'][i]['item_value']))
+                    time.sleep(20)
             # 确认创建
             if self.is_import == True:
                 self.driver.find_element(By.XPATH, create_element_position["objectPage_import_ok_button_posXpath"]).click()
@@ -69,6 +69,7 @@ class EditObjects:
                 self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
                 self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
 
+            time.sleep(0.5)
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)

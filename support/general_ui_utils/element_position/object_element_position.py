@@ -35,6 +35,20 @@ mainPage_button_menu_posXCss = ".menu-btn span"
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
 
+#通用元素定位
+main_button_audit_button_posXpath = '//*[contains(@class,"icon-a-Adminlogs")]'
+url_ObjectDetailPage_auditLogsDrawer_firstRowLog_checkBox_posXpath = '(//div[@class="LocalationDraswer lstsub right-show-edit right-show-edit-other"]//table[@class="el-table__body"]//span[@class="el-checkbox__input"])[1]'  # Audit Logs 侧滑页第一条日志CheckBox Xpath
+url_ObjectDetailPage_auditLogsDrawer_compareButton_posXpath = '//div[@class="LocalationDraswer lstsub right-show-edit right-show-edit-other"]//button[contains(@id,"test-compare-_")]'  # Audit Logs 侧滑页Compare 按钮Xpath
+url_ObjectDetailPage_auditLogsDrawer_compareDrawer_operationText_posXpath = '//div[contains(text(),"Operation")]/following-sibling::div'  # Audit Logs 侧滑页点击Compare后的 operation text Xpath
+ObjectDetailPage_audit_log_compare_version_posXpath = "//div[@class='compare-code-box']//div[text()='Version']/following-sibling::div"
+ObjectDetailPage_audit_log_compare_id_posXpath = '//div[contains(text(),"Target ID")]/following-sibling::div'
+ObjectDetailPage_audit_log_compare_type_posXpath = '//div[contains(text(),"Target Type")]/following-sibling::div'
+ObjectDetailPage_audit_log_compare_ip_posXpath = '//div[contains(text(),"Source IP")]/following-sibling::div'
+ObjectDetailPage_audit_log_compare_time_posXpath = "//div[@class='compare-code-box']//div[text()='Time']/following-sibling::div"
+ObjectDetailPage_audit_log_compare_user_posXpath = '//div[contains(text(),"User")]/following-sibling::div'
+ObjectDetailPage_audit_log_cancel_posXpath = "//div[@class='paper-right-content']//span[normalize-space(text())='Close']"
+
+
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
 language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']/.."#快捷切换语言按钮
 

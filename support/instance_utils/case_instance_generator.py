@@ -1,5 +1,6 @@
 from support.instance_utils.manipulation_instance_generator import ManipulationInstanceGenerator
 from support.instance_utils.dos_protection_instance_generator import DosProtectionInstanceGenerator
+from support.instance_utils.objects_instance_generator import ObjectsInstanceGenerator
 from support.instance_utils.statistics_instance_generator import StatisticsInstanceGenerator
 from support.instance_utils.security_instance_generator import SecurityGenerator
 from support.instance_utils.service_chaining_instance_generator import ServiceChainingInstanceGenerator
@@ -34,6 +35,8 @@ class CaseInstanceGenerator:
             result = self._run_service_chaining(test_data, parameter)
         elif "type" in test_data.keys() and test_data["type"] == "dashboard":
             result = self._run_dashboard(test_data, parameter)
+        elif "type" in test_data.keys() and test_data["type"] == "objects":
+            result = self._run_objects(test_data, parameter)
         else:
             pass
         return result
@@ -77,6 +80,11 @@ class CaseInstanceGenerator:
     def _run_service_chaining(self, test_data, parameter):
         self.service_chaining =ServiceChainingInstanceGenerator(test_data, parameter)
         result = self.service_chaining.run()
+        return result
+
+    def _run_objects(self,test_data, parameter):
+        self.objects = ObjectsInstanceGenerator(test_data, parameter)
+        result = self.objects.run()
         return result
 
     def delete_data(self):
