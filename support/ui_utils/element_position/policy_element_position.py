@@ -610,6 +610,8 @@ serviceChainingRulePage_searchUser_posXpath = policyRulePage_searchUser_posXpath
 serviceChainingRulePage_selectUser_posXpath = policyRulePage_selectUser_posXpath
 serviceChainingRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
 
+serviceChainingRulePage_addCondition_imsi_posXpath = "//div[@class='SourceList list-box']/parent::*//div[normalize-space(text())='Device']"
+
 serviceChainingRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 serviceChainingRulePage_searchDstIP_posXpath =  "//div[@class='destinations list-box']//div[contains(@class, 'object-item-seach')]//input"
 serviceChainingRulePage_selectDstIP_posXpath = "//div[@class='destinations list-box']//span[normalize-space(text())='{replaceValue}']"
