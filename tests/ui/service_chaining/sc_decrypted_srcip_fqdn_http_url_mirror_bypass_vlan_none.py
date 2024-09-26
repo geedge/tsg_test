@@ -65,7 +65,7 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "sc_ui_fqdn",
+                        "name": "service_chaining_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
@@ -81,7 +81,7 @@ def run(parameter):
 
                 "protocol_filed": [
                     {
-                        "name": "sc_ui_url",
+                        "name": "service_chaining_url",
                         "object_type": "url",
                         "item_operation": "add",
                         "select_type": False,

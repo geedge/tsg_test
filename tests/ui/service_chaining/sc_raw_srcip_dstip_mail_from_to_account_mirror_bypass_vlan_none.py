@@ -80,7 +80,7 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "sc_ui_mail_from_account",
+                        "name": "service_chaining_mail_from_account",
                         "object_type": "account",
                         "select_type": False,
                         "item_operation": "add",
@@ -94,7 +94,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "sc_ui_mail_to_account",
+                        "name": "service_chaining_mail_to_account",
                         "object_type": "account",
                         "select_type": False,
                         "item_operation": "add",
@@ -108,7 +108,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "sc_ui_mail_account",
+                        "name": "service_chaining_mail_account",
                         "object_type": "account",
                         "select_type": False,
                         "item_operation": "add",

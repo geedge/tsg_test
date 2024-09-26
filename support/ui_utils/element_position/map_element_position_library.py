@@ -544,6 +544,12 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_searchSrcIP_posXpath": serviceChainingRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": serviceChainingRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": serviceChainingRulePage_closeSrcIP_posXpath,
+        # User
+        "policyRulePage_addConditionUser_posXpath": serviceChainingRulePage_addCondition_user_posXpath,
+        "policyRulePage_addUser_posXpath": serviceChainingRulePage_addUser_posXpath,
+        "policyRulePage_searchUser_posXpath": serviceChainingRulePage_searchUser_posXpath,
+        "policyRulePage_selectUser_posXpath": serviceChainingRulePage_selectUser_posXpath,
+        "policyRulePage_closeUser_posXpath": serviceChainingRulePage_closeUser_posXpath,
         # Dest IP
         "policyRulePage_addDstIP_posXpath": serviceChainingRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": serviceChainingRulePage_searchDstIP_posXpath,

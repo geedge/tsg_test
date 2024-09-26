@@ -16,8 +16,7 @@ from support.ui_utils.policy.delete_rule import DeleteRule
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verification import Verification
-from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list, create_pre_policy, delete_pre_policy
-from support.ui_utils.element_position.map_element_position_library import manipulation_object_no_create_list
+from support.ui_utils.element_position.map_element_position_library import get_element_position, create_pre_policy, delete_pre_policy
 from support.api_utils.analysis_result import AnalysisResult
 import support.ui_utils.env
 from datetime import datetime

@@ -82,7 +82,7 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "sc_ui_qname",
+                        "name": "service_chaining_qname",
                         "object_type": "fqdn",
                         "item_operation": "add",
                         "select_type": False,
