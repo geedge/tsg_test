@@ -10,7 +10,6 @@ import traceback
 from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
-#VPN Client Behavior Analysis
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
@@ -44,7 +43,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.3",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -100,15 +99,13 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "sent_packets+received_packets:SUM:Packets"
+                            "in_pkts+out_pkts:RATE:Packets RATE"
                           ],
-                          "dimensions": [
-                            "app"
-                          ],
-                          "order_by": "Packets",
-                          "row_limit": "20",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                          "dimensions": ["device_group"],
+                          "order_by": "Packets RATE",
+                          "row_limit": "5",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
                         }
                       ]
                 }]
@@ -173,6 +170,8 @@ def run(parameter):
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
+    
+
 
 if __name__ == '__main__':
     parameter = {
@@ -183,16 +182,16 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,  # 6
+        "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
         "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
-        "script_type": "ui",
+        "script_type": "",
         "policy_type": "statistics"
-    }
+   }
     parameter = replace_paras(parameter)
     run(parameter)
     """
