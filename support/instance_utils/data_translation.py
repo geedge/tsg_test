@@ -549,7 +549,7 @@ class DataTranslation:
                             "add_item_list": [
                                 {
                                     "keyword_array": [
-                                        v[0]["item"][0]["item_value"]
+                                        v[0]["items"][0]["item_value"]
                                     ]
                                 }
                             ]

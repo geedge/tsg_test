@@ -100,12 +100,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "in_packets+out_packets:SUM:IN OUT Packets"
+                            "in_pkts+out_pkts:RATE:Packets RATE"
                           ],
                           "dimensions": [
-                            "IN OUT Packets"
+                            "c2s_ttl"
                           ],
-                          "order_by": "Packets",
+                          "order_by": "Packets RATE",
                           "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"

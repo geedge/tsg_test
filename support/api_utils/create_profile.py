@@ -75,20 +75,20 @@ class CreateProfile:
                 "source_columns": "app_category",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Client to Server TTL": {
+            "Client-to-Server TTL": {
                 "source_columns": "c2s_ttl",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Server to Client TT": {
+            "Server-to-Client TTL": {
                 "source_columns": "s2c_ttl",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Incoming Link ID": {
-                "source_columns": "in_link_id",
+            "Client-to-Server Link ID": {
+                "source_columns": "c2s_link_id",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Outgoing Link ID": {
-                "source_columns": "out_link_id",
+            "Server-to-Client Link ID": {
+                "source_columns": "s2c_link_id",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
             "Client Port": {
@@ -173,7 +173,7 @@ class CreateProfile:
                              {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
                              {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},]
             },
-            "DTLS.Handshake Latency(ms)": {
+            "DTLS Handshake Latency(ms)": {
                 "source_columns": "dtls_handshake_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
@@ -182,7 +182,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
             },
-            "SSL.Handshake Latency(ms)": {
+            "SSL Handshake Latency(ms)": {
                 "source_columns": "ssl_handshake_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
@@ -298,7 +298,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
             },
-            "New Client to Server Flows": {
+            "New Client-to-Server Flows": {
                 "source_columns": "new_c2s_flows",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "flows", "metric_type": "count"},
@@ -307,7 +307,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},]
             },
-            "New Server to Client Flows":  {
+            "New Server-to-Client Flows":  {
                 "source_columns": "new_s2c_flows",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "flows", "metric_type": "count"},
@@ -361,7 +361,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
             },
-            "Client to Server IP Fragments": {
+            "Client-to-Server IP Fragments": {
                 "source_columns": "c2s_ip_fragments",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "packets", "metric_type": "count"},
@@ -370,7 +370,7 @@ class CreateProfile:
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
             },
-            "Server to Client IP Fragments": {
+            "Server-to-Client IP Fragments": {
                 "source_columns": "s2c_ip_fragments",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "packets", "metric_type": "count"},
@@ -394,10 +394,10 @@ class CreateProfile:
             "Server Domain": "server_domain",
             "Application": "app",
             "Application Category": "app_category",
-            "Client to Server TTL": "c2s_ttl",
-            "Server to Client TTL": "s2c_ttl",
-            "Incoming Link ID": "in_link_id",
-            "Outgoing Link ID": "out_link_id",
+            "Client-to-Server TTL": "c2s_ttl",
+            "Server-to-Client TTL": "s2c_ttl",
+            "Client-to-Server Link ID": "c2s_link_id",
+            "Server-to-Client Link ID": "s2c_link_id",
             "Client Port": "client_port",
             "Server Port": "server_port",
             "HTTP Host": "http_host",
