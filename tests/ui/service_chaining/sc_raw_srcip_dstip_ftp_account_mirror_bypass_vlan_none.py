@@ -80,7 +80,7 @@ def run(parameter):
                 "server_fqdn": [],
                 "protocol_filed": [
                     {
-                        "name": "sc_ui_ftp_account",
+                        "name": "service_chaining_ftp_account",
                         "object_type": "account",
                         "select_type": False,
                         "item_operation": "add",
