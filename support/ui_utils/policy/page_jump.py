@@ -32,7 +32,7 @@ class PageJump:
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], conf_path)
         conf = configparser.ConfigParser()
         conf.read(conf_path, encoding="utf-8")
-        id_for_ui = conf.get("vsys", "id_for_ui")
+        id_for_ui = conf.get("vsys", "for_traffic_verification")
         id_vsys_format = "vsys{}".format(id_for_ui)   # 使用配置变量值
         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_vsys_format)
         # 传入vsys_name值区分

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 import os
 import sys
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -40,7 +39,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value":  parameter["test_pc_ip"]
+                                "item_value": parameter["test_pc_ip"]
                             },
                         ]
                     }
@@ -73,15 +72,14 @@ def run(parameter):
             "log_query_param": [{"query_field_key": "http_host", "query_value": "slope.ru"},
                                 {"query_field_key": "decoded_as", "query_value": "HTTP"},
                                 {"query_field_key": "server_fqdn", "query_value": "slope.ru"}
-            ],
-             "traffic": {
-                 "protocol": "http",
-                 "type": "curl",
-                 "command": "curl -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
+                                ],
+            "traffic": {
+                "protocol": "http",
+                "type": "curl",
+                "command": "curl -kv http://slope.ru/index.php/component/joomgallery/Accommodation%20in%20Caucasus"
             },
             "token": ""
         }
-
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
@@ -112,7 +110,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.96",
+        "test_pc_ip": "192.168.64.105",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",

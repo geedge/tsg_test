@@ -14,24 +14,22 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-@app.route('/v1/security_ui', methods=["POST"])
-@app.route('/v1/intercept_ui', methods=["POST"])
-@app.route('/v1/manipulation_ui', methods=["POST"])
-@app.route('/v1/monitor_ui', methods=["POST"])
-@app.route('/v1/statistics_ui', methods=["POST"])
-@app.route('/v1/service_chaining_ui', methods=["POST"])
-@app.route('/v1/shaping_ui', methods=["POST"])
-@app.route('/v1/security_api', methods=["POST"])
-@app.route('/v1/intercept_api', methods=["POST"])
-@app.route('/v1/manipulation_api', methods=["POST"])
-@app.route('/v1/monitor_api', methods=["POST"])
-@app.route('/v1/statistics_api', methods=["POST"])
-@app.route('/v1/service_chaining_api', methods=["POST"])
-@app.route('/v1/shaping_api', methods=["POST"])
+@app.route('/v1/security', methods=["POST"])
+@app.route('/v1/intercept', methods=["POST"])
+@app.route('/v1/manipulation', methods=["POST"])
+@app.route('/v1/monitor', methods=["POST"])
+@app.route('/v1/statistics', methods=["POST"])
+@app.route('/v1/service_chaining', methods=["POST"])
+@app.route('/v1/shaping', methods=["POST"])
 @app.route('/v1/dos_protection', methods=["POST"])
 @app.route('/v1/dashboard', methods=["POST"])
 @app.route('/v1/object', methods=["POST"])
+@app.route('/v1/profile', methods=["POST"])
+@app.route('/v1/report', methods=["POST"])
+@app.route('/v1/system', methods=["POST"])
+@app.route('/v1/admin', methods=["POST"])
 @app.route('/v1/case_tag', methods=["POST"])
+
 def receive_parameter():
     try:
         # 从MS或Jmeter等工具的请求体中获取参数
@@ -42,7 +40,7 @@ def receive_parameter():
         if run_status == 1:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to build test parameter.", flush=True)
             module_name = req_json.get("module_name")
-            sub_module_name = req_json.get("sub_module_name")
+            # sub_module_name = req_json.get("sub_module_name")
             test_case_name = req_json.get("test_case_name")
             tag = req_json.get("tag")
         
@@ -72,49 +70,33 @@ def receive_parameter():
             parse = configparser.ConfigParser()
             parse_dir = os.path.join("configuration_file.ini")
             parse.read(parse_dir, encoding="utf-8")
-            
             parameter["username"] = parse.get("account", "username")
-            
             parameter["password"] = parse.get("account", "password")
-            
             parameter["api_server"] = parse.get("tsg_url", "login_url")
-            
             project_path = parse.get("root_path", "path")
             parameter["root_path"] = project_path
-            
-            if tag == "api":
-                parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_api")
-                parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_api")
-                parameter["path"] = f"{project_path}/tests/api"
-                parameter["env"] = "tsgx"
-                parameter["vsys_id"] = parse.get("vsys", "id_for_api")
-                parameter["is_log"] = parse.get("is_log", "api")
-            elif tag == "ui" or tag == "":
-                parameter["test_pc_ip"] = parse.get("test_pc", "ip_for_ui_with_traffic")
-                parameter['test_subcriber_id'] = parse.get("test_pc", "subcriber_id_for_ui_with_traffic")
-                parameter['test_imsi'] = parse.get("test_pc", "imsi_for_ui_with_traffic")
-                parameter['test_phone_number'] = parse.get("test_pc", "phone_number_for_ui_with_traffic")
-                parameter["path"] = f"{project_path}/tests/ui"
-                parameter["vsys_id"] = parse.get("vsys", "id_for_ui")
-                parameter["is_log"] = parse.get("is_log", "ui")
+            parameter["path"] = f"{project_path}/tests"
+            parameter["test_pc_ip"] = parse.get("network_address", "ip")
+            parameter['test_subcriber_id'] = parse.get("network_address", "subcriber_id")
+            parameter["env"] = parse.get("device", "type")
+            parameter["is_log"] = parse.get("is_log", "value")
+            if tag == "api" or tag == "ui" or len(tag) == 0:
+                parameter["vsys_id"] = parse.get("vsys", "for_traffic_verification ")
             elif tag == "general_ui":
-                parameter["path"] = f"{project_path}/tests/ui"
-                parameter["sub_module_name"] = sub_module_name
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.", flush=True)
-            elif tag == "app":
+                parameter["vsys_id"] = parse.get("vsys", "for_ui")
+                # parameter["sub_module_name"] = sub_module_name
+            if tag == "app":
                 parameter["path"] = f"{project_path}/tests/app"
                 parameter["app_name"] = req_json.get("app_name")
                 parameter["app_full_name"] = req_json.get("app_full_name")
-            
             parameter["script_type"] = tag
-            
             parameter["module_name"] = module_name
             
             temp_folder_path = parameter["path"] + "/" + module_name
             
             # 考虑到MS的报告无法快速过滤结果，会生成csv格式的report
             new_report = GenerateReport()
-            new_report.generate_report(module_name, project_path)
+            new_report.generate_report(tag, project_path)
             
             # folder_list = os.listdir(temp_folder_path)
             # sys.stdout.write("The test folder contain: {}\n".format(folder_list))
@@ -136,27 +118,21 @@ def receive_parameter():
                     result = module.run(parameter)
                     # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Test caes response is: {}".format(result), flush=True)
                     # module.run()返回的结果是failure reason，如果是空，则表示测试通过。
-                    if isinstance(result, str) and len(result) == 0 or isinstance(result, dict) and len(result["ui_result"]) == 0 and len(result["api_result"]) == 0:
+                    if len(result["ui_result"]) == 0 and len(result["api_result"]) == 0:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                         response_result["code"] = 200
-                        if tag == "ui":
+                        if tag == "ui" or tag == "":
                             response_result["ui_automation_result"] = "pass"
-                        elif tag == "api":
-                            response_result["api_automation_result"] = "pass"
-                        elif tag == "":
-                            response_result["ui_automation_result"] = "pass"
+                        if tag == "api" or tag == "":
                             response_result["api_automation_result"] = "pass"
                         response_result["data"] = None
                         response_result["success"] = True
-                    elif isinstance(result, str) and len(result) != 0 or isinstance(result, dict) and (len(result["ui_result"]) != 0 or len(result["api_result"]) != 0):
+                    elif len(result["ui_result"]) != 0 or len(result["api_result"]) != 0:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
                         response_result["code"] = 416
-                        if tag == "ui":
-                            response_result["ui_automation_result"] = result
-                        elif tag == "api":
-                            response_result["api_automation_result"] = result
-                        elif tag == "":
+                        if tag == "ui" or tag == "":
                             response_result["ui_automation_result"] = result["ui_result"]
+                        if tag == "api" or tag == "":
                             response_result["api_automation_result"] = result["api_result"]
                         response_result["data"] = None
                         response_result["success"] = False

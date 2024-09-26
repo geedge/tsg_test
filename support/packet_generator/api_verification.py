@@ -421,10 +421,7 @@ class ApiVerification:
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
             parse.read(parse_dir, encoding="utf-8")
-            if script_type == "api":
-                traffic_server = parse.get("traffic_server", "api_server_url")
-            elif script_type == "ui":
-                traffic_server = parse.get("traffic_server", "ui_server_url")
+            traffic_server = parse.get("traffic_server", "url")
             port = parse.get("traffic_port", "server_port")
             url = traffic_server + ":" + port + "/v1/traffic"
             headers = {"Content-Type": "application/json"}
