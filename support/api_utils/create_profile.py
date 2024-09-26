@@ -520,7 +520,7 @@ class CreateProfile:
                         break
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "order_by参数错误:{}".format(post_order_by))
                 #f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
-                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = post_order_by.lower()
+                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = post_order_by.strip()
             # 重组 limit、 drilldown_limit
             if "line" == chart_type:
                 if len(post_statistics_data["chart_list"][chart_idex]["dimensions"]) > 1: # 如果是Line+Dimensions图表，需要添加重组TOP参数，而无Limit参数
