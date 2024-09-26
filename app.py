@@ -81,7 +81,7 @@ def receive_parameter():
             parameter["env"] = parse.get("device", "type")
             parameter["is_log"] = parse.get("is_log", "value")
             if tag == "api" or tag == "ui" or len(tag) == 0:
-                parameter["vsys_id"] = parse.get("vsys", "for_traffic_verification ")
+                parameter["vsys_id"] = parse.get("vsys", "for_traffic_verification")
             elif tag == "general_ui":
                 parameter["vsys_id"] = parse.get("vsys", "for_ui")
                 # parameter["sub_module_name"] = sub_module_name
