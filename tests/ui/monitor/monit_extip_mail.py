@@ -35,7 +35,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monitor_rule_external_ip_mail",
-            "rule_action": "deny",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],
@@ -119,13 +119,13 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "hebingning",
-        "password": "hbn66AAA",
+        "username": "guoqiuya",
+        "password": "Guoqiuya123@@",
         "test_pc_ip": "192.168.64.105",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "debug_flag" : "local",
-        "script_type": "ui",
+        "script_type": "api",
         "env": "tsgx",
         "vsys_id": 10,
         "is_log": 1,

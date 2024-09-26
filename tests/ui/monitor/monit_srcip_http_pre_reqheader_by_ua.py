@@ -89,7 +89,7 @@ def run(parameter):
                     }
 
                 ],
-                "sub_action_override": True,
+                #"sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": [
                     {

@@ -84,19 +84,19 @@ def run(parameter):
             
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.96",
-        "test_subcriber_id": "test6776",
+        "username": "guoqiuya",
+        "password": "Guoqiuya123@@",
+        "test_pc_ip": "192.168.64.105",
+        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
-        "env": "tsgx",
-        "vsys_id": 1,
-        "is_log": 0,
         "debug_flag": "local",
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "is_log": 1,
+        "env": "tsgx",
+        "script_type": "api",
+        "vsys_id": 1,
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
         "module_name": "monitor",
-        "test_case_name": "monit_neg_srcip_http_hit_no"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)

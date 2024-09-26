@@ -2,6 +2,9 @@
 # import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
+
+from selenium.webdriver import ActionChains
+
 from support.ui_utils.policy.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -788,7 +791,11 @@ class CreateRule:
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(ip_condition_type)]).click()
         for j in range(len(ip_data)):
             if ip_data[j]["negate"] == True:
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)]).click()
+                #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)]).click()
+                time.sleep(1)  # 暂停1秒
+                negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)])
+                ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                negate_element.click()
     
     def add_port(self, port_data, port_condition_type, create_element_position):
         # 点add condition的+

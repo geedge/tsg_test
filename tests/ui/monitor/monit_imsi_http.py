@@ -24,7 +24,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monitor_imsi_http",
-            "rule_action": "deny",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],

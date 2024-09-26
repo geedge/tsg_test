@@ -24,7 +24,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monitor_internal_ip_ssl",
-            "rule_action": "deny",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],
@@ -109,8 +109,8 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "guoqiuya",
+        "password": "Guoqiuya123@@",
         "test_pc_ip": "192.168.64.105",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
@@ -119,8 +119,8 @@ if __name__ == '__main__':
         "env": "tsgx",
         "script_type": "ui",
         "vsys_id": 1,
-        "root_path": workdir,
-        "path": workdir + "/testcase/ui",
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }

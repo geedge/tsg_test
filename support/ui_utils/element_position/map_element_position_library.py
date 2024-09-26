@@ -1050,6 +1050,8 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
                     "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
                     "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
+                    #add Src ip negate
+                    "policyRulePage_negateSrcIP_posXpath":monitorRulePage_negateSrcIP_posXpath,
                     #add  dst ip
                     "policyRulePage_addDstIP_posXpath": policyRulePage_addDstIP_posXpath,
                     "policyRulePage_searchDstIP_posXpath": policyRulePage_searchDstIP_posXpath,

@@ -25,7 +25,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": os.path.splitext(os.path.basename(__file__))[0],
-            "rule_action": "allow",
+            "rule_action": "monitor",
             "rule_type": "create",
             "is_mirror": "off",
             "mirror_type": "mail",

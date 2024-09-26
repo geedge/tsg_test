@@ -64,7 +64,7 @@ def run(parameter):
                     }
                 ],
                 "protocol_filed":[],
-                "sub_action_override": True,
+                #"sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },

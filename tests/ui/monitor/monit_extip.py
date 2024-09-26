@@ -35,7 +35,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monitor_rule_external_ip",
-            "rule_action": "deny",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],
@@ -113,22 +113,22 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "hebingning",
-        "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.88",
+        "username": "guoqiuya",
+        "password": "Guoqiuya123@@",
+        "test_pc_ip": "192.168.64.105",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "debug_flag" : "local",
-        "script_type": "ui",
+        "script_type": "api",
         "env": "tsgx",
         "vsys_id": 10,
         "is_log": 1,
-        "root_path": "C:/Users/guoqiuya/Desktop/code/tsg_test",
-        "path": "C:/Users/guoqiuya/Desktop/code/tsg_test/ui",
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
         "module_name": "monitor",
-        "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
-    parameter = replace_paras(parameter)
+    # parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

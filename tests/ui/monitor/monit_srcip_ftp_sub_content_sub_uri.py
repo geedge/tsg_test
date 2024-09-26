@@ -25,7 +25,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monitor_rule_ftp_uri_content",
-            "rule_action": "deny",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -100,7 +100,7 @@ def run(parameter):
                         ],
                     },
                 ],
-                "sub_action_override": True,
+                #"sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },
@@ -145,18 +145,18 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "guoqiuya",
+        "password": "Guoqiuya123@@",
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "is_log": 1,
         "env": "tsgx",
-        "script_type": "ui",
+        "script_type": "api",
         "vsys_id": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
         "module_name": "monitor",
         "test_case_name": "monitor_rule_mail_mirror_on"
     }

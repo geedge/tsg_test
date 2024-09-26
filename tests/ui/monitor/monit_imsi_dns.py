@@ -25,7 +25,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monitor_imsi_dns",
-            "rule_action": "deny",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],
@@ -117,8 +117,8 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "guoqiuya",
+        "password": "Guoqiuya123@@",
         "test_pc_ip": "192.168.64.105",
         "test_subcriber_id": "test490",
         "test_imsi": "110035171786105",
@@ -126,13 +126,14 @@ if __name__ == '__main__':
         "debug_flag": "local",
         "is_log": 1,
         "env": "tsgx",
-        "script_type": "ui",
+        "script_type": "api",
         "vsys_id": 1,
-        "root_path": workdir,
-        "path": workdir + "/testcase/ui",
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/testcase/ui",
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

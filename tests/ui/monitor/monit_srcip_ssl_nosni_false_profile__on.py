@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
@@ -117,20 +118,20 @@ def run(parameter):
 
 if __name__ == '__main__':
     parameter = {
-        "username": "lina2024",
-        "password": "lina2024",
-        "test_pc_ip": "192.168.64.96",
-        "test_subcriber_id": "test6491",
+        "username": "guoqiuya",
+        "password": "Guoqiuya123@@",
+        "test_pc_ip": "192.168.64.105",
+        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "ui",
         "is_log": 1,
         "env": "tsgx",
+        "script_type": "api",
         "vsys_id": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
-        "module_name": "monitor",
-        "test_case_name": ""
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
+        "module_name": "manipulation",
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
 
     run(parameter)

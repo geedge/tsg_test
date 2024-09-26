@@ -64,7 +64,7 @@ def run(parameter):
                     }
                 ],
                 "protocol_filed":[],
-                "sub_action_override": True,
+                #"sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },
@@ -108,13 +108,13 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "script_type": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 0,
         "debug_flag": "local",
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
         "module_name": "monitor",
         "test_case_name": "monit_neg_srcip_http_hit_no"
     }
