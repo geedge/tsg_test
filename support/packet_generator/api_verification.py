@@ -151,14 +151,14 @@ class ApiVerification:
             max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
             search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
             if script_type == "ui":
-                max_fail_count = 35    # 每次查询statistic metric的 间隔时间 单位秒
+                max_fail_count = 20    # 每次查询statistic metric的 间隔时间 单位秒
                 #time.sleep(60)
             utc_tz = pytz.timezone('UTC')
             cmd_return = expected_return = test_data["expected_return"]
             code, statistics_template_chart_list = OrganizeConfig().organize_statistics_rule_cfg(parameter, test_data)
             if code != 200:
                 return False, False, False, "Exception when getting Statistics Template information from the interface", my_driver  # 匹配其它策略模式
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：The expect result: {}'.format(statistics_metircs_expect), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：The expect result: {}'.format(statistics_metircs_expect), flush=True)
             if len(statistics_template_chart_list) > 0:  # 非空
                 for statistics_info in statistics_template_chart_list:
                     fail_count = 0   #自增变量
@@ -186,7 +186,7 @@ class ApiVerification:
                             if fail_count >= max_fail_count:
                                 break
                             time.sleep(search_interval_time)
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：Traffic Metric Verify Result:{}'.format(metric_result), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：Traffic Metric Verify Result:{}'.format(metric_result), flush=True)
             return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
         elif policy_type == "service_chaining":
             #从配置文件中获取active ip list

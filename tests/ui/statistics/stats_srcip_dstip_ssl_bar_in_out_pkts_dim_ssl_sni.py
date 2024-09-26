@@ -100,12 +100,12 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Bar",
                           "metrics": [
-                              "sent_pkts+received_pkts:SUM:Packets"
+                              "in_pkts+out_pkts:RATE:Packets RATE"
                           ],
                           "dimensions": [
                             "ssl_sni"
                           ],
-                          "order_by": "Packets",
+                          "order_by": "Packets RATE",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"
