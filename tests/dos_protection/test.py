@@ -64,20 +64,19 @@ def main():
         }
     }
 
-
     parameter = {
         "username": "lina2024",
         "password": "lina2024",
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "script_type": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
         "debug_flag": "local",
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "root_path": "E:/tsg_test",
+        "path": "E:/tsg_test/tests/ui",
         "module_name": "dos_protection",
         "test_case_name": "dos_protect_srcip_http_rate_srcip_d3"
     }
@@ -86,7 +85,7 @@ def main():
     rule_num = 1
     # 获取开始时间
     utc_tz = pytz.timezone('UTC')
-    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=7200000)
+    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=3600)
     start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
     #获取结束时间
     utc_tz = pytz.timezone('UTC')
@@ -94,51 +93,75 @@ def main():
     end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     test_data = {
-        'is_multi_priority': False,
-        'rule_num': 1,
-        'policy_type': 'dos_protection',
-        'rule_name': 'dos_protect_srcip_http_concurrency_srcip_d3',
-        'rule_action': 'protect',
-        'rule_type': 'create',
-        'do_log': 2,
-        'condition': {
-            'source_ip': [{'name': 'dos_srcip', 'object_type': 'ip', 'select_type': False, 'negate': False,
-                           'item': [{'item_operation': 'add', 'item_type': 'ipv4', 'item_value': '10.64.20.210'}]}],
-            'application': [{'name': 'ssl', 'object_type': 'application', 'negate': False}]
+        "is_multi_priority": False,
+        "rule_num": 1,
+        "policy_type": "dos_protection",
+        "rule_name": "dos_protect_srcip_http_rate_srcip_d3",
+        "rule_action": "protect",
+        "rule_type": "create",
+        "do_log": 2,
+        "condition": {
+            "source_ip": [
+                {
+                    "name": "dos_srcip",
+                    "object_type": "ip",
+                    "select_type": False,
+                    "negate": False,
+                    "item": [
+                        {
+                            "item_operation": "add",
+                            "item_type": "ipv4",
+                            "item_value": '10.64.20.223',
+                        }
+                    ]
+                }
+            ],
+            "application": [
+                {
+                    "name": "http",
+                    "object_type": "application",
+                    "negate": False
+                }
+            ]
         },
-        'threshold': {
-            'type': 'concurrency',
-            'concurrency_threshold': {'group_by': 'source_ip', 'concurrent_sessions': 2}
+        "threshold": {
+            "type": "rate",
+            "rate_threshold": {
+                "group_by": "source_ip",
+                "request_per_period": 2,
+                "counting_period": "1min"
+            }
         },
-        'mitigation': {'behavior': 'deny', 'timeout': '5min'},
-        'expected_return': '',
-        'counters': {'hits': 'many'},
-        'log_query_param': [
-            {'query_field_key': 'attack_type', 'query_value': 'custom_network_attack'},
-            {'query_field_key': 'sessions', 'query_value': ''},
-            {'query_field_key': 'packets', 'query_value': ''},
-            {'query_field_key': 'bytes', 'query_value': ''},
-            {'query_field_key': 'bit_rate', 'query_value': ''},
-            {'query_field_key': 'packet_rate', 'query_value': ''},
-            {'query_field_key': 'session_rate', 'query_value': ''}
+        "mitigation": {
+            "behavior": "none",
+        },
+        "expected_return": "",
+        "counters": {"hits": "many"},
+        "log_query_param": [
+            {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
+            {"query_field_key": "sessions", "query_value": ""},
+            {"query_field_key": "packets", "query_value": ""},
+            {"query_field_key": "bytes", "query_value": ""},
+            {"query_field_key": "bit_rate", "query_value": ""},
+            {"query_field_key": "packet_rate", "query_value": ""},
+            {"query_field_key": "session_rate", "query_value": ""},
         ],
-        'traffic': {
-            'protocol': '',
-            'type': 'trex',
-            'clients_start_ip': '10.64.20.210',
-            'clients_end_ip': '10.64.20.210',
-            'servers_start_ip': '2.1.1.18',
-            'servers_end_ip': '2.1.1.18',
-            'active_flows': 3,
-            'd': 5,
-            'm': 1,
-            'yaml_name': 'test',
-            'pcap_name': 'tls_long'
+        "traffic": {
+            "protocol": "",
+            "type": "trex",
+            "clients_start_ip": "10.64.20.223",
+            "clients_end_ip": "10.64.20.223",
+            "servers_start_ip": "2.1.1.21",
+            "servers_end_ip": "2.1.1.21",
+            "m": 2,
+            "d": 5,
+            "yaml_name": "test",
+            "pcap_name": "http"
         },
-        'token': 'd21627b9-cb69-4c83-b111-8c8a2149cf26&27&',
-        'rule_id': '157553'
+        "token": "",
+        'rule_id': '158303'
     }
-
+    output = {'total_packets': 873, 'total_packets_sent': 198, 'total_packets_received': 675, 'total_bytes': 978822, 'total_bytes_sent': 76869, 'total_bytes_received': 901953, 'total_syn_pkt': 9}
     log_in = LogIn()
     pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
     token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -154,7 +177,6 @@ def main():
     vsys_id = parameter["vsys_id"]
     script_type = parameter["script_type"]
     create_policies_ids = [{'dos_protection': test_data['rule_id']}]
-    output = {'total_bytes': 19027648, 'total_bytes_received': 18671260, 'total_bytes_sent': 356388, 'total_packets': 18056, 'total_packets_received': 12368, 'total_packets_sent': 5688, 'total_syn_pkt': 4}  # 示例的输出
 
     # 调用 GetLog 的 get_log_by_condition 函数
     log = support.api_utils.get_log.GetLog()
@@ -203,4 +225,52 @@ if __name__ == "__main__":
 #         print(f"vsys_id: {vsys_id}")
 #         print(f"script_type: {script_type}")
 #         print(f"output: {output}")
+
+#concurrency_test_data
+# test_data = {
+#         'is_multi_priority': False,
+#         'rule_num': 1,
+#         'policy_type': 'dos_protection',
+#         'rule_name': 'dos_protect_srcip_http_concurrency_srcip_d3',
+#         'rule_action': 'protect',
+#         'rule_type': 'create',
+#         'do_log': 2,
+#         'condition': {
+#             'source_ip': [{'name': 'dos_srcip', 'object_type': 'ip', 'select_type': False, 'negate': False,
+#                            'item': [{'item_operation': 'add', 'item_type': 'ipv4', 'item_value': '10.64.20.210'}]}],
+#             'application': [{'name': 'ssl', 'object_type': 'application', 'negate': False}]
+#         },
+#         'threshold': {
+#             'type': 'concurrency',
+#             'concurrency_threshold': {'group_by': 'source_ip', 'concurrent_sessions': 2}
+#         },
+#         'mitigation': {'behavior': 'deny', 'timeout': '5min'},
+#         'expected_return': '',
+#         'counters': {'hits': 'many'},
+#         'log_query_param': [
+#             {'query_field_key': 'attack_type', 'query_value': 'custom_network_attack'},
+#             {'query_field_key': 'sessions', 'query_value': ''},
+#             {'query_field_key': 'packets', 'query_value': ''},
+#             {'query_field_key': 'bytes', 'query_value': ''},
+#             {'query_field_key': 'bit_rate', 'query_value': ''},
+#             {'query_field_key': 'packet_rate', 'query_value': ''},
+#             {'query_field_key': 'session_rate', 'query_value': ''}
+#         ],
+#         'traffic': {
+#             'protocol': '',
+#             'type': 'trex',
+#             'clients_start_ip': '10.64.20.210',
+#             'clients_end_ip': '10.64.20.210',
+#             'servers_start_ip': '2.1.1.18',
+#             'servers_end_ip': '2.1.1.18',
+#             'active_flows': 3,
+#             'd': 5,
+#             'm': 1,
+#             'yaml_name': 'test',
+#             'pcap_name': 'tls_long'
+#         },
+#         'token': 'd21627b9-cb69-4c83-b111-8c8a2149cf26&27&',
+#         'rule_id': '157553'
+#     }
+#     output = {'total_bytes': 19027648, 'total_bytes_received': 18671260, 'total_bytes_sent': 356388, 'total_packets': 18056, 'total_packets_received': 12368, 'total_packets_sent': 5688, 'total_syn_pkt': 4}  # 示例的输出
 

@@ -84,11 +84,10 @@ def run(parameter):
                 "type": "trex",
                 "clients_start_ip": "1.1.1.1",
                 "clients_end_ip": "1.1.1.1",
-                "servers_start_ip": "2.1.1.18",
-                "servers_end_ip": "2.1.1.18",
+                "servers_start_ip": "2.1.1.30",
+                "servers_end_ip": "2.1.1.30",
                 "active_flows": 3,
                 "d": 5,
-                "m":1,
                 "yaml_name": "test",
                 "pcap_name": "tls_long"
             },
@@ -123,14 +122,14 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "script_type": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
         "debug_flag": "local",
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+        "root_path": "E:/tsg_test",
+        "path": "E:/tsg_test/tests/ui",
         "module_name": "dos_protection",
-        "test_case_name": "dos_protect_srcip_http_concurrency_srcip_d3"
+        "test_case_name": "dos_protect_srcip_http_rate_srcip_d3"
     }
     run(parameter)

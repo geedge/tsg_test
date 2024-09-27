@@ -745,6 +745,8 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationTimeouts_dropDownBox_posXpath"]).click()
                     temp_mitigation_timeout_element_position = create_element_position["policyRulePage_mitigationTimeouts_select_posXpath"].format(replaceValue=test_data["mitigation"]["timeout"])
                     self.driver.find_element(By.XPATH, temp_mitigation_timeout_element_position).click()
+                elif test_data["mitigation"]["behavior"] == "none":
+                    self.driver.find_element(By.ID, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
 
             # other options 操作
             if test_data["policy_type"] == "pxy_manipulation":
