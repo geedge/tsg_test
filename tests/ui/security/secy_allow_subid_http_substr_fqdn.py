@@ -73,8 +73,8 @@ def run(parameter):
         
         # 添加测试过程中涉及的template
         template_path = {}
-        template_path["rule_template"] = parameter["path"] + "/template/rule_template.json"
-        template_path["object_template"] = parameter["path"] + "/template/object_template.json"
+        template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
+        template_path["object_template"] = parameter["root_path"] + "/support/api_utils/template/object_template.json"
         
         # 获取token
         log_in = LogIn()
