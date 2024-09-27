@@ -1,12 +1,5 @@
 import time
-import pytest
-import os
-from datetime import datetime
-import support.ui_utils.env
-
-from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.log_in import *
-
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
@@ -24,8 +17,8 @@ def run(parameter):
         #测试数据
         test_data =  {
             "type":"objects",
+            "case_type": "single",
             "name": "create_ip_object_and_modify_item",
-            "case_type":"single",
             "object_type": "ip",
             "object_operation":{
                 "create": [
