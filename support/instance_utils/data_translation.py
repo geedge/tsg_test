@@ -458,6 +458,52 @@ class DataTranslation:
                             add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
+                    if v[i]["item"][0]["item_type"] == "imei":
+                        temp = {
+                            "name": v[i]["name"],
+                            "attribute_name": "ATTR_GTP_IMEI",
+                            "object_type": "mobile_identity",
+                            "object_sub_type": "imei",
+                            "is_negate": 0,
+                            "object_list": [
+                                {
+                                    "add_item_list": [
+                                    ]
+                                }
+                            ]
+                        }
+                        for u in range(len(v[i]["item"])):
+                            # 添加多个item
+                            add_item_dict = {
+                                "keyword_array": []
+                            }
+                            add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        object.append(copy.deepcopy(temp))  
+            elif k == "apn":
+                for i in range(len(v)):
+                    if v[i]["items"][0]["item_type"] == "apn":
+                        temp = {
+                            "name": v[i]["name"],
+                            "attribute_name": "ATTR_GTP_APN",
+                            "object_type": "apn",
+                            "object_sub_type": "apn",
+                            "is_negate": 0,
+                            "object_list": [
+                                {
+                                    "add_item_list": [
+                                    ]
+                                }
+                            ]
+                        }
+                        for u in range(len(v[i]["items"])):
+                            # 添加多个item
+                            add_item_dict = {
+                                "keyword_array": []
+                            }
+                            add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        object.append(copy.deepcopy(temp))                      
             elif k == "server_fqdn":
                 for i in range(len(v)):
                     temp = {

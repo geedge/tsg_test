@@ -96,7 +96,7 @@ def receive_parameter():
             
             # 考虑到MS的报告无法快速过滤结果，会生成csv格式的report
             new_report = GenerateReport()
-            new_report.generate_report(tag, project_path)
+            new_report.generate_report(module_name, project_path)
             
             # folder_list = os.listdir(temp_folder_path)
             # sys.stdout.write("The test folder contain: {}\n".format(folder_list))
@@ -113,7 +113,7 @@ def receive_parameter():
                     file_name = file.split("\\")[-1]
                 if file_name == test_case_name + ".py":
                     parameter["test_case_name"] = test_case_name
-                    new_path = "tests." + tag + "." + module_name + "." + test_case_name
+                    new_path = "tests." + module_name + "." + test_case_name
                     module = importlib.import_module(new_path)
                     result = module.run(parameter)
                     # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Test caes response is: {}".format(result), flush=True)

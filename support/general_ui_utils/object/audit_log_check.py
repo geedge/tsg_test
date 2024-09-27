@@ -13,6 +13,7 @@ class AuditLogCheck():
 
     def __init__(self,driver):
         self.driver = driver
+        self.driver.implicitly_wait(5)
         self.loginout_parse = configparser.ConfigParser()
         loginout_parse_dir = os.path.join(workdir,"configuration_file.ini")
         self.loginout_parse.read(loginout_parse_dir, encoding="utf-8")

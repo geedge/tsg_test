@@ -44,10 +44,13 @@ class DosProtectionInstanceGenerator:
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
 
-        # 使用随机ip
+        # 使用trex的随机源ip
         if test_data["traffic"]["type"] == "trex":
             organize_config = OrganizeConfig()
             test_data = organize_config.generate_random_ip(test_data, parameter)
+
+        #目的ip使用随机源ip
+
         
         need_initialization = False
         if len(parameter["script_type"]) == 0:
@@ -324,18 +327,12 @@ class DosProtectionInstanceGenerator:
             temp_test_data = translation.data_translation(test_data["policy_type"], test_data)
             test_data["obj_condition"] = temp_test_data["obj_condition"]
             test_data["application"] = temp_test_data["application"]
-            test_data["profile_condition"] = temp_test_data["profile_condition"]
             print(test_data)
 
             # 添加测试过程中涉及的template
             template_path = {}
             template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
             template_path["object_template"] = parameter["root_path"] + "/support/api_utils/template/object_template.json"
-            template_path["pre_intercept_template_path"] = parameter[
-                                                               "root_path"] + "/support/api_utils/template/pre_intercept_template.json"
-            # 添加测试过程中涉及的response pages
-            template_path["profiles_hijack_file_path"] = parameter[
-                                                             "root_path"] + "/support/api_utils/preset_profile/Create-Hijack-Files-test-3.html"
 
             # 创建Object、Profile、Rule
             create = CreatePolicy()
