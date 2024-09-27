@@ -27,23 +27,33 @@ def run(parameter):
 
         #测试数据
         test_data =  {
+            "type": "objects",
+            "case_type": "group",
             "name": "create_ip_group_and_add_item",
             "object_type": "ip",
-            "fuzzy_search": False,
-            "search_type": "name",
-            "select_type":False,
-            "item": [
-                {
-                    "item_operation": "new",
-                    "item_type": "",
-                    "item_value": ["1.1.1.1"]
-                },
-                {
-                    "item_operation": "add",
-                    "item_type": "",
-                    "item_value": ["1.1.1.1-1.1.1.1"]
-                }
-            ]
+            "sub_object": 1,
+            "object_operation":{
+                "create": [
+                    {
+                        "item_operation": "add",
+                        "item_type": "",
+                        "item_value": ["1.1.1.1"]
+                    }
+                ],
+                "edit":[
+                    {
+                        "item_operation": "add",
+                        "item_type": "",
+                        "item_value": ["1.1.1.1-1.1.1.1"]
+                    }
+                ]
+            },
+            "search": {
+                "is_fuzzy": False,
+                "type": "name"
+            },
+            "statistics": "",  # random
+            "audit_log": False  # system
         }
 
         test_ip_object_element_position = {

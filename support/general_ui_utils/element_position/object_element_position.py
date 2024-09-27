@@ -47,6 +47,12 @@ ObjectDetailPage_audit_log_compare_ip_posXpath = '//div[contains(text(),"Source 
 ObjectDetailPage_audit_log_compare_time_posXpath = "//div[@class='compare-code-box']//div[text()='Time']/following-sibling::div"
 ObjectDetailPage_audit_log_compare_user_posXpath = '//div[contains(text(),"User")]/following-sibling::div'
 ObjectDetailPage_audit_log_cancel_posXpath = "//div[@class='paper-right-content']//span[normalize-space(text())='Close']"
+ObjectDetailPage_input_search_box_posXpath = "(//input[@id='object_ip_search'])[2]"
+ObjectDetailPage_statistics_select_box_posXpath = "//input[@id='statistics_select']"  #object详情页Statistics下拉选择框
+ObjectDetailPage_statistics_select_elaborate_posXpath = "//div[@x-placement='bottom-start']//div[text()='Elaborate']"
+ObjectDetailPage_statistics_select_brief_posXpath = "//div[@x-placement='bottom-start']//div[text()='Brief']"
+main_listPage_object_statistics_view_postXpath = "(//div[@id='ly-table1-listcontent']//span[text()='View'])[1]"
+ObjectDetailPage_statistics_button_posXpath = "//div[@class='paper-grid-right']//span[text()='Statistics']"
 
 
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
@@ -74,6 +80,7 @@ listPage_objectSearch_geo_select_CountryandRegion_posXpath = "//li[@id='58-_Filt
 listPage_objectSearch_geo_select_SuperAdministrativeArea_posXpath = "//li[@id='150-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
 listPage_objectSearch_geo_select_AdministrativeArea_posXpath = "//li[@id='59-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
 listPage_objectSearch_geo_select_SubAdministrativeArea_posXpath = "//li[@id='151-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
+
 
 #ip object元素
 ipObjectPage_ipType_posId = "IPip"
