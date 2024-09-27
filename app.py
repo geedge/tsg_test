@@ -96,7 +96,7 @@ def receive_parameter():
             
             # 考虑到MS的报告无法快速过滤结果，会生成csv格式的report
             new_report = GenerateReport()
-            new_report.generate_report(tag, project_path)
+            new_report.generate_report(module_name, project_path)
             
             # folder_list = os.listdir(temp_folder_path)
             # sys.stdout.write("The test folder contain: {}\n".format(folder_list))
