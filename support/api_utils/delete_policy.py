@@ -307,6 +307,7 @@ class DeletePolicy:
             # 删除IP Addresses
             template['name'] = 'automation_test_object'
             template['type'] = 'ip'
+            if template['type'] == 'ip_learning': template['type'] = 'ip'
             self.query_and_delete_by_name(obj_url, template, headers)
             # 删除FQDNs
             template['type'] = 'fqdn'

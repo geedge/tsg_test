@@ -106,6 +106,8 @@ class CaseInstanceGenerator:
             self.service_chaining.delete_data()
         elif "type" in self.test_data.keys() and self.test_data["type"] == "dashboard":
             self.dashboard.delete_data()
+        elif "type" in self.test_data.keys() and self.test_data["type"] == "objects":
+            self.objects.delete_data()
         else:
             pass
         

@@ -12,6 +12,7 @@ from support.general_ui_utils.object.edit_objects import EditObjects
 from support.general_ui_utils.object.search_objects import SearchObjects
 from support.general_ui_utils.object.delete_objects import DeleteObjects
 from support.general_ui_utils.element_position.object_element_position import *
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
 
@@ -23,11 +24,6 @@ def run(parameter):
 
         #脚本启动时间
         start_time = time.time()
-
-        # 环境初始化
-        support.ui_utils.env.initiate_selenium_request()
-        driver = support.ui_utils.env.my_driver()
-        support.ui_utils.env.setup()
 
         #测试数据
         test_data =  {
@@ -88,69 +84,22 @@ def run(parameter):
             }
         }
 
-        log_in = LogIn()
-        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-        test_data["token"] = token
-
-        name_list = [
-            {
-                "name": "create_ip_group_and_add_item",
-                "type": "ip",
-            }
-        ]
-
-        #创建object
-        create_ip_object = CreateObjects(driver)
-        create_port_code = create_ip_object.create_group(test_data,test_ip_object_element_position)
-        object_info = create_ip_object.object_info
-        if create_port_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                  "Create ip object successfully.", flush=True)
-        elif create_port_code != 200:
-            result = "Fail to create ip."
-
-        # 修改Object
-        search_ip = SearchObjects(driver)
-        search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,test_ip_object_element_position)
-        if search_ip_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search ip object successfully.", flush=True)
-        elif create_port_code != 200:
-            result = "Fail to search ip."
-
-        edit_ip = EditObjects(driver)
-        edit_ip_code = edit_ip.edit(test_data, test_ip_object_element_position,first_row_checkbox_element)
-        if edit_ip_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit ip object successfully.", flush=True)
-        elif edit_ip_code != 200:
-            result = result + " In addition, fail to edit ip object."
-
-        for i in range(2):
-            search_ip = SearchObjects(driver)
-            search_ip_code,first_row_checkbox_element = search_ip.search(object_info,test_data,test_ip_object_element_position)
-            if search_ip_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                      "Search ip object successfully.", flush=True)
-            elif create_port_code != 200:
-                result = "Fail to search ip."
-
-            # 删除bject
-            delete_ip = DeleteObjects(driver)
-            delete_ip_code = delete_ip.delete(test_ip_object_element_position,first_row_checkbox_element)
-            if delete_ip_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete ip object successfully.", flush=True)
-            elif delete_ip_code != 200:
-                result = result + " In addition, fail to delete ip object."
+        # 测试用例实例化
+        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
+        result = case_instance_generator.run()
 
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,flush=True)
         return "Error: " + str(e)
     finally:
-        #清理环境
-        support.ui_utils.env.teardown()
-        delete = DeletePolicy()
-        delete.delete_policy_by_name(token, parameter, name_list)
+        # 清理环境并删除配置
+        case_instance_generator.delete_data()
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

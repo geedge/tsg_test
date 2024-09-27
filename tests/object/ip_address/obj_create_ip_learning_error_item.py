@@ -11,6 +11,7 @@ from support.general_ui_utils.object.create_objects import CreateObjects
 from support.general_ui_utils.object.search_objects import SearchObjects
 from support.general_ui_utils.object.delete_objects import DeleteObjects
 from support.general_ui_utils.element_position.object_element_position import *
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
 
@@ -23,89 +24,51 @@ def run(parameter):
         #脚本启动时间
         start_time = time.time()
 
-        # 环境初始化
-        support.ui_utils.env.initiate_selenium_request()
-        driver = support.ui_utils.env.my_driver()
-        support.ui_utils.env.setup()
-
         #测试数据
         test_data =  {
+            "type": "objects",
             "name": "obj_create_ip_learning_error_item",
+            "case_type": "single",
             "object_type": "ip_learning",
             "fuzzy_search": False,
             "search_type": "id",
-            "item": [
-                {
-                    "item_operation": "new",
-                    "item_type": "error_item",
-                    "item_value": ["w$w$w.baidu.com"]
-                }
-            ],
+            "object_operation":{
+                "create": [
+                    {
+                        "item_operation": "add",
+                        "item_type": "error_item",
+                        "item_value": ["w$w$w.baidu.com"]
+                    }
+                ]
+            },
             "learn_from_protocols": ["HTTP", "SSL"],
             "aging_times": "10",
             "vote_clients_Number": "2",
-            "learned_ip_limits": "2"
+            "learned_ip_limits": "2",
+            "search": {
+                "is_fuzzy": False,
+                "type": "name"
+            },
+            "statistics": "",  # random
+            "audit_log": False  # system
         }
 
-        test_ip_object_element_position = {
-            "page_jump": {
-                "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
-            },
-            "create": {
-                "objectListPage_createButton_posId": listPage_object_ip_address_createButton_posId,
-                "objectListPage_dropDown_createButton_posId":listPage_object_ip_address_create_ip_address_Button_posId,
-                "objectPage_inputName_posXpath": ip_addressObjectPage_input_Name_posXpath,
-                "objectPage_inputDescription_posXpath":ip_addressObjectPage_textArea_Description_posXpath,
-                "objectPage_ipLearing_type_posId": ip_addressObjectPage_radioButton_IP_learning_posId,
-                "objectPage_addItem_posXpath": ip_addressObjectPage_button_addItem_posXpath,
-                "objectPage_inputItem_posXpath": ip_addressObjectPage_IP_learning_inputItem_posXpath,
-                "objectPage_button_saveItem_posXpath": ip_addressObjectPage_button_Save_Item_posXpath,
-                "objectPage_okButton_posXpath": ip_addressObjectPage_button_OK_posXpath,
-                "objectPage_okButton_warningYes_posXpath": ip_addressObjectPage_button_warningSaveYes_posXpath,
-                "objectPage_addItem_error_tips_posXpath":ip_addressObjectPage_addItem_error_tips_posXpath,
-                "error_tips_text":"Format error"
-            },
-            "delete": {
-                "objectListPage_deleteButton_posId": listPage_object_ip_address_delButton_posId,
-                "objectListPage_deleteButton_warningYes_posXpath": listPage_object_ip_address_del_yes_Button_posXpath
-            }
-        }
-
-        log_in = LogIn()
-        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-        test_data["token"] = token
-
-        name_list = [
-            {
-                "name": "create_ip_object",
-                "type": "ip",
-            }
-        ]
-
-        #创建object
-        create_ip_object = CreateObjects(driver)
-        create_port_code = create_ip_object.create(test_data,test_ip_object_element_position)
-        object_info = create_ip_object.object_info
-        if create_port_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                  "Create ip object successfully.", flush=True)
-        elif create_port_code != 200:
-            result = "Fail to create ip."
+        # 测试用例实例化
+        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
+        result = case_instance_generator.run()
 
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,flush=True)
         return "Error: " + str(e)
     finally:
-        #清理环境
-        support.ui_utils.env.teardown()
-        delete = DeletePolicy()
-        delete.delete_policy_by_name(token, parameter, name_list)
+        # 清理环境并删除配置
+        case_instance_generator.delete_data()
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

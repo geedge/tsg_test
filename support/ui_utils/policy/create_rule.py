@@ -258,7 +258,10 @@ class CreateRule:
                         # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                         if server_fqdn_data[t]["negate"] == True:
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negateServerFqdn_posXpath"].format(replaceValue=temp)).click()
+                            time.sleep(1)
+                            negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negateServerFqdn_posXpath"].format(replaceValue=temp))
+                            ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                            negate_element.click()
                     elif server_fqdn_data[t]["object_type"] == "category":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
 
@@ -793,7 +796,6 @@ class CreateRule:
         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(ip_condition_type)]).click()
         for j in range(len(ip_data)):
             if ip_data[j]["negate"] == True:
-                #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)]).click()
                 time.sleep(1)  # 暂停1秒
                 negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)])
                 ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见

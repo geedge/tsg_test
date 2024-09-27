@@ -14,11 +14,12 @@ class CreateObjects:
 
     def __init__(self,driver):
         self.driver = driver
+        self.driver.implicitly_wait(5)
         self.my_files = ReadData()
         self.my_random = RandomName()
         self.random_number = "test_" + self.my_random.random_number()
         self.random_name = self.my_random.random_name()
-        self.object_info = {"id":"","name":"","details":"","ip":"","sub_type":"","description":"","subName":"","operation":""}
+        self.object_info = {"id":"","name":"","details":"","ip":"","sub_type":"","description":"","subName":"","operation":"","object_exit":False}
         self.is_import = False
         self.is_group = False
 
@@ -76,6 +77,8 @@ class CreateObjects:
                     self.is_import = True
                     self.driver.find_element(By.XPATH,create_element_position["objectPage_importItem_posXpath"]).click()
                     self.driver.find_element(By.XPATH,create_element_position["importPage_uploadFile_posXpath"]).send_keys(self.my_files._obj_files_path(file_name=data["object_operation"]['create'][i]['item_value']))
+                    if data["object_operation"]['create'][0]['item_type'] == "files_error_type":
+                        assert self.driver.find_element(By.XPATH,main_Import_Mobile_Identity_files_error_type_posXpath).text == "Only txt formats can be uploaded", "断言错误提示"
                     time.sleep(10)
 
             self.confirm_creation(data, create_element_position)
@@ -127,8 +130,7 @@ class CreateObjects:
                 #添加item
                 for i in range(len(data["object_operation"]['create'])):
                     if data["object_operation"]['create'][i]['item_operation'] == 'add':
-                        self.object_info["ip"] = self.object_info["details"] = \
-                        data["object_operation"]['create'][i]['item_value'][0]
+                        self.object_info["ip"] = self.object_info["details"] = data["object_operation"]['create'][i]['item_value'][0]
                         for j in range(len(data["object_operation"]['create'][i]['item_value'])):
                             if data["object_operation"]['create'][i]['item_value'][j] != "null":
                                 self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
@@ -159,16 +161,15 @@ class CreateObjects:
     def confirm_creation(self,data,create_element_position):
         if self.is_group == False:
             if self.is_import == True:
-                if "error_item" in data["object_operation"]['create'][0]['item_value'] or "error_format" in data["object_operation"]['create'][0]['item_value']:
+                if data["object_operation"]['create'][0]['item_type'] == "files_error_item" or data["object_operation"]['create'][0]['item_type'] == "files_error_format":
                     assert self.driver.find_element(By.XPATH,main_Import_files_error_format_posXpath).text == "IP addresses format error", "错误item校验"
-                elif "error_type" in data["object_operation"]['create'][0]['item_value']:
-                    assert self.driver.find_element(By.XPATH,main_Import_Mobile_Identity_files_error_type_posXpath).text == "Only txt formats can be uploaded", "断言错误提示"
-                elif "true_files" in data["object_operation"]['create'][0]['item_value']:
+                elif  data["object_operation"]['create'][0]['item_type'] == "true_files":
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_import_ok_button_posXpath"]).click()
                     self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
                     time.sleep(3)
                     self.object_info["id"] = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']/span").text
+                    self.object_info["object_exit"] = True
             elif len(data['name']) < 4:
                 self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
                 self.Name_tip = self.driver.find_element(By.XPATH, main_ObjectPage_tips_Name_input_Xpath).text
@@ -183,6 +184,7 @@ class CreateObjects:
                 self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
                 time.sleep(3)
                 self.object_info["id"] = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']/span").text
+                self.object_info["object_exit"] = True
         elif self.is_group == True:
             #subObject页面点击OK创建
             self.driver.find_element(By.XPATH,create_element_position["groupObjectPage_subObject_OK_button_posXpath"]).click()
@@ -192,5 +194,7 @@ class CreateObjects:
             self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             time.sleep(1)
             self.object_info["id"] = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']/span").text
+            self.object_info["object_exit"] = True
+
 
 
