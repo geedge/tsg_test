@@ -54,7 +54,7 @@ class CreateObject:
                 for i in range(repeat_time):
                     index = i + 1
                     objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, api_host, test_pc_ip, test_subcriber_id, vsys_id, index, repeat_time)
-                    if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT", "ATTR_GTP_IMSI", "ATTR_GTP_PHONE_NUMBER"]:
+                    if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT", "ATTR_GTP_IMSI", "ATTR_GTP_PHONE_NUMBER","ATTR_GTP_IMEI","ATTR_GTP_APN"]:
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
                     elif attribute_name in ["ATTR_DESTINATION_IP", "ATTR_DESTINATION_PORT", "ATTR_DESTINATION_GEO_COUNTRY", "ATTR_SERVER_FQDN"]:
