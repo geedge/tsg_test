@@ -81,6 +81,15 @@ class CreateObjects:
                         assert self.driver.find_element(By.XPATH,main_Import_Mobile_Identity_files_error_type_posXpath).text == "Only txt formats can be uploaded", "断言错误提示"
                     time.sleep(10)
 
+            # 修改Statistics统计状态
+            if data["statistics"] != "":
+                self.driver.find_element(By.XPATH, ObjectDetailPage_statistics_select_box_posXpath).click()
+                if data["statistics"] == "elaborate":
+                    self.driver.find_element(By.XPATH,
+                                             ObjectDetailPage_statistics_select_elaborate_posXpath).click()
+                elif data["statistics"] == "brief":
+                    self.driver.find_element(By.XPATH,ObjectDetailPage_statistics_select_brief_posXpath).click()
+
             self.confirm_creation(data, create_element_position)
             # # 确认创建
             # if self.is_import == True:
@@ -119,31 +128,31 @@ class CreateObjects:
             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputName_posXpath"]).send_keys(object_name)
             # 点subordinate的+
             self.driver.find_element(By.XPATH,create_element_position["groupObjectPage_addSubordinate_posXpath"]).click()
-            if data["select_type"] == True:
-                pass
-            else:
-                #点击侧滑框+
-                # self.driver.find_element(By.XPATH,ip_address_Group_sub_Object_addButton_posXpath).click()  # 添加sub_Object
-                self.driver.find_element(By.XPATH,ip_address_Group_sub_Object_add_new_Button_posXpath).click()  # add new sub_object
-                self.driver.find_element(By.XPATH,ip_address_Group_sub_Object_add_new_Select_one_Button_posXpath).click()  # new mobile_Identities
-                self.driver.find_element(By.XPATH,ip_address_Group_sub_Object_add_new_one_inputName_posXpath).send_keys(object_name)
-                #添加item
-                for i in range(len(data["object_operation"]['create'])):
-                    if data["object_operation"]['create'][i]['item_operation'] == 'add':
-                        self.object_info["ip"] = self.object_info["details"] = data["object_operation"]['create'][i]['item_value'][0]
-                        for j in range(len(data["object_operation"]['create'][i]['item_value'])):
-                            if data["object_operation"]['create'][i]['item_value'][j] != "null":
-                                self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
-                                self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(data["object_operation"]['create'][i]['item_value'][j])
-                                self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
-                    elif data['item'][i]["item_type"] == "quote":
-                        self.driver.find_element(By.XPATH, mainPage_ObjectSearch_buttonSearch_Item_posXpath).send_keys(data['Create']['sub_name'] + Keys.ENTER)
-                        self.driver.find_element(By.XPATH,main_Group_sub_Object_input_frame_select_one_posXpath).click()
-                    elif data["object_operation"]['create'][i]['item_operation'] == 'import':
-                        self.is_import = True
-                        self.driver.find_element(By.XPATH, create_element_position["objectPage_importItem_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, create_element_position["importPage_uploadFile_posXpath"]).send_keys(self.my_files._obj_files_path(file_name=data["object_operation"]['create'][i]['item_value']))
-                        time.sleep(5)
+            #点击侧滑框+
+            # self.driver.find_element(By.XPATH,ip_address_Group_sub_Object_addButton_posXpath).click()  # 添加sub_Object
+            self.driver.find_element(By.XPATH,ip_address_Group_sub_Object_add_new_Button_posXpath).click()  # add new sub_object
+            self.driver.find_element(By.XPATH,ip_address_Group_sub_Object_add_new_Select_one_Button_posXpath).click()  # new mobile_Identities
+            self.driver.find_element(By.XPATH,ip_address_Group_sub_Object_add_new_one_inputName_posXpath).send_keys(object_name)
+            #添加item
+            if data["object_type"] == "ip":
+                self.object_info["sub_type"] = "ip"
+            for i in range(len(data["object_operation"]['create'])):
+                if data["object_operation"]['create'][i]['item_operation'] == 'add':
+                    self.object_info["ip"] = self.object_info["details"] = data["object_operation"]['create'][i]['item_value'][0]
+                    for j in range(len(data["object_operation"]['create'][i]['item_value'])):
+                        if data["object_operation"]['create'][i]['item_value'][j] != "null":
+                            self.driver.find_element(By.XPATH, create_element_position["objectGroupPage_addItem_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, create_element_position["objectGroupPage_inputItem_posXpath"]).send_keys(data["object_operation"]['create'][i]['item_value'][j])
+                            self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
+                elif data['item'][i]["item_type"] == "quote":
+                    self.driver.find_element(By.XPATH, mainPage_ObjectSearch_buttonSearch_Item_posXpath).send_keys(data['Create']['sub_name'] + Keys.ENTER)
+                    self.driver.find_element(By.XPATH,main_Group_sub_Object_input_frame_select_one_posXpath).click()
+                elif data["object_operation"]['create'][i]['item_operation'] == 'import':
+                    self.is_import = True
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_importItem_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["importPage_uploadFile_posXpath"]).send_keys(self.my_files._obj_files_path(file_name=data["object_operation"]['create'][i]['item_value']))
+                    time.sleep(5)
+
             self.confirm_creation(data,create_element_position)
             # self.driver.find_element(By.XPATH,create_element_position["groupObjectPage_subObject_OK_button_posXpath"]).click()
             # self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_subObject_OK_Warning_Yes_posXpath"]).click()
@@ -163,7 +172,7 @@ class CreateObjects:
             if self.is_import == True:
                 if data["object_operation"]['create'][0]['item_type'] == "files_error_item" or data["object_operation"]['create'][0]['item_type'] == "files_error_format":
                     assert self.driver.find_element(By.XPATH,main_Import_files_error_format_posXpath).text == "IP addresses format error", "错误item校验"
-                elif  data["object_operation"]['create'][0]['item_type'] == "true_files":
+                elif data["object_operation"]['create'][0]['item_type'] == "true_files":
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_import_ok_button_posXpath"]).click()
                     self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
