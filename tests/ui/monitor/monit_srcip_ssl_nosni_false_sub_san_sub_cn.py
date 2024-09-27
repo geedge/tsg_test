@@ -63,7 +63,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "cn",
-                                "item_value": "node->"
+                                "item_value": "node"
                             }
                         ],
                     },

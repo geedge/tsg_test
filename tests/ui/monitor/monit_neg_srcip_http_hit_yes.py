@@ -86,7 +86,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "guoqiuya",
         "password": "Guoqiuya123@@",
-        "test_pc_ip": "192.168.64.105",
+        "test_pc_ip": "192.168.64.100",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
@@ -96,7 +96,7 @@ if __name__ == '__main__':
         "vsys_id": 1,
         "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
         "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
-        "module_name": "manipulation",
+        "module_name": "monitor",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)

@@ -283,7 +283,7 @@ class MonitorInstanceGenerator:
 
             # 数据转换，适配API的test_data
             translation = DataTranslation()
-            test_data = translation.data_translation(test_data["policy_type"], test_data)
+            test_data = translation.data_translation(parameter, test_data)
             # temp_test_data = translation.data_translation(test_data["policy_type"], test_data)
             # test_data["obj_condition"] = temp_test_data["obj_condition"]
             # test_data["application"] = temp_test_data["application"]

@@ -817,6 +817,24 @@ class CreateProfile:
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["id"] = profile_id
                 return create_profile_id_dict
+            elif profile_type == "traffic_mirror":
+                # 添加vsys id
+                profile_data["vsys_id"] = vsys_id
+                del profile_data['profile_type']
+                url = "{}/v1/policy/profile/traffic_mirror".format(api_host)
+                response = requests.post(url=url, json=profile_data, headers=headers, verify=False)
+                print(response.json())
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
+                response_dict = response.json()
+                profile_id = response_dict["data"]["traffic_mirror"]["id"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["id"] = profile_id
+                return create_profile_id_dict
             else:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added the other profile.")
         except AssertionError as e:

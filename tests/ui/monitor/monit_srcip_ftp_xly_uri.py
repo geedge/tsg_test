@@ -62,7 +62,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "$ftp://192.168.40.206/autoFtp/english_big.txt->"
+                                "item_value": "$ftp://192.168.40.206/autoFtp/english_big.txt"
                             }
                         ],
                     }

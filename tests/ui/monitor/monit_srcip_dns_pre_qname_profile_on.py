@@ -68,7 +68,6 @@ def run(parameter):
                 ],
             },
             "profile": [
-
                 {
                     "profile_type": "traffic_mirror",
                     "name": "profile1",

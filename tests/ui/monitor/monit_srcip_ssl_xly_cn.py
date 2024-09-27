@@ -61,7 +61,8 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "cn",
-                                "item_value": "$open.node.com->"
+                                # "item_value": "$open.node.com->"
+                                "item_value": "$open.node.com"
                             }
                         ],
                     }

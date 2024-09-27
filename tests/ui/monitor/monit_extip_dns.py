@@ -134,7 +134,7 @@ if __name__ == '__main__':
         "debug_flag": "local",
         "is_log": 1,
         "env": "tsgx",
-        "script_type": "api",
+        "script_type": "ui",
         "vsys_id": 1,
         # "root_path": workdir,
         # "path": workdir + "/testcase/ui",

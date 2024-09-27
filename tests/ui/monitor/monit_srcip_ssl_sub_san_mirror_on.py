@@ -60,7 +60,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "san",
-                                "item_value": "google->"
+                                "item_value": "google"
                             }
                         ],
                     }
