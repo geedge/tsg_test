@@ -28,7 +28,8 @@ class DeletePolicy:
             create_policies_ids = cfg_list["create_policies_ids"]
             create_geo_name_ids = cfg_list["create_geo_name_ids"]
 
-            delete_object_template = {"type": "ip", "ids": [], "vsys_id": 1}
+            #delete_object_template = {"type": "ip", "ids": [], "vsys_id": 1}
+            delete_object_template = {}
             delete_rule_template = {"ids": [], "type": "tsg_security", "vsys_id": 1}
             # 多条id删除的时候需要区分policy_type
             if len(create_policies_ids) > 0:
@@ -44,10 +45,8 @@ class DeletePolicy:
                     else:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete rule failed.", flush=True)
             if len(create_ip_ids) > 0:
-                delete_object_template['type'] = "ip"
-                delete_object_template['ids'] = create_ip_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/vsys_{}/policy/object/{}".format(vsys_id, "ip")
+                delete_object_template['uuids'] = create_ip_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "ip")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -55,10 +54,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip failed.", flush=True)
             if len(create_port_ids) > 0:
-                delete_object_template['type'] = "port"
-                delete_object_template['ids'] = create_port_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_port_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "port")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -110,10 +107,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete apn failed.", flush=True)
             if len(create_subid_ids) > 0:
-                delete_object_template['type'] = "subscriberid"
-                delete_object_template['ids'] = create_subid_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_subid_ids
+                url = api_server +  "/v1/vsys{}/policy/object/{}".format(vsys_id, "subscriberid")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -121,10 +116,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sub id failed.", flush=True)
             if len(create_fqdn_ids) > 0:
-                delete_object_template['type'] = "fqdn"
-                delete_object_template['ids'] = create_fqdn_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_fqdn_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "fqdn")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -132,10 +125,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn failed.", flush=True)
             if len(create_url_ids) > 0:
-                delete_object_template['type'] = "url"
-                delete_object_template['ids'] = create_url_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_url_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "url")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -154,10 +145,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete flag failed.", flush=True)
             if len(create_keywords_ids) > 0:
-                delete_object_template['type'] = "keywords"
-                delete_object_template['ids'] = create_keywords_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_keywords_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "keyword")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -176,10 +165,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete account failed.", flush=True)
             if len(create_http_signature_ids) > 0:
-                delete_object_template['type'] = "http_signature"
-                delete_object_template['ids'] = create_http_signature_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_http_signature_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "http_signature")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -297,105 +284,103 @@ class DeletePolicy:
         headers = {"Authorization": token}
         api_server = parameter["api_server"]
         vsys_id = parameter["vsys_id"]
-        rule_url = api_server + "/v1/policy/rule"
-        obj_url = api_server + "/v1/policy/object"
+        rule_url = api_server + "/v1/vsys{}/policy/rule".format(vsys_id)
+        obj_url = api_server + "/v1/vsys{}/policy/object".format(vsys_id)
+        profile_url = api_server + "/v1/vsys{}/policy/profile".format(vsys_id)
         dashboard_url = api_server + "/v1/dashboard"
         template = {'type': 'security', 'name': '', 'with_sub_vsys': 0, 'vsys_id': vsys_id}
         # script_type = parameter["script_type"]
         
-        if len(name_list) == 0:
-            # 删除security rule
-            template['name'] = 'automation_test_policy'
-            template['type'] = 'security'
-            self.query_and_delete_by_name(rule_url, template, headers)
-            # 删除monitor rule
-            template['type'] = 'monitor'
-            self.query_and_delete_by_name(rule_url, template, headers)
-            # 删除statistics rule
-            template['type'] = 'statistics'
-            self.query_and_delete_by_name(rule_url, template, headers)
-            # 删除intercept rule
-            template['type'] = 'pxy_intercept'
-            self.query_and_delete_by_name(rule_url, template, headers)
-            # 删除manipulation rule
-            template['type'] = 'pxy_manipulation'
-            self.query_and_delete_by_name(rule_url, template, headers)
-            # 删除Service Chaining rule
-            template['type'] = 'service_chaining'
-            self.query_and_delete_by_name(rule_url, template, headers)
-            # 删除Service Chaining rule
-            template['type'] = 'dos_protection'
-            self.query_and_delete_by_name(rule_url, template, headers)
+        # if len(name_list) == 0:    # 注释掉
+        #     # 删除security rule
+        #     template['name'] = 'automation_test_policy'
+        #     template['type'] = 'security'
+        #     self.query_and_delete_by_name(rule_url, template, headers)
+        #     # 删除monitor rule
+        #     template['type'] = 'monitor'
+        #     self.query_and_delete_by_name(rule_url, template, headers)
+        #     # 删除statistics rule
+        #     template['type'] = 'statistics'
+        #     self.query_and_delete_by_name(rule_url, template, headers)
+        #     # 删除intercept rule
+        #     template['type'] = 'pxy_intercept'
+        #     self.query_and_delete_by_name(rule_url, template, headers)
+        #     # 删除manipulation rule
+        #     template['type'] = 'pxy_manipulation'
+        #     self.query_and_delete_by_name(rule_url, template, headers)
+        #     # 删除Service Chaining rule
+        #     template['type'] = 'service_chaining'
+        #     self.query_and_delete_by_name(rule_url, template, headers)
+        #     # 删除Service Chaining rule
+        #     template['type'] = 'dos_protection'
+        #     self.query_and_delete_by_name(rule_url, template, headers)
+        #
+        #     # 删除IP Addresses
+        #     template['name'] = 'automation_test_object'
+        #     template['type'] = 'ip'
+        #     self.query_and_delete_by_name(obj_url, template, headers)
+        #     # 删除FQDNs
+        #     template['type'] = 'fqdn'
+        #     self.query_and_delete_by_name(obj_url, template, headers)
+        #     # 删除Subscriber IDs
+        #     template['type'] = 'subscriberid'
+        #     self.query_and_delete_by_name(obj_url, template, headers)
+        #     # 删除HTTP Signatures
+        #     template['type'] = 'http_signature'
+        #     self.query_and_delete_by_name(obj_url, template, headers)
+        #     # 删除Keywords
+        #     template['type'] = 'keywords'
+        #     self.query_and_delete_by_name(obj_url, template, headers)
+        #     # 删除URLs
+        #     template['type'] = 'url'
+        #     self.query_and_delete_by_name(obj_url, template, headers)
+        #     # 删除Accounts
+        #     template['type'] = 'account'
+        #     self.query_and_delete_by_name(obj_url, template, headers)
+        #     # 删除Flags
+        #     template['type'] = 'flag'
+        #     self.query_and_delete_by_name(obj_url, template, headers)
+        #
+        #     # 删除Response Pages
+        #     template['name'] = 'automation_test_profile'
+        #     profile_url = api_server + "/v1/policy/profile/response_page"
+        #     if 'type' in template:
+        #         del template["type"]
+        #     self.query_and_delete_by_name(profile_url, template, headers)
+        #     # 删除DNS Records
+        #     profile_url = api_server + "/v1/policy/profile/dns_record"
+        #     self.query_and_delete_by_name(profile_url, template, headers)
+        #     # 删除Hijack Files
+        #     profile_url = api_server + "/v1/policy/profile/hijack_file"
+        #     self.query_and_delete_by_name(profile_url, template, headers)
+        #     # 删除Insert Scripts
+        #     profile_url = api_server + "/v1/policy/profile/insert_script"
+        #     self.query_and_delete_by_name(profile_url, template, headers)
+        #     # 删除TSG Proxy Scripts
+        #     profile_url = api_server + "/v1/policy/profile/run_script"
+        #     self.query_and_delete_by_name(profile_url, template, headers)
+        #     # 删除Service Function Forwarders
+        #     template['name'] = 'test_sc_api'
+        #     profile_url = api_server + "/v1/policy/profile/service_function_forwarder"
+        #     self.query_and_delete_by_name(profile_url, template, headers)
+        #     # 删除Service Functions
+        #     template['name'] = 'test_sc_api'
+        #     profile_url = api_server + "/v1/policy/profile/service_function"
+        #     self.query_and_delete_by_name(profile_url, template, headers)
+        #     # 删除Statistics Templates
+        #     template['name'] = 'test_statistics_api'
+        #     profile_url = api_server + "/v1/policy/profile/statistics_template"
+        #     self.query_and_delete_by_name(profile_url, template, headers)
 
-            # 删除IP Addresses
-            template['name'] = 'automation_test_object'
-            template['type'] = 'ip'
-            self.query_and_delete_by_name(obj_url, template, headers)
-            # 删除FQDNs
-            template['type'] = 'fqdn'
-            self.query_and_delete_by_name(obj_url, template, headers)
-            # 删除Subscriber IDs
-            template['type'] = 'subscriberid'
-            self.query_and_delete_by_name(obj_url, template, headers)
-            # 删除HTTP Signatures
-            template['type'] = 'http_signature'
-            self.query_and_delete_by_name(obj_url, template, headers)
-            # 删除Keywords
-            template['type'] = 'keywords'
-            self.query_and_delete_by_name(obj_url, template, headers)
-            # 删除URLs
-            template['type'] = 'url'
-            self.query_and_delete_by_name(obj_url, template, headers)
-            # 删除Accounts
-            template['type'] = 'account'
-            self.query_and_delete_by_name(obj_url, template, headers)
-            # 删除Flags
-            template['type'] = 'flag'  
-            self.query_and_delete_by_name(obj_url, template, headers)
-            
-            # 删除Response Pages
-            template['name'] = 'automation_test_profile'
-            profile_url = api_server + "/v1/policy/profile/response_page"
-            if 'type' in template:
-                del template["type"]
-            self.query_and_delete_by_name(profile_url, template, headers)
-            # 删除DNS Records
-            profile_url = api_server + "/v1/policy/profile/dns_record"
-            self.query_and_delete_by_name(profile_url, template, headers)
-            # 删除Hijack Files
-            profile_url = api_server + "/v1/policy/profile/hijack_file"
-            self.query_and_delete_by_name(profile_url, template, headers)
-            # 删除Insert Scripts
-            profile_url = api_server + "/v1/policy/profile/insert_script"
-            self.query_and_delete_by_name(profile_url, template, headers)
-            # 删除TSG Proxy Scripts
-            profile_url = api_server + "/v1/policy/profile/run_script"
-            self.query_and_delete_by_name(profile_url, template, headers)
-            # 删除Service Function Forwarders
-            template['name'] = 'test_sc_api'
-            profile_url = api_server + "/v1/policy/profile/service_function_forwarder"
-            self.query_and_delete_by_name(profile_url, template, headers)
-            # 删除Service Functions
-            template['name'] = 'test_sc_api'
-            profile_url = api_server + "/v1/policy/profile/service_function"
-            self.query_and_delete_by_name(profile_url, template, headers)
-            # 删除Statistics Templates
-            template['name'] = 'test_statistics_api'
-            profile_url = api_server + "/v1/policy/profile/statistics_template"
-            self.query_and_delete_by_name(profile_url, template, headers)
-            
-            # 删除geolocation  24.08 版本临时注释掉
-            # geolocation_template = {'location_type': 'geoname_id', 'country': 'auto_geo_obj', 'vsys_id': vsys_id}
-            # geolocation_url = api_server + "/v1/policy/library/geolocation"
-            # self.delete_geolocation(geolocation_url, geolocation_template, headers, vsys_id)
-        elif len(name_list) > 0:
+        if len(name_list) >= 0:
             for name_item in name_list:
                 if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept", "monitor", "statistics", "dos_protection"]:
+                    rule_url = "{}/{}".format(rule_url, name_item["type"])
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
                     self.query_and_delete_by_name(rule_url, template, headers)
-                    
                 if name_item["type"] in ["ip", "port", "url", "fqdn", "http_signature", "mobile_identity", "keywords", "account", "subscriberid"]:
+                    obj_url = "{}/{}".format(obj_url, name_item["type"])
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
                     self.query_and_delete_by_name(obj_url, template, headers)
@@ -405,7 +390,7 @@ class DeletePolicy:
                     if 'type' in template:
                         del template["type"]
                     template['name'] = name_item["name"]
-                    profile_url = api_server + "/v1/policy/profile/" + name_item["type"]
+                    profile_url = "{}/{}".format(profile_url, name_item["type"])
                     # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], profile_url)
                     # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], template)
                     self.query_and_delete_by_name(profile_url, template, headers)
@@ -421,13 +406,16 @@ class DeletePolicy:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "search {} failed, please check".format(template['type']))
                 return 0
             return_json_data = json.loads(response.text)
-            if '/policy/rule' in url or '/policy/object' in url or 'dashboard' in url:
-                tmp_type = template['type']
+            if return_json_data["data"] == None:
+                return 0
+            if "list" not in return_json_data["data"]:
+                return 0
+            tmp_type = template['type']
             if '/policy/rule' in url:    
                 data_list = return_json_data['data']['rules']
                 delete_info = tmp_type.title() + ' ' + 'rule'
             elif '/policy/object' in url:
-                data_list = return_json_data['data']['objects']
+                data_list = return_json_data['data']['list']
                 delete_info = tmp_type
             elif '/dashboard' in url:
                 data_list = return_json_data['data']['dashboards']
@@ -473,15 +461,15 @@ class DeletePolicy:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def combine_delete_ids(self, template, list_data):
-        temp_template = copy.deepcopy(template)
+        #temp_template = copy.deepcopy(template)
+        temp_template = {}
+        uuids = ""
         # 遍历列表中的每个 JSON 对象
         for i, json_obj in enumerate(list_data):
-            # 提取 id 键的值
-            id_value = json_obj.get("id")
-            # 构建类似于 params 的键
-            key = f"ids[{i}]"
-            # 将键值对添加到 params 字典中
-            temp_template[key] = id_value
+            # 提取 uuid 键的值
+            uuids = uuids + json_obj.get("uuid") + ","
+        uuids = uuids.rstrip(",")
+        temp_template["uuids"] = uuids
         return temp_template
 
     def delete_geolocation(self, geolocation_url, geolocation_template, headers, vsys_id):

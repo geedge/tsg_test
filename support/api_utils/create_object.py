@@ -29,8 +29,6 @@ class CreateObject:
         self.geo_name_ids = []
 
     def create_object_from_template(self, token, parameter, condition, template):
-        api_host = parameter["api_server"]
-        vsys_id = parameter["vsys_id"]
         # 此处的condition为测试用例json中obj_condition_{i}的相关数据
         headers = {"Content-Type": "application/json", "Authorization": token}
         with open(template, 'r', encoding='utf-8') as f:
@@ -44,9 +42,6 @@ class CreateObject:
         condition_ids_by_api_dict = {}  # 搜集所有object通过api创建时返回的id字典
         timeout_result = True
 
-        test_pc_ip = parameter['test_pc_ip']
-        test_subcriber_id = parameter['test_subcriber_id']
-        
         # 依次创建object
         if len(condition) > 0:
             for key in condition:
@@ -136,9 +131,6 @@ class CreateObject:
     
     # 对多个objects的处理（处理之后要调用create_object）
     def organize_objects_data(self, obj_template_dict, condition, headers, parameter, index, repeat_time):
-        test_pc_ip = parameter["test_pc_ip"]
-        test_subcriber_id = parameter["test_subcriber_id"]
-        api_host = parameter["api_server"]
         vsys_id = parameter["vsys_id"]
         # object中的is_repeat，用于判定是否需要将数据组建为按照文件读取为多个items的形式
         is_repeat = 0
@@ -166,8 +158,6 @@ class CreateObject:
                 is_negate = condition['is_negate']
             else:
                 is_negate = 0
-
-            #obj_template_dict['vsys_id'] = vsys_id
 
             obj_list = condition["object_list"]
             for obj in obj_list:
@@ -232,109 +222,69 @@ class CreateObject:
                 member = dict(items=items, type="item")
             elif obj_type == "port":
                 for item in add_item_list:
-                    object_dict = {}
-                    if 'port' in item:
-                        if "-" not in str(item['port']):  # 单个端口
-                            object_dict['port'] = str(item['port'])
-                            object_dict['port_format'] = "port"
-                        else:    # 范围端口
-                            object_dict['port_range'] = str(item['port'])
-                            object_dict['port_format'] = "range"
-                    object_dict = dict(port=object_dict, op='add')
-                    items.append(copy.deepcopy(object_dict))
-                member = dict(items=items, type="item")
+                    tmp_item = {
+                        "op": "add",
+                        "interval": "0-65535"
+                    }
+                    tmp_item["op"] = item["op"]
+                    tmp_item["interval"] = item["interval"]
+                    items.append(copy.deepcopy(tmp_item))
+            elif obj_type == "fqdn":
+                for item in add_item_list:
+                    tmp_item = {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "example.com"
+                    }
+                    tmp_item["op"] = item["op"]
+                    tmp_item["expr_type"] = item["expr_type"]
+                    tmp_item["expression"] = item["expression"]
+                    items.append(copy.deepcopy(tmp_item))
+            elif obj_type == "subscriberid":
+                for item in add_item_list:
+                    tmp_item = {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "$test123"
+                    }
+                    tmp_item["op"] = item["op"]
+                    tmp_item["expr_type"] = item["expr_type"]
+                    tmp_item["expression"] = item["expression"]
+                    items.append(copy.deepcopy(tmp_item))
             elif obj_type == "url":
                 for item in add_item_list:
-                    patterns = []
-                    keywords = item["keyword_array"][0]
-                    if "&" not in keywords:
-                        object_dict = dict(keywords=keywords)
-                        patterns.append(object_dict)
-                        patterns = dict(patterns=patterns)
-                        string = dict(string=patterns, op='add')
-                        items.append(string)
-                    else:    #有and模式
-                        keywords_list = keywords.split("&")
-                        string = {}
-                        contextual_string = {}
-                        for i in range(len(keywords_list)):
-                            object_dict = {}
-                            object_dict["keywords"] = keywords_list[i]
-                            patterns.append(copy.deepcopy(object_dict))
-                        contextual_string["patterns"] = patterns
-                        contextual_string['expr_type'] = 1
-                        string["op"] = "add"
-                        string["string"] = contextual_string
-                        items.append(string)
+                    tmp_item = {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "$test123"
+                    }
+                    tmp_item["op"] = item["op"]
+                    tmp_item["expr_type"] = item["expr_type"]
+                    tmp_item["expression"] = item["expression"]
+                    items.append(copy.deepcopy(tmp_item))
             elif obj_type == "keywords":
                 for item in add_item_list:
                     tmp_item = {
                         "op": "add",
-                        "string": {
-                            "patterns": [
-                                # {
-                                #     "keywords": "text"
-                                # }
-                            ],
-                            "expr_type": 0,
-                            "is_hexbin": 0
-                        }
+                        "expr_type": "and",
+                        "expression": "example.com"
                     }
-                    keywords = item["keyword_array"][0]
-                    is_hexbin = item["is_hexbin"]
-                    expr_type = item["expr_type"]
-                    tmp_item["string"]["expr_type"] = expr_type
-                    tmp_item["string"]["is_hexbin"] = is_hexbin
-                    if expr_type == 1:    # 多个and 模式
-                        keywords_list = keywords.split("&")
-                        for i in range(len(keywords_list)):
-                            tmp = {}
-                            tmp["keywords"] = keywords_list[i]
-                            tmp_item["string"]["patterns"].append(copy.deepcopy(tmp))
-                    elif expr_type != 1:
-                        tmp = {}
-                        tmp["keywords"] = keywords
-                        tmp_item["string"]["patterns"].append(copy.deepcopy(tmp))
-                        if expr_type == 3:    # range 模式
-                            range_offset = item["range"]
-                            tmp_item["string"]["patterns"][0]["offset"] = range_offset[0]["offset"]
-                            tmp_item["string"]["patterns"][0]["depth"] = range_offset[0]["depth"]
+                    tmp_item["op"] = item["op"]
+                    tmp_item["expr_type"] = item["expr_type"]
+                    tmp_item["expression"] = item["expression"]
                     items.append(copy.deepcopy(tmp_item))
             elif obj_type == "http_signature":
                 for item in add_item_list:
                     tmp_item = {
                         "op": "add",
-                        "contextual_string": {
-                            "context_name": "Set-Cookie",
-                            "patterns": [
-                                # {
-                                #     "keywords": "text"
-                                # }
-                            ],
-                            "expr_type": 0,
-                            "is_hexbin": 0
-                        }
+                        "context_name": "Set-Cookie",
+                        "expr_type": "and",
+                        "expression": "example.com"
                     }
-                    keywords = item["keyword_array"][0]
-                    is_hexbin = item["is_hexbin"]
-                    expr_type = item["expr_type"]
-                    tmp_item["contextual_string"]["context_name"] = context_name
-                    tmp_item["contextual_string"]["expr_type"] = expr_type
-                    tmp_item["contextual_string"]["is_hexbin"] = is_hexbin
-                    if expr_type == 1:    # 多个and 模式
-                        keywords_list = keywords.split("&")
-                        for i in range(len(keywords_list)):
-                            tmp = {}
-                            tmp["keywords"] = keywords_list[i]
-                            tmp_item["contextual_string"]["patterns"].append(copy.deepcopy(tmp))
-                    elif expr_type != 1:
-                        tmp = {}
-                        tmp["keywords"] = keywords
-                        tmp_item["contextual_string"]["patterns"].append(copy.deepcopy(tmp))
-                        if expr_type == 3:    # range 模式
-                            range_offset = item["range"]
-                            tmp_item["contextual_string"]["patterns"][0]["offset"] = range_offset[0]["offset"]
-                            tmp_item["contextual_string"]["patterns"][0]["depth"] = range_offset[0]["depth"]
+                    tmp_item["op"] = item["op"]
+                    tmp_item["context_name"] = item["context_name"]
+                    tmp_item["expr_type"] = item["expr_type"]
+                    tmp_item["expression"] = item["expression"]
                     items.append(copy.deepcopy(tmp_item))
             elif obj_type == "geolocation":
                 geo_ip_address = []
@@ -402,10 +352,6 @@ class CreateObject:
                             object_dict['ip_address'] = ip
                             object_dict = dict(ip=object_dict, op='add')
                             items.append(object_dict)
-        # if obj_type == 'geolocation':
-        #     member = dict(geolocation = geolocation, type = 'library')
-        # else:
-        #     member = dict(items=items, type="item")
         return items
            
     def create_or_import_object(self, type_op, obj_template_dict, headers, parameter, is_repeat):
@@ -413,6 +359,8 @@ class CreateObject:
             api_host = parameter["api_server"]
             vsys_id = parameter["vsys_id"]
             obj_type = obj_template_dict['object']['type']
+            if obj_type == "keywords":
+                obj_type = "keyword"
             if type_op == "create":
                 url = api_host + "/v1/vsys{}/policy/object/{}".format(vsys_id, obj_type)
                 time1 = datetime.now()

@@ -43,6 +43,21 @@ def run(parameter):
                         ]
                     }
                 ],
+                "sub_id": [
+                    {
+                        "name": "manipulation_subid",
+                        "object_type": "subscriberid",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "subscriberid",
+                                "item_value": "$" + parameter["test_subcriber_id"],
+                            }
+                        ]
+                    }
+                ],
                 "application": [
                     {
                         "name": "http",  #
