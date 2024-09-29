@@ -53,6 +53,7 @@ class CreateObject:
                 for i in range(repeat_time):
                     index = i + 1
                     objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, parameter, index, repeat_time)
+                    # 构造condi数据，创建策略时的引用数据
                     if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT", "ATTR_GTP_IMSI", "ATTR_GTP_PHONE_NUMBER", "ATTR_GTP_IMEI", "ATTR_GTP_APN"]:
                         for obj_dict in objects_list:
                             source_list.append(obj_dict)
@@ -162,13 +163,9 @@ class CreateObject:
             obj_list = condition["object_list"]
             for obj in obj_list:
                 add_item_list = obj["add_item_list"]
-                if "context_name" in obj.keys():
-                    context_name = obj['context_name']
-                else:
-                    context_name = ''
                 if is_import == 0:
                     type_op = "create"
-                    member = self.combine_object_data(parameter, obj_type, add_item_list, context_name, is_repeat)
+                    member = self.combine_object_data(obj_type, add_item_list, is_repeat)
                     obj_template_dict['object']['items'] = member
                 else:
                     type_op = "import"
@@ -194,8 +191,7 @@ class CreateObject:
         return object_temp_list, timeout_result 
     
     # 组织创建通过items进行新增的object的数据
-    def combine_object_data(self, parameter, obj_type, add_item_list, context_name, is_repeat):
-        test_subcriber_id = parameter["test_subcriber_id"]
+    def combine_object_data(self, obj_type, add_item_list, is_repeat):
         items = []
         object_dict = {}
         geolocation = {}
@@ -211,15 +207,6 @@ class CreateObject:
                     tmp_item["ip"] = item["ip"]
                     tmp_item["interval"] = item["interval"]
                     items.append(copy.deepcopy(tmp_item))
-            elif obj_type == "flag":
-                for item in add_item_list:
-                    if 'flag' in item:
-                        object_dict['flag'] = item['flag']
-                    if 'mask' in item:
-                        object_dict['mask'] = item['mask']
-                    object_dict = dict(flag=object_dict, op='add')
-                    items.append(object_dict)
-                member = dict(items=items, type="item")
             elif obj_type == "port":
                 for item in add_item_list:
                     tmp_item = {
@@ -228,50 +215,6 @@ class CreateObject:
                     }
                     tmp_item["op"] = item["op"]
                     tmp_item["interval"] = item["interval"]
-                    items.append(copy.deepcopy(tmp_item))
-            elif obj_type == "fqdn":
-                for item in add_item_list:
-                    tmp_item = {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "example.com"
-                    }
-                    tmp_item["op"] = item["op"]
-                    tmp_item["expr_type"] = item["expr_type"]
-                    tmp_item["expression"] = item["expression"]
-                    items.append(copy.deepcopy(tmp_item))
-            elif obj_type == "subscriberid":
-                for item in add_item_list:
-                    tmp_item = {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "$test123"
-                    }
-                    tmp_item["op"] = item["op"]
-                    tmp_item["expr_type"] = item["expr_type"]
-                    tmp_item["expression"] = item["expression"]
-                    items.append(copy.deepcopy(tmp_item))
-            elif obj_type == "url":
-                for item in add_item_list:
-                    tmp_item = {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "$test123"
-                    }
-                    tmp_item["op"] = item["op"]
-                    tmp_item["expr_type"] = item["expr_type"]
-                    tmp_item["expression"] = item["expression"]
-                    items.append(copy.deepcopy(tmp_item))
-            elif obj_type == "keywords":
-                for item in add_item_list:
-                    tmp_item = {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "example.com"
-                    }
-                    tmp_item["op"] = item["op"]
-                    tmp_item["expr_type"] = item["expr_type"]
-                    tmp_item["expression"] = item["expression"]
                     items.append(copy.deepcopy(tmp_item))
             elif obj_type == "http_signature":
                 for item in add_item_list:
@@ -286,9 +229,30 @@ class CreateObject:
                     tmp_item["expr_type"] = item["expr_type"]
                     tmp_item["expression"] = item["expression"]
                     items.append(copy.deepcopy(tmp_item))
+            elif obj_type in["fqdn", "subscriberid", "keywords", "url", "account", "mobile_identity", "apn"]:
+                for item in add_item_list:
+                    tmp_item = {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "example.com"
+                    }
+                    tmp_item["op"] = item["op"]
+                    tmp_item["expr_type"] = item["expr_type"]
+                    tmp_item["expression"] = item["expression"]
+                    items.append(copy.deepcopy(tmp_item))
+            elif obj_type == "flag":
+                for item in add_item_list:
+                    tmp_item = {
+                        "op": "add",
+                        "flag": "64",
+                        "mask": "64"
+                    }
+                    tmp_item["op"] = item["op"]
+                    tmp_item["flag"] = item["flag"]
+                    tmp_item["mask"] = item["mask"]
+                    items.append(copy.deepcopy(tmp_item))
             elif obj_type == "geolocation":
                 geo_ip_address = []
-                # geo_ip_address_dict = {}
                 for item in add_item_list:
                     if 'continent' in item:
                         geolocation['continent'] = item['continent']
@@ -317,15 +281,7 @@ class CreateObject:
                     geolocation['ip_addresses'] = geo_ip_address
             else:
                 for item in add_item_list:
-                    patterns = []
-                    keywords = item["keyword_array"][0]
-                    if obj_type == "subscriberid" and keywords == "default":
-                        keywords = '$' + test_subcriber_id
-                    object_dict = dict(keywords=keywords)
-                    patterns.append(object_dict)
-                    patterns = dict(patterns=patterns)
-                    string = dict(string=patterns, op='add')
-                    items.append(string)                 
+                    print("todo...{}".format(item))
         elif is_repeat == 1 and obj_type != 'ip':
             for item in add_item_list:
                     patterns = []
@@ -471,13 +427,21 @@ class CreateObject:
     # 组织在策略中使用的source,filter等数据
     def obj_ids_to_policy_obj_list(self, object_ids, attribute_name, is_negate):
         temp_list = []
-        for obj in object_ids:
-            object_id_list = []
-            object_id_list.append(obj)
-            object_dict = dict(object_ids=object_id_list)
-            temp_list.append(object_dict)
-            temp_dict = dict(objects=temp_list, attribute_name=attribute_name, is_negate=is_negate)
-        return temp_dict
+        temp_dict = {
+            "negate_option":False,
+            "attribute_name":"ATTR_SUBSCRIBER_ID",
+            "objects":[
+                {
+                    "object_uuids":[
+                        #"157"
+                    ]
+                }
+            ]
+        }
+        temp_dict["attribute_name"] = attribute_name
+        temp_dict["objects"][0]["object_uuids"] = object_ids
+        temp_list.append(temp_dict)
+        return temp_list
 
     def handle_ids(self, object_ids, target_ids):
         if len(target_ids) != 0 and len(object_ids) != 0:

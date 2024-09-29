@@ -34,10 +34,9 @@ class DeletePolicy:
             # 多条id删除的时候需要区分policy_type
             if len(create_policies_ids) > 0:
                 for i in range(len(create_policies_ids)):
-                    delete_rule_template['type'] = list(create_policies_ids[i].keys())[0]
-                    delete_rule_template['ids'] = list(create_policies_ids[i].values())[0]
-                    delete_rule_template['vsys_id'] = vsys_id
-                    url = api_server + "/v1/policy/rule"
+                    policy_type = list(create_policies_ids[i].keys())[0]
+                    delete_rule_template['uuids'] = list(create_policies_ids[i].values())[0]
+                    url = api_server + "/v1/vsys{}/policy/rule/{}".format(vsys_id, policy_type)
                     response = requests.delete(url, headers=headers, params=delete_rule_template, verify=False)
                     assert response.status_code == 200
                     if response.status_code == 200:
@@ -63,10 +62,9 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete port failed.", flush=True)
             if len(create_imsi_ids) > 0:
-                delete_object_template['type'] = "mobile_identity"
-                delete_object_template['ids'] = create_imsi_ids
+                delete_object_template['uuids'] = create_imsi_ids
                 delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "mobile_identity")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -74,10 +72,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete imsi failed.", flush=True)
             if len(create_phone_number_ids) > 0:
-                delete_object_template['type'] = "mobile_identity"
-                delete_object_template['ids'] = create_phone_number_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_phone_number_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "mobile_identity")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -85,10 +81,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete phone number failed.", flush=True)
             if len(create_imei_ids) > 0:
-                delete_object_template['type'] = "mobile_identity"
-                delete_object_template['ids'] = create_imei_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_imei_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "mobile_identity")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -96,10 +90,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete imei failed.", flush=True)
             if len(create_apn_ids) > 0:
-                delete_object_template['type'] = "apn"
-                delete_object_template['ids'] = create_apn_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_apn_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "apn")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -134,10 +126,8 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete url failed.", flush=True)
             if len(create_flag_ids) > 0:
-                delete_object_template['type'] = "flag"
-                delete_object_template['ids'] = create_flag_ids
-                delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                delete_object_template['uuids'] = create_flag_ids
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "flag")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -154,10 +144,9 @@ class DeletePolicy:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete keyword failed.", flush=True)
             if len(create_account_ids) > 0:
-                delete_object_template['type'] = "account"
-                delete_object_template['ids'] = create_account_ids
+                delete_object_template['uuids'] = create_account_ids
                 delete_object_template["vsys_id"] = vsys_id
-                url = api_server + "/v1/policy/object"
+                url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "account")
                 response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:

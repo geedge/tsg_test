@@ -14,7 +14,6 @@ import os
 class CreatePolicy:
     def create_policy(self, parameter, test_data, template_path):
         # 变量初始化
-        api_server = parameter["api_server"]
         run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
         token = test_data["token"]
@@ -48,33 +47,35 @@ class CreatePolicy:
             timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template)
             for k, v_0 in condition_ids_by_api_dict.items():
                 v = copy.deepcopy(v_0)
-                if k == "ip_ids" and len(v) > 0:
+                if len(v) == 0:
+                    continue
+                if k == "ip_ids":
                     create_ip_ids.extend(v)
-                if k == "subid_ids" and len(v) > 0:
+                elif k == "subid_ids":
                     create_subid_ids.extend(v)
-                if k == "port_ids" and len(v) > 0:
+                elif k == "port_ids":
                     create_port_ids.extend(v)
-                if k == "imsi_ids" and len(v) > 0:
+                elif k == "imsi_ids":
                     create_imsi_ids.extend(v)
-                if k == "phone_number_ids" and len(v) > 0:
+                elif k == "phone_number_ids":
                     create_phone_number_ids.extend(v)
-                if k == "imei_ids" and len(v) > 0:
+                elif k == "imei_ids":
                     create_imei_ids.extend(v)
-                if k == "apn_ids" and len(v) > 0:
+                elif k == "apn_ids":
                     create_apn_ids.extend(v)
-                if k == "fqdn_ids" and len(v) > 0:
+                elif k == "fqdn_ids":
                     create_fqdn_ids.extend(v)
-                if k == "url_ids" and len(v) > 0:
+                elif k == "url_ids":
                     create_url_ids.extend(v)
-                if k == "flag_ids" and len(v) > 0:
+                elif k == "flag_ids":
                     create_flag_ids.extend(v)
-                if k == "keywords_ids" and len(v) > 0:
+                elif k == "keywords_ids":
                     create_keywords_ids.extend(v)
-                if k == "account_ids" and len(v) > 0:
+                elif k == "account_ids":
                     create_account_ids.extend(v)
-                if k == "http_signature_ids" and len(v) > 0:
+                elif k == "http_signature_ids":
                     create_http_signature_ids.extend(v)
-                if k == "geo_name_ids" and len(v) > 0:
+                elif k == "geo_name_ids":
                     create_geo_name_ids.extend(v)
             """
             # 创建profile
