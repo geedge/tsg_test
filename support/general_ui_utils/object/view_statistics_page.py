@@ -42,7 +42,7 @@ class ViewStatisticsPage:
                 statistics_details_class_text = self.driver.find_element(By.XPATH, ObjectDetailPage_statistics_button_posXpath).get_attribute("class")
                 assert "statistics-option-disabled" in statistics_details_class_text, "该元素应不可点击"
             page_jump.jump_sub_object_page(page_jump_element_position)
-
+            time.sleep(0.5)
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}",file=sys.stderr, flush=True)

@@ -10,7 +10,7 @@ from support.general_ui_utils.object.create_objects import CreateObjects
 from support.general_ui_utils.object.edit_objects import EditObjects
 from support.general_ui_utils.object.search_objects import SearchObjects
 from support.general_ui_utils.object.delete_objects import DeleteObjects
-from support.general_ui_utils.object.audit_log_check import AuditLogCheck
+from support.general_ui_utils.object.detail_audit_log_check import AuditLogCheck
 from support.general_ui_utils.object.view_statistics_page import ViewStatisticsPage
 from support.general_ui_utils.element_position.object_element_position import *
 from support.report_update import ReportUpdate
@@ -174,6 +174,7 @@ class ObjectsInstanceGenerator:
                         object_info["operation"] = "Create"
                     elif test_data["object_operation"]["create"][0]["item_operation"] == "import":
                         object_info["operation"] = "Import"
+                    search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
                     audit_log_code = audit_log.audit_log_check(object_info, object_element_position,first_row_checkbox_element)
                     if audit_log_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create ip object audit log check successfully.", flush=True)
