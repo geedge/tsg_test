@@ -14,6 +14,7 @@ import os
 class CreatePolicy:
     def create_policy(self, parameter, test_data, template_path):
         # 变量初始化
+        api_server = parameter["api_server"]
         run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
         token = test_data["token"]
@@ -77,7 +78,7 @@ class CreatePolicy:
                     create_http_signature_ids.extend(v)
                 elif k == "geo_name_ids":
                     create_geo_name_ids.extend(v)
-            """
+
             # 创建profile
             temp_profile_condition = "profile_condition_{}".format(create_number)
             if temp_profile_condition in test_data.keys():
@@ -143,7 +144,7 @@ class CreatePolicy:
                             statistics_sc_info_list.append(sc_info)
             if len(policy_id_list) > 0:
                 create_policies_ids.extend(policy_id_list)
-            """
+
 
         cfg_list = {}
         cfg_list["create_ip_ids"] = create_ip_ids
