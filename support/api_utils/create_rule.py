@@ -133,7 +133,6 @@ class CreatePolicyRule:
             elif method == "tamper":
                 rule_template_dict['rule']['user_region']['tamper_mode'] = 'complete'
         elif action == 'monitor' and policy_type == "monitor":
-            print("Current condition dictionary:", condition)
             if 'packet_capture_'+str(create_number) in condition:
                 rule_template_dict["rule"]["user_region"]["packet_capture"]["enable"] = condition['packet_capture_'+str(create_number)]["enable"]
                 if rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] in condition['packet_capture_'+str(create_number)]:
