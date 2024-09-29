@@ -55,6 +55,20 @@ main_listPage_object_statistics_view_postXpath = "(//div[@id='ly-table1-listcont
 ObjectDetailPage_statistics_button_posXpath = "//div[@class='paper-grid-right']//span[text()='Statistics']"
 
 
+#system audit log页面元素定位
+mainPage_firstLevelMenu_System_posId = "System"  # 一级菜单System
+mainPage_secondLevelMenu_auditLogs_posId = "system_PolicyConfigurationLog"  # 二级菜单AuditLog
+listPage_auditlogSearch_select_TagrgetID_posXpath = '//li[@id="1-_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'  # TagrgetID
+listPage_auditlogSearch_select_Operation_posXpath = '//li[@id="7-_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'  # operation选择
+listPage_auditlogSearch_select_UserName_posXpath = '//li[@id="3-_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'  # username选择
+listPage_auditlogSearch_select_TargetType_posXpath = '//li[@id="30-_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'  # target type选择
+listPage_auditlogSearch_select_Operation_Create_posXpath = '//li[@id="create-_v-select_ListItem_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'
+listPage_auditlogSearch_select_Operation_Edite_posXpath = '//li[@id="edit-_v-select_ListItem_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'
+listPage_auditlogSearch_select_Operation_Delete_posXpath = '//li[@id="delete-_v-select_ListItem_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'
+listPage_auditlogSearch_targetid_text_posXpath = "//div[@class='rel-input v-input input el-input el-input--mini']/input"
+listPage_auditlogSearch_username_text_posXpath = "//div[@class='el-input el-input--mini el-input--suffix is-focus']//input"
+
+
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
 language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']/.."#快捷切换语言按钮
 
