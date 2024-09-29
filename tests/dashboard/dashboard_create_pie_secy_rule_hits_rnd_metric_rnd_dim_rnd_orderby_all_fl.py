@@ -18,7 +18,8 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run test case: " + parameter["test_case_name"], flush=True)
         #参数初始化
-        result,exception_result = "",""
+        exception_result = ""
+        result = {}
 
         #脚本启动时间
         start_time = time.time()
@@ -115,7 +116,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        case_instance_generator.delete_data()
+        if isinstance(case_instance_generator, CaseInstanceGenerator):
+            case_instance_generator.delete_data()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

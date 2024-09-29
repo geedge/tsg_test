@@ -71,7 +71,7 @@ def run(parameter):
                 {
                     "profile_type": "traffic_mirror",
                     "name": "profile1",
-                    "vlan_count": random.randint(1, 5)
+                    "vlan_count": random.randint(3, 66)
                     # vlan的范围：应该是在3-66
                 }
             ],
@@ -112,7 +112,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        case_instance_generator.delete_data()
+        if isinstance(case_instance_generator, CaseInstanceGenerator):
+            case_instance_generator.delete_data()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
