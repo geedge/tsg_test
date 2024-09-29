@@ -731,6 +731,7 @@ test_manipulation_rule_element_position = {
         "policyRulePage_chooseApn_posXpath": policyRulePage_chooseApn_posXpath,
         # Application
         "policyRulePage_addApplication_posXpath": manipulationRulePage_addApplication_posXpath,
+        "policyRulePage_searchDoHApplication_posXpath": manipulationRulePage_searchDoHApplication_posXpath,
         "policyRulePage_searchApplication_posXpath": manipulationRulePage_searchApplication_posXpath,
         "policyRulePage_selectApplication_posXpath": manipulationRulePage_selectApplication_posXpath,
         "policyRulePage_closeApplication_posXpath": manipulationRulePage_closeApplication_posXpath,
@@ -781,10 +782,16 @@ test_manipulation_rule_element_position = {
         "policyRulePage_deny_addResponseContentProfileSelectBox_posXpath": manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath,
         "policyRulePage_deny_searchResponseProfile_posXpath": manipulationRulePage_deny_searchResponseProfile_posXpath,
         "policyRulePage_deny_searchResponseProfileDorpItem_posXpath": manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath,
-        # redirect http action parameter
+        # redirect http doh action parameter
         "policyRulePage_redirectHttp_addResponseCodeSelectBox_posXpath": manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath,
         "policyRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath": manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath,
         "policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath": manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath,
+        "policyRulePage_redirectDoH_qtypeRadio_posXpath": manipulationRulePage_redirectDoH_qtypeRadio_posXpath,
+        "policyRulePage_redirectDoH_atypeSelectBox_posXpath": manipulationRulePage_redirectDoH_atypeSelectBox_posXpath,
+        "policyRulePage_redirectDoH_atypeSelectDropItem_posXpath": manipulationRulePage_redirectDoH_atypeSelectDropItem_posXpath,
+        "policyRulePage_redirectDoH_valueInput_posXpath": manipulationRulePage_redirectDoH_valueInput_posXpath,
+        "policyRulePage_redirectDoH_ttlInput_posXpath": manipulationRulePage_redirectDoH_ttlInput_posXpath,
+        "policyRulePage_redirectDoH_add_posXpath": manipulationRulePage_redirectDoH_add_posXpath,
         # replace action parameter
         "policyRulePage_replace_addRegex_posXpath": manipulationRulePage_replace_addRegex_posXpath,
         "policyRulePage_replace_addSearchInSelectBox_posXpath": manipulationRulePage_replace_addSearchInSelectBox_posXpath,
@@ -1795,4 +1802,4 @@ def replace_paras(parameter):
 
 # 勿删 zcw make
 manipulation_object_no_create_list = ["application", "sub_action_override"]
-manipulation_profile_no_create_list = ["deny_response_text", "deny_response_block", "redirect_url", "replace_parameter", "edit_element_parameter"]
+manipulation_profile_no_create_list = ["deny_response_text", "deny_response_block", "redirect_url", "replace_parameter", "edit_element_parameter", "doh"]

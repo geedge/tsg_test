@@ -495,7 +495,8 @@ manipulationRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
 manipulationRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
 manipulationRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
 # Application的添加、查询、选中、关闭操作
-manipulationRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
+manipulationRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect flex']//span//div[@class='row-content-cell']"
+manipulationRulePage_searchDoHApplication_posXpath = "//div[@class='right-menu-content']//span[text()='DoH']"
 manipulationRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 manipulationRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
 manipulationRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
@@ -544,6 +545,12 @@ manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@class
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
 manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//input[@id='undefined1']"   # redirect url 输入框 定位
+manipulationRulePage_redirectDoH_qtypeRadio_posXpath = ""
+manipulationRulePage_redirectDoH_atypeSelectBox_posXpath = ""
+manipulationRulePage_redirectDoH_atypeSelectDropItem_posXpath = ""
+manipulationRulePage_redirectDoH_valueInput_posXpath = ""
+manipulationRulePage_redirectDoH_ttlInput_posXpath = ""
+manipulationRulePage_redirectDoH_add_posXpath = ""
 # action parameter replace
 manipulationRulePage_replace_addRegex_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='regexEnable']//div[contains(@class, 'el-switch')]"   # regex 开关定位， replace_sort替换为实际的个数
 manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='搜索区域']//i"   # search in 选择框 定位, replace_sort替换为实际的个数

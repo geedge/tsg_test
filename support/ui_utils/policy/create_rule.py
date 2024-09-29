@@ -200,9 +200,10 @@ class CreateRule:
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
                 # 点application的+
                 if test_data["policy_type"] == "pxy_manipulation":
-                    if  test_data["condition"]["application"][0]["name"].lower == "doh":  # doh需要操作application
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to do doh")
-                        pass
+                    if  test_data["condition"]["application"][0]["name"].lower() == "doh":  # doh需要操作application
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addApplication_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchDoHApplication_posXpath"], find_before_wait_time=0.5).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
                     else:   # 非doh不需要操作application
                         pass
                 else:
@@ -588,7 +589,25 @@ class CreateRule:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath"]).clear()
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath"]).send_keys(redirect_url)
                         else:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "doh...")
+                            # 遍历，是否含有多个value
+                            doh_parameter_list = test_data["action_parameter"]["doh"]
+                            for i in range(len(doh_parameter_list)):
+                                q_type = doh_parameter_list[i]["q_type"]
+                                a_type = doh_parameter_list[i]["a_type"]
+                                doh_value = doh_parameter_list[i]["doh_value"]
+                                doh_ttl = doh_parameter_list[i]["doh_ttl"]
+                                if i != 0:
+                                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_atypeSelectBox_posXpath"]).click()
+                                if i == 0:
+                                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_qtypeRadio_posXpath"].format(replace_qtype=q_type)).click()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_atypeSelectBox_posXpath"]).click()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_atypeSelectDropItem_posXpath"].format(replace_atype=a_type)).click()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_valueInput_posXpath"]).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_valueInput_posXpath"], find_after_wait_time=0.5).send_keys(doh_value)
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_ttlInput_posXpath"]).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_add_posXpath"], find_after_wait_time=0.5).send_keys(doh_ttl)
+
+
                     elif test_data["rule_action"] == "replace":
                         # 遍历，是否含有多个search in
                         replace_parameter_list = test_data["action_parameter"]["replace_parameter"]

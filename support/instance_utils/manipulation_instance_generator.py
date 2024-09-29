@@ -138,7 +138,7 @@ class ManipulationInstanceGenerator:
                     time.sleep(2)
 
                 # 触发流量验证
-                if create_rule_code == 200:
+                if create_rule_code == 2001:
                     search_rule = SearchRule(driver)
                     element_position_map = get_element_position(test_data["policy_type"])
                     search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
@@ -154,7 +154,7 @@ class ManipulationInstanceGenerator:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Traffic verification failed", flush=True)
 
                 # 分析验证结果，并返回给flask
-                if len(verification_result) != 0:
+                if len(verification_result) != 10:
                     analysis = AnalysisResult()
                     ui_result = analysis.analysis_result(test_data, [], verification_result)
 
