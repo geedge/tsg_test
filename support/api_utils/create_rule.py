@@ -145,6 +145,7 @@ class CreatePolicyRule:
                 rule_template_dict["rule"]["user_region"]["traffic_mirror"]["enable"] = condition['traffic_mirror_'+str(create_number)]["enable"]
             else:
                 rule_template_dict["rule"]["user_region"]["traffic_mirror"] = {"enable":0}
+
         elif policy_type == "dos_protection" and action == "protect":
             if condition["threshold"]["type"] == "rate":
                 rule_template_dict['rule']['user_region']["threshold"] = {

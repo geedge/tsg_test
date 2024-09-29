@@ -3,7 +3,11 @@
 import copy
 import requests
 import json
-from datetime import datetime 
+from datetime import datetime
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from support.api_utils.log_in import LogIn
 
 class DeletePolicy:    
     def delele_policy_by_cfg(self, token, parameter, cfg_list):
@@ -271,6 +275,10 @@ class DeletePolicy:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
     
     def delete_policy_by_name(self, token, parameter, name_list):
+        if len(token) == 0:
+            log_in = LogIn()
+            pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+            token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         headers = {"Authorization": token}
         api_server = parameter["api_server"]
         vsys_id = parameter["vsys_id"]
