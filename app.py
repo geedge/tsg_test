@@ -116,7 +116,6 @@ def receive_parameter():
                     new_path = "tests." + module_name + "." + test_case_name
                     module = importlib.import_module(new_path)
                     result = module.run(parameter)
-                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Test caes response is: {}".format(result), flush=True)
                     # module.run()返回的结果是failure reason，如果是空，则表示测试通过。
                     if len(result["ui_result"]) == 0 and len(result["api_result"]) == 0:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
@@ -168,7 +167,7 @@ def receive_parameter():
             response_result["code"] = 418
             response_result["result"] = "The run status code is False, do not run test case."
             response_result["data"] = None
-            response_result["success"] = False    
+            response_result["success"] = False
             response = jsonify(response_result)
             response.status_code = response_result["code"]
         
