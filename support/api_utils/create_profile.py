@@ -673,14 +673,14 @@ class CreateProfile:
         :param path_dict:  模板路径 {}
         :param post_data:     请求数据
         :param token:
-        :return:   例如:{'profile_type': 'Statistics_Templates', 'id': 1223, 'template_info': [{'template_id': 1223, 'chart_id': 2881, 'chart_type': 'table'}, {'template_id': 1223, 'chart_id': 2883, 'chart_type': 'table'}]}
+        :return:   例如:{'profile_type': 'statistics_templates', 'id': 1223, 'template_info': [{'template_id': 1223, 'chart_id': 2881, 'chart_type': 'table'}, {'template_id': 1223, 'chart_id': 2883, 'chart_type': 'table'}]}
         """
         try:
             # 处理请求体数据
             headers = {"Authorization": token}
             create_profile_id_dict = {"profile_type":"", "id":""}
             profile_type = profile_data["profile_type"]
-            if profile_type == "Statistics_Templates":
+            if profile_type == "statistics_templates":
                 profile_statistics_template = path_dict["profile_statistics_template"]
                 process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
                 url = "{}/v1/policy/profile/statistics_template".format(api_host)

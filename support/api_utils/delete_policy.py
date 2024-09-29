@@ -178,7 +178,7 @@ class DeletePolicy:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete geolocation failed.", flush=True)
             if len(create_profile_ids) > 0:
                 for del_porfile_index in range(len(create_profile_ids)):
-                    if create_profile_ids[del_porfile_index]["profile_type"] == "Statistics_Templates":    # 删除逻辑
+                    if create_profile_ids[del_porfile_index]["profile_type"] == "statistics_templates":    # 删除逻辑
                         profile_id = create_profile_ids[del_porfile_index]["id"]
                         del_profile_template = {"ids":str(profile_id),"vsys_id":vsys_id}
                         url = "{}/v1/policy/profile/statistics_template".format(api_server)

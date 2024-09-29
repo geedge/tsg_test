@@ -1049,7 +1049,7 @@ class DataTranslation:
                     charts_tmp.append(chart_tmp)
 
                 temp = {
-                    "profile_type": "Statistics_Templates",
+                    "profile_type": "statistics_templates",
                     "name": temp_profile[j]["name"],
                     "chart_list": charts_tmp
                 }
