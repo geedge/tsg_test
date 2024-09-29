@@ -59,21 +59,60 @@ class DashbboardInstanceGenerator:
 
             select_metric_type = ["single", "multiple"]
             multiple_dimension = [True, False]
-            # 随机metric与dimension格式
-            visualization_type = test_data["visualization_type"]
-            metric_type = random.choice(select_metric_type)
-            if test_data["visualization_type"] == "Table":
-                multiple_dimension = random.choice(multiple_dimension)
-            else:
+            if test_data["sub_type"] == "error_metric":
+                metric_type = "multiple"
                 multiple_dimension = False
+                visualization_type = test_data["visualization_type"]
+            elif test_data["sub_type"] == "error_dimensions":
+                metric_type = "single"
+                multiple_dimension = True
+                visualization_type = test_data["visualization_type"]
+            elif test_data["sub_type"] == "error_name":
+                metric_type = random.choice(select_metric_type)
+                multiple_dimension = False
+                visualization_type = test_data["visualization_type"]
+            else:
+                # 随机metric与dimension格式
+                visualization_type = test_data["visualization_type"]
+                metric_type = random.choice(select_metric_type)
+                if test_data["visualization_type"] == "Table":
+                    multiple_dimension = random.choice(multiple_dimension)
+                else:
+                    multiple_dimension = False
 
             # 创建Dashboard-Chart
             create_dashboard = CreateDashboard(driver)
-            create_code = create_dashboard.create(test_data, visualization_type, metric_type, multiple_dimension)
-            if create_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create chart successfully.", flush=True)
+            if test_data["sub_type"] == "error_metric" or test_data["sub_type"] == "error_dimensions" or test_data["sub_type"] == "error_name":
+                create_code = create_dashboard.create(test_data, visualization_type, metric_type, multiple_dimension)
+                if create_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create chart successfully.", flush=True)
+                else:
+                    ui_result = "Fail to create chart"
+                result["ui_result"] = ui_result
+                return result
+            elif test_data["sub_type"] == "empty_chart":
+                create_code, verify_alter = create_dashboard.empty_chart()
+                if create_code == 200 and verify_alter == "INVALID REQUEST:Dataview cannot be empty.":
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Empty chart save hint right", flush=True)
+                else:
+                    ui_result = "Fail to create chart"
+                result["ui_result"] = ui_result
+                return result
+            elif test_data["sub_type"] == "limit_twenty_chart":
+                create_code = create_dashboard.limit_chart(test_data, visualization_type, "single", "false")
+                if create_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Out of range 20 chart save hint right", flush=True)
+                else:
+                    ui_result = "Fail to create chart"
+                result["ui_result"] = ui_result
+                return result
             else:
-                ui_result = "Fail to create chart"
+                create_code = create_dashboard.create(test_data, visualization_type, metric_type, multiple_dimension)
+                if create_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create chart successfully.", flush=True)
+                else:
+                    ui_result = "Fail to create chart"
+
             # 新建chart输入数据校验
             create_verify_code = create_dashboard.create_chart_data_verify(test_data, visualization_type, metric_type,
                                                                            multiple_dimension)
