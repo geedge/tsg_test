@@ -25,7 +25,7 @@ def my_driver():
     chrome_option = webdriver.ChromeOptions()
     os_name = platform.system()
     prefs = {
-    "download.default_directory": workdir  # 设置下载路径
+        "download.default_directory": workdir  # 设置下载路径
     }
     chrome_option.add_experimental_option("prefs", prefs)
     if os_name == "Linux":
