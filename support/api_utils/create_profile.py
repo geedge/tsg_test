@@ -9,6 +9,7 @@ import string
 from datetime import datetime
 import copy
 
+
 class CreateProfile:
     """
     创建profile接口api
@@ -131,7 +132,7 @@ class CreateProfile:
                 "source_columns": "direction",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Session ID":  {
+            "Session ID": {
                 "source_columns": "session_id",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
@@ -139,21 +140,23 @@ class CreateProfile:
                 "source_columns": "in_pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Outgoing Packet Length": {
                 "source_columns": "out_pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"}, ]
             },
             "Packet Length": {
                 "source_columns": "pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "Incoming Latency": {
+            "Incoming Latency(ms)": {
                 "source_columns": "in_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
@@ -161,9 +164,10 @@ class CreateProfile:
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
-            "Outgoing Latency": {
+            "Outgoing Latency(ms)": {
                 "source_columns": "out_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
@@ -171,7 +175,8 @@ class CreateProfile:
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
             "DTLS Handshake Latency(ms)": {
                 "source_columns": "dtls_handshake_latency_ms",
@@ -180,7 +185,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
             "SSL Handshake Latency(ms)": {
                 "source_columns": "ssl_handshake_latency_ms",
@@ -189,7 +195,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
             "TCP Handshake Latency(ms)": {
                 "source_columns": "tcp_handshake_latency_ms",
@@ -198,25 +205,28 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
-            "Duration(ms)": {
+            "Duration": {
                 "source_columns": "duration_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
-            "Round-trip Time(ms)": {
+            "Round-trip Time": {
                 "source_columns": "tcp_rtt_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "short", "metric_type": "count"},
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
             },
             "Bytes Sent": {
                 "source_columns": "sent_bytes",
@@ -226,7 +236,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "bytes", "metric_type": "distribution"}]
             },
             "Packets Sent": {
                 "source_columns": "sent_pkts",
@@ -236,7 +247,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Packets Received": {
                 "source_columns": "received_pkts",
@@ -246,7 +258,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Bytes Received": {
                 "source_columns": "received_bytes",
@@ -256,7 +269,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "bytes", "metric_type": "distribution"}]
             },
             "Incoming Bytes": {
                 "source_columns": "in_bytes",
@@ -266,7 +280,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "bytes", "metric_type": "distribution"}]
             },
             "Outgoing Bytes": {
                 "source_columns": "out_bytes",
@@ -276,7 +291,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "bytes", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "bytes", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "bytes", "metric_type": "distribution"}]
             },
             "Incoming Packets": {
                 "source_columns": "in_pkts",
@@ -286,9 +302,10 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "Outgoing Packets":  {
+            "Outgoing Packets": {
                 "source_columns": "out_pkts",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "packets", "metric_type": "count"},
@@ -296,7 +313,8 @@ class CreateProfile:
                              {"function": "BITRATE", "unit": "bps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "New Client-to-Server Flows": {
                 "source_columns": "new_c2s_flows",
@@ -305,16 +323,18 @@ class CreateProfile:
                              {"function": "RATE", "unit": "fps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "flows", "metric_type": "distribution"}]
             },
-            "New Server-to-Client Flows":  {
+            "New Server-to-Client Flows": {
                 "source_columns": "new_s2c_flows",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
                              {"function": "SUM", "unit": "flows", "metric_type": "count"},
                              {"function": "RATE", "unit": "fps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "flows", "metric_type": "distribution"}]
             },
             "New Incoming Sessions": {
                 "source_columns": "new_in_sessions",
@@ -323,7 +343,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
             },
             "New Outgoing Sessions": {
                 "source_columns": "new_out_sessions",
@@ -332,7 +353,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
             },
             "Closed Incoming Sessions": {
                 "source_columns": "closed_in_sessions",
@@ -341,7 +363,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
             },
             "Closed Outgoing Sessions": {
                 "source_columns": "closed_out_sessions",
@@ -350,7 +373,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "sps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
             },
             "SYN Packets": {
                 "source_columns": "syn_pkts",
@@ -359,7 +383,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "pps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Client-to-Server IP Fragments": {
                 "source_columns": "c2s_ip_fragments",
@@ -368,7 +393,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "pps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "Server-to-Client IP Fragments": {
                 "source_columns": "s2c_ip_fragments",
@@ -377,7 +403,8 @@ class CreateProfile:
                              {"function": "RATE", "unit": "pps", "metric_type": "count"},
                              {"function": "MEDIAN", "unit": "packets", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},]
+                             {"function": "P99_PERCENTILE", "unit": "packets", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
         }
         dimensions_source_fields_map = {
@@ -424,24 +451,24 @@ class CreateProfile:
         }
         bytes_uint = []
         metrics_source_fields_map = {k.lower(): v for k, v in metrics_source_fields_map.items()}
-        dimensions_source_fields_map = {k.lower(): v for k, v in dimensions_source_fields_map.items()}     # 将key转成小写
+        dimensions_source_fields_map = {k.lower(): v for k, v in dimensions_source_fields_map.items()}  # 将key转成小写
         # 读取profile_statistics_template模板文件
         with open(profile_statistics_template, "r", encoding="utf-8") as f_template:
             f_template_dict = json.load(f_template)
-        
+
         # 处理请求数据，并合并到模板数据中
-        chart_template_dict = copy.deepcopy(f_template_dict["statistics_template"]["dataview"]["charts"][0])     # 单个chart模板
+        chart_template_dict = copy.deepcopy(f_template_dict["statistics_template"]["dataview"]["charts"][0])  # 单个chart模板
         f_template_dict["statistics_template"]["dataview"]["charts"].clear()
-        
+
         for _ in range(len(post_statistics_data["chart_list"])):
             f_template_dict["statistics_template"]["dataview"]["charts"].append(copy.deepcopy(chart_template_dict))
-        
-        for chart_idex in range(len(post_statistics_data["chart_list"])):     # 将数据值复制到post模板中
+
+        for chart_idex in range(len(post_statistics_data["chart_list"])):  # 将数据值复制到post模板中
             chart_type = post_statistics_data["chart_list"][chart_idex]["type"]
             # 重组 type
             f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["display"]["type"] = chart_type
             # 判断是否需要 table_type的数值
-            if chart_type == "table":    # 需要判断drill down = drill_down  regular
+            if chart_type == "table":  # 需要判断drill down = drill_down  regular
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["display"]["table_type"] = "regular"
             else:
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["display"]["table_type"] = ""
@@ -457,9 +484,9 @@ class CreateProfile:
                 source_fields_list_temp = source_fields_str.split("+")
                 source_fields_list = list(filter(lambda x: x, source_fields_list_temp))  # 排除空元素
                 label = ""
-                metrics_dict["source_fields"].clear()    # 遍历添加前清空一下旧数据
+                metrics_dict["source_fields"].clear()  # 遍历添加前清空一下旧数据
                 for i in range(len(source_fields_list)):
-                    tmp_source = metrics_source_fields_map[source_fields_list[i]]["source_columns"]   # 通过映射，从metrics_source_fields_map取出value
+                    tmp_source = metrics_source_fields_map[source_fields_list[i]]["source_columns"]  # 通过映射，从metrics_source_fields_map取出value
                     tmp_label_source = tmp_source.replace("_", " ")
                     label = label + tmp_label_source + " "
                     metrics_dict["source_fields"].append(tmp_source)
@@ -477,13 +504,13 @@ class CreateProfile:
                             if value["function"][k]["function"].lower() == function_name.lower():
                                 unit = value["function"][k]["unit"]
                                 metric_type = value["function"][k]["metric_type"]
-                                #print(unit, metric_type)
+                                # print(unit, metric_type)
                                 break
                         break
 
                 metrics_dict["unit"] = unit
                 metrics_dict["metric_type"] = metric_type
-                metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index+1)
+                metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index + 1)
 
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["metrics"].append(copy.deepcopy(metrics_dict))
                 chart_pre_name = metrics_dict["source_fields"][0] + " "
@@ -500,9 +527,9 @@ class CreateProfile:
                 dimensions_dict["is_drilldown"] = post_statistics_data["chart_list"][chart_idex]["dimensions"][dimension_index]["is_drilldown"]
                 if "__time" in tmp_source:
                     dimensions_dict["label"] = "Time"
-                    dimensions_dict["function"]["name"] = "DATETIME_FLOOR_WITH_FILL"     # time维度需要有 DATETIME_FLOOR_WITH_FILL 函数
+                    dimensions_dict["function"]["name"] = "DATETIME_FLOOR_WITH_FILL"  # time维度需要有 DATETIME_FLOOR_WITH_FILL 函数
                 else:
-                    dimensions_dict["label"] = label # 将_连接改为空格连接
+                    dimensions_dict["label"] = label  # 将_连接改为空格连接
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["dimensions"].append(copy.deepcopy(dimensions_dict))
                 chart_after_name = dimensions_dict["source_fields"][0] + " "
             # 重组order by
@@ -518,20 +545,28 @@ class CreateProfile:
                     if post_statistics_data["chart_list"][chart_idex]["metrics"][_]["source_columns"].lower().strip() == post_order_by.lower().strip():
                         function_name = post_statistics_data["chart_list"][chart_idex]["metrics"][_]["function"]
                         break
-                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "order_by参数错误:{}".format(post_order_by))
-                #f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "order_by参数错误:{}".format(post_order_by))
+                # f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] =  "{}_{}_autoapi".format(function_name.lower(), post_order_by.lower())
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = post_order_by.strip()
             # 重组 limit、 drilldown_limit
             if "line" == chart_type:
-                if len(post_statistics_data["chart_list"][chart_idex]["dimensions"]) > 1: # 如果是Line+Dimensions图表，需要添加重组TOP参数，而无Limit参数
+                if len(post_statistics_data["chart_list"][chart_idex]["dimensions"]) > 1:  # 如果是Line+Dimensions图表，需要添加重组TOP参数，而无Limit参数
                     f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["series_limit"] = int(post_statistics_data["chart_list"][chart_idex]["series_limit"])
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = 65536
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = ""
+            elif "histogram" == chart_type:
+                # 不加Limit接口报错，故此处统一对histogramChart添加limit值:'{
+                #   "code" : 400,
+                #   "msg" : "INVALID REQUEST:The limit cannot be empty.",
+                #   "data" : null,
+                #   "success" : false
+                # }'
+                f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = 65536
             else:
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = str(post_statistics_data["chart_list"][chart_idex]["limit"])
             # 重组threshold
-            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["threshold"]["in_bytes"] =  int(post_statistics_data["chart_list"][chart_idex]["threshold"]["in_bytes"])
-            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["threshold"]["out_bytes"] =  int(post_statistics_data["chart_list"][chart_idex]["threshold"]["out_bytes"])
+            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["threshold"]["in_bytes"] = int(post_statistics_data["chart_list"][chart_idex]["threshold"]["in_bytes"])
+            f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["threshold"]["out_bytes"] = int(post_statistics_data["chart_list"][chart_idex]["threshold"]["out_bytes"])
             # 重组 chart name
             if chart_after_name == "":
                 chart_name = "{}".format(chart_pre_name)
@@ -539,7 +574,7 @@ class CreateProfile:
                 chart_name = "{}Distributed by{}".format(chart_pre_name, chart_after_name)
             chart_name = chart_name.strip()
             f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["name"] = chart_name
-        
+
         # 重组statistics template name
         if post_statistics_data["name"] == "random_name":
             temp_list = []
@@ -550,18 +585,18 @@ class CreateProfile:
             f_template_dict["statistics_template"]["name"] = "test_statistics_api_no{}_{}".format(r_letter, formatted_time)
         else:
             f_template_dict["statistics_template"]["name"] = post_statistics_data["name"]
-        
+
         # 重组vsys id
         f_template_dict["vsys_id"] = vsys_id
         f_template_dict["statistics_template"]["vsys_id"] = vsys_id
-        
+
         return f_template_dict
 
     # 生成随机的vlan_id
     def random_vlan_id(self):
         random_num = random.randint(1, 4094)
         return random_num
-    
+
     # 用传入的sf数据替换模板中的数据
     def process_sf_post_data(self, sf_template_path, sf_post_data, vsys_id):
         with open(sf_template_path, "r") as f:
@@ -584,14 +619,14 @@ class CreateProfile:
             sf_template_dict["service_function"]["connectivity"]["ext_vlan_tag"] = self.random_vlan_id()
             sf_template_dict["service_function"]["health_check"]["method"] = "none"
         return sf_template_dict
-    
+
     # 获取sf profile id
     def get_sf_id(self, headers, sf_tempalte_path, sf_post_data, api_host, vsys_id):
         try:
             profile_type = sf_post_data['profile_type']
             if profile_type == "service_function":
-                process_post_data = self.process_sf_post_data(sf_tempalte_path, sf_post_data,vsys_id)
-                url = "{}/v1/policy/profile/service_function".format(api_host)
+                process_post_data = self.process_sf_post_data(sf_tempalte_path, sf_post_data, vsys_id)
+                url = "{}/v1/vsys{}/policy/profile/service_function".format(api_host, vsys_id)
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -600,14 +635,14 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                sf_profile_id = response_dict["data"]["service_function"]["id"]
+                sf_profile_id = response_dict["data"]["service_function"]["uuid"]
             return sf_profile_id
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     # 用传入的sff数据替换模板中的数据
     def process_sff_post_data(self, sf_profile_id, sff_template_path, sff_post_data, vsys_id):
-        with open(sff_template_path,"r") as f:
+        with open(sff_template_path, "r") as f:
             sff_template_dict = json.load(f)
         sff_template_dict["vsys_id"] = vsys_id
         sff_template_dict["service_function_forwarder"]["name"] = sff_post_data["name"]
@@ -623,7 +658,7 @@ class CreateProfile:
         sff_template_dict["service_function_forwarder"]["service_func_profiles"] = sf_profile_id
         return sff_template_dict
 
-    #用传入的dns_record数据代替模板数据
+    # 用传入的dns_record数据代替模板数据
     def process_dns_record_post_data(self, dns_record_template_path, dns_record_post_data, vsys_id):
         with open(dns_record_template_path, "r") as f:
             dns_record_template_dict = json.load(f)
@@ -631,7 +666,7 @@ class CreateProfile:
         dns_record_template_dict["dns_record"]["type"] = dns_record_post_data["type"]
         dns_record_template_dict["dns_record"]["values"][0]["value"] = dns_record_post_data["value"]
         return dns_record_template_dict
-    
+
     # 调用创建profile的接口
     def create_profile_from_template(self, path_dict, profile_data, token, api_host, vsys_id):
         """
@@ -639,21 +674,21 @@ class CreateProfile:
         :param path_dict:  模板路径 {}
         :param post_data:     请求数据
         :param token:
-        :return:   例如:{'profile_type': 'Statistics_Templates', 'id': 1223, 'template_info': [{'template_id': 1223, 'chart_id': 2881, 'chart_type': 'table'}, {'template_id': 1223, 'chart_id': 2883, 'chart_type': 'table'}]}
+        :return:   例如:{'profile_type': 'statistics_templates', 'id': 1223, 'template_info': [{'template_id': 1223, 'chart_id': 2881, 'chart_type': 'table'}, {'template_id': 1223, 'chart_id': 2883, 'chart_type': 'table'}]}
         """
         try:
             # 处理请求体数据
             headers = {"Authorization": token}
-            create_profile_id_dict = {"profile_type":"", "id":""}
+            create_profile_id_dict = {"profile_type": "", "uuid": ""}
             profile_type = profile_data["profile_type"]
-            if profile_type == "Statistics_Templates":
+            if profile_type == "statistics_templates":
                 profile_statistics_template = path_dict["profile_statistics_template"]
                 process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
-                url = "{}/v1/policy/profile/statistics_template".format(api_host)
+                url = "{}/v1/vsys{}/policy/profile/statistics_template".format(api_host, vsys_id)
                 headers["Content-Type"] = "application/json"
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], process_post_data)
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], process_post_data)
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
-                #assert response.status_code == 200
+                # assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
@@ -661,10 +696,10 @@ class CreateProfile:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 # 处理返回数据，提取id
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], response_dict)
-                profile_id = response_dict["data"]["statistics_template"]["id"]
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], response_dict)
+                profile_id = response_dict["data"]["statistics_template"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
-                create_profile_id_dict["id"] = profile_id
+                create_profile_id_dict["uuid"] = profile_id
                 path_profile_type = "statistics_template"
                 template_info = self.search_statistics_templates(profile_id, path_profile_type, headers, api_host, vsys_id)
                 create_profile_id_dict["template_info"] = template_info
@@ -675,12 +710,12 @@ class CreateProfile:
                 sf_profile_id_list = []
                 sf_condition_values = profile_data["sf_condition"]
                 for sf_profile_data in sf_condition_values:
-                    sf_profile_id = self.get_sf_id(headers, profile_sf_template, sf_profile_data, api_host,vsys_id)
+                    sf_profile_id = self.get_sf_id(headers, profile_sf_template, sf_profile_data, api_host, vsys_id)
                     sf_profile_id_list.append(sf_profile_id)
-                process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data,vsys_id)
-                url = "{}/v1/policy/profile/service_function_forwarder".format(api_host)
+                process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data, vsys_id)
+                url = "{}/v1/vsys{}/policy/profile/service_function_forwarder".format(api_host, vsys_id)
                 headers["Content-Type"] = "application/json"
-                response = requests.post(url, headers=headers, json= process_post_data, verify=False)
+                response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
@@ -688,18 +723,18 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                sff_id = response_dict["data"]["service_function_forwarder"]["id"]
+                sff_id = response_dict["data"]["service_function_forwarder"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
-                create_profile_id_dict["id"] = sff_id
+                create_profile_id_dict["uuid"] = sff_id
                 sff_info = self.search_sc_sff(sff_id, headers, api_host, profile_type, vsys_id)
                 create_profile_id_dict["sff_info"] = sff_info
                 return create_profile_id_dict
             elif profile_type == "response_page":
-                files = {"file":("Response-Pages_1.html", open(path_dict["profiles_deny_path"], 'rb'), "text/plain")}
+                files = {"file": ("Response-Pages_1.html", open(path_dict["profiles_deny_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
-                url = "{}/v1/policy/profile/response_page".format(api_host)
+                url = "{}/v1/vsys{}/policy/profile/response_page".format(api_host, vsys_id)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -708,16 +743,16 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["response_page"]["id"]
+                profile_id = response_dict["data"]["response_page"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
-                create_profile_id_dict["id"] = profile_id
+                create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
             elif profile_type == "hijack_files":
-                files = {"file":("Create-Hijack-Files-test-3.html", open(path_dict["profiles_hijack_file_path"], 'rb'), "text/plain")}
+                files = {"file": ("Create-Hijack-Files-test-3.html", open(path_dict["profiles_hijack_file_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
-                url = "{}/v1/policy/profile/hijack_file".format(api_host)
+                url = "{}/v1/vsys{}/policy/profile/hijack_file".format(api_host, vsys_id)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -726,9 +761,9 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["hijack_file"]["id"]
+                profile_id = response_dict["data"]["hijack_file"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
-                create_profile_id_dict["id"] = profile_id
+                create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
             elif profile_type == "insert_profile":
                 file_name = os.path.basename(path_dict["profiles_insert_profile_path"])
@@ -736,7 +771,7 @@ class CreateProfile:
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
-                url = "{}/v1/policy/profile/insert_script".format(api_host)
+                url = "{}/v1/vsys{}/policy/profile/insert_script".format(api_host, vsys_id)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -745,16 +780,16 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["insert_script"]["id"]
+                profile_id = response_dict["data"]["insert_script"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
-                create_profile_id_dict["id"] = profile_id
+                create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
             elif profile_type == "run_script":
                 files = {"file": ("run_script_hijack.lua", open(path_dict["profiles_run_script_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
-                url = "{}/v1/policy/profile/run_script".format(api_host)
+                url = "{}/v1/vsys{}/policy/profile/run_script".format(api_host, vsys_id)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -763,15 +798,16 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["run_script"]["id"]
+                profile_id = response_dict["data"]["run_script"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
-                create_profile_id_dict["id"] = profile_id
+                create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
             elif profile_type == "dns_record":
                 profile_dns_record_template = path_dict["profile_dns_record_template"]
                 process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
-                url = "{}/v1/policy/profile/dns_record".format(api_host)
-                response = requests.post(url, headers=headers, json=process_post_data)
+                url = "{}/v1/vsys{}/policy/profile/dns_record".format(api_host, vsys_id)
+                print(json.dumps(process_post_data))
+                response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
@@ -779,20 +815,37 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["dns_record"]["id"]
+                profile_id = response_dict["data"]["dns_record"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
-                create_profile_id_dict["id"] = profile_id
+                create_profile_id_dict["uuid"] = profile_id
+                return create_profile_id_dict
+            elif profile_type == "traffic_mirror":
+                # 添加vsys id
+                profile_data["vsys_id"] = vsys_id
+                del profile_data['profile_type']
+                url = "{}/v1/vsys{}/policy/profile/traffic_mirror".format(api_host, vsys_id)
+                response = requests.post(url=url, json=profile_data, headers=headers, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
+                response_dict = response.json()
+                profile_id = response_dict["data"]["traffic_mirror"]["uuid"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
             else:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added the other profile.")
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
-    
+
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
-        url = "{}/v1/policy/profile/{type}".format(api_host, type=profile_type)
+        url = "{}/v1/vsys{}/policy/profile/{type}".format(api_host, vsys_id, type=profile_type)
         params_dict = {
             "vsys_id": vsys_id,
-            "ids": template_id
+            "uuids": template_id
         }
         response = requests.get(url, params=params_dict, headers=headers)
         # 打桩数据
@@ -821,14 +874,14 @@ class CreateProfile:
                               "metric_name": metric_name,
                               "label": label}
                 chart_info["metrics"].append(tmp_dict_2)
-            if "order_by" in chart["query"].keys():   # 有 order_by 则取出
+            if "order_by" in chart["query"].keys():  # 有 order_by 则取出
                 chart_info["order_by"] = chart["query"]["order_by"]
             chart_info["limit"] = chart["query"]["limit"]
             chart_info["topk"] = ""
             template_info.append(copy.deepcopy(chart_info))
         return template_info
 
-    #搜索sf并获取返回结果中的sf相关信息
+    # 搜索sf并获取返回结果中的sf相关信息
     def search_sc_sff(self, sff_id, headers, api_host, profile_type, vsys_id):
         url = "{}/v1/policy/profile/{type}/{ids}".format(api_host, type=profile_type, ids=sff_id)
         params_dict = {
@@ -836,25 +889,25 @@ class CreateProfile:
         }
         response = requests.get(url=url, params=params_dict, headers=headers)
         r_dict = response.json()
-        sff_info = {"id": sff_id, "type": "","sf_info": []}
-        if(len(r_dict["data"]["service_function_forwarder"]["service_func_profiles"])>0):
+        sff_info = {"id": sff_id, "type": "", "sf_info": []}
+        if (len(r_dict["data"]["service_function_forwarder"]["service_func_profiles"]) > 0):
             sf_profile_id_list = r_dict["data"]["service_function_forwarder"]["service_func_profiles"]
             for i in sf_profile_id_list:
                 sf_profile_id = i
-                sff_info["sf_info"].append(self.search_sc_sf(sf_profile_id, headers, api_host,vsys_id))
+                sff_info["sf_info"].append(self.search_sc_sf(sf_profile_id, headers, api_host, vsys_id))
             sff_info["type"] = r_dict["data"]["service_function_forwarder"]["type"]
             sff_info["failure_action"] = r_dict["data"]["service_function_forwarder"]["failure_action"]
         return sff_info
 
-    #搜索sff并获取返回结果中的相关信息
+    # 搜索sff并获取返回结果中的相关信息
     def search_sc_sf(self, sf_id, headers, api_host, vsys_id):
-        url = "{}/v1/policy/profile/{type}/{id}".format(api_host, type="service_function", id=sf_id)
+        url = "{}/v1/vsys{}/policy/profile/{type}/{id}".format(api_host, vsys_id, type="service_function", id=sf_id)
         params_dict = {
             "vsys_id": vsys_id
         }
         response = requests.get(url, params=params_dict, headers=headers)
         r_dict = response.json()
-        sf_info = {"id": sf_id, "connectivity": {"method": ""}, "health_check": {"method": ""}}
+        sf_info = {"uuid": sf_id, "connectivity": {"method": ""}, "health_check": {"method": ""}}
         if r_dict["data"]["service_function"]["connectivity"]["method"] == "vxlan_g":
             sf_info["connectivity"]["method"] = r_dict["data"]["service_function"]["connectivity"]["method"]
             sf_info["connectivity"]["dest_ip"] = r_dict["data"]["service_function"]["connectivity"]["dest_ip"]
@@ -865,6 +918,7 @@ class CreateProfile:
         sf_info["device_tag"] = r_dict["data"]["service_function"]["device_group"]["value"]
         sf_info["admin_status"] = r_dict["data"]["service_function"]["admin_status"]
         return sf_info
+
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
