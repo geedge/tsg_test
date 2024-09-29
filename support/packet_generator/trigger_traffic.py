@@ -111,8 +111,8 @@ class TriggerTraffic:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use trex to replay traffic.", flush=True)
                 pcap_name = temp_data.get("pcap_name") + ".pcap"
                 yaml_name = temp_data.get("yaml_name") + ".yaml"
-                m = temp_data.get("m")
-                d = temp_data.get("d")
+                m = temp_data.get("m",0)
+                d = temp_data.get("d",0)
                 if test_data.get("policy_type") == "dos_protection" and test_data.get("threshold") and test_data["threshold"].get("type") == "concurrency":
                     active_flows = temp_data.get("active_flows")
                 else:

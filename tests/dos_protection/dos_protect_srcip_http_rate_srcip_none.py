@@ -25,7 +25,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "dos_protection",
-            "rule_name": "dos_protect_srcip_http_rate_srcip_d3",
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
             "rule_action": "protect",
             "rule_type": "create",
             "do_log": 2,
@@ -135,6 +135,6 @@ if __name__ == '__main__':
         "root_path": "E:/tsg_test",
         "path": "E:/tsg_test/tests/ui",
         "module_name": "dos_protection",
-        "test_case_name": "dos_protect_srcip_http_rate_srcip_d3"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)
