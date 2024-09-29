@@ -823,7 +823,6 @@ class CreateProfile:
                 del profile_data['profile_type']
                 url = "{}/v1/policy/profile/traffic_mirror".format(api_host)
                 response = requests.post(url=url, json=profile_data, headers=headers, verify=False)
-                print(response.json())
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
