@@ -119,7 +119,7 @@ class GetLog:
                             "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
                             "attack_type", "sessions", "session_rate", "packets", "packet_rate",
                             "bytes", "bit_rate", "basic_attack_type", "basic_sessions",
-                            "basic_session_rate", "basc_packets", "basic_packet_rate",
+                            "basic_session_rate", "basic_packets", "basic_packet_rate",
                             "basic_bytes", "basic_bit_rate"
                         }
                         dos_verify_fields = {
@@ -437,7 +437,7 @@ class GetLog:
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
-        elif query_field_key in ["basic_attack_type", "basic_sessions","basic_session_rate", "basc_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate"]:
+        elif query_field_key in ["basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate"]:
             temp_log_result_list.append(True)
         else:
             temp_log_result_list.append(False)
