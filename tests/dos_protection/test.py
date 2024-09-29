@@ -7,11 +7,24 @@ from support.api_utils.log_in import LogIn
 from support.packet_generator.ui_verification import *
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from support.instance_utils.data_translation import DataTranslation
 
 import support.api_utils.get_log
 import support.api_utils.policy_verify
 import support.ui_utils.env
-
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from support.api_utils.log_in import LogIn
+from support.ui_utils.object.create_object import CreateObject
+from support.ui_utils.object.search_object import SearchObject
+from support.ui_utils.object.delete_object import DeleteObject
+from support.api_utils.delete_policy import DeletePolicy
+from support.api_utils.create_policy import CreatePolicy
+from support.packet_generator.verification import Verification
+from support.api_utils.analysis_result import AnalysisResult
+from support.instance_utils.data_translation import DataTranslation
+import support.ui_utils.env
+from datetime import datetime
+from support.ui_utils.element_position.map_element_position_library import *
 def main():
     # 已知参数
     test_rule_element_position = {
@@ -85,7 +98,7 @@ def main():
     rule_num = 1
     # 获取开始时间
     utc_tz = pytz.timezone('UTC')
-    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=3600)
+    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=8000)
     start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
     #获取结束时间
     utc_tz = pytz.timezone('UTC')
@@ -149,8 +162,8 @@ def main():
         "traffic": {
             "protocol": "",
             "type": "trex",
-            "clients_start_ip": "10.64.20.223",
-            "clients_end_ip": "10.64.20.223",
+            "clients_start_ip": "10.64.12.191",
+            "clients_end_ip": "10.64.12.191",
             "servers_start_ip": "2.1.1.21",
             "servers_end_ip": "2.1.1.21",
             "m": 2,
@@ -159,7 +172,7 @@ def main():
             "pcap_name": "http"
         },
         "token": "",
-        'rule_id': '158303'
+        'rule_id': '158489'
     }
     output = {'total_packets': 873, 'total_packets_sent': 198, 'total_packets_received': 675, 'total_bytes': 978822, 'total_bytes_sent': 76869, 'total_bytes_received': 901953, 'total_syn_pkt': 9}
     log_in = LogIn()
@@ -171,6 +184,21 @@ def main():
     # driver = support.ui_utils.env.my_driver()
     # support.ui_utils.env.setup()
 
+    # 数据转换，适配API的test_data
+    translation = DataTranslation()
+    temp_test_data = translation.data_translation(test_data["policy_type"], test_data)
+    test_data["obj_condition"] = temp_test_data["obj_condition"]
+    test_data["application"] = temp_test_data["application"]
+    print(test_data)
+
+    # 添加测试过程中涉及的template
+    template_path = {}
+    template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
+    template_path["object_template"] = parameter["root_path"] + "/support/api_utils/template/object_template.json"
+
+    # 创建Object、Profile、Rule
+    create = CreatePolicy()
+    cfg_list = create.create_policy(parameter, test_data, template_path)
 
     #1.api校验
     api_server = parameter["api_server"]
@@ -199,6 +227,9 @@ def main():
     print("log_result:", log_result)
     print(test_data)
 
+    # 删除配置
+    delete = DeletePolicy()
+    delete.delele_policy_by_cfg(token, parameter, cfg_list)
     # #2.ui校验
     # api_verification_result = [True,True,True]
     #
