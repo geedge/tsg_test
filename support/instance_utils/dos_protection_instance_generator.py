@@ -69,18 +69,7 @@ class DosProtectionInstanceGenerator:
                         "name": condition["name"]
                     }
                     temp_name_list.append(obj_name_dict)
-        for sff in test_data["profile"]:
-            sff_name_dict = {
-                "type": "service_function_forwarder",
-                "name": sff["name"]
-            }
-            temp_name_list.append(sff_name_dict)
-            for sf in sff["service_functions"]:
-                sf_name_dict = {
-                    "type": "service_function",
-                    "name": sf["name"]
-                }
-            temp_name_list.append(sf_name_dict)
+
         self.ui_name_list = temp_name_list
         self.api_name_list = temp_name_list
 
