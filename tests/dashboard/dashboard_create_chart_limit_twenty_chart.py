@@ -3,10 +3,7 @@ import time
 import support.ui_utils.env
 from datetime import datetime
 from support.api_utils.log_in import *
-from support.general_ui_utils.dashboard.dashboard import Dashboard
-
 import random
-
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report import GenerateReport
 from support.report_update import ReportUpdate
