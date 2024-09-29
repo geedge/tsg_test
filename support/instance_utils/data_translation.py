@@ -875,6 +875,8 @@ class DataTranslation:
                                 temp["attribute_name"] = "ATTR_SSL_SAN"
                             if v[i]["items"][0]["item_type"] == "qname":
                                 temp["attribute_name"] = "ATTR_DNS_QNAME"
+                            if "negate" in v[i]:
+                                temp["is_negate"] = v[i]["negate"]
                             for u in range(len(v[i]["items"])):
                                 # 添加多个item
                                 add_item_dict = {
@@ -1051,7 +1053,7 @@ class DataTranslation:
                     charts_tmp.append(chart_tmp)
 
                 temp = {
-                    "profile_type": "Statistics_Templates",
+                    "profile_type": "statistics_templates",
                     "name": temp_profile[j]["name"],
                     "chart_list": charts_tmp
                 }
@@ -1168,6 +1170,42 @@ class DataTranslation:
                         else:
                             print("check file type: {}".format(file_name))
                         profile.append(copy.deepcopy(temp))
+        elif policy_type == "monitor":
+            temp_profile = data["profile"]
+            for i in range(len(temp_profile)):
+                # temp = {
+                #     "profile_type": "traffic_mirror",
+                #     "name": temp_profile[i]["name"],
+                #     "addrType": "",
+                #     "isShared": 0,
+                #     "is_enabled": 1,
+                #     "return_data": 1,
+                #     "op_action": "add",
+                #     "vlan_array": [],
+                #     "vsys_id": 1
+                # }
+                temp = {
+                    "profile_type": "traffic_mirror",  # 外层包含profile类型
+                    "op_action": "add",
+                    "return_data": 1,
+                    "traffic_mirror": {  # 将所有相关属性放入这个嵌套字典中
+                        "name": temp_profile[i]["name"],
+                        "isShared": 0,
+                        "addrType": "",
+                        "is_enabled": 1,
+                        "vlan_array": [],  # 根据需要添加正确的 VLAN ID
+                        "vsys_id": 1
+                    }
+                }
+                for i in range(len(temp_profile)):
+                    temp["profile_type"] = temp_profile[i]["profile_type"]
+                    temp["traffic_mirror"]["name"] = temp_profile[i]["name"]
+                    temp["traffic_mirror"]["vlan_array"].append(str(temp_profile[i]["vlan_count"]))
+                # temp["name"] = temp_profile[i]["name"]
+                # temp["profile_type"] = temp_profile[i]["profile_type"]
+                # temp["vlan_array"].append(str(temp_profile[i]["vlan_count"]))
+                # temp["vlan_array"] = temp_profile[i]["vlan_count"]
+                profile.append(copy.deepcopy(temp))
         return profile
     
 if __name__ == '__main__':

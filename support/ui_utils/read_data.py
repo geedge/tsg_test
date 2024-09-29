@@ -6,16 +6,16 @@ class ReadData:
     def __init__(self):
         #json文件和测试文件目录
         self.workdir = workdir
-        self.testdata = "testdata"
+        self.support = "support"
         self.ui_data = "ui_data"
         #profiles模块目录名称
         self.profiles_data = "profiles_data"
         self.profiles_file = "profiles"
         #objects模块目录名称
         self.objects_data = "objects_data"
-        self.ui_file = "ui_file"
-        self.objects ="objects"
-        self.import_file = "import_file"
+        self.general_ui_utils = "general_ui_utils"
+        self.preset_file ="preset_file"
+        self.object = "object"
         self.download_file = "download_file"
         #admin模块目录名称
         self.admin_data = "admin_area"
@@ -38,76 +38,76 @@ class ReadData:
         :param file_name:
         :return:
         """
-        file = os.path.join(self.workdir, self.testdata, self.ui_data, self.profiles_data, file_name)
+        file = os.path.join(self.workdir, self.support, self.ui_data, self.profiles_data, file_name)
         return file
     
     def _abs_obj_path(self,file_name):
         '''
         重组路径-objects模块路径重组
         '''
-        file = os.path.join(self.workdir,self.testdata, self.ui_data, self.objects_data, file_name)
+        file = os.path.join(self.workdir,self.support, self.ui_data, self.objects_data, file_name)
         return file
     
     def _profiles_files_dowload_path(self):
-        self.file_path = os.path.join(self.workdir, self.testdata, self.ui_file, self.profiles_file, self.download_file)
+        self.file_path = os.path.join(self.workdir, self.support, self.general_ui_utils, self.profiles_file, self.download_file)
         return self.file_path
     
     def _obj_files_path(self,file_name):
         '''
         重组路径-objects模块路径重组
         '''
-        file = os.path.join(self.workdir,self.testdata, self.ui_file, self.objects,self.import_file,file_name)
+        file = os.path.join(self.workdir,self.support, self.general_ui_utils, self.preset_file,self.object,file_name)
         return file
     
     def _obj_files_dowload_path(self):
-        self.file_path = os.path.join(self.workdir,self.testdata, self.ui_file, self.objects,self.download_file)
+        self.file_path = os.path.join(self.workdir,self.support, self.general_ui_utils, self.preset_file,self.download_file)
         return self.file_path
 
     def _admin_files_dowload_path(self):
-        self.file_path = os.path.join(self.workdir, self.testdata, self.ui_file, "admin")
+        self.file_path = os.path.join(self.workdir, self.support, self.general_ui_utils, "admin")
         return self.file_path
     
     def _admin_logs_dowload_path(self):
-        self.file_path = os.path.join(self.workdir, self.testdata, self.ui_file, "admin","admin_logs")
+        self.file_path = os.path.join(self.workdir, self.support, self.general_ui_utils, "admin","admin_logs")
         return self.file_path
     
     def _object_applications_export_path(self):
-        self.file_path = os.path.join(self.workdir, self.testdata, self.ui_file, "objects", "Applications","export_json")
+        self.file_path = os.path.join(self.workdir, self.support, self.general_ui_utils, "objects", "Applications","export_json")
         return self.file_path
 
     def _abs_admin_path(self,file_name):
         '''
         重组路径-admin模块路径重组
         '''
-        file = os.path.join(self.workdir,self.testdata, self.ui_data, self.admin_data, self.System_Appearance,file_name)
+        file = os.path.join(self.workdir,self.support, self.ui_data, self.admin_data, self.System_Appearance,file_name)
         return file
 
     def _abs_update_path(self,file_name):
         '''
         重组路径-admin模块路径重组
         '''
-        file = os.path.join(self.workdir,self.testdata, self.ui_data, self.admin_data, "System_Updates",file_name)
+        file = os.path.join(self.workdir,self.support, self.ui_data, self.admin_data, "System_Updates",file_name)
         return file
 
     def _abs_Assessment_path(self,file_name):
         '''
         重组路径-admin模块路径重组
         '''
-        file = os.path.join(self.workdir,self.testdata, self.ui_data, self.admin_data, "System_Assessment",file_name)
+        file = os.path.join(self.workdir,self.support, self.ui_data, self.admin_data, "System_Assessment",file_name)
         return file
 
     def _abs_Ip_Library_path(self, file_name):
         '''
         重组路径-admin模块路径重组
         '''
-        file = os.path.join(self.workdir, self.testdata, self.ui_data, self.admin_data, "IP_Libraries", file_name)
+        file = os.path.join(self.workdir, self.support, self.ui_data, self.admin_data, "IP_Libraries", file_name)
         return file
 
     def _abs_admin_logs_path(self, file_name):
         '''
         重组路径-admin模块路径重组
         '''
-        file = os.path.join(self.workdir, self.testdata, self.ui_data, self.admin_data, "Admin_Logs", file_name)
+        file = os.path.join(self.workdir, self.support, self.ui_data, self.admin_data, "Admin_Logs", file_name)
         return file
 
 
@@ -190,7 +190,7 @@ class ReadData:
         :param file_name:
         :return:
         """
-        file = os.path.join(self.workdir, self.testdata, self.ui_data, "admin_area", file_name)
+        file = os.path.join(self.workdir, self.support, self.ui_data, "admin_area", file_name)
         return self._from_json(file)
     
     def _manage_users_path(self, file_name):
@@ -199,7 +199,7 @@ class ReadData:
         :param file_name:
         :return:
         """
-        file = os.path.join(self.workdir, self.testdata, self.ui_data, "admin_area", "manage_users", file_name)
+        file = os.path.join(self.workdir, self.support, self.ui_data, "admin_area", "manage_users", file_name)
         return self._from_json(file)
     
     def Read_Header_logo(self,folder_path):

@@ -973,11 +973,10 @@ class SecurityGenerator:
             
             parameter["script_type"] = "api"
             
-            
-            
             # 数据转换，适配API的test_data
-            translation = DataTranslation()
-            test_data = translation.data_translation(parameter, test_data)
+            if test_data["rule_num"] == 1:
+                translation = DataTranslation()
+                test_data = translation.data_translation(parameter, test_data)
 
             self.api_name_list = get_name_list(test_data)
             # 添加测试过程中涉及的template

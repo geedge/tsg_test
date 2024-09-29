@@ -261,7 +261,9 @@ class StatisticsInstanceGenerator:
             support.ui_utils.env.teardown()
         if parameter["script_type"] == "api" or need_initialization == True:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
-
+            # Statistics Rule使用随机IP
+            #organize_config = OrganizeConfig()
+            test_data = organize_config.generate_random_ip(test_data, parameter)
             parameter["script_type"] = "api"
 
             # 数据转换，适配API的test_data

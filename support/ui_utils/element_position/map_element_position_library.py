@@ -550,6 +550,15 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_searchUser_posXpath": serviceChainingRulePage_searchUser_posXpath,
         "policyRulePage_selectUser_posXpath": serviceChainingRulePage_selectUser_posXpath,
         "policyRulePage_closeUser_posXpath": serviceChainingRulePage_closeUser_posXpath,
+        # Device imsi imei phone number
+        "policyRulePage_addConditionImsi_posXpath": serviceChainingRulePage_addCondition_imsi_posXpath,
+        "policyRulePage_addImsi_posXpath": manipulationRulePage_addImsi_posXpath,
+        "policyRulePage_searchImsi_posXpath": manipulationRulePage_searchImsi_posXpath,
+        "policyRulePage_selectImsi_posXpath": manipulationRulePage_selectImsi_posXpath,
+        "policyRulePage_closeImsi_posXpath": manipulationRulePage_closeImsi_posXpath,
+        "policyRulePage_chooseImei_posXpath": policyRulePage_chooseImei_posXpath,
+        "policyRulePage_choosePhoneNumber_posXpath": policyRulePage_choosePhoneNumber_posXpath,
+        "policyRulePage_chooseApn_posXpath": policyRulePage_chooseApn_posXpath,
         # Dest IP
         "policyRulePage_addDstIP_posXpath": serviceChainingRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": serviceChainingRulePage_searchDstIP_posXpath,
@@ -1041,6 +1050,8 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
                     "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
                     "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
+                    #add Src ip negate
+                    "policyRulePage_negateSrcIP_posXpath":monitorRulePage_negateSrcIP_posXpath,
                     #add  dst ip
                     "policyRulePage_addDstIP_posXpath": policyRulePage_addDstIP_posXpath,
                     "policyRulePage_searchDstIP_posXpath": policyRulePage_searchDstIP_posXpath,

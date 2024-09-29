@@ -362,11 +362,27 @@ class CreatePolicyRule:
             #     rules.append(rule_dict)
             #     user_region["rules"] = rules
             rule_template_dict["rule"]["user_region"] = user_region
+        elif condition["policy_type"] == "monitor":
+            user_region = {}
+            rule_template_dict["rule"]["type"] = condition["policy_type"]
+            if action == "monitor":
+                # 设置 packet_capture 部分
+                user_region["packet_capture"] = {
+                    "enable": 0  # 根据实际情况调整是否启用
+                }
+                # 设置 traffic_mirror 部分
+                user_region["traffic_mirror"] = {
+                    "enable": 1,  # 启用流量镜像
+                    "mirror_profile": create_profile_ids[0]["id"]  # 使用 create_profile_ids 中的第一个 ID 作为镜像配置
+                }
+            rule_template_dict["rule"]["user_region"] = user_region
+        
         # 添加用例名称
         if "rule_name" in condition:
             rule_template_dict["rule"]["name"] = condition["rule_name"]
         if "effective_range" in condition:
             rule_template_dict["rule"]["effective_range"] = condition["effective_range"]
+        
         # 开始创建rule
         policy_id_list_temp = self.create_rule(rule_template_dict, headers, api_host)
         if condition["policy_type"] == "pxy_manipulation" or (condition["policy_type"] == "service_chaining" and condition["targeted_traffic"] == "decrypted"):

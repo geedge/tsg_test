@@ -19,7 +19,7 @@ policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSel
 policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
 policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
-policyRulePage_negateSrcIP_posXpath = "//label[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']//span[@class='el-checkbox__input']"
+policyRulePage_negateSrcIP_posXpath = '//*[@id="policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_monitor_write_Home_App_anonymousComponent"]/span[1]'
 
 policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//input[contains(@id, 'object_ip_search')]"
@@ -610,6 +610,8 @@ serviceChainingRulePage_searchUser_posXpath = policyRulePage_searchUser_posXpath
 serviceChainingRulePage_selectUser_posXpath = policyRulePage_selectUser_posXpath
 serviceChainingRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
 
+serviceChainingRulePage_addCondition_imsi_posXpath = "//div[@class='SourceList list-box']/parent::*//div[normalize-space(text())='Device']"
+
 serviceChainingRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 serviceChainingRulePage_searchDstIP_posXpath =  "//div[@class='destinations list-box']//div[contains(@class, 'object-item-seach')]//input"
 serviceChainingRulePage_selectDstIP_posXpath = "//div[@class='destinations list-box']//span[normalize-space(text())='{replaceValue}']"
@@ -692,6 +694,7 @@ monitorRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 monitorRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 monitorRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 monitorRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
+monitorRulePage_negateSrcIP_posXpath = policyRulePage_negateSrcIP_posXpath
 monitorRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 monitorRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 monitorRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
