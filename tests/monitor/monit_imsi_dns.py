@@ -97,11 +97,13 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         if 'case_instance_generator' in locals():
+            if isinstance(case_instance_generator, CaseInstanceGenerator):
             case_instance_generator.delete_data()
         else:
             print("case_instance_generator未初始化，无法删除数据。")
         # # 清理环境并删除配置
-        # case_instance_generator.delete_data()
+        # if isinstance(case_instance_generator, CaseInstanceGenerator):
+            case_instance_generator.delete_data()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

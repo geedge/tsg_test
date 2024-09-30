@@ -77,6 +77,10 @@ main_button_import_files_button_posXpath = '//button/span[contains(text(),"Impor
 main_ObjectPage_Input_path_Import_files_posXpath = '//form/div/div/div/div[1]/input[@type="file"]'
 main_ObjectPage_Import_Mobile_Identity_files_OK_Button_posXpath = '//div[not(@style="display: none;")]/div/div/div[2]/div[2]/button[1]/span'  # 导入文件OK
 main_Import_files_error_format_posXpath = '//ul/li/div[@class="valid-column import-line"]/span'  # 导入文件格式错误提示语
+# 导入导出文件设置
+main_ObjectPage_Input_Import_files_button_posXpath = '//div/button[contains(@class,"Export")]/i'  # main导出文件按钮
+mobileIdentitiesObjectPage_Button_Import_Mobile_Identity_files_posXpath = "//button[@class='el-button btn-style el-button--default el-button--small']"  # Create Import Mobile Identity Button
+list_PageObject_Export_files_yes_button_posXpath = '//span/button[@class="el-button delComponents-ok el-button--primary el-button--small"]/span[contains(text(),"Yes")]'  # 导出文件Yes按钮
 
 
 #搜索框元素

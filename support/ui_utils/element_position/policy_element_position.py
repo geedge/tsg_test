@@ -433,6 +433,7 @@ manipulationRulePage_addCondition_srcGeography_posXpath = "//div[@class='SourceL
 manipulationRulePage_addCondition_dstcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_dstcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Geography']"
 manipulationRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
+manipulationRulePage_addCondition_qname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='QNAME']"
 manipulationRulePage_addCondition_serverPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Port']"
@@ -495,7 +496,8 @@ manipulationRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
 manipulationRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
 manipulationRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
 # Application的添加、查询、选中、关闭操作
-manipulationRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
+manipulationRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect flex']//span//div[@class='row-content-cell']"
+manipulationRulePage_searchDoHApplication_posXpath = "//div[@class='right-menu-content']//span[text()='DoH']"
 manipulationRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 manipulationRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
 manipulationRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
@@ -506,6 +508,11 @@ manipulationRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXp
 manipulationRulePage_searchServerFqdn_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
 manipulationRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
 manipulationRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
+# QNAME的添加、查询、选中、关闭操作
+manipulationRulePage_addServerQname_posXpath = policyRulePage_addQname_posXpath
+manipulationRulePage_searchQname_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
+manipulationRulePage_selectQname_posXpath = policyRulePage_selectQname_posXpath
+manipulationRulePage_closeServerQname_posXpath = policyRulePage_closeQname_posXpath
 # url的添加、查询、选中、关闭操作
 manipulationRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
 manipulationRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
@@ -544,6 +551,12 @@ manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@class
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
 manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//input[@id='undefined1']"   # redirect url 输入框 定位
+manipulationRulePage_redirectDoH_qtypeRadio_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[1]//input[@value='{replace_qtype}']/parent::*"
+manipulationRulePage_redirectDoH_atypeSelectBox_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[{replace_index}]//i[contains(@class, 'el-select__caret')]"    # repalace_index 多个时索引
+manipulationRulePage_redirectDoH_atypeSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//span[text()='{replace_atype}']"
+manipulationRulePage_redirectDoH_valueInput_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[{replace_index}]//div[@zs-label='value']//input"
+manipulationRulePage_redirectDoH_ttlInput_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[{replace_index}]//div[@zs-label='TTL']//input"
+manipulationRulePage_redirectDoH_add_posXpath = "//label[text()='Setting Details']/parent::*/div//form//i[contains(@class, 'icon-Create1')]"
 # action parameter replace
 manipulationRulePage_replace_addRegex_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='regexEnable']//div[contains(@class, 'el-switch')]"   # regex 开关定位， replace_sort替换为实际的个数
 manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='搜索区域']//i"   # search in 选择框 定位, replace_sort替换为实际的个数

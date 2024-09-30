@@ -3,7 +3,11 @@
 import copy
 import requests
 import json
-from datetime import datetime 
+from datetime import datetime
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from support.api_utils.log_in import LogIn
 
 class DeletePolicy:    
     def delele_policy_by_cfg(self, token, parameter, cfg_list):
@@ -15,6 +19,8 @@ class DeletePolicy:
             create_port_ids = cfg_list["create_port_ids"]
             create_imsi_ids = cfg_list["create_imsi_ids"]
             create_phone_number_ids = cfg_list["create_phone_number_ids"]
+            create_imei_ids = cfg_list["create_imei_ids"]
+            create_apn_ids = cfg_list["create_apn_ids"]
             create_subid_ids = cfg_list["create_subid_ids"]
             create_fqdn_ids = cfg_list["create_fqdn_ids"]
             create_url_ids = cfg_list["create_url_ids"]
@@ -85,7 +91,28 @@ class DeletePolicy:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete phone number successfully.", flush=True)
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete phone number failed.", flush=True)
-                    
+            if len(create_imei_ids) > 0:
+                delete_object_template['type'] = "mobile_identity"
+                delete_object_template['ids'] = create_imei_ids
+                delete_object_template["vsys_id"] = vsys_id
+                url = api_server + "/v1/policy/object"
+                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete imei successfully.", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete imei failed.", flush=True)
+            if len(create_apn_ids) > 0:
+                delete_object_template['type'] = "apn"
+                delete_object_template['ids'] = create_apn_ids
+                delete_object_template["vsys_id"] = vsys_id
+                url = api_server + "/v1/policy/object"
+                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete apn successfully.", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete apn failed.", flush=True)
             if len(create_subid_ids) > 0:
                 delete_object_template['type'] = "subscriberid"
                 delete_object_template['ids'] = create_subid_ids
@@ -271,6 +298,10 @@ class DeletePolicy:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
     
     def delete_policy_by_name(self, token, parameter, name_list):
+        if len(token) == 0:
+            log_in = LogIn()
+            pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+            token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         headers = {"Authorization": token}
         api_server = parameter["api_server"]
         vsys_id = parameter["vsys_id"]

@@ -3,29 +3,25 @@ import time
 import support.ui_utils.env
 from datetime import datetime
 from support.api_utils.log_in import *
-from support.general_ui_utils.dashboard.dashboard import Dashboard
-
 import random
-
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report import GenerateReport
+from support.report_update import ReportUpdate
 
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run test case: " + parameter["test_case_name"], flush=True)
         #参数初始化
-        result,exception_result = "",""
+        exception_result = ""
+        result = {}
 
         #脚本启动时间
         start_time = time.time()
 
-        # 环境初始化
-        support.ui_utils.env.initiate_selenium_request()
-        driver = support.ui_utils.env.my_driver()
-        support.ui_utils.env.setup()
-
         #测试数据
         test_data =  {
+            "type":"dashboard",
             "visualization_type": "Table",
             "data_source": "Traffic Metrics",
             "metric": {
@@ -40,55 +36,30 @@ def run(parameter):
             "dimensions": ["Device Group"],
             "order_by": "",
             "filter": "",
-            "sub_type": ""
+            "sub_type": "limit_twenty_chart"
         }
 
-        #随机visualization_type格式
-        visualization_type = test_data["visualization_type"]
-        #创建Dashboard-Chart
-        create_dashboard = Dashboard(driver)
-        create_code = create_dashboard.limit_chart(test_data,visualization_type,"single","false")
-        if create_code == 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Out of range 20 chart save hint right", flush=True)
-        else:
-            result = "Fail to create chart"
+        # 测试用例实例化
+        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
+        result = case_instance_generator.run()
 
-        # 脚本结束时间和耗时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
         return result
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,flush=True)
         return "Error: " + str(e)
     finally:
-        #清理环境
-        support.ui_utils.env.teardown()
-        file_path = parameter["root_path"] + "/report/{}_report.csv".format(parameter["script_type"])
-        if os.path.exists(file_path) and os.path.isfile(file_path):
-            if result is not None and result != "" and len(result) != 0:
-                report_data = []
-                report_data.append(parameter["test_case_name"])
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(result)
-            elif exception_result is not None and exception_result != "" and len(exception_result) != 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Fail"
-                report_data.append(result_flag)
-                report_data.append(exception_result)
-            elif result == "" and len(result) == 0 and exception_result == "" and len(exception_result) == 0:
-                report_data = []
-                report_data.append("test_case_name")
-                result_flag = "Pass"
-                report_data.append(result_flag)
-                report_data.append("")
-            new_report = GenerateReport()
-            new_report.insert_data(parameter, report_data)
+        # 清理环境并删除配置
+        if isinstance(case_instance_generator, CaseInstanceGenerator):
+            case_instance_generator.delete_data()
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
+        # 生成csv报告
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
 
 if __name__ == '__main__':
     parameter = {

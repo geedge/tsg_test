@@ -238,6 +238,33 @@ class OrganizeConfig:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
 
+    def generate_only_dstip_for_trex_replay(self,data):
+        # 遍历 traffic 字典,默认遍历的是key
+        for obj in data["traffic"]:
+            # 处理 server_start_ip 和 server_end_ip 的情况
+            if obj == "servers_start_ip":
+                dst_ip = data["traffic"][obj]
+                # 只对没有 "-" 或 "/" 的 IP 进行处理
+                if "-" not in dst_ip and "/" not in dst_ip:
+                    # 将 IP 分割为四部分
+                    src_ip_list = dst_ip.split(".")
+
+                    # 随机生成新 IP 的部分
+                    src_ip_list[0] = "6"  # 第一部分固定为 "6"
+                    src_ip_list[1] = str(random.randint(0, 255))  # 第二部分随机生成 0-255
+                    src_ip_list[2] = str(random.randint(1, 223))  # 第三部分随机生成 1-223，避免保留地址
+                    src_ip_list[3] = str(random.randint(0, 255))  # 第四部分随机生成 0-255
+
+                    # 重新组合为新的 IP 地址
+                    new_src_ip = ".".join(src_ip_list)
+                    # 将新生成的 IP 替换到 traffic 中
+                    data["traffic"][obj] = new_src_ip
+                    data["traffic"]["servers_end_ip"] = new_src_ip
+        # 输出日志，记录生成的唯一 IP
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Set unique dstip for dos rule.", flush=True)
+        print(data)
+        return data
+
     def get_policy_info(self, token, rule_id, rule_type, api_host, vsys_id):
         try:
             # 请求接口查询metric

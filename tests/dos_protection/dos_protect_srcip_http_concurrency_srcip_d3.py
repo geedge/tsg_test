@@ -64,13 +64,6 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                # {"query_field_key": "basic_attack_type", "query_value": "tcp_syn_flood"},
-                # {"query_field_key": "basic_sessions", "query_value": ""},
-                # {"query_field_key": "basic_session_rate", "query_value": ""},
-                # {"query_field_key": "basic_packets", "query_value": ""},
-                # {"query_field_key": "basic_packet_rate", "query_value": ""},
-                # {"query_field_key": "basic_bytes", "query_value": ""},
-                # {"query_field_key": "basic_bit_rate", "query_value": ""},
                 {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
                 {"query_field_key": "sessions", "query_value": ""},
                 {"query_field_key": "packets", "query_value": ""},
@@ -105,7 +98,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        case_instance_generator.delete_data()
+        if isinstance(case_instance_generator, CaseInstanceGenerator):
+            case_instance_generator.delete_data()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
