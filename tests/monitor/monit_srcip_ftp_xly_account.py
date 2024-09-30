@@ -24,7 +24,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_ftp_account_exact_match",
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
             "rule_action": "monitor",
             "rule_type": "create",
             "condition": {

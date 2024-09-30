@@ -2,6 +2,9 @@
 import time
 import os
 import sys
+
+from support.ui_utils.element_position.map_element_position_library import replace_paras
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from datetime import datetime
 from support.report_update import ReportUpdate

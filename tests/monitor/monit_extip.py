@@ -121,7 +121,7 @@ if __name__ == '__main__':
         "debug_flag" : "local",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 10,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
         "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
