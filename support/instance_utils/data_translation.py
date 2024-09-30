@@ -11,7 +11,7 @@ class DataTranslation:
             "obj_condition": [],
             "profile_condition": [],
             "application": [],
-            "do_log_1": 2
+            "do_log_1": "all"
         }
         for key in data.keys():
             if key in {"condition"}:
@@ -19,7 +19,7 @@ class DataTranslation:
                 if "application" in data["condition"].keys() and len(data["condition"]["application"]) > 0:
                     for app_index in range(len(data["condition"]["application"])):
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
-                if "ip_protocol" in data["condition"].keys() :
+                if "ip_protocol" in data["condition"].keys():
                     temp_test_data["ip_protocol"] = data["condition"]["ip_protocol"]
             if key in {"action_parameter", "profile"}:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
@@ -35,16 +35,16 @@ class DataTranslation:
         data["obj_condition_1"] = copy.deepcopy(temp_test_data["obj_condition"])
         if "effective_devices" in data.keys() and len(data["effective_devices"]) > 0:
             effective_range = {"tag_sets": [
-                                      # [
-                                      #     {
-                                      #         "value": [
-                                      #             # "center-xxg-tsgx"
-                                      #         ],
-                                      #         "tag": "data_center"
-                                      #     }
-                                      # ]
-                                  ]
-                              }
+                # [
+                #     {
+                #         "value": [
+                #             # "center-xxg-tsgx"
+                #         ],
+                #         "tag": "data_center"
+                #     }
+                # ]
+            ]
+            }
             for i in range(len(data["effective_devices"])):
                 temp = {
                     "value": [
@@ -62,7 +62,7 @@ class DataTranslation:
                 effective_range["tag_sets"].append(copy.deepcopy([temp]))
             data["effective_range"] = effective_range
         if "log_options" in data.keys():
-            if data["log_options"] == "all":    # 1
+            if data["log_options"] == "all":  # 1
                 data["do_log_1"] = 1
         # manipulation api test_data 数据补齐
         if policy_type == "pxy_manipulation":
@@ -71,7 +71,7 @@ class DataTranslation:
                     data["code_1"] = data["action_parameter"]["response_page"][0]["response_code"]
                 elif "deny_response_text" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["deny_response_text"][0]["response_code"]
-                    data["message_1"] = data["action_parameter"]["deny_response_text"][0]["response_content"]   # 匹配原有api test_data数据
+                    data["message_1"] = data["action_parameter"]["deny_response_text"][0]["response_content"]  # 匹配原有api test_data数据
                 else:
                     data["code_1"] = 404
                     data["message_1"] = "text"  # 匹配原有api test_data数据
@@ -117,7 +117,7 @@ class DataTranslation:
                 data["user_region"] = user_region
         elif policy_type == "security":
             if data["rule_action"] == "deny":
-                if len(data["condition"]["sub_action"])>0:
+                if len(data["condition"]["sub_action"]) > 0:
                     if data["condition"]["sub_action"][0]["type"] == "drop":
                         data["method_1"] = "drop"
                         if data["condition"]["sub_action"][0]["send_tcp_rst"] == False:
@@ -126,7 +126,7 @@ class DataTranslation:
                             data["send_icmp_unreachable_1"] = 1
                     elif data["condition"]["sub_action"][0]["type"] == "rate_limit":
                         data["method_1"] = "rate_limit"
-                        bps = int(float(data["condition"]["sub_action"][0]["rate_value"])*1000)
+                        bps = int(float(data["condition"]["sub_action"][0]["rate_value"]) * 1000)
                         data["bps_1"] = bps
                     elif data["condition"]["sub_action"][0]["type"] == "tamper":
                         data["method_1"] = "tamper"
@@ -144,7 +144,7 @@ class DataTranslation:
                         data["method_1"] = "alert"
                         data["code_1"] = data["condition"]["sub_action"][0]["code"]
                         if "action_parameter" not in data and data["code_1"] == 200:
-                                data["message_1"] = data["condition"]["sub_action"][0]["content"]
+                            data["message_1"] = data["condition"]["sub_action"][0]["content"]
                     elif data["condition"]["sub_action"][0]["type"] == "redirect":
                         data["method_1"] = "redirect"
                         if data["condition"]["application"][0]["name"] == "http":
@@ -201,13 +201,13 @@ class DataTranslation:
             if data["rule_action"] == "shunt":
                 data["do_log_1"] = 0
         return data
-    
+
     def push_object_data(self, data):
         object = []
         for k, v in data["condition"].items():
             if type(v) == bool:
                 continue
-            if len(v) == 0:   # 空跳过
+            if len(v) == 0:  # 空跳过
                 continue
             if k == "source_ip":
                 for i in range(len(v)):
@@ -236,7 +236,7 @@ class DataTranslation:
                         add_item_dict = {}
                         add_item_dict["ip"] = v[i]["item"][u]["item_value"]
                         add_item_dict["interval"] = "0-65535"
-                        add_item_dict["op"] =  v[i]["item"][u]["item_operation"]
+                        add_item_dict["op"] = v[i]["item"][u]["item_operation"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
@@ -535,13 +535,13 @@ class DataTranslation:
                         add_item_dict["op"] = v[i]["item"][u]["item_operation"]
                         add_item_dict["expr_type"] = "and"
                         expression = v[i]["item"][u]["item_value"]
-                        if expression.startswith("*"):     # suffix   兼容*匹配模式
+                        if expression.startswith("*"):  # suffix   兼容*匹配模式
                             tmp_expr = "{}$".format(expression[1:])
-                        elif expression.endswith("*"):     # prefix  后缀匹配
+                        elif expression.endswith("*"):  # prefix  后缀匹配
                             tmp_expr = "^{}".format(expression[:-1])
-                        elif expression.startswith("$"):    # exactly
+                        elif expression.startswith("$"):  # exactly
                             tmp_expr = "^{}$".format(expression[1:])
-                        else:       # substring ^ $ 模式保持不变
+                        else:  # substring ^ $ 模式保持不变
                             tmp_expr = expression
                         add_item_dict["expression"] = tmp_expr
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
@@ -577,13 +577,13 @@ class DataTranslation:
                         add_item_dict["op"] = v[i]["items"][u]["item_operation"]
                         add_item_dict["expr_type"] = "and"
                         expression = v[i]["items"][u]["item_value"]
-                        if expression.startswith("*"):     # suffix   兼容*匹配模式
+                        if expression.startswith("*"):  # suffix   兼容*匹配模式
                             tmp_expr = "{}$".format(expression[1:])
-                        elif expression.endswith("*"):     # prefix  后缀匹配
+                        elif expression.endswith("*"):  # prefix  后缀匹配
                             tmp_expr = "^{}".format(expression[:-1])
-                        elif expression.startswith("$"):    # exactly
+                        elif expression.startswith("$"):  # exactly
                             tmp_expr = "^{}$".format(expression[1:])
-                        else:       # substring ^ $ 模式保持不变
+                        else:  # substring ^ $ 模式保持不变
                             tmp_expr = expression
                         add_item_dict["expression"] = tmp_expr
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
@@ -618,13 +618,13 @@ class DataTranslation:
                         add_item_dict["op"] = v[i]["items"][u]["item_operation"]
                         add_item_dict["expr_type"] = "and"
                         expression = v[i]["items"][u]["item_value"]
-                        if expression.startswith("*"):     # suffix   兼容*匹配模式
+                        if expression.startswith("*"):  # suffix   兼容*匹配模式
                             tmp_expr = "{}$".format(expression[1:])
-                        elif expression.endswith("*"):     # prefix  后缀匹配
+                        elif expression.endswith("*"):  # prefix  后缀匹配
                             tmp_expr = "^{}".format(expression[:-1])
-                        elif expression.startswith("$"):    # exactly
+                        elif expression.startswith("$"):  # exactly
                             tmp_expr = "^{}$".format(expression[1:])
-                        else:       # substring ^ $ 模式保持不变
+                        else:  # substring ^ $ 模式保持不变
                             tmp_expr = expression
                         add_item_dict["expression"] = tmp_expr
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
@@ -661,13 +661,13 @@ class DataTranslation:
                         add_item_dict["op"] = v[i]["items"][u]["item_operation"]
                         add_item_dict["expr_type"] = "and"
                         expression = v[i]["items"][u]["item_value"]
-                        if expression.startswith("*"):     # suffix   兼容*匹配模式
+                        if expression.startswith("*"):  # suffix   兼容*匹配模式
                             tmp_expr = "{}$".format(expression[1:])
-                        elif expression.endswith("*"):     # prefix  后缀匹配
+                        elif expression.endswith("*"):  # prefix  后缀匹配
                             tmp_expr = "^{}".format(expression[:-1])
-                        elif expression.startswith("$"):    # exactly
+                        elif expression.startswith("$"):  # exactly
                             tmp_expr = "^{}$".format(expression[1:])
-                        else:       # substring ^ $ 模式保持不变
+                        else:  # substring ^ $ 模式保持不变
                             tmp_expr = expression
                         add_item_dict["expression"] = tmp_expr
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
@@ -765,7 +765,7 @@ class DataTranslation:
                             }
                             add_item_dict["add"] = "and"
                             expression = v[i]["item"][u]["value"][0]
-                            add_item_dict["context_name"] =  v[i]["item"][u]["item_key"]
+                            add_item_dict["context_name"] = v[i]["item"][u]["item_key"]
                             if v[i]["item"][u]["item_value"] == "HEX":
                                 add_item_dict["expr_type"] = "and"
                                 tmp_expr = "|{}|".format(expression)
@@ -972,18 +972,18 @@ class DataTranslation:
                         if v[i]["name"] == 'True':
                             boolean_id_tmps = 2
                         filter_temp = {
-                                "is_negate": 0,
-                                "attribute_name": "ATTR_SSL_{}".format(v[i]["boolean_type"]),
-                                "objects": [
-                                    {
-                                        "object_type": "boolean",
-                                        "object_ids": [boolean_id_tmps]
-                                    }
-                                ],
-                                "library_tags": [
+                            "is_negate": 0,
+                            "attribute_name": "ATTR_SSL_{}".format(v[i]["boolean_type"]),
+                            "objects": [
+                                {
+                                    "object_type": "boolean",
+                                    "object_ids": [boolean_id_tmps]
+                                }
+                            ],
+                            "library_tags": [
 
-                                ]
-                            }
+                            ]
+                        }
                         if filter_temp["attribute_name"] == "ATTR_SSL_NO SNI":
                             filter_temp["attribute_name"] = "ATTR_SSL_NO_SNI"
                         object.append(copy.deepcopy(filter_temp))
@@ -1064,14 +1064,14 @@ class DataTranslation:
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     object.append(copy.deepcopy(temp))
         return object
-    
+
     def push_profile_data(self, parameter, data):
         policy_type = data["policy_type"]
         vsys_id = parameter["vsys_id"]
         profile = []
         if policy_type == "service_chaining":
-            load_balance_dict = {"hash_int-ip": "hash-int-ip", "hash_ext-ip" : "hash-ext-ip",
-                "hash_innermost_int-ip" : "hash-innermost-int-ip", "hash_int-ip_and_ext-ip": "hash-int-ip-and-ext-ip"}
+            load_balance_dict = {"hash_int-ip": "hash-int-ip", "hash_ext-ip": "hash-ext-ip",
+                                 "hash_innermost_int-ip": "hash-innermost-int-ip", "hash_int-ip_and_ext-ip": "hash-int-ip-and-ext-ip"}
             temp_profile = data["profile"]
             for i in range(len(temp_profile)):
                 temp = {
@@ -1090,7 +1090,7 @@ class DataTranslation:
                             "profile_id": None,
                             "device_group": {
                                 "tag": "device_group",
-                                "value":"group-xxg-tsgx"
+                                "value": "group-xxg-tsgx"
                             },
                             "admin_status": 1,
                             "connectivity": {
@@ -1189,7 +1189,7 @@ class DataTranslation:
                                 "is_drilldown": 0
                             }
                             dimensions_tmp.append(copy.deepcopy(dimension_tmp))
-                            #dimension_temp_json = {
+                            # dimension_temp_json = {
                             #            "dimensions": [
                             #                all_dimensions[temp_profile[j]["charts"][m]["dimensions"][0]]
                             #            ],
@@ -1202,8 +1202,8 @@ class DataTranslation:
                             "metrics": metrics_tmp,
                             "dimensions": dimensions_tmp,
                             "order_by": "",
-                            #"order_by": temp_profile[j]["charts"][m]["order_by"],
-                            #"custom.statistics.subquery.topk": dimension_temp_json,
+                            # "order_by": temp_profile[j]["charts"][m]["order_by"],
+                            # "custom.statistics.subquery.topk": dimension_temp_json,
                             "series_limit": temp_profile[j]["charts"][m]["row_limit"],
                             "drilldown_limit": None,
                             "threshold": {
@@ -1216,18 +1216,18 @@ class DataTranslation:
                         if temp_profile[j]["charts"][m]["visualization_type"].lower() == "line":
                             order_by_tmp = ""
                         chart_tmp = {
-                                    "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
-                                    "metrics": metrics_tmp,
-                                    "dimensions": dimensions_tmp,
-                                    "order_by": order_by_tmp,
-                                    #"order_by": None,#为适配后面API Metrics的Label随机生成,此处order_by设置为None
-                                    "limit": temp_profile[j]["charts"][m]["row_limit"],
-                                    "drilldown_limit": None,
-                                    "threshold": {
-                                        "in_bytes": temp_profile[j]["charts"][m]["min_in_size"],
-                                        "out_bytes": temp_profile[j]["charts"][m]["min_out_size"]
-                                    }
-                                }
+                            "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
+                            "metrics": metrics_tmp,
+                            "dimensions": dimensions_tmp,
+                            "order_by": order_by_tmp,
+                            # "order_by": None,#为适配后面API Metrics的Label随机生成,此处order_by设置为None
+                            "limit": temp_profile[j]["charts"][m]["row_limit"],
+                            "drilldown_limit": None,
+                            "threshold": {
+                                "in_bytes": temp_profile[j]["charts"][m]["min_in_size"],
+                                "out_bytes": temp_profile[j]["charts"][m]["min_out_size"]
+                            }
+                        }
                     charts_tmp.append(chart_tmp)
 
                 temp = {
@@ -1312,12 +1312,12 @@ class DataTranslation:
                 elif k == "run_script":
                     for t in range(len(v)):
                         temp = {
-                        "profile_type": "run_script",
-                        "max_exec_time": 1000,
-                        "name": "auto_test_obj",
-                        "content_name": "run_script_insert.lua",
-                        "return_data": 1
-                       }
+                            "profile_type": "run_script",
+                            "max_exec_time": 1000,
+                            "name": "auto_test_obj",
+                            "content_name": "run_script_insert.lua",
+                            "return_data": 1
+                        }
                         temp["max_exec_time"] = int(v[t]["profile_file"]["max_exec_time"])
                         temp["name"] = v[t]["profile_file"]["name"]
                         temp["content_name"] = v[t]["profile_file"]["script"]
@@ -1349,10 +1349,11 @@ class DataTranslation:
                             print("check file type: {}".format(file_name))
                         profile.append(copy.deepcopy(temp))
         return profile
-    
+
+
 if __name__ == '__main__':
     policy_type = "dos_protection"
-    test_data =  {
+    test_data = {
         "condition": {
             "source_ip": [
                 {
@@ -1411,34 +1412,34 @@ if __name__ == '__main__':
                     ],
                 }
             ],
-        "action_parameter": {
-            "statistics_template": [
-                {
-                    "name": "stats_table_all_bytes_dim_c_ip_s_ip",
-                    "profile_type": "statistics_template",
-                    "charts": [
-                        {
-                            "chart_name": "table_all_bytes_dim_c_ip_s_ip",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "in_bytes:SUM:incoming bytes",
-                                "out_bytes:SUM:outgoing bytes",
-                                "in_bytes+out_bytes:SUM:all bytes"
-                            ],
-                            "dimensions": [
-                                "client_ip",
-                                "server_ip"
-                            ],
-                            "order_by": "all bytes",
-                            "row_limit": "100",
-                            "min_in_size": "0",
-                            "min_out_size": "0"
-                        }
-                    ]
-                }
-            ]
-        },
-        "profile": [
+            "action_parameter": {
+                "statistics_template": [
+                    {
+                        "name": "stats_table_all_bytes_dim_c_ip_s_ip",
+                        "profile_type": "statistics_template",
+                        "charts": [
+                            {
+                                "chart_name": "table_all_bytes_dim_c_ip_s_ip",
+                                "visualization_type": "Table",
+                                "metrics": [
+                                    "in_bytes:SUM:incoming bytes",
+                                    "out_bytes:SUM:outgoing bytes",
+                                    "in_bytes+out_bytes:SUM:all bytes"
+                                ],
+                                "dimensions": [
+                                    "client_ip",
+                                    "server_ip"
+                                ],
+                                "order_by": "all bytes",
+                                "row_limit": "100",
+                                "min_in_size": "0",
+                                "min_out_size": "0"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "profile": [
                 {
                     "name": "mirror_block_disabled_vxlan_activeip_bfd",
                     "profile_type": "create",

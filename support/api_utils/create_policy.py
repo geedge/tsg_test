@@ -1,6 +1,7 @@
 import copy
 import os
 import sys
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import random
 from support.api_utils.create_object import CreateObject
@@ -11,6 +12,7 @@ from support.packet_generator.workpath import workdir
 import configparser
 import os
 
+
 class CreatePolicy:
     def create_policy(self, parameter, test_data, template_path):
         # 变量初始化
@@ -20,28 +22,28 @@ class CreatePolicy:
         token = test_data["token"]
         create_ip_ids, create_subid_ids, create_port_ids, create_imsi_ids, create_phone_number_ids, create_imei_ids, create_apn_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
-        
+
         # sc需要随机ip
-        if  (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw"):
+        if (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw"):
             test_data = self.generate_random_ip(test_data, run_env, vsys_id)
-        
+
         # 指定循环次数
         is_multi_priority = test_data["is_multi_priority"]
         if is_multi_priority:
             rule_num = test_data["rule_num"]
         else:
             rule_num = 1
-            
+
         for i in range(rule_num):
             # 第i次循环，创建第i组object、profile和rule
             create_number = i + 1
-            
+
             temp_obj_condition = "obj_condition_{}".format(create_number)
             if temp_obj_condition in test_data.keys():
                 object_condition_value = test_data[temp_obj_condition]
             else:
                 object_condition_value = test_data["obj_condition"]
-            
+
             # 创建object
             create_object = CreateObject()
             object_template = template_path["object_template"]
@@ -95,7 +97,6 @@ class CreatePolicy:
                     if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining":
                         temp_profile_list.append(create_profile_ids_dict)
 
-            
             # 创建rule
             create_rule = CreatePolicyRule()
             policy_id_list = create_rule.create_rule_from_template(token, condition_ids_by_api_dict, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
@@ -111,7 +112,7 @@ class CreatePolicy:
                         for chart in policy_statistics_template_chart_info[0]["profile_info"][0]["template_info"]:
                             statistics_info = {}
                             statistics_info["rule_id"] = policy_statistics_template_chart_info[0]["policy_id"]
-                            for k, v in chart.items():    # 将chart字典中的数据，copy到statistics_info
+                            for k, v in chart.items():  # 将chart字典中的数据，copy到statistics_info
                                 statistics_info[k] = v
                             statistics_sc_info_list.append(statistics_info)
                 elif test_data["policy_type"] == "service_chaining":
@@ -124,7 +125,7 @@ class CreatePolicy:
                             sc_info = {}
                             sc_info["rule_id"] = policy_sc_sff_sf_info[0]["policy_id"]
                             sc_info["targeted_traffic"] = test_data["targeted_traffic"]
-                            temp_application = 'application_'+str(create_number)
+                            temp_application = 'application_' + str(create_number)
                             if temp_application in test_data.keys():
                                 sc_info["application"] = test_data[temp_application]
                             else:
@@ -145,7 +146,6 @@ class CreatePolicy:
             if len(policy_id_list) > 0:
                 create_policies_ids.extend(policy_id_list)
 
-
         cfg_list = {}
         cfg_list["create_ip_ids"] = create_ip_ids
         cfg_list["create_subid_ids"] = create_subid_ids
@@ -165,9 +165,9 @@ class CreatePolicy:
         cfg_list["create_policies_ids"] = create_policies_ids
         cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
         cfg_list["timeout_result"] = timeout_result
-        
+
         return cfg_list
-    
+
     def generate_random_ip(self, config, run_env, vsys_id):
         # statistics中将ip改为随机
         temp_obj_condition = "obj_condition_1"
@@ -183,12 +183,12 @@ class CreatePolicy:
                         src_ip = "10.64.77.11"
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
-                        if str(vsys_id) == "1":   #根据vsys id，确认IP范围
+                        if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
                             src_ip_list[2] = str(random.randint(1, 100))
-                        elif str(vsys_id) == "6":   #根据vsys id，确认IP范围
+                        elif str(vsys_id) == "6":  # 根据vsys id，确认IP范围
                             src_ip_list[2] = str(random.randint(200, 222))
-                        elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(192, 223))  
+                        elif str(vsys_id) == "4":  # 根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(192, 223))
                         else:
                             src_ip_list[2] = str(random.randint(224, 250))
                         src_ip_list[3] = str(random.randint(100, 250))
@@ -208,8 +208,8 @@ class CreatePolicy:
                             ip_list_1[2] = str(random.randint(1, 100))
                         elif str(vsys_id) == "6":
                             ip_list_1[2] = str(random.randint(200, 222))
-                        elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(192, 223))    
+                        elif str(vsys_id) == "4":  # 根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(192, 223))
                         else:
                             ip_list_1[2] = str(random.randint(224, 250))
                         ip_list_1[3] = str(random.randint(1, 50))
@@ -235,6 +235,7 @@ class CreatePolicy:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
         return config
 
+
 def generate_testdata(parameter, test_data):
     # statistics中将ip改为随机
     config = test_data
@@ -255,12 +256,12 @@ def generate_testdata(parameter, test_data):
                     src_ip = "10.64.77.11"
                 if "-" not in src_ip and "/" not in src_ip:
                     src_ip_list = src_ip.split(".")
-                    if str(vsys_id) == "1":   #根据vsys id，确认IP范围
+                    if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
                         if obj["attribute_name"] == "ATTR_SOURCE_IP":
                             src_ip_list[2] = str(random.randint(80, 89))
                         else:
                             src_ip_list[2] = str(random.randint(90, 99))
-                    elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
+                    elif str(vsys_id) == "4":  # 根据vsys id，确认IP范围
                         if obj["attribute_name"] == "ATTR_SOURCE_IP":
                             src_ip_list[2] = str(random.randint(200, 209))
                         else:
@@ -338,11 +339,12 @@ def generate_testdata(parameter, test_data):
                     pass
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
     test_data = config
-    #print(test_data)
+    # print(test_data)
     return test_data
 
+
 def replace_paras_api(parameter):
-    #print(workdir)
+    # print(workdir)
     conf_path = os.path.join(workdir, "configuration_file.ini")
     parse = configparser.ConfigParser()
     parse.read(conf_path, encoding="utf-8")
@@ -355,10 +357,11 @@ def replace_paras_api(parameter):
     parameter['test_phone_number'] = parse.get("network_address", "phone_number")
     parameter["vsys_id"] = parse.get("vsys", "for_traffic_verification")
     parameter["is_log"] = parse.get("is_log", "value")
-    #project_path = parse.get("root_path", "path")
-    #parameter["root_path"] = project_path
-    #print(parameter)
+    # project_path = parse.get("root_path", "path")
+    # parameter["root_path"] = project_path
+    # print(parameter)
     return parameter
+
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

@@ -5,7 +5,7 @@
         "type": "security",
         "action": "allow",
         "user_tags": "",
-        "do_log": 1,
+        "log_option": "metadata",
         "effective_range": {},
         "user_region": {},
         "source": [],

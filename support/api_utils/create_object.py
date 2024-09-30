@@ -3,12 +3,14 @@
 import copy
 import os
 import sys
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
 import json
 from support.api_utils.delete_policy import *
 from datetime import datetime
+
 
 class CreateObject:
     def __init__(self):
@@ -72,7 +74,7 @@ class CreateObject:
                     else:
                         for obj_dict in objects_list:
                             filter_list.append(obj_dict)
-                    
+
                     # 删除创建的object，且删除次数等于repeat_time-1，保留最后一次的object用于验证功能
                     if repeat_time > 1:
                         time.sleep(60)
@@ -129,7 +131,7 @@ class CreateObject:
         condition_ids_by_api_dict["http_signature_ids"] = self.http_signature_ids
         condition_ids_by_api_dict["geo_name_ids"] = self.geo_name_ids
         return timeout_result, condition_ids_by_api_dict
-    
+
     # 对多个objects的处理（处理之后要调用create_object）
     def organize_objects_data(self, obj_template_dict, condition, headers, parameter, index, repeat_time):
         vsys_id = parameter["vsys_id"]
@@ -139,9 +141,9 @@ class CreateObject:
         if repeat_time > 1:
             is_repeat = 1
             is_import = 1
-        
+
         attribute_name = condition['attribute_name']
-        if "objects" in condition.keys():# 如果是SSL相关True False相关属性则不进行新增操作,直接使用数据
+        if "objects" in condition.keys():  # 如果是SSL相关True False相关属性则不进行新增操作,直接使用数据
             object_temp_list = []
             object_temp_list.append(copy.deepcopy(condition))
             timeout_result = True
@@ -175,22 +177,23 @@ class CreateObject:
                     for item in add_item_list:
                         object_file = item["keyword_array"][0]
                         file_name = object_file.split("/")[-1]
-                        obj_template_dict["file_dry"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
-                        obj_template_dict["file_import"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
+                        obj_template_dict["file_dry"] = {"file": (file_name, open(object_file, 'rb'), "text/plain")}
+                        obj_template_dict["file_import"] = {"file": (file_name, open(object_file, 'rb'), "text/plain")}
                 object_ids_temp_list, timeout_result = self.create_or_import_object(type_op, obj_template_dict, headers, parameter, is_repeat)
 
             objects_list = []
             object_temp_list = []
             if attribute_name != '' and len(object_ids_temp_list) != 0:
-                objects_list = self.obj_ids_to_policy_obj_list(object_ids_temp_list, attribute_name, is_negate)
+                objects_list = self.obj_ids_to_policy_obj_dict(object_ids_temp_list, attribute_name, is_negate)
             if len(objects_list) > 0 and is_repeat == 0:
                 object_temp_list.append(objects_list)
-            elif len(objects_list) > 0 and is_repeat == 1 and index > repeat_time-1:
+            elif len(objects_list) > 0 and is_repeat == 1 and index > repeat_time - 1:
                 object_temp_list.append(objects_list)
-        
-        return object_temp_list, timeout_result 
-    
-    # 组织创建通过items进行新增的object的数据
+
+        return object_temp_list, timeout_result
+
+        # 组织创建通过items进行新增的object的数据
+
     def combine_object_data(self, obj_type, add_item_list, is_repeat):
         items = []
         object_dict = {}
@@ -229,7 +232,7 @@ class CreateObject:
                     tmp_item["expr_type"] = item["expr_type"]
                     tmp_item["expression"] = item["expression"]
                     items.append(copy.deepcopy(tmp_item))
-            elif obj_type in["fqdn", "subscriberid", "keywords", "url", "account", "mobile_identity", "apn"]:
+            elif obj_type in ["fqdn", "subscriberid", "keywords", "url", "account", "mobile_identity", "apn"]:
                 for item in add_item_list:
                     tmp_item = {
                         "op": "add",
@@ -276,7 +279,7 @@ class CreateObject:
                         addr_type = item['addr_type']
                     if 'ip_address' in item:
                         ip_address = item['ip_address']
-                    geo_ip_address_dict = dict(addr_type = addr_type, ip_address = ip_address, op = 'add')    
+                    geo_ip_address_dict = dict(addr_type=addr_type, ip_address=ip_address, op='add')
                     geo_ip_address.append(geo_ip_address_dict)
                     geolocation['ip_addresses'] = geo_ip_address
             else:
@@ -284,32 +287,32 @@ class CreateObject:
                     print("todo...{}".format(item))
         elif is_repeat == 1 and obj_type != 'ip':
             for item in add_item_list:
-                    patterns = []
-                    object_file = item["keyword_array"][0]
-                    with open(object_file, 'r', encoding="utf-8-sig") as file:
-                        lines = file.readlines()
-                        for line in lines:
-                            keywords = line.strip()
-                            patterns = []
-                            object_dict = dict(keywords=keywords)
-                            patterns.append(object_dict)
-                            patterns = dict(patterns=patterns)
-                            string = dict(string=patterns, op='add')
-                            items.append(string)
+                patterns = []
+                object_file = item["keyword_array"][0]
+                with open(object_file, 'r', encoding="utf-8-sig") as file:
+                    lines = file.readlines()
+                    for line in lines:
+                        keywords = line.strip()
+                        patterns = []
+                        object_dict = dict(keywords=keywords)
+                        patterns.append(object_dict)
+                        patterns = dict(patterns=patterns)
+                        string = dict(string=patterns, op='add')
+                        items.append(string)
         elif is_repeat == 1 and obj_type == 'ip':
             for item in add_item_list:
-                    # patterns = []
-                    object_file = item["keyword_array"][0]
-                    with open(object_file, 'r', encoding="utf-8-sig") as file:
-                        lines = file.readlines()
-                        for line in lines:
-                            ip = line.strip()
-                            # patterns = []
-                            object_dict['ip_address'] = ip
-                            object_dict = dict(ip=object_dict, op='add')
-                            items.append(object_dict)
+                # patterns = []
+                object_file = item["keyword_array"][0]
+                with open(object_file, 'r', encoding="utf-8-sig") as file:
+                    lines = file.readlines()
+                    for line in lines:
+                        ip = line.strip()
+                        # patterns = []
+                        object_dict['ip_address'] = ip
+                        object_dict = dict(ip=object_dict, op='add')
+                        items.append(object_dict)
         return items
-           
+
     def create_or_import_object(self, type_op, obj_template_dict, headers, parameter, is_repeat):
         try:
             api_host = parameter["api_server"]
@@ -364,14 +367,14 @@ class CreateObject:
 
             response_dict = json.loads(response.text)
             object_ids, geo_name_id_list = self.get_object_ids(response_dict, obj_type)
-            
+
             # 是否可取消，待验证？？
             if is_repeat == 1 and obj_type != 'ip':
                 self.fqdn_ids = []
                 self.url_ids = []
             elif is_repeat == 1 and obj_type == 'ip':
                 self.ip_ids = []
-                
+
             obj_type = obj_template_dict['object']['type']
             if "sub_type" in obj_template_dict['object']:
                 object_sub_type = obj_template_dict['object']['sub_type']
@@ -406,11 +409,11 @@ class CreateObject:
             elif obj_type == 'geolocation':
                 self.geo_ids = self.handle_ids(object_ids, self.geo_ids)
                 self.geo_name_ids = self.handle_ids(geo_name_id_list, self.geo_name_ids)
-                
+
             return object_ids, timeout_result
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
-    
+
     # 获取返回结果中的objectsid
     def get_object_ids(self, response_dict, obj_type):
         temp_list = []
@@ -423,25 +426,24 @@ class CreateObject:
             object_id = response_dict['data']['object']['uuid']
         temp_list.append(object_id)
         return temp_list, temp_geo_name_id_list
-    
+
     # 组织在策略中使用的source,filter等数据
-    def obj_ids_to_policy_obj_list(self, object_ids, attribute_name, is_negate):
-        temp_list = []
+    def obj_ids_to_policy_obj_dict(self, object_ids, attribute_name, is_negate):
+        # temp_list = []
         temp_dict = {
-            "negate_option":False,
-            "attribute_name":"ATTR_SUBSCRIBER_ID",
-            "objects":[
+            "negate_option": False,
+            "attribute_name": "ATTR_SUBSCRIBER_ID",
+            "objects": [
                 {
-                    "object_uuids":[
-                        #"157"
+                    "object_uuids": [
+                        # "157"
                     ]
                 }
             ]
         }
         temp_dict["attribute_name"] = attribute_name
         temp_dict["objects"][0]["object_uuids"] = object_ids
-        temp_list.append(temp_dict)
-        return temp_list
+        return temp_dict
 
     def handle_ids(self, object_ids, target_ids):
         if len(target_ids) != 0 and len(object_ids) != 0:
@@ -450,6 +452,7 @@ class CreateObject:
         elif len(target_ids) == 0 and len(object_ids) != 0:
             target_ids = object_ids
         return target_ids
+
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

@@ -183,9 +183,9 @@ class CreatePolicyRule:
         if len(app_name) > 0:
             app_group_id_list = get_application_id.get_group_id(str(app_name), api_host)
             objects_list = []
-            object_ids = dict(object_ids=app_group_id_list)
+            object_ids = dict(object_uuids=app_group_id_list)
             objects_list.append(object_ids)
-            application_dict = dict(objects=objects_list, attribute_name='ATTR_APP_ID', is_negate=0)
+            application_dict = dict(objects=objects_list, attribute_name='ATTR_APP_ID', negate_option=False)
             rule_template_dict['rule']['application'] = application_dict
         else:
             rule_template_dict['rule']['application'] = None
@@ -207,9 +207,9 @@ class CreatePolicyRule:
 
         temp_do_log = 'do_log_' + str(create_number)
         if temp_do_log in condition.keys():
-            rule_template_dict['rule']['do_log'] = condition[temp_do_log]
+            rule_template_dict['rule']['log_option'] = condition[temp_do_log]
         else:
-            rule_template_dict['rule']['do_log'] = condition['do_log']
+            rule_template_dict['rule']['log_option'] = condition['do_log']
 
         # 添加sc逻辑
         if condition["policy_type"] == "service_chaining":
@@ -420,15 +420,15 @@ class CreatePolicyRule:
     def create_rule(self, rule_template_dict, headers, api_host, vsys_id):
         try:
             rule_type = rule_template_dict["rule"]["type"]
-            url = api_host + "/v1/vsys/policy/rule/{}".format(vsys_id, rule_type)
+            url = api_host + "/v1/vsys{}/policy/rule/{}".format(vsys_id, rule_type)
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             if response.status_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(return_json_data['data']['rule']['type']), flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(return_json_data['data']['type']), flush=True)
             else:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule failed.".format(return_json_data['data']['rule']['type']), flush=True)
-            policy_type = return_json_data['data']['rule']['type']
-            policy_id = return_json_data['data']['rule']['uuid']
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule failed.".format(return_json_data['data']['type']), flush=True)
+            policy_type = return_json_data['data']['type']
+            policy_id = return_json_data['data']['uuid']
             policy_id_dict_temp = {}
             policy_id_dict_temp[policy_type] = policy_id
             policy_id_list_temp = []
