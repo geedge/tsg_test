@@ -750,6 +750,12 @@ class CreateRule:
                         temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source IP")
                     elif test_data["threshold"]["rate_threshold"]["group_by"] == "source_asn":
                         temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source ASN")
+                    elif test_data["threshold"]["rate_threshold"]["group_by"] == "source_country":
+                        temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source Country")
+                    elif test_data["threshold"]["rate_threshold"]["group_by"] == "server_fqdn":
+                        temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Server FQDN")
+                    elif test_data["threshold"]["rate_threshold"]["group_by"] == "source_ip_and_destination_ip":
+                        temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source IP and Destination IP")
                     self.driver.find_element(By.XPATH, temp_group_by_element_position).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_requestPerPeriod_posXpath"]).send_keys(test_data["threshold"]["rate_threshold"]["request_per_period"])
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_countingPeriod_dropDownBox_posXpath"]).click()
@@ -760,6 +766,12 @@ class CreateRule:
                         temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source IP")
                     elif test_data["threshold"]["concurrency_threshold"]["group_by"] == "source_asn":
                         temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source ASN")
+                    elif test_data["threshold"]["rate_threshold"]["group_by"] == "source_country":
+                        temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source Country")
+                    elif test_data["threshold"]["rate_threshold"]["group_by"] == "server_fqdn":
+                        temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Server FQDN")
+                    elif test_data["threshold"]["rate_threshold"]["group_by"] == "source_ip_and_destination_ip":
+                        temp_group_by_element_position = create_element_position["policyRulePage_groupBy_select_posXpath"].format(replaceValue="Source IP and Destination IP")
                     self.driver.find_element(By.XPATH, temp_group_by_element_position).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_concurrentSsessions_posXpath"]).send_keys(test_data["threshold"]["concurrency_threshold"]["concurrent_sessions"])
                 #self.driver.find_element(By.ID, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
