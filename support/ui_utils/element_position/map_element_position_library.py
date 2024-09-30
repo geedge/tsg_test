@@ -743,6 +743,12 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchServerFqdn_posXpath": manipulationRulePage_searchServerFqdn_posXpath,
         "policyRulePage_selectServerFqdn_posXpath": manipulationRulePage_selectServerFqdn_posXpath,
         "policyRulePage_closeServerFqdn_posXpath": manipulationRulePage_closeServerFqdn_posXpath,
+        # Qname
+        "policyRulePage_addConditionQname_posXpath": manipulationRulePage_addCondition_qname_posXpath,
+        "policyRulePage_addQname_posXpath": manipulationRulePage_addServerQname_posXpath,
+        "policyRulePage_searchQname_posXpath": manipulationRulePage_searchQname_posXpath,
+        "policyRulePage_selectQname_posXpath": manipulationRulePage_selectQname_posXpath,
+        "policyRulePage_closeQname_posXpath": manipulationRulePage_closeServerQname_posXpath,
         # url
         "policyRulePage_addConditionUrl_posXpath": manipulationRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": manipulationRulePage_addUrl_posXpath,

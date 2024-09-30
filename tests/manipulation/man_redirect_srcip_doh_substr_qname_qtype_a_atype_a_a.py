@@ -52,15 +52,15 @@ def run(parameter):
                 ],
                 "protocol_filed": [
                     {
-                        "name": "manipulation_url",
-                        "object_type": "url",
+                        "name": "manipulation_qname",
+                        "object_type": "fqdn",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "url",
+                                "item_type": "qname",
                                 "item_value": "baidu"
                             }
                         ],
@@ -81,9 +81,11 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
-                "protocol": "ssl",
-                "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
+                "protocol": "doh",
+                "type": "client",
+                "domain": "www.baidu.com",  # ipv6.google.com
+                "query_type": "A",  # AAAA
+                "doh_server_url": "https://dns9.quad9.net"
             },
             "token": ""
         }

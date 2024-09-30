@@ -596,17 +596,17 @@ class CreateRule:
                                 a_type = doh_parameter_list[i]["a_type"]
                                 doh_value = doh_parameter_list[i]["doh_value"]
                                 doh_ttl = doh_parameter_list[i]["doh_ttl"]
-                                if i != 0:
-                                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_atypeSelectBox_posXpath"]).click()
-                                if i == 0:
+                                replace_index = i + 2
+                                if i != 0:    # 非第一次遍历点击
+                                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_add_posXpath"]).click()
+                                if i == 0:   # 只有第一次遍历点击
                                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_qtypeRadio_posXpath"].format(replace_qtype=q_type)).click()
-                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_atypeSelectBox_posXpath"]).click()
-                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_atypeSelectDropItem_posXpath"].format(replace_atype=a_type)).click()
-                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_valueInput_posXpath"]).clear()
-                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_valueInput_posXpath"], find_after_wait_time=0.5).send_keys(doh_value)
-                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_ttlInput_posXpath"]).clear()
-                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_add_posXpath"], find_after_wait_time=0.5).send_keys(doh_ttl)
-
+                                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_atypeSelectBox_posXpath"].format(replace_index=replace_index)).click()
+                                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_atypeSelectDropItem_posXpath"].format(replace_atype=a_type)).click()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_valueInput_posXpath"].format(replace_index=replace_index)).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_valueInput_posXpath"].format(replace_index=replace_index), find_after_wait_time=0.5).send_keys(doh_value)
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_ttlInput_posXpath"].format(replace_index=replace_index)).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_ttlInput_posXpath"].format(replace_index=replace_index), find_after_wait_time=0.5).send_keys(doh_ttl)
 
                     elif test_data["rule_action"] == "replace":
                         # 遍历，是否含有多个search in

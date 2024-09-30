@@ -39,9 +39,11 @@ if __name__ == "__main__":
             "type": "client",
             "domain": "www.baidu.com", # ipv6.google.com
             "query_type": "A", # AAAA
-            "doh_server_url": "https://dns9.quad9.net"
+            #"doh_server_url": "https://dns9.quad9.net"
+            "doh_server_url": "https://dns.quad9.net"
         }
     }
     traffic_data = test_data["traffic"]
     doh_player = DohPlayer()
-    doh_player.send_doh_query(traffic_data, "ui", False)
+    results_doh = doh_player.send_doh_query(traffic_data, "ui", False)
+    print(results_doh)
