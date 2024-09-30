@@ -117,15 +117,14 @@ class GetLog:
                         exclude_fields = {
                             "packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts",
                             "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
-                            "attack_type", "sessions", "session_rate", "packets", "packet_rate",
-                            "bytes", "bit_rate", "basic_attack_type", "basic_sessions",
-                            "basic_session_rate", "basic_packets", "basic_packet_rate",
-                            "basic_bytes", "basic_bit_rate"
+                            "attack_type", "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
+                            "basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate",
+                            "rule_id","conditions"
                         }
                         dos_verify_fields = {
                             "attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate",
-                            "basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets",
-                            "basic_packet_rate", "basic_bytes", "basic_bit_rate"
+                            "basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets","basic_packet_rate", "basic_bytes", "basic_bit_rate",
+                            "rule_id","conditions","source_ip_list","destination_ip"
                         }
                         # 优化后的条件判断
                         if query_field_key in log and query_field_key not in exclude_fields and log[query_field_key] == query_value:
@@ -286,7 +285,7 @@ class GetLog:
                             else:
                                 temp_log_result_list.append(False)
                         elif query_field_key in dos_verify_fields:
-                            self.first_dos_classification(log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output)
+                            self.first_dos_classification(log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id)
                         else:
                             temp_log_result_list.append(False)
                     if False not in temp_log_result_list and len(log_list) > 0:
@@ -311,7 +310,7 @@ class GetLog:
         return log_result
 
 
-    def first_dos_classification(self,log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output):
+    def first_dos_classification(self,log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id):
         #1.Get the time difference to calculate the session_rate、bit_rate and packet_rate
         start_time_value = log["start_time"]
         end_time_value = log["end_time"]
@@ -331,7 +330,7 @@ class GetLog:
         # For mitigation none,one session with full packets.
 
         #To verify the log query param
-        self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets, test_data, time,output)
+        self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets, test_data, time,policy_id)
 
     def get_session_count_in_session_records(self, token,  api_host, start_time, end_time, v_id, test_data):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
@@ -378,7 +377,7 @@ class GetLog:
         return dos_deny_sessions_count,total_packets
 
 
-    def validate_dos_values(self, log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,totapl_packets ,test_data, time,output):
+    def validate_dos_values(self, log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,totapl_packets ,test_data, time,policy_id):
         #三种情况：
         #① deny:src ip+application
         #② deny:src ip
@@ -439,6 +438,30 @@ class GetLog:
                 temp_log_result_list.append(False)
         elif query_field_key in ["basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate"]:
             temp_log_result_list.append(True)
+        elif query_field_key == "rule_id":
+            if policy_id == log[query_field_key]:
+                temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+            else:
+                temp_log_result_list.append(False)
+        elif query_field_key == "conditions":
+            if f"DoS Protection [{policy_id}]" == log [query_field_key]:
+                temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+            else:
+                temp_log_result_list.append(False)
+        elif query_field_key == "source_ip_list" :
+            if test_data["traffic"]["clients_start_ip"] == log [query_field_key]:
+                temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+            else:
+                temp_log_result_list.append(False)
+        elif query_field_key == "destination_ip":
+            if test_data["traffic"]["servers_start_ip"] == log[query_field_key]:
+                temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+            else:
+                temp_log_result_list.append(False)
         else:
             temp_log_result_list.append(False)
 
