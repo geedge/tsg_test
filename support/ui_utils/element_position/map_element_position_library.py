@@ -1536,8 +1536,10 @@ def get_name_list(test_data):
     tmp_name_dict = {}
     # 添加策略的
     tmp_name_dict["type"] = test_data["policy_type"]
-    tmp_name_dict["name"] = test_data["rule_name"]
-    name_list.append(copy.deepcopy(tmp_name_dict))
+    if "rule_name" in test_data:
+        tmp_name_dict["name"] = test_data["rule_name"]
+        name_list.append(copy.deepcopy(tmp_name_dict))
+    
     # 停止收集新建的object、profile名称
     """
     if "condition" in test_data.keys() and len(test_data["condition"]) != 0:
