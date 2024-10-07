@@ -99,9 +99,9 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "closed_in_sessions:RATE:new in sessions",
-                            "closed_out_sessions:RATE:new out sessions",
-                            "closed_in_sessions+new_out_sessions:RATE:sessions"
+                            "closed_in_sessions:RATE:Closed Incoming Sessions",
+                            "closed_out_sessions:RATE:Closed Outgoing Sessions",
+                            "closed_in_sessions+closed_out_sessions:RATE:sessions"
                           ],
                           "dimensions": [],
                           "order_by": "",
