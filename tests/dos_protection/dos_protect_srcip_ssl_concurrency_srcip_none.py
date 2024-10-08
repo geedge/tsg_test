@@ -66,13 +66,20 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                {"query_field_key": "attack_type", "query_value": ""},
+                {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
                 {"query_field_key": "sessions", "query_value": ""},
                 {"query_field_key": "packets", "query_value": ""},
                 {"query_field_key": "bytes", "query_value": ""},
                 {"query_field_key": "bit_rate", "query_value": ""},
                 {"query_field_key": "packet_rate", "query_value": ""},
                 {"query_field_key": "session_rate", "query_value": ""},
+
+                {"query_field_key": "rule_id", "query_value": ""},
+                {"query_field_key": "conditions", "query_value": ""},
+                {"query_field_key": "source_ip_list", "query_value": ""},
+                {"query_field_key": "source_country_list", "query_value": "Private Network"},
+                {"query_field_key": "destination_ip", "query_value": ""},
+                {"query_field_key": "destination_country", "query_value": "US"},
             ],
             "traffic": {
                 "protocol": "",

@@ -47,7 +47,7 @@ class DosProtectionInstanceGenerator:
         # 使用trex的随机源ip
         if test_data["traffic"]["type"] == "trex":
             organize_config = OrganizeConfig()
-            test_data = organize_config.generate_random_ip(test_data, parameter)
+            test_data = organize_config.generate_random_dos_src_ip(test_data,parameter)
             test_data = organize_config.generate_only_dstip_for_trex_replay(test_data)
 
         # 无需创建的condition

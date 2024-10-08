@@ -23,7 +23,7 @@ class AnalysisResult:
                 failure_reason = fail_reason_template + failure_reason
                 # 把最后一个逗号改成句号
                 failure_reason = failure_reason[:failure_reason.rindex(',')] + '.' + failure_reason[failure_reason.rindex(',')+1:]
-        elif condition["policy_type"] == "security" or condition["policy_type"] == "monitor" or condition["policy_type"] == "pxy_manipulation":
+        elif condition["policy_type"] == "security" or condition["policy_type"] == "monitor" or condition["policy_type"] == "pxy_manipulation" or condition["policy_type"] == "dos_protection":
             if cmd_result == False:
                 failure_reason = failure_reason + "the contents returned by the command do not contain the expected value, "
             if metric_result == False:
