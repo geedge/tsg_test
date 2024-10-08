@@ -52,7 +52,7 @@ def run(parameter):
                 "type": "concurrency",
                 "concurrency_threshold": {
                     "group_by": "source_ip",
-                    "concurrent_sessions": 1
+                    "concurrent_sessions": 2
                 }
             },
             "mitigation": {
