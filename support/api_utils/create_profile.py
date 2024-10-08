@@ -420,6 +420,7 @@ class CreateProfile:
             "Server Domain": "server_domain",
             "Application": "app",
             "Application Category": "app_category",
+            "Device Group": "device_group",
             "Client-to-Server TTL": "c2s_ttl",
             "Server-to-Client TTL": "s2c_ttl",
             "Client-to-Server Link ID": "c2s_link_id",
