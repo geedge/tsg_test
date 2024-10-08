@@ -6,6 +6,7 @@ from support.instance_utils.security_instance_generator import SecurityGenerator
 from support.instance_utils.service_chaining_instance_generator import ServiceChainingInstanceGenerator
 from support.instance_utils.monintor_instance_generator import MonitorInstanceGenerator
 from support.instance_utils.dashboard_instance_generator import DashbboardInstanceGenerator
+from support.instance_utils.intercept_instance_generator import InterceptInstanceGenerator
 
 class CaseInstanceGenerator:
     def __init__(self, test_data, parameter):
@@ -26,7 +27,7 @@ class CaseInstanceGenerator:
         elif "policy_type" in test_data.keys() and test_data["policy_type"] == "dos_protection":
             result = self._run_dos_protection(test_data, parameter)
         elif "policy_type" in test_data.keys() and test_data["policy_type"] == "pxy_intercept":
-            print("todo")
+            result = self._run_intercept(test_data, parameter)
         elif "policy_type" in test_data.keys() and test_data["policy_type"] == "pxy_manipulation":
             result = self._run_manipulation(test_data, parameter)
         elif "policy_type" in test_data.keys() and test_data["policy_type"] == "shaping":
@@ -62,7 +63,9 @@ class CaseInstanceGenerator:
         return result
 
     def _run_intercept(self, test_data, parameter):
-        print("todo")
+        self.intercept = InterceptInstanceGenerator(test_data, parameter)
+        result = self.intercept.run()
+        return result
 
     def _run_manipulation(self, test_data, parameter):
         self.manipulation = ManipulationInstanceGenerator(test_data, parameter)
@@ -97,7 +100,7 @@ class CaseInstanceGenerator:
         elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "dos_protection":
             self.dos_protection.delete_data()
         elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "pxy_intercept":
-            print("todo")
+            self.intercept.delete_data()
         elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "pxy_manipulation":
             self.manipulation.delete_data()
         elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "shaping":

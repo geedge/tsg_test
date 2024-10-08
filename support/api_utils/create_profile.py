@@ -135,20 +135,20 @@ class CreateProfile:
                 "source_columns": "session_id",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Incoming Packet Length": {
+            "Incoming Packet Length Distribution": {
                 "source_columns": "in_pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "Outgoing Packet Length": {
+            "Outgoing Packet Length Distribution": {
                 "source_columns": "out_pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},]
             },
-            "Packet Length": {
+            "Packet Length Distribution": {
                 "source_columns": "pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
@@ -420,6 +420,7 @@ class CreateProfile:
             "Server Domain": "server_domain",
             "Application": "app",
             "Application Category": "app_category",
+            "Device Group": "device_group",
             "Client-to-Server TTL": "c2s_ttl",
             "Server-to-Client TTL": "s2c_ttl",
             "Client-to-Server Link ID": "c2s_link_id",

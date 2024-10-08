@@ -10,7 +10,7 @@ import traceback
 from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
-#VPN Client Behavior Analysis
+
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
@@ -38,6 +38,7 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
