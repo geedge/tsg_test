@@ -119,7 +119,7 @@ def run(parameter):
                     "m": 1,
                     "d": 1,
                     "yaml_name": "test",
-                    "pcap_name": "rdp"
+                    "pcap_name": "test_https"
                 },
             "expected_return":"",
             "token": ""

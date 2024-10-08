@@ -119,7 +119,7 @@ def run(parameter):
                     "m": 1,
                     "d": 1,
                     "yaml_name": "test",
-                    "pcap_name": "rdp"
+                    "pcap_name": "test_https"
                 },
             "expected_return":"",
             "token": ""
@@ -160,7 +160,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",
-        "vsys_id": 5,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",

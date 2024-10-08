@@ -20,6 +20,22 @@ class CreateServiceFunctionForwarderProfile:
         self.sc_info["application"] = []
         if len(test_data["condition"]["application"]) > 0:
             self.sc_info["application"].append(test_data["condition"]["application"][0]["name"]) 
+        negate_list = []
+        if "condition" in test_data.keys():
+            for con_key , con_value in test_data["condition"].items():
+                if con_key == "ip_protocol" or con_key == "sub_action_override":
+                    continue
+                else:
+                    if len(con_value) > 0:
+                        for i in range(len(con_value)):
+                            if "negate" in con_value[i].keys() and con_value[i]["negate"] == True:
+                                negate_list.append(1)
+                            else:
+                                negate_list.append(0)
+            if 1 in negate_list:
+                self.sc_info["is_negate"] = 1
+            else:
+                self.sc_info["is_negate"] = 0              
         for j in range(len(test_data["profile"])):
             sff_profile_data = test_data["profile"][j]
             page_jump_element_position = sff_profile_element_position["page_jump"]
