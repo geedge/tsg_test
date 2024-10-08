@@ -1,9 +1,9 @@
 import os
 import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -98,7 +98,7 @@ def run(parameter):
     finally:
         if 'case_instance_generator' in locals():
             if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+                case_instance_generator.delete_data()
         else:
             print("case_instance_generator未初始化，无法删除数据。")
         # # 清理环境并删除配置

@@ -783,6 +783,72 @@ class DataTranslation:
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
+                        elif v[i]["item"][0]["item_type"] == "mail_content":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_MAIL_CONTENT",
+                                "object_type": "keywords",
+                                "object_sub_type": "keywords",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [],
+                                    }
+                                ]
+                            }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": [],
+                                    "is_hexbin": 0,
+                                    "expr_type": 0
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                            object.append(copy.deepcopy(temp))
+                        elif v[i]["item"][0]["item_type"] == "mail_attachment_content":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_MAIL_ATT_CONTENT",
+                                "object_type": "keywords",
+                                "object_sub_type": "keywords",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [],
+                                    }
+                                ]
+                            }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": [],
+                                    "is_hexbin": 0,
+                                    "expr_type": 0
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                            object.append(copy.deepcopy(temp))
+                        elif v[i]["item"][0]["item_type"] == "mail_attachment_name":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_MAIL_ATT_NAME",
+                                "object_type": "keywords",
+                                "object_sub_type": "keywords",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [],
+                                    }
+                                ]
+                            }
+                            for u in range(len(v[i]["item"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": [],
+                                    "is_hexbin": 0,
+                                    "expr_type": 0
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                            object.append(copy.deepcopy(temp))
                         elif v[i]["item"][0]["item_type"] == "ftp_content":
                             temp = {
                                 "name": v[i]["name"],

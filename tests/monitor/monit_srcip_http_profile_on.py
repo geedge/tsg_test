@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -77,7 +78,7 @@ def run(parameter):
                         {
                             "profile_type": "traffic_mirror",
                             "name":"profile1",
-                            "vlan_count": random.randint(1, 5)
+                            "vlan_count": random.randint(3, 66)
                             #vlan的范围：应该是在3-66
                         }
              ],
