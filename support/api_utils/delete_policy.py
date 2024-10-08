@@ -285,6 +285,7 @@ class DeletePolicy:
         vsys_id = parameter["vsys_id"]
         rule_url = api_server + "/v1/vsys{}/policy/rule".format(vsys_id)
         obj_url = api_server + "/v1/vsys{}/policy/object".format(vsys_id)
+        profile_url = api_server + "/v1/vsys{}/policy/profile".format(vsys_id)
         dashboard_url = api_server + "/v1/dashboard"
         template = {'type': 'security', 'name': '', 'with_sub_vsys': 0, 'vsys_id': vsys_id}
         # script_type = parameter["script_type"]
@@ -431,25 +432,24 @@ class DeletePolicy:
         elif len(name_list) > 0:
             for name_item in name_list:
                 if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept", "monitor", "statistics", "dos_protection"]:
+                    temp_url = "{}/{}".format(rule_url, name_item["type"])
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
-                    self.query_and_delete_by_name(rule_url, template, headers)
-
-                if name_item["type"] in ["ip", "port", "url", "fqdn", "http_signature", "mobile_identity", "keywords", "account", "subscriberid"]:
+                    self.query_and_delete_by_name(temp_url, template, headers)
+                elif name_item["type"] in ["ip", "port", "url", "fqdn", "http_signature", "mobile_identity", "keywords", "account", "subscriberid"]:
+                    temp_url = "{}/{}".format(obj_url, name_item["type"])
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
-                    self.query_and_delete_by_name(obj_url, template, headers)
+                    self.query_and_delete_by_name(temp_url, template, headers)
 
-                if name_item["type"] in ["service_function_forwarder", "service_function", "statistics_template", "response_page", "hijack_file",
+                elif name_item["type"] in ["service_function_forwarder", "service_function", "statistics_template", "response_page", "hijack_file",
                                          "insert_script", "traffic_mirror", "run_script", "dns_record"]:
                     if 'type' in template:
                         del template["type"]
                     template['name'] = name_item["name"]
-                    profile_url = api_server + "/v1/policy/profile/" + name_item["type"]
-                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], profile_url)
-                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], template)
-                    self.query_and_delete_by_name(profile_url, template, headers)
-                if name_item["type"] in ["dashboard"]:
+                    temp_url = "{}/{}".format(profile_url, name_item["type"])
+                    self.query_and_delete_by_name(temp_url, template, headers)
+                elif name_item["type"] in ["dashboard"]:
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
                     self.query_and_delete_by_name(dashboard_url, template, headers)
@@ -461,6 +461,10 @@ class DeletePolicy:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "search {} failed, please check".format(template['type']))
                 return 0
             return_json_data = json.loads(response.text)
+            if return_json_data["data"] == None:
+                return 0
+            if "list" not in return_json_data["data"]:
+                return 0
             if '/policy/rule' in url or '/policy/object' in url or 'dashboard' in url:
                 tmp_type = template['type']
             if '/policy/rule' in url:
@@ -499,8 +503,6 @@ class DeletePolicy:
             elif 'traffic_mirror' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'traffic_mirror'.replace("_", " ")
-            print(type(data_list))
-            print(len(data_list))
             if len(data_list) > 0:
                 delete_data = self.combine_delete_ids(template, data_list)
                 response = requests.delete(url, headers=headers, params=delete_data, verify=False)
@@ -514,15 +516,14 @@ class DeletePolicy:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def combine_delete_ids(self, template, list_data):
-        temp_template = copy.deepcopy(template)
+        temp_template = {}
+        uuids = ""
         # 遍历列表中的每个 JSON 对象
         for i, json_obj in enumerate(list_data):
-            # 提取 id 键的值
-            id_value = json_obj.get("uuid")
-            # 构建类似于 params 的键
-            key = f"uuids[{i}]"
-            # 将键值对添加到 params 字典中
-            temp_template[key] = id_value
+            # 提取 uuid 键的值
+            uuids = uuids + json_obj.get("uuid") + ","
+        uuids = uuids.rstrip(",")
+        temp_template["uuids"] = uuids
         return temp_template
 
     def delete_geolocation(self, geolocation_url, geolocation_template, headers, vsys_id):

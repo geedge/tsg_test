@@ -300,17 +300,18 @@ class CreatePolicyRule:
                 user_region["message"] = condition["message_" + str(create_number)]
             elif action == "deny" and 'message_' + str(create_number) not in condition:
                 user_region["method"] = "block"
+                user_region["message"] = "html_profile"
                 user_region["code"] = condition["code_" + str(create_number)]
-                user_region["html_profile"] = create_profile_ids[0]["id"]
+                user_region["profile"] = create_profile_ids[0]["uuid"]
             elif action == "hijack":
                 user_region["method"] = "hijack"
-                user_region["hijack_profile"] = create_profile_ids[0]["id"]
+                user_region["hijack_profile"] = create_profile_ids[0]["uuid"]
             elif action == "insert":
                 user_region["method"] = "insert"
-                user_region["insert_profile"] = create_profile_ids[0]["id"]
+                user_region["insert_profile"] = create_profile_ids[0]["uuid"]
             elif action == "run_script":
                 user_region["method"] = "run_script"
-                user_region["run_script_profile"] = create_profile_ids[0]["id"]
+                user_region["run_script_profile"] = create_profile_ids[0]["uuid"]
             elif action == "redirect":
                 user_region["method"] = "redirect"
                 user_region["code"] = condition["code_" + str(create_number)]
@@ -342,28 +343,8 @@ class CreatePolicyRule:
                     rules.append(copy.deepcopy(rule_dict))
                 user_region["rules"] = rules
                 user_region["method"] = "edit_element"
-            # elif action == "edit_element" and condition["search_scope"] == "whole_file":
-            #     user_region["method"] = "edit_element"
-            #     rules = []
-            #     rule_dict = {"anchor_element": {}, "target_element": {}}
-            #     rule_dict["anchor_element"]["search_scope"] = condition["search_scope"]
-            #     rule_dict["anchor_element"]["contained_keyword"] = condition["contained_keyword"]
-            #     rule_dict["target_element"]["target_distance_from_matching"] = condition["target_distance_from_matching"]
-            #     rule_dict["target_element"]["element_treatment"] = condition["element_treatment"]
-            #     rules.append(rule_dict)
-            #     user_region["rules"] = rules
-            # elif action == "edit_element" and condition["search_scope"] == "inside_element":
-            #     user_region["method"] = "edit_element"
-            #     rules = []
-            #     rule_dict = {"anchor_element": {}, "target_element": {}}
-            #     rule_dict["anchor_element"]["search_scope"] = condition["search_scope"]
-            #     rule_dict["anchor_element"]["contained_keyword"] = condition["contained_keyword"]
-            #     rule_dict["anchor_element"]["start_indicator"] = condition["start_indicator"]
-            #     rule_dict["target_element"]["target_distance_from_matching"] = condition["target_distance_from_matching"]
-            #     rule_dict["target_element"]["element_treatment"] = condition["element_treatment"]
-            #     rules.append(rule_dict)
-            #     user_region["rules"] = rules
-            rule_template_dict["rule"]["user_region"] = user_region
+            rule_template_dict["rule"]["action_parameter"] = user_region
+            rule_template_dict["rule"].pop("user_region")
         elif condition["policy_type"] == "monitor":
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
@@ -411,7 +392,7 @@ class CreatePolicyRule:
         else:
             pre_intercept_template_path['rule']['destination'] = []
         pre_intercept_template_path["rule"]["name"] = "manipulation_pre_intercept"
-        pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host)
+        pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host, vsys_id)
         pre_policy_id_list = pre_intercept_policy_id_dict
 
         return pre_policy_id_list
@@ -421,6 +402,7 @@ class CreatePolicyRule:
         try:
             rule_type = rule_template_dict["rule"]["type"]
             url = api_host + "/v1/vsys{}/policy/rule/{}".format(vsys_id, rule_type)
+            print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             if response.status_code == 200:

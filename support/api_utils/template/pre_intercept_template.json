@@ -1,13 +1,13 @@
 {
     "type": "pxy_intercept",
     "return_data": 1,
-    "vsys_id": 1,
+    "vsys_id": "6",
     "rule": {
         "name": "automation_test_policy",
         "type": "pxy_intercept",
         "action": "intercept",
-        "user_tag_ids": "",
-        "do_log": 1,
+        "user_tags": "",
+        "log_option": "metadata",
         "effective_range": {},
         "user_region": {
             "protocol": "SSL",
@@ -23,18 +23,16 @@
         "destinations": [],
         "filters": "",
         "application": {
-            "is_negate": 0,
+            "negate_option": false,
             "objects": [
                 {
-                    "object_type": "application",
-                    "object_ids": [
-                        109,
-                        163
+                    "object_uuids": [
+                        "80791b3a-e700-2cb8-8c24-6876d9faa8f8",
+                        "f9d5c16a-7f42-203f-8c19-5432354a3271"
                     ]
                 }
             ],
-            "attribute_name": "ATTR_APP_ID",
-            "show": true
+            "attribute_name": "ATTR_APP_ID"
         },
         "is_enabled": 1,
         "description": "test",
