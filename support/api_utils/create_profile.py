@@ -510,7 +510,12 @@ class CreateProfile:
 
                 metrics_dict["unit"] = unit
                 metrics_dict["metric_type"] = metric_type
-                metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index+1)
+                #metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index+1)
+                # 当Metrics数量超过4个时处理逻辑：每个Metric Tpye仅能有4个字段：count_1、count_2、count_3、count_4、unique_count_1、unique_count_2、unique_count_3、unique_count_4、distribution_1、distribution_2、、distribution_3、、distribution_4
+                metric_index_temp = metric_index + 1
+                if metric_index > 3:
+                    metric_index_temp = metric_index % 4 + 1
+                metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index_temp)
 
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["metrics"].append(copy.deepcopy(metrics_dict))
                 chart_pre_name = metrics_dict["source_fields"][0] + " "

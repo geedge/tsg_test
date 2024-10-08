@@ -106,7 +106,7 @@ def run(parameter):
                               "client_ip"
                           ],
                           "order_by": "UNIQUE Session ID",
-                          "row_limit": "",
+                          "row_limit": "10",
                           "min_in_size": "0",
                           "min_out_size": "0"
                         }
