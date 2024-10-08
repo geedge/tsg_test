@@ -11,55 +11,82 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
+        exception_result = ""
+        result = {}
         
         # 脚本启动时间
         start_time = time.time()
+        
         # 测试数据
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_action_1": "allow",
-            "do_log_1": 2,
-            "obj_condition_1": [
-                {
-                "attribute_name": "ATTR_SUBSCRIBER_ID",
-                "object_type": "subscriberid",
-                "object_sub_type": "subscriberid",
-                "object_list": [
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
+            "rule_action": "allow",
+            "rule_type": "create",
+            "condition": {
+                "source_ip": [],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [],
+                "external_port": [],
+                "source_geography": [],
+                "destination_geography": [],
+                "sub_id": [
                     {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "default"
+                        "name": "secy_subid",
+                        "object_type": "subscriberid",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "subscriberid",
+                                "item_value": '$' + parameter["test_subcriber_id"],
+                            }
                         ]
-                        }
-                    ]
                     }
-                ]
-                },
-                {
-                "attribute_name": "ATTR_FTP_URI",
-                "object_type": "url",
-                "object_sub_type": "url",
-                "object_list": [
+                ],
+                "device": [],
+                "tunnel": [],
+                "tunnel_level": [],
+                "flag": [],
+                "application": [
                     {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "/autoFtp/english_big.txt"
-                        ]
-                        }
-                    ]
+                        "name": "ftp", #
+                        "object_type": "application",
+                        "negate": False
                     }
-                ]
-                }
-            ],
-            "application_1": ["ftp"],
+                ],
+                "server_fqdn": [],
+                "protocol_filed": [
+                    {
+                        "name": "secy_ftp_url",
+                        "object_type": "url",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ftp_url",
+                                "item_value": "/autoFtp/english.txt"
+                            }
+                        ],
+                    }
+                ],
+                "sub_action_override": True,
+                "sub_action": [],
+                "packet_capture": []
+            },
+            "profile": [],
             "expected_return": "autotest",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key":"ftp_account","query_value":"ftpuser"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
@@ -67,7 +94,6 @@ def run(parameter):
             },
             "token": ""
         }
-        
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
@@ -89,20 +115,45 @@ def run(parameter):
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
-      
-if __name__ == "__main__":
+            
+if __name__ == '__main__':
+    # ui
+    # parameter = {
+    #     "username": "hebingning",
+    #     "password": "hbn66AAA",
+    #     "test_pc_ip": "192.168.64.65",
+    #     "test_subcriber_id": "test6776",
+    #     "api_server": "http://192.168.44.72",
+    #     "debug_flag": "local",
+    #     "script_type": "ui",
+    #     "env": "tsgx",
+    #     "vsys_id": 1,
+    #     "is_log": 1,
+    #     "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+    #     "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+    #     "module_name": "security",
+    #     "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+    # }
+    # run(parameter)
+    # api
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
+
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.93",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
-        "env": "tsgx",
-        "vsys_id": 6,
+        "debug_flag": "local",
+        "script_type": "api",  # api  ui  空字符串
         "is_log": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "env": "tsgx",
+        "vsys_id": 1,
+        "root_path": workdir,
+        "path": workdir + "/tests/api",
         "module_name": "security",
-        "test_case_name": "allow_http_fqdn"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
