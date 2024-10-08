@@ -79,7 +79,9 @@ def receive_parameter():
             parameter["test_pc_ip"] = parse.get("network_address", "ip")
             parameter['test_subcriber_id'] = parse.get("network_address", "subcriber_id")
             parameter['test_imsi'] = parse.get("network_address", "imsi")
+            parameter['test_imei'] = parse.get("network_address", "imei")
             parameter['test_phone_number'] = parse.get("network_address", "phone_number")
+            parameter['test_apn'] = parse.get("network_address", "apn")
             parameter["env"] = parse.get("device", "type")
             parameter["is_log"] = parse.get("is_log", "value")
             if tag == "api" or tag == "ui" or len(tag) == 0:
