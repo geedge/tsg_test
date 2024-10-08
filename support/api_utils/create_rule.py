@@ -85,55 +85,57 @@ class CreatePolicyRule:
             method = ''
 
         if action == 'deny' and policy_type == "security":
-            rule_template_dict['rule']['user_region']['method'] = method
+            rule_template_dict['rule']['action_parameter']['method'] = method
             if 'packet_capture_' + str(create_number) in condition:
-                rule_template_dict["rule"]["user_region"]["packet_capture"]["enable"] = condition['packet_capture_' + str(create_number)]["enable"]
-                if rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] in condition['packet_capture_' + str(create_number)]:
-                    rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
+                rule_template_dict["rule"]["action_parameter"]["packet_capture"]["enable"] = condition['packet_capture_' + str(create_number)]["enable"]
+                if rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] in condition['packet_capture_' + str(create_number)]:
+                    rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
                 else:
-                    rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] = 2000
+                    rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = 2000
             else:
-                rule_template_dict['rule']['user_region']['packet_capture'] = {"enable": 0}
+                rule_template_dict['rule']['action_parameter']['packet_capture'] = {"enable":0}
             if method == 'drop':
-                if 'after_n_packets_' + str(create_number) in condition:
-                    rule_template_dict['rule']['user_region']['after_n_packets'] = condition['after_n_packets_' + str(create_number)]
+                if 'after_n_packets_'+str(create_number) in condition:
+                    rule_template_dict['rule']['action_parameter']['after_n_packets'] = condition['after_n_packets_'+str(create_number)]
                 else:
-                    rule_template_dict['rule']['user_region']['after_n_packets'] = 0
-                if 'send_icmp_unreachable_' + str(create_number) in condition:
-                    rule_template_dict['rule']['user_region']['send_icmp_unreachable'] = condition['send_icmp_unreachable_' + str(create_number)]
+                    rule_template_dict['rule']['action_parameter']['after_n_packets'] = 0
+                if 'send_icmp_unreachable_'+str(create_number) in condition:
+                    rule_template_dict['rule']['action_parameter']['send_icmp_unreachable'] = condition['send_icmp_unreachable_'+str(create_number)]
                 else:
-                    rule_template_dict['rule']['user_region']['send_icmp_unreachable'] = 0
-                if 'send_tcp_reset_' + str(create_number) in condition:
-                    rule_template_dict['rule']['user_region']['send_tcp_reset'] = condition['send_tcp_reset_' + str(create_number)]
+                    rule_template_dict['rule']['action_parameter']['send_icmp_unreachable'] = 0
+                if 'send_tcp_reset_'+str(create_number) in condition:
+                    rule_template_dict['rule']['action_parameter']['send_tcp_reset'] = condition['send_tcp_reset_'+str(create_number)]
                 else:
-                    rule_template_dict['rule']['user_region']['send_tcp_reset'] = 1
+                    rule_template_dict['rule']['action_parameter']['send_tcp_reset'] = 1
             elif method == 'redirect':
-                if 'to_' + str(create_number) in condition:
-                    rule_template_dict['rule']['user_region']['to'] = condition['to_' + str(create_number)]
-                if 'code_' + str(create_number) in condition:
-                    rule_template_dict['rule']['user_region']['code'] = condition['code_' + str(create_number)]
-                if 'resolution_' + str(create_number) in condition:
-                    rule_template_dict['rule']['user_region']['resolution'] = condition['resolution_' + str(create_number)]
-                    if "record_id" in condition['resolution_' + str(create_number)][0]["answer"][0].keys():
-                        rule_template_dict['rule']['user_region']['resolution'][0]["answer"][0]["record_id"] = create_profile_ids[0]["id"]
-            elif method == "block" and 'message_' + str(create_number) in condition:
-                rule_template_dict['rule']['user_region']['code'] = condition['code_' + str(create_number)]
-                rule_template_dict['rule']['user_region']["message"] = condition['message_' + str(create_number)]
-            elif method == "block" and 'message_' + str(create_number) not in condition:
-                rule_template_dict['rule']['user_region']['code'] = condition['code_' + str(create_number)]
-                if str(condition['code_' + str(create_number)])[0] != "5":
-                    rule_template_dict['rule']['user_region']["html_profile"] = create_profile_ids[0]["id"]
-            elif method == "alert" and 'message_' + str(create_number) in condition:
-                rule_template_dict['rule']['user_region']['code'] = condition['code_' + str(create_number)]
-                rule_template_dict['rule']['user_region']["message"] = condition['message_' + str(create_number)]
-            elif method == "alert" and 'message_' + str(create_number) not in condition:
-                rule_template_dict['rule']['user_region']['code'] = condition['code_' + str(create_number)]
+                if 'to_'+str(create_number) in condition:
+                        rule_template_dict['rule']['action_parameter']['to'] = condition['to_'+str(create_number)]
+                if 'code_'+str(create_number) in condition:
+                        rule_template_dict['rule']['action_parameter']['code'] = condition['code_'+str(create_number)]
+                if 'resolution_'+str(create_number) in condition:
+                    rule_template_dict['rule']['action_parameter']['resolution'] = condition['resolution_' + str(create_number)]
+                    if "record_id" in condition['resolution_'+str(create_number)][0]["answer"][0].keys():
+                        rule_template_dict['rule']['action_parameter']['resolution'][0]["answer"][0]["record_uuid"] = create_profile_ids[0]["uuid"]
+            elif method == "block" and 'message_'+str(create_number) in condition:
+                rule_template_dict['rule']['action_parameter']['code'] = condition['code_'+str(create_number)]
+                rule_template_dict['rule']['action_parameter']["message"] = condition['message_'+str(create_number)]
+            elif method == "block" and 'message_'+str(create_number) not in condition:
+                rule_template_dict['rule']['action_parameter']['code'] = condition['code_'+str(create_number)]
+                if str(condition['code_'+str(create_number)])[0] != "5":
+                    rule_template_dict['rule']['action_parameter']["profile"] = create_profile_ids[0]["uuid"]
+                    rule_template_dict['rule']['action_parameter']["message"] = "html_profile"
+            elif method == "alert" and 'message_'+str(create_number) in condition:
+                rule_template_dict['rule']['action_parameter']['code'] = condition['code_' + str(create_number)]
+                rule_template_dict['rule']['action_parameter']["message"] = condition['message_' + str(create_number)]
+            elif method == "alert" and 'message_'+str(create_number) not in condition:
+                rule_template_dict['rule']['action_parameter']['code'] = condition['code_' + str(create_number)]
                 if condition['code_' + str(create_number)] == 200:
-                    rule_template_dict['rule']['user_region']["html_profile"] = create_profile_ids[0]["id"]
+                    rule_template_dict['rule']['action_parameter']["profile"] = create_profile_ids[0]["uuid"]
+                    rule_template_dict['rule']['action_parameter']["message"] = "html_profile"
             elif method == "rate_limit":
-                rule_template_dict['rule']['user_region']['bps'] = condition['bps_' + str(create_number)]
+                rule_template_dict['rule']['action_parameter']['bps'] = condition['bps_' + str(create_number)]
             elif method == "tamper":
-                rule_template_dict['rule']['user_region']['tamper_mode'] = 'complete'
+                rule_template_dict['rule']['action_parameter']['tamper_mode'] = 'complete'
         elif action == 'monitor' and policy_type == "monitor":
             if 'packet_capture_' + str(create_number) in condition:
                 rule_template_dict["rule"]["user_region"]["packet_capture"]["enable"] = condition['packet_capture_' + str(create_number)]["enable"]
@@ -149,7 +151,7 @@ class CreatePolicyRule:
                 rule_template_dict["rule"]["user_region"]["traffic_mirror"] = {"enable": 0}
         elif policy_type == "dos_protection" and action == "protect":
             if condition["threshold"]["type"] == "rate":
-                rule_template_dict['rule']['user_region']["threshold"] = {
+                rule_template_dict['rule']['action_parameter']["threshold"] = {
                     "type": condition["threshold"]["type"],
                     "rate_threshold": {
                         "group_by": condition["threshold"]["rate_threshold"]["group_by"],
@@ -158,7 +160,7 @@ class CreatePolicyRule:
                     }
                 }
             elif condition["threshold"]["type"] == "concurrency":
-                rule_template_dict['rule']['user_region']["threshold"] = {
+                rule_template_dict['rule']['action_parameter']["threshold"] = {
                     "type": condition["threshold"]["type"],
                     "concurrency_threshold": {
                         "group_by": condition["threshold"]["concurrency_threshold"]["group_by"],
@@ -166,12 +168,12 @@ class CreatePolicyRule:
                     }
                 }
             if condition["mitigation"]["behavior"] == "deny":
-                rule_template_dict['rule']['user_region']["mitigation"] = {
+                rule_template_dict['rule']['action_parameter']["mitigation"] = {
                     "behavior": condition["mitigation"]["behavior"],
                     "timeout": condition["mitigation"]["timeout"]
                 }
             elif condition["mitigation"]["behavior"] == "none":
-                rule_template_dict['rule']['user_region']["mitigation"] = {
+                rule_template_dict['rule']['action_parameter']["mitigation"] = {
                     "behavior": condition["mitigation"]["behavior"]
                 }
 
@@ -235,7 +237,7 @@ class CreatePolicyRule:
                 else:
                     user_region["protocol"] = condition["application"][0]
             user_region["targeted_traffic"] = condition["targeted_traffic"]
-            user_region["sff_profiles"].append(create_profile_ids[0]["id"])
+            user_region["sff_profiles"].append(create_profile_ids[0]["uuid"])
             rule_template_dict["rule"]["user_region"] = user_region
         # 添加profile statistics逻辑
         elif condition["policy_type"] == "statistics":
