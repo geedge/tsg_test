@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -112,19 +112,44 @@ def run(parameter):
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
       
-if __name__ == "__main__":
+if __name__ == '__main__':
+    # ui
+    # parameter = {
+    #     "username": "hebingning",
+    #     "password": "hbn66AAA",
+    #     "test_pc_ip": "192.168.64.65",
+    #     "test_subcriber_id": "test6776",
+    #     "api_server": "http://192.168.44.72",
+    #     "debug_flag": "local",
+    #     "script_type": "ui",
+    #     "env": "tsgx",
+    #     "vsys_id": 1,
+    #     "is_log": 1,
+    #     "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+    #     "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+    #     "module_name": "security",
+    #     "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+    # }
+    # run(parameter)
+    # api
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
+
     parameter = {
-      "script_type": "api",
-      "username": "hebingning",
-      "password": "hbn66AAA",
-      "test_pc_ip": "192.168.64.73",
-      "api_server": "http://192.168.44.72",
-      "is_log": 1,
-      "env": "tsgx",
-      "vsys_id": 6,
-      "root_path": "D:/python_script/tsg_test",
-      "path": "D:/python_script/tsg_test/tests/api",
-      "module_name": "security",
-      "test_case_name": "allow_negate_fqdn"
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.93",
+        "test_subcriber_id": "test6491",
+        "api_server": "http://192.168.44.72",
+        "debug_flag": "local",
+        "script_type": "api",  # api  ui  空字符串
+        "is_log": 1,
+        "env": "tsgx",
+        "vsys_id": 1,
+        "root_path": workdir,
+        "path": workdir + "/tests/api",
+        "module_name": "security",
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)

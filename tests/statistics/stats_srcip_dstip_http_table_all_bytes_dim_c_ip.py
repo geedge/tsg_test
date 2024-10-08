@@ -110,12 +110,10 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "sent_bytes+received_bytes:SUM:SUM(Sent Bytes Received Bytes)",
-                                "sent_bytes:SUM:SUM(Sent Bytes Received Bytes)",
-                                "received_bytes:SUM:SUM(Sent Bytes Received Bytes)"
+                                "sent_bytes+received_bytes:RATE:RATE(Sent Bytes Received Bytes)"
                             ],
                             "dimensions": ["app"],
-                            "order_by": "SUM(Sent Bytes Received Bytes)",
+                            "order_by": "RATE(Sent Bytes Received Bytes)",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

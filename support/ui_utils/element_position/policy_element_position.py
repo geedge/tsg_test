@@ -19,7 +19,7 @@ policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSel
 policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
 policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
-policyRulePage_negateSrcIP_posXpath = '//*[@id="policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_monitor_write_Home_App_anonymousComponent"]/span[1]'
+policyRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']/span[1]"
 
 policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//input[contains(@id, 'object_ip_search')]"
@@ -401,6 +401,7 @@ interceptRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Inte
 
 interceptRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
 interceptRulePage_selectDeny_posId = "interceptintercept"
+interceptRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']/span[1]"
 
 interceptRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 interceptRulePage_okButton_yes_posId = "OK-_policy_Intercept_edit_Home_App_anonymousComponent"
@@ -612,6 +613,7 @@ serviceChainingRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-tab
 serviceChainingRulePage_inputName_posXpath = "//*[@class='biFangName']//input" 
 serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small is-active']" 
 serviceChainingRulePage_decryptedTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small']" 
+serviceChainingRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_service_chaining_write_Home_App_anonymousComponent']/span[1]"
 serviceChainingRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath

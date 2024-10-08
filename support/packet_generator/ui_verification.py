@@ -268,12 +268,16 @@ class UiVerification:
                                     metric_result = True
                                 elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
                                     metric_result = True
+                                elif sc_info["is_negate"] == 1:
+                                    metric_result = True    
                                 else:
                                     metric_result = False
                             elif sc_info["sf_method"] == "layer2_switch":
                                 if sc_info["admin_status"] == 0:
                                     metric_result = True
                                 elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                    metric_result = True
+                                elif sc_info["is_negate"] == 1:
                                     metric_result = True
                                 else:
                                     metric_result = False
@@ -379,9 +383,13 @@ class UiVerification:
                             elif int(log_number) > 0:
                                 break
                         if int(log_number) == 0:
-                            log_result = False
+                            if sc_info["is_negate"] == 1:
+                                log_result = True
+                            else:
+                                log_result = False
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Fail to get log value from log page.", flush=True)
                         else:
+                            time.sleep(0.5)
                             # 点击展开
                             btn = my_driver.find_element(By.XPATH, "//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']")
                             my_driver.execute_script("arguments[0].click()", btn)

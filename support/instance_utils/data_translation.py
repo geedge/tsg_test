@@ -76,8 +76,11 @@ class DataTranslation:
                     data["code_1"] = 404
                     data["message_1"] = "text"  # 匹配原有api test_data数据
             elif data["rule_action"] == "redirect":
-                data["code_1"] = data["action_parameter"]["redirect_url"][0]["response_code"]
-                data["to_1"] = data["action_parameter"]["redirect_url"][0]["redirect_url"]
+                if "redirect_url" in data["action_parameter"].keys():
+                    data["code_1"] = data["action_parameter"]["redirect_url"][0]["response_code"]
+                    data["to_1"] = data["action_parameter"]["redirect_url"][0]["redirect_url"]
+                else:   # doh
+                    print("todo...doh")
             elif data["rule_action"] == "replace":
                 replace_parameter_list = data["action_parameter"]["replace_parameter"]
                 user_region = []
@@ -188,6 +191,7 @@ class DataTranslation:
                                         answer_dict["ttl"]["max"] = int(ttl_split[1])
                                         answer.append(copy.deepcopy(answer_dict))
                                     resolution_dict["answer"] = answer
+                                    resolution.append(copy.deepcopy(resolution_dict))
                                 # profile 部分
                                 data["profile_condition_1"] = []
                                 data["profile_condition_1"].append({})

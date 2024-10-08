@@ -11,7 +11,8 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
+        exception_result = ""
+        result = {}
         
         # 脚本启动时间
         start_time = time.time()
@@ -21,30 +22,56 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_action_1": "shunt",
-            "do_log_1": 0,
-            "obj_condition_1": [
-                {
-                "is_negate": 1,
-                "attribute_name": "ATTR_SOURCE_IP",
-                "object_type": "ip",
-                "object_sub_type": "ip",
-                "object_list": [
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
+            "rule_action": "shunt",
+            "rule_type": "create",
+            "condition": {
+                "source_ip": [
                     {
-                    "add_item_list": [
-                        {
-                        "ip_address": "default",
-                        "port_range": "0-65535"
-                        }
-                    ]
+                        "name": "secy_srcip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": True,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": parameter['test_pc_ip'],
+                            }
+                        ]
                     }
-                ]
-                }
-            ],
-            "application_1": ["dns"],
+                ],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [],
+                "external_port": [],
+                "source_geography": [],
+                "destination_geography": [],
+                "sub_id": [],
+                "device": [],
+                "tunnel": [],
+                "tunnel_level": [],
+                "flag": [],
+                "application": [
+                    {
+                        "name": "dns", #
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
+                "server_fqdn": [],
+                "protocol_filed": [],
+                "sub_action_override": True,
+                "sub_action": [],
+                "packet_capture": []
+            },
+            "profile": [],
             "expected_return": "facebook",
-            "counters_1": {"hits": 0},
-            "log_query_param_1": [],
+            "counters": {"hits": 0},
+            "log_query_param": [],
             "traffic": {
                 "protocol": "dns",
                 "type": "nslookup",
@@ -52,7 +79,6 @@ def run(parameter):
             },
             "token": ""
         }
-        
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
@@ -74,20 +100,45 @@ def run(parameter):
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
-      
-if __name__ == "__main__":
+            
+if __name__ == '__main__':
+    # ui
+    # parameter = {
+    #     "username": "hebingning",
+    #     "password": "hbn66AAA",
+    #     "test_pc_ip": "192.168.64.65",
+    #     "test_subcriber_id": "test6776",
+    #     "api_server": "http://192.168.44.72",
+    #     "debug_flag": "local",
+    #     "script_type": "ui",
+    #     "env": "tsgx",
+    #     "vsys_id": 1,
+    #     "is_log": 1,
+    #     "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+    #     "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+    #     "module_name": "security",
+    #     "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+    # }
+    # run(parameter)
+    # api
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
+
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.93",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "debug_flag": "local",
+        "script_type": "api",  # api  ui  空字符串
+        "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 0,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/api",
+        "vsys_id": 1,
+        "root_path": workdir,
+        "path": workdir + "/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_alert_204_negative_not_ip_http"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)

@@ -136,7 +136,7 @@ class ManipulationInstanceGenerator:
                     elif create_rule_code != 200:
                         ui_result = "Fail to create manipulation rule."
                     time.sleep(2)
-                """
+
                 # 触发流量验证
                 if create_rule_code == 200:
                     search_rule = SearchRule(driver)
@@ -157,7 +157,7 @@ class ManipulationInstanceGenerator:
                 if len(verification_result) != 0:
                     analysis = AnalysisResult()
                     ui_result = analysis.analysis_result(test_data, [], verification_result)
-                """
+
                 # 删除rule
                 if create_rule_code == 200:
                     # 删除提前先发的security intercept策略

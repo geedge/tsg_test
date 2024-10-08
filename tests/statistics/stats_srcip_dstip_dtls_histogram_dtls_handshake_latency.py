@@ -10,7 +10,7 @@ import traceback
 from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
-#VPN Client Behavior Analysis
+
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
@@ -47,6 +47,12 @@ def run(parameter):
                                 "item_value": "10.64.224.3",
                             },
                         ]
+                    },{
+                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": []
                     }
                 ],
                 "source_port": [],
@@ -64,7 +70,14 @@ def run(parameter):
                                 "item_value": "2.1.1.9",
                             },
                         ]
-                    }],
+                    },{
+                        "name": parameter["test_case_name"].replace("_dstip", "", 1),
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": []
+                    }
+                ],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -112,7 +125,7 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.youtube.com"}],
+            "log_query_param": [{"query_field_key": "dtls_sni", "query_value": "www.youtube.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
@@ -123,7 +136,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "youtube"
+                "pcap_name": "dtls"
             },
             # "traffic": {
             #     "type": "trex",

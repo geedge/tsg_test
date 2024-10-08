@@ -38,8 +38,8 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
-                        "select_type": False,
                         "statistics_option": "Brief",
+                        "select_type": False,
                         "negate": False,
                         "item": [
                             {
