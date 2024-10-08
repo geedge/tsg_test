@@ -46,6 +46,11 @@ def run(parameter):
                     }
                 ],
                 "application": [
+                    {
+                        "name": "ssl",  #
+                        "object_type": "application",
+                        "negate": False
+                    }
                 ]
             },
             "threshold": {
@@ -61,7 +66,7 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
+                {"query_field_key": "attack_type", "query_value": ""},
                 {"query_field_key": "sessions", "query_value": ""},
                 {"query_field_key": "packets", "query_value": ""},
                 {"query_field_key": "bytes", "query_value": ""},
@@ -79,7 +84,7 @@ def run(parameter):
                 "active_flows": 2,
                 "d": 5,
                 "yaml_name": "test",
-                "pcap_name": "tcp_long3"
+                "pcap_name": "tls_long"
             },
             "token": ""
         }
