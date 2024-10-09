@@ -115,6 +115,7 @@ class CreatePolicyRule:
                 if 'resolution_'+str(create_number) in condition:
                     rule_template_dict['rule']['action_parameter']['resolution'] = condition['resolution_' + str(create_number)]
                     if "record_id" in condition['resolution_'+str(create_number)][0]["answer"][0].keys():
+                        del condition['resolution_'+str(create_number)][0]["answer"][0]["record_id"]
                         rule_template_dict['rule']['action_parameter']['resolution'][0]["answer"][0]["record_uuid"] = create_profile_ids[0]["uuid"]
             elif method == "block" and 'message_'+str(create_number) in condition:
                 rule_template_dict['rule']['action_parameter']['code'] = condition['code_'+str(create_number)]

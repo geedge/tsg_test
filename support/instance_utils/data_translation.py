@@ -188,6 +188,7 @@ class DataTranslation:
                                         answer_dict["ttl"]["max"] = int(ttl_split[1])
                                         answer.append(copy.deepcopy(answer_dict))
                                     resolution_dict["answer"] = answer
+                                    resolution.append(copy.deepcopy(resolution_dict))
                                 # profile 部分
                                 data["profile_condition_1"] = []
                                 data["profile_condition_1"].append({})
