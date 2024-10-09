@@ -505,7 +505,10 @@ class DeletePolicy:
                 delete_info = 'traffic_mirror'.replace("_", " ")
             if len(data_list) > 0:
                 delete_data = self.combine_delete_ids(template, data_list)
-                response = requests.delete(url, headers=headers, params=delete_data, verify=False)
+                for i in range(len(delete_data)):
+                    tmp_delete = {"uuids":""}
+                    tmp_delete["uuids"] = delete_data[i]
+                    response = requests.delete(url, headers=headers, params=tmp_delete, verify=False)
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(delete_info), flush=True)
                 else:
@@ -516,14 +519,12 @@ class DeletePolicy:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def combine_delete_ids(self, template, list_data):
-        temp_template = {}
-        uuids = ""
+        temp_template = []
         # 遍历列表中的每个 JSON 对象
         for i, json_obj in enumerate(list_data):
             # 提取 uuid 键的值
-            uuids = uuids + json_obj.get("uuid") + ","
-        uuids = uuids.rstrip(",")
-        temp_template["uuids"] = uuids
+            uuid = json_obj.get("uuid")
+            temp_template.append(uuid)
         return temp_template
 
     def delete_geolocation(self, geolocation_url, geolocation_template, headers, vsys_id):

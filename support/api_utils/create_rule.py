@@ -216,8 +216,9 @@ class CreatePolicyRule:
         # 添加sc逻辑
         if condition["policy_type"] == "service_chaining":
             # 如果sc为Decrypted Traffic, 先创建一条intercept策略
+            tmp_list = []
             if condition["targeted_traffic"] == "decrypted":
-                pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, dst_list, path_dict, vsys_id)
+                pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, tmp_list, path_dict, vsys_id, "service_chaining")
             user_region = {"targeted_traffic": "", "sff_profiles": []}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             temp_rule_action = 'rule_action_' + str(create_number)
@@ -225,20 +226,20 @@ class CreatePolicyRule:
                 rule_template_dict["rule"]["action"] = condition[temp_rule_action]
             else:
                 rule_template_dict["rule"]["action"] = condition["rule_action"]
-            temp_application = 'application_' + str(create_number)
-            if temp_application in condition.keys():
-                if len(condition[temp_application]) == 0:
-                    user_region["protocol"] = ""
-                else:
-                    user_region["protocol"] = condition[temp_application][0]
-            else:
-                if len(condition["application"]) == 0:
-                    user_region["protocol"] = ""
-                else:
-                    user_region["protocol"] = condition["application"][0]
+            # temp_application = 'application_' + str(create_number)
+            # if temp_application in condition.keys():
+            #     if len(condition[temp_application]) == 0:
+            #         user_region["protocol"] = ""
+            #     else:
+            #         user_region["protocol"] = condition[temp_application][0]
+            # else:
+            #     if len(condition["application"]) == 0:
+            #         user_region["protocol"] = ""
+            #     else:
+            #         user_region["protocol"] = condition["application"][0]
             user_region["targeted_traffic"] = condition["targeted_traffic"]
             user_region["sff_profiles"].append(create_profile_ids[0]["uuid"])
-            rule_template_dict["rule"]["user_region"] = user_region
+            rule_template_dict["rule"]["action_parameter"] = user_region
         # 添加profile statistics逻辑
         elif condition["policy_type"] == "statistics":
             user_region = {"protocol": "", "template_id": 0}
@@ -292,7 +293,7 @@ class CreatePolicyRule:
         elif condition["policy_type"] == "pxy_manipulation":
             # 创建manipulation策略前先下发一条deny_quic策略和一条intercept策略
             tmp_list = []  # 前置拦截策略，只添加src ip
-            pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, tmp_list, path_dict, vsys_id)
+            pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, tmp_list, path_dict, vsys_id, "pxy_manipulation")
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             # 填写不同动作的user_region
@@ -375,7 +376,7 @@ class CreatePolicyRule:
 
         return policy_id_list_temp
 
-    def create_associated_rule(self, headers, api_host, source_list, dst_list, path_dict, vsys_id):
+    def create_associated_rule(self, headers, api_host, source_list, dst_list, path_dict, vsys_id, associated_policy):
         pre_intercept_path = path_dict["pre_intercept_template_path"]
 
         # 新建intercept策略，只取source_list和dst_list
@@ -393,7 +394,11 @@ class CreatePolicyRule:
             pre_intercept_template_path['rule']['destination'] = dst_list
         else:
             pre_intercept_template_path['rule']['destination'] = []
-        pre_intercept_template_path["rule"]["name"] = "manipulation_pre_intercept"
+        if associated_policy == "pxy_manipulation":
+            tmp_name = "manipulation_pre_intercept"
+        else:
+            tmp_name = "service_chaining_pre_intercept"
+        pre_intercept_template_path["rule"]["name"] = tmp_name
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host, vsys_id)
         pre_policy_id_list = pre_intercept_policy_id_dict
 
