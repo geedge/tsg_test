@@ -31,7 +31,7 @@ def run(parameter):
                         "name": "secy_srcip",
                         "object_type": "ip",
                         "select_type": False,
-                        "negate": False,
+                        "negate": True,
                         "item": [
                             {
                                 "item_operation": "add",

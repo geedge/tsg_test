@@ -79,7 +79,14 @@ def run(parameter):
                 ],
                 "protocol_filed": [],
                 "sub_action_override": True,
-                "sub_action": [],
+                "sub_action": [
+                    {
+                        "type": "drop",
+                        "drop_packet": 0,
+                        "send_tcp_rst": True,
+                        "send_icmp_unreachable": False
+                    }
+                ],
                 "packet_capture": []
             },
             "profile": [],

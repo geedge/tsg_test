@@ -89,7 +89,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv http://open.node.com:180/go"
+                "command": "curl -kv http://open.node.com:180"
             },
             "token": ""
         }

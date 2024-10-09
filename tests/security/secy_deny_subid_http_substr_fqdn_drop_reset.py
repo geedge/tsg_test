@@ -97,8 +97,8 @@ def run(parameter):
             ],
             "traffic": {
                 "protocol": "http",
-                "type": "wget",
-                "command": "wget -q -O- -d http://open.node.com:180"
+                "type": "curl",
+                "command": "curl -kv --connect-timeout 25 -m 25 http://open.node.com:180"
             },
             "token": ""
         }
