@@ -169,6 +169,10 @@ class OrganizeConfig:
         run_env = parameter["env"]
         # statistics中将ip改为随机
         if "condition" in config.keys():
+            sub_id_flag = False
+            if "sub_id" in config["condition"].keys():
+                if len(config["condition"]["sub_id"]) > 0:
+                    sub_id_flag = True
             for obj in config["condition"]:
                 if "source_ip" == obj:# or "destination_ip" in obj:
                     src_ip = config["condition"]["source_ip"][0]["item"][0]["item_value"]
@@ -179,10 +183,19 @@ class OrganizeConfig:
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
                         if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(1, 25))
+                            if sub_id_flag == True:
+                                src_ip_list[2] = str(25)
+                            else:
+                                src_ip_list[2] = str(random.randint(1, 25))
                         elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(224, 224))
-                        src_ip_list[3] = str(random.randint(100, 250))
+                            if sub_id_flag == True:
+                                src_ip_list[2] = str(255)
+                            else:
+                                src_ip_list[2] = str(random.randint(224, 255))
+                        if sub_id_flag == True:
+                            src_ip_list[3] = str(251)
+                        else:
+                            src_ip_list[3] = str(random.randint(100, 249))
                         if run_env == "9140":
                             src_ip_list[0] = "172"
                             src_ip_list[1] = "56"
