@@ -2,117 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from datetime import datetime
-from support.report_update import ReportUpdate
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
-
-def run(parameter):
-    try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
-        # 参数初始化
-        result, exception_result = "", ""
-        
-        # 脚本启动时间
-        start_time = time.time()
-        # 测试数据
-        test_data = {
-            "is_multi_priority": False,
-            "rule_num": 1,
-            "policy_type": "security",
-            "rule_action_1": "allow",
-            "do_log_1": 2,
-            "obj_condition_1": [
-                {
-                "attribute_name": "ATTR_SUBSCRIBER_ID",
-                "object_type": "subscriberid",
-                "object_sub_type": "subscriberid",
-                "object_list": [
-                    {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "default"
-                        ]
-                        }
-                    ]
-                    }
-                ]
-                },
-                {
-                "attribute_name": "ATTR_SERVER_FQDN",
-                "object_type": "fqdn",
-                "object_sub_type": "fqdn",
-                "object_list": [
-                    {
-                    "add_item_list": [
-                        {
-                        "keyword_array": [
-                            "baidu"
-                        ]
-                        }
-                    ]
-                    }
-                ]
-                }
-            ],
-            "application_1": ["ssl"],
-            "expected_return": "baidu",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"ssl_sni","query_value":"www.baidu.com"}],
-            "traffic": {
-                "protocol": "ssl",
-                "type": "curl",
-                "command": "curl -kv https://www.baidu.com"
-            },
-            "token": ""
-        }
-        
-        # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
-        
-        return result
-    except Exception as e:
-        exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
-        return "Error: " + str(e)
-    finally:
-        # 清理环境并删除配置
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
-        # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
-        # 生成csv报告
-        update = ReportUpdate()
-        update.write_result(parameter, result, exception_result)
-      
-if __name__ == "__main__":
-    parameter = {
-        "script_type": "api",
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.88",
-        "api_server": "http://192.168.44.72",
-        "test_subcriber_id": "test6488",
-        "is_log": 1,
-        "env": "tsgx",
-        "vsys_id": 6,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/api",
-        "module_name": "security",
-        "test_case_name": "allow_app-deny_app"
-    }
-    run(parameter)
-
-# -*- coding: UTF-8 -*-
-import time
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -136,31 +26,31 @@ def run(parameter):
             "rule_action": "allow",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
+                "source_ip": [
+                    {
+                        "name": "secy_srcip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": parameter['test_pc_ip'],
+                            }
+                        ]
+                    }
+                ],
                 "source_port": [],
                 "destination_ip": [],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
-                "external_ip": [],
+                "external_ip":[],
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
-                "sub_id": [
-                    {
-                        "name": "secy_subid",
-                        "object_type": "subscriberid",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "subscriberid",
-                                "item_value": '$' + parameter["test_subcriber_id"],
-                            }
-                        ]
-                    }
-                ],
+                "sub_id": [],
                 "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
@@ -172,37 +62,39 @@ def run(parameter):
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
-                "protocol_filed": [
+                "server_fqdn": [
                     {
                         "name": "secy_fqdn",
                         "object_type": "fqdn",
-                        "item_operation": "add",
                         "select_type": False,
                         "negate": False,
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "qname",
-                                "item_value": "www.example.com"
+                                "item_type": "fqdn",
+                                "item_value": "open.node.com",
                             }
-                        ],
+                        ]
                     }
                 ],
+                "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "www.example.com",
-            "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key":"server_ip", "query_value": "8.8.8.8"},
-                                {"query_field_key":"decoded_as", "query_value": "DNS"},
-                                {"query_field_key":"dns_qname", "query_value": "www.example.com"}],
+            "expected_return": "POST",
+            "counters": {"hits": 1},
+            "log_query_param": [
+                {"query_field_key":"ssl_cn", "query_value": "open.node.com"},
+                {"query_field_key":"ssl_san", "query_value": "*.node.com;*.node.cn"},
+                {"query_field_key":"server_fqdn", "query_value": "open.node.com"},
+                {"query_field_key":"decoded_as", "query_value": "SSL"}
+                ],
             "traffic": {
-                "protocol": "dns",
-                "type": "nslookup",
-                "command": "nslookup www.example.com -timeout=1 8.8.8.8"
+                "protocol": "ssl",
+                "type": "curl",
+                "command": "curl -kv --connect-timeout 20 -m 20 https://open.node.com:1443"
             },
             "token": ""
         }
