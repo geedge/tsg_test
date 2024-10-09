@@ -355,13 +355,13 @@ class GetLog:
         log_condition_dict['source'] = "session_record"
         log_condition_dict['identifier_name'] = "session-record-list"
         log_condition_dict['execution_mode'] = 'oneshot'
-        query_pkt = 1 #默认情况有application,为1
-        if not test_data["condition"].get("application", []): #application为空的情况重新判断
-            query_pkt = 0
         if test_data["mitigation"]['behavior']== "none":
             log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'"
         elif test_data["mitigation"]['behavior'] == "deny":
-            log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts='{query_pkt}'"
+            if "application" in test_data["condition"]  and test_data["condition"]["application"] and test_data["condition"]["application"][0]["name"] == "dns":
+                log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts in (0)"
+            else:
+                log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts in (0,1)"
         url = api_host + "/v1/log/query"
         response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
         assert response.status_code == 200
