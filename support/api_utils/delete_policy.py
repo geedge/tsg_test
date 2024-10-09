@@ -417,12 +417,12 @@ class DeletePolicy:
             ]
 
             for endpoint in service_function_endpoints:
-                profile_url = f"{api_server}/v1/policy/profile/{endpoint}"
+                profile_url = f"{api_server}/v1/vsys{vsys_id}/policy/profile/{endpoint}"
                 self.query_and_delete_by_name(profile_url, template, headers)
 
                 # 删除Statistics Templates
             template['name'] = 'test_statistics_api'
-            profile_url = f"{api_server}/v1/policy/profile/statistics_template"
+            profile_url = f"{api_server}/v1/vsys{vsys_id}/policy/profile/statistics_template"
             self.query_and_delete_by_name(profile_url, template, headers)
 
             # 删除geolocation  24.08 版本临时注释掉

@@ -679,8 +679,8 @@ class CreateProfile:
         try:
             # 处理请求体数据
             headers = {"Authorization": token}
-            create_profile_id_dict = {"profile_type": "", "uuid": ""}
-            profile_type = profile_data["profile_type"]
+            create_profile_id_dict = {"profile_type":"", "uuid":""}
+            profile_type = profile_data["profile_type"].lower()
             if profile_type == "statistics_templates":
                 profile_statistics_template = path_dict["profile_statistics_template"]
                 process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
@@ -696,7 +696,7 @@ class CreateProfile:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 # 处理返回数据，提取id
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], response_dict)
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], response_dict)
                 profile_id = response_dict["data"]["statistics_template"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
@@ -712,7 +712,7 @@ class CreateProfile:
                 for sf_profile_data in sf_condition_values:
                     sf_profile_id = self.get_sf_id(headers, profile_sf_template, sf_profile_data, api_host, vsys_id)
                     sf_profile_id_list.append(sf_profile_id)
-                process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data, vsys_id)
+                process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data,vsys_id)
                 url = "{}/v1/vsys{}/policy/profile/service_function_forwarder".format(api_host, vsys_id)
                 headers["Content-Type"] = "application/json"
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
@@ -847,7 +847,7 @@ class CreateProfile:
             "vsys_id": vsys_id,
             "uuids": template_id
         }
-        response = requests.get(url, params=params_dict, headers=headers)
+        response = requests.get(url, params=params_dict, headers=headers, verify=False)
         # 打桩数据
         r_dict = response.json()
         template_info = []
@@ -883,20 +883,20 @@ class CreateProfile:
 
     # 搜索sf并获取返回结果中的sf相关信息
     def search_sc_sff(self, sff_id, headers, api_host, profile_type, vsys_id):
-        url = "{}/v1/policy/profile/{type}/{ids}".format(api_host, type=profile_type, ids=sff_id)
+        url = "{}/v1/vsys{}/policy/profile/{type}/{ids}".format(api_host, vsys_id, type=profile_type, ids=sff_id)
         params_dict = {
             "vsys_id": vsys_id
         }
-        response = requests.get(url=url, params=params_dict, headers=headers)
+        response = requests.get(url=url, params=params_dict, headers=headers, verify=False)
         r_dict = response.json()
-        sff_info = {"id": sff_id, "type": "", "sf_info": []}
-        if (len(r_dict["data"]["service_function_forwarder"]["service_func_profiles"]) > 0):
-            sf_profile_id_list = r_dict["data"]["service_function_forwarder"]["service_func_profiles"]
+        sff_info = {"id": sff_id, "type": "","sf_info": []}
+        if(len(r_dict["data"]["service_func_profiles"])>0):
+            sf_profile_id_list = r_dict["data"]["service_func_profiles"]
             for i in sf_profile_id_list:
                 sf_profile_id = i
-                sff_info["sf_info"].append(self.search_sc_sf(sf_profile_id, headers, api_host, vsys_id))
-            sff_info["type"] = r_dict["data"]["service_function_forwarder"]["type"]
-            sff_info["failure_action"] = r_dict["data"]["service_function_forwarder"]["failure_action"]
+                sff_info["sf_info"].append(self.search_sc_sf(sf_profile_id, headers, api_host,vsys_id))
+            sff_info["type"] = r_dict["data"]["type"]
+            sff_info["failure_action"] = r_dict["data"]["failure_action"]
         return sff_info
 
     # 搜索sff并获取返回结果中的相关信息
@@ -905,18 +905,19 @@ class CreateProfile:
         params_dict = {
             "vsys_id": vsys_id
         }
-        response = requests.get(url, params=params_dict, headers=headers)
+        response = requests.get(url, params=params_dict, headers=headers, verify=False)
         r_dict = response.json()
+        print(json.dumps(r_dict))
         sf_info = {"uuid": sf_id, "connectivity": {"method": ""}, "health_check": {"method": ""}}
-        if r_dict["data"]["service_function"]["connectivity"]["method"] == "vxlan_g":
-            sf_info["connectivity"]["method"] = r_dict["data"]["service_function"]["connectivity"]["method"]
-            sf_info["connectivity"]["dest_ip"] = r_dict["data"]["service_function"]["connectivity"]["dest_ip"]
-            sf_info["health_check"]["method"] = r_dict["data"]["service_function"]["health_check"]["method"]
+        if r_dict["data"]["connectivity"]["method"] == "vxlan_g":
+            sf_info["connectivity"]["method"] = r_dict["data"]["connectivity"]["method"]
+            sf_info["connectivity"]["dest_ip"] = r_dict["data"]["connectivity"]["dest_ip"]
+            sf_info["health_check"]["method"] = r_dict["data"]["health_check"]["method"]
         else:
-            sf_info["connectivity"]["method"] = r_dict["data"]["service_function"]["connectivity"]["method"]
+            sf_info["connectivity"]["method"] = r_dict["data"]["connectivity"]["method"]
             sf_info["health_check"]["method"] = "none"
-        sf_info["device_tag"] = r_dict["data"]["service_function"]["device_group"]["value"]
-        sf_info["admin_status"] = r_dict["data"]["service_function"]["admin_status"]
+        sf_info["device_tag"] = r_dict["data"]["device_group"]["value"]
+        sf_info["admin_status"] = r_dict["data"]["admin_status"]
         return sf_info
 
 
