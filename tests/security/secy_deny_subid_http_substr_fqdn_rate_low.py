@@ -88,15 +88,15 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "reset",
+            "expected_return": "timed out",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"},
             {"query_field_key": "decoded_as", "query_value": "HTTP"}
             ],
             "traffic": {
                 "protocol": "http",
-                "type": "wget",
-                "command": "wget -q -O- -d http://open.node.com:180"
+                "type": "curl",
+                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
             },
             "token": ""
         }

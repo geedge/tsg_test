@@ -71,7 +71,7 @@ def run(parameter):
                         "select_type": False,
                         "negate": False,
                         "repeat_time": 2,
-                        "import_path": "/app/tests/api/preset_profile/url_import.txt"
+                        "import_path": "/app/support/api_utils/preset_profile/url_import.txt"
                     }
                 ],
                 "sub_action_override": True,

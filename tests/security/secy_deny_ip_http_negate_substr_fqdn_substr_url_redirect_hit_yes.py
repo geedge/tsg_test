@@ -111,8 +111,8 @@ def run(parameter):
             ],
             "traffic": {
                 "protocol": "http",
-                "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 http://open.node.com:180"
+                "type": "wget",
+                "command": "wget --debug http://open.node.com:180"
             },
             "token": ""
         }

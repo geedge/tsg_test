@@ -84,13 +84,14 @@ def run(parameter):
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "tamper",
+                        "type": "block",
+                        "code": 550
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "550",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"decoded_as", "query_value": "MAIL"},
             {"query_field_key":"mail_subject", "query_value": "Bestman"}

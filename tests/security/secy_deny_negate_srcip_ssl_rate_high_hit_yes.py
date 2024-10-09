@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -22,7 +22,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_mail_suff_subject_block_tamper",
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -31,12 +31,12 @@ def run(parameter):
                         "name": "secy_srcip",
                         "object_type": "ip",
                         "select_type": False,
-                        "negate": False,
+                        "negate": True,
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter['test_pc_ip'],
+                                "item_value": "1.1.1.1",
                             }
                         ]
                     }
@@ -46,7 +46,7 @@ def run(parameter):
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
-                "external_ip": [],
+                "external_ip":[],
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
@@ -57,86 +57,30 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "mail", #
+                        "name": "ssl", #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
                 "server_fqdn": [],
-                "protocol_filed": [
-                    {
-                        "name": "secy_mail_subject",
-                        "object_type": "keywords",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "mail_subject",
-                                "item_value": "TEXT",
-                                "value": ["tman"]
-                            }
-                        ],
-                    },
-                    {
-                        "name": "secy_mail_from",
-                        "object_type": "account",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "mail_from",
-                                "item_value": "hbn@163"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "secy_mail_to",
-                        "object_type": "account",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "mail_to",
-                                "item_value": "autotest"
-                            }
-                        ],
-                    }
-                ],
+                "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [
                     {
-                        "type": "block",
-                        "code": 551
+                        "type": "rate_limit",
+                        "rate_value": "100000",
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "551",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"decoded_as", "query_value": "MAIL"},
-            {"query_field_key":"mail_subject", "query_value": "Bestman"}
-            ],
+            "expected_return": "youtube",
+            "counters": {"hits": "many"},
+            "log_query_param": [{"query_field_key":"server_fqdn", "query_value": "www.youtube.com"}],
             "traffic": {
-                "protocol": "mail",
-                "type": "client", # client/curl
-                "mail_type": "smtp", # gmail or smtp or smtp_ssl
-                "mail_server": "192.168.40.206", # gmail: smtp.gmail.com
-                "mail_port": 25, # gmail：465（用于SSL）、587（用于启动TLS）。smtp默认：25
-                "mail_timeout": 20,
-                "sender": "hbn@163.com",
-                "password": "111111",
-                "receiver": "autotest@163.com",
-                "subject": "Bestman",
-                "body": "123",
-                "attach": "/app/support/packet_generator/mail_file/subjectEnglish.txt"
+                "protocol": "ssl",
+                "type": "curl",
+                "command": "curl -kv https://www.youtube.com"
             },
             "token": ""
         }
