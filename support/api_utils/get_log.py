@@ -12,7 +12,7 @@ class GetLog:
     def get_log_schema(self, token, log_type, api_host, vsys_id):
         # 修改完成后删除注释:将下方的security_event替换成变量
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/log/schema/" + log_type + "?vsys_id=" + str(vsys_id)
+        url = api_host + "/v1/vsys{}/log/schema/".format(vsys_id) + log_type 
         response = requests.get(url, headers=headers, verify=False)
         assert response.status_code == 200
         log_schema = json.loads(response.text)
@@ -340,7 +340,7 @@ class GetLog:
 
         log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts=1"
 
-        url = api_host + "/v1/log/query"
+        url = api_host + "/v1/vsys{}/log/query".format(v_id)
         response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
         assert response.status_code == 200
         log_list = json.loads(response.text)
@@ -420,7 +420,7 @@ class GetLog:
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
         # 请求接口查询metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/log/query"
+        url = api_host + "/v1/vsys{}/log/query".format(vsys_id)
         metric_result = False
         for i in range(rule_num):
             policy_type = test_data["policy_type"]
@@ -487,7 +487,7 @@ class GetLog:
     def get_sc_metric(self, token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, host_api, vsys_id):
         # 请求接口查询sc metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/log/query".format(host_api)
+        url = "{}/v1/vsys{}/log/query".format(host_api, vsys_id)
         # 重组请求体数据
         post_data_ori_json = """
         {
@@ -649,7 +649,7 @@ class GetLog:
         """
         # 请求接口查询statistics metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/log/query".format(host_api)
+        url = "{}/v1/vsys{}/log/query".format(host_api, vsys_id)
         # 24.08重组请求体dsl结构数据,文档见https://docs.geedge.net/display/TSG/DSL+Examples
         post_data_ori_json = """
         {
