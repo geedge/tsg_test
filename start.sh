@@ -22,12 +22,12 @@ python3 /opt/tsg_test/package/install_docker.py
 tee /etc/docker/daemon.json <<-'EOF'
 {
   "registry-mirrors": [
-        "https://i3nc9nvv.mirror.aliyuncs.com",
-        "https://mirror.ccs.tencentyun.com",
-        "https://docker.mirrors.ustc.edu.cn",
+        "https://dockerproxy.com",
         "https://registry.docker-cn.com",
         "https://hub-mirror.c.163.com",
-        "https://mirror.baidubce.com"
+        "https://docker.mirrors.ustc.edu.cn",
+        "https://cr.console.aliyun.com/",
+        "https://ccr.ccs.tencentyun.com"
   ]
 }
 EOF
