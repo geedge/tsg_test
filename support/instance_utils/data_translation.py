@@ -271,6 +271,8 @@ class DataTranslation:
                             }
                         ]
                     }
+                    if "negate" in v[i]:
+                        temp["is_negate"] = v[i]["negate"]
                     for u in range(len(v[i]["item"])):
                         # 添加多个item
                         add_item_dict = {}
@@ -579,6 +581,8 @@ class DataTranslation:
                         }
                     ]
                 }
+                if "negate" in v[0]:
+                        temp["is_negate"] = v[0]["negate"]
                 object.append(copy.deepcopy(temp))
             elif k == "protocol_filed":
                 for i in range(len(v)):

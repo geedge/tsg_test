@@ -540,6 +540,8 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_addCondition_posXpath": policyRulePage_addCondition_posXpath,
         "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
         "policyRulePage_negateSrcIP_posXpath":serviceChainingRulePage_negateSrcIP_posXpath,
+        "policyRulePage_negateDstIP_posXpath":serviceChainingRulePage_negateDstIP_posXpath,
+        "policyRulePage_negateUser_posXpath":serviceChainingRulePage_negateUser_posXpath,
         # Source IP
         "policyRulePage_addSrcIP_posXpath": serviceChainingRulePage_addSrcIP_posXpath,
         "policyRulePage_searchSrcIP_posXpath": serviceChainingRulePage_searchSrcIP_posXpath,
