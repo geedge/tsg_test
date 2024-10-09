@@ -138,7 +138,23 @@ class CreatePolicy:
                             else:
                                 sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
                                 sc_info["health_check_method"] = "none"
-                            statistics_sc_info_list.append(sc_info)
+                            negate_list = []
+                        if "condition" in test_data.keys():
+                            for con_key , con_value in test_data["condition"].items():
+                                if con_key == "ip_protocol" or con_key == "sub_action_override":
+                                    continue
+                                else:
+                                    if len(con_value) > 0:
+                                        for i in range(len(con_value)):
+                                            if "negate" in con_value[i].keys() and con_value[i]["negate"] == True:
+                                                negate_list.append(1)
+                                            else:
+                                                negate_list.append(0)
+                            if 1 in negate_list:
+                                sc_info["is_negate"] = 1
+                            else:
+                                sc_info["is_negate"] = 0
+                        statistics_sc_info_list.append(sc_info)
             if len(policy_id_list) > 0:
                 create_policies_ids.extend(policy_id_list)
         

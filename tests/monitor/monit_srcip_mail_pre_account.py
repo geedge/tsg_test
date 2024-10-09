@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_account",
-                                "item_value": "hbn*->"
+                                "item_value": "hbn*"
                             }
                         ],
                     }

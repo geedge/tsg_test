@@ -1,8 +1,8 @@
 import os
 import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -125,81 +125,6 @@ def run(parameter):
             },
             "token": ""
         }
-        # 测试数据
-        test_data = {
-            "is_multi_priority": False,
-            "rule_num": 1,
-            "policy_type": "monitor",
-            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
-            "rule_action": "allow",
-            "rule_type": "create",
-            "is_mirror": "off",
-            "mirror_type": "mail",
-            "condition": {
-                "source_ip": [
-                    {
-                        "name": "monitor_source_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "10.64.224.7",
-                            },
-                        ]
-                    }
-                ],
-                "application": [
-                    {
-                        "name": "mail",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
-                "protocol_filed": [
-                    {
-                        "name": "monitor_mail_att_content",
-                        "object_type": "keywords",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "Statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "mail_attachment_content",
-                                "item_value": "HEX",
-                                "value": [
-                                    "54526578"#TRex
-                                ]
-                            }
-                        ],
-                    }
-                ],
-            },
-            "expected_return": "trex",
-            "counters": {"hits": 1},
-            "log_query_param": [
-                {"query_field_key": "decoded_as", "query_value": "MAIL"}
-            ],
-            "traffic": {
-                "protocol": "",
-                "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
-                "servers_start_ip": "2.1.1.3",
-                "servers_end_ip": "2.1.1.3",
-                "m": 1,
-                "d": 1,
-                "yaml_name": "test",
-                "pcap_name": "mail_imap"
-            },
-            "token": ""
-        }
-
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()

@@ -1,9 +1,9 @@
 import os
 import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -118,7 +118,7 @@ if __name__ == '__main__':
         "debug_flag": "local",
         "is_log": 1,
         "env": "tsgx",
-        "script_type": "ui",
+        "script_type": "api",
         "vsys_id": 1,
         "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
         "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",

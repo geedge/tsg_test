@@ -174,7 +174,7 @@ def main():
         "token": "",
         'rule_id': '158489'
     }
-    output = {'total_packets': 873, 'total_packets_sent': 198, 'total_packets_received': 675, 'total_bytes': 978822, 'total_bytes_sent': 76869, 'total_bytes_received': 901953, 'total_syn_pkt': 9}
+    output = {'total_bytes': 978822, 'total_bytes_received': 901953, 'total_bytes_sent': 76869, 'total_packets': 873, 'total_packets_received': 675, 'total_packets_sent': 198, 'total_syn_pkt': 9}
     log_in = LogIn()
     pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
     token = log_in.login(parameter["username"], pwd, parameter["api_server"])

@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -11,7 +11,8 @@ def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
+        exception_result = ""
+        result = {}
         
         # 脚本启动时间
         start_time = time.time()
@@ -21,40 +22,79 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_action_1": "deny",
-            "method_1": "drop",
-            "do_log_1": 2,
-            "obj_condition_1": [
-                {
-                    "attribute_name": "ATTR_SERVER_FQDN",
-                    "object_type": "fqdn",
-                    "object_sub_type": "",
-                    "repeat_time": 3,
-                    "object_list": [
-                        {
-                            "add_item_list": [
-                                {
-                                    "keyword_array": [
-                                        "/app/tests/api/preset_profile/fqdn_import.txt"
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "application_1": ["http"],
+            "rule_name": "secy_deny_srcip_pre_fqdn_http_drop",
+            "rule_action": "deny",
+            "rule_type": "create",
+            "condition": {
+                "source_ip": [
+                    {
+                        "name": "secy_srcip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": parameter['test_pc_ip'],
+                            }
+                        ]
+                    }
+                ],
+                "source_port": [],
+                "destination_ip": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [],
+                "external_port": [],
+                "source_geography": [],
+                "destination_geography": [],
+                "sub_id": [],
+                "device": [],
+                "tunnel": [],
+                "tunnel_level": [],
+                "flag": [],
+                "application": [
+                    {
+                        "name": "http", #
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
+                "server_fqdn": [
+                    {
+                        "name": "secy_fqdn",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "repeat_time": 2,
+                        "import_path": "/app/tests/api/preset_profile/fqdn_import.txt"
+                    }
+                ],
+                "protocol_filed": [],
+                "sub_action_override": True,
+                "sub_action": [
+                    {
+                        "type": "drop",
+                        "drop_packet": 0,
+                        "send_tcp_rst": True,
+                        "send_icmp_unreachable": False
+                    }
+                ],
+                "packet_capture": []
+            },
+            "profile": [],
             "expected_return": "reset",
-            "counters_1": {"hits": 1},
-            "log_query_param_1": [{"query_field_key":"http_host","query_value":"open.node.com"}],
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"}],
             "traffic": {
                 "protocol": "http",
                 "type": "curl",
-                "command": "curl -kv http://open.node.com:180"
+                "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
             },
             "token": ""
         }
-        
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
@@ -76,21 +116,45 @@ def run(parameter):
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
-      
-if __name__ == "__main__":
+            
+if __name__ == '__main__':
+    # ui
+    # parameter = {
+    #     "username": "hebingning",
+    #     "password": "hbn66AAA",
+    #     "test_pc_ip": "192.168.64.65",
+    #     "test_subcriber_id": "test6776",
+    #     "api_server": "http://192.168.44.72",
+    #     "debug_flag": "local",
+    #     "script_type": "ui",
+    #     "env": "tsgx",
+    #     "vsys_id": 1,
+    #     "is_log": 1,
+    #     "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+    #     "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+    #     "module_name": "security",
+    #     "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+    # }
+    # run(parameter)
+    # api
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
+
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.88",
-        "test_subcriber_id": "test6488",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.93",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "debug_flag": "local",
+        "script_type": "api",  # api  ui  空字符串
+        "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 6,
-        "is_log": 0,
-        "root_path": "D:/python_script/tsg_test",
-        "path": "D:/python_script/tsg_test/tests/api",
+        "vsys_id": 1,
+        "root_path": workdir,
+        "path": workdir + "/tests/api",
         "module_name": "security",
-        "test_case_name": "deny_import_50w_fqdn"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)

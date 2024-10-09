@@ -238,6 +238,82 @@ class OrganizeConfig:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
 
+
+    def generate_random_dos_src_ip(self, config, parameter):
+        vsys_id = parameter["vsys_id"]
+        run_env = parameter["env"]
+        # statistics中将ip改为随机
+        if "condition" in config.keys():
+            for obj in config["condition"]:
+                if "source_ip" == obj:  # or "destination_ip" in obj:
+                    src_ip = config["condition"]["source_ip"][0]["item"][0]["item_value"]
+                    traffic_replace_ip = 0
+                    if "default" in src_ip:
+                        src_ip = "10.64.77.11"
+                        traffic_replace_ip = 1
+                    if "-" not in src_ip and "/" not in src_ip:
+                        src_ip_list = src_ip.split(".")
+                        if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(1, 25))
+                        elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
+                            src_ip_list[2] = str(random.randint(224, 255))
+                        src_ip_list[3] = str(random.randint(56, 99))
+                        if run_env == "9140":
+                            src_ip_list[0] = "172"
+                            src_ip_list[1] = "56"
+                        elif run_env == "tsgx":
+                            src_ip_list[0] = "10"
+                            src_ip_list[1] = "64"
+                        new_src_ip = ".".join(src_ip_list)
+                        start_ip = new_src_ip
+                        stop_ip = new_src_ip
+                        config["condition"][obj][0]["item"][0]["item_value"] = new_src_ip
+                    elif "-" in src_ip and "/" not in src_ip:
+                        two_ip_list = src_ip.split("-")
+                        ip_list_1 = two_ip_list[0].split(".")
+                        ip_list_2 = two_ip_list[1].split(".")
+                        if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
+                            ip_list_1[2] = str(random.randint(1, 25))
+                        elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
+                            ip_list_1[2] = str(random.randint(224, 255))
+                        else:
+                            ip_list_1[3] = str(random.randint(56,99))
+                        ip_list_2[2] = ip_list_1[2]
+                        ip_list_2[3] = str(int(ip_list_1[3]) + 1)
+                        new_ip_1 = ".".join(ip_list_1)
+                        new_ip_2 = ".".join(ip_list_2)
+                        if run_env == "9140":
+                            ip_list_1[0] = "172"
+                            ip_list_1[1] = "56"
+                            ip_list_2[0] = "172"
+                            ip_list_2[1] = "56"
+                        elif run_env == "tsgx":
+                            ip_list_1[0] = "10"
+                            ip_list_1[1] = "64"
+                            ip_list_2[0] = "10"
+                            ip_list_2[1] = "64"
+                        new_two_ip_list = []
+                        new_two_ip_list.append(new_ip_1)
+                        new_two_ip_list.append(new_ip_2)
+                        start_ip = new_ip_1
+                        stop_ip = new_ip_2
+                        new_two_ip = "-".join(new_two_ip_list)
+                        config["condition"][obj][0]["item"][0]["item_value"] = new_two_ip
+                    else:
+                        start_ip = stop_ip = "1.1.1.1"
+                    # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
+                    if obj == "source_ip":  # and traffic_replace_ip == 1:
+                        config["traffic"]["clients_start_ip"] = start_ip
+                        config["traffic"]["clients_end_ip"] = stop_ip
+                    # elif obj == "destination_ip":# and traffic_replace_ip == 1:
+                    #    config["traffic"]["servers_start_ip"] = start_ip
+                    #    config["traffic"]["servers_end_ip"] = stop_ip
+                    else:
+                        pass
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Setrandom ip for statistics rule.", flush=True)
+        return config
+
     def generate_only_dstip_for_trex_replay(self,data):
         # 遍历 traffic 字典,默认遍历的是key
         for obj in data["traffic"]:

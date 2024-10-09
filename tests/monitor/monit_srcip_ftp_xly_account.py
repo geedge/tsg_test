@@ -1,8 +1,8 @@
 import os
 import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -24,7 +24,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_ftp_account_exact_match",
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
             "rule_action": "monitor",
             "rule_type": "create",
             "condition": {

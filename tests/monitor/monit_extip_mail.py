@@ -2,14 +2,13 @@ import time
 import pytest
 import os
 import sys
-
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.element_position.map_element_position_library import replace_paras
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 import support.ui_utils.env
@@ -128,7 +127,7 @@ if __name__ == '__main__':
         "debug_flag" : "local",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 10,
+        "vsys_id": 1,
         "is_log": 1,
         "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
         "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/testcase/ui",

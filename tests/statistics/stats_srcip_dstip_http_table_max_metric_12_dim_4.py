@@ -76,11 +76,11 @@ def run(parameter):
                 "tunnel_level": [],
                 "flag": [],
                 "application": [
-                    {
-                        "name": "http",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
+                #    {
+                #        "name": "http",  #
+                #        "object_type": "application",
+                #        "negate": False
+                #    }
                 ],
                 "server_fqdn": [
                 ],

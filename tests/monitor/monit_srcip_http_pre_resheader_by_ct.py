@@ -1,8 +1,8 @@
 import os
 import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -25,7 +25,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": "monitor_app_http_response_heaser_left_match",
-            "rule_action": "",
+            "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
@@ -149,10 +149,10 @@ if __name__ == '__main__':
         "debug_flag": "local",
         "is_log": 1,
         "env": "tsgx",
-        "script_type": "ui",
+        "script_type": "api",
         "vsys_id": 1,
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/testcase/ui",
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
         "module_name": "monitor",
         "test_case_name": "monitor_rule_mail_mirror_on"
     }

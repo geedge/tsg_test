@@ -44,23 +44,22 @@ def run(parameter):
                 ],
                 "application": [
                     {
-                        "name": "http",
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ]
             },
             "threshold": {
-                "type": "rate",
-                "rate_threshold": {
+                "type": "concurrency",
+                "concurrency_threshold": {
                     "group_by": "source_ip",
-                    "request_per_period": 1,
-                    "counting_period": "1min"
+                    "concurrent_sessions": 2 #为1的时候packets_received有为0、为1的不好校验
                 }
             },
             "mitigation": {
                 "behavior": "deny",
-                "timeout": "2min"
+                "timeout": "1h"
             },
             "expected_return": "",
             "counters": {"hits": "many"},
@@ -72,18 +71,25 @@ def run(parameter):
                 {"query_field_key": "bit_rate", "query_value": ""},
                 {"query_field_key": "packet_rate", "query_value": ""},
                 {"query_field_key": "session_rate", "query_value": ""},
+
+                {"query_field_key": "rule_id", "query_value": ""},
+                {"query_field_key": "conditions", "query_value": ""},
+                {"query_field_key": "source_ip_list", "query_value": ""},
+                {"query_field_key": "source_country_list", "query_value": "Private Network"},
+                {"query_field_key": "destination_ip", "query_value": ""},
+                {"query_field_key": "destination_country", "query_value": "US"},
             ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
                 "clients_start_ip": "1.1.1.1",
                 "clients_end_ip": "1.1.1.1",
-                "servers_start_ip": "2.1.2.32",
-                "servers_end_ip": "2.1.2.32",
-                "m": 2,
+                "servers_start_ip": "2.1.2.30",
+                "servers_end_ip": "2.1.2.30",
+                "active_flows": 3,
                 "d": 5,
                 "yaml_name": "test",
-                "pcap_name": "http"
+                "pcap_name": "tcp_long3"
             },
             "token": ""
         }

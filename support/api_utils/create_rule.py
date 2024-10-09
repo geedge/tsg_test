@@ -362,21 +362,52 @@ class CreatePolicyRule:
             #     rules.append(rule_dict)
             #     user_region["rules"] = rules
             rule_template_dict["rule"]["user_region"] = user_region
+        
         elif condition["policy_type"] == "monitor":
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             if action == "monitor":
-                # 设置 packet_capture 部分
-                user_region["packet_capture"] = {
-                    "enable": 0  # 根据实际情况调整是否启用
-                }
-                # 设置 traffic_mirror 部分
-                user_region["traffic_mirror"] = {
-                    "enable": 1,  # 启用流量镜像
-                    "mirror_profile": create_profile_ids[0]["id"]  # 使用 create_profile_ids 中的第一个 ID 作为镜像配置
-                }
+                #user_region_data = condition["user_region"]
+                #设置 packet_capture 部分
+                if 'packet_capture' in condition['condition'] and isinstance(condition['condition']['packet_capture'],
+                                                                             list):
+                    if condition['condition']['packet_capture']:  # 检查列表是否为空
+                        packet_capture_settings = condition['condition']['packet_capture'][0]
+                        user_region["packet_capture"] = {
+                            "enable": 1 if packet_capture_settings.get('enable', False) else 0
+                        }
+                        if user_region["packet_capture"]["enable"] == 1:
+                            user_region["packet_capture"]["capture_depth"] = int(packet_capture_settings.get(
+                                'capture_depth', 2000))  # 默认为 2000
+                    else:
+                        user_region["packet_capture"] = {"enable": 0}  # packet_capture 为空，设置为 0
+                else:
+                    user_region["packet_capture"] = {"enable": 0}  # packet_capture 不存在，设置为 0
+                #设置 traffic_mirror 部分
+                traffic_mirror_enabled = condition.get('is_mirror', 'off') == 'on'  # 检查是否启用镜像
+                if traffic_mirror_enabled:
+                    profile_condition_list = condition.get('profile_condition', [])
+                    if profile_condition_list:
+                        for profile in profile_condition_list:
+                            if 'traffic_mirror' in profile:
+                                traffic_mirror_config = profile['traffic_mirror']
+                                user_region["traffic_mirror"] = {
+                                    "enable": 1 if traffic_mirror_config.get('is_enabled', False) else 0,
+                                    # "mirror_profile": traffic_mirror_config.get('name', create_profile_ids[0]["id"])
+                                    "mirror_profile": create_profile_ids[0]["id"]
+                                }
+                                break  # 找到后退出循环
+                        else:
+                            # 没有找到具体的 traffic_mirror 配置，使用默认配置
+                            user_region["traffic_mirror"] = {"enable": 1, "mirror_profile": create_profile_ids[0]["id"]}
+                    else:
+                        # 没有 profile_condition，但镜像需要启用
+                        user_region["traffic_mirror"] = {"enable": 1}
+                else:
+                    # 镜像未启用
+                    user_region["traffic_mirror"] = {"enable": 0}
+
             rule_template_dict["rule"]["user_region"] = user_region
-        
         # 添加用例名称
         if "rule_name" in condition:
             rule_template_dict["rule"]["name"] = condition["rule_name"]
