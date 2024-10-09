@@ -262,7 +262,7 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record successfully.", flush=True)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
-                    elif create_profile_ids[del_porfile_index]["profile_type"] == "traffic_mirror":  # 删除dns_record
+                    elif create_profile_ids[del_porfile_index]["profile_type"] == "traffic_mirror":  # 删除traffic mirror
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         url = "{}/v1/vsys{}/policy/profile/traffic_mirror".format(api_server, vsys_id)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}

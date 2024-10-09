@@ -139,17 +139,17 @@ class CreatePolicyRule:
                 rule_template_dict['rule']['action_parameter']['tamper_mode'] = 'complete'
         elif action == 'monitor' and policy_type == "monitor":
             if 'packet_capture_' + str(create_number) in condition:
-                rule_template_dict["rule"]["user_region"]["packet_capture"]["enable"] = condition['packet_capture_' + str(create_number)]["enable"]
-                if rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] in condition['packet_capture_' + str(create_number)]:
-                    rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
+                rule_template_dict["rule"]["action_parameter"]["packet_capture"]["enable"] = condition['packet_capture_' + str(create_number)]["enable"]
+                if rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] in condition['packet_capture_' + str(create_number)]:
+                    rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
                 else:
-                    rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] = 2000
+                    rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = 2000
             else:
-                rule_template_dict['rule']['user_region']['packet_capture'] = {"enable": 0}
+                rule_template_dict['rule']['action_parameter']['packet_capture'] = {"enable": 0}
             if 'traffic_mirror_' + str(create_number) in condition:
-                rule_template_dict["rule"]["user_region"]["traffic_mirror"]["enable"] = condition['traffic_mirror_' + str(create_number)]["enable"]
+                rule_template_dict["rule"]["action_parameter"]["traffic_mirror"]["enable"] = condition['traffic_mirror_' + str(create_number)]["enable"]
             else:
-                rule_template_dict["rule"]["user_region"]["traffic_mirror"] = {"enable": 0}
+                rule_template_dict["rule"]["action_parameter"]["traffic_mirror"] = {"enable": 0}
         elif policy_type == "dos_protection" and action == "protect":
             if condition["threshold"]["type"] == "rate":
                 rule_template_dict['rule']['action_parameter']["threshold"] = {
@@ -261,8 +261,8 @@ class CreatePolicyRule:
                     user_region["protocol"] = ""
                 else:
                     user_region["protocol"] = condition["application"][0]
-            user_region["template_id"] = create_profile_ids[0]["id"]
-            rule_template_dict["rule"]["user_region"] = user_region
+            user_region["template_uuid"] = create_profile_ids[0]["uuid"]
+            rule_template_dict["rule"]["action_parameter"] = user_region
         # 添加intercept逻辑, 填写和Intercept相关的user_region
         elif condition["policy_type"] == "pxy_intercept":
             user_region = {"protocol": "", "tcp_option_profile": 1}
@@ -360,9 +360,9 @@ class CreatePolicyRule:
                 # 设置 traffic_mirror 部分
                 user_region["traffic_mirror"] = {
                     "enable": 1,  # 启用流量镜像
-                    "mirror_profile": create_profile_ids[0]["id"]  # 使用 create_profile_ids 中的第一个 ID 作为镜像配置
+                    "mirror_profile": create_profile_ids[0]["uuid"]  # 使用 create_profile_ids 中的第一个 ID 作为镜像配置
                 }
-            rule_template_dict["rule"]["user_region"] = user_region
+            rule_template_dict["rule"]["action_parameter"] = user_region
 
         # 添加用例名称
         if "rule_name" in condition:
