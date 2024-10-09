@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -26,7 +26,21 @@ def run(parameter):
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
+                "source_ip": [
+                    {
+                        "name": "secy_srcip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": parameter['test_pc_ip'],
+                            }
+                        ]
+                    }
+                ],
                 "source_port": [],
                 "destination_ip": [],
                 "destination_port": [],
@@ -36,21 +50,7 @@ def run(parameter):
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
-                "sub_id": [
-                    {
-                        "name": "secy_subid",
-                        "object_type": "subscriberid",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "subscriberid",
-                                "item_value": '$' + parameter["test_subcriber_id"],
-                            }
-                        ]
-                    }
-                ],
+                "sub_id": [],
                 "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
@@ -67,39 +67,49 @@ def run(parameter):
                         "name": "secy_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
-                        "negate": False,
+                        "negate": True,
                         "items": [
                             {
                                 "item_operation": "add",
                                 "item_type": "fqdn",
-                                "item_value": "open.node.com",
+                                "item_value": "open.node",
                             }
                         ]
                     }
                 ],
-                "protocol_filed": [],
+                "protocol_filed": [
+                    {
+                        "name": "secy_url",
+                        "object_type": "url",
+                        "item_operation": "add",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "url",
+                                "item_value": "open.node.com"
+                            }
+                        ],
+                    }
+                ],
                 "sub_action_override": True,
                 "sub_action": [
                     {
                         "type": "redirect",
                         "to_url": "https://www.youtube.com",
-                        "drop_packet": 0,
-                        "send_tcp_rst": True,
-                        "send_icmp_unreachable": False
                     }
                 ],
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "200",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"},
-            {"query_field_key": "decoded_as", "query_value": "HTTP"}
-            ],
+            "expected_return": "POST",
+            "counters": {"hits": 0},
+            "log_query_param": [],
             "traffic": {
                 "protocol": "http",
-                "type": "wget",
-                "command": "wget -q -O- -d http://open.node.com:180"
+                "type": "curl",
+                "command": "curl --connect-timeout 10 -m 10 http://open.node.com:180"
             },
             "token": ""
         }

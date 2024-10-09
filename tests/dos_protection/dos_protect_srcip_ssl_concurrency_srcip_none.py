@@ -88,7 +88,7 @@ def run(parameter):
                 "clients_end_ip": "1.1.1.1",
                 "servers_start_ip": "2.1.2.41",
                 "servers_end_ip": "2.1.2.41",
-                "active_flows": 2,
+                "active_flows": 3,
                 "d": 5,
                 "yaml_name": "test",
                 "pcap_name": "tls_long"

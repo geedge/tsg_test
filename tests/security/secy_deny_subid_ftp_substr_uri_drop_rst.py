@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -96,11 +96,11 @@ def run(parameter):
             "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"},
             {"query_field_key": "decoded_as", "query_value": "FTP"},
             {"query_field_key":"ftp_account", "query_value": "ftpuser"},
-            {"query_field_key":"ftp_url", "query_value": "ftp://192.168.40.206/autoFtp/english_big.txt"}],
+            {"query_field_key":"ftp_url", "query_value": "ftp://192.168.40.206/autoFtp/english.txt"}],
             "traffic": {
                 "protocol": "ftp",
                 "type": "curl",
-                "command": "curl -m 25 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
+                "command": "curl -m 25 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
             },
             "token": ""
         }

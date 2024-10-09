@@ -131,6 +131,7 @@ class CreatePolicy:
                             sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["id"]
                             sc_info["device_tag"] = sff["sff_info"]["sf_info"][0]["device_tag"]
                             sc_info["admin_status"] = sff["sff_info"]["sf_info"][0]["admin_status"]
+                            sc_info["load_balance_localization"] = sff["sff_info"]["load_balance_localization"]
                             if sff["sff_info"]["sf_info"][0]["connectivity"]["method"] == "vxlan_g":
                                 sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
                                 sc_info["sf_dest_ip"] = sff["sff_info"]["sf_info"][0]["connectivity"]["dest_ip"]

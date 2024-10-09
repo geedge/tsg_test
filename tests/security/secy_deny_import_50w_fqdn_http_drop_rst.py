@@ -69,7 +69,7 @@ def run(parameter):
                         "select_type": False,
                         "negate": False,
                         "repeat_time": 2,
-                        "import_path": "/app/tests/api/preset_profile/fqdn_import.txt"
+                        "import_path": "/app/support/api_utils/preset_profile/fqdn_import.txt"
                     }
                 ],
                 "protocol_filed": [],

@@ -31,7 +31,7 @@ def run(parameter):
                         "name": "secy_srcip",
                         "object_type": "ip",
                         "repeat_time": 2,
-                        "import_path": "/app/tests/api/preset_profile/ip_import.txt",
+                        "import_path": "/app/support/api_utils/preset_profile/ip_import.txt",
                         "select_type": False,
                         "negate": False,
                     }

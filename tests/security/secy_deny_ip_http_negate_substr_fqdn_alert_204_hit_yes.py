@@ -96,7 +96,7 @@ def run(parameter):
             "traffic": {
                 "protocol": "http",
                 "type": "wget",
-                "command": "wget -q -O- http://open.node.com:180"
+                "command": "wget -q -O- --debug http://open.node.com:180"
             },
             "token": ""
         }

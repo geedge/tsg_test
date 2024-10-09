@@ -91,7 +91,7 @@ def run(parameter):
                 "packet_capture": []
             },
             "profile": [],
-            "expected_return": "timed out",
+            "expected_return": "reset",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key":"server_fqdn", "query_value": "open.node.com"}],
             "traffic": {

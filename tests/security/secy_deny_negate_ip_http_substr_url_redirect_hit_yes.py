@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -97,8 +97,8 @@ def run(parameter):
             ],
             "traffic": {
                 "protocol": "http",
-                "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 http://open.node.com:180"
+                "type": "wget",
+                "command": "wget --debug  http://open.node.com:180"
             },
             "token": ""
         }

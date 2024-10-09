@@ -653,7 +653,7 @@ class CreateProfile:
         sff_template_dict["service_function_forwarder"]["name"] = sff_post_data["name"]
         sff_template_dict["service_function_forwarder"]["type"] = sff_post_data["type"]
         sff_template_dict["service_function_forwarder"]["load_balance_method"] = sff_post_data["load_balance_method"]
-        sff_template_dict["service_function_forwarder"]["load_balance_localization"] = sff_post_data["load_balance_localization"]
+        sff_template_dict["service_function_forwarder"]["load_balance_localization"] = sff_post_data["load_balance_localization"].lower()
         sff_template_dict["service_function_forwarder"]["failure_action"] = sff_post_data["failure_action"]
         if sff_post_data["failure_action"] == "re-dispatch":
             sff_template_dict["service_function_forwarder"]["unavailability_action"] = {}
@@ -900,6 +900,7 @@ class CreateProfile:
                 sf_profile_id = i
                 sff_info["sf_info"].append(self.search_sc_sf(sf_profile_id, headers, api_host,vsys_id))
             sff_info["type"] = r_dict["data"]["service_function_forwarder"]["type"]
+            sff_info["load_balance_localization"] = r_dict["data"]["service_function_forwarder"]["load_balance_localization"]
             sff_info["failure_action"] = r_dict["data"]["service_function_forwarder"]["failure_action"]
         return sff_info
 
