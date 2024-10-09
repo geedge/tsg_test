@@ -1534,7 +1534,10 @@ def get_name_list(test_data):
                 for i in range(len(value)):
                     tmp_name_dict = {}
                     tmp_name_dict["type"] = value[i]["profile_type"]
-                    tmp_name_dict["name"] = value[i]["profile_file"]["name"]
+                    if tmp_name_dict["type"] == "statistics_template":
+                        tmp_name_dict["name"] = value[i]["name"]
+                    else:
+                        tmp_name_dict["name"] = value[i]["profile_file"]["name"]
                     name_list.append(copy.deepcopy(tmp_name_dict))
     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], name_list)
     #"""
