@@ -234,12 +234,22 @@ class DataTranslation:
                     }
                     if "negate" in v[i]:
                         temp["is_negate"] = v[i]["negate"]
-                    for u in range(len(v[i]["item"])):
-                        # 添加多个item
-                        add_item_dict = {}
-                        add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
-                        add_item_dict["port_range"] = "0-65535"
+                    if "repeat_time" in v[i] and v[i]["repeat_time"] > 1:
+                        temp["repeat_time"] = v[i]["repeat_time"]
+                        import_path = v[i]["import_path"]
+                        add_item_dict = {
+                                "keyword_array": []
+                            }
+                        add_item_dict["keyword_array"].append(import_path)
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        # temp["object_list"][0]["add_item_list"].append(import_path)
+                    if "item" in v[i]:
+                        for u in range(len(v[i]["item"])):
+                            # 添加多个item
+                            add_item_dict = {}
+                            add_item_dict["ip_address"] = v[i]["item"][u]["item_value"]
+                            add_item_dict["port_range"] = "0-65535"
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "destination_ip":
@@ -505,13 +515,22 @@ class DataTranslation:
                     }
                     if "negate" in v[i]:
                         temp["is_negate"] = v[i]["negate"]
-                    for u in range(len(v[i]["items"])):
-                        # 添加多个item
+                    if "repeat_time" in v[i] and v[i]["repeat_time"] > 1:
+                        temp["repeat_time"] = v[i]["repeat_time"]
+                        import_path = v[i]["import_path"]
                         add_item_dict = {
-                            "keyword_array": []
-                        }
-                        add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                                "keyword_array": []
+                            }
+                        add_item_dict["keyword_array"].append(import_path)
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    if "items" in v[i]:    
+                        for u in range(len(v[i]["items"])):
+                            # 添加多个item
+                            add_item_dict = {
+                                "keyword_array": []
+                            }
+                            add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "apn":
@@ -581,15 +600,25 @@ class DataTranslation:
                                 }
                             ]
                         }
-                        if v[i]["items"][0]["item_type"] == "ftp_url":
-                            temp["attribute_name"] = "ATTR_FTP_URI"
-                        for u in range(len(v[i]["items"])):
-                            # 添加多个item
+                        if "items" in v[i]:
+                            if v[i]["items"][0]["item_type"] == "ftp_url":
+                                temp["attribute_name"] = "ATTR_FTP_URI"
+                        if "repeat_time" in v[i] and v[i]["repeat_time"] > 1:
+                            temp["repeat_time"] = v[i]["repeat_time"]
+                            import_path = v[i]["import_path"]
                             add_item_dict = {
-                                "keyword_array": []
-                            }
-                            add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                                    "keyword_array": []
+                                }
+                            add_item_dict["keyword_array"].append(import_path)
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        if "items" in v[i]:
+                            for u in range(len(v[i]["items"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "keyword_array": []
+                                }
+                                add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "http_signature":
                         if v[i]["item"][0]["item_type"] == "request_header":

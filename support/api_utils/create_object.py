@@ -87,6 +87,10 @@ class CreateObject:
                                 "create_url_ids": [],
                                 "create_subid_ids": [],
                                 "create_flag_ids": [],
+                                "create_phone_number_ids": [],
+                                "create_imei_ids": [],
+                                "create_apn_ids":[],
+                                "create_imsi_ids": [],
                                 "create_keywords_ids": [],
                                 "create_account_ids": [],
                                 "create_http_signature_ids": [],
@@ -468,7 +472,10 @@ class CreateObject:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Verify the imported {} object failed.".format(obj_template_dict['object']['type']), flush=True)
                 time1 = datetime.now()
                 url = api_host + "/v1/policy/object/import"
-                response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file_import"], verify=False)
+                import_data = obj_template_dict["data"]
+                if "sub_type" in import_data:
+                    del import_data["sub_type"]
+                response = requests.post(url, data=import_data, headers=headers, files=obj_template_dict["file_import"], verify=False)
                 time.sleep(20)
                 time2 = datetime.now()
                 time_difference = time2 - time1
