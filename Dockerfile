@@ -17,6 +17,9 @@ RUN touch /var/log/selenium_stderr.log
 RUN touch /var/log/gunicorn_stdout.log
 RUN touch /var/log/gunicorn_stderr.log
 
+# 安装mod需要的包
+RUN cd /app/support/packet_generator/dtls_client && go mod tidy
+
 # 对外暴露的端口号
 EXPOSE 8800
 
