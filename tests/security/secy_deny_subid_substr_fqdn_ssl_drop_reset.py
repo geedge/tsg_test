@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -23,7 +23,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "security",
             "rule_name": os.path.splitext(os.path.basename(__file__))[0],
-            "rule_action": "allow",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],
