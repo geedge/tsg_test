@@ -92,7 +92,7 @@ class GetLog:
                     log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, {policy_id})"
                     log_condition_dict['filter'] = log_filter
                     log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
-            url = api_host + "/v1/log/query"
+            url = api_host + "/v1/vsys{}/log/query".format(vsys_id)
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200

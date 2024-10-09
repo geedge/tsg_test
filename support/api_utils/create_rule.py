@@ -402,7 +402,7 @@ class CreatePolicyRule:
         try:
             rule_type = rule_template_dict["rule"]["type"]
             url = api_host + "/v1/vsys{}/policy/rule/{}".format(vsys_id, rule_type)
-            print(json.dumps(rule_template_dict))
+            #print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             if response.status_code == 200:
