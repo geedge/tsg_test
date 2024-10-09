@@ -95,7 +95,6 @@ def run(parameter):
                         {
                             "name": "vxlan_activeip_bfd",
                             "profile_type": "create",
-                            #"device_group": "Device_Group:group-xxg-tsgx",
                             "device_group": "Device_Group:City A",
                             "connectivity": "VXLAN-G:2.2.2.53",
                             "health_check": "BFD:60000:255",
@@ -141,8 +140,6 @@ def run(parameter):
         update.write_result(parameter, result, exception_result)
     
 if __name__ == '__main__':
-    from support.ui_utils.element_position.map_element_position_library import replace_paras
-    from support.ui_utils.workpath import workdir
     parameter = {
         "username": "lytest",
         "password": "123456ly",
@@ -153,16 +150,11 @@ if __name__ == '__main__':
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
-        # "root_path": "C:/automation_project/tsg_test",
-        # "path": "C:/automation_project/tsg_test/tests/ui",
-        # "module_name": "service_chaining",
-        # "test_case_name": "sc_decrypted_negate_srcip_fqdn_ssl_steer_bypass_vxlan_activeip_bfd",
-        "root_path": workdir,
-        "path": workdir + "/testcase/ui",
-        "module_name": "manipulation",
-        "test_case_name": os.path.basename(__file__)[:-3]
+        "root_path": "C:/automation_project/tsg_test",
+        "path": "C:/automation_project/tsg_test/tests/ui",
+        "module_name": "service_chaining",
+        "test_case_name": "sc_decrypted_negate_srcip_fqdn_ssl_steer_bypass_vxlan_activeip_bfd",
     }
-    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：
