@@ -170,9 +170,8 @@ class OrganizeConfig:
         # statistics中将ip改为随机
         if "condition" in config.keys():
             sub_id_flag = False
-            if "sub_id" in config["condition"].keys():
-                if len(config["condition"]["sub_id"]) > 0:
-                    sub_id_flag = True
+            if "sub_id" in config["rule_name"]:
+                sub_id_flag = True
             for obj in config["condition"]:
                 if "source_ip" == obj:# or "destination_ip" in obj:
                     src_ip = config["condition"]["source_ip"][0]["item"][0]["item_value"]

@@ -1109,12 +1109,74 @@ class GetLog:
         'out_pkt_length_distribution': 'Outgoing Packet Length',
         'pkt_length_distribution': 'Packet Length',        
         """
+        #unique和syn数量：1一致
+        one_unique = {
+            'client_ip_object_list',
+            'server_ip_object_list',
+            'client_ip',
+            'client_country',
+            'server_ip',
+            'server_country',
+            'client_asn',
+            'server_asn',
+            'server_fqdn',
+            'server_domain',
+            'app',
+            'device_group',
+            'c2s_link_id',
+            's2c_link_id',
+            'client_port',
+            'server_port',
+            'http_host',
+            'ssl_ja3_hash',
+            'ssl_sni',
+            'subscriber_id',
+            'decoded_as',
+            'sled_ip',
+            'direction',
+            'session_id',
+            'in_latency_ms',
+            'out_latency_ms',
+            'dtls_handshake_latency_ms',
+            'ssl_handshake_latency_ms',
+            'tcp_handshake_latency_ms',
+            'duration_ms',
+            'tcp_rtt_ms',
+            'new_c2s_flows',
+            'new_s2c_flows',
+            'c2s_ip_fragments',
+            's2c_ip_fragments'
+        }
+        # unique数量大于1，具体数量不定
+        uncertain_quantity_unique = {
+            'app_category',
+            'c2s_ttl',
+            's2c_ttl',
+            'flags',
+            'in_pkt_length_distribution',
+            'out_pkt_length_distribution',
+            'pkt_length_distribution',
+            'sent_bytes',
+            'sent_pkts',
+            'received_pkts',
+            'received_bytes',
+            'in_bytes',
+            'out_bytes',
+            'in_pkts',
+            'out_pkts',
+            'c2s_ip_fragments',
+            's2c_ip_fragments'
+        }
         try:
             match len(source_fields):
                 case 1:
                     if source_fields[0] in all_metrics:
                         # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                        if source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","new_c2s_flows","new_s2c_flows"} and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                        if source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","syn_pkts"} and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                            metric_result = True
+                        elif source_fields[0] in one_unique and (stats_value == test_traffic_statistics["total_syn_pkt"]):
+                            metric_result = True
+                        elif source_fields[0] in uncertain_quantity_unique and (stats_value >= test_traffic_statistics["total_syn_pkt"]):
                             metric_result = True
                         elif stats_value >= 1:
                             metric_result = True
@@ -1122,10 +1184,10 @@ class GetLog:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 2:
                     if source_fields[0] in all_metrics and source_fields[1] in all_metrics:
-                        if (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                        if (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and (stats_value == test_traffic_statistics["total_syn_pkt"]):
                             metric_result = True
                         # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                        elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
                             metric_result = True
                         elif stats_value >= test_traffic_statistics["total_syn_pkt"]:
                             metric_result = True
