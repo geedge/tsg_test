@@ -346,7 +346,7 @@ class CreatePolicyRule:
                 user_region["rules"] = rules
                 user_region["method"] = "edit_element"
             rule_template_dict["rule"]["action_parameter"] = user_region
-            rule_template_dict["rule"].pop("user_region")
+            # rule_template_dict["rule"].pop("user_region")
         elif condition["policy_type"] == "monitor":
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]

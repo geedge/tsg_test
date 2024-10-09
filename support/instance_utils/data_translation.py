@@ -1280,59 +1280,6 @@ class DataTranslation:
                         add_item_dict["mask"] = v[i]["items"][u]["mask"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     object.append(copy.deepcopy(temp))
-                            for u in range(len(v[i]["items"])):
-                                # 添加多个item
-                                add_item_dict = {
-                                    "op": "add",
-                                    "expr_type": "and",
-                                    "expression": "example.com"
-                                }
-                                add_item_dict["op"] = v[i]["items"][u]["item_operation"]
-                                add_item_dict["expr_type"] = "and"
-                                expression = v[i]["items"][u]["item_value"]
-                                if expression.startswith("*"):  # suffix   兼容*匹配模式
-                                    tmp_expr = "{}$".format(expression[1:])
-                                elif expression.endswith("*"):  # prefix  后缀匹配
-                                    tmp_expr = "^{}".format(expression[:-1])
-                                elif expression.startswith("$"):  # exactly
-                                    tmp_expr = "^{}$".format(expression[1:])
-                                else:  # substring ^ $ 模式保持不变
-                                    tmp_expr = expression
-                                add_item_dict["expression"] = tmp_expr
-                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
-                            temp["is_negate"] = v[i]["negate"]
-                            object.append(copy.deepcopy(temp))
-            elif k == "flag":
-                for i in range(len(v)):
-                    temp = {
-                        "name": v[i]["name"],
-                        "attribute_name": "ATTR_FLAG",
-                        "object_type": "flag",
-                        "object_sub_type": "flag",
-                        "object_list": [
-                            {
-                                "add_item_list": [
-                                    # {
-                                    #     "op": "add",
-                                    #     "flag": "64",
-                                    #     "mask": "64"
-                                    # }
-                                ]
-                            }
-                        ]
-                    }
-                    for u in range(len(v[i]["items"])):
-                        # 添加多个item
-                        add_item_dict = {
-                            "op": "add",
-                            "flag": "64",
-                            "mask": "64"
-                        }
-                        add_item_dict["op"] = v[i]["items"][u]["item_operation"]
-                        add_item_dict["flag"] = v[i]["items"][u]["flag"]
-                        add_item_dict["mask"] = v[i]["items"][u]["mask"]
-                        temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
-                    object.append(copy.deepcopy(temp))
         return object
 
     def push_profile_data(self, parameter, data):
