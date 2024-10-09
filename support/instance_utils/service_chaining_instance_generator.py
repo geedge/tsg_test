@@ -375,7 +375,7 @@ class ServiceChainingInstanceGenerator:
             # 流量验证
             verify = Verification()
             verification_result = verify.verification("", parameter, test_data, cfg_list, "")
-            """
+
             # 分析验证结果，并返回给flask
             analysis = AnalysisResult()
             api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
@@ -383,7 +383,7 @@ class ServiceChainingInstanceGenerator:
             # 删除配置
             delete = DeletePolicy()
             delete.delele_policy_by_cfg(token, parameter, cfg_list)
-            """
+
             result["api_result"] = api_result
 
         return result

@@ -806,7 +806,7 @@ class CreateProfile:
                 profile_dns_record_template = path_dict["profile_dns_record_template"]
                 process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
                 url = "{}/v1/vsys{}/policy/profile/dns_record".format(api_host, vsys_id)
-                print(json.dumps(process_post_data))
+                #print(json.dumps(process_post_data))
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -907,7 +907,7 @@ class CreateProfile:
         }
         response = requests.get(url, params=params_dict, headers=headers, verify=False)
         r_dict = response.json()
-        print(json.dumps(r_dict))
+        #print(json.dumps(r_dict))
         sf_info = {"uuid": sf_id, "connectivity": {"method": ""}, "health_check": {"method": ""}}
         if r_dict["data"]["connectivity"]["method"] == "vxlan_g":
             sf_info["connectivity"]["method"] = r_dict["data"]["connectivity"]["method"]

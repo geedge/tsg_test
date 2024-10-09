@@ -401,7 +401,7 @@ class CreatePolicyRule:
         pre_intercept_template_path["rule"]["name"] = tmp_name
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host, vsys_id)
         pre_policy_id_list = pre_intercept_policy_id_dict
-
+        #pre_policy_id_list = []
         return pre_policy_id_list
 
     # 请求创建策略接口，下发策略
@@ -409,7 +409,7 @@ class CreatePolicyRule:
         try:
             rule_type = rule_template_dict["rule"]["type"]
             url = api_host + "/v1/vsys{}/policy/rule/{}".format(vsys_id, rule_type)
-            #print(json.dumps(rule_template_dict))
+            print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             if response.status_code == 200:

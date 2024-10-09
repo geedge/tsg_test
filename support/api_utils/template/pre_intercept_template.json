@@ -9,12 +9,11 @@
         "user_tags": "",
         "log_option": "metadata",
         "effective_range": {},
-        "user_region": {
-            "protocol": "SSL",
-            "keyring_for_untrusted": 0,
-            "keyring_for_trusted": 1,
-            "decryption_profile": 1,
-            "tcp_option_profile": 1,
+        "action_parameter": {
+            "keyring_for_untrusted": "cfcd2084-95d5-65ef-66e7-dff9f98764da",
+            "keyring_for_trusted": "c4ca4238-a0b9-2382-0dcc-509a6f75849b",
+            "decryption_profile": "c4ca4238-a0b9-2382-0dcc-509a6f75849b",
+            "tcp_option_profile": "c4ca4238-a0b9-2382-0dcc-509a6f75849b",
             "traffic_mirror": {
                 "enable": 0
             }
