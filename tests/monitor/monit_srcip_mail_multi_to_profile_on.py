@@ -63,7 +63,8 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_to",
-                                "item_value": "zhangchengwei&163fx@163.com"
+                                # "item_value": "zhangchengwei&163fx@163.com"
+                                "item_value": "zhangchengwei@163.com"
                             }
                         ],
                     }
@@ -74,7 +75,7 @@ def run(parameter):
                 {
                     "profile_type": "traffic_mirror",
                     "name": "profile1",
-                    "vlan_count": random.randint(1, 5)
+                    "vlan_count": random.randint(3, 66)
 
                     # vlan的范围：应该是在3-66
                 }

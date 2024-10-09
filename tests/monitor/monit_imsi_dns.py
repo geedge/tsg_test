@@ -3,7 +3,6 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
-
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -15,7 +14,6 @@ def run(parameter):
         # 参数初始化
         exception_result = ""
         result = {}
-
         # 脚本启动时间
         start_time = time.time()
 
@@ -84,25 +82,19 @@ def run(parameter):
             },
             "token": ""
         }
-
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()
-        return result
 
+        return result
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
               flush=True)
         return "Error: " + str(e)
     finally:
-        if 'case_instance_generator' in locals():
-            if isinstance(case_instance_generator, CaseInstanceGenerator):
-                case_instance_generator.delete_data()
-        else:
-            print("case_instance_generator未初始化，无法删除数据。")
-        # # 清理环境并删除配置
-        # if isinstance(case_instance_generator, CaseInstanceGenerator):
+        # 清理环境并删除配置
+        if isinstance(case_instance_generator, CaseInstanceGenerator):
             case_instance_generator.delete_data()
         # 统计脚本用时
         end_time = time.time()
@@ -135,7 +127,6 @@ if __name__ == '__main__':
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
-    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：
