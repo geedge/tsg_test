@@ -852,7 +852,7 @@ class CreateProfile:
         r_dict = response.json()
         template_info = []
         chart_info = {"template_id": template_id, "chart_id": 0, "chart_type": ""}
-        for chart in r_dict["data"]["statistics_templates"][0]["dataview"]["charts"]:
+        for chart in r_dict["data"]["list"][0]["dataview"]["charts"]:
             chart_info["chart_type"] = chart["display"]["type"]
             chart_info["chart_id"] = chart["id"]
             chart_info["version"] = chart["version"]
