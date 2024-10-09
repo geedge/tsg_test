@@ -115,6 +115,7 @@ class CreatePolicyRule:
                 if 'resolution_'+str(create_number) in condition:
                     rule_template_dict['rule']['action_parameter']['resolution'] = condition['resolution_' + str(create_number)]
                     if "record_id" in condition['resolution_'+str(create_number)][0]["answer"][0].keys():
+                        del condition['resolution_'+str(create_number)][0]["answer"][0]["record_id"]
                         rule_template_dict['rule']['action_parameter']['resolution'][0]["answer"][0]["record_uuid"] = create_profile_ids[0]["uuid"]
             elif method == "block" and 'message_'+str(create_number) in condition:
                 rule_template_dict['rule']['action_parameter']['code'] = condition['code_'+str(create_number)]
@@ -409,7 +410,7 @@ class CreatePolicyRule:
         try:
             rule_type = rule_template_dict["rule"]["type"]
             url = api_host + "/v1/vsys{}/policy/rule/{}".format(vsys_id, rule_type)
-            #print(json.dumps(rule_template_dict))
+            print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             if response.status_code == 200:
