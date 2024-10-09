@@ -36,3 +36,9 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 RUN python3 install_chrome.py
 RUN python3 install_trex.py
 RUN python3 update_tsg_ca.py
+RUN python3 install_go.py
+
+# 设置go环境变量
+RUN echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bash_profile
+RUN echo 'export GOPATH=$HOME/go' >> ~/.bash_profile
+RUN . ~/.bash_profile
