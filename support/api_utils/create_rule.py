@@ -210,7 +210,11 @@ class CreatePolicyRule:
 
         temp_do_log = 'do_log_' + str(create_number)
         if temp_do_log in condition.keys():
-            rule_template_dict['rule']['log_option'] = condition[temp_do_log]
+            if condition[temp_do_log] == 2:
+                rule_template_dict['rule']['log_option'] = "all"
+            elif condition[temp_do_log] == 0:
+                rule_template_dict['rule']['log_option'] = "none"
+            # rule_template_dict['rule']['log_option'] = condition[temp_do_log]
         else:
             rule_template_dict['rule']['log_option'] = condition['do_log']
 
