@@ -451,6 +451,7 @@ class DataTranslation:
                             }
                             add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        temp["is_negate"] = v[i]["negate"]
                         object.append(copy.deepcopy(temp))
                     elif v[i]["item"][0]["item_type"] == "phone_number":
                         temp = {
@@ -473,6 +474,7 @@ class DataTranslation:
                             }
                             add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        temp["is_negate"] = v[i]["negate"]
                         object.append(copy.deepcopy(temp))
                     elif v[i]["item"][0]["item_type"] == "imei":
                         temp = {
