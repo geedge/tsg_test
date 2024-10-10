@@ -1115,6 +1115,16 @@ class GetLog:
         'out_pkt_length_distribution': 'Outgoing Packet Length',
         'pkt_length_distribution': 'Packet Length',        
         """
+        # unique和syn数量：1一致
+        one_or_zero_unique = {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","syn_pkts"
+            'new_in_sessions',
+            'new_out_sessions',
+            'closed_in_sessions',
+            'closed_out_sessions',
+            'syn_pkts',
+            'in_latency_ms',
+            'out_latency_ms'
+        }
         #unique和syn数量：1一致
         one_unique = {
             'client_ip_object_list',
@@ -1178,7 +1188,7 @@ class GetLog:
                 case 1:
                     if source_fields[0] in all_metrics:
                         # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                        if source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","syn_pkts"} and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                        if source_fields[0] in one_or_zero_unique and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
                             metric_result = True
                         elif source_fields[0] in one_unique and (stats_value == test_traffic_statistics["total_syn_pkt"]):
                             metric_result = True
