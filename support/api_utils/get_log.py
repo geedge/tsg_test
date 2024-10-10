@@ -323,7 +323,7 @@ class GetLog:
             exp_sessions_count = query_session_count
         elif test_data["mitigation"]["behavior"] == "none" and log["sessions"] < query_session_count:
             exp_sessions_count = log["sessions"]
-
+        else:
             temp_log_result_list.append(False)
             exp_sessions_count = -1
         #3.In the Custom Network Attack in DoS Events.
