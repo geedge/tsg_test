@@ -206,9 +206,20 @@ class CreateObject:
                         "ip": "5.5.5.6",
                         "interval": "0-65535"
                     }
-                    tmp_item["op"] = item["op"]
-                    tmp_item["ip"] = item["ip"]
-                    tmp_item["interval"] = item["interval"]
+                    if "op" in item:
+                        tmp_item["op"] = item["op"]
+                    else:
+                        tmp_item["op"] = "add"
+                    if "ip" in item:
+                        tmp_item["ip"] = item["ip"]
+                    else:
+                        tmp_item["ip"] = item["ip_address"]   
+                    # tmp_item["ip"] = item["ip"]
+                    if "interval" in item:
+                        tmp_item["interval"] = item["interval"]
+                    else:
+                        tmp_item["interval"] = item["port_range"]   
+                    # tmp_item["interval"] = item["interval"]
                     items.append(copy.deepcopy(tmp_item))
             elif obj_type == "port":
                 for item in add_item_list:
@@ -239,9 +250,18 @@ class CreateObject:
                         "expr_type": "and",
                         "expression": "example.com"
                     }
-                    tmp_item["op"] = item["op"]
-                    tmp_item["expr_type"] = item["expr_type"]
-                    tmp_item["expression"] = item["expression"]
+                    if "op" in item:
+                        tmp_item["op"] = item["op"]
+                    else:
+                        tmp_item["op"] = "add"
+                    if "expr_type" in item:
+                        tmp_item["expr_type"] = item["expr_type"]
+                    else:
+                        tmp_item["expr_type"] = "and"
+                    if "expression" in item:
+                        tmp_item["expression"] = item["expression"]
+                    else:
+                        tmp_item["expression"] = item["keyword_array"][0]
                     items.append(copy.deepcopy(tmp_item))
             elif obj_type == "flag":
                 for item in add_item_list:
@@ -250,7 +270,10 @@ class CreateObject:
                         "flag": "64",
                         "mask": "64"
                     }
-                    tmp_item["op"] = item["op"]
+                    if "op" in item:
+                        tmp_item["op"] = item["op"]
+                    else:
+                        tmp_item["op"] = "add"
                     tmp_item["flag"] = item["flag"]
                     tmp_item["mask"] = item["mask"]
                     items.append(copy.deepcopy(tmp_item))
