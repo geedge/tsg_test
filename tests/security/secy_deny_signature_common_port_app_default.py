@@ -57,8 +57,8 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "dns", #
-                        "object_type": "common_port_app",
+                        "name": "common_port_app", #
+                        "object_type": "application",
                         "negate": False
                     }
                 ],
