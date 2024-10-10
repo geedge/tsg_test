@@ -605,7 +605,7 @@ class DataTranslation:
                             ]
                         }
                         if "items" in v[i]:
-                            if v[i]["items"][0]["item_type"] == "ftp_url":
+                            if v[i]["items"][0]["item_type"] == "url" and data["condition"]["application"][0]["name"] == "ftp":
                                 temp["attribute_name"] = "ATTR_FTP_URI"
                         if "repeat_time" in v[i] and v[i]["repeat_time"] > 1:
                             temp["repeat_time"] = v[i]["repeat_time"]
