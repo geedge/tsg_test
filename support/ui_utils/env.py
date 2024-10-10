@@ -86,7 +86,7 @@ def teardown():
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been closed successfully.", flush=True)
             time.sleep(1)
         else:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver is running, there is nothing to do.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Web Driver has been closed, there is nothing to do.", flush=True)
         """
         try:
             driver.quit()

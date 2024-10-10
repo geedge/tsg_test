@@ -61,7 +61,8 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_from",
-                                "item_value": "*163.com"
+                                # "item_value": "*163.com"
+                                "item_value": "hbn@163.com"
                             }
                         ],
                     }

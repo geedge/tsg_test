@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_to",
-                                "item_value": "$autotest@163.com->"
+                                "item_value": "$autotest@163.com"
                             }
                         ],
                     }
@@ -118,7 +118,7 @@ if __name__ == '__main__':
         "debug_flag": "local",
         "is_log": 1,
         "env": "tsgx",
-        "script_type": "api",
+        "script_type": "ui",
         "vsys_id": 1,
         "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
         "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",

@@ -847,6 +847,12 @@ class CreateRule:
             temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(port_condition_type)].format(replaceValue=port_data[z]["name"])
             self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(port_condition_type)]).click()
+        for j in range(len(port_data)):
+            if port_data[j]["negate"] == True:
+                time.sleep(1)  # 暂停1秒
+                negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(port_condition_type)])
+                ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                negate_element.click()
 
     add_subid = add_port
 

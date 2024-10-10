@@ -613,7 +613,9 @@ serviceChainingRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-tab
 serviceChainingRulePage_inputName_posXpath = "//*[@class='biFangName']//input" 
 serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small is-active']" 
 serviceChainingRulePage_decryptedTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small']" 
-serviceChainingRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_service_chaining_write_Home_App_anonymousComponent']/span[1]"
+serviceChainingRulePage_negateSrcIP_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateDstIP_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateUser_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='User']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath

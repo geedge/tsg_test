@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 

@@ -298,12 +298,16 @@ class ApiVerification:
                                 metric_result = True
                             elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
                                 metric_result = True
+                            elif sc_info["is_negate"] == 1:
+                                metric_result = True
                             else:
                                 metric_result = False
                         elif sc_info["sf_method"] == "layer2_switch":
                             if sc_info["admin_status"] == 0:
                                 metric_result = True
                             elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                metric_result = True
+                            elif sc_info["is_negate"] == 1:
                                 metric_result = True
                             else:
                                 metric_result = False
