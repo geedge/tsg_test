@@ -82,7 +82,7 @@ def run(parameter):
                 "active_flows": 3,
                 "d": 5,
                 "yaml_name": "test",
-                "pcap_name": "tcp_long3"
+                "pcap_name": "tcp_long30s"
             },
             "token": ""
         }
