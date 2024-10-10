@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "app_category:UNIQUE_COUNT:pplication Category"
+                            "app_category:UNIQUE_COUNT:Application Category"
                           ],
                           "dimensions": [],
                           "order_by": "",

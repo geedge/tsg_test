@@ -114,12 +114,12 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "decoded_as:UNIQUE_COUNT:UNIQUECOUNT(Decoded AS)"
+                            "decoded_as:UNIQUE_COUNT:UNIQUE Decoded AS"
                           ],
                           "dimensions": [
                             "decoded_as"
                           ],
-                          "order_by": "UNIQUECOUNT(Decoded AS)",
+                          "order_by": "UNIQUE Decoded AS",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"

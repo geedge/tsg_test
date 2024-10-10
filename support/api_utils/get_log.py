@@ -318,7 +318,7 @@ class GetLog:
         time_difference = end_time_value - start_time_value
 
         #2.For mitigation deny:get the session count after execute the mitigation behavior;For mitigation none:get full session counts
-        query_session_count,total_packets = self.get_session_count_in_session_records(token, api_host, start_time, end_time, vsys_id, test_data)
+        query_session_count,total_packets,total_bytes= self.get_session_count_in_session_records(token, api_host, start_time, end_time, vsys_id, test_data)
         if test_data["mitigation"]["behavior"] == "deny":
             exp_sessions_count = query_session_count
         elif test_data["mitigation"]["behavior"] == "none" and log["sessions"] < query_session_count:
@@ -331,7 +331,7 @@ class GetLog:
         # For mitigation none,one session with full packets.
 
         #To verify the log query param
-        self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets, test_data, time,policy_id)
+        self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets,total_bytes, test_data, time,policy_id)
 
     def get_session_count_in_session_records(self, token,  api_host, start_time, end_time, v_id, test_data):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
@@ -373,17 +373,23 @@ class GetLog:
         sent_pkts = log_entry['sent_pkts']
         # 计算总和
         total_packets = received_pkts + sent_pkts
+        # 获取 received_bytes 和 sent_bytes
+        received_bytes = log_entry['received_bytes']
+        sent_bytes = log_entry['sent_bytes']
+        # 计算总和
+        total_bytes = received_bytes + sent_bytes
 
         dos_deny_sessions_count = len(log_list)
-        return dos_deny_sessions_count,total_packets
+        return dos_deny_sessions_count,total_packets,total_bytes
 
 
-    def validate_dos_values(self, log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,totapl_packets ,test_data, time,policy_id):
+    def validate_dos_values(self, log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,totapl_packets ,total_bytes,test_data, time,policy_id):
         #三种情况：
         #① deny:src ip+application
         #② deny:src ip
         #③ none:
         exp_packets_count = exp_sessions_count * totapl_packets
+        exp_bytes_count = exp_sessions_count * total_bytes
         #字段的验证:Bytes验证是否大于0、为负数;不再验证具体的值，不同用例回放数据包不同，Bytes无固定值
         if query_field_key == "attack_type":
             if query_value.replace("_", " ") == log[query_field_key].lower():
@@ -406,7 +412,7 @@ class GetLog:
                 temp_log_result_list.append(False)
 
         elif query_field_key == "bytes": #大于0且是个整数
-            if log[query_field_key] > 0:
+            if log[query_field_key] > 0 and exp_bytes_count == log[query_field_key]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
@@ -1109,6 +1115,16 @@ class GetLog:
         'out_pkt_length_distribution': 'Outgoing Packet Length',
         'pkt_length_distribution': 'Packet Length',        
         """
+        # unique和syn数量：1一致
+        one_or_zero_unique = {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","syn_pkts"
+            'new_in_sessions',
+            'new_out_sessions',
+            'closed_in_sessions',
+            'closed_out_sessions',
+            'syn_pkts',
+            'in_latency_ms',
+            'out_latency_ms'
+        }
         #unique和syn数量：1一致
         one_unique = {
             'client_ip_object_list',
@@ -1172,7 +1188,7 @@ class GetLog:
                 case 1:
                     if source_fields[0] in all_metrics:
                         # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                        if source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","syn_pkts"} and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                        if source_fields[0] in one_or_zero_unique and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
                             metric_result = True
                         elif source_fields[0] in one_unique and (stats_value == test_traffic_statistics["total_syn_pkt"]):
                             metric_result = True

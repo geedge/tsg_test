@@ -102,10 +102,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client IP)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)"
+                                "client_ip:UNIQUE_COUNT:UNIQUE Client IP"
                             ],
                             "dimensions": ["client_ip"],
-                            "order_by": "UNIQUECOUNT(Client IP)",
+                            "order_by": "UNIQUE Client IP",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -114,10 +114,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Server IP)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "server_ip:UNIQUE_COUNT:UNIQUECOUNT(Server IP)"
+                                "server_ip:UNIQUE_COUNT:UNIQUE Server IP"
                             ],
                             "dimensions": ["server_ip"],
-                            "order_by": "UNIQUECOUNT(Server IP)",
+                            "order_by": "UNIQUE Server IP",
                             "row_limit": "50",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -126,10 +126,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client Country)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "client_country:UNIQUE_COUNT:UNIQUECOUNT(Client Country)"
+                                "client_country:UNIQUE_COUNT:UNIQUE Client Country"
                             ],
                             "dimensions": ["client_country"],
-                            "order_by": "UNIQUECOUNT(Client Country)",
+                            "order_by": "UNIQUE Client Country",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -138,10 +138,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Server Country)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "server_country:UNIQUE_COUNT:UNIQUECOUNT(Server Country)"
+                                "server_country:UNIQUE_COUNT:UNIQUE Server Country"
                             ],
                             "dimensions": ["server_country"],
-                            "order_by": "UNIQUECOUNT(Server Country)",
+                            "order_by": "UNIQUE Server Country",
                             "row_limit": "200",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -150,10 +150,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client ASN)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "client_asn:UNIQUE_COUNT:UNIQUECOUNT(Client ASN)"
+                                "client_asn:UNIQUE_COUNT:UNIQUE Client ASN"
                             ],
                             "dimensions": ["client_asn"],
-                            "order_by": "UNIQUECOUNT(Client ASN)",
+                            "order_by": "UNIQUE Client ASN",
                             "row_limit": "500",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -162,10 +162,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Server ASN)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "server_asn:UNIQUE_COUNT:UNIQUECOUNT(Server ASN)"
+                                "server_asn:UNIQUE_COUNT:UNIQUE Server ASN"
                             ],
                             "dimensions": ["server_asn"],
-                            "order_by": "UNIQUECOUNT(Server ASN)",
+                            "order_by": "UNIQUE Server ASN",
                             "row_limit": "1000",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -174,10 +174,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client Port)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "client_port:UNIQUE_COUNT:UNIQUECOUNT(Client Port)"
+                                "client_port:UNIQUE_COUNT:UNIQUE Client Port"
                             ],
                             "dimensions": ["client_port"],
-                            "order_by": "UNIQUECOUNT(Client Port)",
+                            "order_by": "UNIQUE Client Port",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -186,10 +186,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Server Port)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "server_port:UNIQUE_COUNT:UNIQUECOUNT(Server Port)"
+                                "server_port:UNIQUE_COUNT:UNIQUE Server Port"
                             ],
                             "dimensions": ["server_port"],
-                            "order_by": "UNIQUECOUNT(Server Port)",
+                            "order_by": "UNIQUE Server Port",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

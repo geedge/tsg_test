@@ -102,10 +102,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Direction)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "direction:UNIQUE_COUNT:UNIQUECOUNT(Direction)"
+                                "direction:UNIQUE_COUNT:UNIQUE Direction"
                             ],
                             "dimensions": ["direction"],
-                            "order_by": "UNIQUECOUNT(Direction)",
+                            "order_by": "UNIQUE Direction",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -114,10 +114,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Incoming Latency)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "in_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(Incoming Latency)"
+                                "in_latency_ms:UNIQUE_COUNT:UNIQUE Incoming Latency"
                             ],
                             "dimensions": ["in_latency_ms"],
-                            "order_by": "UNIQUECOUNT(Incoming Latency)",
+                            "order_by": "UNIQUE Incoming Latency",
                             "row_limit": "50",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -126,10 +126,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Outgoing Latency)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "out_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(Outgoing Latency)"
+                                "out_latency_ms:UNIQUE_COUNT:UNIQUE Outgoing Latency"
                             ],
                             "dimensions": ["out_latency_ms"],
-                            "order_by": "UNIQUECOUNT(Outgoing Latency)",
+                            "order_by": "Outgoing Latency",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -138,10 +138,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(TCP Handshake Latency(ms))",
                             "visualization_type": "Table",
                             "metrics": [
-                                "tcp_handshake_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(TCP Handshake Latency(ms))"
+                                "tcp_handshake_latency_ms:UNIQUE_COUNT:UNIQUE TCP Handshake Latency"
                             ],
                             "dimensions": ["tcp_handshake_latency_ms"],
-                            "order_by": "UNIQUECOUNT(TCP Handshake Latency(ms))",
+                            "order_by": "UNIQUE TCP Handshake Latency",
                             "row_limit": "200",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -150,10 +150,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Subscriber ID)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "subscriber_id:UNIQUE_COUNT:UNIQUECOUNT(Subscriber ID)"
+                                "subscriber_id:UNIQUE_COUNT:UNIQUE Subscriber ID"
                             ],
                             "dimensions": ["subscriber_id"],
-                            "order_by": "UNIQUECOUNT(Subscriber ID)",
+                            "order_by": "UNIQUE Subscriber ID",
                             "row_limit": "500",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -162,10 +162,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Subscriber ID)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "tcp_rtt_ms:UNIQUE_COUNT:UNIQUECOUNT(Subscriber ID)"
+                                "tcp_rtt_ms:UNIQUE_COUNT:UNIQUE Subscriber ID"
                             ],
                             "dimensions": ["tcp_rtt_ms"],
-                            "order_by": "UNIQUECOUNT(Subscriber ID)",
+                            "order_by": "UNIQUE Subscriber ID",
                             "row_limit": "500",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -174,10 +174,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(SYN Packets)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "syn_pkts:UNIQUE_COUNT:UNIQUECOUNT(SYN Packets)"
+                                "syn_pkts:UNIQUE_COUNT:UNIQUE SYN Packets"
                             ],
                             "dimensions": ["syn_pkts"],
-                            "order_by": "UNIQUECOUNT(SYN Packets)",
+                            "order_by": "UNIQUE SYN Packets",
                             "row_limit": "500",
                             "min_in_size": "0",
                             "min_out_size": "0"

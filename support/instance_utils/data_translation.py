@@ -19,7 +19,7 @@ class DataTranslation:
                 if "application" in data["condition"].keys() and len(data["condition"]["application"]) > 0:
                     for app_index in range(len(data["condition"]["application"])):
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
-                if "ip_protocol" in data["condition"].keys() :
+                if "ip_protocol" in data["condition"].keys():
                     temp_test_data["ip_protocol"] = data["condition"]["ip_protocol"]
             if key in {"action_parameter", "profile"}:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)

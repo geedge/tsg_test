@@ -101,8 +101,8 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "server_ip+server_port:UNIQUE_COUNT:Server-IP-Port",
-                            "session_id:UNIQUE_SERVER:Sessions"
+                            "server_ip+server_port:UNIQUE_COUNT:Server IP Port",
+                            "session_id:UNIQUE_COUNT:Sessions"
                           ],
                           "dimensions": [
                             "client_ip",

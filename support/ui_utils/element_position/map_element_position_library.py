@@ -1495,12 +1495,24 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchSrcIP_posXpath": statisticsRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": statisticsRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": statisticsRulePage_closeSrcIP_posXpath,
+        # source Port
+        "policyRulePage_addConditionSrcPort_posXpath": manipulationRulePage_addCondition_srcPort_posXpath,
+        "policyRulePage_addSrcPort_posXpath": manipulationPage_addSrcPort_posXpath,
+        "policyRulePage_searchSrcPort_posXpath": manipulationRulePage_searchSrcPort_posXpath,
+        "policyRulePage_selectSrcPort_posXpath": manipulationRulePage_selectSrcPort_posXpath,
+        "policyRulePage_closeSrcPort_posXpath": manipulationRulePage_closeSrcPort_posXpath,
         # Destination IP
         "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
         "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
         "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
         "policyRulePage_closeDstIP_posXpath": statisticsRulePage_closeDstIP_posXpath,
+        # Destination Port
+        "policyRulePage_addConditionDstPort_posXpath": manipulationRulePage_addCondition_destinationPort_posXpath,
+        "policyRulePage_addDstPort_posXpath": manipulationRulePage_addDstPort_posXpath,
+        "policyRulePage_searchDstPort_posXpath": manipulationRulePage_searchDstPort_posXpath,
+        "policyRulePage_selectDstPort_posXpath": manipulationRulePage_selectDstPort_posXpath,
+        "policyRulePage_closeDstPort_posXpath": manipulationRulePage_closeDstPort_posXpath,
         # Internal IP
         "policyRulePage_addConditionInternalIP_posXpath": statisticsRulePage_addCondition_internalIP_posXpath,
         "policyRulePage_addInternalIP_posXpath": statisticsRulePage_addInternalIP_posXpath,
@@ -1519,6 +1531,27 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchExternalIP_posXpath": statisticsRulePage_searchExternalIP_posXpath,
         "policyRulePage_selectExternalIP_posXpath": statisticsRulePage_selectExternalIP_posXpath,
         "policyRulePage_closeExternalIP_posXpath": statisticsRulePage_closeExternalIP_posXpath,
+        # external Port
+        "policyRulePage_addConditionExternalPort_posXpath": manipulationRulePage_addCondition_externalPort_posXpath,
+        "policyRulePage_addExternalPort_posXpath": manipulationRulePage_addExternalPort_posXpath,
+        "policyRulePage_searchExternalPort_posXpath": manipulationRulePage_searchExternalPort_posXpath,
+        "policyRulePage_selectExternalPort_posXpath": manipulationRulePage_selectExternalPort_posXpath,
+        "policyRulePage_closeExternalPort_posXpath": manipulationRulePage_closeExternalPort_posXpath,
+        # subid
+        "policyRulePage_addConditionUser_posXpath": manipulationRulePage_addCondition_user_posXpath,
+        "policyRulePage_addUser_posXpath": manipulationRulePage_addUser_posXpath,
+        "policyRulePage_searchUser_posXpath": manipulationRulePage_searchUser_posXpath,
+        "policyRulePage_selectUser_posXpath": manipulationRulePage_selectUser_posXpath,
+        "policyRulePage_closeUser_posXpath": manipulationRulePage_closeUser_posXpath,
+        # Device imsi imei phone number
+        "policyRulePage_addConditionImsi_posXpath": manipulationRulePage_addCondition_imsi_posXpath,
+        "policyRulePage_addImsi_posXpath": manipulationRulePage_addImsi_posXpath,
+        "policyRulePage_searchImsi_posXpath": manipulationRulePage_searchImsi_posXpath,
+        "policyRulePage_selectImsi_posXpath": manipulationRulePage_selectImsi_posXpath,
+        "policyRulePage_closeImsi_posXpath": manipulationRulePage_closeImsi_posXpath,
+        "policyRulePage_chooseImei_posXpath": policyRulePage_chooseImei_posXpath,
+        "policyRulePage_choosePhoneNumber_posXpath": policyRulePage_choosePhoneNumber_posXpath,
+        "policyRulePage_chooseApn_posXpath": policyRulePage_chooseApn_posXpath,
         # Application
         "policyRulePage_addApplication_posXpath": statisticsRulePage_addApplication_posXpath,
         "policyRulePage_searchApplication_posXpath": statisticsRulePage_searchApplication_posXpath,
@@ -1532,6 +1565,12 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchServerFqdn_posXpath": statisticsRulePage_searchServerFqdn_posXpath,
         "policyRulePage_selectServerFqdn_posXpath": statisticsRulePage_selectServerFqdn_posXpath,
         "policyRulePage_closeServerFqdn_posXpath": statisticsRulePage_closeServerFqdn_posXpath,
+        # Qname
+        "policyRulePage_addConditionQname_posXpath": manipulationRulePage_addCondition_qname_posXpath,
+        "policyRulePage_addQname_posXpath": manipulationRulePage_addServerQname_posXpath,
+        "policyRulePage_searchQname_posXpath": manipulationRulePage_searchQname_posXpath,
+        "policyRulePage_selectQname_posXpath": manipulationRulePage_selectQname_posXpath,
+        "policyRulePage_closeQname_posXpath": manipulationRulePage_closeServerQname_posXpath,
         # url
         "policyRulePage_addConditionUrl_posXpath": statisticsRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": statisticsRulePage_addUrl_posXpath,
@@ -1544,6 +1583,18 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
         "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        # request body
+        "policyRulePage_addConditionRequestBody_posXpath": securityRulePage_addCondition_requestBody_posXpath,
+        "policyRulePage_addRequestBody_posXpath": manipulationRulePage_addRequestBody_posXpath,
+        "policyRulePage_searchRequestBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
+        "policyRulePage_selectRequestBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
+        "policyRulePage_closeRequestBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        # response body
+        "policyRulePage_addConditionResponseBody_posXpath": securityRulePage_addCondition_responseBody_posXpath,
+        "policyRulePage_addResponseBody_posXpath": manipulationRulePage_addResponseBody_posXpath,
+        "policyRulePage_searchResponseBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
+        "policyRulePage_selectResponseBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
+        "policyRulePage_closeResponseBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
         #add boolean
         "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
         "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,

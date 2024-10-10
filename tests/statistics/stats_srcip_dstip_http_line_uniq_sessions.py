@@ -99,7 +99,10 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "session_id:UNIQUE_COUNT:UNIQUE_COUNT(session)"
+                            "new_in_sessions:UNIQUE_COUNT:UNIQUE New Incoming Session",
+                            "new_out_sessions:UNIQUE_COUNT:UNIQUE New Outgoing Session",
+                            "closed_in_sessions:UNIQUE_COUNT:UNIQUE Closed Incoming Session",
+                            "closed_out_sessions:UNIQUE_COUNT:UNIQUE Closed Outgoing Session"
                           ],
                           "dimensions": [],
                           "order_by": "",

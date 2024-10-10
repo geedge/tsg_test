@@ -101,12 +101,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "table",
                           "metrics": [
-                            "http_host:UNIQUE_COUNT:UNIQUECOUNT(http_host)"
+                            "http_host:UNIQUE_COUNT:UNIQUE Http Host"
                           ],
                           "dimensions": [
                             "http_host"
                           ],
-                          "order_by": "UNIQUECOUNT(http_host)",
+                          "order_by": "UNIQUE Http Host",
                           "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"

@@ -114,12 +114,12 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "server_domain:UNIQUE_COUNT:UNIQUECOUNT(Server Domain)"
+                            "server_domain:UNIQUE_COUNT:UNIQUE Server Domain"
                           ],
                           "dimensions": [
                             "server_domain"
                           ],
-                          "order_by": "UNIQUECOUNT(Server Domain)",
+                          "order_by": "UNIQUE Server Domain",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"

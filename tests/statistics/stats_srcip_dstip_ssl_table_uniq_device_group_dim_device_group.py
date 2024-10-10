@@ -102,10 +102,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Direction)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "device_group:UNIQUE_COUNT:UNIQUECOUNT(Device Group)"
+                                "device_group:UNIQUE_COUNT:UNIQUE Device Group"
                             ],
                             "dimensions": ["device_group"],
-                            "order_by": "UNIQUECOUNT(Device Group)",
+                            "order_by": "UNIQUE Device Group",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

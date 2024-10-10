@@ -117,7 +117,7 @@ def run(parameter):
                             "client_port:UNIQUE_COUNT:UNIQUECOUNT(Client Port)"
                           ],
                           "dimensions": [
-                            "decoded_as"
+                            "client_port"
                           ],
                           "order_by": "UNIQUECOUNT(Client Port)",
                           "row_limit": "100",
