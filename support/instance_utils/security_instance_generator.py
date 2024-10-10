@@ -983,8 +983,8 @@ class SecurityGenerator:
             # translation = DataTranslation()
             # test_data = translation.data_translation(parameter, test_data)
 
-            # self.api_name_list = get_name_list(test_data)
-            self.api_name_list = []
+            self.api_name_list = get_name_list(test_data)
+            # self.api_name_list = []
             # 添加测试过程中涉及的template
             template_path = {}
             template_path["rule_template"] = parameter["root_path"] + "/support/api_utils/template/rule_template.json"
@@ -1002,16 +1002,16 @@ class SecurityGenerator:
             cfg_list = create.create_policy(parameter, test_data, template_path)
             #"""
             # 流量验证
-            verify = Verification()
-            verification_result = verify.verification("", parameter, test_data, cfg_list, "")
+            # verify = Verification()
+            # verification_result = verify.verification("", parameter, test_data, cfg_list, "")
             
             # 分析验证结果，并返回给flask
-            analysis = AnalysisResult()
-            api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
+            # analysis = AnalysisResult()
+            # api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
             #"""
             # 删除配置
-            delete = DeletePolicy()
-            delete.delele_policy_by_cfg(token, parameter, cfg_list)
+            # delete = DeletePolicy()
+            # delete.delele_policy_by_cfg(token, parameter, cfg_list)
             
             result["api_result"] = api_result
     
@@ -1024,7 +1024,7 @@ class SecurityGenerator:
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        if isinstance(self.api_name_list, list) and self.api_name_list != []:
+        if isinstance(self.api_name_list, list):
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)
             
 if __name__ == '__main__':
