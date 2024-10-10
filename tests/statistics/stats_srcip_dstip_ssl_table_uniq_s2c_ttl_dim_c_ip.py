@@ -114,12 +114,12 @@ def run(parameter):
                           "chart_name": "stats_ssl_table_uniq_s2c_ttl_dim_c_ip",
                           "visualization_type": "Table",
                           "metrics": [
-                            "s2c_ttl:UNIQUE_COUNT:UNIQUECOUNT(Server to Client TTL)"
+                            "s2c_ttl:UNIQUE_COUNT:UNIQUE Server to Client TTL"
                           ],
                           "dimensions": [
                             "client_ip"
                           ],
-                          "order_by": "UNIQUECOUNT(Server to Client TTL)",
+                          "order_by": "UNIQUE Server to Client TTL",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"

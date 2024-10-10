@@ -102,10 +102,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(New Client-to-Server Flows)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "new_c2s_flows:UNIQUE_COUNT:UNIQUECOUNT(New Client-to-Server Flows)"
+                                "new_c2s_flows:UNIQUE_COUNT:UNIQUE New Client-to-Server Flows"
                             ],
                             "dimensions": ["new_c2s_flows"],
-                            "order_by": "UNIQUECOUNT(New Client-to-Server Flows)",
+                            "order_by": "UNIQUE New Client-to-Server Flows",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -114,10 +114,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(New Server-to-Client Flows)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "new_s2c_flows:UNIQUE_COUNT:UNIQUECOUNT(New Server-to-Client Flows)"
+                                "new_s2c_flows:UNIQUE_COUNT:UNIQUE New Server-to-Client Flows"
                             ],
                             "dimensions": ["new_s2c_flows"],
-                            "order_by": "UNIQUECOUNT(New Server-to-Client Flows)",
+                            "order_by": "UNIQUE New Server-to-Client Flows",
                             "row_limit": "50",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -125,10 +125,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(New Incoming Sessions)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "new_in_sessions:UNIQUE_COUNT:UNIQUECOUNT(New Incoming Sessions)"
+                                "new_in_sessions:UNIQUE_COUNT:UNIQUE New Incoming Sessions"
                             ],
                             "dimensions": ["new_in_sessions"],
-                            "order_by": "UNIQUECOUNT(New Incoming Sessions)",
+                            "order_by": "UNIQUE New Incoming Sessions",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -137,10 +137,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(New Outgoing Sessions)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "new_out_sessions:UNIQUE_COUNT:UNIQUECOUNT(New Outgoing Sessions)"
+                                "new_out_sessions:UNIQUE_COUNT:UNIQUE New Outgoing Sessions"
                             ],
                             "dimensions": ["new_out_sessions"],
-                            "order_by": "UNIQUECOUNT(New Outgoing Sessions)",
+                            "order_by": "UNIQUE New Outgoing Sessions",
                             "row_limit": "50",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -149,10 +149,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Closed Incoming Sessions)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "closed_in_sessions:UNIQUE_COUNT:UNIQUECOUNT(Closed Incoming Sessions)"
+                                "closed_in_sessions:UNIQUE_COUNT:UNIQUE Closed Incoming Sessions"
                             ],
                             "dimensions": ["closed_in_sessions"],
-                            "order_by": "UNIQUECOUNT(Packets Sent)",
+                            "order_by": "UNIQUE Packets Sent",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -161,10 +161,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Closed Outgoing Sessions)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "closed_out_sessions:UNIQUE_COUNT:UNIQUECOUNT(Closed Outgoing Sessions)"
+                                "closed_out_sessions:UNIQUE_COUNT:UNIQUE Closed Outgoing Sessions"
                             ],
                             "dimensions": ["closed_out_sessions"],
-                            "order_by": "UNIQUECOUNT(Closed Outgoing Sessions)",
+                            "order_by": "UNIQUE Closed Outgoing Sessions",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -173,10 +173,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client-to-Server IP Fragments)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "c2s_ip_fragments:UNIQUE_COUNT:UNIQUECOUNT(Client-to-Server IP Fragments)"
+                                "c2s_ip_fragments:UNIQUE_COUNT:UNIQUE Client-to-Server IP Fragments"
                             ],
                             "dimensions": ["c2s_ip_fragments"],
-                            "order_by": "UNIQUECOUNT(Client-to-Server IP Fragments)",
+                            "order_by": "UNIQUE Client-to-Server IP Fragments",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -185,10 +185,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Server-to-Client IP Fragments)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "s2c_ip_fragments:UNIQUE_COUNT:UNIQUECOUNT(Server-to-Client IP Fragments)"
+                                "s2c_ip_fragments:UNIQUE_COUNT:UNIQUE Server-to-Client IP Fragments"
                             ],
                             "dimensions": ["s2c_ip_fragments"],
-                            "order_by": "UNIQUECOUNT(Server-to-Client IP Fragments)",
+                            "order_by": "UNIQUE Server-to-Client IP Fragments",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"

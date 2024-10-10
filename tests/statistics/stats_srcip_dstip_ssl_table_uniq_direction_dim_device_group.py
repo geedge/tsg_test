@@ -99,13 +99,13 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Direction)",
+                            "chart_name": "UNIQUE Direction",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "direction:UNIQUE_COUNT:UNIQUECOUNT(Direction)"
+                                "direction:UNIQUE_COUNT:UNIQUE Direction"
                             ],
                             "dimensions": ["device_group"],
-                            "order_by": "UNIQUECOUNT(Direction)",
+                            "order_by": "UNIQUE Direction",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

@@ -102,10 +102,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Bytes Sent)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "sent_bytes:UNIQUE_COUNT:UNIQUECOUNT(Bytes Sent)"
+                                "sent_bytes:UNIQUE_COUNT:UNIQUE Bytes Sent"
                             ],
                             "dimensions": ["sent_bytes"],
-                            "order_by": "UNIQUECOUNT(Bytes Sent)",
+                            "order_by": "UNIQUE Bytes Sent",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -114,10 +114,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Bytes Received)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "received_bytes:UNIQUE_COUNT:UNIQUECOUNT(Bytes Received)"
+                                "received_bytes:UNIQUE_COUNT:UNIQUE Bytes Received"
                             ],
                             "dimensions": ["received_bytes"],
-                            "order_by": "UNIQUECOUNT(Bytes Received)",
+                            "order_by": "UNIQUE Bytes Received",
                             "row_limit": "50",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -125,10 +125,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Incoming Bytes)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "in_bytes:UNIQUE_COUNT:UNIQUECOUNT(Incoming Bytes)"
+                                "in_bytes:UNIQUE_COUNT:UNIQUE Incoming Bytes"
                             ],
                             "dimensions": ["in_bytes"],
-                            "order_by": "UNIQUECOUNT(Incoming Bytes)",
+                            "order_by": "UNIQUE Incoming Bytes",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -137,10 +137,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Outgoing Bytes)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "out_bytes:UNIQUE_COUNT:UNIQUECOUNT(Outgoing Bytes)"
+                                "out_bytes:UNIQUE_COUNT:UNIQUE Outgoing Bytes"
                             ],
                             "dimensions": ["out_bytes"],
-                            "order_by": "UNIQUECOUNT(Outgoing Bytes)",
+                            "order_by": "UNIQUE Outgoing Bytes",
                             "row_limit": "50",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -149,10 +149,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Packets Sent)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "sent_pkts:UNIQUE_COUNT:UNIQUECOUNT(Packets Sent)"
+                                "sent_pkts:UNIQUE_COUNT:UNIQUE Packets Sent"
                             ],
                             "dimensions": ["sent_pkts"],
-                            "order_by": "UNIQUECOUNT(Packets Sent)",
+                            "order_by": "UNIQUE Packets Sent",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -161,10 +161,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Packets Received)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "received_pkts:UNIQUE_COUNT:UNIQUECOUNT(Packets Received)"
+                                "received_pkts:UNIQUE_COUNT:UNIQUE Packets Received"
                             ],
                             "dimensions": ["received_pkts"],
-                            "order_by": "UNIQUECOUNT(Packets Received)",
+                            "order_by": "UNIQUE Packets Received",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -173,10 +173,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Incoming Packets)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "in_pkts:UNIQUE_COUNT:UNIQUECOUNT(Incoming Packets)"
+                                "in_pkts:UNIQUE_COUNT:UNIQUE Incoming Packets"
                             ],
                             "dimensions": ["in_pkts"],
-                            "order_by": "UNIQUECOUNT(Incoming Packets)",
+                            "order_by": "UNIQUE Incoming Packets",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -185,10 +185,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Outgoing Packets)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "out_pkts:UNIQUE_COUNT:UNIQUECOUNT(Outgoing Packets)"
+                                "out_pkts:UNIQUE_COUNT:UNIQUE Outgoing Packets"
                             ],
                             "dimensions": ["out_pkts"],
-                            "order_by": "UNIQUECOUNT(Outgoing Packets)",
+                            "order_by": "UNIQUE Outgoing Packets",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"

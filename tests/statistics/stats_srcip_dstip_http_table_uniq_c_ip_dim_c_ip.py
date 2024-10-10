@@ -97,10 +97,10 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)"
+                                "client_ip:UNIQUE_COUNT:UNIQUE Client IP"
                             ],
                             "dimensions": ["app"],
-                            "order_by": "UNIQUECOUNT(Client IP)",
+                            "order_by": "UNIQUE Client IP",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -109,10 +109,10 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Table",
                             "metrics": [
-                                "server_ip:UNIQUE_COUNT:UNIQUECOUNT(Server IP)"
+                                "server_ip:UNIQUE_COUNT:UNIQUE Server IP"
                             ],
                             "dimensions": ["app"],
-                            "order_by": "UNIQUECOUNT(Server IP)",
+                            "order_by": "UNIQUE Server IP",
                             "row_limit": "200",
                             "min_in_size": "0",
                             "min_out_size": "0"

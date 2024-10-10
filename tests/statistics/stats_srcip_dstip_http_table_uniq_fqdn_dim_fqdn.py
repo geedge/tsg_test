@@ -101,10 +101,10 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "server_fqdn:UNIQUE_COUNT:UNIQUE_COUNT(Server FQDN)"
+                            "server_fqdn:UNIQUE_COUNT:UNIQUE Server FQDN"
                           ],
                           "dimensions": ["server_fqdn"],
-                          "order_by": "UNIQUE_COUNT(Server FQDN)",
+                          "order_by": "UNIQUE Server FQDN",
                           "row_limit": "10",
                           "min_in_size": "0",
                           "min_out_size": "0"

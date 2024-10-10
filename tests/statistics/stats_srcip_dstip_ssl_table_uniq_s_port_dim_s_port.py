@@ -112,12 +112,12 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "server_port:UNIQUE_COUNT:UNIQUECOUNT(server Port)"
+                            "server_port:UNIQUE_COUNT:UNIQUE server Port"
                           ],
                           "dimensions": [
                             "decoded_as"
                           ],
-                          "order_by": "UNIQUECOUNT(server Port)",
+                          "order_by": "UNIQUE server Port",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"

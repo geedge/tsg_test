@@ -114,12 +114,12 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)"
+                            "client_ip:UNIQUE_COUNT:UNIQUE Client IP"
                           ],
                           "dimensions": [
                             "client_ip"
                           ],
-                          "order_by": "UNIQUECOUNT(Client IP)",
+                          "order_by": "UNIQUE Client IP",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"
