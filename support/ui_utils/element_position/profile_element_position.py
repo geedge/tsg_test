@@ -170,8 +170,8 @@ listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath = lis
 listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_trafficMirroringProfiles_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_trafficMirroringProfiles_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_trafficMirroringProfiles_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_trafficMirroringProfiles_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_trafficMirroringProfiles_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_trafficMirroringProfiles_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_trafficMirroringProfiles_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath
@@ -203,8 +203,8 @@ listPage_profileSearch_sslDecryptionKeyrings_input_itemContent_posXpath = listPa
 listPage_profilTable_sslDecryptionKeyrings_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_sslDecryptionKeyrings_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_sslDecryptionKeyrings_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_sslDecryptionKeyrings_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_sslDecryptionKeyrings_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_sslDecryptionKeyrings_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_sslDecryptionKeyrings_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_Certificate_Keyrings_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_sslDecryptionKeyrings_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_Certificate_Keyrings_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath
@@ -248,8 +248,8 @@ listPage_profileSearch_sslDecryptionProfiles_input_itemContent_posXpath = listPa
 listPage_profilTable_sslDecryptionProfiles_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_sslDecryptionProfiles_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_sslDecryptionProfiles_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_sslDecryptionProfiles_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_sslDecryptionProfiles_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_sslDecryptionProfiles_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_sslDecryptionProfiles_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_Profile_Decryption_Profile_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_sslDecryptionProfiles_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_Profile_Decryption_Profile_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath
@@ -392,8 +392,8 @@ listPage_profileSearch_tcpProxyProfiles_input_itemContent_posXpath = listPage_pr
 listPage_profilTable_tcpProxyProfiles_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_tcpProxyProfiles_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_tcpProxyProfiles_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_tcpProxyProfiles_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_tcpProxyProfiles_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_tcpProxyProfiles_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_tcpProxyProfiles_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_advanced_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_tcpProxyProfiles_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_advanced_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath

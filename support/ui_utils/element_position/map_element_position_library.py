@@ -442,6 +442,102 @@ test_response_page_element_position = {
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_responsePages_button_yes_posXpath
     }
 }
+test_ssl_decryption_keyring_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_sslDecryptionKeyrings_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_sslDecryptionKeyrings_createButton_posId,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_sslDecryptionKeyrings_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_sslDecryptionKeyrings_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_sslDecryptionKeyrings_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_sslDecryptionKeyrings_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_sslDecryptionKeyrings_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_sslDecryptionKeyrings_button_yes_posXpath
+    }
+}
+test_ssl_decryption_profile_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_sslDecryptionProfiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_sslDecryptionProfiles_createButton_posId,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_sslDecryptionProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_sslDecryptionProfiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_sslDecryptionProfiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_sslDecryptionProfiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_sslDecryptionProfiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_sslDecryptionProfiles_button_yes_posXpath
+    }
+}
+test_tcp_proxy_profile_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tcpProxyProfiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_tcpProxyProfiles_createButton_posId,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_tcpProxyProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_tcpProxyProfiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_tcpProxyProfiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_tcpProxyProfiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_tcpProxyProfiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_tcpProxyProfiles_button_yes_posXpath
+    }
+}
+test_traffic_mirroring_profile_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posXpath
+    }
+}
 test_hijack_file_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -910,42 +1006,40 @@ test_security_rule_element_position = {
         "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
     }
 }
-
 test_monitor_profile_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-                    "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
-                },
-                "create": {
-                    "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
-                    "profilePage_inputName_posId": trafficMirroringProfiles_input_Name_posId,
-                    "profilePage_addLANID_posCss": trafficMirroringProfiles_button_vlanIdAdd_posCss,
-                    "trafficMirroringProfiles_input_vlanIdsInput_posXpath": trafficMirroringProfiles_input_vlanIdsInput_posXpath,
-                    "profilePage_button_oK_posCss": trafficMirroringProfiles_button_oK_posCss,
-                    "profilePage_button_cancel_posCss": trafficMirroringProfiles_button_cancel_posCss,
-                    "profilePage_button_warningSaveYes_posCss": trafficMirroringProfiles_button_warningSaveYes_posCss,
-                    # action
-                },
-                "edit": {
-                    "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
-                },
-                "search": {
-                    "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
-                    "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
-                    "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
-                    "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
-                },
-                "delete": {
-                    "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-                    "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
-                    "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posCss
-                }
-            }
-
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
+        "profilePage_inputName_posId": trafficMirroringProfiles_input_Name_posId,
+        "profilePage_addLANID_posCss": trafficMirroringProfiles_button_vlanIdAdd_posCss,
+        "trafficMirroringProfiles_input_vlanIdsInput_posXpath": trafficMirroringProfiles_input_vlanIdsInput_posXpath,
+        "profilePage_button_oK_posCss": trafficMirroringProfiles_button_oK_posCss,
+        "profilePage_button_cancel_posCss": trafficMirroringProfiles_button_cancel_posCss,
+        "profilePage_button_warningSaveYes_posCss": trafficMirroringProfiles_button_warningSaveYes_posCss,
+        # action
+    },
+    "edit": {
+        "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posXpath
+    }
+}
 test_imsi_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1757,6 +1851,14 @@ def get_element_position(key_name):
     # profile
     elif key_name == "response_page":
         element_position_map = test_response_page_element_position
+    elif key_name == "ssl_decryption_keyring":
+        element_position_map = test_ssl_decryption_keyring_element_position
+    elif key_name == "ssl_decryption_profile":
+        element_position_map = test_ssl_decryption_profile_element_position
+    elif key_name == "tcp_proxy_profile":
+        element_position_map = test_tcp_proxy_profile_element_position
+    elif key_name == "traffic_mirroring_profile":
+        element_position_map = test_traffic_mirroring_profile_element_position
     elif key_name == "hijack_file":
         element_position_map = test_hijack_file_element_position
     elif key_name == "insert_script":
