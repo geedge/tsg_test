@@ -99,8 +99,8 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "client_ip:UNIQUE_COUNT:UNIQUE_COUNT(client ip)",
-                            "server_ip:UNIQUE_COUNT:UNIQUE_COUNT(server ip)"
+                            "client_ip:UNIQUE_COUNT:UNIQUE Client IP",
+                            "server_ip:UNIQUE_COUNT:UNIQUE Cerver IP"
                           ],
                           "dimensions": [],
                           "order_by": "",

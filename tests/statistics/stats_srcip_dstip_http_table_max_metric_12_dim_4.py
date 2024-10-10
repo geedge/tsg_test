@@ -96,21 +96,21 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Client IP Object List)",
+                            "chart_name": "UNIQUE Client IP Object List",
                             "visualization_type": "Table",
                             "metrics": [
-                                "sent_bytes+received_bytes:SUM:SUM(Bytes Sent Bytes Received)",
-                                "sent_pkts+received_pkts:SUM:SUM(Packets Sent Packets Received)",
-                                "new_c2s_flows+new_s2c_flows:SUM:SUM(New Double Flows)",
-                                "new_in_sessions+new_out_sessions:SUM:SUM(New Sessions)",
-                                "client_ip:UNIQUE_COUNT:UNIQUECOUNT(Client IP)",
-                                "client_port:UNIQUE_COUNT:UNIQUECOUNT(Client Port)",
-                                "server_ip:UNIQUE_COUNT:UNIQUECOUNT(Server IP)",
-                                "server_port:UNIQUE_COUNT:UNIQUECOUNT(Server Port)",
+                                "sent_bytes+received_bytes:SUM:SUM Bytes Sent Bytes Received",
+                                "sent_pkts+received_pkts:SUM:SUM Packets Sent Packets Received",
+                                "new_c2s_flows+new_s2c_flows:SUM:SUM New Double Flows",
+                                "new_in_sessions+new_out_sessions:SUM:SUM New Sessions",
+                                "client_ip:UNIQUE_COUNT:UNIQUECOUNT Client IP",
+                                "client_port:UNIQUE_COUNT:UNIQUECOUNT Client Port",
+                                "server_ip:UNIQUE_COUNT:UNIQUECOUNT Server IP",
+                                "server_port:UNIQUE_COUNT:UNIQUECOUNT Server Port",
                                 "pkt_length_distribution:MEDIAN:MEDIAN Packet Length Distribution",
                                 "pkt_length_distribution:P95_PERCENTILE:P95 Packet Length Distribution",
                                 "pkt_length_distribution:P99_PERCENTILE:P99 Packet Length Distribution",
-                                "tcp_handshake_latency_ms:P99_PERCENTILE:P99 TCP Handshake Latency(ms)"
+                                "tcp_handshake_latency_ms:P99_PERCENTILE:P99 TCP Handshake Latency"
                             ],
                             "dimensions": [
                                 "client_ip",
@@ -118,7 +118,7 @@ def run(parameter):
                                 "server_ip",
                                 "server_port"
                             ],
-                            "order_by": "SUM(New Sessions)",
+                            "order_by": "SUM New Sessions",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

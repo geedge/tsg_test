@@ -113,12 +113,12 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "ssl_sni:UNIQUE_COUNT:UNIQUECOUNT(SSL SNI)"
+                            "ssl_sni:UNIQUE_COUNT:UNIQUE SSL SNI"
                           ],
                           "dimensions": [
                             "ssl_sni"
                           ],
-                          "order_by": "UNIQUECOUNT(SSL SNI)",
+                          "order_by": "UNIQUE SSL SNI",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"

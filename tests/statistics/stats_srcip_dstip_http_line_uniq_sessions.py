@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "session_id:UNIQUE_COUNT:UNIQUE_COUNT(session)"
+                            "session_id:UNIQUE_COUNT:UNIQUE Ssession"
                           ],
                           "dimensions": [],
                           "order_by": "",
