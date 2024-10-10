@@ -52,7 +52,7 @@ class DeletePolicy:
             if len(create_ip_ids) > 0:
                 delete_object_template['uuids'] = create_ip_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "ip")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ip successfully.", flush=True)
@@ -61,7 +61,7 @@ class DeletePolicy:
             if len(create_port_ids) > 0:
                 delete_object_template['uuids'] = create_port_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "port")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete port successfully.", flush=True)
@@ -71,7 +71,7 @@ class DeletePolicy:
                 delete_object_template['uuids'] = create_imsi_ids
                 delete_object_template["vsys_id"] = vsys_id
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "mobile_identity")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete imsi successfully.", flush=True)
@@ -80,7 +80,7 @@ class DeletePolicy:
             if len(create_phone_number_ids) > 0:
                 delete_object_template['uuids'] = create_phone_number_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "mobile_identity")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete phone number successfully.", flush=True)
@@ -89,7 +89,7 @@ class DeletePolicy:
             if len(create_imei_ids) > 0:
                 delete_object_template['uuids'] = create_imei_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "mobile_identity")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete imei successfully.", flush=True)
@@ -98,7 +98,7 @@ class DeletePolicy:
             if len(create_apn_ids) > 0:
                 delete_object_template['uuids'] = create_apn_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "apn")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete apn successfully.", flush=True)
@@ -107,7 +107,7 @@ class DeletePolicy:
             if len(create_subid_ids) > 0:
                 delete_object_template['uuids'] = create_subid_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "subscriberid")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete sub id successfully.", flush=True)
@@ -116,7 +116,7 @@ class DeletePolicy:
             if len(create_fqdn_ids) > 0:
                 delete_object_template['uuids'] = create_fqdn_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "fqdn")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete fqdn successfully.", flush=True)
@@ -125,7 +125,7 @@ class DeletePolicy:
             if len(create_url_ids) > 0:
                 delete_object_template['uuids'] = create_url_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "url")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete url successfully.", flush=True)
@@ -134,7 +134,7 @@ class DeletePolicy:
             if len(create_flag_ids) > 0:
                 delete_object_template['uuids'] = create_flag_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "flag")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete flag successfully.", flush=True)
@@ -143,7 +143,7 @@ class DeletePolicy:
             if len(create_keywords_ids) > 0:
                 delete_object_template['uuids'] = create_keywords_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "keyword")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete keyword successfully.", flush=True)
@@ -153,7 +153,7 @@ class DeletePolicy:
                 delete_object_template['uuids'] = create_account_ids
                 delete_object_template["vsys_id"] = vsys_id
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "account")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete account successfully.", flush=True)
@@ -162,7 +162,7 @@ class DeletePolicy:
             if len(create_http_signature_ids) > 0:
                 delete_object_template['uuids'] = create_http_signature_ids
                 url = api_server + "/v1/vsys{}/policy/object/{}".format(vsys_id, "http_signature")
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete http signature successfully.", flush=True)
@@ -175,7 +175,7 @@ class DeletePolicy:
                 delete_object_template["geoname_ids"] = create_geo_name_id
                 delete_object_template["vsys_id"] = vsys_id
                 url = api_server + "/v1/policy/library/geolocation"
-                response = requests.delete(url, headers=headers, params=delete_object_template, verify=False)
+                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete geolocation successfully.", flush=True)
@@ -508,7 +508,7 @@ class DeletePolicy:
                 for i in range(len(delete_data)):
                     tmp_delete = {"uuids":""}
                     tmp_delete["uuids"] = delete_data[i]
-                    response = requests.delete(url, headers=headers, params=tmp_delete, verify=False)
+                    response = requests.delete(url, headers=headers, json=tmp_delete, verify=False)
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(delete_info), flush=True)
                 else:
@@ -536,7 +536,7 @@ class DeletePolicy:
                 ids = [item["geoname_id"] for item in data_list]
                 ids_str = ",".join(map(str, ids))
                 delete_data = {'geoname_ids': ids_str, 'vsys_id': vsys_id}
-                response = requests.delete(geolocation_url, headers=headers, params=delete_data, verify=False)
+                response = requests.delete(geolocation_url, headers=headers, json=delete_data, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete geolocation object successfully.", flush=True)
