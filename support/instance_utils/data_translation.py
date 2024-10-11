@@ -932,7 +932,7 @@ class DataTranslation:
                             temp["attribute_name"] = "ATTR_FTP_ACCOUNT"
                         if v[i]["items"][0]["item_type"] == "mail_from":
                             temp["attribute_name"] = "ATTR_MAIL_FROM"
-                        if v[i]["items"][0]["item_type"] == "mail_to":
+                        if v[i]["items"][0]["item_type"] == "to" and data["condition"]["application"][0]["name"] == "mail":
                             temp["attribute_name"] = "ATTR_MAIL_TO"
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
