@@ -18,8 +18,6 @@ from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.api_utils.organize_config import *
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from support.packet_generator.traffic_replay import TrafficReplay
 
 class ApiVerification:
     def api_verification(self, driver, parameter, test_data, traffic_result, cfg_list):
@@ -73,12 +71,6 @@ class ApiVerification:
             current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             
-            # 触发流量
-            # if debug_flag == "local":
-            #     temp_data = json.dumps(test_data["traffic"])
-            #     output = self.call_traffic_server(temp_data, script_type, debug_flag)
-            # else:
-            #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
             output = traffic_result
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
             cmd_return = output
@@ -261,12 +253,6 @@ class ApiVerification:
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 等待时间，等待策略生效
                 time.sleep(10)
-                # 触发流量
-                # if debug_flag == "local":
-                #     temp_data = json.dumps(test_data["traffic"])
-                #     output = self.call_traffic_server(temp_data, script_type, debug_flag)
-                # else:
-                #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
                 output = traffic_result
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 cmd_return = output
