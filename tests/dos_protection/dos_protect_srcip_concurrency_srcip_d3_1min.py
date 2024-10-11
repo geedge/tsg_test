@@ -44,7 +44,7 @@ def run(parameter):
                 ],
             },
             "threshold": {
-                "type": "concurrvi",
+                "type": "concurrency",
                 "concurrency_threshold": {
                     "group_by": "source_ip",
                     "concurrent_sessions": 2
