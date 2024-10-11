@@ -23,7 +23,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "security",
             "rule_name": "secy_deny_srcip_ssl_substr_san_rate_high",
-            "rule_action": "allow",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [
