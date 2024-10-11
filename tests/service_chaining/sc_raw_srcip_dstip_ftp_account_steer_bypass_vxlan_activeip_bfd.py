@@ -103,7 +103,7 @@ def run(parameter):
                 {
                     "name": "steer_bypass_vxlan_activeip_bfd",
                     "profile_type": "create",
-                    "type": "Steering",
+                    "type": "steering",
                     "load_balance_method": "hash_ext-ip",
                     "load_balance_localization": "nearby",
                     "failure_action": "Bypass",
