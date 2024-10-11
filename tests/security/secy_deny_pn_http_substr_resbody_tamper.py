@@ -23,7 +23,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "security",
             "rule_name": "secy_deny_pn_http_substr_resbody_tamper",
-            "rule_action": "allow",
+            "rule_action": "deny",
             "rule_type": "create",
             "condition": {
                 "source_ip": [],

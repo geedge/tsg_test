@@ -104,7 +104,7 @@ def run(parameter):
             },
             "profile": [],
             "expected_return": "facebook",
-            "counters": {"hits": 2},
+            "counters": {"hits": 0},
             "log_query_param": [],
             "traffic": {
                 "protocol": "dns",
