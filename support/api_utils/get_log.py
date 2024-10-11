@@ -311,7 +311,6 @@ class GetLog:
 
 
     def first_dos_classification(self,log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id):
-        print(output)
         #1.Get the time difference to calculate the session_rate、bit_rate and packet_rate
         start_time_value = log["start_time"]
         end_time_value = log["end_time"]
@@ -472,7 +471,6 @@ class GetLog:
         else:
             temp_log_result_list.append(False)
 
-        print(temp_log_result_list)
         return temp_log_result_list
 
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):

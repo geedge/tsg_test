@@ -350,7 +350,6 @@ class OrganizeConfig:
                     data["traffic"]["servers_end_ip"] = new_src_ip
         # 输出日志，记录生成的唯一 IP
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Set unique dstip for dos rule.", flush=True)
-        print(data)
         return data
 
     def get_policy_info(self, token, rule_id, rule_type, api_host, vsys_id):

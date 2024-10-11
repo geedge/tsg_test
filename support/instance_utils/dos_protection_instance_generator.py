@@ -248,7 +248,6 @@ class DosProtectionInstanceGenerator:
                 # 数据转换，适配API的test_data
                 translation = DataTranslation()
                 test_data = translation.data_translation(parameter, test_data)
-                print(test_data)
 
                 # 添加测试过程中涉及的template
                 template_path = {}
