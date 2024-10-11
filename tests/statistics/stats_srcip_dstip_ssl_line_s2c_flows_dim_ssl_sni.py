@@ -100,12 +100,12 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                             "visualization_type": "Line",
                             "metrics": [
-                                "new_c2s_flows:SUM:new c2s flows"
+                                "new_s2c_flows:SUM:new s2c flows"
                             ],
                             "dimensions": [
                                 "ssl_sni"
                             ],
-                            "order_by": "new c2s flows",
+                            "order_by": "new s2c flows",
                             "row_limit": "20",
                             "min_in_size": "1",
                             "min_out_size": "1"
