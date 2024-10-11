@@ -424,9 +424,9 @@ if __name__ == "__main__":
     list1 = {}
     for t in test:
         list1[t["label"]] = t
-    print(list1)
-    print(list1["Client IPs"])
-    print(list1["Client IPs"]["function"]["name"])
+    # print(list1)
+    # print(list1["Client IPs"])
+    # print(list1["Client IPs"]["function"]["name"])
     #metrics_labels = [{item["label"]:item} for item in test],
     #if "Client IPs" in metrics_labels:
     #    print(metrics_labels["Client IPs"])

@@ -279,8 +279,8 @@ class ManipulationInstanceGenerator:
                         template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
                     elif profile_type == "run_script":
                         template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][0]["content_name"]
-                    else:
-                        print("check profile path")
+                    # else:
+                    #     print("check profile path")
 
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
