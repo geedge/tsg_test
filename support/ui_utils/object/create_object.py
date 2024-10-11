@@ -50,7 +50,7 @@ class CreateObject:
                         else:
                             item_values = [item_value_str]
                     else:    # 修改模式，未完成
-                        print("todo modify moudle ...")
+                        # print("todo modify moudle ...")
                         item_values = [data["item"][i]["item_value"]]
                     for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
@@ -84,7 +84,7 @@ class CreateObject:
                         else:
                             item_values = [item_value_str]
                     else:    # 修改模式，未完成
-                        print("todo modify moudle ...")
+                        # print("todo modify moudle ...")
                         item_values = [data["item"][i]["item_value"]]
                     for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
@@ -109,7 +109,7 @@ class CreateObject:
                         else:
                             item_values = [item_value_str]
                     else:    # 修改模式，未完成
-                        print("todo modify moudle ...")
+                        # print("todo modify moudle ...")
                         item_values = [data["items"][i]["item_value"]]
                     for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()

@@ -59,7 +59,7 @@ class SSLPlayer:
                                     http_payload = ssl_record.payload["ApplicationData"]
                                     http_request = http_payload.load
                                     http_methods.append(http_request.method)
-                                    print(http_methods)
+                                    # print(http_methods)
     
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

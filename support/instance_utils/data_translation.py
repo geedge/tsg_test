@@ -79,8 +79,8 @@ class DataTranslation:
                 if "redirect_url" in data["action_parameter"].keys():
                     data["code_1"] = data["action_parameter"]["redirect_url"][0]["response_code"]
                     data["to_1"] = data["action_parameter"]["redirect_url"][0]["redirect_url"]
-                else:   # doh
-                    print("todo...doh")
+                # else:   # doh
+                #     print("todo...doh")
             elif data["rule_action"] == "replace":
                 replace_parameter_list = data["action_parameter"]["replace_parameter"]
                 user_region = []
@@ -1190,8 +1190,8 @@ class DataTranslation:
                             temp["format"] = "html"
                         elif file_name.endswith(".htm"):
                             temp["format"] = "htm"
-                        else:
-                            print("check file type: {}".format(file_name))
+                        # else:
+                        #     print("check file type: {}".format(file_name))
                         profile.append(copy.deepcopy(temp))
                 elif k == "hijack_file":
                     element_type_replace_name = {
@@ -1249,8 +1249,8 @@ class DataTranslation:
                         temp["name"] = v[t]["profile_file"]["name"]
                         temp["content_name"] = v[t]["profile_file"]["script"]
                         profile.append(copy.deepcopy(temp))
-                else:
-                    print("no match {}".format(k))
+                # else:
+                #     print("no match {}".format(k))
         elif policy_type == "security" and "action_parameter" in data:
             temp_profile = data["action_parameter"]
             for k, v in temp_profile.items():
@@ -1272,8 +1272,8 @@ class DataTranslation:
                             temp["format"] = "html"
                         elif file_name.endswith(".htm"):
                             temp["format"] = "htm"
-                        else:
-                            print("check file type: {}".format(file_name))
+                        # else:
+                        #     print("check file type: {}".format(file_name))
                         profile.append(copy.deepcopy(temp))
         elif policy_type == "monitor":
             temp_profile = data["profile"]
