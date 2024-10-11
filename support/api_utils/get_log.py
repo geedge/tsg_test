@@ -38,7 +38,9 @@ class GetLog:
         for i in range(rule_num):
             if policy_type == 'security':
                 schema_type = 'security_event'
-            elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
+            elif policy_type == 'pxy_intercept':
+                schema_type = 'session_record'
+            elif policy_type == 'pxy_manipulation':
                 schema_type = 'proxy_event'
             elif policy_type == 'monitor':
                 schema_type = 'monitor_event'
@@ -778,7 +780,7 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}, template_id:{}, chart_id:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],  "Exception when getting Metrics data from the interface.")
             return [False, "The statistics metric API query failed."]

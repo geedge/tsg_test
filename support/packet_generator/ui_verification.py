@@ -78,7 +78,7 @@ class UiVerification:
                                     log_query_key = test_data["log_query_param"][t]["query_field_key"]
                                     log_str = parse.get("log", log_query_key)
                                     if log_query_key == "server_ip" or log_query_key == "decoded_as" or log_query_key == "client_ip":
-                                        log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/parent::div//span[@class='el-dropdown-link popover-click color262626 el-dropdown-selfdefine']".format(replaceValue=log_str)
+                                        log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                         temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                         if temp_value == test_data["log_query_param"][t]["query_value"]:
                                             temp_log_result = True

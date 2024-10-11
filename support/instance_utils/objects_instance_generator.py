@@ -137,16 +137,12 @@ class ObjectsInstanceGenerator:
         elif test_data["object_type"] == "ip_learning":
             object_element_position = test_ip_learning_object_element_position
 
-        need_initialization = False
-        if len(parameter["script_type"]) == 0:
-            need_initialization = True
-
-        if parameter["script_type"] == "ui" or need_initialization == True:
-            if self.test_data["case_type"] == "single":
-                for index in range(len(test_data["object_operation"]["create"])):
+        if parameter["script_type"] == "ui" or len(parameter["script_type"]) == 0:
+            try:
+                if self.test_data["case_type"] == "single":
                     # 创建object
                     create_ip_object = CreateObjects(driver)
-                    create_port_code = create_ip_object.create(test_data,index, object_element_position)
+                    create_port_code = create_ip_object.create(test_data, object_element_position)
                     object_info = create_ip_object.object_info
                     self.object_exit = object_info["object_exit"]
                     if create_port_code == 200:
@@ -155,194 +151,201 @@ class ObjectsInstanceGenerator:
                         ui_result = "Fail to create ip."
 
 
-                search_ip = SearchObjects(driver)
-                # 判断当前用例是否需要进行view点击的statistics页面校验
-                if test_data["statistics"] != "" and create_ip_object.object_info["object_exit"] == True:
-                    search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
-                    if search_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search object successfully.", flush=True)
-                    elif create_port_code != 200:
-                        ui_result = "Fail to search ip."
-                    view_statistics = ViewStatisticsPage(driver)
-                    view_statistics_code = view_statistics.view_statistics_check(test_data["statistics"],object_element_position,first_row_checkbox_element)
-                    if view_statistics_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"view statistics button click successfully.", flush=True)
-                    elif view_statistics_code != 200:
-                        ui_result = "Fail to view statistics button click check"
-
-                # 校验审计日志创建Object
-                audit_log = AuditLogCheck(driver)
-                if test_data["object_operation"]["create"][0]["item_operation"] == "add":
-                    object_info["operation"] = "Create"
-                elif test_data["object_operation"]["create"][0]["item_operation"] == "import":
-                    object_info["operation"] = "Import"
-                search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
-                audit_log_code = audit_log.audit_log_check(object_info, object_element_position,first_row_checkbox_element)
-                if audit_log_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create object audit log check successfully.", flush=True)
-                elif audit_log_code != 200:
-                    ui_result = "Fail to create audit log check"
-
-                if "edit" in test_data["object_operation"].keys():
-                    # object编辑修改操作
-                    for index in range(len(test_data["object_operation"]["edit"])):
+                    search_ip = SearchObjects(driver)
+                    # 判断当前用例是否需要进行view点击的statistics页面校验
+                    if test_data["statistics"] != "" and create_ip_object.object_info["object_exit"] == True:
                         search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
                         if search_ip_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search object successfully.", flush=True)
                         elif create_port_code != 200:
                             ui_result = "Fail to search ip."
-                        edit_ip = EditObjects(driver)
-                        edit_ip_code = edit_ip.edit(test_data,index,object_element_position, first_row_checkbox_element)
-                        if edit_ip_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit object successfully.", flush=True)
-                        elif edit_ip_code != 200:
-                            ui_result = ui_result + " In addition, fail to edit ip object."
+                        view_statistics = ViewStatisticsPage(driver)
+                        view_statistics_code = view_statistics.view_statistics_check(test_data["statistics"],object_element_position,first_row_checkbox_element)
+                        if view_statistics_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"view statistics button click successfully.", flush=True)
+                        elif view_statistics_code != 200:
+                            ui_result = "Fail to view statistics button click check"
 
-                        # 校验修改完成后的审计日志查看
-                        if test_data["object_operation"]["edit"][index]["item_operation"] == "import":
-                            object_info["operation"] = "Import"
-                        else:
-                            object_info["operation"] = "Edit"
-                        audit_log_code = audit_log.audit_log_check(object_info, object_element_position,first_row_checkbox_element)
-                        if audit_log_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit object audit log check successfully.", flush=True)
-                        elif audit_log_code != 200:
-                            ui_result = "Fail to Edit ip object audit log check"
+                    # 校验审计日志创建Object
+                    audit_log = AuditLogCheck(driver)
+                    if test_data["object_operation"]["create"][0]["item_operation"] == "add":
+                        object_info["operation"] = "Create"
+                    elif test_data["object_operation"]["create"][0]["item_operation"] == "import":
+                        object_info["operation"] = "Import"
+                    search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
+                    audit_log_code = audit_log.audit_log_check(object_info, object_element_position,first_row_checkbox_element)
+                    if audit_log_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create object audit log check successfully.", flush=True)
+                    elif audit_log_code != 200:
+                        ui_result = "Fail to create audit log check"
 
-                #判断是否为正常创建object,如item异常校验等未保存object无需删除
-                if object_info["object_exit"] == True:
-                    # 删除object
+                    if "edit" in test_data["object_operation"].keys():
+                        # object编辑修改操作
+                        for index in range(len(test_data["object_operation"]["edit"])):
+                            search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
+                            if search_ip_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search object successfully.", flush=True)
+                            elif create_port_code != 200:
+                                ui_result = "Fail to search ip."
+                            edit_ip = EditObjects(driver)
+                            edit_ip_code = edit_ip.edit(test_data,index,object_element_position, first_row_checkbox_element)
+                            if edit_ip_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit object successfully.", flush=True)
+                            elif edit_ip_code != 200:
+                                ui_result = ui_result + " In addition, fail to edit ip object."
+
+                            # 校验修改完成后的审计日志查看
+                            if test_data["object_operation"]["edit"][index]["item_operation"] == "import":
+                                object_info["operation"] = "Import"
+                            else:
+                                object_info["operation"] = "Edit"
+                            audit_log_code = audit_log.audit_log_check(object_info, object_element_position,first_row_checkbox_element)
+                            if audit_log_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit object audit log check successfully.", flush=True)
+                            elif audit_log_code != 200:
+                                ui_result = "Fail to Edit ip object audit log check"
+
+                    #判断是否为正常创建object,如item异常校验等未保存object无需删除
+                    if object_info["object_exit"] == True:
+                        # 删除object
+                        search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
+                        if search_ip_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search  object successfully.", flush=True)
+                        elif create_port_code != 200:
+                            ui_result = "Fail to search ip."
+
+                        if "export" in test_data["object_operation"]:
+                            export_object = ExportObjects(driver)
+                            export_object_code = export_object.export_objects(object_info,first_row_checkbox_element)
+                            if export_object_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Export object successfully.", flush=True)
+                            elif create_port_code != 200:
+                                ui_result = "Fail to export ip."
+
+                        delete_ip = DeleteObjects(driver)
+                        delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
+                        if delete_ip_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete object successfully.", flush=True)
+                        elif delete_ip_code != 200:
+                            ui_result = ui_result + " In addition, fail to delete ip object."
+
+                    if test_data["audit_log"] == True:
+                        system_audit_log =SystemAuditLogCheck(driver)
+                        system_audit_log_code = system_audit_log.system_audit_log_check(test_data,object_info)
+                        if system_audit_log_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"System audit log verify successfully.", flush=True)
+                        elif system_audit_log_code != 200:
+                            ui_result = ui_result + " In addition, fail to System audit log verify."
+
+                elif self.test_data["audit_log"] == True:
+                    pass
+
+                elif self.test_data["case_type"] == "group":
+                    #若为多层嵌套，预先创建object
+                    if test_data["sub_object"] > 1:
+                        preset_object = PresetObjectCreate(driver)
+                        preset_object_code = preset_object.create(test_data["object_type"], object_element_position)
+                        if preset_object_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                  "Create preset object successfully.", flush=True)
+                        elif preset_object_code != 200:
+                            ui_result = "Fail to create preset object."
+
+                    # 创建object
+                    for index in range(len(test_data["object_operation"]["create"])):
+                        create_ip_object = CreateObjects(driver)
+                        create_object_code = create_ip_object.create_group(test_data,index,object_element_position)
+                        object_info = create_ip_object.object_info
+                        self.object_exit = object_info["object_exit"]
+                        if create_object_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                  "Create ip object successfully.", flush=True)
+                        elif create_object_code != 200:
+                            ui_result = "Fail to create ip."
+
+                    # 校验审计日志创建Object
+                    search_ip = SearchObjects(driver)
                     search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
                     if search_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search  object successfully.", flush=True)
-                    elif create_port_code != 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Search ip object successfully.", flush=True)
+                    elif search_ip_code != 200:
                         ui_result = "Fail to search ip."
 
-                    if "export" in test_data["object_operation"]:
-                        export_object = ExportObjects(driver)
-                        export_object_code = export_object.export_objects(object_info,first_row_checkbox_element)
-                        if export_object_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Export object successfully.", flush=True)
-                        elif create_port_code != 200:
-                            ui_result = "Fail to export ip."
-
-                    delete_ip = DeleteObjects(driver)
-                    delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
-                    if delete_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete object successfully.", flush=True)
-                    elif delete_ip_code != 200:
-                        ui_result = ui_result + " In addition, fail to delete ip object."
-
-                if test_data["audit_log"] == True:
-                    system_audit_log =SystemAuditLogCheck(driver)
-                    system_audit_log_code = system_audit_log.system_audit_log_check(test_data,object_info)
-                    if system_audit_log_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"System audit log verify successfully.", flush=True)
-                    elif system_audit_log_code != 200:
-                        ui_result = ui_result + " In addition, fail to System audit log verify."
-
-            elif self.test_data["audit_log"] == True:
-                pass
-
-            elif self.test_data["case_type"] == "group":
-                #若为多层嵌套，预先创建object
-                if test_data["sub_object"] > 1:
-                    preset_object = PresetObjectCreate(driver)
-                    preset_object_code = preset_object.create(test_data["object_type"], object_element_position)
-                    if preset_object_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Create preset object successfully.", flush=True)
-                    elif preset_object_code != 200:
-                        ui_result = "Fail to create preset object."
-
-                # 创建object
-                for index in range(len(test_data["object_operation"]["create"])):
-                    create_ip_object = CreateObjects(driver)
-                    create_object_code = create_ip_object.create_group(test_data,index,object_element_position)
-                    object_info = create_ip_object.object_info
-                    self.object_exit = object_info["object_exit"]
-                    if create_object_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Create ip object successfully.", flush=True)
-                    elif create_object_code != 200:
-                        ui_result = "Fail to create ip."
-
-                # 校验审计日志创建Object
-                search_ip = SearchObjects(driver)
-                search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
-                if search_ip_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                          "Search ip object successfully.", flush=True)
-                elif search_ip_code != 200:
-                    ui_result = "Fail to search ip."
-
-                audit_log = AuditLogCheck(driver)
+                    audit_log = AuditLogCheck(driver)
 
 
-                if test_data["object_operation"]["create"][0]["item_operation"] == "add" or test_data["object_operation"]["create"][0]["item_operation"] == "quote":
-                    object_info["operation"] = "Create"
-                elif test_data["object_operation"]["create"][0]["item_operation"] == "import":
-                    object_info["operation"] = "Import"
+                    if test_data["object_operation"]["create"][0]["item_operation"] == "add" or test_data["object_operation"]["create"][0]["item_operation"] == "quote":
+                        object_info["operation"] = "Create"
+                    elif test_data["object_operation"]["create"][0]["item_operation"] == "import":
+                        object_info["operation"] = "Import"
 
-                audit_log_code = audit_log.audit_log_check(object_info, object_element_position,first_row_checkbox_element)
-                if audit_log_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create object audit log check successfully.", flush=True)
-                elif audit_log_code != 200:
-                    ui_result = "Fail to create audit log check"
+                    audit_log_code = audit_log.audit_log_check(object_info, object_element_position,first_row_checkbox_element)
+                    if audit_log_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create object audit log check successfully.", flush=True)
+                    elif audit_log_code != 200:
+                        ui_result = "Fail to create audit log check"
 
-                if "edit" in test_data["object_operation"].keys():
-                    # object编辑修改操作
-                    for index in range(len(test_data["object_operation"]["edit"])):
+                    if "edit" in test_data["object_operation"].keys():
+                        # object编辑修改操作
+                        for index in range(len(test_data["object_operation"]["edit"])):
+                            search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
+                            if search_ip_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search ip object successfully.", flush=True)
+                            elif search_ip_code != 200:
+                                ui_result = "Fail to search ip."
+                            edit_ip = EditObjects(driver)
+                            edit_ip_code = edit_ip.edit_group(test_data,index, object_element_position, first_row_checkbox_element)
+                            if edit_ip_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit ip object successfully.", flush=True)
+                            elif edit_ip_code != 200:
+                                ui_result = ui_result + " In addition, fail to edit ip object."
+
+                    # 删除object
+                    for i in range(test_data["sub_object"] + 1):
                         search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
                         if search_ip_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search ip object successfully.", flush=True)
                         elif search_ip_code != 200:
                             ui_result = "Fail to search ip."
-                        edit_ip = EditObjects(driver)
-                        edit_ip_code = edit_ip.edit_group(test_data,index, object_element_position, first_row_checkbox_element)
-                        if edit_ip_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit ip object successfully.", flush=True)
-                        elif edit_ip_code != 200:
-                            ui_result = ui_result + " In addition, fail to edit ip object."
 
-                # 删除object
-                for i in range(test_data["sub_object"] + 1):
-                    search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
-                    if search_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search ip object successfully.", flush=True)
-                    elif search_ip_code != 200:
-                        ui_result = "Fail to search ip."
+                            delete_ip = DeleteObjects(driver)
+                            delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
+                            if delete_ip_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                      "Delete ip object successfully.", flush=True)
+                            elif delete_ip_code != 200:
+                                ui_result = ui_result + " In addition, fail to delete ip object."
 
-                    delete_ip = DeleteObjects(driver)
-                    delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
-                    if delete_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Delete ip object successfully.", flush=True)
-                    elif delete_ip_code != 200:
-                        ui_result = ui_result + " In addition, fail to delete ip object."
+                elif self.test_data["case_type"] == "multiple":
+                    pass
+            finally:
+                # 清理环境
+                result["ui_result"] = ui_result
+                support.ui_utils.env.teardown()
 
-            elif self.test_data["case_type"] == "multiple":
-                pass
+        if parameter["script_type"] == "api" or len(parameter["script_type"]) == 0:
+            try:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run api test case", flush=True)
 
-            result["ui_result"] = ui_result
+                parameter["script_type"] = "api"
 
-        if parameter["script_type"] == "api" or need_initialization == True:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run api test case", flush=True)
+                self.api_name_list = []
 
-            parameter["script_type"] = "api"
-
-            self.api_name_list = []
-
-            "todo api 集成"
+                "todo api 集成"
+            finally:
+                result["api_result"] = api_result
+                # 删除配置
+                delete = DeletePolicy()
+                #delete.delele_policy_by_cfg(token, parameter, cfg_list)
 
         return result
 
     def delete_data(self):
-        # 清理环境
-        support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
-        if isinstance(self.ui_name_list, list) and self.object_exit == True:
+        if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
+            # 清理环境
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        # if isinstance(self.api_name_list, list):
-        #     delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)
+        if isinstance(self.api_name_list, list) and self.api_name_list != []:
+            delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)

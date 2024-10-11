@@ -527,7 +527,7 @@ class CreateRule:
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_fairFactor_posId"]).clear()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_fairFactor_posId"]).send_keys(test_data["ruleFairFactor"])
             
-            # 添加statistics、shaping、sc、manipulation的profile
+            # 添加statistics、shaping、sc、manipulation的profile  action parameters
             if ("action_parameter" in test_data and len(test_data["action_parameter"]) != 0) or ("profile" in test_data and len(test_data["profile"]) != 0):
                 if test_data["policy_type"] == "shaping":
                     # 点profile的+
@@ -541,6 +541,8 @@ class CreateRule:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeProfile_posXpath"]).click()
                         if test_data["multiProfile"] == True and y != len(profile_data) - 1:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addProfile_plus_posXpath"]).click()
+                elif test_data["policy_type"] == "pxy_intercept":
+                    pass
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
                     # 页面滚动到最底部

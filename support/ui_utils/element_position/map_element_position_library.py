@@ -639,6 +639,8 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_negateDstIP_posXpath":serviceChainingRulePage_negateDstIP_posXpath,
         "policyRulePage_negateUser_posXpath":serviceChainingRulePage_negateUser_posXpath,
         "policyRulePage_negateImsi_posXpath":serviceChainingRulePage_negateImsi_posXpath,
+        "policyRulePage_negateSrcPort_posXpath":serviceChainingRulePage_negateSrcPort_posXpath,
+        "policyRulePage_negateDstPort_posXpath":serviceChainingRulePage_negateDstPort_posXpath,
         # Source IP
         "policyRulePage_addSrcIP_posXpath": serviceChainingRulePage_addSrcIP_posXpath,
         "policyRulePage_searchSrcIP_posXpath": serviceChainingRulePage_searchSrcIP_posXpath,
@@ -1423,6 +1425,10 @@ test_intercept_rule_element_position = {
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
         "policyRulePage_negateSrcIP_posXpath":interceptRulePage_negateSrcIP_posXpath,
+        # for trusted servers
+        "policyRulePage_intercept_addTrustedSelectBox_posXpath": manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath,
+        "policyRulePage_intercept_searchTrustedInput_posXpath": manipulationRulePage_hijack_searchHijackProfile_posXpath,
+        "policyRulePage_intercept_searchTrustedDorpItem_posXpath": manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath,
     },
     "search": {
         "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
