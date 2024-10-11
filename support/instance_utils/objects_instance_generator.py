@@ -140,15 +140,17 @@ class ObjectsInstanceGenerator:
         if parameter["script_type"] == "ui" or len(parameter["script_type"]) == 0:
             try:
                 if self.test_data["case_type"] == "single":
-                    # 创建object
-                    create_ip_object = CreateObjects(driver)
-                    create_port_code = create_ip_object.create(test_data, object_element_position)
-                    object_info = create_ip_object.object_info
-                    self.object_exit = object_info["object_exit"]
-                    if create_port_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create object successfully.", flush=True)
-                    elif create_port_code != 200:
-                        ui_result = "Fail to create ip."
+
+                    for index in range(len(test_data["object_operation"]["create"])):
+                        # 创建object
+                        create_ip_object = CreateObjects(driver)
+                        create_port_code = create_ip_object.create(test_data,index, object_element_position)
+                        object_info = create_ip_object.object_info
+                        self.object_exit = object_info["object_exit"]
+                        if create_port_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create object successfully.", flush=True)
+                        elif create_port_code != 200:
+                            ui_result = "Fail to create ip."
 
 
                     search_ip = SearchObjects(driver)
@@ -241,6 +243,7 @@ class ObjectsInstanceGenerator:
                     pass
 
                 elif self.test_data["case_type"] == "group":
+
                     #若为多层嵌套，预先创建object
                     if test_data["sub_object"] > 1:
                         preset_object = PresetObjectCreate(driver)
