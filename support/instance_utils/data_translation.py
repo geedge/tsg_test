@@ -355,6 +355,7 @@ class DataTranslation:
                         add_item_dict = {}
                         add_item_dict["port"] = v[i]["item"][u]["item_value"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "destination_port":
                 for i in range(len(v)):
@@ -379,6 +380,7 @@ class DataTranslation:
                         add_item_dict = {}
                         add_item_dict["port"] = v[i]["item"][u]["item_value"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "internal_port":
                 for i in range(len(v)):
@@ -497,6 +499,7 @@ class DataTranslation:
                             }
                             add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        temp["is_negate"] = v[i]["negate"]
                         object.append(copy.deepcopy(temp))
             elif k == "server_fqdn":
                 for i in range(len(v)):
