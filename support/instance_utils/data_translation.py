@@ -866,7 +866,7 @@ class DataTranslation:
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
-                        elif v[i]["item"][0]["item_type"] == "mail_attachment_name":
+                        elif v[i]["item"][0]["item_type"] == "attachment_name" and data["condition"]["application"][0]["name"] == "mail":
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_MAIL_ATT_NAME",
