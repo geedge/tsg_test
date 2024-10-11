@@ -18,8 +18,6 @@ from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.api_utils.organize_config import *
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from support.packet_generator.traffic_replay import TrafficReplay
 
 class ApiVerification:
     def api_verification(self, driver, parameter, test_data, traffic_result, cfg_list):
@@ -73,12 +71,6 @@ class ApiVerification:
             current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             
-            # 触发流量
-            # if debug_flag == "local":
-            #     temp_data = json.dumps(test_data["traffic"])
-            #     output = self.call_traffic_server(temp_data, script_type, debug_flag)
-            # else:
-            #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
             output = traffic_result
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
             cmd_return = output
@@ -94,7 +86,10 @@ class ApiVerification:
                 if is_log_query == True or is_counters == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_log' is True.", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
-                    for i in range(70):
+                    query_time = 70
+                    if test_data["traffic"]["protocol"] == "mail":
+                        query_time = 90
+                    for i in range(int(query_time)):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
                         if i == 30 and script_type == "ui" and driver:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
@@ -258,12 +253,6 @@ class ApiVerification:
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 等待时间，等待策略生效
                 time.sleep(10)
-                # 触发流量
-                # if debug_flag == "local":
-                #     temp_data = json.dumps(test_data["traffic"])
-                #     output = self.call_traffic_server(temp_data, script_type, debug_flag)
-                # else:
-                #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
                 output = traffic_result
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 cmd_return = output

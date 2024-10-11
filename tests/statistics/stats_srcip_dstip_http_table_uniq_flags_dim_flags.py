@@ -99,13 +99,13 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Flags)",
+                            "chart_name": "UNIQUECOUNT(Flags,
                             "visualization_type": "Bar",
                             "metrics": [
-                                "flags:UNIQUE_COUNT:UNIQUECOUNT(Flags)"
+                                "flags:UNIQUE_COUNT:UNIQUE Flags"
                             ],
                             "dimensions": ["flags"],
-                            "order_by": "UNIQUECOUNT(Flags)",
+                            "order_by": "UNIQUE Flags",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

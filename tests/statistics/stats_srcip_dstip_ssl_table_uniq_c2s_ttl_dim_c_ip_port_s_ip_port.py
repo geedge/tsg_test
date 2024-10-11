@@ -114,7 +114,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "c2s_ttl:UNIQUE_COUNT:UNIQUECOUNT(Client to Server TTL)"
+                            "c2s_ttl:UNIQUE_COUNT:UNIQUE Client to Server TTL"
                           ],
                           "dimensions": [
                             "client_ip",
@@ -122,7 +122,7 @@ def run(parameter):
                             "server_ip",
                             "server_port"
                           ],
-                          "order_by": "UNIQUECOUNT(Client to Server TTL)",
+                          "order_by": "UNIQUE Client to Server TTL",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"

@@ -54,7 +54,7 @@ def run(parameter):
                 "type": "concurrency",
                 "concurrency_threshold": {
                     "group_by": "source_ip",
-                    "concurrent_sessions": 2 #为1的时候packets_received有为0、为1的不好校验
+                    "concurrent_sessions": 2
                 }
             },
             "mitigation": {

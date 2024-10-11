@@ -112,10 +112,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(DTLS.Handshake Latency(ms))",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "dtls_handshake_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(DTLS Handshake Latency(ms))"
+                                "dtls_handshake_latency_ms:UNIQUE_COUNT:UNIQUECOUNT DTLS Handshake Latency"
                             ],
                             "dimensions": ["device_group"],
-                            "order_by": "UNIQUECOUNT(DTLS Handshake Latency(ms))",
+                            "order_by": "UNIQUE DTLS Handshake Latency",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

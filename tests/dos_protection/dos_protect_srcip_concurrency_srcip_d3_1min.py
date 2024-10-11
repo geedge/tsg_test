@@ -44,7 +44,7 @@ def run(parameter):
                 ],
             },
             "threshold": {
-                "type": "concurrency",
+                "type": "concurrvi",
                 "concurrency_threshold": {
                     "group_by": "source_ip",
                     "concurrent_sessions": 2
@@ -52,7 +52,7 @@ def run(parameter):
             },
             "mitigation": {
                 "behavior": "deny",
-                "timeout": "1h"
+                "timeout": "1min"
             },
             "expected_return": "",
             "counters": {"hits": "many"},
@@ -82,7 +82,7 @@ def run(parameter):
                 "active_flows": 3,
                 "d": 5,
                 "yaml_name": "test",
-                "pcap_name": "tcp_long3"
+                "pcap_name": "tcp_long30s"
             },
             "token": ""
         }

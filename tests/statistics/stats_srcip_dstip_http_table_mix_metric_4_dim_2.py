@@ -96,19 +96,19 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Client IP Object List)",
+                            "chart_name": "UNIQUECOUNT(Client IP Object List,
                             "visualization_type": "Table",
                             "metrics": [
-                                "sent_bytes+received_bytes:SUM:SUM(Bytes Sent Bytes Received)",
-                                "sent_pkts+received_pkts:SUM:SUM(Packets Sent Packets Received)",
-                                "new_c2s_flows+new_s2c_flows:SUM:SUM(New Double Flows)",
-                                "new_in_sessions+new_out_sessions:SUM:SUM(New Sessions)"
+                                "sent_bytes+received_bytes:SUM:SUM Bytes Sent Bytes Received",
+                                "sent_pkts+received_pkts:SUM:SUM Packets Sent Packets Received",
+                                "new_c2s_flows+new_s2c_flows:SUM:SUM New Double Flows",
+                                "new_in_sessions+new_out_sessions:SUM:SUM New Sessions"
                             ],
                             "dimensions": [
                                 "server_fqdn",
                                 "app"
                             ],
-                            "order_by": "SUM(New Sessions)",
+                            "order_by": "SUM New Sessions",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

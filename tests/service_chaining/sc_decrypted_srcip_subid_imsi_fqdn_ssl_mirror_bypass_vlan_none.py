@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import traceback
 from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -65,7 +65,21 @@ def run(parameter):
                         ]
                     }
                 ],
-                "device": [],
+                "device": [
+                    {
+                        "name": "service_chaining_imsi",
+                        "object_type": "mobile_identity",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "imsi",
+                                "item_value": '$' + parameter['test_imsi'],
+                            }
+                        ]
+                    }
+                ],
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
@@ -164,6 +178,7 @@ if __name__ == '__main__':
         "password": "123456ly",
         "test_pc_ip": "192.168.64.91",
         "test_subcriber_id": "test6776",
+        "test_imsi":"434589604510",
         "api_server": "http://192.168.44.72",
         "script_type": "ui",
         "env": "tsgx",

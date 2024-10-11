@@ -73,7 +73,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "ftp_url",
+                                "item_type": "url",
                                 "item_value": "/autoFtp/english_big.txt"
                             }
                         ],

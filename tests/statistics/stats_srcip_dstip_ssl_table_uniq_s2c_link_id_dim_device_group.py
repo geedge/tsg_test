@@ -114,12 +114,12 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "s2c_link_id:UNIQUE_COUNT:UNIQUECOUNT(Server to Client Link ID)"
+                            "s2c_link_id:UNIQUE_COUNT:UNIQUE Server to Client Link ID"
                           ],
                           "dimensions": [
                             "device_group"
                           ],
-                          "order_by": "UNIQUECOUNT(Server to Client Link ID)",
+                          "order_by": "UNIQUE Server to Client Link ID",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"

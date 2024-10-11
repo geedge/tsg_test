@@ -75,6 +75,10 @@ class CreateProfile:
                 "source_columns": "app_category",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
+            "Device Group": {
+                "source_columns": "device_group",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
             "Client-to-Server TTL": {
                 "source_columns": "c2s_ttl",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]

@@ -27,7 +27,7 @@ def run(parameter):
             "rule_name": parameter["test_case_name"],
             "rule_action": "intercept",
             "rule_type": "create",
-            "condition": {
+            "c2ondition": {
                 "source_ip": [
                     {
                         "name": "manipulation_source_ip",
@@ -50,6 +50,95 @@ def run(parameter):
                         "negate": False
                     }
                 ],
+            },
+            "action_parameter": {
+                "ssl_decryption_keyring": [
+                    {
+                        "profile_type": "ssl_keyring",
+                        "decryption_keying_type": "trusted",
+                        "profile_file": {
+                            "name": "manipulation_trusted_page",
+                            "model": "create",
+                            "file_certificate": "test_root_cert_catest.cer",
+                            "file_private_key": "test_root_key_catest.key",
+                            "certificate_type": "Root-Certificate",
+                            "private_key_format": "true",
+                            "is_match": "match",
+                            "reissue_expiry_hours": "C-120",
+                            "type": "Root-Certificate",
+                            "public_key_algorithm": "RSA-2048",
+                            "certificate_revocation_list": "",
+                            "include_root": "on"
+                        }
+                    }
+                ],
+                "ssl_decryption_profile": [
+                    {
+                        "profile_type": "ssl_decryption",
+                        "profile_file": {
+                            "name": "manipulation_ssl_decryption_profile",
+                            "model": "create",
+                            "common_name": "on",
+                            "issuer": "on",
+                            "self_signed": "on",
+                            "expiry_date": "on",
+                            "fail_action": "Pass-through",
+                            "ev_certificate": "off",
+                            "certificate_transparency": "off",
+                            "mutual_authentication": "on",
+                            "protocol_errors": "on",
+                            "certificate_pinning": "on",
+                            "certificate_not_installed": "off",
+                            "mirror_client_versions": "on",
+                            "min_client_version": "TLSv1.0",
+                            "max_client_version": "TLSv1.2",
+                            "allow_HTTP2": "on"
+                        }
+                    }
+                ],
+                "tcp_proxy_profile": [
+                    {
+                        "profile_type": "tcp_option",
+                        "profile_file": {
+                            "name": "manipulation_tcp_proxy_profile",
+                            "model": "create",
+                            "enable_TCP_passthrough": "off",
+                            "c_override_MSS": "off",
+                            "c_overrideMSS": "536",
+                            "c_no_delay": "on",
+                            "c_ttl": "70",
+                            "c_keepalive": "on",
+                            "c_probe_number": "8",
+                            "c_idle_time": "30",
+                            "c_interval": "15",
+                            "c_UserTimeout_switch": "on",
+                            "c_userTimeout": "600",
+                            "s_override_MSS": "off",
+                            "s_overrideMSS": "1460",
+                            "s_no_delay": "on",
+                            "s_ttl": "75",
+                            "s_keepalive": "on",
+                            "s_probe_number": "8",
+                            "s_idle_time": "30",
+                            "s_interval": "15",
+                            "s_UserTimeout_switch": "on",
+                            "s_userTimeout": "600"
+                        }
+                    }
+                ],
+                "traffic_mirroring_profile": [
+                    {
+                        "profile_type": "traffic_mirror",
+                        "profile_file": {
+                            "name": "manipulation_traffic_mirroring_profile",
+                            "model": "create",
+                            "vlan_id":
+                                [
+                                    "16"
+                                ]
+                        }
+                    }
+                ]
             },
             "expected_return": "关于百度,CN=TSG",
             "counters": {"hits": 1},
