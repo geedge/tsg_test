@@ -46,12 +46,6 @@ def run(parameter):
                                 "item_value": "10.64.38.240",
                             },
                         ]
-                    },{
-                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": []
                     }
                 ],
                 "source_port": [],
@@ -68,12 +62,6 @@ def run(parameter):
                                 "item_value": "2.1.1.3",
                             },
                         ]
-                    },{
-                        "name": parameter["test_case_name"].replace("_dstip", "", 1),
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": []
                     }
                 ],
                 "destination_port": [],

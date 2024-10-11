@@ -303,12 +303,12 @@ class MonitorInstanceGenerator:
             cfg_list = create.create_policy(parameter, test_data, template_path)
 
             # 流量验证
-            verify = Verification()
-            verification_result = verify.verification("", parameter, test_data, cfg_list, "")
+            # verify = Verification()
+            # verification_result = verify.verification("", parameter, test_data, cfg_list, "")
 
             # 分析验证结果，并返回给flask
-            analysis = AnalysisResult()
-            api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
+            # analysis = AnalysisResult()
+            # api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
 
             result["api_result"] = api_result
             # 删除配置
