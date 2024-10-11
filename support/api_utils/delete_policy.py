@@ -43,7 +43,7 @@ class DeletePolicy:
                     delete_rule_template['uuids'] = list(create_policies_ids[i].values())[0]
                     delete_rule_template['vsys_id'] = vsys_id
                     url = api_server + "/v1/vsys{}/policy/rule/{}".format(vsys_id, delete_rule_template['type'])
-                    response = requests.delete(url, headers=headers, params=delete_rule_template, verify=False)
+                    response = requests.delete(url, headers=headers, json=delete_rule_template, verify=False)
                     assert response.status_code == 200
                     if response.status_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete rule successfully.", flush=True)
@@ -187,7 +187,7 @@ class DeletePolicy:
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         del_profile_template = {"uuids": str(profile_id), "vsys_id": vsys_id}
                         url = "{}/v1/policy/profile/statistics_template".format(api_server)
-                        response = requests.delete(url, headers=headers, params=del_profile_template, verify=False)
+                        response = requests.delete(url, headers=headers, json=del_profile_template, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete statistics template successfully.", flush=True)
@@ -197,14 +197,14 @@ class DeletePolicy:
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         del_profile_sff = {"uuids": str(profile_id), "vsys_id": vsys_id}
                         url = "{}/v1/policy/profile/service_function_forwarder".format(api_server)
-                        response = requests.delete(url, headers=headers, params=del_profile_sff, verify=False)
+                        response = requests.delete(url, headers=headers, json=del_profile_sff, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function forwarder successfully.", flush=True)
                             profile_id = create_profile_ids[del_porfile_index]["sff_info"]["sf_info"][0]["id"]
                             del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
                             url = "{}/v1/policy/profile/service_function".format(api_server)
-                            response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
+                            response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                             assert response.status_code == 200
                             if response.status_code == 200:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function successfully.", flush=True)
@@ -216,7 +216,7 @@ class DeletePolicy:
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         url = "{}/v1/vsys{}/policy/profile/response_page".format(api_server, vsys_id)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
-                        response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete response page successfully.", flush=True)
@@ -226,7 +226,7 @@ class DeletePolicy:
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         url = "{}/v1/vsys{}/policy/profile/hijack_file".format(api_server, vsys_id)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
-                        response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete hijack files successfully.", flush=True)
@@ -236,7 +236,7 @@ class DeletePolicy:
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         url = "{}/v1/vsys{}/policy/profile/insert_script".format(api_server, vsys_id)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
-                        response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete insert profile successfully.", flush=True)
@@ -246,7 +246,7 @@ class DeletePolicy:
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         url = "{}/v1/vsys{}/policy/profile/run_script".format(api_server, vsys_id)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
-                        response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete run script successfully.", flush=True)
@@ -256,7 +256,7 @@ class DeletePolicy:
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         url = "{}/v1/vsys{}/policy/profile/dns_record".format(api_server, vsys_id)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
-                        response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record successfully.", flush=True)
@@ -266,7 +266,7 @@ class DeletePolicy:
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         url = "{}/v1/vsys{}/policy/profile/traffic_mirror".format(api_server, vsys_id)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
-                        response = requests.delete(url, headers=headers, params=del_profile_sf, verify=False)
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record successfully.", flush=True)
