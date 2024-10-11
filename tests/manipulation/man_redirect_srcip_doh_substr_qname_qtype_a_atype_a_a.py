@@ -83,9 +83,9 @@ def run(parameter):
             "traffic": {
                 "protocol": "doh",
                 "type": "client",
-                "domain": "www.baidu.com",  # ipv6.google.com
+                "domain": "www.google.com",  # ipv6.google.com
                 "query_type": "A",  # AAAA
-                "doh_server_url": "https://dns9.quad9.net"
+                "doh_server_url": "https://dns.quad9.net/dns-query"
             },
             "token": ""
         }

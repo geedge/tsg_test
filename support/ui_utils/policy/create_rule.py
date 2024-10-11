@@ -174,6 +174,12 @@ class CreateRule:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeImsi_posXpath"]).click()
+                    for j in range(len(device_data)):
+                            if device_data[j]["negate"] == True:
+                                time.sleep(1)  # 暂停1秒
+                                negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negateImsi_posXpath"])
+                                ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                                negate_element.click()
             # 添加apn
             if "apn" in test_data["condition"] and len(test_data["condition"]["apn"]) != 0:
                 device_data = test_data["condition"]["apn"]

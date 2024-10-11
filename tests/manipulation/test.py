@@ -7,7 +7,7 @@ import copy
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib
 from contextlib import redirect_stdout
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.workpath import workdir
 from support.ui_utils.element_position.map_element_position_library import *
 import re
 time.sleep(1)

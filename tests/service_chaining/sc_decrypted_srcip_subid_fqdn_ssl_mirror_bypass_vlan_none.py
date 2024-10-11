@@ -65,21 +65,7 @@ def run(parameter):
                         ]
                     }
                 ],
-                "device": [
-                    {
-                        "name": "service_chaining_imsi",
-                        "object_type": "mobile_identity",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "imsi",
-                                "item_value": '$' + parameter['test_imsi'],
-                            }
-                        ]
-                    }
-                ],
+                "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],

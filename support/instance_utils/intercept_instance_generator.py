@@ -132,7 +132,7 @@ class InterceptInstanceGenerator:
                     elif create_rule_code != 200:
                         ui_result = "Fail to create intercept rule."
                     time.sleep(2)
-                """
+                #"""
                 # 触发流量验证
                 if create_rule_code == 200:
                     search_rule = SearchRule(driver)
@@ -153,7 +153,7 @@ class InterceptInstanceGenerator:
                 if len(verification_result) != 0:
                     analysis = AnalysisResult()
                     ui_result = analysis.analysis_result(test_data, [], verification_result)
-                """
+                #"""
                 # 删除rule
                 if create_rule_code == 200:
                     search_rule = SearchRule(driver)
@@ -205,6 +205,7 @@ class InterceptInstanceGenerator:
                         # 退出遍历标志
                         if cond_status == 1:  # 失败，退出遍历创建
                             break
+
                 # 删除profile
                 if delete_rule_code == 200 and "action_parameter" in test_data.keys():
                     # 删除

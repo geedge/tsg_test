@@ -19,7 +19,7 @@ class DataTranslation:
                 if "application" in data["condition"].keys() and len(data["condition"]["application"]) > 0:
                     for app_index in range(len(data["condition"]["application"])):
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
-                if "ip_protocol" in data["condition"].keys() :
+                if "ip_protocol" in data["condition"].keys():
                     temp_test_data["ip_protocol"] = data["condition"]["ip_protocol"]
             if key in {"action_parameter", "profile"}:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
@@ -451,6 +451,7 @@ class DataTranslation:
                             }
                             add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        temp["is_negate"] = v[i]["negate"]
                         object.append(copy.deepcopy(temp))
                     elif v[i]["item"][0]["item_type"] == "phone_number":
                         temp = {
@@ -473,6 +474,7 @@ class DataTranslation:
                             }
                             add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        temp["is_negate"] = v[i]["negate"]
                         object.append(copy.deepcopy(temp))
                     elif v[i]["item"][0]["item_type"] == "imei":
                         temp = {
@@ -864,7 +866,7 @@ class DataTranslation:
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
-                        elif v[i]["item"][0]["item_type"] == "mail_attachment_name":
+                        elif v[i]["item"][0]["item_type"] == "attachment_name" and data["condition"]["application"][0]["name"] == "mail":
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_MAIL_ATT_NAME",
