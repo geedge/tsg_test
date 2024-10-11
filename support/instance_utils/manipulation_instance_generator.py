@@ -49,11 +49,7 @@ class ManipulationInstanceGenerator:
         test_data["token"] = token
         self.test_data["token"] = token
 
-        need_initialization = False
-        if len(parameter["script_type"]) == 0:
-            need_initialization = True
-
-        if parameter["script_type"] == "ui" or need_initialization == True:
+        if parameter["script_type"] == "ui" or len(parameter["script_type"]) == 0:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
 
@@ -247,7 +243,7 @@ class ManipulationInstanceGenerator:
                 result["ui_result"] = ui_result
                 support.ui_utils.env.teardown()
             
-        if parameter["script_type"] == "api" or need_initialization == True:
+        if parameter["script_type"] == "api" or len(parameter["script_type"]) == 0:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
 
@@ -294,7 +290,6 @@ class ManipulationInstanceGenerator:
                 # 分析验证结果，并返回给flask
                 analysis = AnalysisResult()
                 api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
-
             finally:
                 result["api_result"] = api_result
                 # 删除配置
@@ -305,11 +300,9 @@ class ManipulationInstanceGenerator:
 
     def delete_data(self):
         # 删除配置
-        #print(self.api_name_list)
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
             # 清理环境
-            #support.ui_utils.env.teardown()
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
         if isinstance(self.api_name_list, list) and self.api_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)

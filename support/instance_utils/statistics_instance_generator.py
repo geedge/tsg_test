@@ -49,14 +49,10 @@ class StatisticsInstanceGenerator:
         test_data["token"] = token
         self.test_data["token"] = token
 
-        need_initialization = False
-        if len(parameter["script_type"]) == 0:
-            need_initialization = True
-
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
-        if parameter["script_type"] == "ui" or need_initialization == True:
+        if parameter["script_type"] == "ui" or len(parameter["script_type"]) == 0:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
 
@@ -262,7 +258,7 @@ class StatisticsInstanceGenerator:
                 # 清理环境
                 result["ui_result"] = ui_result
                 support.ui_utils.env.teardown()
-        if parameter["script_type"] == "api" or need_initialization == True:
+        if parameter["script_type"] == "api" or len(parameter["script_type"]) == 0:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
                 # Statistics Rule使用随机IP
@@ -307,8 +303,6 @@ class StatisticsInstanceGenerator:
         return result
 
     def delete_data(self):
-        # 清理环境
-        support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:

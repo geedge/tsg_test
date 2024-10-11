@@ -1423,6 +1423,10 @@ test_intercept_rule_element_position = {
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
         "policyRulePage_negateSrcIP_posXpath":interceptRulePage_negateSrcIP_posXpath,
+        # for trusted servers
+        "policyRulePage_intercept_addTrustedSelectBox_posXpath": manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath,
+        "policyRulePage_intercept_searchTrustedInput_posXpath": manipulationRulePage_hijack_searchHijackProfile_posXpath,
+        "policyRulePage_intercept_searchTrustedDorpItem_posXpath": manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath,
     },
     "search": {
         "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
