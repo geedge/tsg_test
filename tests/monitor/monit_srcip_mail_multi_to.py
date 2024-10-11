@@ -103,7 +103,9 @@ def run(parameter):
                 "receiver": "autotest@163.com",
                 "subject": "Bestman",
                 "body": "123",
-                "attach": "/app/support/packet_generator/mail_file/subjectEnglish.txt"
+                # "attach": "/app/support/packet_generator/mail_file/subjectEnglish.txt"
+                "attach": "/opt/traffic_replay/mail_file/subjectEnglish.txt"
+
             },
             "token": ""
         }
@@ -138,7 +140,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "guoqiuya",
         "password": "Guoqiuya123@@",
-        "test_pc_ip": "192.168.64.105",
+        "test_pc_ip": "192.168.64.100",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
@@ -151,6 +153,7 @@ if __name__ == '__main__':
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

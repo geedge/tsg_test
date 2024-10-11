@@ -63,7 +63,8 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_to",
-                                "item_value": "zhangchengwei&163fx@163.com"
+                                # "item_value": "zhangchengwei&163fx@163.com"
+                                "item_value": "zhangchengwei163fx@163.com"
                             }
                         ],
                     }
@@ -135,6 +136,7 @@ if __name__ == '__main__':
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

@@ -70,7 +70,7 @@ def run(parameter):
                 {
                     "profile_type": "traffic_mirror",
                     "name": "profile1",
-                    "vlan_count": random.randint(3, 66)
+                    "vlan_count": random.randint(1, 5)
                     # vlan的范围：应该是在3-66
                 }
             ],

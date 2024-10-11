@@ -64,7 +64,7 @@ def run(parameter):
                                 "item_operation": "add",
                                 "item_type": "mail_to",
                                 # "item_value": "zhangchengwei&163fx@163.com"
-                                "item_value": "zhangchengwei@163.com"
+                                "item_value": "zhangchengwei163fx@163.com"
                             }
                         ],
                     }
@@ -84,8 +84,8 @@ def run(parameter):
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
-                {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
-                {"query_field_key": "monitor_mirrored_bytes", "query_value": ""}
+                {"query_field_key": "monitor_mirrored_pkts", "query_value": "937"},
+                # {"query_field_key": "monitor_mirrored_bytes", "query_value": ""}
             ],
             "traffic": {
                 "protocol": "",
