@@ -37,6 +37,7 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
@@ -53,6 +54,7 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
