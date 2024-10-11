@@ -62,7 +62,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_to",
+                                "item_type": "to",
                                 "item_value": "zhangchengwei&163fx@163.com"
                             }
                         ],
