@@ -30,8 +30,6 @@ def run(parameter):
             "name": "obj_create_ip_learning_error_item",
             "case_type": "single",
             "object_type": "ip_learning",
-            "fuzzy_search": False,
-            "search_type": "id",
             "object_operation":{
                 "create": [
                     {
