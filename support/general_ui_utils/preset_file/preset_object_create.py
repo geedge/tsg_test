@@ -28,7 +28,7 @@ class PresetObjectCreate():
                     {
                         "item_operation": "add",
                         "item_type": "",
-                        "item_value": ["1.1.1.1"]
+                        "item_value": ["192.60.64.28"]
                     },
                 ]
             },
@@ -109,7 +109,7 @@ class PresetObjectCreate():
                                              ObjectDetailPage_statistics_select_elaborate_posXpath).click()
                 elif data["statistics"] == "brief":
                     self.driver.find_element(By.XPATH,ObjectDetailPage_statistics_select_brief_posXpath).click()
-
+            #确认创建
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
             self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             time.sleep(3)
@@ -131,3 +131,15 @@ class PresetObjectCreate():
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}",flush=True)
             return 400
+
+
+    def delete(self):
+        self.driver.refresh()
+        self.driver.find_element(By.ID, mainPage_ObjectSearch_selectLabel_posId).send_keys(self.object_info["name"])
+        self.driver.find_element(By.XPATH,listPage_objectSearch_ip_address_select_Name_posXpath).click()
+        btn = self.driver.find_element(By.ID,mainPage_ObjectSearch_buttonSearch_posId)
+        self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
+        self.driver.find_element(By.XPATH, "//span[@class='el-checkbox__input']").click()
+        self.driver.find_element(By.ID, listPage_object_ip_address_delButton_posId).click()
+        self.driver.find_element(By.XPATH,listPage_object_ip_address_del_yes_Button_posXpath).click()
+

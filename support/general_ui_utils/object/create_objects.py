@@ -10,6 +10,7 @@ from support.general_ui_utils.object.page_jump import PageJump
 from support.ui_utils.read_data import ReadData
 from support.general_ui_utils.element_position.object_element_position import *
 from support.ui_utils.random_name import *
+from support.general_ui_utils.object.item_duplicate_check import ItemDuplicateCheck
 
 class CreateObjects:
 
@@ -85,10 +86,13 @@ class CreateObjects:
                 time.sleep(10)
 
             #查看item类型是否为相同object内重复item
-            if data["object_operation"]['create'][index]['item_type'] == "duplicate":
+            if "duplicate" in data["object_operation"]['create'][index]['item_type']:
                 time.sleep(2)
                 self.isElementExist(Element=listPage_object_reprtition_check_postXpath)
                 assert self.Exist, "未存在重复标识"
+                if data["object_operation"]['create'][index]['item_type'] == "multiple_duplicate":
+                    item_duplicate = ItemDuplicateCheck(self.driver)
+                    item_duplicate.duplicate_check(data)
 
             # 修改Statistics统计状态
             if data["statistics"] != "":
