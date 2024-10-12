@@ -101,7 +101,8 @@ def run(parameter):
                           "metrics": [
                             "in_pkt_length_distribution:UNIQUE_COUNT:Incoming Packet Length Distribution",
                             "out_pkt_length_distribution:UNIQUE_COUNT:Out Packet Length Distribution",
-                            "pkt_length_distribution:UNIQUE_COUNT:Packet Length Distribution"
+                            "pkt_length_distribution:UNIQUE_COUNT:Packet Length Distribution",
+                            "in_pkt_length_distribution+out_pkt_length_distribution:UNIQUE_COUNT:UNIQUE INOUT Packet Length Distribution"
                           ],
                           "dimensions": [],
                           "order_by": "",

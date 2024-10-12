@@ -100,7 +100,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "device_group:UNIQUE_COUNT:Application",
-                            "app:UNIQUE_COUNT:Device Group"
+                            "app:UNIQUE_COUNT:Device Group",
+                            "device_group+app:UNIQUE_COUNT:Device Group Application"
                           ],
                           "dimensions": [],
                           "order_by": "",

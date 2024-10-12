@@ -100,7 +100,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "decoded_as:UNIQUE_COUNT:Decoded AS",
-                            "sled_ip:UNIQUE_COUNT:Sled IP"
+                            "sled_ip:UNIQUE_COUNT:Sled IP",
+                            "decoded_as+sled_ip:UNIQUE_COUNT:Decoded AS Sled IP"
                           ],
                           "dimensions": [],
                           "order_by": "",
