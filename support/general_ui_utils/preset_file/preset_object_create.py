@@ -20,7 +20,7 @@ class PresetObjectCreate():
 
         self.ip_test_data = {
             "type": "objects",
-            "name": "create_ip_four_group_nest",
+            "name": "",
             "case_type": "single",
             "object_type": "ip",
             "object_operation": {
@@ -40,12 +40,14 @@ class PresetObjectCreate():
             "audit_log": False  # system
         }
 
-    def create(self,object_type,object_element_position):
+    def create(self,object_type,name,object_element_position):
         page_jump_element_position = object_element_position["page_jump"]
         create_element_position = object_element_position["create"]
         data = []
         if object_type == "ip":
             data = self.ip_test_data
+
+        data["name"] = name
 
         try:
             # 页面跳转

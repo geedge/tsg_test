@@ -16,6 +16,8 @@ from support.general_ui_utils.object.export_objects import ExportObjects
 from support.general_ui_utils.object.system_audit_log_check import SystemAuditLogCheck
 from support.general_ui_utils.element_position.object_element_position import *
 from support.general_ui_utils.preset_file.preset_object_create import PresetObjectCreate
+from support.general_ui_utils.object.page_jump import PageJump
+from support.general_ui_utils.object.differrent_vsys_object_check import DifferentVsysObjectCheck
 from support.report_update import ReportUpdate
 
 class ObjectsInstanceGenerator:
@@ -243,15 +245,11 @@ class ObjectsInstanceGenerator:
                         elif system_audit_log_code != 200:
                             ui_result = ui_result + " In addition, fail to System audit log verify."
 
-                elif self.test_data["audit_log"] == True:
-                    pass
-
                 elif self.test_data["case_type"] == "group":
-
                     #若为多层嵌套，预先创建object
                     if test_data["sub_object"] > 1:
                         preset_object = PresetObjectCreate(driver)
-                        preset_object_code = preset_object.create(test_data["object_type"], object_element_position)
+                        preset_object_code = preset_object.create(test_data["object_type"], test_data["name"],object_element_position)
                         if preset_object_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                                   "Create preset object successfully.", flush=True)
@@ -316,19 +314,19 @@ class ObjectsInstanceGenerator:
                         elif search_ip_code != 200:
                             ui_result = "Fail to search ip."
 
-                            delete_ip = DeleteObjects(driver)
-                            delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
-                            if delete_ip_code == 200:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                                      "Delete ip object successfully.", flush=True)
-                            elif delete_ip_code != 200:
-                                ui_result = ui_result + " In addition, fail to delete ip object."
+                        delete_ip = DeleteObjects(driver)
+                        delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
+                        if delete_ip_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                                  "Delete ip object successfully.", flush=True)
+                        elif delete_ip_code != 200:
+                            ui_result = ui_result + " In addition, fail to delete ip object."
 
                 elif self.test_data["case_type"] == "multiple":
 
                     #为重复item校验创建object
                     preset_object = PresetObjectCreate(driver)
-                    preset_object_code = preset_object.create(test_data["object_type"], object_element_position)
+                    preset_object_code = preset_object.create(test_data["object_type"],test_data["name"],object_element_position)
                     if preset_object_code == 200:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create preset object successfully.", flush=True)
                     elif preset_object_code != 200:
@@ -356,12 +354,80 @@ class ObjectsInstanceGenerator:
                     delete_ip = DeleteObjects(driver)
                     delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
                     if delete_ip_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                              "Delete object successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete object successfully.", flush=True)
                     elif delete_ip_code != 200:
                         ui_result = ui_result + " In addition, fail to delete ip object."
 
                     preset_object.delete()
+
+                elif self.test_data["case_type"] == "different_vsys":
+                    # 为重复item校验创建object
+                    preset_object = PresetObjectCreate(driver)
+                    preset_object_code = preset_object.create(test_data["object_type"], test_data["name"],object_element_position)
+                    first_object_info = preset_object.object_info
+                    if preset_object_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create preset object successfully.", flush=True)
+                    elif preset_object_code != 200:
+                        ui_result = "Fail to create preset object."
+
+                    if "vsys" in test_data.keys():
+                        page_jump = PageJump(driver)
+                        page_jump_code = page_jump.change_vsys(test_data["vsys"])
+                        if page_jump_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Change vsys successfully.", flush=True)
+                        elif page_jump_code != 200:
+                            ui_result = "Fail to change vsys."
+                    #切换至vsys0
+                    for index in range(len(test_data["object_operation"]["create"])):
+                        # 创建object
+                        create_ip_object = CreateObjects(driver)
+                        create_port_code = create_ip_object.create(test_data, index, object_element_position)
+                        second_object_info = create_ip_object.object_info
+                        if create_port_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3], "Create object successfully.",flush=True)
+                        elif create_port_code != 200:
+                            ui_result = "Fail to create ip."
+
+                    different_vsys_check = DifferentVsysObjectCheck(driver)
+                    different_vsys_check_code = different_vsys_check.different_vsys_object_check(first_object_info,second_object_info,test_data,object_element_position)
+                    if different_vsys_check_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Different vsys check object successfully.", flush=True)
+                    elif different_vsys_check_code != 200:
+                        ui_result = "Fail to Different vsys check."
+
+                    #删除vsys0下创建object
+                    search_ip = SearchObjects(driver)
+                    search_ip_code, first_row_checkbox_element = search_ip.search(first_object_info, test_data,object_element_position)
+                    if search_ip_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search ip object successfully.", flush=True)
+                    elif search_ip_code != 200:
+                        ui_result = "Fail to search ip."
+                    delete_ip = DeleteObjects(driver)
+                    delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
+                    if delete_ip_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete ip object successfully.", flush=True)
+                    elif delete_ip_code != 200:
+                        ui_result = ui_result + " In addition, fail to delete ip object."
+
+                    #切换到UIAutoTestVsys删除object
+                    if "vsys" in test_data.keys():
+                        page_jump_code = page_jump.change_vsys("UIAutoTestVsys")
+                        if page_jump_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Change vsys successfully.", flush=True)
+                        elif page_jump_code != 200:
+                            ui_result = "Fail to change vsys."
+                        search_ip_code, first_row_checkbox_element = search_ip.search(first_object_info, test_data,object_element_position)
+                        if search_ip_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search ip object successfully.", flush=True)
+                        elif search_ip_code != 200:
+                            ui_result = "Fail to search ip."
+                        delete_ip = DeleteObjects(driver)
+                        delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
+                        if delete_ip_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete ip object successfully.", flush=True)
+                        elif delete_ip_code != 200:
+                            ui_result = ui_result + " In addition, fail to delete ip object."
+
 
 
 
