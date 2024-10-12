@@ -136,7 +136,11 @@ class ObjectsInstanceGenerator:
         elif test_data["object_type"] == "ip_learning":
             object_element_position = test_ip_learning_object_element_position
 
-        if parameter["script_type"] == "ui" or len(parameter["script_type"]) == 0:
+        need_initialization = False
+        if len(parameter["script_type"]) == 0:
+            need_initialization = True
+
+        if parameter["script_type"] == "ui" or need_initialization == True:
             try:
                 if self.test_data["case_type"] == "single":
                     # 创建object
@@ -315,7 +319,7 @@ class ObjectsInstanceGenerator:
                 result["ui_result"] = ui_result
                 support.ui_utils.env.teardown()
 
-        if parameter["script_type"] == "api" or len(parameter["script_type"]) == 0:
+        if parameter["script_type"] == "api" or need_initialization == True:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run api test case", flush=True)
 

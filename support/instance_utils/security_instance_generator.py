@@ -48,8 +48,12 @@ class SecurityGenerator:
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         test_data["token"] = token
-        
-        if parameter["script_type"] == "ui" or len(parameter["script_type"]) == 0:
+
+        need_initialization = False
+        if len(parameter["script_type"]) == 0:
+            need_initialization = True
+
+        if parameter["script_type"] == "ui" or need_initialization == True:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
 
@@ -968,7 +972,7 @@ class SecurityGenerator:
                 result["ui_result"] = ui_result
                 support.ui_utils.env.teardown()
         
-        if parameter["script_type"] == "api" or len(parameter["script_type"]) == 0:
+        if parameter["script_type"] == "api" or need_initialization == True:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
 
