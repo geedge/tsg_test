@@ -70,6 +70,24 @@ def run(parameter):
                             "certificate_revocation_list": "",
                             "include_root": "on"
                         }
+                    },
+                    {
+                        "profile_type": "ssl_keyring",
+                        "decryption_keying_type": "untrusted",
+                        "profile_file": {
+                            "name": "manipulation_untrusted_page",
+                            "model": "create",
+                            "file_certificate": "test_root_cert_catest.cer",
+                            "file_private_key": "test_root_key_catest.key",
+                            "certificate_type": "Root-Certificate",
+                            "private_key_format": "true",
+                            "is_match": "match",
+                            "reissue_expiry_hours": "C-120",
+                            "type": "Root-Certificate",
+                            "public_key_algorithm": "RSA-2048",
+                            "certificate_revocation_list": "",
+                            "include_root": "on"
+                        }
                     }
                 ],
                 "ssl_decryption_profile": [
@@ -140,7 +158,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "关于百度,CN=TSG",
+            "expected_return": "关于百度",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {

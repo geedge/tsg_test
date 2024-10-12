@@ -542,7 +542,72 @@ class CreateRule:
                         if test_data["multiProfile"] == True and y != len(profile_data) - 1:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addProfile_plus_posXpath"]).click()
                 elif test_data["policy_type"] == "pxy_intercept":
-                    pass
+                    profile_data = test_data["action_parameter"]
+                    if "ssl_decryption_keyring" in profile_data.keys():
+                        ssl_decryption_keyrings = profile_data["ssl_decryption_keyring"]
+                        for i in range(len(ssl_decryption_keyrings)):
+                            # trusted
+                            if ssl_decryption_keyrings[i]["decryption_keying_type"] == "trusted":
+                                trusted_profile_name = ssl_decryption_keyrings[i]["profile_file"]["name"]
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addTrustedSelectBox_posXpath"]).click()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTrustedInput_posXpath"], find_after_wait_time=0.6).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTrustedInput_posXpath"]).send_keys(trusted_profile_name)
+                                # 点击回车键
+                                search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTrustedInput_posXpath"])
+                                search_box.send_keys(Keys.RETURN)
+                                # 选择第一个
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTrustedDorpItem_posXpath"], find_after_wait_time=0.6).click()
+                            # untrusted
+                            elif ssl_decryption_keyrings[i]["decryption_keying_type"] == "untrusted":
+                                untrusted_profile_name = ssl_decryption_keyrings[i]["profile_file"]["name"]
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addUntrustedSelectBox_posXpath"]).click()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchUntrustedInput_posXpath"], find_after_wait_time=0.6).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchUntrustedInput_posXpath"]).send_keys(untrusted_profile_name)
+                                # 点击回车键
+                                search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchUntrustedInput_posXpath"])
+                                search_box.send_keys(Keys.RETURN)
+                                # 选择第一个
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchUntrustedDorpItem_posXpath"], find_after_wait_time=0.6).click()
+                    # mirror decrypted profile
+                    if "traffic_mirroring_profile" in profile_data.keys():
+                        traffic_mirroring_profiles = profile_data["traffic_mirroring_profile"]
+                        for i in range(len(traffic_mirroring_profiles)):
+                            traffic_mirroring_profile_name = traffic_mirroring_profiles[i]["profile_file"]["name"]
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addDecryptionProfileSelectBox_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"], find_after_wait_time=0.6).clear()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"]).send_keys(traffic_mirroring_profile_name)
+                            # 点击回车键
+                            search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"])
+                            search_box.send_keys(Keys.RETURN)
+                            # 选择第一个
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileDorpItem_posXpath"], find_after_wait_time=0.6).click()
+                    # decryption profile
+                    if "ssl_decryption_profile" in profile_data.keys():
+                        ssl_decryption_profiles = profile_data["ssl_decryption_profile"]
+                        for i in range(len(ssl_decryption_profiles)):
+                            ssl_decryption_profile_name = ssl_decryption_profiles[i]["profile_file"]["name"]
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addDecryptionProfileSelectBox_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"], find_after_wait_time=0.6).clear()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"]).send_keys(ssl_decryption_profile_name)
+                            # 点击回车键
+                            search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"])
+                            search_box.send_keys(Keys.RETURN)
+                            # 选择第一个
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileDorpItem_posXpath"], find_after_wait_time=0.6).click()
+                    # tcp proxy profile
+                    if "tcp_proxy_profile" in profile_data.keys():
+                        tcp_proxy_profiles = profile_data["tcp_proxy_profile"]
+                        for i in range(len(tcp_proxy_profiles)):
+                            tcp_proxy_profile_name = tcp_proxy_profiles[i]["profile_file"]["name"]
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addTcpProfileSelectBox_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTcpProfileInput_posXpath"], find_after_wait_time=0.6).clear()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTcpProfileInput_posXpath"]).send_keys(tcp_proxy_profile_name)
+                            # 点击回车键
+                            search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTcpProfileInput_posXpath"])
+                            search_box.send_keys(Keys.RETURN)
+                            # 选择第一个
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTcpProfileDorpItem_posXpath"], find_after_wait_time=0.6).click()
+
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
                     # 页面滚动到最底部
@@ -615,7 +680,6 @@ class CreateRule:
                                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_valueInput_posXpath"].format(replace_index=replace_index), find_after_wait_time=0.5).send_keys(doh_value)
                                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_ttlInput_posXpath"].format(replace_index=replace_index)).clear()
                                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_redirectDoH_ttlInput_posXpath"].format(replace_index=replace_index), find_after_wait_time=0.5).send_keys(doh_ttl)
-
                     elif test_data["rule_action"] == "replace":
                         # 遍历，是否含有多个search in
                         replace_parameter_list = test_data["action_parameter"]["replace_parameter"]

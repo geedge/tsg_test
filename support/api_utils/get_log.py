@@ -99,6 +99,7 @@ class GetLog:
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200
             log_list = json.loads(response.text)
+            #print(log_list)
             log_list = log_list['data']['result']
             log_index = i + 1
             temp_log_query_param = 'log_query_param_' + str(log_index)
@@ -502,6 +503,7 @@ class GetLog:
             response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
+            #print(response)
             index = i + 1
             temp_counters = 'counters_' + str(index)
             if temp_counters in test_data.keys():
