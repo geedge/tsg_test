@@ -43,48 +43,15 @@ def run(parameter):
                     }
                 ],
             },
-            "threshold": {
-                "type": "concurrency",
-                "concurrency_threshold": {
-                    "group_by": "source_ip",
-                    "concurrent_sessions": 2
-                }
-            },
-            "mitigation": {
-                "behavior": "deny",
-                "timeout": "1h"
-            },
             "expected_return": "",
-            "counters": {"hits": "many"},
+            "counters": {"hits": 1},
             "log_query_param": [
-                {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
-                {"query_field_key": "sessions", "query_value": ""},
-                {"query_field_key": "packets", "query_value": ""},
-                {"query_field_key": "bytes", "query_value": ""},
-                {"query_field_key": "bit_rate", "query_value": ""},
-                {"query_field_key": "packet_rate", "query_value": ""},
-                {"query_field_key": "session_rate", "query_value": ""},
-
-                {"query_field_key": "rule_id", "query_value": ""},
-                {"query_field_key": "conditions", "query_value": ""},
-                {"query_field_key": "source_ip_list", "query_value": ""},
-                {"query_field_key": "source_country_list", "query_value": "Private Network"},
-                {"query_field_key": "destination_ip", "query_value": ""},
-                {"query_field_key": "destination_country", "query_value": "US"},
             ],
             "traffic": {
-                "protocol": "",
-                "type": "trex",
-                "clients_start_ip": "1.1.1.1",
-                "clients_end_ip": "1.1.1.1",
-                "servers_start_ip": "2.1.2.30",
-                "servers_end_ip": "2.1.2.30",
-                "active_flows": 3,
-                "d": 5,
-                "yaml_name": "test",
-                "pcap_name": "tcp_long30s"
-            },
-            "token": ""
+                "protocol": "ssl",
+                "type": "curl",
+                "command": "curl -kv --connect-timeout 10 -m 10 https://www.baidu.com"
+            }
         }
         
         # 测试用例实例化

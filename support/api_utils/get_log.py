@@ -447,7 +447,7 @@ class GetLog:
         elif query_field_key == "rule_id":
             if policy_id == log[query_field_key]:
                 temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+                test_data["log_query_param"][time]["query_value"] = int(log[query_field_key])
             else:
                 temp_log_result_list.append(False)
         elif query_field_key == "conditions":

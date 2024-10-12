@@ -236,7 +236,9 @@ class DosProtectionInstanceGenerator:
 
             finally:
                 result["ui_result"] = ui_result
-                support.ui_utils.env.teardown()
+                # 删除配置
+                # delete = DeletePolicy()
+                # delete.delele_policy_by_cfg(token, parameter, temp_name_list)
 
         if parameter["script_type"] == "api" or need_initialization == True:
             try:
