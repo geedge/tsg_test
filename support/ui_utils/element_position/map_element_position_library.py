@@ -641,6 +641,9 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_negateImsi_posXpath":serviceChainingRulePage_negateImsi_posXpath,
         "policyRulePage_negateSrcPort_posXpath":serviceChainingRulePage_negateSrcPort_posXpath,
         "policyRulePage_negateDstPort_posXpath":serviceChainingRulePage_negateDstPort_posXpath,
+        "policyRulePage_negateServerFqdn_posXpath":serviceChainingRulePage_negateServerFqdn_posXpath,
+        "policyRulePage_negateInternalPort_posXpath":serviceChainingRulePage_negateInternalPort_posXpath,
+        "policyRulePage_negateExternalPort_posXpath":serviceChainingRulePage_negateExternalPort_posXpath,
         # Source IP
         "policyRulePage_addSrcIP_posXpath": serviceChainingRulePage_addSrcIP_posXpath,
         "policyRulePage_searchSrcIP_posXpath": serviceChainingRulePage_searchSrcIP_posXpath,

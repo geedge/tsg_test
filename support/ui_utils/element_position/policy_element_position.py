@@ -638,6 +638,9 @@ serviceChainingRulePage_negateUser_posXpath = "//div[@zs-label='Source']//p[norm
 serviceChainingRulePage_negateImsi_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Device']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_negateSrcPort_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_negateDstPort_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateServerFqdn_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='Server FQDN']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateInternalPort_posXpath = "//div[@zs-label='Internal']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateExternalPort_posXpath = "//div[@zs-label='External']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
