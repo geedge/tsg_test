@@ -163,7 +163,7 @@ class ObjectsInstanceGenerator:
                         search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
                         if search_ip_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search object successfully.", flush=True)
-                        elif create_port_code != 200:
+                        elif search_ip_code != 200:
                             ui_result = "Fail to search ip."
                         view_statistics = ViewStatisticsPage(driver)
                         view_statistics_code = view_statistics.view_statistics_check(test_data["statistics"],object_element_position,first_row_checkbox_element)
@@ -191,7 +191,7 @@ class ObjectsInstanceGenerator:
                             search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
                             if search_ip_code == 200:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search object successfully.", flush=True)
-                            elif create_port_code != 200:
+                            elif search_ip_code != 200:
                                 ui_result = "Fail to search ip."
                             edit_ip = EditObjects(driver)
                             edit_ip_code = edit_ip.edit(test_data,index,object_element_position, first_row_checkbox_element)
@@ -217,7 +217,7 @@ class ObjectsInstanceGenerator:
                         search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
                         if search_ip_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search  object successfully.", flush=True)
-                        elif create_port_code != 200:
+                        elif search_ip_code != 200:
                             ui_result = "Fail to search ip."
 
                         if "export" in test_data["object_operation"]:
@@ -225,7 +225,7 @@ class ObjectsInstanceGenerator:
                             export_object_code = export_object.export_objects(object_info,first_row_checkbox_element)
                             if export_object_code == 200:
                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Export object successfully.", flush=True)
-                            elif create_port_code != 200:
+                            elif export_object_code != 200:
                                 ui_result = "Fail to export ip."
 
                         delete_ip = DeleteObjects(driver)
@@ -325,7 +325,46 @@ class ObjectsInstanceGenerator:
                                 ui_result = ui_result + " In addition, fail to delete ip object."
 
                 elif self.test_data["case_type"] == "multiple":
-                    pass
+
+                    #为重复item校验创建object
+                    preset_object = PresetObjectCreate(driver)
+                    preset_object_code = preset_object.create(test_data["object_type"], object_element_position)
+                    if preset_object_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create preset object successfully.", flush=True)
+                    elif preset_object_code != 200:
+                        ui_result = "Fail to create preset object."
+
+                    for index in range(len(test_data["object_operation"]["create"])):
+                        # 创建object
+                        create_ip_object = CreateObjects(driver)
+                        create_port_code = create_ip_object.create(test_data,index, object_element_position)
+                        object_info = create_ip_object.object_info
+                        self.object_exit = object_info["object_exit"]
+                        if create_port_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create object successfully.", flush=True)
+                        elif create_port_code != 200:
+                            ui_result = "Fail to create ip."
+
+                    # 删除object
+                    search_ip = SearchObjects(driver)
+                    search_ip_code, first_row_checkbox_element = search_ip.search(object_info, test_data,object_element_position)
+                    if search_ip_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search  object successfully.", flush=True)
+                    elif search_ip_code != 200:
+                        ui_result = "Fail to search ip."
+
+                    delete_ip = DeleteObjects(driver)
+                    delete_ip_code = delete_ip.delete(object_element_position, first_row_checkbox_element)
+                    if delete_ip_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                              "Delete object successfully.", flush=True)
+                    elif delete_ip_code != 200:
+                        ui_result = ui_result + " In addition, fail to delete ip object."
+
+                    preset_object.delete()
+
+
+
             finally:
                 # 清理环境
                 result["ui_result"] = ui_result

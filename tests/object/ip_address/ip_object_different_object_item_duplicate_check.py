@@ -1,17 +1,8 @@
 import time
-import pytest
 import os
-from datetime import datetime
-import support.ui_utils.env
-from datetime import datetime
-
-from support.api_utils.delete_policy import DeletePolicy
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
-from support.general_ui_utils.object.create_objects import CreateObjects
-from support.general_ui_utils.object.edit_objects import EditObjects
-from support.general_ui_utils.object.search_objects import SearchObjects
-from support.general_ui_utils.object.delete_objects import DeleteObjects
-from support.general_ui_utils.element_position.object_element_position import *
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
@@ -28,15 +19,15 @@ def run(parameter):
         #测试数据
         test_data =  {
             "type": "objects",
-            "name": "create_ip_object_and_add_item",
-            "case_type": "single",
+            "name": "ip_object_different_object_item_duplicate_check",
+            "case_type": "multiple",
             "object_type": "ip",
             "object_operation": {
                 "create": [
                     {
                         "item_operation": "add",
-                        "item_type": "duplicate",
-                        "item_value": ["192.60.64.28","192.60.64.28"]
+                        "item_type": "multiple_duplicate",
+                        "item_value": ["192.60.64.28"]
                     },
                 ],
             },

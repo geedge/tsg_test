@@ -1,19 +1,11 @@
+# -*- coding: UTF-8 -*-
 import time
-import pytest
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from datetime import datetime
-import support.ui_utils.env
-from datetime import datetime
-
-from support.api_utils.delete_policy import DeletePolicy
-from support.api_utils.log_in import *
-from support.general_ui_utils.object.create_objects import CreateObjects
-from support.general_ui_utils.object.edit_objects import EditObjects
-from support.general_ui_utils.object.search_objects import SearchObjects
-from support.general_ui_utils.object.delete_objects import DeleteObjects
-from support.general_ui_utils.element_position.object_element_position import *
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 
 
 def run(parameter):
