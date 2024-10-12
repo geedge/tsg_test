@@ -101,6 +101,7 @@ def run(parameter):
                           "metrics": [
                             "new_c2s_flows:UNIQUE_COUNT:UNIQUE New Client-to-Server Flows",
                             "new_s2c_flows:UNIQUE_COUNT:UNIQUE New Server-to-Client Flows"
+                            "new_c2s_flows+new_s2c_flows:UNIQUE_COUNT:UNIQUE Flows"
                           ],
                           "dimensions": [],
                           "order_by": "",

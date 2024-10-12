@@ -100,7 +100,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "direction:UNIQUE_COUNT:Direction",
-                            "session_id:UNIQUE_COUNT:Session ID"
+                            "session_id:UNIQUE_COUNT:Session ID",
+                            "direction+session_id:UNIQUE_COUNT:Direction Session ID"
                           ],
                           "dimensions": [],
                           "order_by": "",

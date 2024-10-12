@@ -67,12 +67,19 @@ def run(parameter):
                         "send_icmp_unreachable": True
                     }
                 ],
-                "packet_capture": []
+                "packet_capture": [],
+                "ip_protocol":[
+                    "UDP"
+                ]
             },
             "profile": [],
             "expected_return": "Failed",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"server_ip", "query_value": "93.184.215.14"}],
+            "log_query_param": [
+                {"query_field_key":"server_ip", "query_value": "93.184.215.14"},
+                {"query_field_key": "ip_protocol", "query_value": "udp"},
+                {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
+                                ],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

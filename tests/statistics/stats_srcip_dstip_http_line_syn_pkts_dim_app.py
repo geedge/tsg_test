@@ -104,7 +104,7 @@ def run(parameter):
                           "dimensions": [
                             "app"
                           ],
-                          "order_by": "syn pkts",
+                          "order_by": "",
                           "row_limit": "10",
                           "min_in_size": "0",
                           "min_out_size": "0"

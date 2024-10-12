@@ -35,13 +35,13 @@ def run(parameter):
                 "is_fuzzy": False,
                 "type": "id"
             },
-            "statistics": "",  # random
+            "statistics": "random",  # random
             "audit_log": False  # system
         }
 
         statistics_type = ["elaborate","brief","none"]
-        # test_data["statistics"] = random.choice(statistics_type)
-        test_data["statistics"] = "brief"
+        test_data["statistics"] = random.choice(statistics_type)
+        # test_data["statistics"] = "brief"
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()

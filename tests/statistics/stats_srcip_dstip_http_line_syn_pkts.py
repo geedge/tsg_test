@@ -106,6 +106,18 @@ def run(parameter):
                           "row_limit": "",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "Syn Packets Line",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "syn_pkts:SUM:syn pkts"
+                            ],
+                            "dimensions": [],
+                            "order_by": "",
+                            "row_limit": "",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
