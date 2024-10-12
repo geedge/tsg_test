@@ -90,7 +90,7 @@ def run(parameter):
             "expected_return": "timed out",
             "counters": {"hits": 1},
             "log_query_param": [
-                {"query_field_key":"ssl_cn", "query_value": "open.node.com"},
+                {"query_field_key":"ssl_sni", "query_value": "open.node.com"},
                 {"query_field_key":"decoded_as", "query_value": "SSL"}
                 ],
             "traffic": {
