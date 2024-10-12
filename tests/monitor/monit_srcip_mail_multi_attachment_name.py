@@ -67,8 +67,7 @@ def run(parameter):
                                 "item_type": "mail_attachment_name",
                                 "item_value": "TEXT",
                                 "value": [
-                                    # "test&1214"
-                                    "test1214"
+                                    "test&1214"
                                 ]
                             }
                         ],

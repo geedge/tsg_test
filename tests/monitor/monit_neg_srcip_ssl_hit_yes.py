@@ -103,4 +103,6 @@ if __name__ == '__main__':
         "module_name": "monitor",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    #parameter = replace_paras(parameter)
+    parameter = replace_paras(parameter)
     run(parameter)

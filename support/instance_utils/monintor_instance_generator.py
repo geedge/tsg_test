@@ -288,7 +288,7 @@ class MonitorInstanceGenerator:
             # test_data["obj_condition"] = temp_test_data["obj_condition"]
             # test_data["application"] = temp_test_data["application"]
             # test_data["profile_condition"] = temp_test_data["profile_condition"]
-            # print(test_data)
+            #print(test_data)
 
             # 添加测试过程中涉及的template
             template_path = {}
@@ -302,6 +302,8 @@ class MonitorInstanceGenerator:
             # 创建Object、Profile、Rule
             create = CreatePolicy()
             cfg_list = create.create_policy(parameter, test_data, template_path)
+            #print("cfg_list: {}".format(cfg_list))
+
 
             # 流量验证
             verify = Verification()

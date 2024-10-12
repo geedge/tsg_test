@@ -77,7 +77,7 @@ def run(parameter):
                         {
                             "profile_type": "traffic_mirror",
                             "name":"profile1",
-                            "vlan_count": random.randint(3, 66)
+                            "vlan_count": random.randint(1, 5)
                             #vlan的范围：应该是在3-66
                         }
              ],
@@ -146,6 +146,7 @@ if __name__ == '__main__':
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

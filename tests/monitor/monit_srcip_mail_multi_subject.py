@@ -66,7 +66,7 @@ def run(parameter):
                                 "item_type": "mail_subject",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "Bestman"
+                                    "Best&man"
                                 ]
                             }
                         ],
