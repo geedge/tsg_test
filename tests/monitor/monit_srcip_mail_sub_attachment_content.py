@@ -65,7 +65,7 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_attachment_content",
+                                "item_type": "attachment_content",
                                 "item_value": "TEXT",
                                 "value": [
                                     "TRex"

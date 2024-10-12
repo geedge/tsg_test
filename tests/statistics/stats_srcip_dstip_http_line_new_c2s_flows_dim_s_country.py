@@ -104,7 +104,7 @@ def run(parameter):
                           "dimensions": [
                               "server_country"
                           ],
-                          "order_by": "new s2c flows",
+                          "order_by": "new c2s flows",
                           "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"

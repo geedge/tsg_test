@@ -100,7 +100,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "server_fqdn:UNIQUE_COUNT:Server FQDN",
-                            "server_domain:UNIQUE_COUNT:Server Domain"
+                            "server_domain:UNIQUE_COUNT:Server Domain",
+                            "server_fqdn+server_domain:UNIQUE_COUNT:Server Domain"
                           ],
                           "dimensions": [],
                           "order_by": "",

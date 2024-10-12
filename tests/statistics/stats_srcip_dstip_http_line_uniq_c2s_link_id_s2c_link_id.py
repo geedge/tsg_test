@@ -100,7 +100,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "c2s_link_id:UNIQUE_COUNT:Client-to-Server Link ID",
-                            "s2c_link_id:UNIQUE_COUNT:Server-to-Client Link ID"
+                            "s2c_link_id:UNIQUE_COUNT:Server-to-Client Link ID",
+                            "c2s_link_id+s2c_link_id:UNIQUE_COUNT:Link ID"
                           ],
                           "dimensions": [],
                           "order_by": "",

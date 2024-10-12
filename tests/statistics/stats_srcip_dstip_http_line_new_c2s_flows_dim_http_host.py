@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.23",
+                                "item_value": "2.1.1.6",
                             },
                         ]
                     }],
@@ -96,14 +96,30 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_pkts+out_pkts:RATE:pkts"
+                            "new_c2s_flows:RATE:new c2s flows"
                           ],
-                          "dimensions": ["client_ip"],
-                          "order_by": "pkts",
-                          "row_limit": "10",
+                          "dimensions": [
+                              "http_host"
+                          ],
+                          "order_by": "new c2s flows",
+                          "row_limit": "20",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "new_c2s_flows+new_s2c_flows:RATE:new flows"
+                          ],
+                          "dimensions": [
+                              "http_host"
+                          ],
+                          "order_by": "new flows",
+                          "row_limit": "9",
                           "min_in_size": "1",
                           "min_out_size": "1"
                         }
@@ -116,10 +132,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.23",
-                "clients_end_ip": "10.64.224.23",
-                "servers_start_ip": "2.1.1.23",
-                "servers_end_ip": "2.1.1.23",
+                "clients_start_ip": "10.64.224.6",
+                "clients_end_ip": "10.64.224.6",
+                "servers_start_ip": "2.1.1.6",
+                "servers_end_ip": "2.1.1.6",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",

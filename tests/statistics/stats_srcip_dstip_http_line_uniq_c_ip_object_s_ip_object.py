@@ -37,6 +37,7 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
@@ -53,6 +54,7 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
@@ -100,7 +102,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "client_ip_object_list:UNIQUE_COUNT:Client IP Object List",
-                            "server_ip_object_list:UNIQUE_COUNT:Server IP Object List"
+                            "server_ip_object_list:UNIQUE_COUNT:Server IP Object List",
+                            "client_ip_object_list+server_ip_object_list:UNIQUE_COUNT:IP Object List"
                           ],
                           "dimensions": [],
                           "order_by": "",

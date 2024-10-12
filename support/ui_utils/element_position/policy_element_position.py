@@ -398,15 +398,34 @@ securityRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labe
 # intercept
 interceptRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
 interceptRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
-
 interceptRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
 interceptRulePage_selectDeny_posId = "interceptintercept"
 interceptRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']/span[1]"
-
 interceptRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 interceptRulePage_okButton_yes_posId = "OK-_policy_Intercept_edit_Home_App_anonymousComponent"
 interceptRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
-
+# action parameter trusted
+interceptRulePage_intercept_addTrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_trusted']//span[@class='el-input__suffix']//i"   # trusted  选择框  定位
+interceptRulePage_intercept_searchTrustedInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # trusted profile 对话框查询输入框
+interceptRulePage_intercept_searchTrustedDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # trusted profile 对话框查询下拉列表第一个元素
+# action parameter untrusted
+interceptRulePage_intercept_addUntrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_untrusted']//span[@class='el-input__suffix']//i"   # untrusted  选择框  定位
+interceptRulePage_intercept_searchUntrustedInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # untrusted profile 对话框查询输入框
+interceptRulePage_intercept_searchUntrustedDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # untrusted profile 对话框查询下拉列表第一个元素
+# action parameter mirror decrypted traffic
+interceptRulePage_intercept_addTrafficMirrorProfileButton_posXpath = "//div[@zs-label='Mirror Decrypted Traffic']//div[@role='switch']"   # traffic decrypted traffic 打开按钮  定位
+interceptRulePage_intercept_addVlanIDButton_posXpath = "//div[@zs-label='Add VLAN ID']//div[@role='switch']"   # add vlan id  打开按钮  定位
+interceptRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath = "//div[@zs-label='Traffic Mirror Profile']//span[@class='el-input__suffix']//i"   # traffic decrypted traffic 选择框  定位
+interceptRulePage_intercept_searcTrafficMirrorProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # traffic decrypted traffic profile 对话框查询输入框
+interceptRulePage_intercept_searchTrafficMirrorProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # traffic decrypted traffic profile 对话框查询下拉列表第一个元素
+# action parameter decryption profile
+interceptRulePage_intercept_addDecryptionProfileSelectBox_posXpath = "//div[@zs-label='Decryption profile']//span[@class='el-input__suffix']//i"   # decryption profile  选择框  定位
+interceptRulePage_intercept_searchDecryptionProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # decryption profile 对话框查询输入框
+interceptRulePage_intercept_searchDecryptionProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # decryption profile 对话框查询下拉列表第一个元素
+# action parameter tcp proxy profile
+interceptRulePage_intercept_addTcpProfileSelectBox_posXpath = "//div[@zs-label='TCP Proxy Profile']//span[@class='el-input__suffix']//i"   # tcp proxy profile  选择框  定位
+interceptRulePage_intercept_searchTcpProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # tcp proxy profile 对话框查询输入框
+interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # tcp proxy profile 对话框查询下拉列表第一个元素
 
 
 #### manipulation
@@ -617,6 +636,8 @@ serviceChainingRulePage_negateSrcIP_posXpath = "//div[@zs-label='Source']//p[nor
 serviceChainingRulePage_negateDstIP_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_negateUser_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='User']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_negateImsi_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Device']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateSrcPort_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateDstPort_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath

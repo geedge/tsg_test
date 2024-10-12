@@ -108,6 +108,20 @@ def run(parameter):
                           "row_limit": "",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "closed_in_sessions:SUM:Closed Incoming Sessions",
+                                "closed_out_sessions:SUM:Closed Outgoing Sessions",
+                                "closed_in_sessions+closed_out_sessions:SUM:sessions"
+                            ],
+                            "dimensions": [],
+                            "order_by": "",
+                            "row_limit": "",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]

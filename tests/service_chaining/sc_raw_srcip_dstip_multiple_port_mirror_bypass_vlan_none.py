@@ -73,7 +73,7 @@ def run(parameter):
                     }
                 ],
                 "destination_port": [{
-                        "name": "sc_dst_port",
+                        "name": "service_chaining_dst_port",
                         "object_type": "port",
                         "select_type": False,
                         "negate": False,

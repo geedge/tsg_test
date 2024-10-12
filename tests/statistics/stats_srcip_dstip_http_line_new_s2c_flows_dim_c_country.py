@@ -108,6 +108,20 @@ def run(parameter):
                           "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "new_c2s_flows+new_s2c_flows:SUM:new flows"
+                          ],
+                          "dimensions": [
+                              "client_country"
+                          ],
+                          "order_by": "new flows",
+                          "row_limit": "10",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
                         }
                       ]
                 }]

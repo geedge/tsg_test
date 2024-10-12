@@ -639,6 +639,8 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_negateDstIP_posXpath":serviceChainingRulePage_negateDstIP_posXpath,
         "policyRulePage_negateUser_posXpath":serviceChainingRulePage_negateUser_posXpath,
         "policyRulePage_negateImsi_posXpath":serviceChainingRulePage_negateImsi_posXpath,
+        "policyRulePage_negateSrcPort_posXpath":serviceChainingRulePage_negateSrcPort_posXpath,
+        "policyRulePage_negateDstPort_posXpath":serviceChainingRulePage_negateDstPort_posXpath,
         # Source IP
         "policyRulePage_addSrcIP_posXpath": serviceChainingRulePage_addSrcIP_posXpath,
         "policyRulePage_searchSrcIP_posXpath": serviceChainingRulePage_searchSrcIP_posXpath,
@@ -1379,8 +1381,6 @@ test_dos_protection_rule_element_position = {
                         "policyRuleListPage_okButton_warningNo_posXpath":dosRuleListpage_okButton_warningNo_posXpath
                     }
                 }
-
-
 test_intercept_rule_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1423,6 +1423,28 @@ test_intercept_rule_element_position = {
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
         "policyRulePage_negateSrcIP_posXpath":interceptRulePage_negateSrcIP_posXpath,
+        # trusted servers
+        "policyRulePage_intercept_addTrustedSelectBox_posXpath": interceptRulePage_intercept_addTrustedSelectBox_posXpath,
+        "policyRulePage_intercept_searchTrustedInput_posXpath": interceptRulePage_intercept_searchTrustedInput_posXpath,
+        "policyRulePage_intercept_searchTrustedDorpItem_posXpath": interceptRulePage_intercept_searchTrustedDorpItem_posXpath,
+        # untrusted servers
+        "policyRulePage_intercept_addUntrustedSelectBox_posXpath": interceptRulePage_intercept_addUntrustedSelectBox_posXpath,
+        "policyRulePage_intercept_searchUntrustedInput_posXpath": interceptRulePage_intercept_searchUntrustedInput_posXpath,
+        "policyRulePage_intercept_searchUntrustedDorpItem_posXpath": interceptRulePage_intercept_searchUntrustedDorpItem_posXpath,
+        # action parameter mirror decrypted traffic
+        "policyRulePage_intercept_addTrafficMirrorProfileButton_posXpath": interceptRulePage_intercept_addTrafficMirrorProfileButton_posXpath,
+        "policyRulePage_intercept_addVlanIDButton_posXpath": interceptRulePage_intercept_addVlanIDButton_posXpath,
+        "policyRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath": interceptRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath,
+        "policyRulePage_intercept_searcTrafficMirrorProfileInput_posXpath": interceptRulePage_intercept_searcTrafficMirrorProfileInput_posXpath,
+        "policyRulePage_intercept_searchTrafficMirrorProfileDorpItem_posXpath": interceptRulePage_intercept_searchTrafficMirrorProfileDorpItem_posXpath,
+        # action parameter decryption profile
+        "policyRulePage_intercept_addDecryptionProfileSelectBox_posXpath": interceptRulePage_intercept_addDecryptionProfileSelectBox_posXpath,
+        "policyRulePage_intercept_searchDecryptionProfileInput_posXpath": interceptRulePage_intercept_searchDecryptionProfileInput_posXpath,
+        "policyRulePage_intercept_searchDecryptionProfileDorpItem_posXpath": interceptRulePage_intercept_searchDecryptionProfileDorpItem_posXpath,
+        # action parameter tcp proxy profile
+        "policyRulePage_intercept_addTcpProfileSelectBox_posXpath": interceptRulePage_intercept_addTcpProfileSelectBox_posXpath,
+        "policyRulePage_intercept_searchTcpProfileInput_posXpath": interceptRulePage_intercept_searchTcpProfileInput_posXpath,
+        "policyRulePage_intercept_searchTcpProfileDorpItem_posXpath": interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath,
     },
     "search": {
         "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,

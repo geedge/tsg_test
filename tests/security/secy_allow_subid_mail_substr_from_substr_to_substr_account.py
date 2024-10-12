@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
@@ -87,7 +87,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_to",
+                                "item_type": "to",
                                 "item_value": "autotest@163.com"
                             }
                         ],

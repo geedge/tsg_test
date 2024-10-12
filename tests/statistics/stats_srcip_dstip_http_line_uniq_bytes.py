@@ -109,6 +109,19 @@ def run(parameter):
                           "row_limit": "",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "sent_bytes+received_bytes:UNIQUE_COUNT:Sent Received Bytes",
+                                "in_bytes+out_bytes:UNIQUE_COUNT:In Out Bytes"
+                            ],
+                            "dimensions": [],
+                            "order_by": "",
+                            "row_limit": "",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
