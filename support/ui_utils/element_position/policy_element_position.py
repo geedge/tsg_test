@@ -405,11 +405,27 @@ interceptRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el
 interceptRulePage_okButton_yes_posId = "OK-_policy_Intercept_edit_Home_App_anonymousComponent"
 interceptRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 # action parameter trusted
-interceptRulePage_intercept_addTrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_trusted']//i"   # trusted  选择框  定位
-interceptRulePage_intercept_searchTrustedInput_posXpath = "//body/div/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # hijack search profile 对话框查询输入框
-interceptRulePage_intercept_searchTrustedDorpItem_posXpathh = "//body/div/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[1]"   # hijack search profile 对话框查询下拉列表第一个元素
-
-
+interceptRulePage_intercept_addTrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_trusted']//span[@class='el-input__suffix']//i"   # trusted  选择框  定位
+interceptRulePage_intercept_searchTrustedInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # trusted profile 对话框查询输入框
+interceptRulePage_intercept_searchTrustedDorpItem_posXpathh = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # trusted profile 对话框查询下拉列表第一个元素
+# action parameter untrusted
+interceptRulePage_intercept_addUntrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_untrusted']//span[@class='el-input__suffix']//i"   # untrusted  选择框  定位
+interceptRulePage_intercept_searchUntrustedInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # untrusted profile 对话框查询输入框
+interceptRulePage_intercept_searchUntrustedDorpItem_posXpathh = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # untrusted profile 对话框查询下拉列表第一个元素
+# action parameter mirror decrypted traffic
+interceptRulePage_intercept_addTrafficMirrorProfileButton_posXpath = "//div[@zs-label='Traffic Mirror Profile']//div[@role='switch']"   # traffic decrypted traffic 选择框  定位
+interceptRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath = "//div[@zs-label='Traffic Mirror Profile']//span[@class='el-input__suffix']//i"   # traffic decrypted traffic 选择框  定位
+interceptRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath = "//div[@zs-label='Traffic Mirror Profile']//span[@class='el-input__suffix']//i"   # traffic decrypted traffic 选择框  定位
+interceptRulePage_intercept_searcTrafficMirrorProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # traffic decrypted traffic profile 对话框查询输入框
+interceptRulePage_intercept_searchTrafficMirrorProfileDorpItem_posXpathh = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # traffic decrypted traffic profile 对话框查询下拉列表第一个元素
+# action parameter decryption profile
+interceptRulePage_intercept_addDecryptionProfileSelectBox_posXpath = "//div[@zs-label='Decryption profile']//span[@class='el-input__suffix']//i"   # decryption profile  选择框  定位
+interceptRulePage_intercept_searchDecryptionProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # decryption profile 对话框查询输入框
+interceptRulePage_intercept_searchDecryptionProfileDorpItem_posXpathh = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # decryption profile 对话框查询下拉列表第一个元素
+# action parameter tcp proxy profile
+interceptRulePage_intercept_addTcpProfileSelectBox_posXpath = "//div[@zs-label='TCP Proxy Profile']//span[@class='el-input__suffix']//i"   # tcp proxy profile  选择框  定位
+interceptRulePage_intercept_searchTcpProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # tcp proxy profile 对话框查询输入框
+interceptRulePage_intercept_searchTcpProfileDorpItem_posXpathh = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # tcp proxy profile 对话框查询下拉列表第一个元素
 
 
 

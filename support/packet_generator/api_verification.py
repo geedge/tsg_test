@@ -109,6 +109,14 @@ class ApiVerification:
                             metric_result = log.get_metric(token, rule_num, start_time, end_time, create_policies_ids, test_data, api_server, vsys_id, script_type)
                         if is_counters == False:
                             log_result = "no_set"
+                        if log_result == False:
+                            print("log_result....{}".format(log_result))
+                            if i < 3:   # 允许失败3次，重新请求数据断言
+                                log_result = None
+                        if metric_result == False:
+                            print("metric_result....{}".format(metric_result))
+                            if i < 3:   # 允许失败3次，重新请求数据断言
+                                metric_result = None
                         if log_result != None and metric_result != None:
                             break
             else:
