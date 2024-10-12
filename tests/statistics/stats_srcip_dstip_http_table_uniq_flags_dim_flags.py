@@ -99,7 +99,7 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Flags,
+                            "chart_name": "UNIQUECOUNT(Flags)",
                             "visualization_type": "Bar",
                             "metrics": [
                                 "flags:UNIQUE_COUNT:UNIQUE Flags"

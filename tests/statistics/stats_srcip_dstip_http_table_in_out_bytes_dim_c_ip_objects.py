@@ -11,11 +11,9 @@ from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
-
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -39,6 +37,7 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
@@ -106,12 +105,44 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "server_fqdn"
+                            "client_ip_object_list"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:RATE:in bytes",
+                                "out_bytes:RATE:out bytes",
+                                "in_bytes+out_bytes:RATE:bytes"
+                            ],
+                            "dimensions": [
+                                "client_ip_object_list"
+                            ],
+                            "order_by": "in bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:BITRATE:in bytes",
+                                "out_bytes:BITRATE:out bytes",
+                                "in_bytes+out_bytes:BITRATE:bytes"
+                            ],
+                            "dimensions": [
+                                "client_ip_object_list"
+                            ],
+                            "order_by": "out bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
@@ -131,8 +162,8 @@ def run(parameter):
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
-                {"server_fqdn": "www.yumi.com","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            "statists_metric_results": [
+                {"client_ip_object_list": "1573552", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -182,20 +213,20 @@ def run(parameter):
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
 
-    if __name__ == '__main__':
-        parameter = {
+if __name__ == '__main__':
+    parameter = {
 
-            "username": "zhaokun",
-            "password": "zhaokun1",
-            "test_pc_ip": "192.168.64.73",
-            "api_server": "http://192.168.44.72",
-            "is_log": 1,
-            "env": "tsgx",
-            "vsys_id": 1,  # 6
-            "root_path": "D:/tsgcode/tsg_test",
-            "path": "tsgcode/tsg_test/testcase/ui",
-            "module_name": "statistics",
-            "test_case_name": os.path.basename(__file__)[:-3],
+        "username": "zhaokun",
+        "password": "zhaokun1",
+        "test_pc_ip": "192.168.64.73",
+        "api_server": "http://192.168.44.72",
+        "is_log": 1,
+        "env": "tsgx",
+        "vsys_id": 1,  # 6
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

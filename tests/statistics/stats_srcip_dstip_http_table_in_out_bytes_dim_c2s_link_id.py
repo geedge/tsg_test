@@ -98,7 +98,7 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
                             "in_bytes:SUM:in bytes",
@@ -106,8 +106,39 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "server_fqdn",
-                            "server_domain"
+                            "c2s_link_id"
+                          ],
+                          "order_by": "bytes",
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                          "visualization_type": "Table",
+                          "metrics": [
+                            "in_bytes:RATE:in bytes",
+                            "out_bytes:RATE:out bytes",
+                            "in_bytes+out_bytes:RATE:bytes"
+                          ],
+                          "dimensions": [
+                            "c2s_link_id"
+                          ],
+                          "order_by": "bytes",
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                          "visualization_type": "Table",
+                          "metrics": [
+                            "in_bytes:BITRATE:in bytes",
+                            "out_bytes:BITRATE:out bytes",
+                            "in_bytes+out_bytes:BITRATE:bytes"
+                          ],
+                          "dimensions": [
+                            "c2s_link_id"
                           ],
                           "order_by": "bytes",
                           "row_limit": "20",
@@ -133,7 +164,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
-                {"server_fqdn": "www.yumi.com","server_domain": "yumi.com","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+                {"c2s_link_id": 720, "s2c_link_id": 720, "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -156,6 +187,7 @@ def run(parameter):
             # },
             "token": ""
         }
+        # name_list汇总
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
         result = case_instance_generator.run()

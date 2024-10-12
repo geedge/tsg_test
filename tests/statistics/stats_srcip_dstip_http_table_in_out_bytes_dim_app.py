@@ -98,22 +98,54 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
-                          "visualization_type": "Table",
-                          "metrics": [
-                            "in_bytes:SUM:in bytes",
-                            "out_bytes:SUM:out bytes",
-                            "in_bytes+out_bytes:SUM:bytes"
-                          ],
-                          "dimensions": [
-                            "server_domain"
-                          ],
-                          "order_by": "bytes",
-                          "row_limit": "20",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:SUM:in bytes",
+                                "out_bytes:SUM:out bytes",
+                                "in_bytes+out_bytes:SUM:bytes"
+                            ],
+                            "dimensions": [
+                                "app"
+                            ],
+                            "order_by": "bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:RATE:in bytes",
+                                "out_bytes:RATE:out bytes",
+                                "in_bytes+out_bytes:RATE:bytes"
+                            ],
+                            "dimensions": [
+                                "app"
+                            ],
+                            "order_by": "bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:BITRATE:in bytes",
+                                "out_bytes:BITRATE:out bytes",
+                                "in_bytes+out_bytes:BITRATE:bytes"
+                            ],
+                            "dimensions": [
+                                "app"
+                            ],
+                            "order_by": "bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
-                      ]
+                    ]
                 }]
             },
             "expected_return": "reset",
@@ -132,7 +164,7 @@ def run(parameter):
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
-                {"s2c_ttl": "255","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+                {"applicatoin": "2407TCP","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",

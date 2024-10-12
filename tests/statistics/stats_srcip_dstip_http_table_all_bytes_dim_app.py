@@ -101,14 +101,46 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Table",
                             "metrics": [
-                                "in_bytes:SUM:in bytes",
-                                "out_bytes:SUM:out bytes",
-                                "in_bytes+out_bytes:SUM:bytes"
+                                "sent_bytes:SUM:Bytes Sent",
+                                "received_bytes:SUM:Bytes Received",
+                                "sent_bytes+received_bytes:SUM:Bytes"
                             ],
                             "dimensions": [
                                 "app"
                             ],
-                            "order_by": "bytes",
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:RATE:Bytes Sent",
+                                "received_bytes:RATE:Bytes Received",
+                                "sent_bytes+received_bytes:RATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "app"
+                            ],
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:Bytes Sent",
+                                "received_bytes:BITRATE:Bytes Received",
+                                "sent_bytes+received_bytes:BITRATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "app"
+                            ],
+                            "order_by": "Bytes",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

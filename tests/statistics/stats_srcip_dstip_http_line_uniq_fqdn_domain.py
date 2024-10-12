@@ -101,7 +101,7 @@ def run(parameter):
                           "metrics": [
                             "server_fqdn:UNIQUE_COUNT:Server FQDN",
                             "server_domain:UNIQUE_COUNT:Server Domain",
-                            "server_fqdn+server_domain:UNIQUE_COUNT:Server Domain"
+                            "server_fqdn+server_domain:UNIQUE_COUNT:Server FQDN Domain"
                           ],
                           "dimensions": [],
                           "order_by": "",

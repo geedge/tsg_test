@@ -11,9 +11,11 @@ from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
+
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -59,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.4",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -97,18 +99,54 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "in_pkt_length_distribution:UNIQUE_COUNT:Incoming Packet Length Distribution",
-                            "out_pkt_length_distribution:UNIQUE_COUNT:Out Packet Length Distribution",
-                            "pkt_length_distribution:UNIQUE_COUNT:Packet Length Distribution",
-                            "in_pkt_length_distribution+out_pkt_length_distribution:UNIQUE_COUNT:UNIQUE INOUT Packet Length Distribution"
+                            "in_bytes:SUM:in bytes",
+                            "out_bytes:SUM:out bytes",
+                            "in_bytes+out_bytes:SUM:bytes"
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
+                          "dimensions": [
+                            "client_ip",
+                            "server_ip"
+                          ],
+                          "order_by": "bytes",
+                          "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:RATE:in bytes",
+                                "out_bytes:RATE:out bytes",
+                                "in_bytes+out_bytes:RATE:bytes"
+                            ],
+                            "dimensions": [
+                                "client_ip",
+                                "server_ip"
+                            ],
+                            "order_by": "bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:BITRATE:in bytes",
+                                "out_bytes:BITRATE:out bytes",
+                                "in_bytes+out_bytes:BITRATE:bytes"
+                            ],
+                            "dimensions": [
+                                "client_ip",
+                                "server_ip"
+                            ],
+                            "order_by": "bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
@@ -119,15 +157,18 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.4",
-                "clients_end_ip": "10.64.224.4",
-                "servers_start_ip": "2.1.1.4",
-                "servers_end_ip": "2.1.1.4",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"client_ip": "10.64.21.243", "server_ip": "2.1.1.31", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",

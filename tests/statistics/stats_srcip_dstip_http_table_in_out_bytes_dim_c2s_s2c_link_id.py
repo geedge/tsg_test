@@ -11,6 +11,7 @@ from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
+
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
@@ -44,7 +45,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.16",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -60,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.16",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -97,7 +98,7 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                          "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
                             "in_bytes:SUM:in bytes",
@@ -105,12 +106,47 @@ def run(parameter):
                             "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "client_ip"
+                            "c2s_link_id",
+                            "s2c_link_id"
                           ],
                           "order_by": "bytes",
-                          "row_limit": "100",
-                          "min_in_size": "1",
-                          "min_out_size": "1"
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                            "in_bytes:RATE:in bytes",
+                            "out_bytes:RATE:out bytes",
+                            "in_bytes+out_bytes:RATE:bytes"
+                          ],
+                          "dimensions": [
+                            "c2s_link_id",
+                            "s2c_link_id"
+                          ],
+                          "order_by": "bytes",
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:BITRATE:in bytes",
+                                "out_bytes:BITRATE:out bytes",
+                                "in_bytes+out_bytes:BITRATE:bytes"
+                            ],
+                            "dimensions": [
+                                "c2s_link_id",
+                                "s2c_link_id"
+                            ],
+                            "order_by": "bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
@@ -121,17 +157,17 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.16",
-                "clients_end_ip": "10.64.224.16",
-                "servers_start_ip": "2.1.1.16",
-                "servers_end_ip": "2.1.1.16",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"client_country": 64, "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+                {"c2s_link_id": 720, "s2c_link_id": 720, "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -181,9 +217,6 @@ def run(parameter):
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
 
-    
-
-
 if __name__ == '__main__':
     parameter = {
 
@@ -191,9 +224,9 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 1,#6
+        "vsys_id": 1,  # 6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",

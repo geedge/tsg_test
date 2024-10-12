@@ -1006,18 +1006,18 @@ class GetLog:
     def metric_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds = 1):
         failure_info_2 = ""
         metric_result = False
-        try:
-            total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
+        try:#经与OLAP沟通：目前计算方式为先除以时间再乘以8，本身已经是bps 降低的这点精度可以忽略（只有字节数据很低的时候精度会降低，实际数据都比较大不会影响）如果将*8 放在表达式里面，有表达式定义会有点问题，故修改自动化计算bps方式和OLAP保持一致
+            total_bytes_sent = test_traffic_statistics["total_bytes_sent"]
             if total_bytes_sent > 0 and time_dif_seconds > 1:
-                total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2)
+                total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2) * rate_coefficient
 
-            total_bytes_received = test_traffic_statistics["total_bytes_received"] * rate_coefficient
+            total_bytes_received = test_traffic_statistics["total_bytes_received"]
             if total_bytes_received > 0 and time_dif_seconds > 1:
-                total_bytes_received = round(total_bytes_received / time_dif_seconds, 2)
+                total_bytes_received = round(total_bytes_received / time_dif_seconds, 2) * rate_coefficient
 
-            total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
+            total_bytes = test_traffic_statistics["total_bytes"]
             if total_bytes > 0 and time_dif_seconds > 1:
-                total_bytes = round(total_bytes / time_dif_seconds, 2)
+                total_bytes = round(total_bytes / time_dif_seconds, 2) * rate_coefficient
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes rate_coefficient Rate:{}".format(total_bytes), flush=True)
 
             total_packets_sent = test_traffic_statistics["total_packets_sent"]
@@ -1105,7 +1105,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_unique_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds):
+    def metric_unique_count_value_verification(self, source_fields, stats_value,  test_traffic_statistics):
         failure_info_2 = ""
         metric_result = False
         util = UtilStatisticsTemplate()
@@ -1229,7 +1229,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Unique Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_histogram_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds):
+    def metric_histogram_value_verification(self, source_fields, stats_value):
         # 待重构
         failure_info_2 = ""
         util = UtilStatisticsTemplate()
@@ -1252,7 +1252,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_percentile_value_verification(self, source_fields, stats_value, rate_coefficient,test_traffic_statistics, time_dif_seconds):
+    def metric_percentile_value_verification(self, source_fields):
         # 待重构
         metric_result = False
         failure_info_2 = ""

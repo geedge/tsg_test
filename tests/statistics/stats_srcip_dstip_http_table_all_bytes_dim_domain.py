@@ -101,18 +101,49 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:in bytes",
-                            "out_bytes:SUM:out bytes",
-                            "in_bytes+out_bytes:SUM:bytes"
+                              "sent_bytes:SUM:Bytes Sent",
+                              "received_bytes:SUM:Bytes Received",
+                              "in_bytes+out_bytes:SUM:Bytes"
                           ],
                           "dimensions": [
-                            "client_ip",
-                            "server_ip"
+                            "server_domain"
                           ],
-                          "order_by": "bytes",
+                          "order_by": "Bytes",
                           "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:RATE:Bytes Sent",
+                                "received_bytes:RATE:Bytes Received",
+                                "in_bytes+out_bytes:RATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "server_domain"
+                            ],
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:Bytes Sent",
+                                "received_bytes:BITRATE:Bytes Received",
+                                "in_bytes+out_bytes:BITRATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "server_domain"
+                            ],
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
@@ -132,8 +163,8 @@ def run(parameter):
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [
-                {"client_ip": "10.64.21.243", "server_ip": "2.1.1.31", "in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
+                {"s2c_ttl": "255","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",
