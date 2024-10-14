@@ -988,13 +988,13 @@ class GetLog:
                     metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,8, test_traffic_statistics, time_dif_seconds)
                 case "UNIQUE_COUNT":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, test_traffic_statistics)
                 case "HISTOGRAM":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value)
                 case "MEDIAN" | "P95_PERCENTILE" | "P99_PERCENTILE":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value)
                 case _:
                     failure_info_2 = f"Invalid function name: {function_name}"
             return metric_result, failure_info_2

@@ -100,9 +100,9 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:in bytes",
-                            "out_bytes:SUM:out bytes",
-                            "in_bytes+out_bytes:SUM:bytes"
+                              "sent_bytes:SUM:Bytes Sent",
+                              "received_bytes:SUM:Bytes Received",
+                              "in_bytes+out_bytes:SUM:Bytes"
                           ],
                           "dimensions": [
                             "server_ip_object_list"
@@ -111,6 +111,38 @@ def run(parameter):
                           "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                              "sent_bytes:RATE:Bytes Sent",
+                              "received_bytes:RATE:Bytes Received",
+                              "in_bytes+out_bytes:RATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "server_ip_object_list"
+                            ],
+                            "order_by": "bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                              "sent_bytes:BITRATE:Bytes Sent",
+                              "received_bytes:BITRATE:Bytes Received",
+                              "in_bytes+out_bytes:BITRATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "server_ip_object_list"
+                            ],
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
