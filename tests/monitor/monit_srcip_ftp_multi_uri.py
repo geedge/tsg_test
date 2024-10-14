@@ -62,8 +62,8 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                # "item_value": "autoFtp/english_big.txt"
-                                "item_value":"$ftp://192.168.40.206/autoFtp/english_big.txt"
+                                "item_value": "autoFtp/&english_big.txt"
+                                # "item_value":"$ftp://192.168.40.206/autoFtp/english_big.txt"
                                 #data["items"][i]["item_value"].split("->")[0].strip()
                                 #表达式运算的结果是english
                             }
@@ -125,6 +125,7 @@ if __name__ == '__main__':
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

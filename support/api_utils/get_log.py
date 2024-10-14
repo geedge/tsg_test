@@ -209,7 +209,8 @@ class GetLog:
                                         # 如果有 "items" 列表，并且列表不为空
                                         if "items" in protocol_filed and protocol_filed["items"]:
                                             item_type = protocol_filed["items"][0].get("item_type", "")
-                                            if item_type in ["mail_from", "mail_to"]:
+                                            # if item_type in ["mail_from", "mail_to"]:
+                                            if item_type in ["mail_from", "to"]:
                                                 mirror_bytes_value = actual_bytes_value - 19578
                                                 mirror_pkts_value = actual_pkts_value - 158
                                             else:  # 如果有 "items"，但不符合特定类型时的默认行为
@@ -236,7 +237,9 @@ class GetLog:
                                         else:
                                             mirror_bytes_value = actual_bytes_value - 967
                                             mirror_pkts_value = actual_pkts_value - 9
-
+                                    else:
+                                        mirror_bytes_value = actual_bytes_value - 967
+                                        mirror_pkts_value = actual_pkts_value - 9
                                     if "profile" in test_data and test_data["profile"] != "":
                                         vlan_count = test_data['profile'][0]['vlan_count']
                                         num_vlans = vlan_count
@@ -988,13 +991,13 @@ class GetLog:
                     metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,8, test_traffic_statistics, time_dif_seconds)
                 case "UNIQUE_COUNT":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, test_traffic_statistics)
                 case "HISTOGRAM":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value)
                 case "MEDIAN" | "P95_PERCENTILE" | "P99_PERCENTILE":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value)
                 case _:
                     failure_info_2 = f"Invalid function name: {function_name}"
             return metric_result, failure_info_2
@@ -1010,15 +1013,21 @@ class GetLog:
             total_bytes_sent = test_traffic_statistics["total_bytes_sent"]
             if total_bytes_sent > 0 and time_dif_seconds > 1:
                 total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2) * rate_coefficient
+            else:
+                total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
 
             total_bytes_received = test_traffic_statistics["total_bytes_received"]
             if total_bytes_received > 0 and time_dif_seconds > 1:
                 total_bytes_received = round(total_bytes_received / time_dif_seconds, 2) * rate_coefficient
+            else:
+                total_bytes_received = test_traffic_statistics["total_bytes_received"] * rate_coefficient
 
             total_bytes = test_traffic_statistics["total_bytes"]
             if total_bytes > 0 and time_dif_seconds > 1:
                 total_bytes = round(total_bytes / time_dif_seconds, 2) * rate_coefficient
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes rate_coefficient Rate:{}".format(total_bytes), flush=True)
+            else:
+                total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
 
             total_packets_sent = test_traffic_statistics["total_packets_sent"]
             if total_packets_sent > 0 and time_dif_seconds > 1:

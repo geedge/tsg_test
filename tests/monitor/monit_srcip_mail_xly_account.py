@@ -61,22 +61,37 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "mail_account",
-                                "item_value": "$hbn@163.com->"
+                                "item_value": "$hbn@163.com"
                             }
                         ],
                     }
                 ],
             },
-            "expected_return": "Ok",
+            "expected_return": "Email sent successfully",
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
                 {"query_field_key": "mail_account", "query_value": "hbn@163.com"}
             ],
+            # "traffic": {
+            #     "protocol": "mail",
+            #     "type": "curl",
+            #     "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/packet_generator/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
+            # },
             "traffic": {
                 "protocol": "mail",
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 25 -m 25 --url 'smtp://192.168.40.206' --mail-from 'hbn@163.com'  --mail-rcpt 'autotest@163.com'  --upload-file '/app/support/packet_generator/mail_file/subjectEnglish.txt' --user 'hbn@163.com:111111'"
+                "type": "curl",  # client/curl
+                "mail_type": "smtp",  # gmail or smtp or smtp_ssl
+                "mail_server": "192.168.40.206",  # gmail: smtp.gmail.com
+                "mail_port": 25,  # gmail：465（用于SSL）、587（用于启动TLS）。smtp默认：25
+                "mail_timeout": 20,
+                "sender": "hbn@163.com",
+                "password": "111111",
+                "receiver": "autotest@163.com",
+                "subject": "Bestman",
+                "body": "123",
+                # "attach": "/app/support/packet_generator/mail_file/subjectEnglish.txt"
+                "attach": "/opt/traffic_replay/mail_file/subjectEnglish.txt"
             },
             "token": ""
         }
@@ -125,6 +140,7 @@ if __name__ == '__main__':
         "module_name": "monitor",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

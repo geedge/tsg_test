@@ -1,8 +1,17 @@
 import time
+import pytest
 import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from datetime import datetime
+import support.ui_utils.env
+from datetime import datetime
+
+from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.log_in import *
+from support.general_ui_utils.object.create_objects import CreateObjects
+from support.general_ui_utils.object.edit_objects import EditObjects
+from support.general_ui_utils.object.search_objects import SearchObjects
+from support.general_ui_utils.object.delete_objects import DeleteObjects
+from support.general_ui_utils.element_position.object_element_position import *
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
@@ -19,17 +28,18 @@ def run(parameter):
         #测试数据
         test_data =  {
             "type": "objects",
-            "case_type": "single",
-            "name": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
+            "case_type": "group",
+            "name": "ip_create_group_no_exclude",
             "object_type": "ip",
+            "sub_object": 4,
             "object_operation":{
                 "create": [
                     {
-                        "item_operation": "add",
-                        "item_type": "",
-                        "item_value": ["1.1.1.1", "1.1.1.1-1.1.1.1", "192.168.2.1/24", "1:1:1::1/24", "94E5:E27A::6041"]
+                        "item_operation": "quote",
+                        "item_type": "no_include",
+                        "item_value": "ip_create_group_no_exclude"
                     }
-                ]
+                ],
             },
             "search": {
                 "is_fuzzy": False,
@@ -37,8 +47,8 @@ def run(parameter):
             },
             "statistics": "",  # random
             "audit_log": False  # system
-
         }
+
 
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)

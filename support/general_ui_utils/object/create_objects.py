@@ -103,19 +103,7 @@ class CreateObjects:
                 elif data["statistics"] == "brief":
                     self.driver.find_element(By.XPATH,ObjectDetailPage_statistics_select_brief_posXpath).click()
 
-            self.confirm_creation(data, create_element_position)
-            # # 确认创建
-            # if self.is_import == True:
-            #     if "error_item" in data['item'][0]['item_value']:
-            #         assert self.driver.find_element(By.XPATH,main_Import_files_error_format_posXpath).text == "IP addresses format error", "错误item校验"
-            #     else:
-            #         self.driver.find_element(By.XPATH,create_element_position["objectPage_import_ok_button_posXpath"]).click()
-            #
-            # self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
-            # self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
-            #获取Object ID
-            # time.sleep(1)
-            # self.object_info["id"] = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']/span").text
+            self.confirm_creation(data, index,create_element_position)
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}",flush=True)
@@ -139,8 +127,25 @@ class CreateObjects:
             # 输入name
             self.object_info["name"] = object_name = data["name"]
             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputName_posXpath"]).send_keys(object_name)
-            # 点subordinate的+
-            self.driver.find_element(By.XPATH,create_element_position["groupObjectPage_addSubordinate_posXpath"]).click()
+            if data["object_operation"]['create'][index]['item_type'] == "no_include":
+                self.driver.find_element(By.XPATH, listPage_object_group_exclude_open_posXpath).click()
+                self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_exclude_addSubordinate_posXpath"]).click()
+            elif data["object_operation"]['create'][index]['item_type'] == "no_exclude":
+                self.driver.find_element(By.XPATH, listPage_object_group_exclude_open_posXpath).click()
+                self.driver.find_element(By.XPATH,create_element_position["groupObjectPage_include_addSubordinate_posXpath"]).click()
+            elif data["object_operation"]['create'][index]['item_type'] == "no_include_exclude":
+                self.driver.find_element(By.XPATH, listPage_object_group_exclude_open_posXpath).click()
+                self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
+                self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
+                try:
+                    assert self.driver.find_element(By.XPATH,"//div[@role='alert']//p").text == "Subordinate objects of an object cannot be null"
+                    return 200
+                except Exception as e:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr, flush=True)
+                    return 400
+            else:
+                # 点subordinate的+
+                self.driver.find_element(By.XPATH,create_element_position["groupObjectPage_include_addSubordinate_posXpath"]).click()
             #添加item
             if data["object_type"] == "ip":
                 self.object_info["sub_type"] = "ip"
@@ -170,21 +175,13 @@ class CreateObjects:
                 self.driver.find_element(By.XPATH, create_element_position["importPage_uploadFile_posXpath"]).send_keys(self.my_files._obj_files_path(file_name=data["object_operation"]['create'][index]['item_value']))
                 time.sleep(5)
 
-            self.confirm_creation(data,create_element_position)
-            # self.driver.find_element(By.XPATH,create_element_position["groupObjectPage_subObject_OK_button_posXpath"]).click()
-            # self.driver.find_element(By.XPATH, create_element_position["groupObjectPage_subObject_OK_Warning_Yes_posXpath"]).click()
-            # #Group页面确认
-            # self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
-            # self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
-            # 获取Object ID
-            # time.sleep(1)
-            # self.object_info["id"] = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']/span").text
+            self.confirm_creation(data,index,create_element_position)
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr, flush=True)
             return 400
 
-    def confirm_creation(self,data,create_element_position):
+    def confirm_creation(self,data,index,create_element_position):
         if self.is_group == False:
             if self.is_import == True:
                 if data["object_operation"]['create'][0]['item_type'] == "files_error_item" or data["object_operation"]['create'][0]['item_type'] == "files_error_format":
@@ -213,9 +210,25 @@ class CreateObjects:
                 self.object_info["object_exit"] = True
         elif self.is_group == True:
             if self.is_quote == True:
-                # 确认创建
-                self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
-                self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
+                if data["object_operation"]['create'][index]['item_type'] == "no_exclude":
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
+                    assert self.driver.find_element(By.XPATH,"//div[@role='alert']//p").text == "When enabling excluded objects, there must be at least one valid piece of data"
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_cancelButton_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_cancelButton_warningYes_posXpath"]).click()
+                elif data["object_operation"]['create'][index]['item_type'] == "no_include":
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
+                    assert self.driver.find_element(By.XPATH,"//div[@role='alert']//p").text == "Subordinate objects of an object cannot contain only excluded objects"
+                    self.driver.find_element(By.XPATH,create_element_position["objectPage_cancelButton_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_cancelButton_warningYes_posXpath"]).click()
+                else:
+                    # 确认创建
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
+                    self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
+                    time.sleep(1)
+                    self.object_info["id"] = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']/span").text
+                    self.object_info["object_exit"] = True
             else:
                 #subObject页面点击OK创建
                 self.driver.find_element(By.XPATH,create_element_position["groupObjectPage_subObject_OK_button_posXpath"]).click()
@@ -223,9 +236,9 @@ class CreateObjects:
                 # Group页面确认
                 self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
                 self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
-            time.sleep(1)
-            self.object_info["id"] = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']/span").text
-            self.object_info["object_exit"] = True
+                time.sleep(1)
+                self.object_info["id"] = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']/span").text
+                self.object_info["object_exit"] = True
 
     def isElementExist(self, Element, timeout=3):
         try:

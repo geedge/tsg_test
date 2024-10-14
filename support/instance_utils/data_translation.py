@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import copy
+import random
 
 from support.api_utils.util_statistics_template import UtilStatisticsTemplate
 
@@ -636,9 +637,13 @@ class DataTranslation:
                             for u in range(len(v[i]["items"])):
                                 # 添加多个item
                                 add_item_dict = {
-                                    "keyword_array": []
+                                    "keyword_array": [],
+                                    "is_hexbin": 0,
+                                    "expr_type": 0
                                 }
                                 add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                                if "&" in v[i]["items"][u]["item_value"]:
+                                    add_item_dict["expr_type"] = 1  # 如果包含 '&'
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "http_signature":
@@ -835,6 +840,19 @@ class DataTranslation:
                                     "expr_type": 0
                                 }
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                if v[i]["item"][u]["item_value"] == "HEX":
+                                    add_item_dict["is_hexbin"] = 1
+                                    add_item_dict["expr_type"] = 0
+                                elif v[i]["item"][u]["item_value"] == "REGEX":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 2
+                                elif "range" in v[i]["item"][u].keys() and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 3
+                                    add_item_dict["range"] = v[i]["item"][u]["range"]
+                                elif "&" in v[i]["item"][u]["value"][0] and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 1
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
                         elif v[i]["item"][0]["item_type"] == "content" and data["condition"]["application"][0]["name"] == "mail":
@@ -857,6 +875,19 @@ class DataTranslation:
                                     "expr_type": 0
                                 }
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                if v[i]["item"][u]["item_value"] == "HEX":
+                                    add_item_dict["is_hexbin"] = 1
+                                    add_item_dict["expr_type"] = 0
+                                elif v[i]["item"][u]["item_value"] == "REGEX":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 2
+                                elif "range" in v[i]["item"][u].keys() and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 3
+                                    add_item_dict["range"] = v[i]["item"][u]["range"]
+                                elif "&" in v[i]["item"][u]["value"][0] and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 1
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
                         elif v[i]["item"][0]["item_type"] == "attachment_content" and data["condition"]["application"][0]["name"] == "mail":
@@ -879,6 +910,19 @@ class DataTranslation:
                                     "expr_type": 0
                                 }
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                if v[i]["item"][u]["item_value"] == "HEX":
+                                    add_item_dict["is_hexbin"] = 1
+                                    add_item_dict["expr_type"] = 0
+                                elif v[i]["item"][u]["item_value"] == "REGEX":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 2
+                                elif "range" in v[i]["item"][u].keys() and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 3
+                                    add_item_dict["range"] = v[i]["item"][u]["range"]
+                                elif "&" in v[i]["item"][u]["value"][0] and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 1
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
                         elif v[i]["item"][0]["item_type"] == "attachment_name" and data["condition"]["application"][0]["name"] == "mail":
@@ -901,6 +945,19 @@ class DataTranslation:
                                     "expr_type": 0
                                 }
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                if v[i]["item"][u]["item_value"] == "HEX":
+                                    add_item_dict["is_hexbin"] = 1
+                                    add_item_dict["expr_type"] = 0
+                                elif v[i]["item"][u]["item_value"] == "REGEX":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 2
+                                elif "range" in v[i]["item"][u].keys() and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 3
+                                    add_item_dict["range"] = v[i]["item"][u]["range"]
+                                elif "&" in v[i]["item"][u]["value"][0] and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 1
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
                         elif v[i]["item"][0]["item_type"] == "ftp_content":
@@ -923,6 +980,19 @@ class DataTranslation:
                                     "expr_type": 0
                                 }
                                 add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
+                                if v[i]["item"][u]["item_value"] == "HEX":
+                                    add_item_dict["is_hexbin"] = 1
+                                    add_item_dict["expr_type"] = 0
+                                elif v[i]["item"][u]["item_value"] == "REGEX":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 2
+                                elif "range" in v[i]["item"][u].keys() and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 3
+                                    add_item_dict["range"] = v[i]["item"][u]["range"]
+                                elif "&" in v[i]["item"][u]["value"][0] and v[i]["item"][u]["item_value"] == "TEXT":
+                                    add_item_dict["is_hexbin"] = 0
+                                    add_item_dict["expr_type"] = 1
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "account":
@@ -952,9 +1022,14 @@ class DataTranslation:
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
                             add_item_dict = {
-                                "keyword_array": []
+                                "keyword_array": [],
+                                "is_hexbin": 0,
+                                "expr_type": 0
                             }
                             add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
+                            # 检查 item_value 是否包含 '&'
+                            if "&" in v[i]["items"][u]["item_value"]:
+                                add_item_dict["expr_type"] = 1  # 如果包含 '&'
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "boolean":
@@ -1005,6 +1080,31 @@ class DataTranslation:
                                 add_item_dict["keyword_array"].append(v[i]["items"][u]["item_value"])
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
+            elif k == "flag":
+                for i in range(len(v)):
+                    temp = {
+                        "name": v[0]["name"],
+                        "attribute_name": "ATTR_FLAG",
+                        "object_type": "flag",
+                        "object_sub_type": "flag",
+                        "is_negate": 0,
+                        "object_list": [
+                            {
+                                "add_item_list": [
+                                    # {
+                                    #     "port": v[0]["item"][0]["item_value"]
+                                    # }
+                                ]
+                            }
+                        ]
+                    }
+                    for u in range(len(v[i]["item"])):
+                        # 直接使用 item_value 字典
+                        add_item_dict = v[i]["item"][u]["item_value"].copy()  # 假设它直接是 {'flag': '8', 'mask': '8'}
+                        temp["object_list"][0]["add_item_list"].append(add_item_dict)
+                    temp["is_negate"] = v[i]["negate"]
+                    object.append(copy.deepcopy(temp))
+
         return object
     
     def push_profile_data(self, parameter, data):
@@ -1157,6 +1257,8 @@ class DataTranslation:
                         order_by_tmp = temp_profile[j]["charts"][m]["order_by"]
                         if temp_profile[j]["charts"][m]["visualization_type"].lower() == "line":
                             order_by_tmp = ""
+                        if order_by_tmp == "Random":
+                            order_by_tmp = ""
                         chart_tmp = {
                                     "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
                                     "metrics": metrics_tmp,
@@ -1293,38 +1395,24 @@ class DataTranslation:
         elif policy_type == "monitor":
             temp_profile = data["profile"]
             for i in range(len(temp_profile)):
-                # temp = {
-                #     "profile_type": "traffic_mirror",
-                #     "name": temp_profile[i]["name"],
-                #     "addrType": "",
-                #     "isShared": 0,
-                #     "is_enabled": 1,
-                #     "return_data": 1,
-                #     "op_action": "add",
-                #     "vlan_array": [],
-                #     "vsys_id": 1
-                # }
                 temp = {
-                    "profile_type": "traffic_mirror",  # 外层包含profile类型
+                    "profile_type": "traffic_mirror",
                     "op_action": "add",
                     "return_data": 1,
-                    "traffic_mirror": {  # 将所有相关属性放入这个嵌套字典中
+                    "traffic_mirror": {
                         "name": temp_profile[i]["name"],
                         "isShared": 0,
                         "addrType": "",
                         "is_enabled": 1,
-                        "vlan_array": [],  # 根据需要添加正确的 VLAN ID
+                        "vlan_array": [],
                         "vsys_id": 1
                     }
                 }
-                for i in range(len(temp_profile)):
-                    temp["profile_type"] = temp_profile[i]["profile_type"]
-                    temp["traffic_mirror"]["name"] = temp_profile[i]["name"]
-                    temp["traffic_mirror"]["vlan_array"].append(str(temp_profile[i]["vlan_count"]))
-                # temp["name"] = temp_profile[i]["name"]
-                # temp["profile_type"] = temp_profile[i]["profile_type"]
-                # temp["vlan_array"].append(str(temp_profile[i]["vlan_count"]))
-                # temp["vlan_array"] = temp_profile[i]["vlan_count"]
+                vlan_count = temp_profile[i]["vlan_count"]  # 获取 vlan_count 的值
+                # 生成从 3 到 66 范围内的 vlan_count 个随机数
+                if vlan_count > 0:
+                    temp["traffic_mirror"]["vlan_array"] = random.sample(range(3, 67), min(vlan_count,6))
+                temp["profile_type"] = temp_profile[i]["profile_type"]
                 profile.append(copy.deepcopy(temp))
         return profile
     

@@ -147,6 +147,7 @@ def run(parameter):
                 "traffic_mirroring_profile": [
                     {
                         "profile_type": "traffic_mirror",
+                        "vlan_id": "no_default",
                         "profile_file": {
                             "name": "manipulation_traffic_mirroring_profile",
                             "model": "create",

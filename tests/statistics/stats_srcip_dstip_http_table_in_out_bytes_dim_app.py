@@ -124,7 +124,7 @@ def run(parameter):
                             "dimensions": [
                                 "app"
                             ],
-                            "order_by": "bytes",
+                            "order_by": "in bytes",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -140,7 +140,7 @@ def run(parameter):
                             "dimensions": [
                                 "app"
                             ],
-                            "order_by": "bytes",
+                            "order_by": "out bytes",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"

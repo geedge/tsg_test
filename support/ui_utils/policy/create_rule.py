@@ -572,15 +572,21 @@ class CreateRule:
                     if "traffic_mirroring_profile" in profile_data.keys():
                         traffic_mirroring_profiles = profile_data["traffic_mirroring_profile"]
                         for i in range(len(traffic_mirroring_profiles)):
-                            traffic_mirroring_profile_name = traffic_mirroring_profiles[i]["profile_file"]["name"]
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addDecryptionProfileSelectBox_posXpath"]).click()
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"], find_after_wait_time=0.6).clear()
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"]).send_keys(traffic_mirroring_profile_name)
-                            # 点击回车键
-                            search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileInput_posXpath"])
-                            search_box.send_keys(Keys.RETURN)
-                            # 选择第一个
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchDecryptionProfileDorpItem_posXpath"], find_after_wait_time=0.6).click()
+                            value_id = traffic_mirroring_profiles[i]["vlan_id"]
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addTrafficMirrorProfileButton_posXpath"]).click()
+                            if value_id == "default":
+                                continue
+                            else:
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addVlanIDButton_posXpath"]).click()
+                                traffic_mirroring_profile_name = traffic_mirroring_profiles[i]["profile_file"]["name"]
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath"]).click()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searcTrafficMirrorProfileInput_posXpath"], find_after_wait_time=0.6).clear()
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searcTrafficMirrorProfileInput_posXpath"]).send_keys(traffic_mirroring_profile_name)
+                                # 点击回车键
+                                search_box = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searcTrafficMirrorProfileInput_posXpath"])
+                                search_box.send_keys(Keys.RETURN)
+                                # 选择第一个
+                                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTrafficMirrorProfileDorpItem_posXpath"], find_after_wait_time=0.6).click()
                     # decryption profile
                     if "ssl_decryption_profile" in profile_data.keys():
                         ssl_decryption_profiles = profile_data["ssl_decryption_profile"]

@@ -45,7 +45,9 @@ class CreatePolicy:
             # 创建object
             create_object = CreateObject()
             object_template = template_path["object_template"]
+            #print("object_condition_value: {}".format(object_condition_value))
             timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, vsys_id)
+            #print("condition_ids_by_api_dict: {}".format(condition_ids_by_api_dict))
             for k, v_0 in condition_ids_by_api_dict.items():
                 v = copy.deepcopy(v_0)
                 if k == "ip_ids" and len(v) > 0:
@@ -89,7 +91,10 @@ class CreatePolicy:
                 create_profile = CreateProfile()
                 for profile_data in profile_condition_value:
                     create_profile_ids_dict = create_profile.create_profile_from_template(template_path, profile_data, token, api_server, vsys_id)
+                    #print("create_profile_ids_dict: {}".format(create_profile_ids_dict))
                     create_profile_ids.append(create_profile_ids_dict)
+                    #print("create_profile_ids: {}".format(create_profile_ids))
+
                     if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining":
                         temp_profile_list.append(create_profile_ids_dict)
             

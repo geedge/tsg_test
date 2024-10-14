@@ -1,11 +1,11 @@
+import random
 import time
 from datetime import datetime
 
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-
+from support.ui_utils.random_name import *
 from support.general_ui_utils.object.page_jump import PageJump
-from support.ui_utils.read_data import ReadData
 from support.general_ui_utils.element_position.object_element_position import *
 
 class SearchObjects:
@@ -13,6 +13,7 @@ class SearchObjects:
     def __init__(self,driver):
         self.driver = driver
         self.driver.implicitly_wait(5)
+        self.my_random = RandomName()
 
     def search(self,object_info,data,object_element_position):
         page_jump_element_position = object_element_position["page_jump"]
@@ -44,7 +45,7 @@ class SearchObjects:
                 self.driver.find_element(By.ID, listPage_objectSearch_ip_address_selectLabel_posId).click()
                 self.driver.find_element(By.ID, listPage_objectSearch_ip_address_selectLabel_posId).send_keys(search_value)
                 self.driver.find_element(By.XPATH, listPage_objectSearch_ip_address_select_subType_posXpath).click()
-            elif search_type == 'sub_Name':
+            elif search_type == 'sub_name':
                 # 删除Group下的sub mobile
                 self.driver.find_element(By.ID, listPage_objectSearch_ip_address_selectLabel_posId).click()
                 self.driver.find_element(By.ID, listPage_objectSearch_ip_address_selectLabel_posId).send_keys(search_value)
@@ -98,5 +99,29 @@ class SearchObjects:
 
         return search_value
 
-
+    def main_page_item_search(self,object_info):
+        try:
+            self.driver.find_element(By.XPATH,listPage_item_search_details_first_posXpath).click()
+            self.driver.find_element(By.XPATH, listPage_item_search_text_posXpath).click()
+            if object_info["sub_type"] == "ip":
+                item_search_type = random.choice(["IP","Port"])
+                self.driver.find_element(By.XPATH,f"//div[@class='select_info_list']/ul/li[normalize-space(text())='{item_search_type}']").click()
+                if item_search_type == "IP":
+                    search_value = object_info["ip"]
+                elif item_search_type == "Port":
+                    search_value = random.randint(0,65535)
+            else:
+                pass
+            # 首先进行错误搜索校验
+            self.driver.find_element(By.XPATH, listPage_item_search_text_posXpath).send_keys(self.my_random.random_number() + Keys.ENTER)
+            assert self.driver.find_element(By.XPATH, listPage_item_search_total_text_posXpath).text == "Total:0"
+            # 正确校验
+            self.driver.find_element(By.XPATH, listPage_item_search_text_posXpath).clear()
+            self.driver.find_element(By.XPATH, listPage_item_search_text_posXpath).send_keys(str(search_value) + Keys.ENTER)
+            assert self.driver.find_element(By.XPATH,listPage_item_search_total_text_posXpath).text != "Total:0", "搜索结果错误"
+            self.driver.find_element(By.XPATH,listPage_item_search_close_posXpath).click()
+            return 200
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}",flush=True)
+            return 400
 
