@@ -104,5 +104,4 @@ if __name__ == '__main__':
         "test_case_name": os.path.basename(__file__)[:-3]
     }
     #parameter = replace_paras(parameter)
-    parameter = replace_paras(parameter)
     run(parameter)

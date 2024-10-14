@@ -65,7 +65,7 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [],
-                #"sub_action_override": True,
+                "sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },

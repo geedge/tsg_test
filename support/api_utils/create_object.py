@@ -232,15 +232,33 @@ class CreateObject:
                         object_dict['addr_type'] = item['addr_type']
                     object_dict = dict(ip=object_dict, op='add')
                     items.append(copy.deepcopy(object_dict))
+            # elif obj_type == "flag":
+            #     for item in add_item_list:
+            #         if 'flag' in item:
+            #             object_dict['flag'] = item['flag']
+            #         if 'mask' in item:
+            #             object_dict['mask'] = item['mask']
+            #         object_dict = dict(flag=object_dict, op='add')
+            #         items.append(object_dict)
+            #     member = dict(items=items, type="item")
             elif obj_type == "flag":
+                items = []  # 初始化一个空的列表用于存放所有的项
                 for item in add_item_list:
-                    if 'flag' in item:
-                        object_dict['flag'] = item['flag']
-                    if 'mask' in item:
-                        object_dict['mask'] = item['mask']
-                    object_dict = dict(flag=object_dict, op='add')
-                    items.append(object_dict)
-                member = dict(items=items, type="item")
+                    # 直接构造每个 flag 的字典
+                    flag_item_dict = {
+                        "op": "add",
+                        "flag": {
+                            "flag": item['flag'],  # 直接从item中取flag值
+                            "mask": item['mask']  # 直接从item中取mask值
+                        }
+                    }
+                    items.append(flag_item_dict)  # 将构建的字典添加到items列表中
+                # 构建最终的 member 字典
+                member = {
+                    "type": "item",
+                    "items": items  # 使用之前构建的 items 列表
+                }
+
             elif obj_type == "port":
                 for item in add_item_list:
                     object_dict = {}
