@@ -58,22 +58,22 @@ class CreateObject:
                     # 构造condi数据，创建策略时的引用数据
                     if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT", "ATTR_GTP_IMSI", "ATTR_GTP_PHONE_NUMBER", "ATTR_GTP_IMEI", "ATTR_GTP_APN"]:
                         for obj_dict in objects_list:
-                            source_list.append(obj_dict)
+                            source_list.append(copy.deepcopy(obj_dict))
                     elif attribute_name in ["ATTR_DESTINATION_IP", "ATTR_DESTINATION_PORT", "ATTR_DESTINATION_GEO_COUNTRY", "ATTR_SERVER_FQDN"]:
                         for obj_dict in objects_list:
-                            dst_list.append(obj_dict)
+                            dst_list.append(copy.deepcopy(obj_dict))
                     elif attribute_name in ["ATTR_EXTERNAL_IP", "ATTR_EXTERNAL_PORT"]:
                         for obj_dict in objects_list:
-                            external_list.append(obj_dict)
+                            external_list.append(copy.deepcopy(obj_dict))
                     elif attribute_name in ["ATTR_INTERNAL_IP", "ATTR_INTERNAL_PORT"]:
                         for obj_dict in objects_list:
-                            internal_list.append(obj_dict)
+                            internal_list.append(copy.deepcopy(obj_dict))
                     elif attribute_name == 'ATTR_FLAG':
                         for obj_dict in objects_list:
-                            flag_list.append(obj_dict)
+                            flag_list.append(copy.deepcopy(obj_dict))
                     else:
                         for obj_dict in objects_list:
-                            filter_list.append(obj_dict)
+                            filter_list.append(copy.deepcopy(obj_dict))
 
                     # 删除创建的object，且删除次数等于repeat_time-1，保留最后一次的object用于验证功能
                     if repeat_time > 1:
