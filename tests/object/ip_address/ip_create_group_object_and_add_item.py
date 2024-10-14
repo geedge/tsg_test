@@ -31,7 +31,7 @@ def run(parameter):
             "case_type": "group",
             "name": "create_ip_group_and_add_item",
             "object_type": "ip",
-            "sub_object": 1,
+            "sub_object": 2,
             "object_operation":{
                 "create": [
                     {
