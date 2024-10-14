@@ -1010,15 +1010,21 @@ class GetLog:
             total_bytes_sent = test_traffic_statistics["total_bytes_sent"]
             if total_bytes_sent > 0 and time_dif_seconds > 1:
                 total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2) * rate_coefficient
+            else:
+                total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
 
             total_bytes_received = test_traffic_statistics["total_bytes_received"]
             if total_bytes_received > 0 and time_dif_seconds > 1:
                 total_bytes_received = round(total_bytes_received / time_dif_seconds, 2) * rate_coefficient
+            else:
+                total_bytes_received = test_traffic_statistics["total_bytes_received"] * rate_coefficient
 
             total_bytes = test_traffic_statistics["total_bytes"]
             if total_bytes > 0 and time_dif_seconds > 1:
                 total_bytes = round(total_bytes / time_dif_seconds, 2) * rate_coefficient
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes rate_coefficient Rate:{}".format(total_bytes), flush=True)
+            else:
+                total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
 
             total_packets_sent = test_traffic_statistics["total_packets_sent"]
             if total_packets_sent > 0 and time_dif_seconds > 1:
