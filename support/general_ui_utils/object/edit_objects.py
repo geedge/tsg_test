@@ -45,6 +45,13 @@ class EditObjects:
                 self.driver.find_element(By.XPATH,create_element_position["objectPage_importItem_posXpath"]).click()
                 self.driver.find_element(By.XPATH,create_element_position["importPage_uploadFile_posXpath"]).send_keys(self.my_files._obj_files_path(file_name=data["object_operation"]['edit'][index]['item_value']))
                 time.sleep(5)
+
+            #判断clear count的点击
+            is_clear_counter_clickable = self.driver.find_element(By.XPATH,url_ObjectDetailPage_clearCounter_posXpath).get_attribute("class")
+            assert "not-allowed" not in is_clear_counter_clickable, "is_clear_counter_clickable = {}".format(is_clear_counter_clickable)
+            # self.driver.find_element(By.XPATH,listPage_object_pages_clearCounter_button_warnning_yes_poxXpath).click()
+            # assert self.driver.find_element(By.XPATH,"//div[@role='alert']//p") == "Success","clear count点击失败"
+
             # 确认创建
             if self.is_import == True:
                 self.driver.find_element(By.XPATH, create_element_position["objectPage_import_ok_button_posXpath"]).click()

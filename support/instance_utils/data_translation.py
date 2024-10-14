@@ -1157,6 +1157,8 @@ class DataTranslation:
                         order_by_tmp = temp_profile[j]["charts"][m]["order_by"]
                         if temp_profile[j]["charts"][m]["visualization_type"].lower() == "line":
                             order_by_tmp = ""
+                        if order_by_tmp == "Random":
+                            order_by_tmp = ""
                         chart_tmp = {
                                     "type": temp_profile[j]["charts"][m]["visualization_type"].lower(),
                                     "metrics": metrics_tmp,
