@@ -222,6 +222,13 @@ class ObjectsInstanceGenerator:
                         elif search_ip_code != 200:
                             ui_result = "Fail to search ip."
 
+                        if "main_page_search" in test_data["search"].keys():
+                            main_search_code = search_ip.main_page_item_search(object_info)
+                            if main_search_code == 200:
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search  object successfully.", flush=True)
+                            elif main_search_code != 200:
+                                ui_result = "Fail to search ip."
+
                         if "export" in test_data["object_operation"]:
                             export_object = ExportObjects(driver)
                             export_object_code = export_object.export_objects(object_info,first_row_checkbox_element)

@@ -102,8 +102,11 @@ listPage_objectSearch_geo_select_CountryandRegion_posXpath = "//li[@id='58-_Filt
 listPage_objectSearch_geo_select_SuperAdministrativeArea_posXpath = "//li[@id='150-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
 listPage_objectSearch_geo_select_AdministrativeArea_posXpath = "//li[@id='59-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
 listPage_objectSearch_geo_select_SubAdministrativeArea_posXpath = "//li[@id='151-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
-
-
+#主页object item点击后侧滑框搜索
+listPage_item_search_text_posXpath = "//input[@placeholder='Search for']"
+listPage_item_search_total_text_posXpath = "//div[@class='LocalationDraswer lstsub policy-right-show-edit v-draswer']//p[@class='total']"
+listPage_item_search_details_first_posXpath ='(//div[@id="multilineItemDetails-_MultilineTableCell_ElTableBody_ElTable_Objects_ip_Home_App_anonymousComponent"])[1]'
+listPage_item_search_close_posXpath = "//div[@class='IpItems list-box']//span[normalize-space(text())='Close']"
 #ip object元素
 ipObjectPage_ipType_posId = "IPip"
 main_ObjectPage_tips_Name_input_Xpath = '//form/div[1]/div/div[@class="el-form-item__error"]'
