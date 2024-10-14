@@ -108,6 +108,34 @@ def run(parameter):
                           "row_limit": "",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "sent_bytes:RATE:in bytes",
+                            "received_bytes:RATE:out bytes",
+                            "sent_bytes+received_bytes:RATE:bytes"
+                          ],
+                          "dimensions": [],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "sent_bytes:SUM:in bytes",
+                                "received_bytes:SUM:out bytes",
+                                "sent_bytes+received_bytes:SUM:bytes"
+                            ],
+                            "dimensions": [],
+                            "order_by": "",
+                            "row_limit": "",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]

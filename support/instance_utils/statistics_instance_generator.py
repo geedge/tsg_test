@@ -49,13 +49,14 @@ class StatisticsInstanceGenerator:
         test_data["token"] = token
         self.test_data["token"] = token
 
+        # Statistics Rule使用随机IP
+        organize_config = OrganizeConfig()
+        test_data = organize_config.generate_random_ip(test_data, parameter)
+
         need_initialization = False
         if len(parameter["script_type"]) == 0:
             need_initialization = True
 
-        # Statistics Rule使用随机IP
-        organize_config = OrganizeConfig()
-        test_data = organize_config.generate_random_ip(test_data, parameter)
         if parameter["script_type"] == "ui" or need_initialization == True:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
@@ -264,6 +265,12 @@ class StatisticsInstanceGenerator:
                 support.ui_utils.env.teardown()
         if parameter["script_type"] == "api" or need_initialization == True:
             try:
+                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "parameter(script_type:{}),test_data(rule_name:{})".format(parameter["script_type"],test_data["rule_name"]), flush=True)
+                if need_initialization == True and "sub_id" in test_data["rule_name"]:
+                    if "bytes" not in test_data["rule_name"] and "pkts" not in test_data["rule_name"] and "closed_sessions" not in test_data["rule_name"] and "closed_sessions" not in test_data["rule_name"]:
+                        # 如果同时跑UI和API，且为SUB ID相关用例时，因SUB ID相关用例在1个Vsys仅注册了一个测试SUBID对象，所以需等待UI用例流量结束：120 seconds
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Subid related use cases need to wait until the UI traffic ends,, wait for 120 seconds", flush=True)
+                        time.sleep(120)
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
                 # Statistics Rule使用随机IP
                 #organize_config = OrganizeConfig()
@@ -307,8 +314,6 @@ class StatisticsInstanceGenerator:
         return result
 
     def delete_data(self):
-        # 清理环境
-        support.ui_utils.env.teardown()
         # 删除配置
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:

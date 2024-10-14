@@ -85,11 +85,9 @@ class CreatePolicyRule:
         if action == 'deny' and policy_type == "security":
             rule_template_dict['rule']['user_region']['method'] = method
             if 'packet_capture_'+str(create_number) in condition:
+                rule_template_dict["rule"]["user_region"]["packet_capture"] = {}
                 rule_template_dict["rule"]["user_region"]["packet_capture"]["enable"] = condition['packet_capture_'+str(create_number)]["enable"]
-                if rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] in condition['packet_capture_'+str(create_number)]:
-                    rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
-                else:
-                    rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] = 2000
+                rule_template_dict['rule']['user_region']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
             else:
                 rule_template_dict['rule']['user_region']['packet_capture'] = {"enable":0}
             if method == 'drop':

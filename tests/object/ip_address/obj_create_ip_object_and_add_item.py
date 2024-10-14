@@ -19,8 +19,6 @@ def run(parameter):
             "name": "create_ip_object_and_add_item",
             "case_type": "single",
             "object_type": "ip",
-            "fuzzy_search": False,
-            "search_type": "id",
             "object_operation":{
                 "create": [
                     {

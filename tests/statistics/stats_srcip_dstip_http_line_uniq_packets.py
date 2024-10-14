@@ -101,8 +101,21 @@ def run(parameter):
                           "metrics": [
                             "sent_pkts:UNIQUE_COUNT:Packets Sent",
                             "received_pkts:UNIQUE_COUNT:Packets Received",
+                            "sent_pkts+received_pkts:UNIQUE_COUNT:Packets"
+                          ],
+                          "dimensions": [],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
+                          "metrics": [
                             "in_pkts:UNIQUE_COUNT:Incoming Packets",
-                            "out_pkts:UNIQUE_COUNT:Outgoing Packets"
+                            "out_pkts:UNIQUE_COUNT:Outgoing Packets",
+                            "in_pkts+out_pkts:UNIQUE_COUNT:Packets"
                           ],
                           "dimensions": [],
                           "order_by": "",

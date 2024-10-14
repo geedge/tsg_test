@@ -279,8 +279,8 @@ class ManipulationInstanceGenerator:
                         template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
                     elif profile_type == "run_script":
                         template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][0]["content_name"]
-                    else:
-                        print("check profile path")
+                    # else:
+                    #     print("check profile path")
 
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
@@ -294,7 +294,6 @@ class ManipulationInstanceGenerator:
                 # 分析验证结果，并返回给flask
                 analysis = AnalysisResult()
                 api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
-
             finally:
                 result["api_result"] = api_result
                 # 删除配置
@@ -305,11 +304,9 @@ class ManipulationInstanceGenerator:
 
     def delete_data(self):
         # 删除配置
-        #print(self.api_name_list)
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
             # 清理环境
-            #support.ui_utils.env.teardown()
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
         if isinstance(self.api_name_list, list) and self.api_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)

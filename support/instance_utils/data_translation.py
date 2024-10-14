@@ -80,8 +80,8 @@ class DataTranslation:
                 if "redirect_url" in data["action_parameter"].keys():
                     data["code_1"] = data["action_parameter"]["redirect_url"][0]["response_code"]
                     data["to_1"] = data["action_parameter"]["redirect_url"][0]["redirect_url"]
-                else:   # doh
-                    print("todo...doh")
+                # else:   # doh
+                #     print("todo...doh")
             elif data["rule_action"] == "replace":
                 replace_parameter_list = data["action_parameter"]["replace_parameter"]
                 user_region = []
@@ -121,6 +121,16 @@ class DataTranslation:
                 data["user_region"] = user_region
         elif policy_type == "security":
             if data["rule_action"] == "deny":
+                if "packet_capture" in data["condition"] and len(data["condition"]["packet_capture"]) > 0:
+                    data["packet_capture_1"] = {}
+                    capture_flag = data["condition"]["packet_capture"][0]["enable"]
+                    if capture_flag == True:
+                        capture_flag = 1
+                    else:
+                        capture_flag = 0
+                    capture_depth = data["condition"]["packet_capture"][0]["capture_depth"]
+                    data["packet_capture_1"]["enable"] = capture_flag
+                    data["packet_capture_1"]["capture_depth"] = int(capture_depth)
                 if len(data["condition"]["sub_action"])>0:
                     if data["condition"]["sub_action"][0]["type"] == "drop":
                         data["method_1"] = "drop"
@@ -356,6 +366,7 @@ class DataTranslation:
                         add_item_dict = {}
                         add_item_dict["port"] = v[i]["item"][u]["item_value"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "destination_port":
                 for i in range(len(v)):
@@ -380,6 +391,7 @@ class DataTranslation:
                         add_item_dict = {}
                         add_item_dict["port"] = v[i]["item"][u]["item_value"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "internal_port":
                 for i in range(len(v)):
@@ -404,6 +416,7 @@ class DataTranslation:
                         add_item_dict = {}
                         add_item_dict["port"] = v[i]["item"][u]["item_value"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    temp["is_negate"] = v[i]["negate"]    
                     object.append(copy.deepcopy(temp))
             elif k == "external_port":
                 for i in range(len(v)):
@@ -428,6 +441,7 @@ class DataTranslation:
                         add_item_dict = {}
                         add_item_dict["port"] = v[i]["item"][u]["item_value"]
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "device":
                 for i in range(len(v)):
@@ -498,6 +512,7 @@ class DataTranslation:
                             }
                             add_item_dict["keyword_array"].append(v[i]["item"][u]["item_value"])
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        temp["is_negate"] = v[i]["negate"]
                         object.append(copy.deepcopy(temp))
                     elif v[i]["item"][0]["item_type"] == "apn":
                         temp = {
@@ -862,7 +877,7 @@ class DataTranslation:
                                     add_item_dict["expr_type"] = 1
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
-                        elif v[i]["item"][0]["item_type"] == "mail_content":
+                        elif v[i]["item"][0]["item_type"] == "content" and data["condition"]["application"][0]["name"] == "mail":
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_MAIL_CONTENT",
@@ -897,7 +912,7 @@ class DataTranslation:
                                     add_item_dict["expr_type"] = 1
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
-                        elif v[i]["item"][0]["item_type"] == "mail_attachment_content":
+                        elif v[i]["item"][0]["item_type"] == "attachment_content" and data["condition"]["application"][0]["name"] == "mail":
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_MAIL_ATT_CONTENT",
@@ -932,7 +947,7 @@ class DataTranslation:
                                     add_item_dict["expr_type"] = 1
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                             object.append(copy.deepcopy(temp))
-                        elif v[i]["item"][0]["item_type"] == "mail_attachment_name":
+                        elif v[i]["item"][0]["item_type"] == "attachment_name" and data["condition"]["application"][0]["name"] == "mail":
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_MAIL_ATT_NAME",
@@ -1024,7 +1039,7 @@ class DataTranslation:
                             temp["attribute_name"] = "ATTR_FTP_ACCOUNT"
                         if v[i]["items"][0]["item_type"] == "mail_from":
                             temp["attribute_name"] = "ATTR_MAIL_FROM"
-                        if v[i]["items"][0]["item_type"] == "mail_to":
+                        if v[i]["items"][0]["item_type"] == "to" and data["condition"]["application"][0]["name"] == "mail":
                             temp["attribute_name"] = "ATTR_MAIL_TO"
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
@@ -1287,8 +1302,8 @@ class DataTranslation:
                             temp["format"] = "html"
                         elif file_name.endswith(".htm"):
                             temp["format"] = "htm"
-                        else:
-                            print("check file type: {}".format(file_name))
+                        # else:
+                        #     print("check file type: {}".format(file_name))
                         profile.append(copy.deepcopy(temp))
                 elif k == "hijack_file":
                     element_type_replace_name = {
@@ -1346,8 +1361,8 @@ class DataTranslation:
                         temp["name"] = v[t]["profile_file"]["name"]
                         temp["content_name"] = v[t]["profile_file"]["script"]
                         profile.append(copy.deepcopy(temp))
-                else:
-                    print("no match {}".format(k))
+                # else:
+                #     print("no match {}".format(k))
         elif policy_type == "security" and "action_parameter" in data:
             temp_profile = data["action_parameter"]
             for k, v in temp_profile.items():
@@ -1369,8 +1384,8 @@ class DataTranslation:
                             temp["format"] = "html"
                         elif file_name.endswith(".htm"):
                             temp["format"] = "htm"
-                        else:
-                            print("check file type: {}".format(file_name))
+                        # else:
+                        #     print("check file type: {}".format(file_name))
                         profile.append(copy.deepcopy(temp))
         elif policy_type == "monitor":
             temp_profile = data["profile"]

@@ -108,9 +108,37 @@ def run(parameter):
                         },
                         {
                             "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:RATE:RATE(Send Bytes)",
+                                "received_bytes:RATE:RATE(Received Bytes)",
+                                "sent_bytes+received_bytes:RATE:RATE(Sent Bytes Received Bytes)"
+                            ],
+                            "dimensions": ["client_ip"],
+                            "order_by": "RATE(Send Bytes)",
+                            "row_limit": "500",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:BITRATE(Send Bytes)",
+                                "received_bytes:BITRATE:BITRATE(Received Bytes)",
+                                "sent_bytes+received_bytes:BITRATE:BITRATE(Sent Bytes Received Bytes)"
+                            ],
+                            "dimensions": ["client_ip"],
+                            "order_by": "BITRATE(Received Bytes)",
+                            "row_limit": "500",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "sent_bytes+received_bytes:RATE:RATE(Sent Bytes Received Bytes)"
+                                "sent_bytes+received_bytes:RATE:BITRATE(Sent Bytes Received Bytes)"
                             ],
                             "dimensions": ["app"],
                             "order_by": "RATE(Sent Bytes Received Bytes)",

@@ -56,43 +56,6 @@ def run(parameter):
             "audit_log": False  # system
         }
 
-        test_ip_object_element_position = {
-            "page_jump": {
-                "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
-            },
-            "create": {
-                "objectListPage_createButton_posId": listPage_object_ip_address_createButton_posId,
-                "objectListPage_dropDown_createGroupButton_posId":listPage_object_ip_address_create_ip_address_Group_Button_posId,
-                "objectListPage_dropDown_createButton_posId":listPage_object_ip_address_create_ip_address_Button_posId,
-                "objectPage_inputName_posXpath": ip_addressObjectPage_input_Name_posXpath,
-                "objectPage_inputDescription_posXpath":ip_addressObjectPage_textArea_Description_posXpath,
-                "objectPage_ipType_posId": ipObjectPage_ipType_posId,
-                "objectPage_addItem_posXpath": ip_address_Group_sub_Object_add_new_add_item_Button_posXpath,
-                "objectPage_inputItem_posXpath": ip_address_Group_sub_Object_add_new_addIP_item_inputName_posXpath,
-                "objectPage_button_saveItem_posXpath": ip_addressObjectPage_button_Save_Item_posXpath,
-                "objectPage_okButton_posXpath": ip_addressObjectPage_button_OK_posXpath,
-                "objectPage_okButton_warningYes_posXpath": ip_addressObjectPage_button_warningSaveYes_posXpath,
-                "groupObjectPage_addSubordinate_posXpath":ip_address_Group_sub_Object_addButton_posXpath,
-                "groupObjectPage_subObject_OK_button_posXpath":ip_address_Group_sub_Object_add_new_one_OK1_Button_posXpath,
-                "groupObjectPage_subObject_OK_Warning_Yes_posXpath":ip_address_Group_sub_Object_add_new_one_OK1_Warning_Yes_Button_posXpath
-            },
-            "edit":{
-                "objectPage_Group_edit_subObject_Button_posXpath":ip_address_Group_sub_Object_edit_subObject_Button_posXpath,
-                "objectListPage_editButton_posId": listPage_object_ip_address_editButton_posId,
-                "objectPage_editItem_Button_posXpath": ip_addressObjectPage_button_editItem_posXpath,
-                "objectPage_Item_text_posXpath": ip_addressObjectPage_button_ip_learing_text_posXpath,
-                "objectPage_editItem_Save_Button_posXpath": ip_addressObjectPage_button_add_itemIP_Save_posXpath,
-                "objectPage_addItem_first_item_posXpath": ip_addressObjectPage_button_addItem_first_item_posXpath,
-            },
-            "delete": {
-                "objectListPage_deleteButton_posId": listPage_object_ip_address_delButton_posId,
-                "objectListPage_deleteButton_warningYes_posXpath": listPage_object_ip_address_del_yes_Button_posXpath
-            }
-        }
 
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)

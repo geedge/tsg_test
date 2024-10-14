@@ -19,7 +19,7 @@ class CreateSSLDecryptionProfile:
         if self.driver.find_element(By.CSS_SELECTOR, sslDecryptionProfiles_button_warningSaveYes_posCss, find_before_wait_time=1).is_displayed():
             self.driver.find_element(By.CSS_SELECTOR, sslDecryptionProfiles_button_warningSaveYes_posCss).click()
 
-    def _operate_page(self, data: {}, operation_type="create"):
+    def _operate_page(self, data, operation_type="create"):
         """"""
         if operation_type == "create":
             data_index = 0   #新增数据索引
@@ -52,12 +52,12 @@ class CreateSSLDecryptionProfile:
         mirror_client_versions = self._get_value_from_data(data, key="mirror_client_versions", data_index=data_index)   #提取数据
         mirror_client_versions_class = self.driver.find_element(By.XPATH, sslDecryptionProfiles_switch_mirrorClientVersions_posXpath).get_attribute("class")   #该开关当前属性状态
         allowHTTP2_class = self.driver.find_element(By.XPATH, sslDecryptionProfiles_switch_allowHTTP2_posXpath).get_attribute("class")  # 该开关当前属性状态
-        print(allowHTTP2_class)
+        # print(allowHTTP2_class)
         if "is-checked" not in mirror_client_versions_class:    #只有 当前状态为关时，才可以操作版本大小。
             min_version = self._get_value_from_data(data, key="min_client_version", data_index=data_index)
             max_version = self._get_value_from_data(data, key="max_client_version", data_index=data_index)
-            print(min_version)
-            print(max_version)
+            # print(min_version)
+            # print(max_version)
             version_index_list = ['sslv3.0', 'tlsv1.0', 'tlsv1.1', 'tlsv1.2', 'tlsv1.3']
             if min_version != no_modify:    #编辑时不修改，则不用操作
                 self.driver.find_element(By.XPATH, sslDecryptionProfiles_input_minVersion_posXpath).click()
@@ -80,7 +80,7 @@ class CreateSSLDecryptionProfile:
                     # print("error_content=", error_content)
                     time.sleep(2)
 
-    def _operate_switch(self, data: {}, data_index=0, no_modify="不修改", switch_name="", element_position=""):
+    def _operate_switch(self, data, data_index=0, no_modify="不修改", switch_name="", element_position=""):
         """
         页面中，开关状态操作。
         :param data:
@@ -107,7 +107,7 @@ class CreateSSLDecryptionProfile:
                 else:                                            #页面当前为关，不用点击开关
                     pass
 
-    def _get_value_from_data(self, data: {}, key="", data_index=0):
+    def _get_value_from_data(self, data, key="", data_index=0):
         """
         从data数据中，根据key提取值
         :param data:
@@ -118,7 +118,7 @@ class CreateSSLDecryptionProfile:
         try:
             switch_value: str = data[key].split("->")[data_index].strip().lower()    #用例数据
         except Exception as e:
-            print(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], e, flush=True)
         return switch_value
 
 

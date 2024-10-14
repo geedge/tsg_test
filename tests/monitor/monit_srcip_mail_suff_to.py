@@ -60,7 +60,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_to",
+                                "item_type": "to",
                                 "item_value": "*test@163.com"
                             }
                         ],

@@ -38,7 +38,9 @@ class GetLog:
         for i in range(rule_num):
             if policy_type == 'security':
                 schema_type = 'security_event'
-            elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
+            elif policy_type == 'pxy_intercept':
+                schema_type = 'session_record'
+            elif policy_type == 'pxy_manipulation':
                 schema_type = 'proxy_event'
             elif policy_type == 'monitor':
                 schema_type = 'monitor_event'
@@ -97,6 +99,7 @@ class GetLog:
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200
             log_list = json.loads(response.text)
+            #print(log_list)
             log_list = log_list['data']['result']
             log_index = i + 1
             temp_log_query_param = 'log_query_param_' + str(log_index)
@@ -311,7 +314,6 @@ class GetLog:
 
 
     def first_dos_classification(self,log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id):
-        print(output)
         #1.Get the time difference to calculate the session_rate、bit_rate and packet_rate
         start_time_value = log["start_time"]
         end_time_value = log["end_time"]
@@ -448,7 +450,7 @@ class GetLog:
         elif query_field_key == "rule_id":
             if policy_id == log[query_field_key]:
                 temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+                test_data["log_query_param"][time]["query_value"] = int(log[query_field_key])
             else:
                 temp_log_result_list.append(False)
         elif query_field_key == "conditions":
@@ -472,7 +474,6 @@ class GetLog:
         else:
             temp_log_result_list.append(False)
 
-        print(temp_log_result_list)
         return temp_log_result_list
 
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
@@ -502,6 +503,7 @@ class GetLog:
             response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
+            #print(response)
             index = i + 1
             temp_counters = 'counters_' + str(index)
             if temp_counters in test_data.keys():
@@ -780,7 +782,7 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}, template_id:{}, chart_id:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],  "Exception when getting Metrics data from the interface.")
             return [False, "The statistics metric API query failed."]
@@ -1004,18 +1006,18 @@ class GetLog:
     def metric_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds = 1):
         failure_info_2 = ""
         metric_result = False
-        try:
-            total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
+        try:#经与OLAP沟通：目前计算方式为先除以时间再乘以8，本身已经是bps 降低的这点精度可以忽略（只有字节数据很低的时候精度会降低，实际数据都比较大不会影响）如果将*8 放在表达式里面，有表达式定义会有点问题，故修改自动化计算bps方式和OLAP保持一致
+            total_bytes_sent = test_traffic_statistics["total_bytes_sent"]
             if total_bytes_sent > 0 and time_dif_seconds > 1:
-                total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2)
+                total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2) * rate_coefficient
 
-            total_bytes_received = test_traffic_statistics["total_bytes_received"] * rate_coefficient
+            total_bytes_received = test_traffic_statistics["total_bytes_received"]
             if total_bytes_received > 0 and time_dif_seconds > 1:
-                total_bytes_received = round(total_bytes_received / time_dif_seconds, 2)
+                total_bytes_received = round(total_bytes_received / time_dif_seconds, 2) * rate_coefficient
 
-            total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
+            total_bytes = test_traffic_statistics["total_bytes"]
             if total_bytes > 0 and time_dif_seconds > 1:
-                total_bytes = round(total_bytes / time_dif_seconds, 2)
+                total_bytes = round(total_bytes / time_dif_seconds, 2) * rate_coefficient
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes rate_coefficient Rate:{}".format(total_bytes), flush=True)
 
             total_packets_sent = test_traffic_statistics["total_packets_sent"]
@@ -1103,7 +1105,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_unique_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds):
+    def metric_unique_count_value_verification(self, source_fields, stats_value,  test_traffic_statistics):
         failure_info_2 = ""
         metric_result = False
         util = UtilStatisticsTemplate()
@@ -1227,7 +1229,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Unique Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_histogram_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds):
+    def metric_histogram_value_verification(self, source_fields, stats_value):
         # 待重构
         failure_info_2 = ""
         util = UtilStatisticsTemplate()
@@ -1250,7 +1252,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_percentile_value_verification(self, source_fields, stats_value, rate_coefficient,test_traffic_statistics, time_dif_seconds):
+    def metric_percentile_value_verification(self, source_fields):
         # 待重构
         metric_result = False
         failure_info_2 = ""

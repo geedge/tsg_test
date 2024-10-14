@@ -100,7 +100,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "client_country:UNIQUE_COUNT:Client Country",
-                            "server_country:UNIQUE_COUNT:Server Country"
+                            "server_country:UNIQUE_COUNT:Server Country",
+                            "client_country+server_country:UNIQUE_COUNT:Country"
                           ],
                           "dimensions": [],
                           "order_by": "",

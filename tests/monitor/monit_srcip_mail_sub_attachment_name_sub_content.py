@@ -64,7 +64,7 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_attachment_name",
+                                "item_type": "attachment_name",
                                 "item_value": "TEXT",
                                 "value": [
                                     "test"
@@ -83,7 +83,7 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_content",
+                                "item_type": "content",
                                 "item_value": "TEXT",
                                 "value": [
                                     "172"

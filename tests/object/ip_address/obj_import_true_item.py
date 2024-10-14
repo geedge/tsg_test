@@ -30,8 +30,6 @@ def run(parameter):
             "name": "import_true_item",
             "case_type": "single",
             "object_type": "ip",
-            "fuzzy_search": False,
-            "search_type": "id",
             "object_operation":{
                 "create": [
                     {

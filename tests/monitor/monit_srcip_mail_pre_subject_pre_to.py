@@ -62,14 +62,14 @@ def run(parameter):
                         # "items": [
                         #     {
                         #         "item_operation": "add",
-                        #         "item_type": "mail_to",
+                        #         "item_type": "to",
                         #         "item_value": "auto*"
                         #     }
                         # ],
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_type": "mail_to",
+                                "item_type": "to",
                                 "item_value": "$autotest@163.com"
                             }
                         ],

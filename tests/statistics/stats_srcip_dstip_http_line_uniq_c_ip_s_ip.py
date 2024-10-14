@@ -100,7 +100,8 @@ def run(parameter):
                           "visualization_type": "Line",
                           "metrics": [
                             "client_ip:UNIQUE_COUNT:UNIQUE Client IP",
-                            "server_ip:UNIQUE_COUNT:UNIQUE Cerver IP"
+                            "server_ip:UNIQUE_COUNT:UNIQUE Server IP",
+                            "client_ip+server_ip:UNIQUE_COUNT:UNIQUE IP"
                           ],
                           "dimensions": [],
                           "order_by": "",

@@ -53,7 +53,11 @@ ObjectDetailPage_statistics_select_elaborate_posXpath = "//div[@x-placement='bot
 ObjectDetailPage_statistics_select_brief_posXpath = "//div[@x-placement='bottom-start']//div[text()='Brief']"
 main_listPage_object_statistics_view_postXpath = "(//div[@id='ly-table1-listcontent']//span[text()='View'])[1]"
 ObjectDetailPage_statistics_button_posXpath = "//div[@class='paper-grid-right']//span[text()='Statistics']"
-
+listPage_object_reprtition_check_postXpath = "//i[@class='operate-icon iconfont icon-jinggao1']"
+listPage_First_object_ID_posXpath = "(//*[@id='ly-table1-listcontent']//div[@class='table-status-item-id'])[1]"
+listPage_Second_object_ID_posXpath = "(//*[@id='ly-table1-listcontent']//div[@class='table-status-item-id'])[2]"
+listPage_object_ip_address_select_First_object_posXpath = "//div[@class='el-table__body-wrapper is-scrolling-left']//tbody/tr[1]//span[@class='el-checkbox__input']"  # 选择列表中第一个对象
+listPage_object_ip_address_select_Second_object_posXpath = "//div[@class='el-table__body-wrapper is-scrolling-left']//tbody/tr[2]//span[@class='el-checkbox__input']"  # 选择列表中第二个对象
 
 #system audit log页面元素定位
 mainPage_firstLevelMenu_System_posId = "System"  # 一级菜单System

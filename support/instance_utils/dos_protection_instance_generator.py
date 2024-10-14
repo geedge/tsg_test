@@ -76,7 +76,7 @@ class DosProtectionInstanceGenerator:
         need_initialization = False
         if len(parameter["script_type"]) == 0:
             need_initialization = True
-        
+
         if parameter["script_type"] == "ui" or need_initialization == True:
             try:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
@@ -233,10 +233,11 @@ class DosProtectionInstanceGenerator:
                         # 退出遍历标志
                         if cond_status == 1:  # 失败，退出遍历创建
                             break
-
             finally:
                 result["ui_result"] = ui_result
-                support.ui_utils.env.teardown()
+                # 删除配置
+                # delete = DeletePolicy()
+                # delete.delele_policy_by_cfg(token, parameter, temp_name_list)
 
         if parameter["script_type"] == "api" or need_initialization == True:
             try:
@@ -248,7 +249,6 @@ class DosProtectionInstanceGenerator:
                 # 数据转换，适配API的test_data
                 translation = DataTranslation()
                 test_data = translation.data_translation(parameter, test_data)
-                print(test_data)
 
                 # 添加测试过程中涉及的template
                 template_path = {}
@@ -279,7 +279,6 @@ class DosProtectionInstanceGenerator:
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
             # 清理环境
-            support.ui_utils.env.teardown()
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
         if isinstance(self.api_name_list, list) and self.api_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)

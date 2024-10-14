@@ -108,6 +108,20 @@ def run(parameter):
                           "row_limit": "",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "new_in_sessions:SUM:new in sessions",
+                                "new_out_sessions:SUM:new out sessions",
+                                "new_in_sessions+new_out_sessions:SUM:sessions"
+                            ],
+                            "dimensions": [],
+                            "order_by": "",
+                            "row_limit": "",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]

@@ -78,7 +78,7 @@ class UiVerification:
                                     log_query_key = test_data["log_query_param"][t]["query_field_key"]
                                     log_str = parse.get("log", log_query_key)
                                     if log_query_key == "server_ip" or log_query_key == "decoded_as" or log_query_key == "client_ip":
-                                        log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/parent::div//span[@class='el-dropdown-link popover-click color262626 el-dropdown-selfdefine']".format(replaceValue=log_str)
+                                        log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                         temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                         if temp_value == test_data["log_query_param"][t]["query_value"]:
                                             temp_log_result = True
@@ -524,13 +524,13 @@ class UiVerification:
                                 query_key_list = ["basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets", "basic_packet_rate", "basic_bytes", "basic_bit_rate"]
                             temp_log_result_list = self.verify_dos_events(my_driver, expand_element_postion, parse, test_data, query_key_list)
                         elif int(log_number) == 1:
-                            query_key_list_1 = ["attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate"]
+                            query_key_list_1 = ["attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate","rule_id","conditions","destination_ip"]
                             expand_element_postion_1 = "//tr[1]//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
-                            temp_log_result_list_1 = self.verify_dos_events(my_driver, expand_element_postion_1, parse, test_data, query_key_list_1)
-                            query_key_list_2 = ["basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets", "basic_packet_rate", "basic_bytes", "basic_bit_rate"]
-                            expand_element_postion_2 = "//tr[2]//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
-                            temp_log_result_list_2 = self.verify_dos_events(my_driver, expand_element_postion_2, parse, test_data, query_key_list_2)
-                            temp_log_result_list = temp_log_result_list_1 + temp_log_result_list_2
+                            temp_log_result_list = self.verify_dos_events(my_driver, expand_element_postion_1, parse, test_data, query_key_list_1)
+                            # query_key_list_2 = ["basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets", "basic_packet_rate", "basic_bytes", "basic_bit_rate"]
+                            # expand_element_postion_2 = "//tr[2]//i[@class='vxe-table--expand-btn vxe-icon-arrow-right']"
+                            # temp_log_result_list_2 = self.verify_dos_events(my_driver, expand_element_postion_2, parse, test_data, query_key_list_2)
+                            # temp_log_result_list = temp_log_result_list_1 + temp_log_result_list_2
                         if False not in temp_log_result_list:
                             log_result = True
                         else:
@@ -600,12 +600,49 @@ class UiVerification:
                         log_result_list.append(True)
                     else:
                         log_result_list.append(False)
-
+                elif log_query_key in {"source_ip_list"}:  # 日志中非结构文件断言
+                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
+                        replaceValue=log_str)
+                    element_exist_flag = my_driver.is_exist_element(log_item_pos_xpath)
+                    # 验证开关开启
+                    if len(test_data["log_query_param"][i]["query_value"]) != 0 :
+                        # 有下载按钮，点击下载按钮，验证是否报错
+                        if element_exist_flag == True:
+                            # 连续点击下载按钮5次（防止下载异常的时候异常信息消失的太快）
+                            for _ in range(5):
+                                log_item_element = my_driver.find_element(By.XPATH, log_item_pos_xpath)
+                                my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
+                                my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
+                                time.sleep(1)
+                            log_item_element = my_driver.find_element(By.XPATH, log_item_pos_xpath)
+                            my_driver.execute_script("arguments[0].scrollIntoView();", log_item_element)
+                            my_driver.find_element(By.XPATH, log_item_pos_xpath).click()
+                            time.sleep(1)
+                            # 只有下载失败的时候界面才有此定位
+                            error_text_posXpath = "//div[contains(@class, 'el-message el-message--error')]"
+                            error_text_is_exist = my_driver.is_exist_element(error_text_posXpath)
+                            # 有错误提示，下载失败
+                            if error_text_is_exist == True:
+                                temp_log_result = False
+                            # 下载成功时无错误提示.
+                            else:
+                                temp_log_result = True
+                        else:
+                            # 没有下载按钮，false
+                            temp_log_result = False
+                    # 验证开关不开启
+                    elif test_data["log_query_param"][i]["query_value"]:
+                        if element_exist_flag == False:
+                            temp_log_result = True
+                        else:
+                            temp_log_result = False
+                    log_result_list.append(temp_log_result)
                 else:
                     if temp_value == str(log_query_value):
                         log_result_list.append(True)
                     else:
                         log_result_list.append(False)
+
         return log_result_list
     
 if __name__ == "__main__":
