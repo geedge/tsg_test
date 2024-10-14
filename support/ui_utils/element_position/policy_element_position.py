@@ -400,10 +400,19 @@ interceptRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy
 interceptRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
 interceptRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
 interceptRulePage_selectDeny_posId = "interceptintercept"
+# rule 页面中Add Condition按钮定位
+interceptRulePage_addCondition_posXpath = "//*[@id='policy_condition-_ConditionModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']"
+interceptRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']/div[last()]//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+# rule 中添加condition侧滑中选择行定位
+interceptRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
+interceptRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
+# source ip
 interceptRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']/span[1]"
-interceptRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
-interceptRulePage_okButton_yes_posId = "OK-_policy_Intercept_edit_Home_App_anonymousComponent"
-interceptRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+# Server FQDN的添加、查询、选中、关闭操作
+interceptRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
+interceptRulePage_searchServerFqdn_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
+interceptRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
+interceptRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 # action parameter trusted
 interceptRulePage_intercept_addTrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_trusted']//span[@class='el-input__suffix']//i"   # trusted  选择框  定位
 interceptRulePage_intercept_searchTrustedInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # trusted profile 对话框查询输入框
@@ -426,6 +435,9 @@ interceptRulePage_intercept_searchDecryptionProfileDorpItem_posXpath = "//body/d
 interceptRulePage_intercept_addTcpProfileSelectBox_posXpath = "//div[@zs-label='TCP Proxy Profile']//span[@class='el-input__suffix']//i"   # tcp proxy profile  选择框  定位
 interceptRulePage_intercept_searchTcpProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # tcp proxy profile 对话框查询输入框
 interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # tcp proxy profile 对话框查询下拉列表第一个元素
+interceptRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
+interceptRulePage_okButton_yes_posId = "OK-_policy_Intercept_edit_Home_App_anonymousComponent"
+interceptRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 
 
 #### manipulation
