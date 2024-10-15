@@ -121,8 +121,8 @@ def run(parameter):
             # 创建时如果返回的ui_result和api_result值为空，意味着创建成功，接下来进行流量验证
             if len(case_generator_result["ui_result"]) == 0 and len(case_generator_result["api_result"]) == 0:
                 # 触发流量
-                traffic_generator = SendTraffic()
-                traffic_result = traffic_generator.send_traffic(parameter, test_data)
+                sender = SendTraffic()
+                traffic_result = sender.send_traffic(parameter, test_data)
                 # 验证metric和log
                 verification = Verify()
                 verification_result = verification.verify_result(parameter, test_data, case_generator_result, traffic_result)

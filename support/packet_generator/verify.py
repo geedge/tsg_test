@@ -27,9 +27,9 @@ class Verify:
             #     source_ip = parse.get("capture", "source_ip")
             #     timeout = parse.get("capture", "timeout")
             #     capture_packet = CapturePacket()
-            #     traffic_generator = SendTraffic()
+            #     sender = SendTraffic()
             #     capture_thread = Thread(target=capture_packet.capture_packet, args=(intf, filter, source_ip, int(timeout)))
-            #     traffic_thread = Thread(target=traffic_generator.send_traffic, args=(parameter, test_data))
+            #     traffic_thread = Thread(target=sender.send_traffic, args=(parameter, test_data))
             #     # 启动线程
             #     capture_thread.start()
             #     traffic_thread.start()
@@ -40,8 +40,8 @@ class Verify:
             # 等待配置同步
             if script_type == "api":
                 time.sleep(3)
-            traffic_generator = SendTraffic()
-            traffic_result = traffic_generator.send_traffic(parameter, test_data)
+            sender = SendTraffic()
+            traffic_result = sender.send_traffic(parameter, test_data)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             if script_type == "ui":
                 traffic_verification = ApiVerification()

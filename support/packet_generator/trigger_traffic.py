@@ -278,5 +278,5 @@ if __name__ == "__main__":
             },
         "token": ""
     }
-    traffic_generator = SendTraffic()
-    result = traffic_generator.send_traffic(parameter, test_data)
+    sender = SendTraffic()
+    result = sender.send_traffic(parameter, test_data)
