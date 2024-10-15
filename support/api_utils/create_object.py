@@ -150,7 +150,7 @@ class CreateObject:
         else:
             obj_type = condition["object_type"]
             obj_template_dict['object']['type'] = obj_type
-
+            obj_template_dict['vsys'] = int(vsys_id)
             obj_sub_type = condition['object_sub_type']
             obj_template_dict['object']['sub_type'] = obj_sub_type
             obj_template_dict['object']['statistics_option'] = 'elaborate'
@@ -243,7 +243,7 @@ class CreateObject:
                     tmp_item["expr_type"] = item["expr_type"]
                     tmp_item["expression"] = item["expression"]
                     items.append(copy.deepcopy(tmp_item))
-            elif obj_type in ["fqdn", "subscriberid", "keywords", "url", "account", "mobile_identity", "apn"]:
+            elif obj_type in ["fqdn", "subscriberid", "keyword", "url", "account", "mobile_identity", "apn"]:
                 for item in add_item_list:
                     tmp_item = {
                         "op": "add",
@@ -341,11 +341,29 @@ class CreateObject:
             api_host = parameter["api_server"]
             vsys_id = parameter["vsys_id"]
             obj_type = obj_template_dict['object']['type']
-            if obj_type == "keywords":
-                obj_type = "keyword"
+            api_path_map = {  
+                "ip": "ip-addresses",  
+                "url": "urls",  
+                "fqdn": "fqdns",
+                "keyword": "keywords",
+                "subscriberid": "subscriber-ids",
+                "account": "accounts",
+                "mobile_identity": "mobile-identities",
+                "apn": "apns",
+                "application": "applications",
+                "tunnel": "tunnels",
+                "flag": "flags",
+                "interval": "intervals",
+                "port": "ports",
+                "boolean": "boolean",
+                "ip_protocol": "ip-protocols",
+                "tunnel_level": "tunnel-levels"
+            }  
+            api_path_obj_type = api_path_map.get(obj_type)
             if type_op == "create":
-                url = api_host + "/v1/vsys{}/policy/object/{}".format(vsys_id, obj_type)
+                url = api_host + "/v1/objects/{}".format(api_path_obj_type)
                 time1 = datetime.now()
+                print(json.dumps(obj_template_dict))
                 response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
@@ -361,7 +379,7 @@ class CreateObject:
                 else:
                     timeout_result = True
             elif type_op == "import":
-                import_url = api_host + "/v1/policy/object/import"
+                import_url = api_host + "/v1/objects/import"
                 if 'Content-Type' in headers:
                     del headers['Content-Type']
                 response = requests.post(import_url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file_dry"], verify=False)
@@ -371,7 +389,7 @@ class CreateObject:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Verify the imported {} object failed.".format(obj_template_dict['object']['type']), flush=True)
                 time1 = datetime.now()
-                url = api_host + "/v1/policy/object/import"
+                url = api_host + "/v1/objects/import"
                 response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file_import"], verify=False)
                 time.sleep(20)
                 time2 = datetime.now()
@@ -423,7 +441,7 @@ class CreateObject:
                 self.flag_ids = self.handle_ids(object_ids, self.flag_ids)
             elif obj_type == 'url':
                 self.url_ids = self.handle_ids(object_ids, self.url_ids)
-            elif obj_type == 'keywords':
+            elif obj_type == 'keyword':
                 self.keywords_ids = self.handle_ids(object_ids, self.keywords_ids)
             elif obj_type == 'account':
                 self.account_ids = self.handle_ids(object_ids, self.account_ids)

@@ -413,7 +413,18 @@ class CreatePolicyRule:
     def create_rule(self, rule_template_dict, headers, api_host, vsys_id):
         try:
             rule_type = rule_template_dict["rule"]["type"]
-            url = api_host + "/v1/vsys{}/policy/rule/{}".format(vsys_id, rule_type)
+            api_path_map = {  
+                "security": "security-rules",
+                "proxy_intercept": "proxy-intercept-rules",    
+                "proxy_manipulation": "proxy-manipulation-rules",  
+                "traffic_shaping": "traffic-shaping-rules",  
+                "service_chaining": "service-chaining-rules",  
+                "statistics": "statistics-rules",  
+                "monitor": "monitor-rules",
+                "dos_protection": "dos-protection-rules",  
+            }  
+            api_path_rule_type = api_path_map.get(rule_type)
+            url = api_host + "/v1/policies/{}".format(api_path_rule_type)
             #print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)

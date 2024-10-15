@@ -242,7 +242,7 @@ class OrganizeConfig:
         try:
             # 请求接口查询metric
             headers = {'Content-Type': 'application/json', 'Authorization': token}
-            url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={vsys_id}")
+            url = (api_host + f"/v1/policies?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={vsys_id}")
             response = requests.get(url, headers=headers, verify=False)
             if response.status_code != 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
@@ -258,9 +258,9 @@ class OrganizeConfig:
             # 请求接口查询metric
             headers = {'Content-Type': 'application/json', 'Authorization': token}
             # 获取单个Template
-            #url = (api_host + f"/v1/policy/profile/statistics_template/{template_id}?page_size=-1&vsys_id={vsys_id}")
+            #url = (api_host + f"/v1/profiles/statistics_template/{template_id}?page_size=-1&vsys_id={vsys_id}")
             # 获取一批Template
-            url = (api_host + f"/v1/policy/profile/statistics_template?page_size=20&page_no=1&ids={template_id}&vsys_id={str(vsys_id)}")
+            url = (api_host + f"/v1/profiles/statistics_template?page_size=20&page_no=1&ids={template_id}&vsys_id={str(vsys_id)}")
             response = requests.get(url, headers=headers, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)

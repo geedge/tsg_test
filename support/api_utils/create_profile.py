@@ -626,7 +626,7 @@ class CreateProfile:
             profile_type = sf_post_data['profile_type']
             if profile_type == "service_function":
                 process_post_data = self.process_sf_post_data(sf_tempalte_path, sf_post_data, vsys_id)
-                url = "{}/v1/vsys{}/policy/profile/service_function".format(api_host, vsys_id)
+                url = "{}/v1/profiles/service-functions".format(api_host)
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -684,7 +684,7 @@ class CreateProfile:
             if profile_type == "statistics_templates":
                 profile_statistics_template = path_dict["profile_statistics_template"]
                 process_post_data = self.process_statistics_post_data(profile_statistics_template, profile_data, vsys_id)
-                url = "{}/v1/vsys{}/policy/profile/statistics_template".format(api_host, vsys_id)
+                url = "{}/v1/profiles/statistics-templates".format(api_host)
                 headers["Content-Type"] = "application/json"
                 # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], process_post_data)
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
@@ -713,7 +713,7 @@ class CreateProfile:
                     sf_profile_id = self.get_sf_id(headers, profile_sf_template, sf_profile_data, api_host, vsys_id)
                     sf_profile_id_list.append(sf_profile_id)
                 process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data,vsys_id)
-                url = "{}/v1/vsys{}/policy/profile/service_function_forwarder".format(api_host, vsys_id)
+                url = "{}/v1/profiles/service-function-forwarders".format(api_host)
                 headers["Content-Type"] = "application/json"
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
@@ -734,7 +734,7 @@ class CreateProfile:
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
-                url = "{}/v1/vsys{}/policy/profile/response_page".format(api_host, vsys_id)
+                url = "{}/v1/profiles/response-pages".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -752,7 +752,7 @@ class CreateProfile:
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
-                url = "{}/v1/vsys{}/policy/profile/hijack_file".format(api_host, vsys_id)
+                url = "{}/v1/profiles/proxy-hijack-files".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -771,7 +771,7 @@ class CreateProfile:
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
-                url = "{}/v1/vsys{}/policy/profile/insert_script".format(api_host, vsys_id)
+                url = "{}/v1/profiles/proxy-inject-scripts".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -789,7 +789,7 @@ class CreateProfile:
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
-                url = "{}/v1/vsys{}/policy/profile/run_script".format(api_host, vsys_id)
+                url = "{}/v1/profiles/http-manipulation-scripts".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -805,7 +805,7 @@ class CreateProfile:
             elif profile_type == "dns_record":
                 profile_dns_record_template = path_dict["profile_dns_record_template"]
                 process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
-                url = "{}/v1/vsys{}/policy/profile/dns_record".format(api_host, vsys_id)
+                url = "{}/v1/profiles/dns-records".format(api_host)
                 #print(json.dumps(process_post_data))
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
@@ -823,7 +823,7 @@ class CreateProfile:
                 # 添加vsys id
                 profile_data["vsys_id"] = vsys_id
                 del profile_data['profile_type']
-                url = "{}/v1/vsys{}/policy/profile/traffic_mirror".format(api_host, vsys_id)
+                url = "{}/v1/profiles/traffic-mirror-profiles".format(api_host, vsys_id)
                 response = requests.post(url=url, json=profile_data, headers=headers, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -842,7 +842,9 @@ class CreateProfile:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
-        url = "{}/v1/vsys{}/policy/profile/{type}".format(api_host, vsys_id, type=profile_type)
+        if profile_type == "statistics_template":
+            api_path_profile_type = "statistics-templates"
+        url = "{}/v1/profiles/{type}".format(api_host, type=api_path_profile_type)
         params_dict = {
             "vsys_id": vsys_id,
             "uuids": template_id
@@ -883,7 +885,9 @@ class CreateProfile:
 
     # 搜索sf并获取返回结果中的sf相关信息
     def search_sc_sff(self, sff_id, headers, api_host, profile_type, vsys_id):
-        url = "{}/v1/vsys{}/policy/profile/{type}/{ids}".format(api_host, vsys_id, type=profile_type, ids=sff_id)
+        if profile_type == "service_function_forwarder":
+            api_path_profile_type = "service-function-forwarders"
+        url = "{}/v1/profiles/{type}/{ids}".format(api_host, type=api_path_profile_type, ids=sff_id)
         params_dict = {
             "vsys_id": vsys_id
         }
@@ -901,7 +905,7 @@ class CreateProfile:
 
     # 搜索sff并获取返回结果中的相关信息
     def search_sc_sf(self, sf_id, headers, api_host, vsys_id):
-        url = "{}/v1/vsys{}/policy/profile/{type}/{id}".format(api_host, vsys_id, type="service_function", id=sf_id)
+        url = "{}/v1/profiles/{type}/{id}".format(api_host, type="service-functions", id=sf_id)
         params_dict = {
             "vsys_id": vsys_id
         }

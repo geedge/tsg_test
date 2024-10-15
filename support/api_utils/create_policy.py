@@ -18,7 +18,7 @@ class CreatePolicy:
         # 变量初始化
         api_server = parameter["api_server"]
         run_env = parameter["env"]
-        vsys_id = parameter["vsys_id"]
+        vsys_id = int(parameter["vsys_id"])
         token = test_data["token"]
         create_ip_ids, create_subid_ids, create_port_ids, create_imsi_ids, create_phone_number_ids, create_imei_ids, create_apn_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
@@ -81,70 +81,70 @@ class CreatePolicy:
                 elif k == "geo_name_ids":
                     create_geo_name_ids.extend(v)
 
-            # 创建profile
-            temp_profile_condition = "profile_condition_{}".format(create_number)
-            if temp_profile_condition in test_data.keys():
-                profile_condition_value = test_data[temp_profile_condition]
-            elif "profile_condition" not in test_data:
-                profile_condition_value = ""
-            else:
-                profile_condition_value = test_data["profile_condition"]
-            if len(profile_condition_value) > 0:
-                create_profile = CreateProfile()
-                for profile_data in profile_condition_value:
-                    create_profile_ids_dict = create_profile.create_profile_from_template(template_path, profile_data, token, api_server, vsys_id)
-                    create_profile_ids.append(create_profile_ids_dict)
-                    if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining":
-                        temp_profile_list.append(create_profile_ids_dict)
+            # # 创建profile
+            # temp_profile_condition = "profile_condition_{}".format(create_number)
+            # if temp_profile_condition in test_data.keys():
+            #     profile_condition_value = test_data[temp_profile_condition]
+            # elif "profile_condition" not in test_data:
+            #     profile_condition_value = ""
+            # else:
+            #     profile_condition_value = test_data["profile_condition"]
+            # if len(profile_condition_value) > 0:
+            #     create_profile = CreateProfile()
+            #     for profile_data in profile_condition_value:
+            #         create_profile_ids_dict = create_profile.create_profile_from_template(template_path, profile_data, token, api_server, vsys_id)
+            #         create_profile_ids.append(create_profile_ids_dict)
+            #         if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining":
+            #             temp_profile_list.append(create_profile_ids_dict)
 
-            # 创建rule
-            create_rule = CreatePolicyRule()
-            policy_id_list = create_rule.create_rule_from_template(token, condition_ids_by_api_dict, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
-            # policy_id = list(policy_id_list[0].values())[0]
-            if len(create_profile_ids) > i:
-                if test_data["policy_type"] == "statistics":
-                    temp_info = {}
-                    temp_info["policy_id"] = list(policy_id_list[i].values())[i]
-                    test_data["rule_id"] = temp_info["policy_id"]
-                    temp_info["profile_info"] = temp_profile_list
-                    policy_statistics_template_chart_info.append(temp_info)
-                    if len(policy_statistics_template_chart_info) > 0:
-                        for chart in policy_statistics_template_chart_info[0]["profile_info"][0]["template_info"]:
-                            statistics_info = {}
-                            statistics_info["rule_id"] = policy_statistics_template_chart_info[0]["policy_id"]
-                            for k, v in chart.items():  # 将chart字典中的数据，copy到statistics_info
-                                statistics_info[k] = v
-                            statistics_sc_info_list.append(statistics_info)
-                elif test_data["policy_type"] == "service_chaining":
-                    sc_sff_sf_info = {}
-                    sc_sff_sf_info["policy_id"] = list(policy_id_list[i].values())[i]
-                    sc_sff_sf_info["sff_info"] = temp_profile_list
-                    policy_sc_sff_sf_info.append(sc_sff_sf_info)
-                    if len(policy_sc_sff_sf_info) > 0:
-                        for sff in policy_sc_sff_sf_info[0]["sff_info"]:
-                            sc_info = {}
-                            sc_info["rule_id"] = policy_sc_sff_sf_info[0]["policy_id"]
-                            sc_info["targeted_traffic"] = test_data["targeted_traffic"]
-                            temp_application = 'application_' + str(create_number)
-                            if temp_application in test_data.keys():
-                                sc_info["application"] = test_data[temp_application]
-                            else:
-                                sc_info["application"] = test_data['application']
-                            sc_info["sff_id"] = sff["id"]
-                            sc_info["type"] = sff["sff_info"]["type"]
-                            sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["id"]
-                            sc_info["device_tag"] = sff["sff_info"]["sf_info"][0]["device_tag"]
-                            sc_info["admin_status"] = sff["sff_info"]["sf_info"][0]["admin_status"]
-                            if sff["sff_info"]["sf_info"][0]["connectivity"]["method"] == "vxlan_g":
-                                sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
-                                sc_info["sf_dest_ip"] = sff["sff_info"]["sf_info"][0]["connectivity"]["dest_ip"]
-                                sc_info["health_check_method"] = sff["sff_info"]["sf_info"][0]["health_check"]["method"]
-                            else:
-                                sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
-                                sc_info["health_check_method"] = "none"
-                            statistics_sc_info_list.append(sc_info)
-            if len(policy_id_list) > 0:
-                create_policies_ids.extend(policy_id_list)
+            # # 创建rule
+            # create_rule = CreatePolicyRule()
+            # policy_id_list = create_rule.create_rule_from_template(token, condition_ids_by_api_dict, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
+            # # policy_id = list(policy_id_list[0].values())[0]
+            # if len(create_profile_ids) > i:
+            #     if test_data["policy_type"] == "statistics":
+            #         temp_info = {}
+            #         temp_info["policy_id"] = list(policy_id_list[i].values())[i]
+            #         test_data["rule_id"] = temp_info["policy_id"]
+            #         temp_info["profile_info"] = temp_profile_list
+            #         policy_statistics_template_chart_info.append(temp_info)
+            #         if len(policy_statistics_template_chart_info) > 0:
+            #             for chart in policy_statistics_template_chart_info[0]["profile_info"][0]["template_info"]:
+            #                 statistics_info = {}
+            #                 statistics_info["rule_id"] = policy_statistics_template_chart_info[0]["policy_id"]
+            #                 for k, v in chart.items():  # 将chart字典中的数据，copy到statistics_info
+            #                     statistics_info[k] = v
+            #                 statistics_sc_info_list.append(statistics_info)
+            #     elif test_data["policy_type"] == "service_chaining":
+            #         sc_sff_sf_info = {}
+            #         sc_sff_sf_info["policy_id"] = list(policy_id_list[i].values())[i]
+            #         sc_sff_sf_info["sff_info"] = temp_profile_list
+            #         policy_sc_sff_sf_info.append(sc_sff_sf_info)
+            #         if len(policy_sc_sff_sf_info) > 0:
+            #             for sff in policy_sc_sff_sf_info[0]["sff_info"]:
+            #                 sc_info = {}
+            #                 sc_info["rule_id"] = policy_sc_sff_sf_info[0]["policy_id"]
+            #                 sc_info["targeted_traffic"] = test_data["targeted_traffic"]
+            #                 temp_application = 'application_' + str(create_number)
+            #                 if temp_application in test_data.keys():
+            #                     sc_info["application"] = test_data[temp_application]
+            #                 else:
+            #                     sc_info["application"] = test_data['application']
+            #                 sc_info["sff_id"] = sff["id"]
+            #                 sc_info["type"] = sff["sff_info"]["type"]
+            #                 sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["id"]
+            #                 sc_info["device_tag"] = sff["sff_info"]["sf_info"][0]["device_tag"]
+            #                 sc_info["admin_status"] = sff["sff_info"]["sf_info"][0]["admin_status"]
+            #                 if sff["sff_info"]["sf_info"][0]["connectivity"]["method"] == "vxlan_g":
+            #                     sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
+            #                     sc_info["sf_dest_ip"] = sff["sff_info"]["sf_info"][0]["connectivity"]["dest_ip"]
+            #                     sc_info["health_check_method"] = sff["sff_info"]["sf_info"][0]["health_check"]["method"]
+            #                 else:
+            #                     sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
+            #                     sc_info["health_check_method"] = "none"
+            #                 statistics_sc_info_list.append(sc_info)
+            # if len(policy_id_list) > 0:
+                # create_policies_ids.extend(policy_id_list)
 
         cfg_list = {}
         cfg_list["create_ip_ids"] = create_ip_ids

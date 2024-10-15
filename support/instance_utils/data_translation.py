@@ -725,14 +725,13 @@ class DataTranslation:
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_HTTP_REQ_HDR",
-                                "object_type": "http_signature",
-                                "object_sub_type": "http_signature",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
                                 "object_list": [
                                     {
                                         "add_item_list": [
                                             # {
                                             #     "op": "add",
-                                            #     "context_name": "Set-Cookie",
                                             #     "expr_type": "and",
                                             #     "expression": v[0]["item"][0]["item_value"]
                                             # }
@@ -744,18 +743,13 @@ class DataTranslation:
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_HTTP_RES_HDR",
-                                "object_type": "http_signature",
-                                "object_sub_type": "http_signature",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
                                 "object_list": [
                                     {
                                         "add_item_list": [
                                             # {
                                             #     "op": "add",
-                                            #     "context_name": "Set-Cookie",
-                                            #     "expr_type": "and",
-                                            #     "expression": v[0]["item"][0]["item_value"]
-                                            #     "op": "add",
-                                            #     "context_name": "Set-Cookie",
                                             #     "expr_type": "and",
                                             #     "expression": v[0]["item"][0]["item_value"]
                                             # }
@@ -767,13 +761,14 @@ class DataTranslation:
                             # 添加多个item
                             add_item_dict = {
                                 "op": "add",
-                                "context_name": "Content-Type",
+                                # "context_name": "Content-Type",
                                 "expr_type": "and",
                                 "expression": "example.com"
                             }
                             add_item_dict["add"] = "and"
                             expression = v[i]["item"][u]["value"][0]
-                            add_item_dict["context_name"] = v[i]["item"][u]["item_key"]
+                            # expression = v[i]["item"][u]["value"][0] + "&" + v[i]["item"][u]["item_key"]
+                            # add_item_dict["context_name"] = v[i]["item"][u]["item_key"]
                             if v[i]["item"][u]["item_value"] == "HEX":
                                 add_item_dict["expr_type"] = "and"
                                 tmp_expr = "|{}|".format(expression)
@@ -798,6 +793,7 @@ class DataTranslation:
                                         tmp_expr = "^{}$".format(expression[1:])
                                     else:  # substring ^ $ 模式保持不变
                                         tmp_expr = expression
+                            tmp_expr = tmp_expr + "&" + v[i]["item"][u]["item_key"]
                             add_item_dict["expression"] = tmp_expr
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
@@ -806,8 +802,8 @@ class DataTranslation:
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_HTTP_REQ_BODY",
-                                "object_type": "keywords",
-                                "object_sub_type": "keywords",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
                                 "object_list": [
                                     {
                                         "add_item_list": [
@@ -824,8 +820,8 @@ class DataTranslation:
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_HTTP_RES_BODY",
-                                "object_type": "keywords",
-                                "object_sub_type": "keywords",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
                                 "object_list": [
                                     {
                                         "add_item_list": [
@@ -842,8 +838,8 @@ class DataTranslation:
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_MAIL_SUBJECT",
-                                "object_type": "keywords",
-                                "object_sub_type": "keywords",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
                                 "object_list": [
                                     {
                                         "add_item_list": [
@@ -880,8 +876,8 @@ class DataTranslation:
                             temp = {
                                 "name": v[i]["name"],
                                 "attribute_name": "ATTR_FTP_CONTENT",
-                                "object_type": "keywords",
-                                "object_sub_type": "keywords",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
                                 "object_list": [
                                     {
                                         "add_item_list": [
