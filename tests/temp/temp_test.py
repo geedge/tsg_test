@@ -114,35 +114,38 @@ def run(parameter):
         number = 1
         if len(parameter["script_type"]) == 0:
             number = 2
-        for _ in range(number):
-            # 测试用例实例化
+        for i in range(number):
+            # 测试用例实例化，创建测试需要的object、profile、policy rule
             case_instance_generator = CaseInstanceGenerator(test_data["policy_configuration"], parameter, number)
-            generator_result = case_instance_generator.create()
+            case_generator_result = case_instance_generator.create()
             # 创建时如果返回的ui_result和api_result值为空，意味着创建成功，接下来进行流量验证
-            if len(generator_result["create_ui_result"]) == 0 and len(generator_result["create_api_result"]) == 0:
+            if len(case_generator_result["ui_result"]) == 0 and len(case_generator_result["api_result"]) == 0:
                 # 触发流量
-                trigger = TriggerTraffic()
-                traffic_result = trigger.send_traffic(parameter, test_data)
-                # 验证
+                traffic_generator = SendTraffic()
+                traffic_result = traffic_generator.send_traffic(parameter, test_data)
+                # 验证metric和log
                 verification = Verify()
-                # verification_result = verification.verify_result(driver, parameter, test_data, cfg_list, element_position_map)
-                verification_result = verification.verify_result(parameter, test_data, generator_result, traffic_result)
+                verification_result = verification.verify_result(parameter, test_data, case_generator_result, traffic_result)
                 if len(verification_result) != 0:
                     if len(verification_result) == 4:
-                        generator_result["driver"] = verification_result[3]
+                        case_generator_result["driver"] = verification_result[3]
                     elif len(verification_result) == 5:
-                        generator_result["driver"] = verification_result[4]
+                        case_generator_result["driver"] = verification_result[4]
                     # 分析结果
                     analysis = Analyse()
-                    # result = analysis.analyse_result(test_data, generator_result["cfg_list"], verification_result)
-                    result["ui_result"] = analysis.analyse_result(test_data, generator_result, verification_result)
+                    if number == 2 and i == 0:
+                        result["ui_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
+                    elif number == 2 and i == 1:
+                        result["api_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
+                    else:
+                        result[parameter["script_type"]] = analysis.analyse_result(test_data, case_generator_result, verification_result)
             # 删除配置
             if isinstance(case_instance_generator, CaseInstanceGenerator):
-                delete_result = case_instance_generator.delete_data(test_data, generator_result)
-                if len(delete_result["delete_ui_result"]) > 0:
-                    result["ui_result"] = result["ui_result"] + delete_result["delete_ui_result"]
-                if len(delete_result["delete_api_result"]) > 0:
-                    result["api_result"] = result["api_result"] + delete_result["delete_api_result"]
+                deletion_result = case_instance_generator.delete_data(test_data, case_generator_result)
+                if len(deletion_result["ui_result"]) > 0:
+                    result["ui_result"] = result["ui_result"] + deletion_result["ui_result"]
+                if len(deletion_result["api_result"]) > 0:
+                    result["api_result"] = result["api_result"] + deletion_result["api_result"]
         return result
     except Exception as e:
         exception_result = str(e)
@@ -162,8 +165,8 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.93",
-        "test_subcriber_id": "test6491",
+        "test_pc_ip": "192.168.64.86",
+        "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
         "script_type": "",
