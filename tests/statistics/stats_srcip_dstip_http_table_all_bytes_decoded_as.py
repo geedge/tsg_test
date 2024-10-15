@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.15",
+                                "item_value": "2.1.1.14",
                             },
                         ]
                     }],
@@ -77,7 +77,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -97,15 +97,51 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes+out_bytes:BITRATE:bytes"
+                            "sent_bytes:SUM:Bytes Sent",
+                            "received_bytes:SUM:Bytes Received",
+                            "sent_bytes+received_bytes:SUM:Bytes"
                           ],
-                          "dimensions": ["http_host"],
-                          "order_by": "bytes",
-                          "row_limit": "15",
+                          "dimensions": [
+                              "decoded_as"
+                          ],
+                          "order_by": "Bytes",
+                          "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:RATE:Bytes Sent",
+                                "received_bytes:RATE:Bytes Received",
+                                "sent_bytes+received_bytes:RATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "decoded_as"
+                            ],
+                            "order_by": "Bytes Sent",
+                            "row_limit": "20",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:Bytes Sent",
+                                "received_bytes:BITRATE:Bytes Received",
+                                "sent_bytes+received_bytes:BITRATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "decoded_as"
+                            ],
+                            "order_by": "Bytes Received",
+                            "row_limit": "50",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -116,17 +152,17 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.15",
-                "clients_end_ip": "10.64.224.15",
-                "servers_start_ip": "2.1.1.15",
-                "servers_end_ip": "2.1.1.15",
+                "clients_start_ip": "10.64.224.14",
+                "clients_end_ip": "10.64.224.14",
+                "servers_start_ip": "2.1.1.14",
+                "servers_end_ip": "2.1.1.14",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
-                {"applicatoin": "2407TCP","bytes": 754864}
+            "statists_metric_results": [
+                {"time": "2024-07-24T01:36:19Z", "out_bytes": 745744, "in_bytes": 9120, "bytes": 754864}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -194,7 +230,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-   }
+    }
     parameter = replace_paras(parameter)
     run(parameter)
     """

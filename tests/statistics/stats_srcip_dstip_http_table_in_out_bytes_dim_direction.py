@@ -70,21 +70,7 @@ def run(parameter):
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
-                "sub_id": [
-                    {
-                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
-                        "object_type": "subscriberid",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "subscriberid",
-                                "item_value": '$' + parameter["test_subcriber_id"],
-                            }
-                        ]
-                    }
-                ],
+                "sub_id": [],
                 "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
@@ -111,17 +97,51 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes+out_bytes:BITRATE:bytes"
+                              "in_bytes:SUM:in bytes",
+                              "out_bytes:SUM:out bytes",
+                              "in_bytes+out_bytes:SUM:bytes"
                           ],
                           "dimensions": [
-                            "subscriber_id"
+                            "direction"
                           ],
                           "order_by": "bytes",
                           "row_limit": "100",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                              "in_bytes:RATE:in bytes",
+                              "out_bytes:RATE:out bytes",
+                              "in_bytes+out_bytes:RATE:bytes"
+                          ],
+                          "dimensions": [
+                            "direction"
+                          ],
+                          "order_by": "in bytes",
+                          "row_limit": "100",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:BITRATE:in bytes",
+                                "out_bytes:BITRATE:out bytes",
+                                "in_bytes+out_bytes:BITRATE:bytes"
+                            ],
+                            "dimensions": [
+                                "direction"
+                            ],
+                            "order_by": "out bytes",
+                            "row_limit": "100",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
