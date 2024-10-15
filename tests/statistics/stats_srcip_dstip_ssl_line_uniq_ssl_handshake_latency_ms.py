@@ -11,7 +11,6 @@ from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
-
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
@@ -45,7 +44,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.31",
+                                "item_value": "10.64.224.9",
                             },
                         ]
                     }
@@ -61,11 +60,10 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.3",
+                                "item_value": "2.1.1.11",
                             },
                         ]
-                    }
-                ],
+                    }],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -80,7 +78,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "ssl",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -99,34 +97,34 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Flags)",
-                            "visualization_type": "Bar",
-                            "metrics": [
-                                "flags:UNIQUE_COUNT:UNIQUE Flags"
-                            ],
-                            "dimensions": ["flags"],
-                            "order_by": "UNIQUE Flags",
-                            "row_limit": "20",
-                            "min_in_size": "0",
-                            "min_out_size": "0"
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "ssl_handshake_latency_ms:UNIQUE_COUNT:SSL Handshake Latency(ms)    "
+                          ],
+                          "dimensions": [],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
                         }
-                    ]
+                      ]
                 }]
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.baidu.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.38.240",
-                "clients_end_ip": "10.64.38.240",
-                "servers_start_ip": "2.1.1.31",
-                "servers_end_ip": "2.1.1.31",
+                "clients_start_ip": "10.64.224.11",
+                "clients_end_ip": "10.64.224.11",
+                "servers_start_ip": "2.1.1.11",
+                "servers_end_ip": "2.1.1.11",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "http_87pkts"
+                "pcap_name": "test_https"
             },
             # "traffic": {
             #     "type": "trex",
@@ -176,6 +174,7 @@ def run(parameter):
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
 
+
 if __name__ == '__main__':
     parameter = {
 
@@ -183,21 +182,20 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,  # 6
+        "vsys_id": 1,#6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
         "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
-        "test_subcriber_id": "test6438",
+        "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
    }
     parameter = replace_paras(parameter)
     run(parameter)
-
     """
     # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
