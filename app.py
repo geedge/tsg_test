@@ -121,7 +121,7 @@ def receive_parameter():
                     module = importlib.import_module(new_path)
                     result = module.run(parameter)
                     # module.run()返回的结果是failure reason，如果是空，则表示测试通过。
-                    if len(result["ui_result"]) == 0 and len(result["api_result"]) == 0:
+                    if isinstance(result, str) and len(result) == 0 or isinstance(result, dict) and len(result["ui_result"]) == 0 and len(result["api_result"]) == 0:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                         response_result["code"] = 200
                         if tag == "ui" or tag == "":
@@ -130,7 +130,7 @@ def receive_parameter():
                             response_result["api_automation_result"] = "pass"
                         response_result["data"] = None
                         response_result["success"] = True
-                    elif len(result["ui_result"]) != 0 or len(result["api_result"]) != 0:
+                    elif isinstance(result, str) and len(result) != 0 or isinstance(result, dict) and (len(result["ui_result"]) != 0 or len(result["api_result"]) != 0):
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
                         response_result["code"] = 416
                         if tag == "ui" or tag == "":
