@@ -22,7 +22,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_http_suff_reqheader_by_cookie_block_403_profile",
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
