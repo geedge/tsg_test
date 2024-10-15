@@ -79,7 +79,8 @@ class Verify:
                 return verification_result
         except Exception as e:
             # 返回此异常有时导致执行结果为成功，本地参数和配置文件参数中的vsys修改为不一致可复现
-            return f"Exception: {e}"
+            raise
+            #return f"Exception: {e}"
             # 所以修改为如下返回
             # return (False, False, False, f"Exception: {e}", f"Exception: {e}")
 

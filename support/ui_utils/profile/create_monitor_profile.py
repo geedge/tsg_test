@@ -57,13 +57,8 @@ class CreateMonitorProfile():
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
-            traceback.print_exc()
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], str(e))
-            return 400
-
-
-
-
+            raise
+            #return 400
 
     def process_vlan_ids(self,data):
         vlan_count = data["vlan_count"]
@@ -164,7 +159,7 @@ class CreateMonitorProfile():
 
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Element not found: ", e)
-            return False
+            raise
 
 
 

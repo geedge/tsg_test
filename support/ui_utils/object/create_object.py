@@ -160,7 +160,8 @@ class CreateObject:
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-            return 400
+            raise
+            #return 400
     
     def create_group(self, data, object_type, object_element_position):
         page_jump_element_position = object_element_position["page_jump"]
@@ -219,5 +220,6 @@ class CreateObject:
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr, flush=True)
-            return 400
+            raise
+            #return 400
         

@@ -349,6 +349,8 @@ class ServiceChainingInstanceGenerator:
                                 ui_result = ui_result + " In addition, fail to delete service function forwarder profile."
                         else:
                             ui_result = ui_result + " In addition, fail to search service function forwarder profile."
+            except Exception as e:
+                raise
             finally:
                 # 清理环境
                 result["ui_result"] = ui_result
@@ -384,6 +386,8 @@ class ServiceChainingInstanceGenerator:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data, cfg_list, verification_result)
+            except Exception as e:
+                raise
             finally:
                 result["api_result"] = api_result
                 # 删除配置

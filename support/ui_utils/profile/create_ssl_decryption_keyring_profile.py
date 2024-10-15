@@ -114,9 +114,11 @@ class CreateSSLDecryptionKeyringProfile:
         """
         try:
             switch_value: str = data[key].split("->")[data_index].strip().lower()    #用例数据
+            return switch_value
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-        return switch_value
+            raise
+
 
 
 

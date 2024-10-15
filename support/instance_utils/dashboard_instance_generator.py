@@ -153,6 +153,8 @@ class DashbboardInstanceGenerator:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete chart successfully.", flush=True)
                 else:
                     ui_result = "Fail to Delete chart"
+            except Exception as e:
+                raise
             finally:
                 # 清理环境
                 result["ui_result"] = ui_result
@@ -166,6 +168,8 @@ class DashbboardInstanceGenerator:
                 self.api_name_list = []
 
                 "todo api 集成"
+            except Exception as e:
+                raise
             finally:
                 result["api_result"] = api_result
                 # 删除配置

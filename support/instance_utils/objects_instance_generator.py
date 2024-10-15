@@ -438,10 +438,8 @@ class ObjectsInstanceGenerator:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete ip object successfully.", flush=True)
                         elif delete_ip_code != 200:
                             ui_result = ui_result + " In addition, fail to delete ip object."
-
-
-
-
+            except Exception as e:
+                raise
             finally:
                 # 清理环境
                 result["ui_result"] = ui_result
@@ -456,6 +454,8 @@ class ObjectsInstanceGenerator:
                 self.api_name_list = []
 
                 "todo api 集成"
+            except Exception as e:
+                raise
             finally:
                 result["api_result"] = api_result
                 # 删除配置
