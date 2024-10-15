@@ -13,7 +13,7 @@ class CaseInstanceGenerator:
         self.test_data = test_data
         self.parameter = parameter
     
-    def run(self):
+    def create(self):
         result = self._run(self.test_data, self.parameter)
         return result
 
