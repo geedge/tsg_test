@@ -53,8 +53,7 @@ class CreateProfile:
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            traceback.print_exc()
-            return 400
+            raise
 
     def _create_response_page(self, data):
         """

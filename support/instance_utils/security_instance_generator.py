@@ -965,6 +965,8 @@ class SecurityGenerator:
                                     break
                             else:
                                 result = result + " In addition, fail to search {} object.".format(object_sub_type)
+            except Exception as e:
+                raise
             finally:
                 # 清理环境
                 result["ui_result"] = ui_result
@@ -1005,6 +1007,8 @@ class SecurityGenerator:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data, cfg_list, verification_result)
+            except Exception as e:
+                raise
             finally:
                 result["api_result"] = api_result
                 # 删除配置

@@ -61,5 +61,5 @@ class EditRule:
             return 200, rule_id
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-            traceback.print_exc()
-            return 400, None
+            raise
+            #return 400, None

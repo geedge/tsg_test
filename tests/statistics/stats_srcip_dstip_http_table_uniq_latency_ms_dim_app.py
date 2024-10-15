@@ -101,8 +101,7 @@ def run(parameter):
                           "metrics": [
                             "in_latency_ms:UNIQUE_COUNT:Incoming Latency(ms)",
                             "out_latency_ms:UNIQUE_COUNT:Outgoing Latency(ms)",
-                            "tcp_handshake_latency_ms:UNIQUE_COUNT:TCP Latency",
-                            "in_latency_ms+out_latency_ms:UNIQUE_COUNT:Latency(ms)"
+                            "tcp_handshake_latency_ms:UNIQUE_COUNT:TCP Latency"
                           ],
                           "dimensions": ["app"],
                           "order_by": "TCP Latency",

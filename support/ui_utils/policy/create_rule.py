@@ -883,120 +883,139 @@ class CreateRule:
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-            traceback.print_exc()
-            return 400, None
+            raise
+            #return 400, None
         
     def add_ip(self, ip_data, ip_condition_type, create_element_position):
-        if ip_condition_type != "SrcIP" and ip_condition_type != "DstIP":
+        try:
+            if ip_condition_type != "SrcIP" and ip_condition_type != "DstIP":
+                # 点add condition的+
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                # 选中port
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(ip_condition_type)]).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+            # 点ip address的+
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_add{}_posXpath".format(ip_condition_type)]).click()
+            # 通过ip name搜索并选中
+            for i in range(len(ip_data)):
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).clear()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)], find_after_wait_time=1).send_keys(ip_data[i]["name"])
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(ip_condition_type)].format(replaceValue=ip_data[i]["name"])
+                self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(ip_condition_type)]).click()
+            for j in range(len(ip_data)):
+                if ip_data[j]["negate"] == True:
+                    time.sleep(1)  # 暂停1秒
+                    negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)])
+                    ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                    negate_element.click()
+        except Exception as e:
+            raise
+    
+    def add_port(self, port_data, port_condition_type, create_element_position):
+        try:
             # 点add condition的+
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
             # 选中port
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(ip_condition_type)]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(port_condition_type)]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-        # 点ip address的+
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_add{}_posXpath".format(ip_condition_type)]).click()
-        # 通过ip name搜索并选中
-        for i in range(len(ip_data)):
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).clear()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)], find_after_wait_time=1).send_keys(ip_data[i]["name"])
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-            temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(ip_condition_type)].format(replaceValue=ip_data[i]["name"])
-            self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(ip_condition_type)]).click()
-        for j in range(len(ip_data)):
-            if ip_data[j]["negate"] == True:
-                time.sleep(1)  # 暂停1秒
-                negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)])
-                ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
-                negate_element.click()
-    
-    def add_port(self, port_data, port_condition_type, create_element_position):
-        # 点add condition的+
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
-        # 选中port
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(port_condition_type)]).click()
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-        # 点source port的+
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_add{}_posXpath".format(port_condition_type)]).click()
-        # 通过port name搜索并选中
-        for z in range(len(port_data)):
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(port_condition_type)], find_after_wait_time=1).send_keys(port_data[z]["name"])
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(port_condition_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-            temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(port_condition_type)].format(replaceValue=port_data[z]["name"])
-            self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(port_condition_type)]).click()
-        for j in range(len(port_data)):
-            if port_data[j]["negate"] == True:
-                time.sleep(1)  # 暂停1秒
-                negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(port_condition_type)])
-                ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
-                negate_element.click()
+            # 点source port的+
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_add{}_posXpath".format(port_condition_type)]).click()
+            # 通过port name搜索并选中
+            for z in range(len(port_data)):
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(port_condition_type)], find_after_wait_time=1).send_keys(port_data[z]["name"])
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(port_condition_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(port_condition_type)].format(replaceValue=port_data[z]["name"])
+                self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(port_condition_type)]).click()
+            for j in range(len(port_data)):
+                if port_data[j]["negate"] == True:
+                    time.sleep(1)  # 暂停1秒
+                    negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(port_condition_type)])
+                    ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                    negate_element.click()
+        except Exception as e:
+            raise
 
     add_subid = add_port
 
     def add_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
-        # 点add condition的+
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-        # 点protocol filed的+
-        temp_element_position = create_element_position["policyRulePage_add{}_posXpath".format(filed_type)].format(replaceValue=num)
-        self.driver.find_element(By.XPATH, temp_element_position).click()
-        # 通过protocol filed name搜索并选中
-        for x in range(len(protocol_field_data)):
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=1).send_keys(protocol_field_data[x]["name"])
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)], find_after_wait_time=0.5).click()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
-
-    def add_bool_type_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
-        for x in range(len(protocol_field_data)):
+        try:
+            # 点add condition的+
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
-            var1 = protocol_field_data[x]["boolean_type"]
-            xpath_temp = create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]
-            xpath_last = xpath_temp.format(replaceValue=var1)
-            self.driver.find_element(By.XPATH, xpath_last).click()
-            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
             # 点protocol filed的+
             temp_element_position = create_element_position["policyRulePage_add{}_posXpath".format(filed_type)].format(replaceValue=num)
             self.driver.find_element(By.XPATH, temp_element_position).click()
             # 通过protocol filed name搜索并选中
-            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_search{}_posXpath".format(filed_type)],find_after_wait_time=1).send_keys(protocol_field_data[x]["name"])
-            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_search{}_posXpath".format(filed_type)],find_after_wait_time=0.5).send_keys(Keys.ENTER)
-            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_select{}_posXpath".format(filed_type)],find_after_wait_time=0.5).click()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
-            num = num +1
+            for x in range(len(protocol_field_data)):
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=1).send_keys(protocol_field_data[x]["name"])
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)], find_after_wait_time=0.5).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
+        except Exception as e:
+            raise
+
+    def add_bool_type_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
+        try:
+            for x in range(len(protocol_field_data)):
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                var1 = protocol_field_data[x]["boolean_type"]
+                xpath_temp = create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]
+                xpath_last = xpath_temp.format(replaceValue=var1)
+                self.driver.find_element(By.XPATH, xpath_last).click()
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                # 点protocol filed的+
+                temp_element_position = create_element_position["policyRulePage_add{}_posXpath".format(filed_type)].format(replaceValue=num)
+                self.driver.find_element(By.XPATH, temp_element_position).click()
+                # 通过protocol filed name搜索并选中
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_search{}_posXpath".format(filed_type)],find_after_wait_time=1).send_keys(protocol_field_data[x]["name"])
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_search{}_posXpath".format(filed_type)],find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_select{}_posXpath".format(filed_type)],find_after_wait_time=0.5).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
+                num = num +1
+        except Exception as e:
+            raise
 
     def add_ip_protocol(self, ip_protocol_data, filed_type, create_element_position):
-        # 点add condition的+
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
-        # 选中port
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
-        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-        # 点source port的+
-        self.driver.find_element(By.XPATH, create_element_position[ "policyRulePage_add{}_posXpath".format(filed_type)]).click()
-        # 通过port name搜索并选中
-        is_first_iteration = True
-        for z in ip_protocol_data:
-            #如果不是第一次循环，需要点加号调侧滑框
-            if not is_first_iteration:
-                self.driver.find_element(By.XPATH, policyRulePage_little_button_addIpProtocol_posXpath).click()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=1).send_keys(z)
-            self.driver.find_element(By.XPATH, create_element_position[ "policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-            temp_element_position = create_element_position[ "policyRulePage_select{}_posXpath".format(filed_type)].format( replaceValue=z)
-            self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
-            is_first_iteration = False
+        try:
+            # 点add condition的+
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+            # 选中port
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
+            self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+            # 点source port的+
+            self.driver.find_element(By.XPATH, create_element_position[ "policyRulePage_add{}_posXpath".format(filed_type)]).click()
+            # 通过port name搜索并选中
+            is_first_iteration = True
+            for z in ip_protocol_data:
+                #如果不是第一次循环，需要点加号调侧滑框
+                if not is_first_iteration:
+                    self.driver.find_element(By.XPATH, policyRulePage_little_button_addIpProtocol_posXpath).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=1).send_keys(z)
+                self.driver.find_element(By.XPATH, create_element_position[ "policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                temp_element_position = create_element_position[ "policyRulePage_select{}_posXpath".format(filed_type)].format( replaceValue=z)
+                self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
+                is_first_iteration = False
+        except Exception as e:
+            raise
 
     def add_effective_devices(self, effective_device_data, create_element_position):
-        # 点击 add effective devices按钮
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addEffectiveDevices_posXpath"]).click()
-        # 从侧滑中选择数据
-        for i in range(len(effective_device_data)):
-            replace_device = effective_device_data[i].strip()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEffectiveDevices_posXpath"].format(replace_device=replace_device), find_after_wait_time=1).click()
-        # 关闭侧滑
-        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeEffectiveDevices_posXpath"]).click()
+        try:
+            # 点击 add effective devices按钮
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addEffectiveDevices_posXpath"]).click()
+            # 从侧滑中选择数据
+            for i in range(len(effective_device_data)):
+                replace_device = effective_device_data[i].strip()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEffectiveDevices_posXpath"].format(replace_device=replace_device), find_after_wait_time=1).click()
+            # 关闭侧滑
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeEffectiveDevices_posXpath"]).click()
+        except Exception as e:
+            raise
+
 
 
 

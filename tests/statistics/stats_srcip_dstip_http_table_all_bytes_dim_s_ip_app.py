@@ -11,9 +11,11 @@ from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
+
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -59,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.15",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -77,7 +79,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
@@ -97,15 +99,54 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes+out_bytes:BITRATE:bytes"
+                              "sent_bytes:SUM:Bytes Sent",
+                              "received_bytes:SUM:Bytes Received",
+                              "sent_bytes+received_bytes:SUM:Bytes"
                           ],
-                          "dimensions": ["http_host"],
-                          "order_by": "bytes",
-                          "row_limit": "15",
-                          "min_in_size": "1",
-                          "min_out_size": "1"
+                          "dimensions": [
+                              "app",
+                              "server_ip"
+                          ],
+                          "order_by": "Bytes",
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:RATE:Bytes Sent",
+                                "received_bytes:RATE:Bytes Received",
+                                "sent_bytes+received_bytes:RATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "app",
+                                "server_ip"
+                            ],
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:Bytes Sent",
+                                "received_bytes:BITRATE:Bytes Received",
+                                "sent_bytes+received_bytes:BITRATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "app",
+                                "server_ip"
+                            ],
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
@@ -116,17 +157,17 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.15",
-                "clients_end_ip": "10.64.224.15",
-                "servers_start_ip": "2.1.1.15",
-                "servers_end_ip": "2.1.1.15",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
-                {"applicatoin": "2407TCP","bytes": 754864}
+                {"server_fqdn": "www.yumi.com","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -176,20 +217,20 @@ def run(parameter):
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
 
-if __name__ == '__main__':
-    parameter = {
+    if __name__ == '__main__':
+        parameter = {
 
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.73",
-        "api_server": "http://192.168.44.72",
-        "is_log": 1,
-        "env": "tsgx",
-        "vsys_id": 1,  # 6
-        "root_path": "D:/tsgcode/tsg_test",
-        "path": "tsgcode/tsg_test/testcase/ui",
-        "module_name": "statistics",
-        "test_case_name": os.path.basename(__file__)[:-3],
+            "username": "zhaokun",
+            "password": "zhaokun1",
+            "test_pc_ip": "192.168.64.73",
+            "api_server": "http://192.168.44.72",
+            "is_log": 1,
+            "env": "tsgx",
+            "vsys_id": 1,  # 6
+            "root_path": "D:/tsgcode/tsg_test",
+            "path": "tsgcode/tsg_test/testcase/ui",
+            "module_name": "statistics",
+            "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
         "test_subcriber_id": "test6489",
         "script_type": "ui",

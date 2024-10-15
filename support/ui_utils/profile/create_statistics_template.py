@@ -143,7 +143,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def _operate_radio(self, chart, data_index=0, no_modify="不修改", data_key="", ep_radio="", chart_id=""):
         """
@@ -179,7 +180,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr)
-            return 400
+            raise
+            #return 400
 
     def _get_value_from_data(self, data, key="", data_index=0):
         """
@@ -193,6 +195,7 @@ class CreateStatisticsTemplate():
             switch_value: str = data[key].split("->")[data_index].strip() # 用例数据
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
+            raise
         return switch_value
 
     def _operate_order_by(self, chart, data_index=0, no_modify="不修改", data_key="", chart_id=""):
@@ -227,7 +230,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def _operate_metrics_or_dimensions_dropdown(self, chart, data_index=0, no_modify="不修改", data_key="",chart_id=""):
         """
@@ -288,7 +292,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def _operate_input(self, chart, data_index=0, no_modify="不修改", data_key="", element_position="",
                        chart_id=""):
@@ -348,7 +353,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def _operate_series_limit(self, chart, data_index=0, no_modify="不修改", data_key="", element_position="",
                               chart_id=""):
@@ -398,7 +404,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def dropdown_add(self, chart_id="", dropdown_name="", new_value="", dropdown_item_dict={}):
         """
@@ -570,7 +577,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def dropdown_del(self, chart_id="", dropdown_name="", old_value="", dropdown_item_dict={}):
         """
@@ -609,7 +617,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def dropdown_modify(self, chart_id="", dropdown_name="", old_value="", new_value="", dropdown_item_dict={}):
         """
@@ -678,7 +687,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:dropdown_add();Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def error_print_function(self, function, error):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],

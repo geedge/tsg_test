@@ -235,6 +235,8 @@ class InterceptInstanceGenerator:
                         # 退出遍历标志
                         if prfi_status == 1:  # 失败，退出遍历创建
                             break
+            except Exception as e:
+                raise
             finally:
                 # 清理环境
                 result["ui_result"] = ui_result
@@ -287,6 +289,8 @@ class InterceptInstanceGenerator:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data, cfg_list, verification_result)
+            except Exception as e:
+                raise
             finally:
                 result["api_result"] = api_result
                 # 删除配置

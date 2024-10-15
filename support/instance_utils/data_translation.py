@@ -10,6 +10,7 @@ class DataTranslation:
         policy_type = data["policy_type"]
         temp_test_data = {
             "obj_condition": [],
+            "library_condition":[],
             "profile_condition": [],
             "application": [],
             "do_log_1": 2
@@ -17,6 +18,9 @@ class DataTranslation:
         for key in data.keys():
             if key in {"condition"}:
                 temp_test_data["obj_condition"] = self.push_object_data(data)
+                for k in data["condition"]:
+                    if k.endswith("library"):
+                        temp_test_data["library_condition"] = self.push_library_data(data)
                 if "application" in data["condition"].keys() and len(data["condition"]["application"]) > 0:
                     for app_index in range(len(data["condition"]["application"])):
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
@@ -26,6 +30,8 @@ class DataTranslation:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
         if len(temp_test_data["obj_condition"]) > 0:
             data["obj_condition"] = temp_test_data["obj_condition"]
+        if len(temp_test_data["library_condition"]) > 0:
+            data["library_condition"] = temp_test_data["library_condition"]
         if len(temp_test_data["application"]) >= 0:
             data["application"] = temp_test_data["application"]
         if "ip_protocol" in data["condition"].keys() and len(temp_test_data["ip_protocol"]) >= 0:
@@ -223,6 +229,8 @@ class DataTranslation:
             if type(v) == bool:
                 continue
             if len(v) == 0:   # 空跳过
+                continue
+            if k in {"source_library"}: # 如果condition引用的是library，跳过
                 continue
             if k == "source_ip":
                 for i in range(len(v)):
@@ -1415,7 +1423,30 @@ class DataTranslation:
                 temp["profile_type"] = temp_profile[i]["profile_type"]
                 profile.append(copy.deepcopy(temp))
         return profile
-    
+
+    def push_library_data(self, data):     # 组织library数据
+        library = []
+        for k, v in data["condition"].items():
+            temp = {
+                "attribute_name": "",
+                "is_negate":"",
+                "library":[]
+            }
+            if k == "source_library" and len(v) > 0:
+                temp["attribute_name"] = "ATTR_SOURCE_IP"       # 添加attribute_name用于判断library添加至那个
+            elif k == "destination_library" and len(v) > 0:
+                temp["attribute_name"] = "ATTR_DESTINATION_IP"
+            elif k == "server_fqdn_library" and len(v) > 0:
+                temp["attribute_name"] = "ATTR_SERVER_FQDN"
+            else:
+                continue
+            for i in range(len(v)):
+                temp["is_negate"] = v[i]["negate"]
+            temp["library"] = v
+            library.append(copy.deepcopy(temp))
+        return library
+
+
 if __name__ == '__main__':
     policy_type = "dos_protection"
     test_data =  {

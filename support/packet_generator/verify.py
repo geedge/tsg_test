@@ -79,7 +79,7 @@ class Verify:
                 return verification_result
         except Exception as e:
             return "Exception Error: " + str(e)
-            # return (False, False, False, f"Exception: {e}", f"Exception: {e}")
+            # raise
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
