@@ -17,7 +17,7 @@ from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verify import Verify
 from support.ui_utils.element_position.map_element_position_library import get_element_position, create_pre_policy, delete_pre_policy
-from support.api_utils.analysis_result import AnalysisResult
+from support.api_utils.analyse_result import Analyse
 import support.ui_utils.env
 from datetime import datetime
 import copy
@@ -250,8 +250,8 @@ class ServiceChainingInstanceGenerator:
                         cfg_list = {}
                         cfg_list["create_policies_ids"] = create_policies_ids
                         cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
-                        verify = Verify()
-                        verification_result = verify.verify_result(driver, parameter, test_data, cfg_list, element_position_map)
+                        verification = Verify()
+                        verification_result = verification.verify_result(driver, parameter, test_data, cfg_list, element_position_map)
                         if len(verification_result) == 4:
                             driver = verification_result[3]
                         elif len(verification_result) == 5:
@@ -261,8 +261,8 @@ class ServiceChainingInstanceGenerator:
 
                 # 分析验证结果，并返回给flask
                 if len(verification_result) != 0:
-                    analysis = AnalysisResult()
-                    ui_result = analysis.analysis_result(test_data, [], verification_result)
+                    analysis = Analyse()
+                    ui_result = analysis.analyse_result(test_data, [], verification_result)
 
                 # 删除rule
                 if create_rule_code == 200:
@@ -378,12 +378,12 @@ class ServiceChainingInstanceGenerator:
                 cfg_list = create.create_policy(parameter, test_data, template_path)
 
                 # 流量验证
-                verify = Verify()
-                verification_result = verify.verify_result("", parameter, test_data, cfg_list, "")
+                verification = Verify()
+                verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
 
                 # 分析验证结果，并返回给flask
-                analysis = AnalysisResult()
-                api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
+                analysis = Analyse()
+                api_result = analysis.analyse_result(test_data, cfg_list, verification_result)
             finally:
                 result["api_result"] = api_result
                 # 删除配置

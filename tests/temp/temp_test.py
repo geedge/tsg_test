@@ -7,7 +7,7 @@ from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.packet_generator.verify import Verify
-from support.api_utils.analysis_result import AnalysisResult
+from support.api_utils.analyse_result import Analyse
 from support.ui_utils.workpath import workdir
 
 def run(parameter):
@@ -120,18 +120,18 @@ def run(parameter):
             # 创建时如果返回的ui_result和api_result值为空，意味着创建成功，接下来进行流量验证
             if len(generator_result["create_ui_result"]) == 0 and len(generator_result["create_api_result"]) == 0:
                 # 触发流量并验证
-                verify = Verify()
-                # verification_result = verify.verify_result(driver, parameter, test_data, cfg_list, element_position_map)
-                verification_result = verify.verify_result(generator_result, parameter, test_data)
+                verification = Verify()
+                # verification_result = verification.verify_result(driver, parameter, test_data, cfg_list, element_position_map)
+                verification_result = verification.verify_result(generator_result, parameter, test_data)
                 if len(verification_result) != 0:
                     if len(verification_result) == 4:
                         generator_result["driver"] = verification_result[3]
                     elif len(verification_result) == 5:
                         generator_result["driver"] = verification_result[4]
                     # 分析结果
-                    analysis = AnalysisResult()
-                    # result = analysis.analysis_result(test_data, generator_result["cfg_list"], verification_result)
-                    result["ui_result"] = analysis.analysis_result(test_data, generator_result, verification_result)
+                    analysis = Analyse()
+                    # result = analysis.analyse_result(test_data, generator_result["cfg_list"], verification_result)
+                    result["ui_result"] = analysis.analyse_result(test_data, generator_result, verification_result)
             # 删除配置
             if isinstance(case_instance_generator, CaseInstanceGenerator):
                 delete_result = case_instance_generator.delete_data(test_data, generator_result)

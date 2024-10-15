@@ -6,7 +6,7 @@ from support.api_utils.create_policy import *
 import time
 from support.packet_generator.verify import Verify
 from support.api_utils.delete_policy import *
-from support.api_utils.analysis_result import *
+from support.api_utils.analyse_result import *
 from support.report import *
 from datetime import datetime
 
@@ -72,12 +72,12 @@ def run(parameter):
         cfg_list = create.create_policy(parameter, test_data, template_path)
         
         # 流量验证
-        verify = Verify()
-        verification_result = verify.verify_result("", parameter, test_data, cfg_list, "")
+        verification = Verify()
+        verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
         
         # 分析验证结果，并返回给flask
-        analysis = AnalysisResult()
-        result = analysis.analysis_result(test_data, cfg_list, verification_result)
+        analysis = Analyse()
+        result = analysis.analyse_result(test_data, cfg_list, verification_result)
         # if len(result) == 0:
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
         # elif len(result) != 0:
