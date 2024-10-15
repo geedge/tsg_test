@@ -102,10 +102,22 @@ def run(parameter):
                             "new_in_sessions+new_out_sessions:RATE:sessions"
                           ],
                           "dimensions": ["device_group"],
-                          "order_by": "sessions",
+                          "order_by": "",
                           "row_limit": "10",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "new_in_sessions+new_out_sessions:SUM:sessions"
+                            ],
+                            "dimensions": ["device_group"],
+                            "order_by": "",
+                            "row_limit": "10",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]

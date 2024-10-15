@@ -99,15 +99,25 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_in_sessions:SUM:new in sessions",
-                            "new_out_sessions:SUM:new out sessions",
-                            "new_in_sessions+new_out_sessions:SUM:sessions"
+                            "closed_in_sessions+closed_out_sessions:RATE:Closed Sessions"
                           ],
-                          "dimensions": [],
+                          "dimensions": ["flags"],
                           "order_by": "",
-                          "row_limit": "",
+                          "row_limit": "20",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "closed_in_sessions+closed_out_sessions:SUM:Closed Sessions"
+                            ],
+                            "dimensions": ["flags"],
+                            "order_by": "",
+                            "row_limit": "10",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -150,7 +160,7 @@ def run(parameter):
         }
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.create()
+        result = case_instance_generator.run()
 
         # 脚本结束时间和耗时
         end_time = time.time()
