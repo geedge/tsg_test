@@ -7,11 +7,14 @@ class Analyse:
             timeout_result = True
         cmd_result = verification_result[0]
         log_result = verification_result[1]
-        metric_result = verification_result[2]
+        if condition["policy_type"] == "statistics":
+            metric_result = verification_result[1]
+        else:
+            metric_result = verification_result[2]
         fail_reason_template = "The verification result of policy effect is failed, the failure reasons are: "
         failure_reason = ""
-        if condition["policy_type"] == "statistics" and len(verification_result) == 5:
-            failure_reason = verification_result[3]
+        if condition["policy_type"] == "statistics":
+            failure_reason = verification_result[2]
         elif condition["policy_type"] == "service_chaining":
             if cmd_result == False:
                 failure_reason = failure_reason + "the metrics do not match the expectant value,"
@@ -40,8 +43,6 @@ class Analyse:
                 failure_reason = fail_reason_template + failure_reason
                 # 把最后一个逗号改成句号
                 failure_reason = failure_reason[:failure_reason.rindex(',')] + '.' + failure_reason[failure_reason.rindex(',')+1:]
-
-        
         return failure_reason
 
 if __name__ == "__main__":

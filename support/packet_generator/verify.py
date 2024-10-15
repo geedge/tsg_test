@@ -16,7 +16,7 @@ class Verify:
             my_driver = driver
             script_type = parameter["script_type"]
             
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to trigger traffic.", flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to send traffic.", flush=True)
             # if test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
             #     # SC解密流量相对特殊，只能用curl进行验证，但curl不能统计pkt和byte，故通过网口抓包来进行功能对比。
             #     parse = configparser.ConfigParser()
@@ -48,8 +48,6 @@ class Verify:
                 api_verification_result = traffic_verification.api_verification(my_driver, parameter, test_data, traffic_result, cfg_list)
                 if len(api_verification_result) == 4:
                     my_driver = api_verification_result[3]
-                elif len(api_verification_result) == 5:
-                    my_driver = api_verification_result[4]
                 policy_type = test_data["policy_type"]
                 if len(api_verification_result) > 0 and policy_type != "statistics":
                     verification_result = [False for _ in range(4)]
@@ -81,9 +79,9 @@ class Verify:
                 return verification_result
         except Exception as e:
             # 返回此异常有时导致执行结果为成功，本地参数和配置文件参数中的vsys修改为不一致可复现
-            #return f"Exception: {e}"
+            return f"Exception: {e}"
             # 所以修改为如下返回
-            return (False, False, False, f"Exception: {e}", f"Exception: {e}")
+            # return (False, False, False, f"Exception: {e}", f"Exception: {e}")
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

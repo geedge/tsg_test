@@ -114,31 +114,30 @@ def run(parameter):
         number = 1
         if len(parameter["script_type"]) == 0:
             number = 2
-        for i in range(number):
+        for _ in range(number):
             # 测试用例实例化，创建测试需要的object、profile、policy rule
             case_instance_generator = CaseInstanceGenerator(test_data["policy_configuration"], parameter, number)
             case_generator_result = case_instance_generator.create()
-            # 创建时如果返回的ui_result和api_result值为空，意味着创建成功，接下来进行流量验证
-            if len(case_generator_result["ui_result"]) == 0 and len(case_generator_result["api_result"]) == 0:
+            # 创建时如果返回的ui_result和api_result值为空，意味着创建成功，接下来进行流量验证，否则返回异常值并跳过验证阶段，走清理删除程序
+            if isinstance(case_generator_result, dict) and len(case_generator_result["ui_result"]) == 0 and len(case_generator_result["api_result"]) == 0:
                 # 触发流量
                 sender = SendTraffic()
                 traffic_result = sender.send_traffic(parameter, test_data)
                 # 验证metric和log
                 verification = Verify()
                 verification_result = verification.verify_result(parameter, test_data, case_generator_result, traffic_result)
-                if len(verification_result) != 0:
-                    if len(verification_result) == 4:
-                        case_generator_result["driver"] = verification_result[3]
-                    elif len(verification_result) == 5:
-                        case_generator_result["driver"] = verification_result[4]
+                if len(verification_result) == 4:
+                    case_generator_result["driver"] = verification_result[3]
                     # 分析结果
                     analysis = Analyse()
-                    if number == 2 and i == 0:
+                    if len(case_generator_result["driver"]) > 0:
                         result["ui_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
-                    elif number == 2 and i == 1:
+                    if len(case_generator_result["cfg_list"]) > 0:
                         result["api_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
-                    else:
-                        result[parameter["script_type"]] = analysis.analyse_result(test_data, case_generator_result, verification_result)
+                else:
+                    result = verification_result
+            elif isinstance(case_generator_result, str) and len(case_generator_result) != 0 or isinstance(result, dict) and (len(result["ui_result"]) != 0 or len(result["api_result"]) != 0):
+                result = case_generator_result
             # 删除配置
             if isinstance(case_instance_generator, CaseInstanceGenerator):
                 deletion_result = case_instance_generator.delete_data(test_data, case_generator_result)
@@ -149,8 +148,8 @@ def run(parameter):
         return result
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
-        return "Error: " + str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", e, flush=True)
+        return "Exception Error: " + str(e)
     finally:
         # 统计脚本用时
         end_time = time.time()

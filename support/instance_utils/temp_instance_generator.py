@@ -152,15 +152,15 @@ class DosProtectionInstanceGenerator:
         creation_result["api_result"] = api_result
         return creation_result
 
-    def delete_data(self, test_data, case_result):
+    def delete_data(self, test_data, creation_result):
         ui_result, api_result = "", ""
         deletion_result = {
             "ui_result": "",
             "api_result": ""
         }
         delete = DeletePolicy()
-        if isinstance(self.ui_name_list, list) and self.ui_name_list != [] and len(case_result["driver"]) > 0:
-            driver = case_result["driver"]
+        if isinstance(self.ui_name_list, list) and self.ui_name_list != [] and len(creation_result["driver"]) > 0:
+            driver = creation_result["driver"]
             # 删除rule
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_type"])
@@ -216,8 +216,8 @@ class DosProtectionInstanceGenerator:
             support.ui_utils.env.teardown()
             # 强行删除，防止有配置残留影响其他用例测试
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        if isinstance(self.api_name_list, list) and self.api_name_list != [] and len(case_result["cfg_list"]) > 0:
-            cfg_list = case_result["cfg_list"]
+        if isinstance(self.api_name_list, list) and self.api_name_list != [] and len(creation_result["cfg_list"]) > 0:
+            cfg_list = creation_result["cfg_list"]
             # 按配置进行删除
             delete.delele_policy_by_cfg(test_data["token"], parameter, cfg_list)
             # 强行删除，防止有配置残留影响其他用例测试
