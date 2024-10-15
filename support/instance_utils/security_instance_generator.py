@@ -788,11 +788,9 @@ class SecurityGenerator:
                         verification_result = verification.verify_result(driver, parameter, test_data, [], test_rule_element_position)
                         if len(verification_result) == 4:
                             driver = verification_result[3]
-                        elif len(verification_result) == 5:
-                            driver = verification_result[4]
 
                 # 分析验证结果，并返回给flask
-                if len(verification_result) > 1:
+                if len(verification_result) == 4:
                     analysis = Analyse()
                     ui_result = analysis.analyse_result(test_data, [], verification_result)
 

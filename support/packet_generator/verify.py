@@ -78,9 +78,7 @@ class Verify:
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"verification_result:{verification_result}")
                 return verification_result
         except Exception as e:
-            # 返回此异常有时导致执行结果为成功，本地参数和配置文件参数中的vsys修改为不一致可复现
-            return f"Exception: {e}"
-            # 所以修改为如下返回
+            return "Exception Error: " + str(e)
             # return (False, False, False, f"Exception: {e}", f"Exception: {e}")
 
 if __name__ == "__main__":

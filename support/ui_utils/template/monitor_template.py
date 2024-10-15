@@ -196,14 +196,12 @@ def run(parameter):
                 verification_result = verification.verify_result(driver, parameter, test_data, [], element_position_map)
                 if len(verification_result) == 4:
                     driver = verification_result[3]
-                elif len(verification_result) == 5:
-                    driver = verification_result[4]
             else:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                       "Traffic verification failed", flush=True)
 
         # 分析验证结果，并返回给flask
-        if len(verification_result) > 1:
+        if len(verification_result) == 4:
             analysis = Analyse()
             result = analysis.analyse_result(test_data, [], verification_result)
             # if len(result) == 0:

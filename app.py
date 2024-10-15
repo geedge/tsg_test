@@ -130,13 +130,19 @@ def receive_parameter():
                             response_result["api_automation_result"] = "pass"
                         response_result["data"] = None
                         response_result["success"] = True
-                    elif isinstance(result, str) and len(result) != 0 or isinstance(result, dict) and (len(result["ui_result"]) != 0 or len(result["api_result"]) != 0):
+                    elif isinstance(result, dict) and (len(result["ui_result"]) != 0 or len(result["api_result"]) != 0):
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
                         response_result["code"] = 416
                         if tag == "ui" or tag == "":
                             response_result["ui_automation_result"] = result["ui_result"]
                         if tag == "api" or tag == "":
                             response_result["api_automation_result"] = result["api_result"]
+                        response_result["data"] = None
+                        response_result["success"] = False
+                    elif isinstance(result, str) and len(result) != 0:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
+                        response_result["code"] = 416
+                        response_result["result"] = result
                         response_result["data"] = None
                         response_result["success"] = False
                     break
