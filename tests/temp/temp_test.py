@@ -7,6 +7,7 @@ from datetime import datetime
 from support.report_update import ReportUpdate
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.packet_generator.verify import Verify
+from support.packet_generator.trigger_traffic import *
 from support.api_utils.analyse_result import Analyse
 from support.ui_utils.workpath import workdir
 
@@ -119,10 +120,13 @@ def run(parameter):
             generator_result = case_instance_generator.create()
             # 创建时如果返回的ui_result和api_result值为空，意味着创建成功，接下来进行流量验证
             if len(generator_result["create_ui_result"]) == 0 and len(generator_result["create_api_result"]) == 0:
-                # 触发流量并验证
+                # 触发流量
+                trigger = TriggerTraffic()
+                traffic_result = trigger.send_traffic(parameter, test_data)
+                # 验证
                 verification = Verify()
                 # verification_result = verification.verify_result(driver, parameter, test_data, cfg_list, element_position_map)
-                verification_result = verification.verify_result(generator_result, parameter, test_data)
+                verification_result = verification.verify_result(parameter, test_data, generator_result, traffic_result)
                 if len(verification_result) != 0:
                     if len(verification_result) == 4:
                         generator_result["driver"] = verification_result[3]
