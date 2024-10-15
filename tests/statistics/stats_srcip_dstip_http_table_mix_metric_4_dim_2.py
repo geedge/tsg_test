@@ -96,7 +96,7 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Client IP Object List,
+                            "chart_name": "default name",
                             "visualization_type": "Table",
                             "metrics": [
                                 "sent_bytes+received_bytes:SUM:SUM Bytes Sent Bytes Received",

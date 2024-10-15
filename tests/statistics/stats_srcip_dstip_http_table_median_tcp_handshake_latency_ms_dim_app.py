@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.16",
+                                "item_value": "2.1.1.3",
                             },
                         ]
                     }],
@@ -98,22 +98,18 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
-                          "visualization_type": "Table",
-                          "metrics": [
-                            "in_bytes:SUM:in bytes",
-                            "out_bytes:SUM:out bytes",
-                            "in_bytes+out_bytes:SUM:bytes"
-                          ],
-                          "dimensions": [
-                            "server_ip"
-                          ],
-                          "order_by": "bytes",
-                          "row_limit": "100",
-                          "min_in_size": "1",
-                          "min_out_size": "1"
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "tcp_handshake_latency_ms:MEDIAN:TCP Handshake Latency(ms)"
+                            ],
+                            "dimensions": ["app"],
+                            "order_by": "Random",
+                            "row_limit": "200",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
-                      ]
+                    ]
                 }]
             },
             "expected_return": "reset",
@@ -122,18 +118,15 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.16",
-                "clients_end_ip": "10.64.224.16",
-                "servers_start_ip": "2.1.1.16",
-                "servers_end_ip": "2.1.1.16",
+                "clients_start_ip": "10.64.38.240",
+                "clients_end_ip": "10.64.38.240",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
-                {"s2c_ttl": "255","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
-            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -197,12 +190,13 @@ if __name__ == '__main__':
         "module_name": "statistics",
         "test_case_name": os.path.basename(__file__)[:-3],
         "debug_flag": "local",
-        "test_subcriber_id": "test6489",
+        "test_subcriber_id": "test6438",
         "script_type": "ui",
         "policy_type": "statistics"
    }
     parameter = replace_paras(parameter)
     run(parameter)
+
     """
     # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure

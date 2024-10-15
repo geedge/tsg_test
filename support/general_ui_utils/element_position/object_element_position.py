@@ -58,6 +58,10 @@ listPage_First_object_ID_posXpath = "(//*[@id='ly-table1-listcontent']//div[@cla
 listPage_Second_object_ID_posXpath = "(//*[@id='ly-table1-listcontent']//div[@class='table-status-item-id'])[2]"
 listPage_object_ip_address_select_First_object_posXpath = "//div[@class='el-table__body-wrapper is-scrolling-left']//tbody/tr[1]//span[@class='el-checkbox__input']"  # 选择列表中第一个对象
 listPage_object_ip_address_select_Second_object_posXpath = "//div[@class='el-table__body-wrapper is-scrolling-left']//tbody/tr[2]//span[@class='el-checkbox__input']"  # 选择列表中第二个对象
+url_ObjectDetailPage_clearCounter_posXpath = '//button[contains(@id,"objectResetBtn-_anonymousComponent_ElForm_anonymousComponent_VPanel_VEditPanel_")]'  # Clear Counter按钮
+listPage_object_pages_clearCounter_button_warnning_yes_poxXpath = "//div[@class='el-message-box tsg-message el-message-box--center']//span[normalize-space(text())='Yes']"
+listPage_object_group_exclude_open_posXpath = "//span[@class='el-switch__core']"
+
 
 #system audit log页面元素定位
 mainPage_firstLevelMenu_System_posId = "System"  # 一级菜单System
@@ -102,8 +106,11 @@ listPage_objectSearch_geo_select_CountryandRegion_posXpath = "//li[@id='58-_Filt
 listPage_objectSearch_geo_select_SuperAdministrativeArea_posXpath = "//li[@id='150-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
 listPage_objectSearch_geo_select_AdministrativeArea_posXpath = "//li[@id='59-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
 listPage_objectSearch_geo_select_SubAdministrativeArea_posXpath = "//li[@id='151-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
-
-
+#主页object item点击后侧滑框搜索
+listPage_item_search_text_posXpath = "//input[@placeholder='Search for']"
+listPage_item_search_total_text_posXpath = "//div[@class='LocalationDraswer lstsub policy-right-show-edit v-draswer']//p[@class='total']"
+listPage_item_search_details_first_posXpath ='(//div[@id="multilineItemDetails-_MultilineTableCell_ElTableBody_ElTable_Objects_ip_Home_App_anonymousComponent"])[1]'
+listPage_item_search_close_posXpath = "//div[@class='IpItems list-box']//span[normalize-space(text())='Close']"
 #ip object元素
 ipObjectPage_ipType_posId = "IPip"
 main_ObjectPage_tips_Name_input_Xpath = '//form/div[1]/div/div[@class="el-form-item__error"]'
@@ -143,8 +150,10 @@ ip_addressObjectPage_button_OK_posXpath = '//button[@id="OK-_IpDetail_Home_App_a
 ip_addressObjectPage_button_SaveYes_posXpath = '//button[@id="OK-_IpDetail_VDraswer_EditDraw_IpDetail_Home_App_anonymousComponent"]/span'  # Group引用创建OK按钮
 ip_addressObjectPage_button_warningSaveYes_posXpath = "//div[@class='el-message-box__wrapper']/div/div[3]/button[2]/span"  # 提示保存ok按钮警告框
 ip_addressObjectPage_button_warningSaveCancel_posCss = '//div[@class="el-message-box__wrapper"]/div/div[3]/button[1]/span'  # 提示保存取消按钮警告框
-ip_addressObjectPage_button_cancel_posCss = "//button[@id='Cancel-_IpDetail_Home_App_anonymousComponent']/span"  # Cancel按钮
-ip_address_Group_sub_Object_addButton_posXpath = "//div[@class='CommonSubObjects']//i[@class='iconfont icon-Create1 cursor']"  # ip_address_Group添加sub Object按钮
+ip_addressObjectPage_button_cancel_posXpath = "//button[@id='Cancel-_IpDetail_Home_App_anonymousComponent']/span"  # Cancel按钮
+ip_addressObjectPage_leaveThisPage_yesButton_posXpath = '//button[contains(@class,"operation-confirm-Leave")]'  # is_leave_this_page_exist 弹窗中的确认按钮
+ip_address_Group_sub_Object_add_include_Button_posXpath = "(//div[@class='CommonSubObjects']//i[@class='iconfont icon-Create1 cursor'])[1]"  # ip_address_Group include添加sub Object按钮
+ip_address_Group_sub_Object_add_exclude_Button_posXpath = "(//div[@class='CommonSubObjects']//i[@class='iconfont icon-Create1 cursor'])[2]" #exclude 添加按钮
 ip_address_Group_sub_Object_add_new_Button_posXpath = "//i[@class='iconfont icon-Create1']"  # 新建sub_ip_address按钮
 ip_address_Group_sub_Object_add_new_Select_one_Button_posXpath = "//ul[@x-placement='bottom-start']/li[1]"  # 新建选择ip_address按钮
 ip_address_Group_sub_Object_edit_subObject_Button_posXpath = "//i[@class='row-edit iconfont icon-Edit cursor fontsize18']"  # 编辑group 下的object 按钮

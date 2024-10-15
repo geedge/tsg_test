@@ -1109,7 +1109,6 @@ test_phone_number_object_element_position = {
                     "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-
 test_monitor_rule_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1333,8 +1332,6 @@ test_monitor_rule_element_position = {
                     "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
                 }
             }
-
-
 test_dos_protection_rule_element_position = {
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1416,9 +1413,9 @@ test_intercept_rule_element_position = {
         "policyRulePage_okButton_yes_posId": interceptRulePage_okButton_yes_posId,
         "policyRulePage_okButton_warningYes_posXpath": interceptRulePage_okButton_warningYes_posXpath,
         # Add Condition按钮定位
-        "policyRulePage_addCondition_posXpath": manipulationRulePage_addCondition_posXpath,
+        "policyRulePage_addCondition_posXpath": interceptRulePage_addCondition_posXpath,
         # add condition侧滑的关闭定位
-        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+        "policyRulePage_addCondition_close_posXpath": interceptRulePage_addCondition_close_posXpath,
         # Source IP
         "policyRulePage_addConditionSrcIP_posXpath": manipulationRulePage_addCondition_srcIP_posXpath,
         "policyRulePage_addSrcIP_posXpath": manipulationRulePage_addSrcIP_posXpath,
@@ -1426,11 +1423,17 @@ test_intercept_rule_element_position = {
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
         "policyRulePage_negateSrcIP_posXpath":interceptRulePage_negateSrcIP_posXpath,
-        # trusted servers
+        # Server FQDN
+        "policyRulePage_addConditionServerFqdn_posXpath": interceptRulePage_addCondition_serverFqdn_posXpath,
+        "policyRulePage_addServerFqdn_posXpath": interceptRulePage_addServerFqdn_posXpath,
+        "policyRulePage_searchServerFqdn_posXpath": interceptRulePage_searchServerFqdn_posXpath,
+        "policyRulePage_selectServerFqdn_posXpath": interceptRulePage_selectServerFqdn_posXpath,
+        "policyRulePage_closeServerFqdn_posXpath": interceptRulePage_closeServerFqdn_posXpath,
+        # action parameter trusted servers
         "policyRulePage_intercept_addTrustedSelectBox_posXpath": interceptRulePage_intercept_addTrustedSelectBox_posXpath,
         "policyRulePage_intercept_searchTrustedInput_posXpath": interceptRulePage_intercept_searchTrustedInput_posXpath,
         "policyRulePage_intercept_searchTrustedDorpItem_posXpath": interceptRulePage_intercept_searchTrustedDorpItem_posXpath,
-        # untrusted servers
+        # action parameter untrusted servers
         "policyRulePage_intercept_addUntrustedSelectBox_posXpath": interceptRulePage_intercept_addUntrustedSelectBox_posXpath,
         "policyRulePage_intercept_searchUntrustedInput_posXpath": interceptRulePage_intercept_searchUntrustedInput_posXpath,
         "policyRulePage_intercept_searchUntrustedDorpItem_posXpath": interceptRulePage_intercept_searchUntrustedDorpItem_posXpath,
@@ -1665,7 +1668,6 @@ test_statistics_rule_element_position = {
         "policyRuleListPage_okButton_warningNo_posXpath": statisticsRulePage_delete_tip_button_warningNo_posXpath
     }
 }
-
 test_session_log_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
