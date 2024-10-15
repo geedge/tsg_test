@@ -99,13 +99,25 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_pkts+out_pkts:RATE:pkts"
+                            "sent_pkts+received_pkts:RATE:pkts"
                           ],
                           "dimensions": ["app"],
                           "order_by": "pkts",
                           "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "sent_pkts+received_pkts:SUM:pkts"
+                            ],
+                            "dimensions": ["app"],
+                            "order_by": "",
+                            "row_limit": "5",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]

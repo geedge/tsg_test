@@ -99,10 +99,10 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_pkts+out_pkts:RATE:pkts"
+                            "sent_pkts+received_pkts:RATE:pkts"
                           ],
                           "dimensions": ["http_host"],
-                          "order_by": "pkts",
+                          "order_by": "",
                           "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
@@ -111,10 +111,10 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_pkts+out_pkts:SUM:pkts"
+                            "sent_pkts+received_pkts:SUM:pkts"
                           ],
                           "dimensions": ["http_host"],
-                          "order_by": "pkts",
+                          "order_by": "",
                           "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
