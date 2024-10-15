@@ -11,11 +11,9 @@ from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
-
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -55,14 +53,13 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
-                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.3",
+                                "item_value": "2.1.1.14",
                             },
                         ]
                     }],
@@ -80,29 +77,14 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
                 "server_fqdn": [
                 ],
-                "protocol_filed": [
-                    {
-                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "www.ct.cn"
-                            }
-                        ],
-                    }
-                ],
+                "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [
                 ],
@@ -114,39 +96,74 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                          "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_pkts:SUM:incoming pkts",
-                            "out_pkts:SUM:outgoing pkts",
-                            "in_pkts+out_pkts:SUM:all pkts"
+                            "sent_bytes:SUM:Bytes Sent",
+                            "received_bytes:SUM:Bytes Received",
+                            "sent_bytes+received_bytes:SUM:Bytes"
                           ],
                           "dimensions": [
-                            "client_ip"
+                              "sled_ip"
                           ],
-                          "order_by": "all pkts",
-                          "row_limit": "50",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                          "order_by": "Bytes",
+                          "row_limit": "100",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:RATE:Bytes Sent",
+                                "received_bytes:RATE:Bytes Received",
+                                "sent_bytes+received_bytes:RATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "sled_ip"
+                            ],
+                            "order_by": "Bytes Sent",
+                            "row_limit": "200",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:Bytes Sent",
+                                "received_bytes:BITRATE:Bytes Received",
+                                "sent_bytes+received_bytes:BITRATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "sled_ip"
+                            ],
+                            "order_by": "Bytes Received",
+                            "row_limit": "500",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.ct.cn"}],
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
-                "servers_start_ip": "2.1.1.3",
-                "servers_end_ip": "2.1.1.3",
+                "clients_start_ip": "10.64.224.14",
+                "clients_end_ip": "10.64.224.14",
+                "servers_start_ip": "2.1.1.14",
+                "servers_end_ip": "2.1.1.14",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "http_get_347pkts"
+                "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"time": "2024-07-24T01:36:19Z", "out_bytes": 745744, "in_bytes": 9120, "bytes": 754864}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -213,7 +230,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-   }
+    }
     parameter = replace_paras(parameter)
     run(parameter)
     """

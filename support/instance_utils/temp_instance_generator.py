@@ -129,6 +129,9 @@ class DosProtectionInstanceGenerator:
                 elif create_rule_code != 200:
                     ui_result = "Fail to create {} rule.".format(test_data["policy_type"])
 
+            creation_result["driver"] = driver
+            creation_result["element_position_map"] = element_position_map
+            
         if parameter["script_type"] == "api":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
 
@@ -144,10 +147,8 @@ class DosProtectionInstanceGenerator:
             # 创建Object、Profile、Rule
             create = CreatePolicy()
             cfg_list = create.create_policy(parameter, test_data, template_path)
-                
-        creation_result["driver"] = driver
-        creation_result["element_position_map"] = element_position_map
-        creation_result["cfg_list"] = cfg_list
+            creation_result["cfg_list"] = cfg_list
+        
         creation_result["ui_result"] = ui_result
         creation_result["api_result"] = api_result
         return creation_result
@@ -159,7 +160,7 @@ class DosProtectionInstanceGenerator:
             "api_result": ""
         }
         delete = DeletePolicy()
-        if isinstance(self.ui_name_list, list) and self.ui_name_list != [] and len(creation_result["driver"]) > 0:
+        if isinstance(self.ui_name_list, list) and self.ui_name_list != [] and "driver" in creation_result and len(creation_result["driver"]) > 0:
             driver = creation_result["driver"]
             # 删除rule
             search_rule = SearchRule(driver)
@@ -216,7 +217,7 @@ class DosProtectionInstanceGenerator:
             support.ui_utils.env.teardown()
             # 强行删除，防止有配置残留影响其他用例测试
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        if isinstance(self.api_name_list, list) and self.api_name_list != [] and len(creation_result["cfg_list"]) > 0:
+        if isinstance(self.api_name_list, list) and self.api_name_list != [] and "cfg_list" in creation_result and len(creation_result["cfg_list"]) > 0:
             cfg_list = creation_result["cfg_list"]
             # 按配置进行删除
             delete.delele_policy_by_cfg(test_data["token"], parameter, cfg_list)

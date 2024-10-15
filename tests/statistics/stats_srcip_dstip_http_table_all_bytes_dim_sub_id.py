@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.3",
+                                "item_value": "2.1.1.14",
                             },
                         ]
                     }],
@@ -97,17 +97,51 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes+out_bytes:BITRATE:bytes"
+                            "sent_bytes:SUM:Bytes Sent",
+                            "received_bytes:SUM:Bytes Received",
+                            "sent_bytes+received_bytes:SUM:Bytes"
                           ],
                           "dimensions": [
-                            "server_fqdn"
+                              "subscriber_id"
                           ],
-                          "order_by": "bytes",
+                          "order_by": "Bytes",
                           "row_limit": "100",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:RATE:Bytes Sent",
+                                "received_bytes:RATE:Bytes Received",
+                                "sent_bytes+received_bytes:RATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "subscriber_id"
+                            ],
+                            "order_by": "Bytes Sent",
+                            "row_limit": "200",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:Bytes Sent",
+                                "received_bytes:BITRATE:Bytes Received",
+                                "sent_bytes+received_bytes:BITRATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "subscriber_id"
+                            ],
+                            "order_by": "Bytes Received",
+                            "row_limit": "500",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -118,17 +152,17 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.3",
-                "clients_end_ip": "10.64.224.3",
-                "servers_start_ip": "2.1.1.3",
-                "servers_end_ip": "2.1.1.3",
+                "clients_start_ip": "10.64.224.14",
+                "clients_end_ip": "10.64.224.14",
+                "servers_start_ip": "2.1.1.14",
+                "servers_end_ip": "2.1.1.14",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [  # BITRATE=bytes*8
-                {"s2c_link_id": 720, "bytes": 754864}
+            "statists_metric_results": [
+                {"time": "2024-07-24T01:36:19Z", "out_bytes": 745744, "in_bytes": 9120, "bytes": 754864}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -196,7 +230,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-   }
+    }
     parameter = replace_paras(parameter)
     run(parameter)
     """

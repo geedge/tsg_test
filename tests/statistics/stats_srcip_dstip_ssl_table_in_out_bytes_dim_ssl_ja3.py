@@ -11,9 +11,11 @@ from datetime import datetime
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 
+
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -59,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.14",
+                                "item_value": "2.1.1.3",
                             },
                         ]
                     }],
@@ -77,13 +79,12 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "ssl",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                "server_fqdn": [
-                ],
+                "server_fqdn": [],
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [
@@ -96,39 +97,75 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                          "visualization_type": "Table",
                           "metrics": [
-                            "sent_bytes:RATE:in bytes",
-                            "received_bytes:RATE:out bytes",
-                            "sent_bytes+received_bytes:RATE:bytes"
+                            "in_bytes:SUM:incoming bytes",
+                            "out_bytes:SUM:outgoing bytes",
+                            "in_bytes+out_bytes:SUM:all bytes"
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
-                          "min_in_size": "1",
-                          "min_out_size": "1"
+                          "dimensions": [
+                            "ssl_ja3_hash"
+                          ],
+                          "order_by": "all bytes",
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:RATE:incoming bytes",
+                                "out_bytes:RATE:outgoing bytes",
+                                "in_bytes+out_bytes:RATE:all bytes"
+                            ],
+                            "dimensions": [
+                                "ssl_ja3_hash"
+                            ],
+                            "order_by": "incoming bytes",
+                            "row_limit": "50",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_2", 1),
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_bytes:BITRATE:incoming bytes",
+                                "out_bytes:BITRATE:outgoing bytes",
+                                "in_bytes+out_bytes:BITRATE:all bytes"
+                            ],
+                            "dimensions": [
+                                "ssl_ja3_hash"
+                            ],
+                            "order_by": "outgoing bytes",
+                            "row_limit": "100",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
+            "log_query_param": [
+                {"query_field_key": "ssl_sni", "query_value": "www.bbc.com"}
+            ],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.14",
-                "clients_end_ip": "10.64.224.14",
-                "servers_start_ip": "2.1.1.14",
-                "servers_end_ip": "2.1.1.14",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "http_87pkts"
+                "pcap_name": "ssl_tls13"
             },
-            "statists_metric_results": [
-                {"time": "2024-07-24T01:36:19Z", "out_bytes": 745744, "in_bytes": 9120, "bytes": 754864}
+            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
+                {"client_ip": "10.64.14.213", "in_bytes": 13209, "out_bytes": 454788, "bytes": 3743976}
             ],
             # "traffic": {
             #     "type": "trex",
@@ -196,7 +233,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
     parameter = replace_paras(parameter)
     run(parameter)
     """
