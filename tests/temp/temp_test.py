@@ -130,9 +130,9 @@ def run(parameter):
                     case_generator_result["driver"] = verification_result[3]
                     # 分析结果
                     analysis = Analyse()
-                    if len(case_generator_result["driver"]) > 0:
+                    if "driver" in case_generator_result and len(case_generator_result["driver"]) > 0:
                         result["ui_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
-                    if len(case_generator_result["cfg_list"]) > 0:
+                    if "cfg_list" in case_generator_result and len(case_generator_result["cfg_list"]) > 0:
                         result["api_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
                 else:
                     result = verification_result
