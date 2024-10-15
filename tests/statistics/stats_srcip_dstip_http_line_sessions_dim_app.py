@@ -102,7 +102,19 @@ def run(parameter):
                             "new_in_sessions+new_out_sessions:RATE:sessions"
                           ],
                           "dimensions": ["app"],
-                          "order_by": "sessions",
+                          "order_by": "",
+                          "row_limit": "15",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "new_in_sessions+new_out_sessions:SUM:sessions"
+                          ],
+                          "dimensions": ["app"],
+                          "order_by": "",
                           "row_limit": "15",
                           "min_in_size": "1",
                           "min_out_size": "1"
@@ -148,7 +160,7 @@ def run(parameter):
         }
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()

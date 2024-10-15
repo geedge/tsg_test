@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "www.python.*"
+                                "item_value": "www.caltech.*"
                             }
                         ],
                     }
@@ -83,18 +83,18 @@ def run(parameter):
             },
             "expected_return": "this.piece.style",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.python.org"}, {"query_field_key": "http_url", "query_value": "www.python.org/"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.caltech.edu"}, {"query_field_key": "http_url", "query_value": "www.caltech.edu/"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --http2 -kv --connect-timeout 30 --max-time 60 https://www.python.org/"
+                "command": "curl --http2 -kv --connect-timeout 30 --max-time 60  https://www.caltech.edu/"
             },
             "token": ""
         }
 
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()

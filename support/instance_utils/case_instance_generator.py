@@ -1,3 +1,7 @@
+# -*- coding: UTF-8 -*-
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.instance_utils.manipulation_instance_generator import ManipulationInstanceGenerator
 from support.instance_utils.dos_protection_instance_generator import DosProtectionInstanceGenerator
 from support.instance_utils.objects_instance_generator import ObjectsInstanceGenerator
@@ -13,7 +17,7 @@ class CaseInstanceGenerator:
         self.test_data = test_data
         self.parameter = parameter
     
-    def run(self):
+    def create(self):
         result = self._run(self.test_data, self.parameter)
         return result
 

@@ -106,6 +106,18 @@ def run(parameter):
                           "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "in_pkts+out_pkts:SUM:pkts"
+                            ],
+                            "dimensions": ["sled_ip"],
+                            "order_by": "",
+                            "row_limit": "10",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -148,7 +160,7 @@ def run(parameter):
         }
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()

@@ -106,7 +106,7 @@ def run(parameter):
 
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()

@@ -61,7 +61,6 @@ def run(parameter):
                             "model": "create",
                             "file_certificate": "test_mid_cert_camiddletest.chain.pem",
                             "file_private_key": "test_mid_key_camiddletest.key",
-                            "certificate_type": "Intermediate-Certificate",
                             "private_key_format": "true",
                             "is_match": "match",
                             "reissue_expiry_hours": "C-120",
@@ -86,7 +85,7 @@ def run(parameter):
 
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
