@@ -18,7 +18,7 @@ from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
-from support.packet_generator.verification import Verification
+from support.packet_generator.verify import Verify
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analysis_result import *
 from support.api_utils.log_in import *
@@ -149,8 +149,8 @@ class StatisticsInstanceGenerator:
                     search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], element_position_map)
                     if search_rule_code == 200:
                         test_data["rule_id"] = rule_id
-                        verify = Verification()
-                        verification_result = verify.verification(driver, parameter, test_data, [], element_position_map)
+                        verify = Verify()
+                        verification_result = verify.verify_result(driver, parameter, test_data, [], element_position_map)
                         if len(verification_result) == 4:
                             driver = verification_result[3]
                         elif len(verification_result) == 5:
@@ -295,8 +295,8 @@ class StatisticsInstanceGenerator:
                 cfg_list = create.create_policy(parameter, test_data, template_path)
 
                 # 流量验证
-                verify = Verification()
-                verification_result = verify.verification("", parameter, test_data, cfg_list, "")
+                verify = Verify()
+                verification_result = verify.verify_result("", parameter, test_data, cfg_list, "")
 
                 # 分析验证结果，并返回给flask
                 analysis = AnalysisResult()

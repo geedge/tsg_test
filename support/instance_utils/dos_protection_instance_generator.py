@@ -12,7 +12,7 @@ from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
-from support.packet_generator.verification import Verification
+from support.packet_generator.verify import Verify
 from support.api_utils.analysis_result import AnalysisResult
 from support.instance_utils.data_translation import DataTranslation
 import support.ui_utils.env
@@ -150,8 +150,8 @@ class DosProtectionInstanceGenerator:
                                                                         element_position_map)
                     if search_rule_code == 200:
                         test_data["rule_id"] = rule_id
-                        verify = Verification()
-                        verification_result = verify.verification(driver, parameter, test_data, [],
+                        verify = Verify()
+                        verification_result = verify.verify_result(driver, parameter, test_data, [],
                                                                   element_position_map)
                         if len(verification_result) == 4:
                             driver = verification_result[3]
@@ -260,8 +260,8 @@ class DosProtectionInstanceGenerator:
                 cfg_list = create.create_policy(parameter, test_data, template_path)
 
                 # 流量验证
-                verify = Verification()
-                verification_result = verify.verification("", parameter, test_data, cfg_list, "")
+                verify = Verify()
+                verification_result = verify.verify_result("", parameter, test_data, cfg_list, "")
 
                 # 分析验证结果，并返回给flask
                 analysis = AnalysisResult()

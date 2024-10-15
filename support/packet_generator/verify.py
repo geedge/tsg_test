@@ -10,8 +10,8 @@ from support.packet_generator.workpath import workdir
 from datetime import datetime
 from threading import Thread
 
-class Verification:
-    def verification(self, driver, parameter, test_data, cfg_list, test_rule_element_position):
+class Verify:
+    def verify_result(self, driver, parameter, test_data, cfg_list, test_rule_element_position):
         try:
             my_driver = driver
             script_type = parameter["script_type"]
