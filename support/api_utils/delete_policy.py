@@ -31,6 +31,8 @@ class DeletePolicy:
             create_profile_ids = cfg_list["create_profile_ids"]
             create_policies_ids = cfg_list["create_policies_ids"]
             create_geo_name_ids = cfg_list["create_geo_name_ids"]
+            create_library_tag_ids = cfg_list["create_library_tag_ids"] 
+            create_library_catalog_ids = cfg_list["create_library_catalog_ids"] 
 
             delete_object_template = {"type": "ip", "ids": [], "vsys_id": 1}
             delete_rule_template = {"ids": [], "type": "tsg_security", "vsys_id": 1}
@@ -294,6 +296,38 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record successfully.", flush=True)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
+            if len(create_library_catalog_ids) > 0:
+                delete_library_catalog_dict = {"catalog_ids": "", "vsy_id":1}
+                for catalog_id in create_library_catalog_ids:
+                    if len(create_library_catalog_ids) == 1:
+                        delete_library_catalog_dict["catalog_ids"] = str(catalog_id)
+                    elif len(create_library_catalog_ids) > 1:
+                        sep = ","
+                        delete_library_catalog_dict["catalog_ids"] = sep.join(str(catalog_id))
+                delete_library_catalog_dict["vsy_id"] = vsys_id
+                url = api_server + "/v1/policy/library/catalog"
+                response = requests.delete(url, headers=headers, params=delete_library_catalog_dict, verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library catalog successfully.", flush=True)
+                    if len(create_library_tag_ids) > 0:
+                        delete_library_tag_dict = {"tag_ids": "", "vsy_id":1}
+                        for tag_id in create_library_tag_ids:
+                            if len(create_library_tag_ids) == 1:
+                                delete_library_tag_dict["tag_ids"] = str(tag_id)
+                            elif len(create_library_tag_ids) > 1:
+                                sep = ","
+                                delete_library_tag_dict["tag_ids"] = sep.join(str(tag_id))
+                        delete_library_tag_dict["vsy_id"] = vsys_id
+                        url = api_server + "/v1/policy/library/tag"
+                        response = requests.delete(url, headers=headers, params=delete_library_tag_dict, verify=False)
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library tag successfully.", flush=True)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library tag failed.", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library catalog failed.", flush=True)
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
     

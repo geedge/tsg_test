@@ -61,6 +61,8 @@ class ServiceChainingInstanceGenerator:
             if conditions:  # 确保conditions不为空  
                 if con_key in service_chaining_no_create_list:
                     continue
+                if con_key in {"source_library", "destination_library","server_fqdn_library"}:
+                    continue
                 for condition in conditions:  
                     # 为每个条件项创建一个新的字典  
                     obj_name_dict = {  
@@ -378,6 +380,7 @@ class ServiceChainingInstanceGenerator:
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
+                time.sleep(30)
 
                 # 流量验证
                 verification = Verify()
