@@ -182,7 +182,7 @@ class MonitorInstanceGenerator:
                               "Traffic verification failed", flush=True)
 
                 # 分析验证结果，并返回给flask
-                if len(verification_result) != 0:
+                len(verification_result) > 1:
                     analysis = Analyse()
                     ui_result = analysis.analyse_result(test_data, [], verification_result)
 
