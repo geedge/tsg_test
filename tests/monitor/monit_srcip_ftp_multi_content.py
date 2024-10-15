@@ -79,12 +79,12 @@ def run(parameter):
                                 "item_operation": "add",
                                 "item_type": "ftp_content",
                                 "item_value": "TEXT",
-                                "value": [
-                                    "autotest*"
-                                ]
                                 # "value": [
-                                #     "autotest&test"
+                                #     "autotest*"
                                 # ]
+                                "value": [
+                                    "auto&test"
+                                ]
                             }
                         ],
                     }
@@ -107,7 +107,7 @@ def run(parameter):
 
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
         return result
     except Exception as e:
@@ -148,6 +148,7 @@ if __name__ == '__main__':
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

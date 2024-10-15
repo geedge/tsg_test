@@ -99,13 +99,25 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_pkts+out_pkts:RATE:pkts"
+                            "sent_pkts+received_pkts:RATE:pkts"
                           ],
                           "dimensions": ["server_ip"],
-                          "order_by": "pkts",
+                          "order_by": "",
                           "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "sent_pkts+received_pkts:SUM:pkts"
+                            ],
+                            "dimensions": ["server_ip"],
+                            "order_by": "",
+                            "row_limit": "10",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -148,7 +160,7 @@ def run(parameter):
         }
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()

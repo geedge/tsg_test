@@ -22,7 +22,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "secy_deny_srcip_http_suff_reqheader_by_cookie_block_403_text",
+            "rule_name": os.path.splitext(os.path.basename(__file__))[0],
             "rule_action": "deny",
             "rule_type": "create",
             "condition": {
@@ -109,7 +109,7 @@ def run(parameter):
         }
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
         
         return result
     except Exception as e:

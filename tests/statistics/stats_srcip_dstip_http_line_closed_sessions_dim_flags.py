@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.4",
+                                "item_value": "2.1.1.26",
                             },
                         ]
                     }],
@@ -99,14 +99,25 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "client_port:UNIQUE_COUNT:Client Port",
-                            "server_port:UNIQUE_COUNT:Server Port"
+                            "closed_in_sessions+closed_out_sessions:RATE:Closed Sessions"
                           ],
-                          "dimensions": [],
+                          "dimensions": ["flags"],
                           "order_by": "",
-                          "row_limit": "",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                          "row_limit": "20",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "closed_in_sessions+closed_out_sessions:SUM:Closed Sessions"
+                            ],
+                            "dimensions": ["flags"],
+                            "order_by": "",
+                            "row_limit": "10",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -117,10 +128,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.4",
-                "clients_end_ip": "10.64.224.4",
-                "servers_start_ip": "2.1.1.4",
-                "servers_end_ip": "2.1.1.4",
+                "clients_start_ip": "10.64.224.26",
+                "clients_end_ip": "10.64.224.26",
+                "servers_start_ip": "2.1.1.26",
+                "servers_end_ip": "2.1.1.26",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",

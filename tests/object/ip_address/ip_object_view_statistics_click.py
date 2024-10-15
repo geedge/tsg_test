@@ -44,7 +44,7 @@ def run(parameter):
         # test_data["statistics"] = "brief"
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
     except Exception as e:
         exception_result = str(e)

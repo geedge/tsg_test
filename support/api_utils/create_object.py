@@ -177,6 +177,7 @@ class CreateObject:
                 if is_import == 0:
                     type = "create"
                     member = self.combine_object_data(obj_type, obj_sub_type, add_item_list, test_pc_ip, test_subcriber_id, context_name, is_repeat)
+                    #print("member: {}".format(member))
                     obj_template_dict['object']['member'] = member
                 else:
                     type = "import"
@@ -188,8 +189,9 @@ class CreateObject:
                         file_name = object_file.split("/")[-1]
                         obj_template_dict["file_dry"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
                         obj_template_dict["file_import"] = {"file":(file_name, open(object_file, 'rb'), "text/plain")}
+                #print("obj_template_dict: {}".format(obj_template_dict))
                 object_ids_temp_list, timeout_result = self.create_or_import_object(type, obj_template_dict, headers, api_host, is_repeat)
-
+                #print("object_ids_temp_list: {}".format(object_ids_temp_list))
             objects_list = []
             object_temp_list = []
             if attribute_name != '' and len(object_ids_temp_list) != 0:
@@ -230,15 +232,33 @@ class CreateObject:
                         object_dict['addr_type'] = item['addr_type']
                     object_dict = dict(ip=object_dict, op='add')
                     items.append(copy.deepcopy(object_dict))
+            # elif obj_type == "flag":
+            #     for item in add_item_list:
+            #         if 'flag' in item:
+            #             object_dict['flag'] = item['flag']
+            #         if 'mask' in item:
+            #             object_dict['mask'] = item['mask']
+            #         object_dict = dict(flag=object_dict, op='add')
+            #         items.append(object_dict)
+            #     member = dict(items=items, type="item")
             elif obj_type == "flag":
+                items = []  # 初始化一个空的列表用于存放所有的项
                 for item in add_item_list:
-                    if 'flag' in item:
-                        object_dict['flag'] = item['flag']
-                    if 'mask' in item:
-                        object_dict['mask'] = item['mask']
-                    object_dict = dict(flag=object_dict, op='add')
-                    items.append(object_dict)
-                member = dict(items=items, type="item")
+                    # 直接构造每个 flag 的字典
+                    flag_item_dict = {
+                        "op": "add",
+                        "flag": {
+                            "flag": item['flag'],  # 直接从item中取flag值
+                            "mask": item['mask']  # 直接从item中取mask值
+                        }
+                    }
+                    items.append(flag_item_dict)  # 将构建的字典添加到items列表中
+                # 构建最终的 member 字典
+                member = {
+                    "type": "item",
+                    "items": items  # 使用之前构建的 items 列表
+                }
+
             elif obj_type == "port":
                 for item in add_item_list:
                     object_dict = {}
@@ -309,8 +329,40 @@ class CreateObject:
                             tmp_item["string"]["patterns"][0]["offset"] = range_offset[0]["offset"]
                             tmp_item["string"]["patterns"][0]["depth"] = range_offset[0]["depth"]
                     items.append(copy.deepcopy(tmp_item))
-
-
+            elif obj_type == "account":
+                for item in add_item_list:
+                    tmp_item = {
+                        "op": "add",
+                        "string": {
+                            "patterns": [
+                                # {
+                                #     "keywords": "text"
+                                # }
+                            ],
+                            "expr_type": 0,
+                            "is_hexbin": 0
+                        }
+                    }
+                    keywords = item["keyword_array"][0]
+                    is_hexbin = item["is_hexbin"]
+                    expr_type = item["expr_type"]
+                    tmp_item["string"]["expr_type"] = expr_type
+                    tmp_item["string"]["is_hexbin"] = is_hexbin
+                    if expr_type == 1:  # 多个and 模式
+                        keywords_list = keywords.split("&")
+                        for i in range(len(keywords_list)):
+                            tmp = {}
+                            tmp["keywords"] = keywords_list[i]
+                            tmp_item["string"]["patterns"].append(copy.deepcopy(tmp))
+                    elif expr_type != 1:
+                        tmp = {}
+                        tmp["keywords"] = keywords
+                        tmp_item["string"]["patterns"].append(copy.deepcopy(tmp))
+                        if expr_type == 3:  # range 模式
+                            range_offset = item["range"]
+                            tmp_item["string"]["patterns"][0]["offset"] = range_offset[0]["offset"]
+                            tmp_item["string"]["patterns"][0]["depth"] = range_offset[0]["depth"]
+                    items.append(copy.deepcopy(tmp_item))
 
                     # patterns = []
                     # keywords = item["keyword_array"][0]
@@ -494,7 +546,8 @@ class CreateObject:
             obj_type = obj_template_dict['object']['type']
             response_dict = json.loads(response.text)
             object_ids, geo_name_id_list = self.get_object_ids(response_dict, obj_type)
-            
+            #print("object_ids: {}".format(object_ids))
+
             # 是否可取消，待验证？？
             if is_repeat == 1 and obj_type != 'ip':
                 self.fqdn_ids = []
@@ -564,6 +617,7 @@ class CreateObject:
             object_dict = dict(object_ids=object_id_list)
             temp_list.append(object_dict)
             temp_dict = dict(objects=temp_list, attribute_name=attribute_name, is_negate=is_negate)
+            #print("temp_dict: {}".format(temp_dict))
         return temp_dict
 
     def handle_ids(self, object_ids, target_ids):

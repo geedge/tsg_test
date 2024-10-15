@@ -188,7 +188,7 @@ class ApiVerification:
                                 break
                             time.sleep(search_interval_time)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：Traffic Metric Verify Result:{}'.format(metric_result), flush=True)
-            return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
+            return metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
         elif policy_type == "service_chaining":
             #从配置文件中获取active ip list
             conf_path = os.path.join(workdir,"configuration_file.ini")
@@ -371,7 +371,7 @@ class ApiVerification:
             return True, log_result, metric_result, my_driver
         elif policy_type == "shaping":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.")
-            return True, True, True
+            return True, True, True, my_driver
 
     def is_in(self, full_str, sub_str, debug_flag):
         if sub_str == "trex":  #故若干

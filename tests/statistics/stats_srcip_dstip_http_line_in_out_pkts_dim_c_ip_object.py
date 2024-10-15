@@ -37,6 +37,7 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
@@ -59,7 +60,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.26",
+                                "item_value": "2.1.1.23",
                             },
                         ]
                     }],
@@ -99,15 +100,25 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_in_sessions:SUM:new in sessions",
-                            "new_out_sessions:SUM:new out sessions",
-                            "new_in_sessions+new_out_sessions:SUM:sessions"
+                            "in_pkts+out_pkts:RATE:pkts"
                           ],
-                          "dimensions": [],
+                          "dimensions": ["client_ip_object_list"],
                           "order_by": "",
-                          "row_limit": "",
+                          "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "in_pkts+out_pkts:Sum:pkts"
+                            ],
+                            "dimensions": ["client_ip_object_list"],
+                            "order_by": "",
+                            "row_limit": "20",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -118,10 +129,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.26",
-                "clients_end_ip": "10.64.224.26",
-                "servers_start_ip": "2.1.1.26",
-                "servers_end_ip": "2.1.1.26",
+                "clients_start_ip": "10.64.224.23",
+                "clients_end_ip": "10.64.224.23",
+                "servers_start_ip": "2.1.1.23",
+                "servers_end_ip": "2.1.1.23",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
@@ -150,7 +161,7 @@ def run(parameter):
         }
         # 测试用例实例化
         case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        result = case_instance_generator.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()

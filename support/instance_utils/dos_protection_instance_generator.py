@@ -12,8 +12,8 @@ from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
-from support.packet_generator.verification import Verification
-from support.api_utils.analysis_result import AnalysisResult
+from support.packet_generator.verify import Verify
+from support.api_utils.analyse_result import Analyse
 from support.instance_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
@@ -150,8 +150,8 @@ class DosProtectionInstanceGenerator:
                                                                         element_position_map)
                     if search_rule_code == 200:
                         test_data["rule_id"] = rule_id
-                        verify = Verification()
-                        verification_result = verify.verification(driver, parameter, test_data, [],
+                        verification = Verify()
+                        verification_result = verification.verify_result(driver, parameter, test_data, [],
                                                                   element_position_map)
                         if len(verification_result) == 4:
                             driver = verification_result[3]
@@ -162,9 +162,9 @@ class DosProtectionInstanceGenerator:
                               "Traffic verification failed", flush=True)
 
                 # 分析验证结果，并返回给flask
-                if len(verification_result) != 0:
-                    analysis = AnalysisResult()
-                    ui_result = analysis.analysis_result(test_data, [], verification_result)
+                len(verification_result) > 1:
+                    analysis = Analyse()
+                    ui_result = analysis.analyse_result(test_data, [], verification_result)
 
                 # 删除rule
                 if create_rule_code == 200:
@@ -260,12 +260,12 @@ class DosProtectionInstanceGenerator:
                 cfg_list = create.create_policy(parameter, test_data, template_path)
 
                 # 流量验证
-                verify = Verification()
-                verification_result = verify.verification("", parameter, test_data, cfg_list, "")
+                verification = Verify()
+                verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
 
                 # 分析验证结果，并返回给flask
-                analysis = AnalysisResult()
-                api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
+                analysis = Analyse()
+                api_result = analysis.analyse_result(test_data, cfg_list, verification_result)
             finally:
                 result["api_result"] = api_result
                 # 删除配置
