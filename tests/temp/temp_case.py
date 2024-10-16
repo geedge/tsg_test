@@ -12,15 +12,14 @@ from support.api_utils.analyse_result import Analyse
 from support.ui_utils.workpath import workdir
 
 def run(parameter):
-    result = {
-        "ui_result": "",
-        "api_result": "",
-        "exception_result": ""
-    }
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         
         # 参数初始化
+        result = {
+            "ui_result": "",
+            "api_result": ""
+        }
         exception_result = ""
         
         # 脚本启动时间
