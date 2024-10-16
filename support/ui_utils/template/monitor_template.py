@@ -203,7 +203,7 @@ def run(parameter):
         # 分析验证结果，并返回给flask
         if len(verification_result) == 4:
             analysis = Analyse()
-            result = analysis.analyse_result(test_data, [], verification_result)
+            result = analysis.analyse_result(test_data["policy_type"], [], verification_result)
             # if len(result) == 0:
                 # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
             # elif len(result) != 0:

@@ -44,7 +44,7 @@ class CaseInstanceGenerator:
         elif "type" in policy_configuration.keys() and policy_configuration["type"] == "objects":
             result = self._run_objects(policy_configuration, parameter)
         elif "type" in policy_configuration.keys() and policy_configuration["type"] == "temp":
-            result = self._run_temp(policy_configuration, parameter)
+            result = self._run_temp(policy_configuration, parameter, i=0)
         else:
             pass
         return result

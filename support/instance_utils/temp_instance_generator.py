@@ -38,27 +38,23 @@ class TempInstanceGenerator:
             test_data["token"] = token
 
             # 使用trex的随机源ip
-            if test_data["traffic"]["type"] == "trex":
+            if test_data["traffic_generation"]["type"] == "trex":
                 organize_config = OrganizeConfig()
-                test_data = organize_config.generate_random_dos_src_ip(test_data,parameter)
+                test_data = organize_config.generate_random_dos_src_ip(test_data, parameter)
                 test_data = organize_config.generate_only_dstip_for_trex_replay(test_data)
-
-            # 无需创建的condition
-            dos_protection_no_create_list = ["application", "ip_protocol", "sub_action_override"]
+                
             # name_list汇总
             temp_name_list = []
             policy_name_dict = {}
-            policy_name_dict["type"] = test_data["policy_type"]
-            policy_name_dict["name"] = test_data["rule_name"]
+            policy_name_dict["type"] = test_data["policy_configuration"]["type"]
+            policy_name_dict["name"] = test_data["policy_configuration"]["name"]
             temp_name_list.append(policy_name_dict)
-            for con_key, conditions in test_data["condition"].items():
+            for con_key, conditions in test_data["policy_configuration"].items():
                 if conditions:  # 确保conditions不为空
-                    if con_key in dos_protection_no_create_list:
-                        continue
                     for condition in conditions:
                         # 为每个条件项创建一个新的字典
                         obj_name_dict = {
-                            "type": condition["object_type"],
+                            "type": condition["type"],
                             "name": condition["name"]
                         }
                         temp_name_list.append(obj_name_dict)
@@ -223,7 +219,7 @@ class TempInstanceGenerator:
         if isinstance(self.api_name_list, list) and self.api_name_list != [] and "cfg_list" in creation_result and len(creation_result["cfg_list"]) > 0:
             cfg_list = creation_result["cfg_list"]
             # 按配置进行删除
-            delete.delele_policy_by_cfg(test_data["token"], parameter, cfg_list)
+            delete.delele_policy_by_cfg(self.test_data["token"], parameter, cfg_list)
         deletion_result["ui_result"] = ui_result
         deletion_result["api_result"] = api_result
         return deletion_result
