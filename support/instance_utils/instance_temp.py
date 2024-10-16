@@ -119,7 +119,7 @@ class InstanceTemp:
                         ui_result = "Fail to create {} rule.".format(self.test_data["policy_type"])
 
                 creation_result["driver"] = driver
-                creation_result["element_position_map"] = element_position_map
+                # creation_result["element_position_map"] = element_position_map
                 
             if self.parameter["script_type"] == "api":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
