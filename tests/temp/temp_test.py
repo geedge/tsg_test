@@ -12,15 +12,16 @@ from support.api_utils.analyse_result import Analyse
 from support.ui_utils.workpath import workdir
 
 def run(parameter):
+    result = {
+        "ui_result": "",
+        "api_result": "",
+        "exception_result": ""
+    }
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         
         # 参数初始化
         exception_result = ""
-        result = {
-            "ui_result": "",
-            "api_result": ""
-        }
         
         # 脚本启动时间
         start_time = time.time()
@@ -136,10 +137,16 @@ def run(parameter):
                     if "cfg_list" in case_generator_result and len(case_generator_result["cfg_list"]) > 0:
                         result["api_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
                 else:
-                    result = verification_result
+                    result["exception_result"] = verification_result
                     exit_flag = True
-            elif isinstance(case_generator_result, str) and len(case_generator_result) != 0 or isinstance(result, dict) and (len(result["ui_result"]) != 0 or len(result["api_result"]) != 0):
-                result = case_generator_result
+            elif isinstance(case_generator_result, str) and len(case_generator_result) != 0:
+                result["exception_result"] = case_generator_result
+                exit_flag = True
+            elif isinstance(result, dict) and len(case_generator_result["ui_result"]) != 0:
+                result["ui_result"] = case_generator_result["ui_result"]
+                exit_flag = True
+            elif isinstance(result, dict) and len(case_generator_result["api_result"]) != 0:
+                result["api_result"] = case_generator_result["ui_result"]
                 exit_flag = True
             # 删除配置
             if isinstance(case_instance_generator, CaseInstanceGenerator):
@@ -154,8 +161,10 @@ def run(parameter):
         return result
     except Exception as e:
         exception_result = str(e)
+        result["exception_result"] = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", e, flush=True)
-        return "Exception Error: " + str(e)
+        # return "Exception Error: " + str(e)
+        return result
     finally:
         # 统计脚本用时
         end_time = time.time()

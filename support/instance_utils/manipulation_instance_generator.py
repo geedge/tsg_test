@@ -305,7 +305,7 @@ class ManipulationInstanceGenerator:
 
         return result
 
-    def delete_data(self):
+    def clean_up(self):
         # 删除配置
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:

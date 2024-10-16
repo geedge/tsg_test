@@ -14,7 +14,7 @@ from support.instance_utils.data_translation import DataTranslation
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class DosProtectionInstanceGenerator:
+class TempInstanceGenerator:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
@@ -157,7 +157,7 @@ class DosProtectionInstanceGenerator:
         except Exception as e:
             return "Exception Error: " + str(e)
 
-    def delete_data(self, test_data, creation_result):
+    def delete(self, test_data, creation_result):
         ui_result, api_result = "", ""
         deletion_result = {
             "ui_result": "",
@@ -217,19 +217,24 @@ class DosProtectionInstanceGenerator:
                     # 退出遍历标志
                     if cond_status == 1:  # 失败，退出遍历创建
                         break
-            # 环境清理
-            support.ui_utils.env.teardown()
-            # 强行删除，防止有配置残留影响其他用例测试
-            delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
         if isinstance(self.api_name_list, list) and self.api_name_list != [] and "cfg_list" in creation_result and len(creation_result["cfg_list"]) > 0:
             cfg_list = creation_result["cfg_list"]
             # 按配置进行删除
             delete.delele_policy_by_cfg(test_data["token"], parameter, cfg_list)
-            # 强行删除，防止有配置残留影响其他用例测试
-            delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)
         deletion_result["ui_result"] = ui_result
         deletion_result["api_result"] = api_result
         return deletion_result
+
+    def clean_up(self):
+        delete = DeletePolicy()
+        if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
+            # 环境清理
+            support.ui_utils.env.teardown()
+            # 强行删除，防止有配置残留影响其他用例测试
+            delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
+        if isinstance(self.api_name_list, list) and self.api_name_list != []:
+            # 强行删除，防止有配置残留影响其他用例测试
+            delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)
         
 if __name__ == '__main__':
     parameter = {

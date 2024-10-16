@@ -100,7 +100,7 @@ def run(parameter):
     finally:
         # 清理环境并删除配置
         if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+            case_instance_generator.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
