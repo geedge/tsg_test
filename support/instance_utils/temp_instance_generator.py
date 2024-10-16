@@ -66,6 +66,7 @@ class TempInstanceGenerator:
             self.ui_name_list = temp_name_list
             self.api_name_list = temp_name_list
 
+            # =============required begin=============
             if len(parameter["script_type"]) == 0:
                 if number == 0:
                     parameter["script_type"] = "ui"
@@ -73,6 +74,7 @@ class TempInstanceGenerator:
                     parameter["script_type"] = "api"
 
             if parameter["script_type"] == "ui":
+            # =============required end=============
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
 
                 # 环境初始化
@@ -130,15 +132,13 @@ class TempInstanceGenerator:
                     elif create_rule_code != 200:
                         ui_result = "Fail to create {} rule.".format(test_data["policy_type"])
 
+            # =============required begin=============
                 creation_result["driver"] = driver
                 creation_result["element_position_map"] = element_position_map
                 
             if parameter["script_type"] == "api":
+            # =============required end=============
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
-
-                # 数据转换，适配API的test_data
-                translation = DataTranslation()
-                test_data = translation.data_translation(parameter, test_data)
 
                 # 添加测试过程中涉及的template
                 template_path = {}
@@ -148,6 +148,7 @@ class TempInstanceGenerator:
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
+        # =============required begin=============
                 creation_result["cfg_list"] = cfg_list
             
             creation_result["ui_result"] = ui_result
@@ -156,7 +157,9 @@ class TempInstanceGenerator:
             return creation_result
         except Exception as e:
             return "Exception Error: " + str(e)
+        # =============required end=============
 
+    # =============required begin=============
     def delete(self, test_data, creation_result):
         ui_result, api_result = "", ""
         deletion_result = {
@@ -224,6 +227,7 @@ class TempInstanceGenerator:
         deletion_result["ui_result"] = ui_result
         deletion_result["api_result"] = api_result
         return deletion_result
+    # =============required end=============
 
     def clean_up(self):
         delete = DeletePolicy()

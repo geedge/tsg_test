@@ -115,9 +115,9 @@ def run(parameter):
         loop_number = 1
         if len(parameter["script_type"]) == 0:
             loop_number = 2
-        for _ in range(loop_number):
+        for i in range(loop_number):
             # 测试用例实例化，创建测试需要的object、profile、policy rule
-            case_instance_generator = CaseInstanceGenerator(test_data["policy_configuration"], parameter, loop_number)
+            case_instance_generator = CaseInstanceGenerator(test_data["policy_configuration"], parameter, i)
             case_generator_result = case_instance_generator.create()
             # 完成创建后如果返回的ui_result和api_result值为空，意味着创建成功，并进行流量验证，否则返回异常值并跳过验证阶段，走清理删除步骤
             if isinstance(case_generator_result, dict) and len(case_generator_result["ui_result"]) == 0 and len(case_generator_result["api_result"]) == 0:
@@ -128,22 +128,24 @@ def run(parameter):
                 verification = Verify()
                 verification_result = verification.verify_result(parameter, test_data, case_generator_result, traffic_result)
                 if len(verification_result) == 4:
-                    case_generator_result["driver"] = verification_result[3]
                     # 分析结果
                     analysis = Analyse()
                     if "driver" in case_generator_result and len(case_generator_result["driver"]) > 0:
+                        case_generator_result["driver"] = verification_result[3]
                         result["ui_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
                     if "cfg_list" in case_generator_result and len(case_generator_result["cfg_list"]) > 0:
                         result["api_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
                     # 删除测试数据
                     deletion_result = case_instance_generator.delete(test_data, case_generator_result)
-                    if len(deletion_result["ui_result"]) > 0 or len(deletion_result["api_result"]) > 0:
-                        return deletion_result
+                    if len(deletion_result["ui_result"]) > 0:
+                        result["ui_result"] = result["ui_result"] + deletion_result["ui_result"]
+                    if len(deletion_result["api_result"]) > 0:
+                        result["api_result"] = result["api_result"] + deletion_result["api_result"]
+                    return result
                 else:
                     return verification_result
             else:
                 return case_generator_result
-        return result
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", e, flush=True)

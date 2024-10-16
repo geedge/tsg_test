@@ -150,7 +150,7 @@ def run(parameter):
                 exit_flag = True
             # 删除配置
             if isinstance(case_instance_generator, CaseInstanceGenerator):
-                deletion_result = case_instance_generator.delete_data(test_data, case_generator_result)
+                deletion_result = case_instance_generator.clean_up(test_data, case_generator_result)
                 if len(deletion_result["ui_result"]) > 0:
                     result["ui_result"] = result["ui_result"] + deletion_result["ui_result"]
                 if len(deletion_result["api_result"]) > 0:

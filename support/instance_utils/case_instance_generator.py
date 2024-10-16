@@ -102,9 +102,11 @@ class CaseInstanceGenerator:
         result = self.temp.run()
         return result
     
+    # =============required begin=============
     def delete(self, policy_configuration, case_generator_result):
         if "type" in self.policy_configuration.keys() and self.policy_configuration["type"] == "temp":
              self.temp.delete(policy_configuration, case_generator_result)
+    # =============required end=============
     
     def clean_up(self):
         if "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "security":
