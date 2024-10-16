@@ -119,7 +119,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        case_instance_generator.clean_up()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
