@@ -118,26 +118,26 @@ def run(parameter):
         for i in range(loop_number):
             # 测试数据实例化，创建测试需要的object、profile、policy rule
             instantiation = InstanceTestData(test_data, parameter, i)
-            instantiation_result = instantiation.create()
+            creation_result = instantiation.create()
             # 完成创建后如果返回的ui_result和api_result值为空，意味着创建成功，并进行流量验证，否则返回异常值并跳过验证阶段，走清理删除步骤
-            if isinstance(instantiation_result, dict) and len(instantiation_result["ui_result"]) == 0 and len(instantiation_result["api_result"]) == 0:
+            if isinstance(creation_result, dict) and len(creation_result["ui_result"]) == 0 and len(creation_result["api_result"]) == 0:
                 # 触发流量
                 sender = SendTraffic()
                 traffic_result = sender.send_traffic(parameter, test_data)
                 # 验证metric和log
                 verification = Verify()
-                verification_result = verification.verify_result(parameter, test_data, instantiation_result, traffic_result)
+                verification_result = verification.verify_result(parameter, test_data, creation_result, traffic_result)
                 if len(verification_result) == 4:
                     # 分析结果
                     analysis = Analyse()
-                    if "driver" in instantiation_result and len(instantiation_result["driver"]) > 0:
-                        instantiation_result["driver"] = verification_result[3]
-                        result["ui_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], instantiation_result, verification_result)
-                    if "cfg_list" in instantiation_result and len(instantiation_result["cfg_list"]) > 0:
-                        result["api_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], instantiation_result, verification_result)
+                    if "driver" in creation_result and len(creation_result["driver"]) > 0:
+                        creation_result["driver"] = verification_result[3]
+                        result["ui_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], creation_result, verification_result)
+                    if "cfg_list" in creation_result and len(creation_result["cfg_list"]) > 0:
+                        result["api_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], creation_result, verification_result)
                     # 删除测试数据
-                    delete_instantiation = DeleteInstantiation()
-                    deletion_result = delete_instantiation.delete(parameter, test_data, instantiation_result)
+                    deletion_instantiation = DeleteInstantiation()
+                    deletion_result = deletion_instantiation.delete(parameter, test_data, creation_result)
                     if len(deletion_result["ui_result"]) > 0:
                         result["ui_result"] = result["ui_result"] + deletion_result["ui_result"]
                     if len(deletion_result["api_result"]) > 0:
@@ -145,7 +145,7 @@ def run(parameter):
                 else:
                     result = verification_result
             else:
-                result = instantiation_result
+                result = creation_result
         return result
     except Exception as e:
         exception_result = str(e)
@@ -153,8 +153,8 @@ def run(parameter):
         return "Exception Error: " + str(e)
     finally:
         # 清理环境和残留配置
-        if isinstance(delete_instantiation, DeleteInstantiation):
-            delete_instantiation.clean_up(parameter, test_data, instantiation_result)
+        if isinstance(deletion_instantiation, DeleteInstantiation):
+            deletion_instantiation.clean_up(parameter, creation_result)
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
