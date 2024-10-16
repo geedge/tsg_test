@@ -997,22 +997,22 @@ statisticsRulePage_rightInfo_hitCount_posXpath = "//form[@class='el-form paper-g
 statisticsRulePage_rightInfo_72hoursHitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[5]//td[2]"#//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr/td[2]
 
 # DoS Protection
-dosRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
-dosRuleListPage_editButton_posId = "appEdit-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
-dosRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
+dosRuleListPage_createButton_posId = '//*[@class="action-create inline-flex mr-[8px] "]'
+dosRuleListPage_editButton_posId = '//*[@class="action-edit inline-flex mr-[8px] "]'
+dosRuleListPage_deleteButton_posId ='//*[@class="action-delete inline-flex mr-[8px] "]'
 dosRuleListpage_okButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 dosRuleListpage_okButton_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
-dosRuleListPage_searchLable_posId = "select-label"
-dosRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
+dosRuleListPage_searchLable_posId = '//*[@class="MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5"]'
+dosRuleListPage_searchLable_dropDown_item_posXpath = '//span[normalize-space(text())="{replaceValue}"]/../..'   #下拉菜单定位
 dosRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
-dosRuleListPage_searchLable_searchButton_posId = "searchQuery"
-dosRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
-dosRuleListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
+dosRuleListPage_searchLable_searchButton_posId = '//*[@class="iconfont icon-sousuo text-[19px]"]'
+dosRuleListPage_tableTbody_posXpath = ''
+dosRuleListPage_allSelect_posXpath = ''
 
-dosRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
-dosRulePage_selectShunt_posId = "protectprotect"
-dosRulePage_selectDeny_posId = "denydeny"
-dosRulePage_selectAllow_posId = "allowallow"
+dosRulePage_inputName_posXpath = '//*[@class="MuiInput-input css-fqt4w4"]'
+dosRulePage_selectShunt_posId ='//button[normalize-space(text())="Protect"]'
+dosRulePage_selectDeny_posId = "(//button[normalize-space(text())='Deny'])[1]"
+dosRulePage_selectAllow_posId = "//button[normalize-space(text())='Allow']"
 
 dosRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 dosRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
