@@ -65,9 +65,9 @@ def run(parameter):
                             "fail_action": "Fail-Close",
                             "ev_certificate": "off",
                             "certificate_transparency": "off",
-                            "mutual_authentication": "on",
-                            "protocol_errors": "on",
-                            "certificate_pinning": "on",
+                            "mutual_authentication": "off",
+                            "protocol_errors": "off",
+                            "certificate_pinning": "off",
                             "certificate_not_installed": "off",
                             "mirror_client_versions": "on",
                             "min_client_version": "TLSv1.0",
@@ -77,7 +77,7 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "CN=CA UNTRUST",
+            "expected_return": "Connection reset by peer in connection to untrusted-root.badssl.com",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "untrusted-root.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {

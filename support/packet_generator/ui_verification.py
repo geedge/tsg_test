@@ -50,9 +50,17 @@ class UiVerification:
                         element_exist_flag = my_driver.is_exist_element(is_save_element)
                         if element_exist_flag == True:
                             my_driver.find_element(By.XPATH, is_save_element).click()
-                        time.sleep(1)
-                        log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
-                        log_number = log_number_str.split(": ")[-1]
+                        time.sleep(3)
+                        for _ in range(9):    # # 有可能日志出的慢，需要等待3分钟，最大等待日志3分钟
+                            log_number_str = my_driver.find_element(By.XPATH, "//div[@class='search-addition-info search-row']//div[1]").text
+                            log_number = log_number_str.split(": ")[-1]
+                            if int(hit_count) > int(log_number):
+                                time.sleep(20)
+                                my_driver.back()   # 后退页面到策略页面
+                                my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']", find_before_wait_time=0.5).click()
+                                #my_driver.find_element(By.XPATH, "//*[@id='facedQuery']").click()
+                                continue
+                            break
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "log_number:", log_number, flush=True)
                         
                         # 如果condition的范围很广，test_data["counters"]["hits"]设置为many，意味着不能进行精准的log判断。如果test_data["counters"]["hits"]不为many，则表示可以准确判断。
@@ -144,6 +152,16 @@ class UiVerification:
                                         else:
                                             temp_log_result = False
                                         temp_log_result_list.append(temp_log_result)
+                                    elif log_query_key in ["proxy_pinning_status", "proxy_intercept_status", "proxy_passthrough_reason"]:
+                                        log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]".format(replaceValue=log_str)
+                                        temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text.strip()
+                                        #print("实际值:{}".format(temp_value))
+                                        #print("预期值:{}".format(test_data["log_query_param"][t]["query_value"]))
+                                        if temp_value == test_data["log_query_param"][t]["query_value"]:
+                                            temp_log_result = True
+                                        else:
+                                            temp_log_result = False
+                                        temp_log_result_list.append(temp_log_result)
                                     elif log_query_key in ["server_port"]:
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
                                             replaceValue=log_str)
@@ -197,6 +215,8 @@ class UiVerification:
                                     log_result = True
                                 else:
                                     log_result = False
+                            elif int(hit_count) > int(log_number):
+                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "hit count > log number,need check.")
                         else:
                             # 不能直接把log_result赋值，也要判断log，目前值判断第一条日志
                             log_result = True

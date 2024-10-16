@@ -21,7 +21,7 @@ class CaseInstanceGenerator:
     def create(self):
         result = self._run(self.policy_configuration, self.parameter)
         return result
-
+    run = create
     def _run(self, policy_configuration, parameter):
         if "policy_type" in policy_configuration.keys() and policy_configuration["policy_type"] == "security":
             result = self._run_security(policy_configuration, parameter)

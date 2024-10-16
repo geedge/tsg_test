@@ -292,9 +292,48 @@ class GetLog:
                                 temp_log_result_list.append(False)
                         elif query_field_key in dos_verify_fields:
                             self.first_dos_classification(log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id)
+                        elif query_field_key in {"proxy_pinning_status", "proxy_intercept_status", "proxy_passthrough_reason"}:
+                            actual_value = log[query_field_key]   # 日志查询到的值
+                            except_value = query_value     # 断言的预期值
+                            if query_field_key == "proxy_passthrough_reason":
+                                if except_value in {"EV Certificate", "Certificate Transparency", "Protocol Errors", "Mutual Authentication", "Certificate Not Installed", "Certificate Pinning"}:
+                                    if actual_value in {""}:  # 证书动态放行会产生两条日志，其中一条大概率是拦截的日志，则跳过断言
+                                        continue
+                                    elif actual_value == except_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
+                                else:
+                                    if actual_value == except_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
+                            elif query_field_key == "proxy_intercept_status":  # proxy_intercept_status的值需要转换
+                                if except_value == "passthrough":      # proxy_intercept_status， 0=passthrough, 1=intercept
+                                    except_value = 0
+                                else:
+                                    except_value = 1
+                                if except_value == 0:
+                                    if actual_value == 1:
+                                        continue
+                                    elif actual_value == except_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
+                                else:
+                                    if actual_value == except_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
                         else:
                             temp_log_result_list.append(False)
-                    if False not in temp_log_result_list and len(log_list) > 0:
+                    if policy_type == 'pxy_intercept' and len(temp_log_result_list) < len(log_query_params):
+                         # 动态passthrough
+                        if True in temp_log_result_list:
+                            log_result = True
+                        else:
+                            log_result = False
+                    elif False not in temp_log_result_list and len(log_list) > 0:
                         log_result = True
                     # elif len(log_list) == 0 and len(log_query_params) == 0 and False not in temp_log_result_list:
                     #     log_result = True

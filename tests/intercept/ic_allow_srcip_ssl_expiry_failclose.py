@@ -77,9 +77,9 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "CN=CA UNTRUST",
+            "expected_return": "Connection reset by peer in connection to expired.badssl.com",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "untrusted-root.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "expired.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
