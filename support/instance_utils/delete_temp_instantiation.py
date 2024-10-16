@@ -12,7 +12,6 @@ class DeleteTempInstantiation:
     def delete(self, parameter, test_data, instantiation_result):
         ui_name_list = instantiation_result["ui_name_list"]
         api_name_list = instantiation_result["api_name_list"]
-        
         ui_result, api_result = "", ""
         deletion_result = {
             "ui_result": "",
