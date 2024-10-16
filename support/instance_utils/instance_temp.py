@@ -19,11 +19,8 @@ class InstanceTemp:
     def create(self):
         try:
             api_name_list, ui_name_list = [], []
-            ui_result, api_result = "", ""
-            creation_result = {
-                "ui_result": "", 
-                "api_result": ""
-            }
+            ui_result, api_result, token = "", "", ""
+            cfg_list, creation_result = {}
             
             log_in = LogIn()
             pwd = log_in.encryptPwd(self.parameter["password"], self.parameter["api_server"])
