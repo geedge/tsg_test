@@ -3,7 +3,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.api_utils.log_in import *
-from support.instance_utils.test_data_instance import TestDataInstance
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -40,8 +40,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        test_data_instance = TestDataInstance(test_data, parameter)
-        result = test_data_instance.create()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
     except Exception as e:
         exception_result = str(e)

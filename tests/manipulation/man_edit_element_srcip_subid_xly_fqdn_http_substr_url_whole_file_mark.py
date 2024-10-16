@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.test_data_instance import TestDataInstance
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -121,8 +121,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        test_data_instance = TestDataInstance(test_data, parameter)
-        result = test_data_instance.create()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()

@@ -13,7 +13,7 @@ from support.api_utils.create_policy import CreatePolicy
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class TempInstance:
+class InstanceTemp:
     def __init__(self, test_data, parameter, loop_number):
         self.test_data = test_data
         self.parameter = parameter

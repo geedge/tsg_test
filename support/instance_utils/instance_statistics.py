@@ -26,7 +26,7 @@ import support.ui_utils.env
 from datetime import datetime
 import time
 
-class StatisticsInstance:
+class InstanceStatistics:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
