@@ -12,7 +12,7 @@ from support.general_ui_utils.object.create_objects import CreateObjects
 from support.general_ui_utils.object.search_objects import SearchObjects
 from support.general_ui_utils.object.delete_objects import DeleteObjects
 from support.general_ui_utils.element_position.object_element_position import *
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.test_data_instance import TestDataInstance
 from support.report_update import ReportUpdate
 
 
@@ -57,8 +57,8 @@ def run(parameter):
                 test_data["search"]["type"] += search_type[i] + "&"
         print(test_data["search"]["type"])
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.create()
+        test_data_instance = TestDataInstance(test_data, parameter)
+        result = test_data_instance.create()
 
     except Exception as e:
         exception_result = str(e)

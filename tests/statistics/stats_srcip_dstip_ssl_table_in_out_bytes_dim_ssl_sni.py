@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.test_data_instance import TestDataInstance
 from support.report_update import ReportUpdate
 
 
@@ -203,8 +203,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.create()
+        test_data_instance = TestDataInstance(test_data, parameter)
+        result = test_data_instance.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -223,8 +223,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.clean_up()
+        if isinstance(test_data_instance, TestDataInstance):
+            test_data_instance.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

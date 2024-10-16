@@ -26,7 +26,7 @@ from datetime import datetime
 from support.instance_utils.data_translation import DataTranslation
 from support.ui_utils.element_position.map_element_position_library import *
 
-class SecurityGenerator:
+class SecurityInstance:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter

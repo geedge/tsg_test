@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 
 from datetime import datetime
 from support.report_update import ReportUpdate
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.test_data_instance import TestDataInstance
 
 def run(parameter):
     try:
@@ -65,8 +65,8 @@ def run(parameter):
         }
         
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.create()
+        test_data_instance = TestDataInstance(test_data, parameter)
+        result = test_data_instance.create()
         
         return result
     except Exception as e:
@@ -75,8 +75,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.clean_up()
+        if isinstance(test_data_instance, TestDataInstance):
+            test_data_instance.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
