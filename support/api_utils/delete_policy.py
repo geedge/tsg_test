@@ -206,14 +206,14 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete statistics template failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "service_function_forwarder":  # 删除SFF和SF
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
-                        del_profile_sff = {"uuids": str(profile_id), "vsys_id": vsys_id}
+                        del_profile_sff = {"uuids": str(profile_id), "vsys": vsys_id}
                         url = "{}/v1/profiles/service-function-forwarders".format(api_server)
                         response = requests.delete(url, headers=headers, json=del_profile_sff, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete service function forwarder successfully.", flush=True)
-                            profile_id = create_profile_ids[del_porfile_index]["sff_info"]["sf_info"][0]["id"]
-                            del_profile_sf = {"ids": str(profile_id), "vsys_id": vsys_id}
+                            profile_id = create_profile_ids[del_porfile_index]["sff_info"]["sf_info"][0]["uuid"]
+                            del_profile_sf = {"uuids": str(profile_id), "vsys": vsys_id}
                             url = "{}/v1/profiles/service-functions".format(api_server)
                             response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                             assert response.status_code == 200
@@ -280,9 +280,9 @@ class DeletePolicy:
                         response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete traffic mirror profile successfully.", flush=True)
                         else:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete traffic mirror profile failed.", flush=True)
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
@@ -450,31 +450,31 @@ class DeletePolicy:
             elif '/dashboard' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = tmp_type
-            elif 'response_page' in url:
+            elif 'response-pages' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'response_page'.replace("_", " ")
-            elif 'dns_record' in url:
+            elif 'dns-records' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'dns_records'.replace("_", " ")
-            elif 'hijack_file' in url:
+            elif 'proxy-hijack-files' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'hijack_files'.replace("_", " ")
-            elif 'insert_script' in url:
+            elif 'proxy-inject-scripts' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'insert_scripts'.replace("_", " ")
-            elif 'run_script' in url:
+            elif 'http-manipulation-scripts' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'run_scripts'.replace("_", " ")
-            elif 'service_function_forwarder' in url:
+            elif 'service-function-forwarders' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'service_function_forwarder'.replace("_", " ")
-            elif 'service_function' in url:
+            elif 'service-functions' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'service_function'.replace("_", " ")
-            elif 'statistics_template' in url:
+            elif 'statistics-templates' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'statistics_template'.replace("_", " ")
-            elif 'traffic_mirror' in url:
+            elif 'traffic-mirror-profiles' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'traffic_mirror'.replace("_", " ")
             if len(data_list) > 0:

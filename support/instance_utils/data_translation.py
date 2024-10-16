@@ -1288,7 +1288,7 @@ class DataTranslation:
                     }
                     for t in range(len(v)):
                         temp = {
-                            "profile_type": "hijack_files",
+                            "profile_type": "proxy_hijack_file",
                             "content_type": "text/html",
                             "name": "auto_test_obj",
                             "content_name": "Files-test-5.png",
@@ -1298,7 +1298,7 @@ class DataTranslation:
                         temp["content_type"] = element_type_replace_name[v[t]["profile_file"]["file_type"]]
                         temp["name"] = v[t]["profile_file"]["name"]
                         temp["content_name"] = v[t]["profile_file"]["download_name"]
-                        temp["vsys_id"] = vsys_id
+                        temp["vsys"] = vsys_id
                         profile.append(copy.deepcopy(temp))
                 elif k == "insert_script":
                     insert_map = {
@@ -1306,7 +1306,7 @@ class DataTranslation:
                     }
                     for t in range(len(v)):
                         temp = {
-                            "profile_type": "insert_profile",
+                            "profile_type": "proxy_inject_script",
                             "is_enabled": 1,
                             "format": "js",
                             "name": "auto_test_obj",
@@ -1327,7 +1327,7 @@ class DataTranslation:
                 elif k == "run_script":
                     for t in range(len(v)):
                         temp = {
-                            "profile_type": "run_script",
+                            "profile_type": "http_manipulation_script",
                             "max_exec_time": 1000,
                             "name": "auto_test_obj",
                             "content_name": "run_script_insert.lua",
@@ -1381,7 +1381,7 @@ class DataTranslation:
                     "profile_type": "traffic_mirror",  # 外层包含profile类型
                     "op_action": "add",
                     "return_data": 1,
-                    "traffic_mirror": {  # 将所有相关属性放入这个嵌套字典中
+                    "traffic_mirror_profile": {  # 将所有相关属性放入这个嵌套字典中
                         "name": temp_profile[i]["name"],
                         "isShared": 0,
                         "addrType": "",
@@ -1392,8 +1392,8 @@ class DataTranslation:
                 }
                 for i in range(len(temp_profile)):
                     temp["profile_type"] = temp_profile[i]["profile_type"]
-                    temp["traffic_mirror"]["name"] = temp_profile[i]["name"]
-                    temp["traffic_mirror"]["vlan_array"].append(str(temp_profile[i]["vlan_count"]))
+                    temp["traffic_mirror_profile"]["name"] = temp_profile[i]["name"]
+                    temp["traffic_mirror_profile"]["vlan_array"].append(str(temp_profile[i]["vlan_count"]))
                 # temp["name"] = temp_profile[i]["name"]
                 # temp["profile_type"] = temp_profile[i]["profile_type"]
                 # temp["vlan_array"].append(str(temp_profile[i]["vlan_count"]))

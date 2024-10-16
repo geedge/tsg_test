@@ -733,7 +733,7 @@ class CreateProfile:
                 files = {"file": ("Response-Pages_1.html", open(path_dict["profiles_deny_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
-                profile_data["vsys_id"] = vsys_id
+                profile_data["vsys"] = vsys_id
                 url = "{}/v1/profiles/response-pages".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
@@ -747,11 +747,11 @@ class CreateProfile:
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
-            elif profile_type == "hijack_files":
+            elif profile_type == "proxy_hijack_file":
                 files = {"file": ("Create-Hijack-Files-test-3.html", open(path_dict["profiles_hijack_file_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
-                profile_data["vsys_id"] = vsys_id
+                profile_data["vsys"] = vsys_id
                 url = "{}/v1/profiles/proxy-hijack-files".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
@@ -761,16 +761,16 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["hijack_file"]["uuid"]
+                profile_id = response_dict["data"]["proxy_hijack_file"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
-            elif profile_type == "insert_profile":
+            elif profile_type == "proxy_inject_script":
                 file_name = os.path.basename(path_dict["profiles_insert_profile_path"])
                 files = {"file": (file_name, open(path_dict["profiles_insert_profile_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
-                profile_data["vsys_id"] = vsys_id
+                profile_data["vsys"] = vsys_id
                 url = "{}/v1/profiles/proxy-inject-scripts".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
@@ -780,15 +780,15 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["insert_script"]["uuid"]
+                profile_id = response_dict["data"]["proxy_inject_script"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
-            elif profile_type == "run_script":
+            elif profile_type == "http_manipulation_script":
                 files = {"file": ("run_script_hijack.lua", open(path_dict["profiles_run_script_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
-                profile_data["vsys_id"] = vsys_id
+                profile_data["vsys"] = vsys_id
                 url = "{}/v1/profiles/http-manipulation-scripts".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
@@ -798,13 +798,15 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["run_script"]["uuid"]
+                profile_id = response_dict["data"]["http_manipulation_script"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
             elif profile_type == "dns_record":
                 profile_dns_record_template = path_dict["profile_dns_record_template"]
                 process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
+                # 添加vsys id
+                profile_data["vsys"] = vsys_id
                 url = "{}/v1/profiles/dns-records".format(api_host)
                 #print(json.dumps(process_post_data))
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
@@ -821,7 +823,7 @@ class CreateProfile:
                 return create_profile_id_dict
             elif profile_type == "traffic_mirror":
                 # 添加vsys id
-                profile_data["vsys_id"] = vsys_id
+                profile_data["vsys"] = vsys_id
                 del profile_data['profile_type']
                 url = "{}/v1/profiles/traffic-mirror-profiles".format(api_host, vsys_id)
                 response = requests.post(url=url, json=profile_data, headers=headers, verify=False)
@@ -832,7 +834,7 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["traffic_mirror"]["uuid"]
+                profile_id = response_dict["data"]["traffic_mirror_profile"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
@@ -846,7 +848,7 @@ class CreateProfile:
             api_path_profile_type = "statistics-templates"
         url = "{}/v1/profiles/{type}".format(api_host, type=api_path_profile_type)
         params_dict = {
-            "vsys_id": vsys_id,
+            "vsys": vsys_id,
             "uuids": template_id
         }
         response = requests.get(url, params=params_dict, headers=headers, verify=False)
@@ -889,7 +891,7 @@ class CreateProfile:
             api_path_profile_type = "service-function-forwarders"
         url = "{}/v1/profiles/{type}/{ids}".format(api_host, type=api_path_profile_type, ids=sff_id)
         params_dict = {
-            "vsys_id": vsys_id
+            "vsys": vsys_id
         }
         response = requests.get(url=url, params=params_dict, headers=headers, verify=False)
         r_dict = response.json()
@@ -907,7 +909,7 @@ class CreateProfile:
     def search_sc_sf(self, sf_id, headers, api_host, vsys_id):
         url = "{}/v1/profiles/{type}/{id}".format(api_host, type="service-functions", id=sf_id)
         params_dict = {
-            "vsys_id": vsys_id
+            "vsys": vsys_id
         }
         response = requests.get(url, params=params_dict, headers=headers, verify=False)
         r_dict = response.json()

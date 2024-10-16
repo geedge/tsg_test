@@ -95,7 +95,7 @@ def run(parameter):
                         {
                             "name": "vxlan_activeip_bfd",
                             "profile_type": "create",
-                            "device_group": "Device_Group:group-xxg-tsgx",
+                            "device_group": "Device_Group:City A",
                             "connectivity": "VXLAN-G:2.2.2.53",
                             "health_check": "BFD:60000:255",
                             "enable": "on"
@@ -140,26 +140,43 @@ def run(parameter):
         update.write_result(parameter, result, exception_result)
     
 if __name__ == '__main__':
+    # ui
+    # parameter = {
+    #     "username": "hebingning",
+    #     "password": "hbn66AAA",
+    #     "test_pc_ip": "192.168.64.65",
+    #     "test_subcriber_id": "test6776",
+    #     "api_server": "http://192.168.44.72",
+    #     "debug_flag": "local",
+    #     "script_type": "ui",
+    #     "env": "tsgx",
+    #     "vsys_id": 1,
+    #     "is_log": 1,
+    #     "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
+    #     "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
+    #     "module_name": "security",
+    #     "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
+    # }
+    # run(parameter)
+    # api
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
+
     parameter = {
-        "username": "lytest",
-        "password": "123456ly",
-        "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6776",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.93",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "debug_flag": "local",
+        "script_type": "api",  # api  ui  空字符串
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,
-        "is_log": 1,
-        "root_path": "C:/automation_project/tsg_test",
-        "path": "C:/automation_project/tsg_test/tests/ui",
-        "module_name": "service_chaining",
-        "test_case_name": "sc_decrypted_negate_srcip_fqdn_ssl_steer_bypass_vxlan_activeip_bfd",
+        "root_path": workdir,
+        "path": workdir + "/tests/api",
+        "module_name": "security",
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
-    """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
-    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
-
-    # 执行如下命令生成测试报告（自动打开浏览器）：
-    allure serve allure
-    """

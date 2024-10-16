@@ -127,27 +127,48 @@ def run(parameter):
 
 
 if __name__ == '__main__':
+    # parameter = {
+    #     "username": "guoqiuya",
+    #     "password": "Guoqiuya123@@",
+    #     "test_pc_ip": "192.168.64.105",
+    #     "test_subcriber_id": "test490",
+    #     "api_server": "http://192.168.44.72",
+    #     "debug_flag": "local",
+    #     "is_log": 1,
+    #     "env": "tsgx",
+    #     "script_type": "api",
+    #     "vsys_id": 1,
+    #     "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+    #     "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
+    #     "module_name": "manipulation",
+    #     "test_case_name": os.path.basename(__file__)[:-3]
+    # }
+    # run(parameter)
+    # """
+    # # 在测试文件的当前路径执行如下命令执行测试用例：
+    # pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
+
+    # # 执行如下命令生成测试报告（自动打开浏览器）：
+    # allure serve allure
+    # """
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
+
     parameter = {
-        "username": "guoqiuya",
-        "password": "Guoqiuya123@@",
-        "test_pc_ip": "192.168.64.105",
-        "test_subcriber_id": "test490",
+        "username": "hebingning",
+        "password": "hbn66AAA",
+        "test_pc_ip": "192.168.64.93",
+        "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
+        "script_type": "api",  # api  ui  空字符串
         "is_log": 1,
         "env": "tsgx",
-        "script_type": "api",
         "vsys_id": 1,
-        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
-        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
-        "module_name": "manipulation",
+        "root_path": workdir,
+        "path": workdir + "/tests/api",
+        "module_name": "security",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
-    """
-    # 在测试文件的当前路径执行如下命令执行测试用例：
-    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
-
-    # 执行如下命令生成测试报告（自动打开浏览器）：
-    allure serve allure
-    """

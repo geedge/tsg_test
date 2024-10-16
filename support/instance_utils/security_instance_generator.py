@@ -1010,8 +1010,8 @@ class SecurityGenerator:
             # api_result = analysis.analysis_result(test_data, cfg_list, verification_result)
             #"""
             # 删除配置
-            # delete = DeletePolicy()
-            # delete.delele_policy_by_cfg(token, parameter, cfg_list)
+            delete = DeletePolicy()
+            delete.delele_policy_by_cfg(token, parameter, cfg_list)
             
             result["api_result"] = api_result
     
