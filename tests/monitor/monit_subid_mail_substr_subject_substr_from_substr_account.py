@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from datetime import datetime
 from support.report_update import ReportUpdate
-from support.instance_utils.test_data_instance import TestDataInstance
+from support.instance_utils.instance_test_data import InstanceTestData
 
 
 def run(parameter):
@@ -143,8 +143,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        test_data_instance = TestDataInstance(test_data, parameter)
-        result = test_data_instance.create()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         return result
     except Exception as e:
@@ -154,8 +154,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(test_data_instance, TestDataInstance):
-            test_data_instance.clean_up()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

@@ -5,11 +5,12 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
-from support.instance_utils.test_data_instance import TestDataInstance
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.packet_generator.verify import Verify
 from support.packet_generator.trigger_traffic import *
 from support.api_utils.analyse_result import Analyse
 from support.ui_utils.workpath import workdir
+from support.instance_utils.delete_instantiation import DeleteInstantiation
 
 def run(parameter):
     try:
@@ -116,26 +117,27 @@ def run(parameter):
             loop_number = 2
         for i in range(loop_number):
             # 测试数据实例化，创建测试需要的object、profile、policy rule
-            test_data_instance = TestDataInstance(test_data, parameter, i)
-            test_data_instance_result = test_data_instance.create()
+            instantiation = InstanceTestData(test_data, parameter, i)
+            instantiation_result = instantiation.create()
             # 完成创建后如果返回的ui_result和api_result值为空，意味着创建成功，并进行流量验证，否则返回异常值并跳过验证阶段，走清理删除步骤
-            if isinstance(test_data_instance_result, dict) and len(test_data_instance_result["ui_result"]) == 0 and len(test_data_instance_result["api_result"]) == 0:
+            if isinstance(instantiation_result, dict) and len(instantiation_result["ui_result"]) == 0 and len(instantiation_result["api_result"]) == 0:
                 # 触发流量
                 sender = SendTraffic()
                 traffic_result = sender.send_traffic(parameter, test_data)
                 # 验证metric和log
                 verification = Verify()
-                verification_result = verification.verify_result(parameter, test_data, test_data_instance_result, traffic_result)
+                verification_result = verification.verify_result(parameter, test_data, instantiation_result, traffic_result)
                 if len(verification_result) == 4:
                     # 分析结果
                     analysis = Analyse()
-                    if "driver" in test_data_instance_result and len(test_data_instance_result["driver"]) > 0:
-                        test_data_instance_result["driver"] = verification_result[3]
-                        result["ui_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], test_data_instance_result, verification_result)
-                    if "cfg_list" in test_data_instance_result and len(test_data_instance_result["cfg_list"]) > 0:
-                        result["api_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], test_data_instance_result, verification_result)
+                    if "driver" in instantiation_result and len(instantiation_result["driver"]) > 0:
+                        instantiation_result["driver"] = verification_result[3]
+                        result["ui_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], instantiation_result, verification_result)
+                    if "cfg_list" in instantiation_result and len(instantiation_result["cfg_list"]) > 0:
+                        result["api_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], instantiation_result, verification_result)
                     # 删除测试数据
-                    deletion_result = test_data_instance.delete()
+                    delete_instantiation = DeleteInstantiation()
+                    deletion_result = delete_instantiation.delete(parameter, test_data, instantiation_result)
                     if len(deletion_result["ui_result"]) > 0:
                         result["ui_result"] = result["ui_result"] + deletion_result["ui_result"]
                     if len(deletion_result["api_result"]) > 0:
@@ -143,7 +145,7 @@ def run(parameter):
                 else:
                     result = verification_result
             else:
-                result = test_data_instance_result
+                result = instantiation_result
         return result
     except Exception as e:
         exception_result = str(e)
@@ -151,8 +153,8 @@ def run(parameter):
         return "Exception Error: " + str(e)
     finally:
         # 清理环境和残留配置
-        if isinstance(test_data_instance, TestDataInstance):
-            test_data_instance.clean_up()
+        if isinstance(delete_instantiation, DeleteInstantiation):
+            delete_instantiation.clean_up(parameter, test_data, instantiation_result)
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

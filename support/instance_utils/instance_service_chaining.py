@@ -25,7 +25,7 @@ import time
 from support.ui_utils.object.generate_random_ip import *
 from support.instance_utils.data_translation import DataTranslation
 
-class ServiceChainingInstance:
+class InstanceServiceChaining:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
