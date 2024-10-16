@@ -26,7 +26,7 @@ from datetime import datetime
 from support.instance_utils.data_translation import DataTranslation
 from support.ui_utils.element_position.map_element_position_library import *
 
-class SecurityGenerator:
+class InstanceSecurity:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
@@ -792,7 +792,7 @@ class SecurityGenerator:
                 # 分析验证结果，并返回给flask
                 if len(verification_result) == 4:
                     analysis = Analyse()
-                    ui_result = analysis.analyse_result(test_data, [], verification_result)
+                    ui_result = analysis.analyse_result(test_data["policy_type"], [], verification_result)
 
                 # 删除rule
                 if create_rule_code == 200:
@@ -1006,7 +1006,7 @@ class SecurityGenerator:
 
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
-                api_result = analysis.analyse_result(test_data, cfg_list, verification_result)
+                api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
             except Exception as e:
                 raise
             finally:

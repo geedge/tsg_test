@@ -10,7 +10,7 @@ from support.api_utils.delete_policy import DeletePolicy
 import support.ui_utils.env
 from datetime import datetime
 
-class DashbboardInstanceGenerator:
+class InstanceDashbboard:
 
 
     def __init__(self, test_data, parameter):

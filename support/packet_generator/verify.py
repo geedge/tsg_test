@@ -15,8 +15,8 @@ class Verify:
         try:
             my_driver = driver
             script_type = parameter["script_type"]
-            
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to send traffic.", flush=True)
+            """
             # if test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
             #     # SC解密流量相对特殊，只能用curl进行验证，但curl不能统计pkt和byte，故通过网口抓包来进行功能对比。
             #     parse = configparser.ConfigParser()
@@ -38,6 +38,7 @@ class Verify:
             #     traffic_thread.join()
             # else:
             # 等待配置同步
+            """
             if script_type == "api":
                 time.sleep(3)
             sender = SendTraffic()
@@ -71,12 +72,10 @@ class Verify:
                         verification_result[3] = ui_verification_result[3]
                         return verification_result
                 else:
-                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"testapi_verification_result:{api_verification_result}")
                     return api_verification_result
             elif script_type == "api":
                 traffic_verification = ApiVerification()
                 verification_result = traffic_verification.api_verification("", parameter, test_data, traffic_result, cfg_list)
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"verification_result:{verification_result}")
                 return verification_result
         except Exception as e:
             return "Exception Error: " + str(e)

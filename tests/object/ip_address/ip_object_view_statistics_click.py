@@ -1,7 +1,7 @@
 import random
 import time
 from support.api_utils.log_in import *
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -43,8 +43,8 @@ def run(parameter):
         test_data["statistics"] = random.choice(statistics_type)
         # test_data["statistics"] = "brief"
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.create()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
     except Exception as e:
         exception_result = str(e)

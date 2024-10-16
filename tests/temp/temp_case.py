@@ -5,22 +5,22 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.report_update import ReportUpdate
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.packet_generator.verify import Verify
 from support.packet_generator.trigger_traffic import *
 from support.api_utils.analyse_result import Analyse
 from support.ui_utils.workpath import workdir
+from support.instance_utils.delete_instantiation import DeleteInstantiation
 
 def run(parameter):
-    result = {
-        "ui_result": "",
-        "api_result": "",
-        "exception_result": ""
-    }
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         
         # 参数初始化
+        result = {
+            "ui_result": "",
+            "api_result": ""
+        }
         exception_result = ""
         
         # 脚本启动时间
@@ -115,34 +115,37 @@ def run(parameter):
         loop_number = 1
         if len(parameter["script_type"]) == 0:
             loop_number = 2
-        for _ in range(loop_number):
-            # 测试用例实例化，创建测试需要的object、profile、policy rule
-            case_instance_generator = CaseInstanceGenerator(test_data["policy_configuration"], parameter, loop_number)
-            case_generator_result = case_instance_generator.create()
+        for i in range(loop_number):
+            # 测试数据实例化，创建测试需要的object、profile、policy rule
+            instantiation = InstanceTestData(test_data, parameter, i)
+            creation_result = instantiation.create()
             # 完成创建后如果返回的ui_result和api_result值为空，意味着创建成功，并进行流量验证，否则返回异常值并跳过验证阶段，走清理删除步骤
-            if isinstance(case_generator_result, dict) and len(case_generator_result["ui_result"]) == 0 and len(case_generator_result["api_result"]) == 0:
+            if isinstance(creation_result, dict) and len(creation_result["ui_result"]) == 0 and len(creation_result["api_result"]) == 0:
                 # 触发流量
                 sender = SendTraffic()
                 traffic_result = sender.send_traffic(parameter, test_data)
                 # 验证metric和log
                 verification = Verify()
-                verification_result = verification.verify_result(parameter, test_data, case_generator_result, traffic_result)
+                verification_result = verification.verify_result(parameter, test_data, creation_result, traffic_result)
                 if len(verification_result) == 4:
-                    case_generator_result["driver"] = verification_result[3]
                     # 分析结果
                     analysis = Analyse()
-                    if "driver" in case_generator_result and len(case_generator_result["driver"]) > 0:
-                        result["ui_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
-                    if "cfg_list" in case_generator_result and len(case_generator_result["cfg_list"]) > 0:
-                        result["api_result"] = analysis.analyse_result(test_data, case_generator_result, verification_result)
+                    if "driver" in creation_result and len(creation_result["driver"]) > 0:
+                        creation_result["driver"] = verification_result[3]
+                        result["ui_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], creation_result, verification_result)
+                    if "cfg_list" in creation_result and len(creation_result["cfg_list"]) > 0:
+                        result["api_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], creation_result, verification_result)
                     # 删除测试数据
-                    deletion_result = case_instance_generator.delete(test_data, case_generator_result)
-                    if len(deletion_result["ui_result"]) > 0 or len(deletion_result["api_result"]) > 0:
-                        return deletion_result
+                    deletion_instantiation = DeleteInstantiation()
+                    deletion_result = deletion_instantiation.delete(parameter, test_data, creation_result)
+                    if len(deletion_result["ui_result"]) > 0:
+                        result["ui_result"] = result["ui_result"] + deletion_result["ui_result"]
+                    if len(deletion_result["api_result"]) > 0:
+                        result["api_result"] = result["api_result"] + deletion_result["api_result"]
                 else:
-                    return verification_result
+                    result = verification_result
             else:
-                return case_generator_result
+                result = creation_result
         return result
     except Exception as e:
         exception_result = str(e)
@@ -150,8 +153,8 @@ def run(parameter):
         return "Exception Error: " + str(e)
     finally:
         # 清理环境和残留配置
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.clean_up()
+        if isinstance(deletion_instantiation, DeleteInstantiation):
+            deletion_instantiation.clean_up(parameter, creation_result)
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

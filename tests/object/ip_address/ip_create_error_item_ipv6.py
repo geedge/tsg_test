@@ -1,7 +1,7 @@
 import time
 from support.api_utils.log_in import *
 from support.general_ui_utils.element_position.object_element_position import *
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -38,8 +38,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.create()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
     except Exception as e:
         exception_result = str(e)
