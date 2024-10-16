@@ -2,18 +2,18 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.instance_utils.manipulation_instance_generator import ManipulationInstanceGenerator
-from support.instance_utils.dos_protection_instance_generator import DosProtectionInstanceGenerator
-from support.instance_utils.objects_instance_generator import ObjectsInstanceGenerator
-from support.instance_utils.statistics_instance_generator import StatisticsInstanceGenerator
-from support.instance_utils.security_instance_generator import SecurityGenerator
-from support.instance_utils.service_chaining_instance_generator import ServiceChainingInstanceGenerator
-from support.instance_utils.monintor_instance_generator import MonitorInstanceGenerator
-from support.instance_utils.dashboard_instance_generator import DashbboardInstanceGenerator
-from support.instance_utils.intercept_instance_generator import InterceptInstanceGenerator
-from support.instance_utils.temp_instance_generator import TempInstanceGenerator
+from support.instance_utils.manipulation_instance import ManipulationInstance
+from support.instance_utils.dos_protection_instance import DosProtectionInstance
+from support.instance_utils.objects_instance import ObjectsInstance
+from support.instance_utils.statistics_instance import StatisticsInstance
+from support.instance_utils.security_instance import SecurityInstance
+from support.instance_utils.service_chaining_instance import ServiceChainingInstance
+from support.instance_utils.monintor_instance import MonitorInstance
+from support.instance_utils.dashboard_instance import DashbboardInstance
+from support.instance_utils.intercept_instance import InterceptInstance
+from support.instance_utils.temp_instance import TempInstance
 
-class CaseInstanceGenerator:
+class TestDataInstance:
     def __init__(self, policy_configuration, parameter):
         self.policy_configuration = policy_configuration
         self.parameter = parameter
@@ -46,32 +46,32 @@ class CaseInstanceGenerator:
         return result
 
     def create_security_policy(self, policy_configuration, parameter):
-        self.security = SecurityGenerator(policy_configuration, parameter)
+        self.security = SecurityInstance(policy_configuration, parameter)
         result = self.security.run()
         return result
 
     def create_monitor_policy(self, policy_configuration, parameter):
-        self.monitor = MonitorInstanceGenerator(policy_configuration,parameter)
+        self.monitor = MonitorInstance(policy_configuration,parameter)
         result = self.monitor.run()
         return result
 
     def create_statistics_policy(self, policy_configuration, parameter):
-        self.statistics = StatisticsInstanceGenerator(policy_configuration, parameter)
+        self.statistics = StatisticsInstance(policy_configuration, parameter)
         result = self.statistics.run()
         return result
 
     def create_dos_protection_policy(self, policy_configuration, parameter):
-        self.dos_protection = DosProtectionInstanceGenerator(policy_configuration, parameter)
+        self.dos_protection = DosProtectionInstance(policy_configuration, parameter)
         result = self.dos_protection.run()
         return result
 
     def create_intercept_policy(self, policy_configuration, parameter):
-        self.intercept = InterceptInstanceGenerator(policy_configuration, parameter)
+        self.intercept = InterceptInstance(policy_configuration, parameter)
         result = self.intercept.run()
         return result
 
     def create_manipulation_policy(self, policy_configuration, parameter):
-        self.manipulation = ManipulationInstanceGenerator(policy_configuration, parameter)
+        self.manipulation = ManipulationInstance(policy_configuration, parameter)
         result = self.manipulation.run()
         return result
 
@@ -79,22 +79,22 @@ class CaseInstanceGenerator:
         print("todo")
 
     def create_dashboard(self, policy_configuration, parameter):
-        self.dashboard = DashbboardInstanceGenerator(policy_configuration,parameter)
+        self.dashboard = DashbboardInstance(policy_configuration,parameter)
         result = self.dashboard.run()
         return result
 
     def create_service_chaining_policy(self, policy_configuration, parameter):
-        self.service_chaining =ServiceChainingInstanceGenerator(policy_configuration, parameter)
+        self.service_chaining =ServiceChainingInstance(policy_configuration, parameter)
         result = self.service_chaining.run()
         return result
 
     def create_objects(self,policy_configuration, parameter):
-        self.objects = ObjectsInstanceGenerator(policy_configuration, parameter)
+        self.objects = ObjectsInstance(policy_configuration, parameter)
         result = self.objects.run()
         return result
 
     def create_temp_policy(self, policy_configuration, parameter, loop_number):
-        self.temp = TempInstanceGenerator(policy_configuration, parameter, loop_number)
+        self.temp = TempInstance(policy_configuration, parameter, loop_number)
         result = self.temp.create()
         return result
     

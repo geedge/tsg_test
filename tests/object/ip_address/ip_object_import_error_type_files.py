@@ -6,7 +6,7 @@ import support.ui_utils.env
 from datetime import datetime
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.log_in import *
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.test_data_instance import TestDataInstance
 from support.report_update import ReportUpdate
 
 
@@ -43,8 +43,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.create()
+        test_data_instance = TestDataInstance(test_data, parameter)
+        result = test_data_instance.create()
 
     except Exception as e:
         exception_result = str(e)

@@ -10,11 +10,10 @@ from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
-from support.instance_utils.data_translation import DataTranslation
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class TempInstanceGenerator:
+class TempInstance:
     def __init__(self, test_data, parameter, loop_number):
         self.test_data = test_data
         self.parameter = parameter
