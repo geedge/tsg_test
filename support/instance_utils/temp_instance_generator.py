@@ -15,41 +15,38 @@ from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
 class TempInstanceGenerator:
-    def __init__(self, test_data, parameter):
+    def __init__(self, test_data, parameter, loop_number):
         self.test_data = test_data
         self.parameter = parameter
+        self.loop_number = loop_number
+        self.creation_result = {
+            "ui_result": "", 
+            "api_result": ""
+        }
 
-    def run(self):
-        result = self.create(self.test_data, self.parameter)
-        return result
-
-    def create(self, test_data, parameter, number):
+    def create(self):
         try:
             self.api_name_list, self.ui_name_list = [], []
             ui_result, api_result = "", ""
-            creation_result = {
-                "ui_result": "", 
-                "api_result": ""
-            }
             
             log_in = LogIn()
             pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
             token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-            test_data["token"] = token
+            self.test_data["token"] = token
 
             # 使用trex的随机源ip
-            if test_data["traffic_generation"]["type"] == "trex":
+            if self.test_data["traffic_generation"]["type"] == "trex":
                 organize_config = OrganizeConfig()
-                test_data = organize_config.generate_random_dos_src_ip(test_data, parameter)
-                test_data = organize_config.generate_only_dstip_for_trex_replay(test_data)
+                self.test_data = organize_config.generate_random_dos_src_ip(self.test_data, parameter)
+                self.test_data = organize_config.generate_only_dstip_for_trex_replay(self.test_data)
                 
             # name_list汇总
             temp_name_list = []
             policy_name_dict = {}
-            policy_name_dict["type"] = test_data["policy_configuration"]["type"]
-            policy_name_dict["name"] = test_data["policy_configuration"]["name"]
+            policy_name_dict["type"] = self.test_data["policy_configuration"]["type"]
+            policy_name_dict["name"] = self.test_data["policy_configuration"]["name"]
             temp_name_list.append(policy_name_dict)
-            for con_key, conditions in test_data["policy_configuration"].items():
+            for con_key, conditions in self.test_data["policy_configuration"].items():
                 if conditions:  # 确保conditions不为空
                     for condition in conditions:
                         # 为每个条件项创建一个新的字典
@@ -64,9 +61,9 @@ class TempInstanceGenerator:
 
             # =============required begin=============
             if len(parameter["script_type"]) == 0:
-                if number == 0:
+                if self.loop_number == 0:
                     parameter["script_type"] = "ui"
-                elif number == 1:
+                elif self.loop_number == 1:
                     parameter["script_type"] = "api"
 
             if parameter["script_type"] == "ui":
@@ -78,8 +75,8 @@ class TempInstanceGenerator:
                 driver = support.ui_utils.env.my_driver()
                 support.ui_utils.env.setup()
 
-                if "condition" in test_data.keys():
-                    for cond_key, cond_value in (test_data["condition"].items()):
+                if "condition" in self.test_data.keys():
+                    for cond_key, cond_value in (self.test_data["condition"].items()):
                         cond_status = 0
                         if cond_key == "application":
                             continue  # 直接跳过
@@ -109,28 +106,28 @@ class TempInstanceGenerator:
                 # 创建rule
                 if cond_code == 200:
                     create_rule = CreateRule(driver)
-                    element_position_map = get_element_position(test_data["policy_type"])
+                    element_position_map = get_element_position(self.test_data["policy_type"])
                     #动态选择变量
-                    if test_data["threshold"]["type"] == "rate":
+                    if self.test_data["threshold"]["type"] == "rate":
                         element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdRateType_posId
                         element_position_map["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = policyRulePage_mitigationTimeouts_select_posXpath
-                    elif test_data["threshold"]["type"] == "concurrency":
+                    elif self.test_data["threshold"]["type"] == "concurrency":
                         element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdConcurrencyType_posId
                         element_position_map["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = dosRulePage_mitigationTimeouts_select_bottom_posXpath
-                    if test_data["mitigation"]["behavior"] == "deny":
+                    if self.test_data["mitigation"]["behavior"] == "deny":
                         element_position_map["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_deny_posId
-                    elif test_data["mitigation"]["behavior"] == "none":
+                    elif self.test_data["mitigation"]["behavior"] == "none":
                         element_position_map["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_none_posId
 
-                    create_rule_code = create_rule.create(test_data, element_position_map)
+                    create_rule_code = create_rule.create(self.test_data, element_position_map)
                     if create_rule_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(test_data["policy_type"], flush=True))
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(self.test_data["policy_type"], flush=True))
                     elif create_rule_code != 200:
-                        ui_result = "Fail to create {} rule.".format(test_data["policy_type"])
+                        ui_result = "Fail to create {} rule.".format(self.test_data["policy_type"])
 
             # =============required begin=============
-                creation_result["driver"] = driver
-                creation_result["element_position_map"] = element_position_map
+                self.creation_result["driver"] = driver
+                self.creation_result["element_position_map"] = element_position_map
                 
             if parameter["script_type"] == "api":
             # =============required end=============
@@ -143,45 +140,45 @@ class TempInstanceGenerator:
 
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
-                cfg_list = create.create_policy(parameter, test_data, template_path)
+                cfg_list = create.create_policy(parameter, self.test_data, template_path)
         # =============required begin=============
-                creation_result["cfg_list"] = cfg_list
+                self.creation_result["cfg_list"] = cfg_list
             
-            creation_result["ui_result"] = ui_result
-            creation_result["api_result"] = api_result
+            self.creation_result["ui_result"] = ui_result
+            self.creation_result["api_result"] = api_result
             
-            return creation_result
+            return self.creation_result
         except Exception as e:
             return "Exception Error: " + str(e)
         # =============required end=============
 
     # =============required begin=============
-    def delete(self, test_data, creation_result):
+    def delete(self):
         ui_result, api_result = "", ""
         deletion_result = {
             "ui_result": "",
             "api_result": ""
         }
         delete = DeletePolicy()
-        if isinstance(self.ui_name_list, list) and self.ui_name_list != [] and "driver" in creation_result and len(creation_result["driver"]) > 0:
-            driver = creation_result["driver"]
+        if isinstance(self.ui_name_list, list) and self.ui_name_list != [] and "driver" in self.creation_result and len(self.creation_result["driver"]) > 0:
+            driver = self.creation_result["driver"]
             # 删除rule
             search_rule = SearchRule(driver)
-            element_position_map = get_element_position(test_data["policy_type"])
-            search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
+            element_position_map = get_element_position(self.test_data["policy_configuration"]["type"])
+            search_rule_code, first_row_checkbox_element = search_rule.search(self.test_data["policy_configuration"]["type"], self.test_data["policy_configuration"]["type"], element_position_map)
             if search_rule_code == 200:
                 delete_rule = DeleteRule(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete monitor rule successfully.", flush=True)
                 elif delete_rule_code != 200:
-                    ui_result = ui_result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
+                    ui_result = ui_result + " In addition, fail to delete {} rule.".format(self.test_data["policy_configuration"]["type"])
             else:
-                ui_result = ui_result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
+                ui_result = ui_result + " In addition, fail to search {} rule.".format(self.test_data["policy_configuration"]["type"])
             # 删除object
-            if delete_rule_code == 200 and "condition" in test_data.keys():
+            if delete_rule_code == 200 and "condition" in self.test_data["policy_configuration"]["type"].keys():
                 # 删除
-                for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
+                for cond_key, cond_value in (self.test_data["policy_configuration"]["condition"].items()):  # 遍历所有cond数据
                     if cond_key == "application":
                         continue  # 直接跳过
                     cond_status = 0
@@ -216,8 +213,8 @@ class TempInstanceGenerator:
                     # 退出遍历标志
                     if cond_status == 1:  # 失败，退出遍历创建
                         break
-        if isinstance(self.api_name_list, list) and self.api_name_list != [] and "cfg_list" in creation_result and len(creation_result["cfg_list"]) > 0:
-            cfg_list = creation_result["cfg_list"]
+        if isinstance(self.api_name_list, list) and self.api_name_list != [] and "cfg_list" in self.creation_result and len(self.creation_result["cfg_list"]) > 0:
+            cfg_list = self.creation_result["cfg_list"]
             # 按配置进行删除
             delete.delele_policy_by_cfg(self.test_data["token"], parameter, cfg_list)
         deletion_result["ui_result"] = ui_result

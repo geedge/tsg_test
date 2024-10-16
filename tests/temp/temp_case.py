@@ -135,7 +135,7 @@ def run(parameter):
                     if "cfg_list" in case_generator_result and len(case_generator_result["cfg_list"]) > 0:
                         result["api_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], case_generator_result, verification_result)
                     # 删除测试数据
-                    deletion_result = case_instance_generator.delete(test_data["policy_configuration"], case_generator_result)
+                    deletion_result = case_instance_generator.delete()
                     if len(deletion_result["ui_result"]) > 0:
                         result["ui_result"] = result["ui_result"] + deletion_result["ui_result"]
                     if len(deletion_result["api_result"]) > 0:
