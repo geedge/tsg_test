@@ -4,7 +4,7 @@
     "vsys_id": "6",
     "rule": {
         "name": "automation_test_policy",
-        "type": "pxy_intercept",
+        "type": "proxy_intercept",
         "action": "intercept",
         "user_tags": "",
         "log_option": "metadata",

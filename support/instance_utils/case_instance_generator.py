@@ -90,7 +90,7 @@ class CaseInstanceGenerator:
             self.dos_protection.delete_data()
         elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "pxy_intercept":
             print("todo")
-        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "pxy_manipulation":
+        elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "proxy_manipulation":
             self.manipulation.delete_data()
         elif "policy_type" in self.test_data.keys() and self.test_data["policy_type"] == "shaping":
             print("todo")

@@ -42,8 +42,8 @@ class DeletePolicy:
                     delete_rule_template['type'] = list(create_policies_ids[i].keys())[0]
                     api_path_map = {  
                         "security": "security-rules",
-                        "proxy_intercept": "proxy-intercept-rules",    
-                        "proxy_manipulation": "proxy-manipulation-rules",  
+                        "pxy_intercept": "proxy-intercept-rules",    
+                        "pxy_manipulation": "proxy-manipulation-rules",  
                         "traffic_shaping": "traffic-shaping-rules",  
                         "service_chaining": "service-chaining-rules",  
                         "statistics": "statistics-rules",  
@@ -52,7 +52,7 @@ class DeletePolicy:
                     }  
                     api_path_rule_type = api_path_map.get(delete_rule_template['type'])
                     delete_rule_template['uuids'] = list(create_policies_ids[i].values())[0]
-                    delete_rule_template['vsys_id'] = vsys_id
+                    delete_rule_template['vsys'] = vsys_id
                     url = api_server + "/v1/policies/{}".format(api_path_rule_type)
                     response = requests.delete(url, headers=headers, json=delete_rule_template, verify=False)
                     assert response.status_code == 200
@@ -301,65 +301,104 @@ class DeletePolicy:
         template = {'type': 'security', 'name': '', 'with_sub_vsys': 0, 'vsys': int(vsys_id)}
         # script_type = parameter["script_type"]
 
-        if len(name_list) == 0:
+        # if len(name_list) == 0:
 
-            # 定义要删除的规则类型
-            rule_types = ['security-rules', 'monitor-rules', 'statistics-rules', 'proxy-intercept-rules', 'proxy-manipulation-rules',
-                          'service-chaining-rules', 'dos-protection-rules']
+        #     # 定义要删除的规则类型
+        #     # 删除rule
+        #     rule_types = ['security-rules', 'monitor-rules', 'statistics-rules', 'proxy-intercept-rules', 'proxy-manipulation-rules',
+        #                   'service-chaining-rules', 'dos-protection-rules']
 
-            for rule_type in rule_types:
-                template['name'] = 'automation_test_policy'
-                template['type'] = rule_type
-                rule_url_full = rule_url + '/' + rule_type
-                self.query_and_delete_by_name(rule_url_full, template, headers)
+        #     for rule_type in rule_types:
+        #         template['name'] = 'automation_test_policy'
+        #         template['type'] = rule_type
+        #         rule_url_full = rule_url + '/' + rule_type
+        #         self.query_and_delete_by_name(rule_url_full, template, headers)
 
-
+        #     api_rule_path_map = {  
+        #         "security": "security-rules",
+        #         "proxy_intercept": "proxy-intercept-rules",    
+        #         "proxy_manipulation": "proxy-manipulation-rules",  
+        #         "traffic_shaping": "traffic-shaping-rules",  
+        #         "service_chaining": "service-chaining-rules",  
+        #         "statistics": "statistics-rules",  
+        #         "monitor": "monitor-rules",
+        #         "dos_protection": "dos-protection-rules",  
+        #     } 
+        #     for key, value in api_rule_path_map.items():  
+        #         template['name'] = 'automation_test_policy'
+        #         template['type'] = key
+        #         rule_url_full = rule_url + '/' + value
+        #         self.query_and_delete_by_name(rule_url_full, template, headers) 
             # 删除object
-            object_types = [
-                'ip-addresses', 'fqdns', 'subscriber-ids',
-                'keywords', 'urls', 'accounts', 'flags'
-            ]
+            # object_types = [
+            #     'ip-addresses', 'fqdns', 'subscriber-ids',
+            #     'keywords', 'urls', 'accounts', 'flags'
+            # ]
 
-            for obj_type in object_types:
-                template['name'] = 'automation_test_object'
-                template['type'] = obj_type
-                rule_url_full = obj_url + '/' + obj_type
-                self.query_and_delete_by_name(rule_url_full, template, headers)
-
+            # for obj_type in object_types:
+            #     template['name'] = 'automation_test_object'
+            #     template['type'] = obj_type
+            #     rule_url_full = obj_url + '/' + obj_type
+            #     self.query_and_delete_by_name(rule_url_full, template, headers)
+            
+            # api_object_path_map = {  
+            #     "ip": "ip-addresses",  
+            #     "fqdn": "fqdns",
+            #     "keywords": "keywords",
+            #     "subscriberid": "subscriber-ids",
+            #     "account": "accounts",
+            #     "flag": "flags",
+            # } 
+            # for key, value in api_object_path_map.items():  
+            #     template['name'] = 'automation_test_object'
+            #     template['type'] = key
+            #     obj_url_full = obj_url + '/' + value
+            #     self.query_and_delete_by_name(obj_url_full, template, headers) 
             # 删除profiles   
             # 删除Response Pages及其他配置
-            template['name'] = 'automation_test_profile'
-            profile_types = [
-                "response-pages", "dns-records", "proxy-hijack-files",
-                "proxy-inject-scripts", "http-manipulation-scripts"
-            ]
+            # template['name'] = 'automation_test_profile'
+            # profile_types = [
+            #     "response-pages", "dns-records", "proxy-hijack-files",
+            #     "proxy-inject-scripts", "http-manipulation-scripts"
+            # ]
 
-            for profile_type in profile_types:
-                profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/{profile_type}"
-                if 'type' in template:
-                    del template["type"]
-                self.query_and_delete_by_name(profile_url, template, headers)
+            # for profile_type in profile_types:
+            #     profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/{profile_type}"
+            #     if 'type' in template:
+            #         del template["type"]
+            #     self.query_and_delete_by_name(profile_url, template, headers)
+                    
+            # api_profile_path_map = {  
+            #     "service_function_forwarder": "service-function-forwarders",  
+            #     "service_function": "service-functions",  
+            #     "statistics_template": "statistics-templates",
+            #     "response_page": "response-pages",
+            #     "hijack_file": "proxy-hijack-files",
+            #     "insert_script": "proxy-inject-scripts",
+            #     "traffic_mirror": "traffic-mirror-profiles",
+            #     "run_script": "http-manipulation-scripts",
+            #     "dns_record": "dns-records"
+            # } 
+            # # 删除Service Function Forwarders和Service Functions
+            # template['name'] = 'test_sc_api'
+            # service_function_endpoints = [
+            #     "service-function-forwarders", "service-functions"
+            # ]
 
-                # 删除Service Function Forwarders和Service Functions
-            template['name'] = 'test_sc_api'
-            service_function_endpoints = [
-                "service-function-forwarders", "service-functions"
-            ]
+            # for endpoint in service_function_endpoints:
+            #     profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/{endpoint}"
+            #     self.query_and_delete_by_name(profile_url, template, headers)
 
-            for endpoint in service_function_endpoints:
-                profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/{endpoint}"
-                self.query_and_delete_by_name(profile_url, template, headers)
-
-                # 删除Statistics Templates
-            template['name'] = 'test_statistics_api'
-            profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/statistics-templates"
-            self.query_and_delete_by_name(profile_url, template, headers)
+            # # 删除Statistics Templates
+            # template['name'] = 'test_statistics_api'
+            # profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/statistics-templates"
+            # self.query_and_delete_by_name(profile_url, template, headers)
 
             # 删除geolocation  24.08 版本临时注释掉
             # geolocation_template = {'location_type': 'geoname_id', 'country': 'auto_geo_obj', 'vsys_id': vsys_id}
             # geolocation_url = api_server + "/v1/policy/library/geolocation"
             # self.delete_geolocation(geolocation_url, geolocation_template, headers, vsys_id)
-        elif len(name_list) > 0:
+        if len(name_list) > 0:
             for name_item in name_list:
                 if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept", "monitor", "statistics", "dos_protection"]:
                     api_path_map = {  

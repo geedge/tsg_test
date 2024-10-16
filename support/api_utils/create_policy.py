@@ -130,9 +130,9 @@ class CreatePolicy:
                                 sc_info["application"] = test_data[temp_application]
                             else:
                                 sc_info["application"] = test_data['application']
-                            sc_info["sff_id"] = sff["id"]
+                            sc_info["sff_id"] = sff["uuid"]
                             sc_info["type"] = sff["sff_info"]["type"]
-                            sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["id"]
+                            sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["uuid"]
                             sc_info["device_tag"] = sff["sff_info"]["sf_info"][0]["device_tag"]
                             sc_info["admin_status"] = sff["sff_info"]["sf_info"][0]["admin_status"]
                             if sff["sff_info"]["sf_info"][0]["connectivity"]["method"] == "vxlan_g":
