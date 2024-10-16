@@ -13,7 +13,8 @@ from support.report_update import ReportUpdate
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -37,13 +38,14 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.31",
+                                "item_value": "10.64.224.6",
                             },
                         ]
                     }
@@ -53,13 +55,14 @@ def run(parameter):
                     {
                         "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
+                        "statistics_option": "Brief",
                         "select_type": False,
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.21",
+                                "item_value": "2.1.1.6",
                             },
                         ]
                     }],
@@ -96,16 +99,18 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                          "visualization_type": "table",
                           "metrics": [
-                            "sent_pkts:SUM:in pkts",
-                            "received_pkts:SUM:out pkts",
-                            "sent_pkts+received_pkts:SUM:pkts"
+                            "new_c2s_flows:SUM:new c2s flows",
+                            "new_s2c_flows:SUM:new s2c flows",
+                            "new_c2s_flows+new_s2c_flows:SUM:all flows"
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
+                          "dimensions": [
+                            "client_ip_object_list"
+                          ],
+                          "order_by": "new c2s flows",
+                          "row_limit": "10",
                           "min_in_size": "1",
                           "min_out_size": "1"
                         }
@@ -118,18 +123,15 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.21",
-                "clients_end_ip": "10.64.224.21",
-                "servers_start_ip": "2.1.1.21",
-                "servers_end_ip": "2.1.1.21",
+                "clients_start_ip": "10.64.224.6",
+                "clients_end_ip": "10.64.224.6",
+                "servers_start_ip": "2.1.1.6",
+                "servers_end_ip": "2.1.1.6",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
-            "statists_metric_results": [
-                {"time": "2024-07-25T07:22:07Z", "out_pkts": 64, "pkts": 83, "in_pkts": 19}
-            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -173,10 +175,11 @@ def run(parameter):
     finally:
         # 清理环境
         if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.clean_up()
+            case_instance_generator.delete_data()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
+
 
 if __name__ == '__main__':
     parameter = {
@@ -185,7 +188,7 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
         "vsys_id": 1,  # 6
         "root_path": "D:/tsgcode/tsg_test",

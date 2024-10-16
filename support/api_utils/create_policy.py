@@ -19,9 +19,9 @@ class CreatePolicy:
         run_env = parameter["env"]
         vsys_id = parameter["vsys_id"]
         token = test_data["token"]
-        create_ip_ids, create_subid_ids, create_port_ids, create_imsi_ids, create_phone_number_ids, create_imei_ids, create_apn_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
+        create_ip_ids, create_subid_ids, create_port_ids, create_imsi_ids, create_phone_number_ids, create_imei_ids, create_apn_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids, library_tag_ids, library_catalog_ids = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
-        
+
         # sc需要随机ip
         if  (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw"):
             test_data = self.generate_random_ip(test_data, run_env, vsys_id)
@@ -48,11 +48,12 @@ class CreatePolicy:
             object_template = template_path["object_template"]
             #print("object_condition_value: {}".format(object_condition_value))
             timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, vsys_id)
-            # 创建library
-            library_condition = test_data["library_condition"]
-            create_library = CreateLibrary()
-            library_condition_ids_dict, library_tag_ids, library_catalog_ids = create_library.create_library(token, library_condition, api_server, vsys_id)
-            condition_ids_by_api_dict = create_library.tags_ids_to_policy_condition_list(library_condition_ids_dict,condition_ids_by_api_dict)
+
+            if "library_condition" in test_data.keys():# 创建library
+                library_condition = test_data["library_condition"]
+                create_library = CreateLibrary()
+                library_condition_ids_dict, library_tag_ids, library_catalog_ids = create_library.create_library(token, library_condition, api_server, vsys_id)
+                condition_ids_by_api_dict = create_library.tags_ids_to_policy_condition_list(library_condition_ids_dict,condition_ids_by_api_dict)
             for k, v_0 in condition_ids_by_api_dict.items():
                 v = copy.deepcopy(v_0)
                 if k == "ip_ids" and len(v) > 0:

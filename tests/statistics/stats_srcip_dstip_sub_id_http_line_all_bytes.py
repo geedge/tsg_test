@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.26",
+                                "item_value": "2.1.1.14",
                             },
                         ]
                     }],
@@ -70,7 +70,21 @@ def run(parameter):
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
-                "sub_id": [],
+                "sub_id": [
+                    {
+                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                        "object_type": "subscriberid",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "subscriberid",
+                                "item_value": '$' + parameter["test_subcriber_id"],
+                            }
+                        ]
+                    }
+                ],
                 "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
@@ -99,15 +113,43 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "closed_in_sessions:SUM:Closed Incoming Sessions",
-                            "closed_out_sessions:SUM:Closed Outgoing Sessions",
-                            "closed_in_sessions+closed_out_sessions:SUM:sessions"
+                            "sent_bytes:BITRATE:in bytes",
+                            "received_bytes:BITRATE:out bytes",
+                            "sent_bytes+received_bytes:BITRATE:bytes"
                           ],
                           "dimensions": [],
                           "order_by": "",
                           "row_limit": "",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "sent_bytes:RATE:in bytes",
+                            "received_bytes:RATE:out bytes",
+                            "sent_bytes+received_bytes:RATE:bytes"
+                          ],
+                          "dimensions": [],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "sent_bytes:SUM:in bytes",
+                                "received_bytes:SUM:out bytes",
+                                "sent_bytes+received_bytes:SUM:bytes"
+                            ],
+                            "dimensions": [],
+                            "order_by": "",
+                            "row_limit": "",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -118,15 +160,18 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.26",
-                "clients_end_ip": "10.64.224.26",
-                "servers_start_ip": "2.1.1.26",
-                "servers_end_ip": "2.1.1.26",
+                "clients_start_ip": "10.64.224.14",
+                "clients_end_ip": "10.64.224.14",
+                "servers_start_ip": "2.1.1.14",
+                "servers_end_ip": "2.1.1.14",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"time": "2024-07-24T01:36:19Z", "out_bytes": 745744, "in_bytes": 9120, "bytes": 754864}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -170,7 +215,7 @@ def run(parameter):
     finally:
         # 清理环境
         if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.clean_up()
+            case_instance_generator.delete_data()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -193,7 +238,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-   }
+    }
     parameter = replace_paras(parameter)
     run(parameter)
     """
