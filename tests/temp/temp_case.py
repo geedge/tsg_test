@@ -137,7 +137,7 @@ def run(parameter):
                         result["api_result"] = analysis.analyse_result(test_data["policy_configuration"]["type"], instantiation_result, verification_result)
                     # 删除测试数据
                     delete_instantiation = DeleteInstantiation()
-                    deletion_result = instantiation.delete()
+                    deletion_result = delete_instantiation.delete(parameter, test_data, instantiation_result)
                     if len(deletion_result["ui_result"]) > 0:
                         result["ui_result"] = result["ui_result"] + deletion_result["ui_result"]
                     if len(deletion_result["api_result"]) > 0:
@@ -153,8 +153,8 @@ def run(parameter):
         return "Exception Error: " + str(e)
     finally:
         # 清理环境和残留配置
-        if isinstance(instantiation, InstanceTestData):
-            instantiation.clean_up()
+        if isinstance(delete_instantiation, DeleteInstantiation):
+            delete_instantiation.clean_up(parameter, test_data, instantiation_result)
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

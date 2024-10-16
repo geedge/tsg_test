@@ -98,12 +98,6 @@ class InstanceTestData:
         result = self.temp.create()
         return result
     
-    # =============required begin=============
-    def delete(self):
-        if "type" in self.policy_configuration.keys() and self.policy_configuration["type"] == "temp":
-             self.temp.delete()
-    # =============required end=============
-    
     def clean_up(self):
         if "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "security":
              self.security.clean_up()
@@ -125,8 +119,6 @@ class InstanceTestData:
             self.dashboard.clean_up()
         elif "type" in self.policy_configuration.keys() and self.policy_configuration["type"] == "objects":
             self.objects.clean_up()
-        elif "type" in self.policy_configuration.keys() and self.policy_configuration["type"] == "temp":
-            self.temp.clean_up()
         else:
             pass
         
