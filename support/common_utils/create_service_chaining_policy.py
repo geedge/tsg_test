@@ -10,6 +10,7 @@ from support.ui_utils.profile.create_sc_profile import CreateServiceFunctionForw
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
 from support.ui_utils.element_position.profile_element_position import *
+from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policy.create_rule import CreateRule
 from support.ui_utils.policy.search_rule import SearchRule
 from support.ui_utils.policy.delete_rule import DeleteRule

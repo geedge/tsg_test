@@ -1,7 +1,7 @@
 #login page 登录页面
-loginPage_userName_posName = "username"
-loginPage_passwd_posName = "password"
-loginPage_signIn_posId = "login"
+loginPage_userName_posXpath = "//div[@class='loginTitle']//input[@placeholder='User name']"
+loginPage_passwd_posXpath = "//div[@class='loginTitle']//input[@placeholder='Password']"
+loginPage_signIn_posXpath = "//div[@class='loginTitle']//button"
 loginPage_error_posXpath = "//p[@class='el-message__content']"
 
 #main页面
@@ -9,14 +9,14 @@ loginPage_error_posXpath = "//p[@class='el-message__content']"
 #mainPage_navigationBar_logo_posCss = ".logo"
 mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
 mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss
-mainPage_input_language_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']"
-mainPage_language_change_posXpath = "//span[@class='el-input__prefix']//i"
-mainPage_language_chinese_posXpath = "//div/ul/li/span[contains(text(),'简体中文')]"
-mainPage_language_russian_posXpath = "//div/ul/li/span[contains(text(),'Русский')]"
-mainPage_language_english_posXpath = "//div/ul/li/span[contains(text(),'English')]"
-mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
+mainPage_input_language_posXpath = "//button[@id='header-profile-button']/i"
+mainPage_language_change_posXpath = "//button[@id='header-profile-button']/i"
+mainPage_language_chinese_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), '中文')]"
+mainPage_language_russian_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), 'Русский')]"
+mainPage_language_english_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), 'English')]"
+mainPage_button_menu_posXpath = "//div[@id='root']//header//div[@class='systemMenu']//button//i"    #menu按钮定位
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
-mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
+mainPage_vsysTree_vsysName_posXpath = "//div[@class='MuiStack-root css-1r1y6jm']//li/div"    # vsys tree中vsys name定位
 mainPage_vsysTree_DefaultVsys_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys1']"
 mainPage_vsysTree_Vsys1_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys10']"
 mainPage_vsysTree_Vsys3_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys3']"
