@@ -19,7 +19,7 @@ class InstanceTemp:
     def create(self):
         try:
             api_name_list, ui_name_list = [], []
-            ui_result, api_result, token = "", "", ""
+            ui_result, api_result, token, driver = "", "", "", ""
             cfg_list, creation_result = {}
             
             log_in = LogIn()
