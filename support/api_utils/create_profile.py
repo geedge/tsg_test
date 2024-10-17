@@ -911,7 +911,7 @@ class CreateProfile:
             for i in sf_profile_id_list:
                 sf_profile_id = i
                 sff_info["sf_info"].append(self.search_sc_sf(sf_profile_id, headers, api_host,vsys_id))
-            sff_info["load_balance_localization"] = r_dict["data"]["service_function_forwarder"]["load_balance_localization"]
+            sff_info["load_balance_localization"] = r_dict["data"]["load_balance_localization"]
             sff_info["type"] = r_dict["data"]["type"]
             sff_info["failure_action"] = r_dict["data"]["failure_action"]
         return sff_info
