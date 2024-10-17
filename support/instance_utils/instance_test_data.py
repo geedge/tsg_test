@@ -99,21 +99,21 @@ class InstanceTestData:
         return result
     
     def clean_up(self):
-        if "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "security":
+        if "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "security":
              self.security.clean_up()
-        elif "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "monitor":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "monitor":
              self.monitor.clean_up()
-        elif "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "statistics":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "statistics":
             self.statistics.clean_up()
-        elif "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "dos_protection":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "dos_protection":
             self.dos_protection.clean_up()
-        elif "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "pxy_intercept":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "pxy_intercept":
             self.intercept.clean_up()
-        elif "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "pxy_manipulation":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "pxy_manipulation":
             self.manipulation.clean_up()
-        elif "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "shaping":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "shaping":
             print("todo")
-        elif "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "service_chaining":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "service_chaining":
             self.service_chaining.clean_up()
         elif "type" in self.policy_configuration.keys() and self.policy_configuration["type"] == "dashboard":
             self.dashboard.clean_up()

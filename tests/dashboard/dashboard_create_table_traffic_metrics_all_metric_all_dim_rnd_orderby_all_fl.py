@@ -1,0 +1,144 @@
+import os
+import time
+from support.api_utils.delete_policy import *
+from support.instance_utils.instance_test_data import InstanceTestData
+from support.report_update import ReportUpdate
+
+
+def run(parameter):
+    global create_code, driver
+    try:
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run test case: " + parameter["test_case_name"], flush=True)
+        #参数初始化
+        exception_result = ""
+        result = {}
+
+        #脚本启动时间
+        start_time = time.time()
+
+        #测试数据
+        test_data =   {
+                "type":"dashboard",
+                "visualization_type": "Table",
+                "data_source": "Traffic Metrics",
+                "select_metric_type": "single",
+                "metric": {
+                    "single_type": [
+                        {
+                            "field": "New Sessions",
+                            "aggregate": "SUM",
+                            "label": "verifyedit1"
+                        },
+                        {
+                            "field": "Closed Sessions",
+                            "aggregate": "RATE",
+                            "label": "verifyedit2"
+                        },
+                        {
+                            "field": "Incoming Bytes",
+                            "aggregate": "BITRATE",
+                            "label": "verifyedit3"
+                        },
+                        {
+                            "field": "Outgoing Packets",
+                            "aggregate": "SUM",
+                            "label": ""
+                        },
+                        {
+                            "field": "Asymmetric Flows(c2s)",
+                            "aggregate": "SUM",
+                            "label": ""
+                        },
+                        {
+                            "field": "Asymmetric Flows(s2c)",
+                            "aggregate": "SUM",
+                            "label": ""
+                        }
+                    ],
+                    "multiple_type": [
+                        {
+                            "field": ["New Sessions", "Closed Sessions"],
+                            "aggregate": "SUM",
+                            "label": "verifyedit2"
+                        },
+                        {
+                            "field": ["Incoming Bytes","Outgoing Bytes"],
+                            "aggregate": "random",
+                            "label": "verifyedit2"
+                        },
+                        {
+                            "field": ["Incoming Packets","Outgoing Packets"],
+                            "aggregate": "random",
+                            "label": "verifyedit3"
+                        },
+                        {
+                            "field": ["Asymmetric Flows(c2s)","Asymmetric Flows(s2c)"],
+                            "aggregate": "SUM",
+                            "label": ""
+                        }
+                    ]
+                },
+                "multiple_dimension": "true",
+                "dimensions": ["Time", "Device Group", "Data Center"],
+                "sub_type": "",
+                "order_by":"verifyedit2",
+                "filter": [
+                    {
+                        "field": "Device Group",
+                        "operator": "=",
+                        "value": ["group-xxg-tsgx"]
+                    },
+                    {
+                        "field": "Data Center",
+                        "operator": "IN",
+                        "value": ["center-xxg-tsgx","center-xxg-9140"]
+                    }
+                ]
+            }
+
+        # 测试用例实例化
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
+
+        return result
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,flush=True)
+        return "Error: " + str(e)
+    finally:
+        # 清理环境并删除配置
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
+        # 生成csv报告
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
+
+if __name__ == '__main__':
+    parameter = {
+        "username": "auto_ui_yzj",
+        "password": "auto_ui_yzj",
+        "test_pc_ip": "192.168.64.28",
+        "test_subcriber_id": "",
+        "api_server": "http://192.168.44.72",
+        "script_type": "ui",
+        "env": "tsgx",
+        "vsys_id": 2,
+        "is_log": 0,
+        "root_path": "D:/PycharmProjects/tsg_test",
+        "path": "D:/PycharmProjects/tsg_test/tests/ui",
+        "module_name": "dashboard",
+        "test_case_name": "create_table_traffic_spectrum"
+    }
+    run(parameter)
+    """
+    # 在测试文件的当前路径执行如下命令执行测试用例：
+    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
+
+    # 执行如下命令生成测试报告（自动打开浏览器）：
+    allure serve allure
+    """
