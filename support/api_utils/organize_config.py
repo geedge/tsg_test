@@ -241,8 +241,10 @@ class OrganizeConfig:
     def get_policy_info(self, token, rule_id, rule_type, api_host, vsys_id):
         try:
             # 请求接口查询metric
+            if rule_type == "statistics":
+                rule_type = "statistics-rules"
             headers = {'Content-Type': 'application/json', 'Authorization': token}
-            url = (api_host + f"/v1/policies?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={vsys_id}")
+            url = (api_host + f"/v1/policies/{rule_type}?vsys={vsys_id}&page_size=20&page_no=1&uuid={rule_id}&is_enabled=")
             response = requests.get(url, headers=headers, verify=False)
             if response.status_code != 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))

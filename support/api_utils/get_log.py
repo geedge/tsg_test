@@ -12,8 +12,9 @@ class GetLog:
     def get_log_schema(self, token, log_type, api_host, vsys_id):
         # 修改完成后删除注释:将下方的security_event替换成变量
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/vsys{}/log/schema/".format(vsys_id) + log_type 
-        response = requests.get(url, headers=headers, verify=False)
+        url = api_host + "/v1/logs/schema/" + log_type
+        vsys = {"vsys": vsys_id} 
+        response = requests.get(url, headers=headers, params=vsys, verify=False)
         assert response.status_code == 200
         log_schema = json.loads(response.text)
         log_schema = log_schema['data']['fields']
@@ -30,7 +31,7 @@ class GetLog:
             "start_time": "",
             "end_time": "",
             "filter": "",
-            "vsys_id": 1
+            "vsys": 1
         }
         log_condition_dict = json.loads(json.dumps(log_condition))
         policy_type = test_data["policy_type"]
@@ -49,7 +50,7 @@ class GetLog:
             if policy_type == 'security':
                 log_source = 'security_event'
                 identifier_name = 'security-event-list'
-                log_query_rule_type = 'security_rule_list'
+                log_query_rule_type = 'security_rule_uuid_list'
             elif policy_type == 'pxy_intercept':
                 log_source = 'session_record'
                 identifier_name = 'session-record-list'
@@ -57,22 +58,22 @@ class GetLog:
             elif policy_type == 'pxy_manipulation':
                 log_source = 'proxy_event'
                 identifier_name = 'proxy-event-manipulation-list'
-                log_query_rule_type = 'proxy_rule_list'
+                log_query_rule_type = 'proxy_rule_uuid_list'
             elif policy_type == 'monitor':
                 log_source = 'monitor_event'
                 identifier_name = 'monitor-event-list'
-                log_query_rule_type = 'monitor_rule_list'
+                log_query_rule_type = 'monitor_rule_uuid_list'
             elif policy_type == 'statistics':
                 log_source = 'session_record'
                 identifier_name = 'session-record-list'
-                log_query_rule_type = 'statistics_rule_list'
+                log_query_rule_type = 'statistics_rule_uuid_list'
             elif policy_type == "dos_protection":
                 log_source = "dos_event"
                 identifier_name = "dos-event-list"
             log_condition_dict['columns'] = fields
             log_condition_dict['start_time'] = start_time
             log_condition_dict['end_time'] = end_time
-            log_condition_dict['vsys_id'] = vsys_id
+            log_condition_dict['vsys'] = vsys_id
             log_condition_dict['source'] = log_source
             log_condition_dict['identifier_name'] = identifier_name
             log_condition_dict['execution_mode'] = 'oneshot'
@@ -86,18 +87,18 @@ class GetLog:
                 log_condition_dict['filter'] = f"destination_ip='{test_data['traffic']['servers_start_ip']}'AND attack_type='{attack_type}'"
             else:
                 if script_type == "api" and len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
-                    log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
+                    log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},'{policy_id}')"
                     log_condition_dict['filter'] = log_filter
                 else:
-                    log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, {policy_id})"
+                    log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, '{policy_id}')"
                     log_condition_dict['filter'] = log_filter
                     log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
-            url = api_host + "/v1/vsys{}/log/query".format(vsys_id)
+            url = api_host + "/v1/logs/query"
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
             assert response.status_code == 200
             log_list = json.loads(response.text)
-            log_list = log_list['data']['result']
+            log_list = log_list['data']['list']
             log_index = i + 1
             temp_log_query_param = 'log_query_param_' + str(log_index)
             if temp_log_query_param in test_data.keys():
@@ -420,7 +421,7 @@ class GetLog:
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
         # 请求接口查询metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/vsys{}/log/query".format(vsys_id)
+        url = api_host + "/v1/logs/query"
         metric_result = False
         for i in range(rule_num):
             policy_type = test_data["policy_type"]
@@ -433,13 +434,13 @@ class GetLog:
             elif policy_type == 'dos_protection':
                 dataset_identifier_name = "dos-protection-rule-statistics"
             policy_id = list(create_policies_ids[i].values())[0]
-            hit_query_condition = {"identifier_name": dataset_identifier_name, "rule_id": "", "start_time": "",
-                                   "end_time": "", "vsys_id": 1, "execution_mode": "oneshot", "output_mode": "json",
+            hit_query_condition = {"identifier_name": dataset_identifier_name, "rule_uuid": "", "start_time": "",
+                                   "end_time": "", "vsys": 1, "execution_mode": "oneshot", "output_mode": "json",
                                    "interval": 1}
             hit_query_condition['rule_id'] = policy_id
             hit_query_condition['start_time'] = start_time
             hit_query_condition['end_time'] = end_time
-            hit_query_condition['vsys_id'] = vsys_id
+            hit_query_condition['vsys'] = vsys_id
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query metric by condition.", flush=True)
             response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
@@ -487,7 +488,7 @@ class GetLog:
     def get_sc_metric(self, token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, host_api, vsys_id):
         # 请求接口查询sc metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/vsys{}/log/query".format(host_api, vsys_id)
+        url = "{}/v1/logs/query".format(host_api)
         # 重组请求体数据
         post_data_ori_json = """
         {
@@ -496,7 +497,7 @@ class GetLog:
             "rule_id": "271039",
             "start_time": "2023-11-21T03:23:24Z",
             "end_time": "2023-11-30T07:39:49Z",
-            "vsys_id": 1,
+            "vsys": 1,
             "interval": 1,
             "duration":1,
             "limit": 10000,
@@ -508,20 +509,21 @@ class GetLog:
         post_data_ori_dict["identifier_name"] = "service-chaining-policy-rule-statistics"
         post_data_ori_dict["start_time"] = start_time
         post_data_ori_dict["end_time"] = end_time
-        post_data_ori_dict["rule_id"] = int(sc_info["rule_id"])
-        post_data_ori_dict["vsys_id"] = vsys_id
+        # post_data_ori_dict["rule_id"] = int(sc_info["rule_id"])
+        post_data_ori_dict["rule_uuid"] = sc_info["rule_id"]
+        post_data_ori_dict["vsys"] = vsys_id
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric query failed.", flush=True)
             return 444
         else:  # 返回正常结果
-            if r_dict["data"]["result"] == []:  # 为空
+            if r_dict["data"]["list"] == []:  # 为空
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric is empty.", flush=True)
                 return 333
             else:  # metric不为空时，验证返回结果
                 metric_result = False  # 默认
-                result_list = r_dict["data"]["result"]
+                result_list = r_dict["data"]["list"]
                 sc_value = copy.deepcopy(result_list[0])
                 metric_result = self.assert_sc_metric(sc_info, sc_value, sc_expected_metric, active_dest_ips_list)
         return metric_result
@@ -649,7 +651,7 @@ class GetLog:
         """
         # 请求接口查询statistics metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/vsys{}/log/query".format(host_api, vsys_id)
+        url = "{}/v1/logs/query".format(host_api)
         # 24.08重组请求体dsl结构数据,文档见https://docs.geedge.net/display/TSG/DSL+Examples
         post_data_ori_json = """
         {
@@ -687,7 +689,7 @@ class GetLog:
         post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
         post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
         post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
-        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_id = {} and template_id = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
+        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_uuid = {} and template_uuid = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
         if statistics_info["chart_type"] == "bar":
             variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
@@ -727,7 +729,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Metrics data from the interface.")
             return [False, "The statistics metric API query failed."]
         else:  # 返回正常结果
-            if r_dict["data"]["result"] == []:  # 为空
+            if r_dict["data"]["list"] == []:  # 为空
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is []")
                 # 对应有方向的session的单一Metrics方式需要另行处理
                 tmp_in_out_list = UtilStatisticsTemplate().tmp_in_out_list
@@ -738,7 +740,7 @@ class GetLog:
                         return [333, "this is a pass"]
                 return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
-                result_list_from_api = r_dict["data"]["result"]
+                result_list_from_api = r_dict["data"]["list"]
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is {}".format(result_list_from_api))
                 #print(result_list_from_api)
                 result_list = []

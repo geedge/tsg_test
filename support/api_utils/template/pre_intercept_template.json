@@ -10,10 +10,10 @@
         "log_option": "metadata",
         "effective_range": {},
         "action_parameter": {
-            "keyring_for_untrusted": "cfcd2084-95d5-65ef-66e7-dff9f98764da",
-            "keyring_for_trusted": "c4ca4238-a0b9-2382-0dcc-509a6f75849b",
-            "decryption_profile": "c4ca4238-a0b9-2382-0dcc-509a6f75849b",
-            "tcp_option_profile": "c4ca4238-a0b9-2382-0dcc-509a6f75849b",
+            "keyring_for_untrusted": "00000000-0000-0000-0000-000000000000",
+            "keyring_for_trusted": "00000000-0000-0000-0000-000000000001",
+            "decryption_profile": "00000000-0000-0000-0000-000000000001",
+            "tcp_option_profile": "00000000-0000-0000-0000-000000000001",
             "traffic_mirror": {
                 "enable": 0
             }
