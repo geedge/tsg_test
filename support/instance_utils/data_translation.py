@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import copy
+import random
 
 from support.api_utils.util_statistics_template import UtilStatisticsTemplate
 
@@ -9,6 +10,7 @@ class DataTranslation:
         policy_type = data["policy_type"]
         temp_test_data = {
             "obj_condition": [],
+            "library_condition":[],
             "profile_condition": [],
             "application": [],
             "do_log_1": "all"
@@ -16,6 +18,9 @@ class DataTranslation:
         for key in data.keys():
             if key in {"condition"}:
                 temp_test_data["obj_condition"] = self.push_object_data(data)
+                for k in data["condition"]:
+                    if k.endswith("library"):
+                        temp_test_data["library_condition"] = self.push_library_data(data)
                 if "application" in data["condition"].keys() and len(data["condition"]["application"]) > 0:
                     for app_index in range(len(data["condition"]["application"])):
                         temp_test_data["application"].append(data["condition"]["application"][app_index]["name"])
@@ -25,6 +30,8 @@ class DataTranslation:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
         if len(temp_test_data["obj_condition"]) > 0:
             data["obj_condition"] = temp_test_data["obj_condition"]
+        if len(temp_test_data["library_condition"]) > 0:
+            data["library_condition"] = temp_test_data["library_condition"]
         if len(temp_test_data["application"]) >= 0:
             data["application"] = temp_test_data["application"]
         if "ip_protocol" in data["condition"].keys() and len(temp_test_data["ip_protocol"]) >= 0:
@@ -117,7 +124,17 @@ class DataTranslation:
                 data["user_region"] = user_region
         elif policy_type == "security":
             if data["rule_action"] == "deny":
-                if len(data["condition"]["sub_action"]) > 0:
+                if "packet_capture" in data["condition"] and len(data["condition"]["packet_capture"]) > 0:
+                    data["packet_capture_1"] = {}
+                    capture_flag = data["condition"]["packet_capture"][0]["enable"]
+                    if capture_flag == True:
+                        capture_flag = 1
+                    else:
+                        capture_flag = 0
+                    capture_depth = data["condition"]["packet_capture"][0]["capture_depth"]
+                    data["packet_capture_1"]["enable"] = capture_flag
+                    data["packet_capture_1"]["capture_depth"] = int(capture_depth)
+                if len(data["condition"]["sub_action"])>0:
                     if data["condition"]["sub_action"][0]["type"] == "drop":
                         data["method_1"] = "drop"
                         if data["condition"]["sub_action"][0]["send_tcp_rst"] == False:
@@ -195,7 +212,6 @@ class DataTranslation:
                                 data["profile_condition_1"][0]["profile_type"] = "dns_record"
                                 data["profile_condition_1"][0]["type"] = data["profile"][0]["type"]
                                 data["profile_condition_1"][0]["value"] = data["profile"][0]["items"][0]
-
                             data["resolution_1"] = resolution
                 else:
                     if data["condition"]["sub_action_override"] == False:
@@ -210,6 +226,8 @@ class DataTranslation:
             if type(v) == bool:
                 continue
             if len(v) == 0:  # 空跳过
+                continue
+            if k in {"source_library"}: # 如果condition引用的是library，跳过
                 continue
             if k == "source_ip":
                 for i in range(len(v)):
@@ -233,13 +251,23 @@ class DataTranslation:
                     }
                     if "negate" in v[i]:
                         temp["is_negate"] = v[i]["negate"]
-                    for u in range(len(v[i]["item"])):
-                        # 添加多个item
-                        add_item_dict = {}
-                        add_item_dict["ip"] = v[i]["item"][u]["item_value"]
-                        add_item_dict["interval"] = "0-65535"
-                        add_item_dict["op"] = v[i]["item"][u]["item_operation"]
+                    if "repeat_time" in v[i] and v[i]["repeat_time"] > 1:
+                        temp["repeat_time"] = v[i]["repeat_time"]
+                        import_path = v[i]["import_path"]
+                        add_item_dict = {
+                                "keyword_array": []
+                            }
+                        add_item_dict["keyword_array"].append(import_path)
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        # temp["object_list"][0]["add_item_list"].append(import_path)
+                    if "item" in v[i]:
+                        for u in range(len(v[i]["item"])):
+                            # 添加多个item
+                            add_item_dict = {}
+                            add_item_dict["ip"] = v[i]["item"][u]["item_value"]
+                            add_item_dict["interval"] = "0-65535"
+                            add_item_dict["op"] = v[i]["item"][u]["item_operation"]
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "destination_ip":
@@ -262,6 +290,8 @@ class DataTranslation:
                             }
                         ]
                     }
+                    if "negate" in v[i]:
+                        temp["is_negate"] = v[i]["negate"]
                     for u in range(len(v[i]["item"])):
                         # 添加多个item
                         add_item_dict = {}
