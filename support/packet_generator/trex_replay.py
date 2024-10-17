@@ -40,14 +40,15 @@ class TrafficReplay:
         # 更具传入的pcap_name，修改yanl文件内容
         overwrite_yaml = OverwriteYaml(self.path_dict)
         overwrite_yaml.replace_from_yaml(yaml_name, pcap_name, clients_start=clients_start, clients_end=clients_end, servers_start=servers_start, servers_end=servers_end)
+        self.yaml_abs_path = os.path.join(self.pcap_yaml_path, yaml_name)
         # cd /opt/trex/v3.03/ && /opt/trex/v3.03/t-rex-64 -f /opt/trex/v3.03/cap2_my/http_50.yaml -m 1 -d 100
         # 重组trex执行命令
         if active_flows == 0:
             template_trex_command = "cd {trex_workpath} && {trex_workpath}/t-rex-64 -f {yaml_abs_path} -m {m} -d {d}"
+            trex_command = template_trex_command.format(trex_workpath=self.traffic_trex_workpath, yaml_abs_path=self.yaml_abs_path, m=m, d=d)
         elif active_flows > 0:
             template_trex_command = "cd {trex_workpath} && {trex_workpath}/t-rex-64 -f {yaml_abs_path} --active-flows {active_flows} -d {d}"
-        self.yaml_abs_path = os.path.join(self.pcap_yaml_path, yaml_name)
-        trex_command = template_trex_command.format(trex_workpath=self.traffic_trex_workpath, yaml_abs_path=self.yaml_abs_path, m=m, d=d)
+            trex_command = template_trex_command.format(trex_workpath=self.traffic_trex_workpath, yaml_abs_path=self.yaml_abs_path, active_flows=active_flows, d=d)
         # 执行trex命令
         p = subprocess.Popen(trex_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
         stdout_flag = 0  # 0表示不输出

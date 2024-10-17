@@ -18,8 +18,6 @@ from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.api_utils.organize_config import *
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from support.packet_generator.traffic_replay import TrafficReplay
 
 class ApiVerification:
     def api_verification(self, driver, parameter, test_data, traffic_result, cfg_list):
@@ -73,12 +71,6 @@ class ApiVerification:
             current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
             start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             
-            # 触发流量
-            # if debug_flag == "local":
-            #     temp_data = json.dumps(test_data["traffic"])
-            #     output = self.call_traffic_server(temp_data, script_type, debug_flag)
-            # else:
-            #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
             output = traffic_result
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
             cmd_return = output
@@ -94,7 +86,10 @@ class ApiVerification:
                 if is_log_query == True or is_counters == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_log' is True.", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
-                    for i in range(70):
+                    query_time = 70
+                    if test_data["traffic"]["protocol"] == "mail":
+                        query_time = 90
+                    for i in range(int(query_time)):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
                         if i == 30 and script_type == "ui" and driver:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Operate the browser to prevent timeout close.", flush=True)
@@ -114,6 +109,12 @@ class ApiVerification:
                             metric_result = log.get_metric(token, rule_num, start_time, end_time, create_policies_ids, test_data, api_server, vsys_id, script_type)
                         if is_counters == False:
                             log_result = "no_set"
+                        if log_result == False:
+                            if i < 3:   # 允许失败3次，重新请求数据断言
+                                log_result = None
+                        if metric_result == False:
+                            if i < 3:   # 允许失败3次，重新请求数据断言
+                                metric_result = None
                         if log_result != None and metric_result != None:
                             break
             else:
@@ -151,7 +152,7 @@ class ApiVerification:
             max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
             search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
             if script_type == "ui":
-                max_fail_count = 35    # 每次查询statistic metric的 间隔时间 单位秒
+                max_fail_count = 20    # 每次查询statistic metric的 间隔时间 单位秒
                 #time.sleep(60)
             utc_tz = pytz.timezone('UTC')
             cmd_return = expected_return = test_data["expected_return"]
@@ -187,7 +188,7 @@ class ApiVerification:
                                 break
                             time.sleep(search_interval_time)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG：Traffic Metric Verify Result:{}'.format(metric_result), flush=True)
-            return metric_result, metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
+            return metric_result, metric_result, metric_results[1], my_driver    # 匹配其它策略模式
         elif policy_type == "service_chaining":
             #从配置文件中获取active ip list
             conf_path = os.path.join(workdir,"configuration_file.ini")
@@ -231,12 +232,16 @@ class ApiVerification:
                                 metric_result = True
                             elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
                                 metric_result = True
+                            elif sc_info["is_negate"] == 1:
+                                metric_result = True
                             else:
                                 metric_result = False
                         elif sc_info["sf_method"] == "layer2_switch":
                             if sc_info["admin_status"] == 0:
                                 metric_result = True
                             elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                metric_result = True
+                            elif sc_info["is_negate"] == 1:
                                 metric_result = True
                             else:
                                 metric_result = False
@@ -254,12 +259,6 @@ class ApiVerification:
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 # 等待时间，等待策略生效
                 time.sleep(10)
-                # 触发流量
-                # if debug_flag == "local":
-                #     temp_data = json.dumps(test_data["traffic"])
-                #     output = self.call_traffic_server(temp_data, script_type, debug_flag)
-                # else:
-                #     output = self.call_traffic_server(test_data["traffic"], script_type, debug_flag)
                 output = traffic_result
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 cmd_return = output
@@ -294,12 +293,16 @@ class ApiVerification:
                                 metric_result = True
                             elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
                                 metric_result = True
+                            elif sc_info["is_negate"] == 1:
+                                metric_result = True
                             else:
                                 metric_result = False
                         elif sc_info["sf_method"] == "layer2_switch":
                             if sc_info["admin_status"] == 0:
                                 metric_result = True
                             elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                                metric_result = True
+                            elif sc_info["is_negate"] == 1:
                                 metric_result = True
                             else:
                                 metric_result = False
@@ -368,7 +371,7 @@ class ApiVerification:
             return True, log_result, metric_result, my_driver
         elif policy_type == "shaping":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.")
-            return True, True, True
+            return True, True, True, my_driver
 
     def is_in(self, full_str, sub_str, debug_flag):
         if sub_str == "trex":  #故若干

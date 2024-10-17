@@ -6,9 +6,10 @@ import json
 from datetime import datetime
 import os
 import sys
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
+from datetime import datetime
+
 
 
 class DeletePolicy:
@@ -33,6 +34,8 @@ class DeletePolicy:
             create_profile_ids = cfg_list["create_profile_ids"]
             create_policies_ids = cfg_list["create_policies_ids"]
             create_geo_name_ids = cfg_list["create_geo_name_ids"]
+            create_library_tag_ids = cfg_list["create_library_tag_ids"]
+            create_library_catalog_ids = cfg_list["create_library_catalog_ids"]
 
             delete_object_template = {}
             delete_rule_template = {"uuids": [], "type": "tsg_security", "vsys_id": 1}
@@ -40,16 +43,16 @@ class DeletePolicy:
             if len(create_policies_ids) > 0:
                 for i in range(len(create_policies_ids)):
                     delete_rule_template['type'] = list(create_policies_ids[i].keys())[0]
-                    api_path_map = {  
+                    api_path_map = {
                         "security": "security-rules",
-                        "pxy_intercept": "proxy-intercept-rules",    
-                        "pxy_manipulation": "proxy-manipulation-rules",  
-                        "traffic_shaping": "traffic-shaping-rules",  
-                        "service_chaining": "service-chaining-rules",  
-                        "statistics": "statistics-rules",  
+                        "pxy_intercept": "proxy-intercept-rules",
+                        "pxy_manipulation": "proxy-manipulation-rules",
+                        "traffic_shaping": "traffic-shaping-rules",
+                        "service_chaining": "service-chaining-rules",
+                        "statistics": "statistics-rules",
                         "monitor": "monitor-rules",
-                        "dos_protection": "dos-protection-rules",  
-                    }  
+                        "dos_protection": "dos-protection-rules",
+                    }
                     api_path_rule_type = api_path_map.get(delete_rule_template['type'])
                     delete_rule_template['uuids'] = list(create_policies_ids[i].values())[0]
                     delete_rule_template['vsys'] = vsys_id
@@ -283,6 +286,39 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete traffic mirror profile successfully.", flush=True)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete traffic mirror profile failed.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
+            if len(create_library_catalog_ids) > 0:
+                delete_library_catalog_dict = {"catalog_ids": "", "vsy_id":1}
+                for catalog_id in create_library_catalog_ids:
+                    if len(create_library_catalog_ids) == 1:
+                        delete_library_catalog_dict["catalog_ids"] = str(catalog_id)
+                    elif len(create_library_catalog_ids) > 1:
+                        sep = ","
+                        delete_library_catalog_dict["catalog_ids"] = sep.join(str(catalog_id))
+                delete_library_catalog_dict["vsy_id"] = vsys_id
+                url = api_server + "/v1/policy/library/catalog"
+                response = requests.delete(url, headers=headers, params=delete_library_catalog_dict, verify=False)
+                assert response.status_code == 200
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library catalog successfully.", flush=True)
+                    if len(create_library_tag_ids) > 0:
+                        delete_library_tag_dict = {"tag_ids": "", "vsy_id":1}
+                        for tag_id in create_library_tag_ids:
+                            if len(create_library_tag_ids) == 1:
+                                delete_library_tag_dict["tag_ids"] = str(tag_id)
+                            elif len(create_library_tag_ids) > 1:
+                                sep = ","
+                                delete_library_tag_dict["tag_ids"] = sep.join(str(tag_id))
+                        delete_library_tag_dict["vsy_id"] = vsys_id
+                        url = api_server + "/v1/policy/library/tag"
+                        response = requests.delete(url, headers=headers, params=delete_library_tag_dict, verify=False)
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library tag successfully.", flush=True)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library tag failed.", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library catalog failed.", flush=True)
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
 
@@ -314,21 +350,21 @@ class DeletePolicy:
         #         rule_url_full = rule_url + '/' + rule_type
         #         self.query_and_delete_by_name(rule_url_full, template, headers)
 
-        #     api_rule_path_map = {  
+        #     api_rule_path_map = {
         #         "security": "security-rules",
-        #         "proxy_intercept": "proxy-intercept-rules",    
-        #         "proxy_manipulation": "proxy-manipulation-rules",  
-        #         "traffic_shaping": "traffic-shaping-rules",  
-        #         "service_chaining": "service-chaining-rules",  
-        #         "statistics": "statistics-rules",  
+        #         "proxy_intercept": "proxy-intercept-rules",
+        #         "proxy_manipulation": "proxy-manipulation-rules",
+        #         "traffic_shaping": "traffic-shaping-rules",
+        #         "service_chaining": "service-chaining-rules",
+        #         "statistics": "statistics-rules",
         #         "monitor": "monitor-rules",
-        #         "dos_protection": "dos-protection-rules",  
-        #     } 
-        #     for key, value in api_rule_path_map.items():  
+        #         "dos_protection": "dos-protection-rules",
+        #     }
+        #     for key, value in api_rule_path_map.items():
         #         template['name'] = 'automation_test_policy'
         #         template['type'] = key
         #         rule_url_full = rule_url + '/' + value
-        #         self.query_and_delete_by_name(rule_url_full, template, headers) 
+        #         self.query_and_delete_by_name(rule_url_full, template, headers)
             # 删除object
             # object_types = [
             #     'ip-addresses', 'fqdns', 'subscriber-ids',
@@ -340,21 +376,21 @@ class DeletePolicy:
             #     template['type'] = obj_type
             #     rule_url_full = obj_url + '/' + obj_type
             #     self.query_and_delete_by_name(rule_url_full, template, headers)
-            
-            # api_object_path_map = {  
-            #     "ip": "ip-addresses",  
+
+            # api_object_path_map = {
+            #     "ip": "ip-addresses",
             #     "fqdn": "fqdns",
             #     "keywords": "keywords",
             #     "subscriberid": "subscriber-ids",
             #     "account": "accounts",
             #     "flag": "flags",
-            # } 
-            # for key, value in api_object_path_map.items():  
+            # }
+            # for key, value in api_object_path_map.items():
             #     template['name'] = 'automation_test_object'
             #     template['type'] = key
             #     obj_url_full = obj_url + '/' + value
-            #     self.query_and_delete_by_name(obj_url_full, template, headers) 
-            # 删除profiles   
+            #     self.query_and_delete_by_name(obj_url_full, template, headers)
+            # 删除profiles
             # 删除Response Pages及其他配置
             # template['name'] = 'automation_test_profile'
             # profile_types = [
@@ -367,10 +403,10 @@ class DeletePolicy:
             #     if 'type' in template:
             #         del template["type"]
             #     self.query_and_delete_by_name(profile_url, template, headers)
-                    
-            # api_profile_path_map = {  
-            #     "service_function_forwarder": "service-function-forwarders",  
-            #     "service_function": "service-functions",  
+
+            # api_profile_path_map = {
+            #     "service_function_forwarder": "service-function-forwarders",
+            #     "service_function": "service-functions",
             #     "statistics_template": "statistics-templates",
             #     "response_page": "response-pages",
             #     "hijack_file": "proxy-hijack-files",
@@ -378,7 +414,7 @@ class DeletePolicy:
             #     "traffic_mirror": "traffic-mirror-profiles",
             #     "run_script": "http-manipulation-scripts",
             #     "dns_record": "dns-records"
-            # } 
+            # }
             # # 删除Service Function Forwarders和Service Functions
             # template['name'] = 'test_sc_api'
             # service_function_endpoints = [
@@ -401,25 +437,25 @@ class DeletePolicy:
         if len(name_list) > 0:
             for name_item in name_list:
                 if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept", "monitor", "statistics", "dos_protection"]:
-                    api_path_map = {  
+                    api_path_map = {
                         "security": "security-rules",
-                        "proxy_intercept": "proxy-intercept-rules",    
-                        "proxy_manipulation": "proxy-manipulation-rules",  
-                        "traffic_shaping": "traffic-shaping-rules",  
-                        "service_chaining": "service-chaining-rules",  
-                        "statistics": "statistics-rules",  
+                        "proxy_intercept": "proxy-intercept-rules",
+                        "proxy_manipulation": "proxy-manipulation-rules",
+                        "traffic_shaping": "traffic-shaping-rules",
+                        "service_chaining": "service-chaining-rules",
+                        "statistics": "statistics-rules",
                         "monitor": "monitor-rules",
-                        "dos_protection": "dos-protection-rules",  
-                    }  
+                        "dos_protection": "dos-protection-rules",
+                    }
                     api_path_rule_type = api_path_map.get(name_item["type"])
                     temp_url = "{}/{}".format(rule_url, api_path_rule_type)
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
                     self.query_and_delete_by_name(temp_url, template, headers)
                 elif name_item["type"] in ["ip", "port", "url", "fqdn", "http_signature", "mobile_identity", "keywords", "account", "subscriberid"]:
-                    api_path_map = {  
-                        "ip": "ip-addresses",  
-                        "url": "urls",  
+                    api_path_map = {
+                        "ip": "ip-addresses",
+                        "url": "urls",
                         "fqdn": "fqdns",
                         "keywords": "keywords",
                         "subscriberid": "subscriber-ids",
@@ -434,8 +470,8 @@ class DeletePolicy:
                         "boolean": "boolean",
                         "ip_protocol": "ip-protocols",
                         "tunnel_level": "tunnel-levels"
-                    }  
-                    api_path_obj_type = api_path_map.get(name_item["type"])                    
+                    }
+                    api_path_obj_type = api_path_map.get(name_item["type"])
                     temp_url = "{}/{}".format(obj_url, api_path_obj_type)
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
@@ -447,9 +483,9 @@ class DeletePolicy:
                                          "insert_script", "traffic_mirror", "run_script", "dns_record"]:
                     if 'type' in template:
                         del template["type"]
-                    api_path_map = {  
-                        "service_function_forwarder": "service-function-forwarders",  
-                        "service_function": "service-functions",  
+                    api_path_map = {
+                        "service_function_forwarder": "service-function-forwarders",
+                        "service_function": "service-functions",
                         "statistics_template": "statistics-templates",
                         "response_page": "response-pages",
                         "hijack_file": "proxy-hijack-files",
@@ -457,8 +493,8 @@ class DeletePolicy:
                         "traffic_mirror": "traffic-mirror-profiles",
                         "run_script": "http-manipulation-scripts",
                         "dns_record": "dns-records"
-                    }  
-                    api_path_profile_type = api_path_map.get(name_item["type"])                     
+                    }
+                    api_path_profile_type = api_path_map.get(name_item["type"])
                     template['name'] = name_item["name"]
                     temp_url = "{}/{}".format(profile_url, api_path_profile_type)
                     self.query_and_delete_by_name(temp_url, template, headers)

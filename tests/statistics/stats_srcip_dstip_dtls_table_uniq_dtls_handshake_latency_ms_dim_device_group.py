@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -46,6 +46,12 @@ def run(parameter):
                                 "item_value": "10.64.38.240",
                             },
                         ]
+                    },{
+                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": []
                     }
                 ],
                 "source_port": [],
@@ -62,6 +68,12 @@ def run(parameter):
                                 "item_value": "2.1.1.3",
                             },
                         ]
+                    },{
+                        "name": parameter["test_case_name"].replace("_dstip", "", 1),
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": []
                     }
                 ],
                 "destination_port": [],
@@ -100,10 +112,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(DTLS.Handshake Latency(ms))",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "dtls_handshake_latency_ms:UNIQUE_COUNT:UNIQUECOUNT(DTLS Handshake Latency(ms))"
+                                "dtls_handshake_latency_ms:UNIQUE_COUNT:UNIQUECOUNT DTLS Handshake Latency"
                             ],
                             "dimensions": ["device_group"],
-                            "order_by": "UNIQUECOUNT(DTLS Handshake Latency(ms))",
+                            "order_by": "UNIQUE DTLS Handshake Latency",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -149,8 +161,8 @@ def run(parameter):
         }
         # name_list汇总
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -169,8 +181,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

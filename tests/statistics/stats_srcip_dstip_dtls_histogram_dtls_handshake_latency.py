@@ -2,11 +2,13 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from support.ui_utils.element_position.map_element_position_library import replace_paras
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -45,6 +47,12 @@ def run(parameter):
                                 "item_value": "10.64.224.3",
                             },
                         ]
+                    },{
+                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": []
                     }
                 ],
                 "source_port": [],
@@ -54,7 +62,6 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
-                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
@@ -62,6 +69,12 @@ def run(parameter):
                                 "item_value": "2.1.1.9",
                             },
                         ]
+                    },{
+                        "name": parameter["test_case_name"].replace("_dstip", "", 1),
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": []
                     }
                 ],
                 "destination_port": [],
@@ -146,8 +159,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -165,50 +178,37 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
 
 if __name__ == '__main__':
-    # ui
-    # parameter = {
-    #     "username": "hebingning",
-    #     "password": "hbn66AAA",
-    #     "test_pc_ip": "192.168.64.65",
-    #     "test_subcriber_id": "test6776",
-    #     "api_server": "http://192.168.44.72",
-    #     "debug_flag": "local",
-    #     "script_type": "ui",
-    #     "env": "tsgx",
-    #     "vsys_id": 1,
-    #     "is_log": 1,
-    #     "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-    #     "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
-    #     "module_name": "security",
-    #     "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
-    # }
-    # run(parameter)
-    # api
-    from support.ui_utils.element_position.map_element_position_library import replace_paras
-    from support.ui_utils.workpath import workdir
-
     parameter = {
-        "username": "hebingning",
-        "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.93",
-        "test_subcriber_id": "test6491",
+
+        "username": "zhaokun",
+        "password": "zhaokun1",
+        "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "debug_flag": "local",
-        "script_type": "api",  # api  ui  空字符串
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,
-        "root_path": workdir,
-        "path": workdir + "/tests/api",
-        "module_name": "security",
-        "test_case_name": os.path.basename(__file__)[:-3]
+        "vsys_id": 1,  # 6
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": os.path.basename(__file__)[:-3],
+        "debug_flag": "local",
+        "test_subcriber_id": "test6489",
+        "script_type": "ui",
+        "policy_type": "statistics"
     }
     parameter = replace_paras(parameter)
     run(parameter)
+    """
+    # 在测试文件的当前路径执行如下命令执行测试用例:
+    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
+
+    # 执行如下命令生成测试报告（自动打开浏览器）:
+    allure serve allure
+    """

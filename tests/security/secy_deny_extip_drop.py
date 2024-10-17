@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from datetime import datetime
 from support.report_update import ReportUpdate
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 
 def run(parameter):
     try:
@@ -67,12 +67,19 @@ def run(parameter):
                         "send_icmp_unreachable": True
                     }
                 ],
-                "packet_capture": []
+                "packet_capture": [],
+                "ip_protocol":[
+                    "UDP"
+                ]
             },
             "profile": [],
             "expected_return": "Failed",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"server_ip", "query_value": "93.184.215.14"}],
+            "log_query_param": [
+                {"query_field_key":"server_ip", "query_value": "93.184.215.14"},
+                {"query_field_key": "ip_protocol", "query_value": "udp"},
+                {"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}
+                                ],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
@@ -81,8 +88,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
         
         return result
     except Exception as e:
@@ -91,8 +98,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

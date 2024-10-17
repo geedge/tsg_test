@@ -12,7 +12,11 @@ from support.ui_utils.profile.create_hijack_profile import CreateHijackProfile
 from support.ui_utils.profile.create_insert_profile import CreateInsertProfile
 from support.ui_utils.profile.create_run_script_profile import CreateRunScriptProfile
 from support.ui_utils.profile.create_response_page import CreateResponsePage
-from datetime import datetime 
+from support.ui_utils.profile.create_ssl_decryption_keyring_profile import CreateSSLDecryptionKeyringProfile
+from support.ui_utils.profile.create_ssl_decryption_profile import CreateSSLDecryptionProfile
+from support.ui_utils.profile.create_tcp_proxy_profile import CreateTcpProxyProfile
+from support.ui_utils.profile.create_traffic_mirroring_profile import CreateMonitorProfile
+from datetime import datetime
 
 class CreateProfile:
     def __init__(self, driver):
@@ -37,12 +41,19 @@ class CreateProfile:
                 self._create_insert_script(profile_data["profile_file"])
             elif profile_data["profile_type"] == "run_script":    # run script 创建
                 self._create_run_script(profile_data["profile_file"])
+            elif profile_data["profile_type"] == "ssl_keyring":    # ssl decrpytion keyring 创建
+                self._create_run_ssl_decryption_keyring(profile_data["profile_file"])
+            elif profile_data["profile_type"] == "ssl_decryption":    # ssl decrpytion profile 创建
+                self._create_run_ssl_decryption_profile(profile_data["profile_file"])
+            elif profile_data["profile_type"] == "tcp_option":  # tcp proxy 创建
+                self._create_run_tcp_proxy_profile(profile_data["profile_file"])
+            elif profile_data["profile_type"] == "traffic_mirror":  # traffic mirror 创建
+                self._create_traffic_mirroring_profile(profile_data["profile_file"])
             # 其它 profile创建
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            traceback.print_exc()
-            return 400
+            raise
 
     def _create_response_page(self, data):
         """
@@ -65,6 +76,26 @@ class CreateProfile:
         # 新建 run script
         Pl = CreateRunScriptProfile(self.driver)
         Pl.create_run_script_file(data)
+
+    def _create_run_ssl_decryption_keyring(self, data):
+        # 新建 ssl_decryption_keyring
+        Pl = CreateSSLDecryptionKeyringProfile(self.driver)
+        Pl.create_ssl_decryption_keyring_file(data)
+
+    def _create_run_ssl_decryption_profile(self, data):
+        # 新建 ssl_decryption_proile
+        Pl = CreateSSLDecryptionProfile(self.driver)
+        Pl.create_ssl_decryption_file(data)
+
+    def _create_run_tcp_proxy_profile(self, data):
+        # 新建 tcp_proxy_profile
+        Pl = CreateTcpProxyProfile(self.driver)
+        Pl.create_tcp_proxy_profile(data)
+
+    def _create_traffic_mirroring_profile(self, data):
+        # 新建 tcp_proxy_profile
+        Pl = CreateMonitorProfile(self.driver)
+        Pl.create_traffic_mirroring_profile(data)
 
     def _create_statistics_template_page(self, data):
         cond_code = 0

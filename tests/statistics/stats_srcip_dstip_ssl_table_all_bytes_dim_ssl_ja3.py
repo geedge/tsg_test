@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -100,17 +100,49 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:incoming bytes",
-                            "out_bytes:SUM:outgoing bytes",
-                            "in_bytes+out_bytes:SUM:all bytes"
+                              "sent_bytes:RATE:Bytes Sent",
+                              "received_bytes:RATE:Bytes Received",
+                              "sent_bytes+received_bytes:RATE:All Bytes"
                           ],
                           "dimensions": [
                             "ssl_ja3_hash"
                           ],
-                          "order_by": "all bytes",
-                          "row_limit": "100",
+                          "order_by": "All Bytes",
+                          "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:RATE:Bytes Sent",
+                                "received_bytes:RATE:Bytes Received",
+                                "sent_bytes+received_bytes:RATE:All Bytes"
+                            ],
+                            "dimensions": [
+                                "ssl_ja3_hash"
+                            ],
+                            "order_by": "Bytes Sent",
+                            "row_limit": "50",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_2", 1),
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:Bytes Sent",
+                                "received_bytes:BITRATE:Bytes Received",
+                                "sent_bytes+received_bytes:BITRATE:All Bytes"
+                            ],
+                            "dimensions": [
+                                "ssl_ja3_hash"
+                            ],
+                            "order_by": "Bytes Received",
+                            "row_limit": "100",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
@@ -157,8 +189,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -177,8 +209,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

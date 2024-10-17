@@ -7,7 +7,7 @@ import copy
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib
 from contextlib import redirect_stdout
-from support.traffic_manager.workpath import workdir
+from support.packet_generator.workpath import workdir
 from support.ui_utils.element_position.map_element_position_library import *
 import re
 time.sleep(1)
@@ -260,7 +260,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.test_data_instance import TestDataInstance
 from support.report_update import ReportUpdate
 
 
@@ -278,8 +278,8 @@ def run(parameter):
         replace_text
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -294,7 +294,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -363,16 +364,16 @@ if __name__ == '__main__':
 
 if __name__ == '__main__':
     # 定义目录和目标文件  需要调整的变量
-    ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (26).json'
-    case_directory_path = 'C:/zcw/tsg_test/tests/manipulation'
+    ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (20).json'
+    case_directory_path = 'C:/zcw/tsg_test/tests/ui/manipulation'
     file_startwith = "man_"
     file_endswith = ".py"
 
     # 本地运行所有用例
-    #local_run()
+    local_run()
 
     # 对比MS工具
-    diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+    #diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 生成excle使用数据工具
     #get_excel_formate_from_case(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)

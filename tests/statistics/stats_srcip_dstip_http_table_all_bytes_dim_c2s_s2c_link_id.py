@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -97,22 +97,57 @@ def run(parameter):
                     "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                     "profile_type": "statistics_template",
                     "charts": [
+
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:SUM:Bytes Sent",
+                                "received_bytes:SUM:Bytes Received",
+                                "sent_bytes+received_bytes:SUM:Bytes"
+                            ],
+                            "dimensions": [
+                                "c2s_link_id",
+                                "s2c_link_id"
+                            ],
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
+                        },
                         {
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:in bytes",
-                            "out_bytes:SUM:out bytes",
-                            "in_bytes+out_bytes:SUM:bytes"
+                            "sent_bytes:RATE:Bytes Sent",
+                            "received_bytes:RATE:Bytes Received",
+                            "sent_bytes+received_bytes:RATE:Bytes"
                           ],
                           "dimensions": [
                             "c2s_link_id",
                             "s2c_link_id"
                           ],
-                          "order_by": "bytes",
+                          "order_by": "Bytes",
                           "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_bytes:BITRATE:Bytes Sent",
+                                "received_bytes:BITRATE:Bytes Received",
+                                "sent_bytes+received_bytes:BITRATE:Bytes"
+                            ],
+                            "dimensions": [
+                                "c2s_link_id",
+                                "s2c_link_id"
+                            ],
+                            "order_by": "Bytes",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
@@ -157,8 +192,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -177,8 +212,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

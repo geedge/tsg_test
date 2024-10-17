@@ -1,7 +1,7 @@
 #login page 登录页面
-loginPage_userName_posName = "username"
-loginPage_passwd_posName = "password"
-loginPage_signIn_posId = "login"
+loginPage_userName_posXpath = "//div[@class='loginTitle']//input[@placeholder='User name']"
+loginPage_passwd_posXpath = "//div[@class='loginTitle']//input[@placeholder='Password']"
+loginPage_signIn_posXpath = "//div[@class='loginTitle']//button"
 loginPage_error_posXpath = "//p[@class='el-message__content']"
 
 #main页面
@@ -9,14 +9,14 @@ loginPage_error_posXpath = "//p[@class='el-message__content']"
 #mainPage_navigationBar_logo_posCss = ".logo"
 mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
 mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss
-mainPage_input_language_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']"
-mainPage_language_change_posXpath = "//span[@class='el-input__prefix']//i"
-mainPage_language_chinese_posXpath = "//div/ul/li/span[contains(text(),'简体中文')]"
-mainPage_language_russian_posXpath = "//div/ul/li/span[contains(text(),'Русский')]"
-mainPage_language_english_posXpath = "//div/ul/li/span[contains(text(),'English')]"
-mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
+mainPage_input_language_posXpath = "//button[@id='header-profile-button']/i"
+mainPage_language_change_posXpath = "//button[@id='header-profile-button']/i"
+mainPage_language_chinese_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), '中文')]"
+mainPage_language_russian_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), 'Русский')]"
+mainPage_language_english_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), 'English')]"
+mainPage_button_menu_posXpath = "//div[@id='root']//header//div[@class='systemMenu']//button//i"    #menu按钮定位
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
-mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
+mainPage_vsysTree_vsysName_posXpath = "//div[@class='MuiStack-root css-1r1y6jm']//li/div"    # vsys tree中vsys name定位
 mainPage_vsysTree_DefaultVsys_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys1']"
 mainPage_vsysTree_Vsys1_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys10']"
 mainPage_vsysTree_Vsys3_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys3']"
@@ -170,8 +170,8 @@ listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath = lis
 listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_trafficMirroringProfiles_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_trafficMirroringProfiles_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_trafficMirroringProfiles_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_trafficMirroringProfiles_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_trafficMirroringProfiles_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_trafficMirroringProfiles_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_trafficMirroringProfiles_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath
@@ -203,8 +203,8 @@ listPage_profileSearch_sslDecryptionKeyrings_input_itemContent_posXpath = listPa
 listPage_profilTable_sslDecryptionKeyrings_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_sslDecryptionKeyrings_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_sslDecryptionKeyrings_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_sslDecryptionKeyrings_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_sslDecryptionKeyrings_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_sslDecryptionKeyrings_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_sslDecryptionKeyrings_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_Certificate_Keyrings_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_sslDecryptionKeyrings_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_Certificate_Keyrings_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath
@@ -248,8 +248,8 @@ listPage_profileSearch_sslDecryptionProfiles_input_itemContent_posXpath = listPa
 listPage_profilTable_sslDecryptionProfiles_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_sslDecryptionProfiles_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_sslDecryptionProfiles_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_sslDecryptionProfiles_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_sslDecryptionProfiles_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_sslDecryptionProfiles_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_sslDecryptionProfiles_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_Profile_Decryption_Profile_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_sslDecryptionProfiles_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_Profile_Decryption_Profile_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath
@@ -392,8 +392,8 @@ listPage_profileSearch_tcpProxyProfiles_input_itemContent_posXpath = listPage_pr
 listPage_profilTable_tcpProxyProfiles_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_tcpProxyProfiles_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_tcpProxyProfiles_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
-listPage_dialogTips_tcpProxyProfiles_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
+listPage_dialogTips_tcpProxyProfiles_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_tcpProxyProfiles_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_tcpProxyProfiles_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_advanced_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
 listPage_linkTips_tcpProxyProfiles_button_add_posXpath = "//*[@id='temporary_form-_ClusterTable_ElDialog_copyComponents_advanced_Home_App_anonymousComponent']/i"    # 添加 按钮 xpath
@@ -875,6 +875,7 @@ statisticsTemplates_radio_visualizationType_posXpath = "//form[contains(@class, 
 #tatisticsTemplates_radio_visualizationType_posXpath = "//label[normalize-space(text())='{replaceChart}']/parent::*//label[normalize-space(text())='{repalceLabel}']/parent::*//span[normalize-space(text())='{replaceType}']/parent::*/span[contains(@class, 'el-radio__input')]"    # Visualization Type 单选按钮按钮。replaceChart repalceLabel replaceType 需要二次处理
 statisticsTemplates_radio_sampling_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//span[normalize-space(text())='{replaceSampling}']"  # sampling 单选按钮按钮。replaceName需要二次处理
 statisticsTemplates_input_other_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//span[normalize-space(text())='{repalceLabel}']/parent::*//input"  # 其它的输入框和下拉输入框 。replaceName需要二次处理
+statisticsTemplates_input_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//input"  # 其它的输入框和下拉输入框 。replaceName需要二次处理
 statisticsTemplates_LabelName_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')]//*[normalize-space(text())='{repalceLabel}']"
 statisticsTemplates_dropdown_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'el-popper')]//span[normalize-space(text())='{replaceDropdownIterm}']"  # 所有的下拉列表中内容定位 。replaceDropdownIterm 二次处理
 statisticsTemplates_button_chartAdd_posXpath = "//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath

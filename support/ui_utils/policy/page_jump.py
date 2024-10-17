@@ -16,54 +16,60 @@ class PageJump:
         """
         vsys_name:空值时，参数来自配置文件
         """
-        # 菜单操作
-        self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
-        #self.change_vsys(vsys_name=vsys_name)     # 调整到页面登录时切换vsys
-        self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()
-        btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"])
-        self.driver.execute_script("arguments[0].click()", btn) 
-        time.sleep(1)
+        try:
+            # 菜单操作
+            self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"]).click()
+            #self.change_vsys(vsys_name=vsys_name)     # 调整到页面登录时切换vsys
+            self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posId"]).click()
+            btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"])
+            self.driver.execute_script("arguments[0].click()", btn)
+            time.sleep(1)
+        except Exception as e:
+            raise
         
     def change_vsys(self, vsys_name=""):
-        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the current vsys: {current_vsys_name}")
-        current_path = os.path.dirname(__file__)   # 当前文件目录
-        temp_path = os.path.dirname(os.path.dirname(os.path.dirname(current_path)))
-        conf_path = os.path.join(temp_path, "configuration_file.ini")
-        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], conf_path)
-        conf = configparser.ConfigParser()
-        conf.read(conf_path, encoding="utf-8")
-        id_for_ui = conf.get("vsys", "for_traffic_verification")
-        id_vsys_format = "vsys{}".format(id_for_ui)   # 使用配置变量值
-        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_vsys_format)
-        # 传入vsys_name值区分
-        if vsys_name == "":     # 空，vsys值来自配置文件
-            change_vsys_name = id_vsys_format
-        else:     # 切换到指定vsys
-            change_vsys_name = vsys_name
-        #time.sleep(5)
-        #因Case：sessions_srcip_ssl_bar_client_port执行时界面会弹出悬浮层掩盖Menu按钮导致用例失败，此处添加点击使得悬浮层消失：
-        menu_enabled = False
         try:
-            menu_enabled = self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).is_enabled()
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the current vsys: {current_vsys_name}")
+            current_path = os.path.dirname(__file__)   # 当前文件目录
+            temp_path = os.path.dirname(os.path.dirname(os.path.dirname(current_path)))
+            conf_path = os.path.join(temp_path, "configuration_file.ini")
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], conf_path)
+            conf = configparser.ConfigParser()
+            conf.read(conf_path, encoding="utf-8")
+            id_for_ui = conf.get("vsys", "for_traffic_verification")
+            id_vsys_format = "vsys{}".format(id_for_ui)   # 使用配置变量值
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_vsys_format)
+            # 传入vsys_name值区分
+            if vsys_name == "":     # 空，vsys值来自配置文件
+                change_vsys_name = id_vsys_format
+            else:     # 切换到指定vsys
+                change_vsys_name = vsys_name
+            #time.sleep(5)
+            #因Case：sessions_srcip_ssl_bar_client_port执行时界面会弹出悬浮层掩盖Menu按钮导致用例失败，此处添加点击使得悬浮层消失：
+            menu_enabled = False
+            try:
+                menu_enabled = self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).is_enabled()
+            except Exception as e:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", f"Exception: {e}", flush=True)
+            finally:
+                if menu_enabled == False:
+                    # 因Case：sessions_srcip_ssl_bar_client_port执行时界面会弹出悬浮层掩盖Menu按钮导致用例失败，此处添加点击使得悬浮层消失：
+                    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "menu_enabled:{}".format(menu_enabled), flush=True)
+                    self.driver.find_element(By.XPATH, mainPage_version_posXpath).click()
+            self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
+            #current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
+            vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
+            flag_num = 0
+            for el_vsys_item in vsys_tree_name_list:
+                vsys_item_name = el_vsys_item.text.strip().lower()
+                vsys_item_name_list = vsys_item_name.split("\n")
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], vsys_item_name_list)
+                if change_vsys_name.lower() in vsys_item_name_list:
+                    flag_num = 1
+                    el_vsys_item.find_element(By.XPATH, ".//div[@class='menu-title']").click()
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Change to vsys {current_vsys_name}")
+                    break
+            if flag_num == 0:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"no vsys: {change_vsys_name}", flush=True)
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", f"Exception: {e}", flush=True)
-        finally:
-            if menu_enabled == False:
-                # 因Case：sessions_srcip_ssl_bar_client_port执行时界面会弹出悬浮层掩盖Menu按钮导致用例失败，此处添加点击使得悬浮层消失：
-                # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "menu_enabled:{}".format(menu_enabled), flush=True)
-                self.driver.find_element(By.XPATH, mainPage_version_posXpath).click()
-        self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
-        #current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
-        vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
-        flag_num = 0
-        for el_vsys_item in vsys_tree_name_list:
-            vsys_item_name = el_vsys_item.text.strip().lower()
-            vsys_item_name_list = vsys_item_name.split("\n")
-            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], vsys_item_name_list)
-            if change_vsys_name.lower() in vsys_item_name_list:
-                flag_num = 1
-                el_vsys_item.find_element(By.XPATH, ".//div[@class='menu-title']").click()
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Change to vsys {current_vsys_name}")
-                break
-        if flag_num == 0:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"no vsys: {change_vsys_name}", flush=True)
+            raise

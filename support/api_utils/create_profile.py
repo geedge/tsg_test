@@ -76,6 +76,10 @@ class CreateProfile:
                 "source_columns": "app_category",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
+            "Device Group": {
+                "source_columns": "device_group",
+                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
+            },
             "Client-to-Server TTL": {
                 "source_columns": "c2s_ttl",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
@@ -136,20 +140,20 @@ class CreateProfile:
                 "source_columns": "session_id",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"}]
             },
-            "Incoming Packet Length": {
+            "Incoming Packet Length Distribution": {
                 "source_columns": "in_pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "Outgoing Packet Length": {
+            "Outgoing Packet Length Distribution": {
                 "source_columns": "out_pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"}, ]
             },
-            "Packet Length": {
+            "Packet Length Distribution": {
                 "source_columns": "pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
@@ -421,6 +425,7 @@ class CreateProfile:
             "Server Domain": "server_domain",
             "Application": "app",
             "Application Category": "app_category",
+            "Device Group": "device_group",
             "Client-to-Server TTL": "c2s_ttl",
             "Server-to-Client TTL": "s2c_ttl",
             "Client-to-Server Link ID": "c2s_link_id",
@@ -510,7 +515,12 @@ class CreateProfile:
 
                 metrics_dict["unit"] = unit
                 metrics_dict["metric_type"] = metric_type
-                metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index + 1)
+                #metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index+1)
+                # 当Metrics数量超过4个时处理逻辑：每个Metric Tpye仅能有4个字段：count_1、count_2、count_3、count_4、unique_count_1、unique_count_2、unique_count_3、unique_count_4、distribution_1、distribution_2、、distribution_3、、distribution_4
+                metric_index_temp = metric_index + 1
+                if metric_index > 3:
+                    metric_index_temp = metric_index % 4 + 1
+                metrics_dict["metric_name"] = "{}_{}".format(metric_type, metric_index_temp)
 
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["metrics"].append(copy.deepcopy(metrics_dict))
                 chart_pre_name = metrics_dict["source_fields"][0] + " "
@@ -648,7 +658,7 @@ class CreateProfile:
         sff_template_dict["service_function_forwarder"]["name"] = sff_post_data["name"]
         sff_template_dict["service_function_forwarder"]["type"] = sff_post_data["type"]
         sff_template_dict["service_function_forwarder"]["load_balance_method"] = sff_post_data["load_balance_method"]
-        sff_template_dict["service_function_forwarder"]["load_balance_localization"] = sff_post_data["load_balance_localization"]
+        sff_template_dict["service_function_forwarder"]["load_balance_localization"] = sff_post_data["load_balance_localization"].lower()
         sff_template_dict["service_function_forwarder"]["failure_action"] = sff_post_data["failure_action"]
         if sff_post_data["failure_action"] == "re-dispatch":
             sff_template_dict["service_function_forwarder"]["unavailability_action"] = {}
@@ -901,6 +911,7 @@ class CreateProfile:
             for i in sf_profile_id_list:
                 sf_profile_id = i
                 sff_info["sf_info"].append(self.search_sc_sf(sf_profile_id, headers, api_host,vsys_id))
+            sff_info["load_balance_localization"] = r_dict["data"]["service_function_forwarder"]["load_balance_localization"]
             sff_info["type"] = r_dict["data"]["type"]
             sff_info["failure_action"] = r_dict["data"]["failure_action"]
         return sff_info

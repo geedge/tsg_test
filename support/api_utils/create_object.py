@@ -87,6 +87,10 @@ class CreateObject:
                                 "create_url_ids": [],
                                 "create_subid_ids": [],
                                 "create_flag_ids": [],
+                                "create_phone_number_ids": [],
+                                "create_imei_ids": [],
+                                "create_apn_ids":[],
+                                "create_imsi_ids": [],
                                 "create_keywords_ids": [],
                                 "create_account_ids": [],
                                 "create_http_signature_ids": [],
@@ -213,12 +217,12 @@ class CreateObject:
                     if "ip" in item:
                         tmp_item["ip"] = item["ip"]
                     else:
-                        tmp_item["ip"] = item["ip_address"]   
+                        tmp_item["ip"] = item["ip_address"]
                     # tmp_item["ip"] = item["ip"]
                     if "interval" in item:
                         tmp_item["interval"] = item["interval"]
                     else:
-                        tmp_item["interval"] = item["port_range"]   
+                        tmp_item["interval"] = item["port_range"]
                     # tmp_item["interval"] = item["interval"]
                     items.append(copy.deepcopy(tmp_item))
             elif obj_type == "port":
@@ -341,9 +345,9 @@ class CreateObject:
             api_host = parameter["api_server"]
             vsys_id = parameter["vsys_id"]
             obj_type = obj_template_dict['object']['type']
-            api_path_map = {  
-                "ip": "ip-addresses",  
-                "url": "urls",  
+            api_path_map = {
+                "ip": "ip-addresses",
+                "url": "urls",
                 "fqdn": "fqdns",
                 "keyword": "keywords",
                 "subscriberid": "subscriber-ids",
@@ -358,7 +362,7 @@ class CreateObject:
                 "boolean": "boolean",
                 "ip_protocol": "ip-protocols",
                 "tunnel_level": "tunnel-levels"
-            }  
+            }
             api_path_obj_type = api_path_map.get(obj_type)
             if type_op == "create":
                 url = api_host + "/v1/objects/{}".format(api_path_obj_type)
@@ -390,7 +394,10 @@ class CreateObject:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Verify the imported {} object failed.".format(obj_template_dict['object']['type']), flush=True)
                 time1 = datetime.now()
                 url = api_host + "/v1/objects/import"
-                response = requests.post(url, data=obj_template_dict["data"], headers=headers, files=obj_template_dict["file_import"], verify=False)
+                import_data = obj_template_dict["data"]
+                if "sub_type" in import_data:
+                    del import_data["sub_type"]
+                response = requests.post(url, data=import_data, headers=headers, files=obj_template_dict["file_import"], verify=False)
                 time.sleep(20)
                 time2 = datetime.now()
                 time_difference = time2 - time1
@@ -408,6 +415,8 @@ class CreateObject:
 
             response_dict = json.loads(response.text)
             object_ids, geo_name_id_list = self.get_object_ids(response_dict, obj_type)
+
+            #print("object_ids: {}".format(object_ids))
 
             # 是否可取消，待验证？？
             if is_repeat == 1 and obj_type != 'ip':

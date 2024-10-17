@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -96,19 +96,19 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                            "chart_name": "UNIQUECOUNT(Client IP Object List)",
+                            "chart_name": "default name",
                             "visualization_type": "Table",
                             "metrics": [
-                                "sent_bytes+received_bytes:SUM:SUM(Bytes Sent Bytes Received)",
-                                "sent_pkts+received_pkts:SUM:SUM(Packets Sent Packets Received)",
-                                "new_c2s_flows+new_s2c_flows:SUM:SUM(New Double Flows)",
-                                "new_in_sessions+new_out_sessions:SUM:SUM(New Sessions)"
+                                "sent_bytes+received_bytes:SUM:SUM Bytes Sent Bytes Received",
+                                "sent_pkts+received_pkts:SUM:SUM Packets Sent Packets Received",
+                                "new_c2s_flows+new_s2c_flows:SUM:SUM New Double Flows",
+                                "new_in_sessions+new_out_sessions:SUM:SUM New Sessions"
                             ],
                             "dimensions": [
                                 "server_fqdn",
                                 "app"
                             ],
-                            "order_by": "SUM(New Sessions)",
+                            "order_by": "SUM New Sessions",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -153,8 +153,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -173,8 +173,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
@@ -9,7 +9,6 @@ from datetime import datetime
 
 def run(parameter):
     try:
-        case_instance_generator = None
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
@@ -114,8 +113,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         return result
     except Exception as e:
@@ -125,8 +124,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
@@ -156,6 +155,7 @@ if __name__ == '__main__':
         "module_name": "monitor",
         "test_case_name": "monitor_rule_mail_mirror_on"
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

@@ -35,6 +35,48 @@ mainPage_button_menu_posXCss = ".menu-btn span"
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
 
+#通用元素定位
+main_button_audit_button_posXpath = '//*[contains(@class,"icon-a-Adminlogs")]'
+url_ObjectDetailPage_auditLogsDrawer_firstRowLog_checkBox_posXpath = '(//div[@class="LocalationDraswer lstsub right-show-edit right-show-edit-other"]//table[@class="el-table__body"]//span[@class="el-checkbox__input"])[1]'  # Audit Logs 侧滑页第一条日志CheckBox Xpath
+url_ObjectDetailPage_auditLogsDrawer_compareButton_posXpath = '//div[@class="LocalationDraswer lstsub right-show-edit right-show-edit-other"]//button[contains(@id,"test-compare-_")]'  # Audit Logs 侧滑页Compare 按钮Xpath
+url_ObjectDetailPage_auditLogsDrawer_compareDrawer_operationText_posXpath = '//div[contains(text(),"Operation")]/following-sibling::div'  # Audit Logs 侧滑页点击Compare后的 operation text Xpath
+ObjectDetailPage_audit_log_compare_version_posXpath = "//div[@class='compare-code-box']//div[text()='Version']/following-sibling::div"
+ObjectDetailPage_audit_log_compare_id_posXpath = '//div[contains(text(),"Target ID")]/following-sibling::div'
+ObjectDetailPage_audit_log_compare_type_posXpath = '//div[contains(text(),"Target Type")]/following-sibling::div'
+ObjectDetailPage_audit_log_compare_ip_posXpath = '//div[contains(text(),"Source IP")]/following-sibling::div'
+ObjectDetailPage_audit_log_compare_time_posXpath = "//div[@class='compare-code-box']//div[text()='Time']/following-sibling::div"
+ObjectDetailPage_audit_log_compare_user_posXpath = '//div[contains(text(),"User")]/following-sibling::div'
+ObjectDetailPage_audit_log_cancel_posXpath = "//div[@class='paper-right-content']//span[normalize-space(text())='Close']"
+ObjectDetailPage_input_search_box_posXpath = "(//input[@id='object_ip_search'])[2]"
+ObjectDetailPage_statistics_select_box_posXpath = "//input[@id='statistics_select']"  #object详情页Statistics下拉选择框
+ObjectDetailPage_statistics_select_elaborate_posXpath = "//div[@x-placement='bottom-start']//div[text()='Elaborate']"
+ObjectDetailPage_statistics_select_brief_posXpath = "//div[@x-placement='bottom-start']//div[text()='Brief']"
+main_listPage_object_statistics_view_postXpath = "(//div[@id='ly-table1-listcontent']//span[text()='View'])[1]"
+ObjectDetailPage_statistics_button_posXpath = "//div[@class='paper-grid-right']//span[text()='Statistics']"
+listPage_object_reprtition_check_postXpath = "//i[@class='operate-icon iconfont icon-jinggao1']"
+listPage_First_object_ID_posXpath = "(//*[@id='ly-table1-listcontent']//div[@class='table-status-item-id'])[1]"
+listPage_Second_object_ID_posXpath = "(//*[@id='ly-table1-listcontent']//div[@class='table-status-item-id'])[2]"
+listPage_object_ip_address_select_First_object_posXpath = "//div[@class='el-table__body-wrapper is-scrolling-left']//tbody/tr[1]//span[@class='el-checkbox__input']"  # 选择列表中第一个对象
+listPage_object_ip_address_select_Second_object_posXpath = "//div[@class='el-table__body-wrapper is-scrolling-left']//tbody/tr[2]//span[@class='el-checkbox__input']"  # 选择列表中第二个对象
+url_ObjectDetailPage_clearCounter_posXpath = '//button[contains(@id,"objectResetBtn-_anonymousComponent_ElForm_anonymousComponent_VPanel_VEditPanel_")]'  # Clear Counter按钮
+listPage_object_pages_clearCounter_button_warnning_yes_poxXpath = "//div[@class='el-message-box tsg-message el-message-box--center']//span[normalize-space(text())='Yes']"
+listPage_object_group_exclude_open_posXpath = "//span[@class='el-switch__core']"
+
+
+#system audit log页面元素定位
+mainPage_firstLevelMenu_System_posId = "System"  # 一级菜单System
+mainPage_secondLevelMenu_auditLogs_posId = "system_PolicyConfigurationLog"  # 二级菜单AuditLog
+listPage_auditlogSearch_select_TagrgetID_posXpath = '//li[@id="1-_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'  # TagrgetID
+listPage_auditlogSearch_select_Operation_posXpath = '//li[@id="7-_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'  # operation选择
+listPage_auditlogSearch_select_UserName_posXpath = '//li[@id="3-_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'  # username选择
+listPage_auditlogSearch_select_TargetType_posXpath = '//li[@id="30-_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'  # target type选择
+listPage_auditlogSearch_select_Operation_Create_posXpath = '//li[@id="create-_v-select_ListItem_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'
+listPage_auditlogSearch_select_Operation_Edite_posXpath = '//li[@id="edit-_v-select_ListItem_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'
+listPage_auditlogSearch_select_Operation_Delete_posXpath = '//li[@id="delete-_v-select_ListItem_FilteredSearch_ElRow_system_PolicyConfigurationLog_Home_App_anonymousComponent"]'
+listPage_auditlogSearch_targetid_text_posXpath = "//div[@class='rel-input v-input input el-input el-input--mini']/input"
+listPage_auditlogSearch_username_text_posXpath = "//div[@class='el-input el-input--mini el-input--suffix is-focus']//input"
+
+
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
 language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']/.."#快捷切换语言按钮
 
@@ -43,6 +85,10 @@ main_button_import_files_button_posXpath = '//button/span[contains(text(),"Impor
 main_ObjectPage_Input_path_Import_files_posXpath = '//form/div/div/div/div[1]/input[@type="file"]'
 main_ObjectPage_Import_Mobile_Identity_files_OK_Button_posXpath = '//div[not(@style="display: none;")]/div/div/div[2]/div[2]/button[1]/span'  # 导入文件OK
 main_Import_files_error_format_posXpath = '//ul/li/div[@class="valid-column import-line"]/span'  # 导入文件格式错误提示语
+# 导入导出文件设置
+main_ObjectPage_Input_Import_files_button_posXpath = '//div/button[contains(@class,"Export")]/i'  # main导出文件按钮
+mobileIdentitiesObjectPage_Button_Import_Mobile_Identity_files_posXpath = "//button[@class='el-button btn-style el-button--default el-button--small']"  # Create Import Mobile Identity Button
+list_PageObject_Export_files_yes_button_posXpath = '//span/button[@class="el-button delComponents-ok el-button--primary el-button--small"]/span[contains(text(),"Yes")]'  # 导出文件Yes按钮
 
 
 #搜索框元素
@@ -60,7 +106,11 @@ listPage_objectSearch_geo_select_CountryandRegion_posXpath = "//li[@id='58-_Filt
 listPage_objectSearch_geo_select_SuperAdministrativeArea_posXpath = "//li[@id='150-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
 listPage_objectSearch_geo_select_AdministrativeArea_posXpath = "//li[@id='59-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
 listPage_objectSearch_geo_select_SubAdministrativeArea_posXpath = "//li[@id='151-_FilteredSearch_ElRow_Geography_List_Home_App_anonymousComponent']"
-
+#主页object item点击后侧滑框搜索
+listPage_item_search_text_posXpath = "//input[@placeholder='Search for']"
+listPage_item_search_total_text_posXpath = "//div[@class='LocalationDraswer lstsub policy-right-show-edit v-draswer']//p[@class='total']"
+listPage_item_search_details_first_posXpath ='(//div[@id="multilineItemDetails-_MultilineTableCell_ElTableBody_ElTable_Objects_ip_Home_App_anonymousComponent"])[1]'
+listPage_item_search_close_posXpath = "//div[@class='IpItems list-box']//span[normalize-space(text())='Close']"
 #ip object元素
 ipObjectPage_ipType_posId = "IPip"
 main_ObjectPage_tips_Name_input_Xpath = '//form/div[1]/div/div[@class="el-form-item__error"]'
@@ -100,8 +150,10 @@ ip_addressObjectPage_button_OK_posXpath = '//button[@id="OK-_IpDetail_Home_App_a
 ip_addressObjectPage_button_SaveYes_posXpath = '//button[@id="OK-_IpDetail_VDraswer_EditDraw_IpDetail_Home_App_anonymousComponent"]/span'  # Group引用创建OK按钮
 ip_addressObjectPage_button_warningSaveYes_posXpath = "//div[@class='el-message-box__wrapper']/div/div[3]/button[2]/span"  # 提示保存ok按钮警告框
 ip_addressObjectPage_button_warningSaveCancel_posCss = '//div[@class="el-message-box__wrapper"]/div/div[3]/button[1]/span'  # 提示保存取消按钮警告框
-ip_addressObjectPage_button_cancel_posCss = "//button[@id='Cancel-_IpDetail_Home_App_anonymousComponent']/span"  # Cancel按钮
-ip_address_Group_sub_Object_addButton_posXpath = "//div[@class='CommonSubObjects']//i[@class='iconfont icon-Create1 cursor']"  # ip_address_Group添加sub Object按钮
+ip_addressObjectPage_button_cancel_posXpath = "//button[@id='Cancel-_IpDetail_Home_App_anonymousComponent']/span"  # Cancel按钮
+ip_addressObjectPage_leaveThisPage_yesButton_posXpath = '//button[contains(@class,"operation-confirm-Leave")]'  # is_leave_this_page_exist 弹窗中的确认按钮
+ip_address_Group_sub_Object_add_include_Button_posXpath = "(//div[@class='CommonSubObjects']//i[@class='iconfont icon-Create1 cursor'])[1]"  # ip_address_Group include添加sub Object按钮
+ip_address_Group_sub_Object_add_exclude_Button_posXpath = "(//div[@class='CommonSubObjects']//i[@class='iconfont icon-Create1 cursor'])[2]" #exclude 添加按钮
 ip_address_Group_sub_Object_add_new_Button_posXpath = "//i[@class='iconfont icon-Create1']"  # 新建sub_ip_address按钮
 ip_address_Group_sub_Object_add_new_Select_one_Button_posXpath = "//ul[@x-placement='bottom-start']/li[1]"  # 新建选择ip_address按钮
 ip_address_Group_sub_Object_edit_subObject_Button_posXpath = "//i[@class='row-edit iconfont icon-Edit cursor fontsize18']"  # 编辑group 下的object 按钮

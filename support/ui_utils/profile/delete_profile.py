@@ -25,10 +25,10 @@ class DeleteProfile:
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-            traceback.print_exc()
             self.driver.find_element(By.XPATH, delete_element_position["profileListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(0.5)
-            return 200
+            raise
+            #return 200
 
     def select_lock_and_referenceCount(self, rows, islock=False, referenceCount=0):
         """

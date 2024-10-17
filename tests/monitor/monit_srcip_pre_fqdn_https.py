@@ -1,10 +1,9 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -25,7 +24,7 @@ def run(parameter):
             "rule_num": 1,
             "policy_type": "monitor",
             "rule_name": os.path.splitext(os.path.basename(__file__))[0],
-            "rule_action": "allow",
+            "rule_action": "monitor",
             "rule_type": "create",
             "is_mirror": "off",
             "mirror_type": "mail",
@@ -40,7 +39,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value":  parameter["test_pc_ip"]
+                                "item_value": parameter["test_pc_ip"]
                             },
                         ]
                     }
@@ -70,11 +69,11 @@ def run(parameter):
             },
             "expected_return": "mtv",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
+            "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter["test_pc_ip"]},
                                 {"query_field_key": "decoded_as", "query_value": "SSL"},
                                 {"query_field_key": "server_fqdn", "query_value": "www.mtv.com"}
-            ],
-             "traffic": {
+                                ],
+            "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
                 "command": "curl -kv https://www.mtv.com/"
@@ -83,8 +82,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         return result
     except Exception as e:
@@ -94,8 +93,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
@@ -126,6 +125,7 @@ if __name__ == '__main__':
         "module_name": "monitor",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

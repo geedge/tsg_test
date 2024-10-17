@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -51,9 +51,117 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "关于百度,CN=TSG",
+            "action_parameter": {
+                "ssl_decryption_keyring": [
+                    {
+                        "profile_type": "ssl_keyring",
+                        "decryption_keying_type": "trusted",
+                        "profile_file": {
+                            "name": "manipulation_trusted_page",
+                            "model": "create",
+                            "file_certificate": "test_root_cert_catest.cer",
+                            "file_private_key": "test_root_key_catest.key",
+                            "certificate_type": "Root-Certificate",
+                            "private_key_format": "true",
+                            "is_match": "match",
+                            "reissue_expiry_hours": "C-120",
+                            "type": "Root-Certificate",
+                            "public_key_algorithm": "RSA-2048",
+                            "certificate_revocation_list": "",
+                            "include_root": "on"
+                        }
+                    },
+                    {
+                        "profile_type": "ssl_keyring",
+                        "decryption_keying_type": "untrusted",
+                        "profile_file": {
+                            "name": "manipulation_untrusted_page",
+                            "model": "create",
+                            "file_certificate": "test_root_cert_catest.cer",
+                            "file_private_key": "test_root_key_catest.key",
+                            "certificate_type": "Root-Certificate",
+                            "private_key_format": "true",
+                            "is_match": "match",
+                            "reissue_expiry_hours": "C-120",
+                            "type": "Root-Certificate",
+                            "public_key_algorithm": "RSA-2048",
+                            "certificate_revocation_list": "",
+                            "include_root": "on"
+                        }
+                    }
+                ],
+                "ssl_decryption_profile": [
+                    {
+                        "profile_type": "ssl_decryption",
+                        "profile_file": {
+                            "name": "manipulation_ssl_decryption_profile",
+                            "model": "create",
+                            "common_name": "on",
+                            "issuer": "on",
+                            "self_signed": "on",
+                            "expiry_date": "on",
+                            "fail_action": "Pass-through",
+                            "ev_certificate": "off",
+                            "certificate_transparency": "off",
+                            "mutual_authentication": "on",
+                            "protocol_errors": "on",
+                            "certificate_pinning": "on",
+                            "certificate_not_installed": "off",
+                            "mirror_client_versions": "on",
+                            "min_client_version": "TLSv1.0",
+                            "max_client_version": "TLSv1.2",
+                            "allow_HTTP2": "on"
+                        }
+                    }
+                ],
+                "tcp_proxy_profile": [
+                    {
+                        "profile_type": "tcp_option",
+                        "profile_file": {
+                            "name": "manipulation_tcp_proxy_profile",
+                            "model": "create",
+                            "enable_TCP_passthrough": "off",
+                            "c_override_MSS": "off",
+                            "c_overrideMSS": "536",
+                            "c_no_delay": "on",
+                            "c_ttl": "70",
+                            "c_keepalive": "on",
+                            "c_probe_number": "8",
+                            "c_idle_time": "30",
+                            "c_interval": "15",
+                            "c_UserTimeout_switch": "on",
+                            "c_userTimeout": "600",
+                            "s_override_MSS": "off",
+                            "s_overrideMSS": "1460",
+                            "s_no_delay": "on",
+                            "s_ttl": "75",
+                            "s_keepalive": "on",
+                            "s_probe_number": "8",
+                            "s_idle_time": "30",
+                            "s_interval": "15",
+                            "s_UserTimeout_switch": "on",
+                            "s_userTimeout": "600"
+                        }
+                    }
+                ],
+                "traffic_mirroring_profile": [
+                    {
+                        "profile_type": "traffic_mirror",
+                        "vlan_id": "no_default",
+                        "profile_file": {
+                            "name": "manipulation_traffic_mirroring_profile",
+                            "model": "create",
+                            "vlan_id":
+                                [
+                                    "16"
+                                ]
+                        }
+                    }
+                ]
+            },
+            "expected_return": "关于百度",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
@@ -63,8 +171,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -79,8 +187,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

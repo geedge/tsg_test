@@ -50,7 +50,7 @@ class CreateObject:
                         else:
                             item_values = [item_value_str]
                     else:    # 修改模式，未完成
-                        print("todo modify moudle ...")
+                        # print("todo modify moudle ...")
                         item_values = [data["item"][i]["item_value"]]
                     for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
@@ -84,7 +84,7 @@ class CreateObject:
                         else:
                             item_values = [item_value_str]
                     else:    # 修改模式，未完成
-                        print("todo modify moudle ...")
+                        # print("todo modify moudle ...")
                         item_values = [data["item"][i]["item_value"]]
                     for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
@@ -109,7 +109,7 @@ class CreateObject:
                         else:
                             item_values = [item_value_str]
                     else:    # 修改模式，未完成
-                        print("todo modify moudle ...")
+                        # print("todo modify moudle ...")
                         item_values = [data["items"][i]["item_value"]]
                     for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
@@ -159,8 +159,9 @@ class CreateObject:
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-            return 400
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
+            raise
+            #return 400
     
     def create_group(self, data, object_type, object_element_position):
         page_jump_element_position = object_element_position["page_jump"]
@@ -218,6 +219,7 @@ class CreateObject:
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr, flush=True)
-            return 400
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr, flush=True)
+            raise
+            #return 400
         

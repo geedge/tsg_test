@@ -13,7 +13,7 @@ class GetLog:
         # 修改完成后删除注释:将下方的security_event替换成变量
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = api_host + "/v1/logs/schema/" + log_type
-        vsys = {"vsys": vsys_id} 
+        vsys = {"vsys": vsys_id}
         response = requests.get(url, headers=headers, params=vsys, verify=False)
         assert response.status_code == 200
         log_schema = json.loads(response.text)
@@ -39,7 +39,9 @@ class GetLog:
         for i in range(rule_num):
             if policy_type == 'security':
                 schema_type = 'security_event'
-            elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
+            elif policy_type == 'pxy_intercept':
+                schema_type = 'session_record'
+            elif policy_type == 'pxy_manipulation':
                 schema_type = 'proxy_event'
             elif policy_type == 'monitor':
                 schema_type = 'monitor_event'
@@ -118,10 +120,14 @@ class GetLog:
                         exclude_fields = {
                             "packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts",
                             "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
-                            "attack_type", "sessions", "session_rate", "packets", "packet_rate",
-                            "bytes", "bit_rate", "basic_attack_type", "basic_sessions",
-                            "basic_session_rate", "basc_packets", "basic_packet_rate",
-                            "basic_bytes", "basic_bit_rate"
+                            "attack_type", "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
+                            "basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate",
+                            "rule_id","conditions"
+                        }
+                        dos_verify_fields = {
+                            "attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate",
+                            "basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets","basic_packet_rate", "basic_bytes", "basic_bit_rate",
+                            "rule_id","conditions","source_ip_list","destination_ip"
                         }
                         # 优化后的条件判断
                         if query_field_key in log and query_field_key not in exclude_fields and log[query_field_key] == query_value:
@@ -203,7 +209,8 @@ class GetLog:
                                         # 如果有 "items" 列表，并且列表不为空
                                         if "items" in protocol_filed and protocol_filed["items"]:
                                             item_type = protocol_filed["items"][0].get("item_type", "")
-                                            if item_type in ["mail_from", "mail_to"]:
+                                            # if item_type in ["mail_from", "mail_to"]:
+                                            if item_type in ["mail_from", "to"]:
                                                 mirror_bytes_value = actual_bytes_value - 19578
                                                 mirror_pkts_value = actual_pkts_value - 158
                                             else:  # 如果有 "items"，但不符合特定类型时的默认行为
@@ -230,7 +237,9 @@ class GetLog:
                                         else:
                                             mirror_bytes_value = actual_bytes_value - 967
                                             mirror_pkts_value = actual_pkts_value - 9
-
+                                    else:
+                                        mirror_bytes_value = actual_bytes_value - 967
+                                        mirror_pkts_value = actual_pkts_value - 9
                                     if "profile" in test_data and test_data["profile"] != "":
                                         vlan_count = test_data['profile'][0]['vlan_count']
                                         num_vlans = vlan_count
@@ -281,21 +290,50 @@ class GetLog:
                                 temp_log_result_list.append(True)
                             else:
                                 temp_log_result_list.append(False)
-                        elif query_field_key in {
-                                                "attack_type", "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
-                                               "basic_attack_type", "basic_sessions", "basic_session_rate","basic_packets","basic_packet_rate", "basic_bytes", "basic_bit_rate"
-                        }:
-                            start_time_value = log["start_time"]
-                            end_time_value = log["end_time"]
-                            time_difference = end_time_value - start_time_value
-
-                            deny_session_count = self.get_dos_deny_sessions_count(token,api_host,start_time,end_time,vsys_id,test_data)
-                            exp_sessions_count = output["total_syn_pkt"] - deny_session_count
-                            self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference, exp_sessions_count,test_data,time)
-
+                        elif query_field_key in dos_verify_fields:
+                            self.first_dos_classification(log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id)
+                        elif query_field_key in {"proxy_pinning_status", "proxy_intercept_status", "proxy_passthrough_reason"}:
+                            actual_value = log[query_field_key]   # 日志查询到的值
+                            except_value = query_value     # 断言的预期值
+                            if query_field_key == "proxy_passthrough_reason":
+                                if except_value in {"EV Certificate", "Certificate Transparency", "Protocol Errors", "Mutual Authentication", "Certificate Not Installed", "Certificate Pinning"}:
+                                    if actual_value in {""}:  # 证书动态放行会产生两条日志，其中一条大概率是拦截的日志，则跳过断言
+                                        continue
+                                    elif actual_value == except_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
+                                else:
+                                    if actual_value == except_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
+                            elif query_field_key == "proxy_intercept_status":  # proxy_intercept_status的值需要转换
+                                if except_value == "passthrough":      # proxy_intercept_status， 0=passthrough, 1=intercept
+                                    except_value = 0
+                                else:
+                                    except_value = 1
+                                if except_value == 0:
+                                    if actual_value == 1:
+                                        continue
+                                    elif actual_value == except_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
+                                else:
+                                    if actual_value == except_value:
+                                        temp_log_result_list.append(True)
+                                    else:
+                                        temp_log_result_list.append(False)
                         else:
                             temp_log_result_list.append(False)
-                    if False not in temp_log_result_list and len(log_list) > 0:
+                    if policy_type == 'pxy_intercept' and len(temp_log_result_list) < len(log_query_params):
+                         # 动态passthrough
+                        if True in temp_log_result_list:
+                            log_result = True
+                        else:
+                            log_result = False
+                    elif False not in temp_log_result_list and len(log_list) > 0:
                         log_result = True
                     # elif len(log_list) == 0 and len(log_query_params) == 0 and False not in temp_log_result_list:
                     #     log_result = True
@@ -316,7 +354,30 @@ class GetLog:
             #     log_result = False
         return log_result
 
-    def get_dos_deny_sessions_count(self, token,  api_host, start_time, end_time, v_id, test_data):
+
+    def first_dos_classification(self,log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id):
+        #1.Get the time difference to calculate the session_rate、bit_rate and packet_rate
+        start_time_value = log["start_time"]
+        end_time_value = log["end_time"]
+        time_difference = end_time_value - start_time_value
+
+        #2.For mitigation deny:get the session count after execute the mitigation behavior;For mitigation none:get full session counts
+        query_session_count,total_packets,total_bytes= self.get_session_count_in_session_records(token, api_host, start_time, end_time, vsys_id, test_data)
+        if test_data["mitigation"]["behavior"] == "deny":
+            exp_sessions_count = query_session_count
+        elif test_data["mitigation"]["behavior"] == "none" and log["sessions"] < query_session_count:
+            exp_sessions_count = log["sessions"]
+        else:
+            temp_log_result_list.append(False)
+            exp_sessions_count = -1
+        #3.In the Custom Network Attack in DoS Events.
+        # For mitigaiton deny,if condition has an app,one session with four packets;if condition only have ip,one session with one packet
+        # For mitigation none,one session with full packets.
+
+        #To verify the log query param
+        self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets,total_bytes, test_data, time,policy_id)
+
+    def get_session_count_in_session_records(self, token,  api_host, start_time, end_time, v_id, test_data):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         log_condition = {
             "page_no": 1,
@@ -338,22 +399,43 @@ class GetLog:
         log_condition_dict['source'] = "session_record"
         log_condition_dict['identifier_name'] = "session-record-list"
         log_condition_dict['execution_mode'] = 'oneshot'
-
-        log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts=1"
-
+        #log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts=1"
+        if test_data["mitigation"]['behavior']== "none":
+            log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'"
+        elif test_data["mitigation"]['behavior'] == "deny":
+            if "application" in test_data["condition"]  and test_data["condition"]["application"] and test_data["condition"]["application"][0]["name"] == "dns":
+                log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts in (0)"
+            else:
+                log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts in (0,1)"
         url = api_host + "/v1/vsys{}/log/query".format(v_id)
         response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
         assert response.status_code == 200
         log_list = json.loads(response.text)
         log_list = log_list['data']['result']
+        log_entry= log_list[0]
+        # 获取 received_pkts 和 sent_pkts
+        received_pkts = log_entry['received_pkts']
+        sent_pkts = log_entry['sent_pkts']
+        # 计算总和
+        total_packets = received_pkts + sent_pkts
+        # 获取 received_bytes 和 sent_bytes
+        received_bytes = log_entry['received_bytes']
+        sent_bytes = log_entry['sent_bytes']
+        # 计算总和
+        total_bytes = received_bytes + sent_bytes
+
         dos_deny_sessions_count = len(log_list)
-        return dos_deny_sessions_count
+        return dos_deny_sessions_count,total_packets,total_bytes
 
 
-    def validate_dos_values(self,log, query_field_key, query_value, temp_log_result_list,time_difference,exp_sessions_count,test_data,time):
-        exp_packets_count = exp_sessions_count * 4
-        exp_bytes_count = exp_packets_count * 173.5
-        #attack_type和sessions的值 是 query_value和接口返回的值比较
+    def validate_dos_values(self, log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,totapl_packets ,total_bytes,test_data, time,policy_id):
+        #三种情况：
+        #① deny:src ip+application
+        #② deny:src ip
+        #③ none:
+        exp_packets_count = exp_sessions_count * totapl_packets
+        exp_bytes_count = exp_sessions_count * total_bytes
+        #字段的验证:Bytes验证是否大于0、为负数;不再验证具体的值，不同用例回放数据包不同，Bytes无固定值
         if query_field_key == "attack_type":
             if query_value.replace("_", " ") == log[query_field_key].lower():
                 temp_log_result_list.append(True)
@@ -363,10 +445,10 @@ class GetLog:
         elif query_field_key == "sessions":
             if exp_sessions_count == log[query_field_key]:
                 temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key] #time,第几次循环，则给log_query_param中的第几次-1的数赋值
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]  # time,第几次循环，则给log_query_param中的第几次-1的数赋值
             else:
                 temp_log_result_list.append(False)
-        #其余值比较：基于sessions计算出的值和接口返回的值比较
+            # 其余值比较：基于sessions计算出的值和接口返回的值比较
         elif query_field_key == "packets":
             if exp_packets_count == log[query_field_key]:
                 temp_log_result_list.append(True)
@@ -374,15 +456,15 @@ class GetLog:
             else:
                 temp_log_result_list.append(False)
 
-        elif query_field_key == "bytes":
-            if exp_bytes_count == log[query_field_key]:
+        elif query_field_key == "bytes": #大于0且是个整数
+            if log[query_field_key] > 0 and exp_bytes_count == log[query_field_key]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
 
         elif query_field_key == "bit_rate":
-            bits_rate_value = int((exp_bytes_count * 8) / time_difference)
+            bits_rate_value = int((log["bytes"] * 8) / time_difference)
 
             if bits_rate_value == log[query_field_key]:
                 temp_log_result_list.append(True)
@@ -401,21 +483,40 @@ class GetLog:
 
         elif query_field_key == "packet_rate":
             packet_rate = exp_packets_count / time_difference
-
             if int(packet_rate) == log[query_field_key]:
                 temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"]= log[query_field_key]
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
-
-        elif query_field_key in {"basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets",
-                                 "basic_packet_rate", "basic_bytes", "basic_bit_rate"}:
-            # 基本攻击类型的校验暂未添加：
-            # 1个session 对应 1个packet;1个packet对应66个Byte
+        elif query_field_key in ["basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate"]:
             temp_log_result_list.append(True)
+        elif query_field_key == "rule_id":
+            if policy_id == log[query_field_key]:
+                temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = int(log[query_field_key])
+            else:
+                temp_log_result_list.append(False)
+        elif query_field_key == "conditions":
+            if f"DoS Protection [{policy_id}]" == log [query_field_key]:
+                temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+            else:
+                temp_log_result_list.append(False)
+        elif query_field_key == "source_ip_list" :
+            if test_data["traffic"]["clients_start_ip"] == log [query_field_key]:
+                temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+            else:
+                temp_log_result_list.append(False)
+        elif query_field_key == "destination_ip":
+            if test_data["traffic"]["servers_start_ip"] == log[query_field_key]:
+                temp_log_result_list.append(True)
+                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+            else:
+                temp_log_result_list.append(False)
         else:
             temp_log_result_list.append(False)
-        print(temp_log_result_list)
+
         return temp_log_result_list
 
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
@@ -724,9 +825,9 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"statistics metric:start_time:{}, end_time:{}, rule_id:{}".format(start_time,end_time,statistics_info["rule_id"]))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}, template_id:{}, chart_id:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
         if r_dict["code"] != 200:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Metrics data from the interface.")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],  "Exception when getting Metrics data from the interface.")
             return [False, "The statistics metric API query failed."]
         else:  # 返回正常结果
             if r_dict["data"]["list"] == []:  # 为空
@@ -820,7 +921,8 @@ class GetLog:
                                 histogram_sketch_line_flag = True
                                 break
                     if histogram_sketch_line_flag:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The histogram metrics Line cannot automatically compare statistical results.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The histogram metrics Line cannot automatically compare statistical results.", flush=True)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is {}".format(result_list_from_api), flush=True)
                         metric_results = [True, ""]
                     else:
                         statistics_value = copy.deepcopy(result_list[0])
@@ -846,13 +948,14 @@ class GetLog:
                                         break
                                 if break_flag == 1:
                                     break  # 退出累加循环
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"The actual query result data from TSG: {}".format(statistics_value), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: {}".format(statistics_value), flush=True)
                         # 时差，速率使用:
                         util = UtilStatisticsTemplate()
                         time_dif_seconds = util.time_dif_seconds(start_time, end_time)
                         metric_results = self.assert_livechart_statistics(statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds)  # 判断正确调用函数
                 elif statistics_info["chart_type"] == "histogram":
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram cannot automatically compare statistical results.", flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Histogram cannot automatically compare statistical results.", flush=True)
+                    #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is {}".format(result_list_from_api), flush=True)
                     metric_results = [True, ""]
                 return metric_results
     
@@ -928,13 +1031,13 @@ class GetLog:
                     metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,8, test_traffic_statistics, time_dif_seconds)
                 case "UNIQUE_COUNT":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, test_traffic_statistics)
                 case "HISTOGRAM":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp,stats_value, 1,test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value)
                 case "MEDIAN" | "P95_PERCENTILE" | "P99_PERCENTILE":
                     time_dif_seconds = 0
-                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value, 1, test_traffic_statistics, time_dif_seconds)
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value)
                 case _:
                     failure_info_2 = f"Invalid function name: {function_name}"
             return metric_result, failure_info_2
@@ -946,19 +1049,25 @@ class GetLog:
     def metric_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds = 1):
         failure_info_2 = ""
         metric_result = False
-        try:
-            total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
+        try:#经与OLAP沟通：目前计算方式为先除以时间再乘以8，本身已经是bps 降低的这点精度可以忽略（只有字节数据很低的时候精度会降低，实际数据都比较大不会影响）如果将*8 放在表达式里面，有表达式定义会有点问题，故修改自动化计算bps方式和OLAP保持一致
+            total_bytes_sent = test_traffic_statistics["total_bytes_sent"]
             if total_bytes_sent > 0 and time_dif_seconds > 1:
-                total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2)
+                total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2) * rate_coefficient
+            else:
+                total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
 
-            total_bytes_received = test_traffic_statistics["total_bytes_received"] * rate_coefficient
+            total_bytes_received = test_traffic_statistics["total_bytes_received"]
             if total_bytes_received > 0 and time_dif_seconds > 1:
-                total_bytes_received = round(total_bytes_received / time_dif_seconds, 2)
+                total_bytes_received = round(total_bytes_received / time_dif_seconds, 2) * rate_coefficient
+            else:
+                total_bytes_received = test_traffic_statistics["total_bytes_received"] * rate_coefficient
 
-            total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
+            total_bytes = test_traffic_statistics["total_bytes"]
             if total_bytes > 0 and time_dif_seconds > 1:
-                total_bytes = round(total_bytes / time_dif_seconds, 2)
+                total_bytes = round(total_bytes / time_dif_seconds, 2) * rate_coefficient
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes rate_coefficient Rate:{}".format(total_bytes), flush=True)
+            else:
+                total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
 
             total_packets_sent = test_traffic_statistics["total_packets_sent"]
             if total_packets_sent > 0 and time_dif_seconds > 1:
@@ -999,7 +1108,7 @@ class GetLog:
                     elif source_fields[0] == "syn_pkts" and total_syn_pkt2:
                         metric_result = True
                     # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                    elif source_fields[0] in {"new_in_sessions", "new_out_sessions","closed_in_sessions","closed_out_sessions"} and (stats_value == total_syn_pkt1 or stats_value == 0):
+                    elif source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions", "closed_out_sessions"} and (stats_value == total_syn_pkt1 or stats_value == 0):
                         metric_result = True
                     # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                     elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt1:
@@ -1045,7 +1154,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_unique_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds):
+    def metric_unique_count_value_verification(self, source_fields, stats_value,  test_traffic_statistics):
         failure_info_2 = ""
         metric_result = False
         util = UtilStatisticsTemplate()
@@ -1057,12 +1166,84 @@ class GetLog:
         'out_pkt_length_distribution': 'Outgoing Packet Length',
         'pkt_length_distribution': 'Packet Length',        
         """
+        # unique和syn数量：1一致
+        one_or_zero_unique = {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","syn_pkts"
+            'new_in_sessions',
+            'new_out_sessions',
+            'closed_in_sessions',
+            'closed_out_sessions',
+            'syn_pkts',
+            'in_latency_ms',
+            'out_latency_ms'
+        }
+        #unique和syn数量：1一致
+        one_unique = {
+            'client_ip_object_list',
+            'server_ip_object_list',
+            'client_ip',
+            'client_country',
+            'server_ip',
+            'server_country',
+            'client_asn',
+            'server_asn',
+            'server_fqdn',
+            'server_domain',
+            'app',
+            'device_group',
+            'c2s_link_id',
+            's2c_link_id',
+            'client_port',
+            'server_port',
+            'http_host',
+            'ssl_ja3_hash',
+            'ssl_sni',
+            'subscriber_id',
+            'decoded_as',
+            'sled_ip',
+            'direction',
+            'session_id',
+            'in_latency_ms',
+            'out_latency_ms',
+            'dtls_handshake_latency_ms',
+            'ssl_handshake_latency_ms',
+            'tcp_handshake_latency_ms',
+            'duration_ms',
+            'tcp_rtt_ms',
+            'new_c2s_flows',
+            'new_s2c_flows',
+            'c2s_ip_fragments',
+            's2c_ip_fragments'
+        }
+        # unique数量大于1，具体数量不定
+        uncertain_quantity_unique = {
+            'app_category',
+            'c2s_ttl',
+            's2c_ttl',
+            'flags',
+            'in_pkt_length_distribution',
+            'out_pkt_length_distribution',
+            'pkt_length_distribution',
+            'sent_bytes',
+            'sent_pkts',
+            'received_pkts',
+            'received_bytes',
+            'in_bytes',
+            'out_bytes',
+            'in_pkts',
+            'out_pkts',
+            'c2s_ip_fragments',
+            's2c_ip_fragments'
+        }
         try:
             match len(source_fields):
                 case 1:
                     if source_fields[0] in all_metrics:
                         # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                        if source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","new_c2s_flows","new_s2c_flows"} and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                        if source_fields[0] in one_or_zero_unique and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                            metric_result = True
+                        elif source_fields[0] in one_unique and (stats_value == test_traffic_statistics["total_syn_pkt"]):
+                            metric_result = True
+                        elif source_fields[0] in uncertain_quantity_unique and (stats_value >= test_traffic_statistics["total_syn_pkt"]):
                             metric_result = True
                         elif stats_value >= 1:
                             metric_result = True
@@ -1070,10 +1251,10 @@ class GetLog:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 2:
                     if source_fields[0] in all_metrics and source_fields[1] in all_metrics:
-                        if (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                        if (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and (stats_value == test_traffic_statistics["total_syn_pkt"]):
                             metric_result = True
                         # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                        elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]:
+                        elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
                             metric_result = True
                         elif stats_value >= test_traffic_statistics["total_syn_pkt"]:
                             metric_result = True
@@ -1097,7 +1278,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Unique Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_histogram_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds):
+    def metric_histogram_value_verification(self, source_fields, stats_value):
         # 待重构
         failure_info_2 = ""
         util = UtilStatisticsTemplate()
@@ -1120,7 +1301,7 @@ class GetLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
             return metric_result, failure_info_2
 
-    def metric_percentile_value_verification(self, source_fields, stats_value, rate_coefficient,test_traffic_statistics, time_dif_seconds):
+    def metric_percentile_value_verification(self, source_fields):
         # 待重构
         metric_result = False
         failure_info_2 = ""

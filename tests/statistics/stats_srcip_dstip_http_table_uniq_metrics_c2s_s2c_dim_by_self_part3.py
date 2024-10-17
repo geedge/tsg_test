@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -102,10 +102,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Device Group)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "device_group:UNIQUE_COUNT:UNIQUECOUNT(Device Group)"
+                                "device_group:UNIQUE_COUNT:UNIQUE Device Group"
                             ],
                             "dimensions": ["device_group"],
-                            "order_by": "UNIQUECOUNT(Device Group)",
+                            "order_by": "UNIQUE Device Group",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -114,22 +114,22 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Sled IP)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "sled_ip:UNIQUE_COUNT:UNIQUECOUNT(Sled IP)"
+                                "sled_ip:UNIQUE_COUNT:UNIQUE Sled IP"
                             ],
                             "dimensions": ["sled_ip"],
-                            "order_by": "UNIQUECOUNT(Sled IP)",
+                            "order_by": "UNIQUE Sled IP",
                             "row_limit": "50",
                             "min_in_size": "0",
                             "min_out_size": "0"
                         },
                         {
-                            "chart_name": "UNIQUECOUNT(Decoded AS)",
+                            "chart_name": "UNIQUE Decoded AS",
                             "visualization_type": "Table",
                             "metrics": [
-                                "decoded_as:UNIQUE_COUNT:UNIQUECOUNT(Decoded AS)"
+                                "decoded_as:UNIQUE_COUNT:UNIQUE Decoded AS"
                             ],
                             "dimensions": ["decoded_as"],
-                            "order_by": "UNIQUECOUNT(Decoded AS)",
+                            "order_by": "UNIQUE Decoded AS",
                             "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -138,10 +138,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client-to-Server TTL)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "c2s_ttl:UNIQUE_COUNT:UNIQUECOUNT(Client-to-Server TTL)"
+                                "c2s_ttl:UNIQUE_COUNT:UNIQUE Client to Server TTL"
                             ],
                             "dimensions": ["c2s_ttl"],
-                            "order_by": "UNIQUECOUNT(Client-to-Server TTL)",
+                            "order_by": "UNIQUE Client to Server TTL",
                             "row_limit": "200",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -149,10 +149,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Server-to-Client TTL)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "s2c_ttl:UNIQUE_COUNT:UNIQUECOUNT(Server-to-Client TTL)"
+                                "s2c_ttl:UNIQUE_COUNT:UNIQUE Server to Client TTL"
                             ],
                             "dimensions": ["s2c_ttl"],
-                            "order_by": "UNIQUECOUNT(Server-to-Client TTL)",
+                            "order_by": "UNIQUE Server to Client TTL",
                             "row_limit": "200",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -161,10 +161,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Server-to-Client Link ID)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "c2s_link_id:UNIQUE_COUNT:UNIQUECOUNT(Server-to-Client Link ID)"
+                                "c2s_link_id:UNIQUE_COUNT:UNIQUE Server to Client Link ID"
                             ],
                             "dimensions": ["c2s_link_id"],
-                            "order_by": "UNIQUECOUNT(Server-to-Client Link ID)",
+                            "order_by": "UNIQUE Server to Client Link ID",
                             "row_limit": "500",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -173,10 +173,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Client-to-Server Link ID)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "s2c_link_id:UNIQUE_COUNT:UNIQUECOUNT(Client-to-Server Link ID)"
+                                "s2c_link_id:UNIQUE_COUNT:UNIQUE Client to Server Link ID"
                             ],
                             "dimensions": ["s2c_link_id"],
-                            "order_by": "UNIQUECOUNT(Client-to-Server Link ID)",
+                            "order_by": "UNIQUE Client to Server Link ID",
                             "row_limit": "1000",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -185,10 +185,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Session ID)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "session_id:UNIQUE_COUNT:UNIQUECOUNT(Session ID)"
+                                "session_id:UNIQUE_COUNT:UNIQUE Session ID"
                             ],
                             "dimensions": ["session_id"],
-                            "order_by": "UNIQUECOUNT(Session ID)",
+                            "order_by": "UNIQUE Session ID",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -233,8 +233,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -253,8 +253,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

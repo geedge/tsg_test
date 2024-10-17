@@ -19,7 +19,7 @@ policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSel
 policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
 policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
-policyRulePage_negateSrcIP_posXpath = "//label[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']//span[@class='el-checkbox__input']"
+policyRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']/span[1]"
 
 policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//input[contains(@id, 'object_ip_search')]"
@@ -398,14 +398,46 @@ securityRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labe
 # intercept
 interceptRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
 interceptRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
-
 interceptRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
 interceptRulePage_selectDeny_posId = "interceptintercept"
-
+# rule 页面中Add Condition按钮定位
+interceptRulePage_addCondition_posXpath = "//*[@id='policy_condition-_ConditionModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']"
+interceptRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']/div[last()]//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+# rule 中添加condition侧滑中选择行定位
+interceptRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
+interceptRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
+# source ip
+interceptRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']/span[1]"
+# Server FQDN的添加、查询、选中、关闭操作
+interceptRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
+interceptRulePage_searchServerFqdn_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
+interceptRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
+interceptRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
+# action parameter trusted
+interceptRulePage_intercept_addTrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_trusted']//span[@class='el-input__suffix']//i"   # trusted  选择框  定位
+interceptRulePage_intercept_searchTrustedInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # trusted profile 对话框查询输入框
+interceptRulePage_intercept_searchTrustedDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # trusted profile 对话框查询下拉列表第一个元素
+# action parameter untrusted
+interceptRulePage_intercept_addUntrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_untrusted']//span[@class='el-input__suffix']//i"   # untrusted  选择框  定位
+interceptRulePage_intercept_searchUntrustedInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # untrusted profile 对话框查询输入框
+interceptRulePage_intercept_searchUntrustedDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # untrusted profile 对话框查询下拉列表第一个元素
+# action parameter mirror decrypted traffic
+interceptRulePage_intercept_addTrafficMirrorProfileButton_posXpath = "//div[@zs-label='Mirror Decrypted Traffic']//div[@role='switch']"   # traffic decrypted traffic 打开按钮  定位
+interceptRulePage_intercept_addVlanIDButton_posXpath = "//div[@zs-label='Add VLAN ID']//div[@role='switch']"   # add vlan id  打开按钮  定位
+interceptRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath = "//div[@zs-label='Traffic Mirror Profile']//span[@class='el-input__suffix']//i"   # traffic decrypted traffic 选择框  定位
+interceptRulePage_intercept_searcTrafficMirrorProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # traffic decrypted traffic profile 对话框查询输入框
+interceptRulePage_intercept_searchTrafficMirrorProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # traffic decrypted traffic profile 对话框查询下拉列表第一个元素
+# action parameter decryption profile
+interceptRulePage_intercept_addDecryptionProfileSelectBox_posXpath = "//div[@zs-label='Decryption profile']//span[@class='el-input__suffix']//i"   # decryption profile  选择框  定位
+interceptRulePage_intercept_searchDecryptionProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # decryption profile 对话框查询输入框
+interceptRulePage_intercept_searchDecryptionProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # decryption profile 对话框查询下拉列表第一个元素
+# action parameter tcp proxy profile
+interceptRulePage_intercept_addTcpProfileSelectBox_posXpath = "//div[@zs-label='TCP Proxy Profile']//span[@class='el-input__suffix']//i"   # tcp proxy profile  选择框  定位
+interceptRulePage_intercept_searchTcpProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # tcp proxy profile 对话框查询输入框
+interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # tcp proxy profile 对话框查询下拉列表第一个元素
 interceptRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
 interceptRulePage_okButton_yes_posId = "OK-_policy_Intercept_edit_Home_App_anonymousComponent"
 interceptRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
-
 
 
 #### manipulation
@@ -433,6 +465,7 @@ manipulationRulePage_addCondition_srcGeography_posXpath = "//div[@class='SourceL
 manipulationRulePage_addCondition_dstcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_dstcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Geography']"
 manipulationRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
+manipulationRulePage_addCondition_qname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='QNAME']"
 manipulationRulePage_addCondition_serverPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 manipulationRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='IP Address']"
 manipulationRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Port']"
@@ -495,7 +528,8 @@ manipulationRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
 manipulationRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
 manipulationRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
 # Application的添加、查询、选中、关闭操作
-manipulationRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
+manipulationRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect flex']//span//div[@class='row-content-cell']"
+manipulationRulePage_searchDoHApplication_posXpath = "//div[@class='right-menu-content']//span[text()='DoH']"
 manipulationRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 manipulationRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
 manipulationRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
@@ -506,6 +540,11 @@ manipulationRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXp
 manipulationRulePage_searchServerFqdn_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
 manipulationRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
 manipulationRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
+# QNAME的添加、查询、选中、关闭操作
+manipulationRulePage_addServerQname_posXpath = policyRulePage_addQname_posXpath
+manipulationRulePage_searchQname_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
+manipulationRulePage_selectQname_posXpath = policyRulePage_selectQname_posXpath
+manipulationRulePage_closeServerQname_posXpath = policyRulePage_closeQname_posXpath
 # url的添加、查询、选中、关闭操作
 manipulationRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
 manipulationRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
@@ -544,6 +583,12 @@ manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@class
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
 manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//input[@id='undefined1']"   # redirect url 输入框 定位
+manipulationRulePage_redirectDoH_qtypeRadio_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[1]//input[@value='{replace_qtype}']/parent::*"
+manipulationRulePage_redirectDoH_atypeSelectBox_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[{replace_index}]//i[contains(@class, 'el-select__caret')]"    # repalace_index 多个时索引
+manipulationRulePage_redirectDoH_atypeSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//span[text()='{replace_atype}']"
+manipulationRulePage_redirectDoH_valueInput_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[{replace_index}]//div[@zs-label='value']//input"
+manipulationRulePage_redirectDoH_ttlInput_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[{replace_index}]//div[@zs-label='TTL']//input"
+manipulationRulePage_redirectDoH_add_posXpath = "//label[text()='Setting Details']/parent::*/div//form//i[contains(@class, 'icon-Create1')]"
 # action parameter replace
 manipulationRulePage_replace_addRegex_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='regexEnable']//div[contains(@class, 'el-switch')]"   # regex 开关定位， replace_sort替换为实际的个数
 manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='搜索区域']//i"   # search in 选择框 定位, replace_sort替换为实际的个数
@@ -599,6 +644,15 @@ serviceChainingRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-tab
 serviceChainingRulePage_inputName_posXpath = "//*[@class='biFangName']//input" 
 serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small is-active']" 
 serviceChainingRulePage_decryptedTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small']" 
+serviceChainingRulePage_negateSrcIP_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateDstIP_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateUser_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='User']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateImsi_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Device']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateSrcPort_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateDstPort_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateServerFqdn_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='Server FQDN']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateInternalPort_posXpath = "//div[@zs-label='Internal']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
+serviceChainingRulePage_negateExternalPort_posXpath = "//div[@zs-label='External']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
@@ -609,6 +663,8 @@ serviceChainingRulePage_addUser_posXpath = policyRulePage_addUser_posXpath
 serviceChainingRulePage_searchUser_posXpath = policyRulePage_searchUser_posXpath
 serviceChainingRulePage_selectUser_posXpath = policyRulePage_selectUser_posXpath
 serviceChainingRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
+
+serviceChainingRulePage_addCondition_imsi_posXpath = "//div[@class='SourceList list-box']/parent::*//div[normalize-space(text())='Device']"
 
 serviceChainingRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 serviceChainingRulePage_searchDstIP_posXpath =  "//div[@class='destinations list-box']//div[contains(@class, 'object-item-seach')]//input"
@@ -692,6 +748,7 @@ monitorRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 monitorRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 monitorRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 monitorRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
+monitorRulePage_negateSrcIP_posXpath = policyRulePage_negateSrcIP_posXpath
 monitorRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 monitorRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 monitorRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath

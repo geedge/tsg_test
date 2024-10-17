@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -65,21 +65,7 @@ def run(parameter):
                         ]
                     }
                 ],
-                "device": [
-                    {
-                        "name": "service_chaining_imsi",
-                        "object_type": "mobile_identity",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "imsi",
-                                "item_value": '$' + parameter['test_imsi'],
-                            }
-                        ]
-                    }
-                ],
+                "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
@@ -147,8 +133,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -166,8 +152,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

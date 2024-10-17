@@ -7,6 +7,7 @@ import random
 from support.api_utils.create_object import CreateObject
 from support.api_utils.create_rule import CreatePolicyRule
 from support.api_utils.create_profile import CreateProfile
+from support.api_utils.create_library import CreateLibrary
 from datetime import datetime
 from support.packet_generator.workpath import workdir
 import configparser
@@ -20,7 +21,7 @@ class CreatePolicy:
         run_env = parameter["env"]
         vsys_id = int(parameter["vsys_id"])
         token = test_data["token"]
-        create_ip_ids, create_subid_ids, create_port_ids, create_imsi_ids, create_phone_number_ids, create_imei_ids, create_apn_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
+        create_ip_ids, create_subid_ids, create_port_ids, create_imsi_ids, create_phone_number_ids, create_imei_ids, create_apn_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids, library_tag_ids, library_catalog_ids = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
         statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
 
         # sc需要随机ip
@@ -47,7 +48,13 @@ class CreatePolicy:
             # 创建object
             create_object = CreateObject()
             object_template = template_path["object_template"]
+            #print("object_condition_value: {}".format(object_condition_value))
             timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template)
+            if "library_condition" in test_data.keys():# 创建library
+                library_condition = test_data["library_condition"]
+                create_library = CreateLibrary()
+                library_condition_ids_dict, library_tag_ids, library_catalog_ids = create_library.create_library(token, library_condition, api_server, vsys_id)
+                condition_ids_by_api_dict = create_library.tags_ids_to_policy_condition_list(library_condition_ids_dict,condition_ids_by_api_dict)
             for k, v_0 in condition_ids_by_api_dict.items():
                 v = copy.deepcopy(v_0)
                 if len(v) == 0:
@@ -93,7 +100,10 @@ class CreatePolicy:
                 create_profile = CreateProfile()
                 for profile_data in profile_condition_value:
                     create_profile_ids_dict = create_profile.create_profile_from_template(template_path, profile_data, token, api_server, vsys_id)
+                    #print("create_profile_ids_dict: {}".format(create_profile_ids_dict))
                     create_profile_ids.append(create_profile_ids_dict)
+                    #print("create_profile_ids: {}".format(create_profile_ids))
+
                     if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining":
                         temp_profile_list.append(create_profile_ids_dict)
 
@@ -135,6 +145,7 @@ class CreatePolicy:
                             sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["uuid"]
                             sc_info["device_tag"] = sff["sff_info"]["sf_info"][0]["device_tag"]
                             sc_info["admin_status"] = sff["sff_info"]["sf_info"][0]["admin_status"]
+                            sc_info["load_balance_localization"] = sff["sff_info"]["load_balance_localization"]
                             if sff["sff_info"]["sf_info"][0]["connectivity"]["method"] == "vxlan_g":
                                 sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
                                 sc_info["sf_dest_ip"] = sff["sff_info"]["sf_info"][0]["connectivity"]["dest_ip"]
@@ -142,7 +153,23 @@ class CreatePolicy:
                             else:
                                 sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
                                 sc_info["health_check_method"] = "none"
-                            statistics_sc_info_list.append(sc_info)
+                            negate_list = []
+                        if "condition" in test_data.keys():
+                            for con_key , con_value in test_data["condition"].items():
+                                if con_key == "ip_protocol" or con_key == "sub_action_override":
+                                    continue
+                                else:
+                                    if len(con_value) > 0:
+                                        for i in range(len(con_value)):
+                                            if "negate" in con_value[i].keys() and con_value[i]["negate"] == True:
+                                                negate_list.append(1)
+                                            else:
+                                                negate_list.append(0)
+                            if 1 in negate_list:
+                                sc_info["is_negate"] = 1
+                            else:
+                                sc_info["is_negate"] = 0
+                        statistics_sc_info_list.append(sc_info)
             if len(policy_id_list) > 0:
                 create_policies_ids.extend(policy_id_list)
 
@@ -164,74 +191,93 @@ class CreatePolicy:
         cfg_list["create_profile_ids"] = create_profile_ids
         cfg_list["create_policies_ids"] = create_policies_ids
         cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
+        cfg_list["create_library_tag_ids"] = library_tag_ids
+        cfg_list["create_library_catalog_ids"] = library_catalog_ids
         cfg_list["timeout_result"] = timeout_result
 
         return cfg_list
 
     def generate_random_ip(self, config, run_env, vsys_id):
         # statistics中将ip改为随机
-        temp_obj_condition = "obj_condition_1"
-        if temp_obj_condition in config.keys():
-            object_condition_value = config[temp_obj_condition]
-        else:
-            object_condition_value = config["obj_condition"]
-        if len(object_condition_value) > 0:
-            for obj in object_condition_value:
-                if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
-                    src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
-                    if "default" in src_ip:
-                        src_ip = "10.64.77.11"
-                    if "-" not in src_ip and "/" not in src_ip:
-                        src_ip_list = src_ip.split(".")
-                        if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(1, 100))
-                        elif str(vsys_id) == "6":  # 根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(200, 222))
-                        elif str(vsys_id) == "4":  # 根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(192, 223))
+        # temp_obj_condition = "obj_condition_1"
+        # temp_library_condition = "library_condition"
+        # if temp_obj_condition in config.keys():
+        #     object_condition_value = config[temp_obj_condition]
+        # elif temp_library_condition in config.keys():
+        #     object_condition_value = config[temp_library_condition]
+        # else:
+        #     object_condition_value = config["obj_condition"]
+        for k,v in config.items():
+            if k in {"obj_condition_1", "library_condition"}:
+                object_condition_value = v
+            else:
+                object_condition_value = config["obj_condition"]
+            if len(object_condition_value) > 0:
+                for obj in object_condition_value:
+                    if obj["attribute_name"] == "ATTR_SOURCE_IP" or obj["attribute_name"] == "ATTR_DESTINATION_IP":
+                        if "library" in obj.keys():
+                            src_ip = obj["library"][0]["catalogs"][0]["ip_entries"]
                         else:
-                            src_ip_list[2] = str(random.randint(224, 250))
-                        src_ip_list[3] = str(random.randint(100, 250))
-                        if run_env == "9140":
-                            src_ip_list[0] = "172"
-                            src_ip_list[1] = "56"
-                        elif run_env == "tsgx":
-                            src_ip_list[0] = "10"
-                            src_ip_list[1] = "64"
-                        new_src_ip = ".".join(src_ip_list)
-                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
-                    elif "-" in src_ip and "/" not in src_ip:
-                        two_ip_list = src_ip.split("-")
-                        ip_list_1 = two_ip_list[0].split(".")
-                        ip_list_2 = two_ip_list[1].split(".")
-                        if str(vsys_id) == "6":
-                            ip_list_1[2] = str(random.randint(1, 100))
-                        elif str(vsys_id) == "6":
-                            ip_list_1[2] = str(random.randint(200, 222))
-                        elif str(vsys_id) == "4":  # 根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(192, 223))
-                        else:
-                            ip_list_1[2] = str(random.randint(224, 250))
-                        ip_list_1[3] = str(random.randint(1, 50))
-                        ip_list_2[2] = ip_list_1[2]
-                        ip_list_2[3] = str(int(ip_list_1[3]) + 200)
-                        new_ip_1 = ".".join(ip_list_1)
-                        new_ip_2 = ".".join(ip_list_2)
-                        if run_env == "9140":
-                            ip_list_1[0] = "172"
-                            ip_list_1[1] = "56"
-                            ip_list_2[0] = "172"
-                            ip_list_2[1] = "56"
-                        elif run_env == "tsgx":
-                            ip_list_1[0] = "10"
-                            ip_list_1[1] = "64"
-                            ip_list_2[0] = "10"
-                            ip_list_2[1] = "64"
-                        new_two_ip_list = []
-                        new_two_ip_list.append(new_ip_1)
-                        new_two_ip_list.append(new_ip_2)
-                        new_two_ip = "-".join(new_two_ip_list)
-                        obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
+                            src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
+                        if "default" in src_ip:
+                            src_ip = "10.64.77.11"
+                        if "-" not in src_ip and "/" not in src_ip:
+                            src_ip_list = src_ip.split(".")
+                            if str(vsys_id) == "1":   #根据vsys id，确认IP范围
+                                src_ip_list[2] = str(random.randint(1, 100))
+                            elif str(vsys_id) == "6":   #根据vsys id，确认IP范围
+                                src_ip_list[2] = str(random.randint(200, 222))
+                            elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
+                                src_ip_list[2] = str(random.randint(192, 223))
+                            else:
+                                src_ip_list[2] = str(random.randint(224, 250))
+                            src_ip_list[3] = str(random.randint(100, 250))
+                            if run_env == "9140":
+                                src_ip_list[0] = "172"
+                                src_ip_list[1] = "56"
+                            elif run_env == "tsgx":
+                                src_ip_list[0] = "10"
+                                src_ip_list[1] = "64"
+                            new_src_ip = ".".join(src_ip_list)
+                            if "library" in obj.keys():
+                                obj["library"][0]["catalogs"][0]["ip_entries"] = new_src_ip
+                            else:
+                                obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
+                        elif "-" in src_ip and "/" not in src_ip:
+                            two_ip_list = src_ip.split("-")
+                            ip_list_1 = two_ip_list[0].split(".")
+                            ip_list_2 = two_ip_list[1].split(".")
+                            if str(vsys_id) == "6":
+                                ip_list_1[2] = str(random.randint(1, 100))
+                            elif str(vsys_id) == "6":
+                                ip_list_1[2] = str(random.randint(200, 222))
+                            elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
+                                src_ip_list[2] = str(random.randint(192, 223))
+                            else:
+                                ip_list_1[2] = str(random.randint(224, 250))
+                            ip_list_1[3] = str(random.randint(1, 50))
+                            ip_list_2[2] = ip_list_1[2]
+                            ip_list_2[3] = str(int(ip_list_1[3]) + 200)
+                            new_ip_1 = ".".join(ip_list_1)
+                            new_ip_2 = ".".join(ip_list_2)
+                            if run_env == "9140":
+                                ip_list_1[0] = "172"
+                                ip_list_1[1] = "56"
+                                ip_list_2[0] = "172"
+                                ip_list_2[1] = "56"
+                            elif run_env == "tsgx":
+                                ip_list_1[0] = "10"
+                                ip_list_1[1] = "64"
+                                ip_list_2[0] = "10"
+                                ip_list_2[1] = "64"
+                            new_two_ip_list = []
+                            new_two_ip_list.append(new_ip_1)
+                            new_two_ip_list.append(new_ip_2)
+                            new_two_ip = "-".join(new_two_ip_list)
+                            if "library" in obj.keys():
+                                obj["library"][0]["catalogs"][0]["ip_entries"] = new_two_ip
+                            else:
+                                obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_two_ip
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics or sc rule.", flush=True)
         return config
 

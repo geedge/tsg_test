@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 #sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -101,8 +101,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         return result
     except Exception as e:
@@ -112,8 +112,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
@@ -128,43 +128,30 @@ def run(parameter):
 
 
 if __name__ == '__main__':
-    # ui
-    # parameter = {
-    #     "username": "hebingning",
-    #     "password": "hbn66AAA",
-    #     "test_pc_ip": "192.168.64.65",
-    #     "test_subcriber_id": "test6776",
-    #     "api_server": "http://192.168.44.72",
-    #     "debug_flag": "local",
-    #     "script_type": "ui",
-    #     "env": "tsgx",
-    #     "vsys_id": 1,
-    #     "is_log": 1,
-    #     "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-    #     "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
-    #     "module_name": "security",
-    #     "test_case_name": "deny_srcip_fqdn_drop_rst_icmp"
-    # }
-    # run(parameter)
-    # api
-    from support.ui_utils.element_position.map_element_position_library import replace_paras
-    from support.ui_utils.workpath import workdir
-
     parameter = {
-        "username": "hebingning",
-        "password": "hbn66AAA",
-        "test_pc_ip": "192.168.64.93",
-        "test_subcriber_id": "test6491",
+        "username": "guoqiuya",
+        "password": "Guoqiuya123@@",
+        "test_pc_ip": "192.168.64.111",
+        "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "api",  # api  ui  空字符串
         "is_log": 1,
         "env": "tsgx",
+        "script_type": "api",
         "vsys_id": 1,
-        "root_path": workdir,
-        "path": workdir + "/tests/api",
-        "module_name": "security",
+        # "root_path": workdir,
+        # "path": workdir + "/testcase/ui",
+        "root_path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test",
+        "path": "C:/Users/guoqiuya/Desktop/code/test_924/tsg_test/tests/ui",
+        "module_name": "monitor",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
     parameter = replace_paras(parameter)
     run(parameter)
+    """
+    # 在测试文件的当前路径执行如下命令执行测试用例：
+    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
+
+    # 执行如下命令生成测试报告（自动打开浏览器）：
+    allure serve allure
+    """

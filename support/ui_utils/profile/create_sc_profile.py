@@ -20,6 +20,22 @@ class CreateServiceFunctionForwarderProfile:
         self.sc_info["application"] = []
         if len(test_data["condition"]["application"]) > 0:
             self.sc_info["application"].append(test_data["condition"]["application"][0]["name"]) 
+        negate_list = []
+        if "condition" in test_data.keys():
+            for con_key , con_value in test_data["condition"].items():
+                if con_key == "ip_protocol" or con_key == "sub_action_override":
+                    continue
+                else:
+                    if len(con_value) > 0:
+                        for i in range(len(con_value)):
+                            if "negate" in con_value[i].keys() and con_value[i]["negate"] == True:
+                                negate_list.append(1)
+                            else:
+                                negate_list.append(0)
+            if 1 in negate_list:
+                self.sc_info["is_negate"] = 1
+            else:
+                self.sc_info["is_negate"] = 0              
         for j in range(len(test_data["profile"])):
             sff_profile_data = test_data["profile"][j]
             page_jump_element_position = sff_profile_element_position["page_jump"]
@@ -47,7 +63,8 @@ class CreateServiceFunctionForwarderProfile:
                 return 200,self.sc_info
             except Exception as e:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-                return 400
+                raise
+                #return 400
     def operate_sff_page(self, data,sf_name_list,sff_profile_element_position):
         create_element_position = sff_profile_element_position["create"]
         """
@@ -149,7 +166,8 @@ class CreateServiceFunctionForwarderProfile:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create service function profile successfully.", flush=True)
                 sf_name_list.append(serviceFunctions_name)
             except Exception as e:
-                return "Error: " + str(e)
+                raise
+                #return "Error: " + str(e)
         return sf_name_list
     
     def create_sf_profile(self,data, profile_element_position):

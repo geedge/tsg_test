@@ -34,5 +34,21 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 # 安装chrome和chromedriver
 RUN python3 install_chrome.py
+
+# 安装trex
 RUN python3 install_trex.py
+
+# 更新tsg_ca
 RUN python3 update_tsg_ca.py
+
+# 安装go并设置环境变量，可通过GO_VERSION动态修改版本号
+RUN python3 install_go.py
+# ENV GO_VERSION 1.23.2
+# RUN wget https://golang.google.cn/dl/go${GO_VERSION}.linux-amd64.tar.gz | \
+#     tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz && \
+RUN ln -s /usr/local/go/bin/go /usr/local/bin/go && \
+    ln -s /usr/local/go/bin/godoc /usr/local/bin/godoc && \
+    ln -s /usr/local/go/bin/gofmt /usr/local/bin/gofmt
+ENV GOPATH /go
+ENV PATH /usr/local/go/bin:${GOPATH}/bin:${PATH}
+RUN mkdir -p ${GOPATH}/src ${GOPATH}/bin ${GOPATH}/pkg

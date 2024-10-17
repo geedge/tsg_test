@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -23,7 +23,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "service_chaining",
-            "rule_name": "sc_raw_subid_imei_apn_fqdn_http_url_mirror_bypass_vlan_none",
+            "rule_name": "sc_raw_subid_imei_apn_fqdn_http_url_steer_bypass_vxlan_activeip_bfd",
             "rule_action": "service_chaining",
             "targeted_traffic": "raw",
             "rule_type": "create",
@@ -132,7 +132,7 @@ def run(parameter):
                 {
                     "name": "steer_bypass_vxlan_activeip_bfd",
                     "profile_type": "create",
-                    "type": "Steering",
+                    "type": "steering",
                     "load_balance_method": "hash_int-ip",
                     "load_balance_localization": "nearby",
                     "failure_action": "Bypass",
@@ -175,8 +175,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
         
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -194,8 +194,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -214,7 +214,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_subid_imei_apn_fqdn_http_url_mirror_bypass_vlan_none"
+        "test_case_name": "sc_raw_subid_imei_apn_fqdn_http_url_steer_bypass_vxlan_activeip_bfd"
     }
     run(parameter)
     """

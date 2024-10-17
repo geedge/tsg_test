@@ -2,10 +2,10 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.instance_utils.instance_test_data import InstanceTestData
 from support.report_update import ReportUpdate
 
 
@@ -93,8 +93,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        instantiation = InstanceTestData(test_data, parameter)
+        result = instantiation.create()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -109,40 +109,20 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        case_instance_generator.delete_data()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
 
 
 if __name__ == '__main__':
-    # from support.ui_utils.element_position.map_element_position_library import replace_paras
-    # from support.ui_utils.workpath import workdir
-
-    # parameter = {
-    #     "username": "zcw3",
-    #     "password": "qa111111",
-    #     "test_pc_ip": "192.168.64.93",
-    #     "test_subcriber_id": "test6491",
-    #     "api_server": "http://192.168.44.72",
-    #     "debug_flag": "local",
-    #     "script_type": "api",  # api  ui  空字符串
-    #     "is_log": 1,
-    #     "env": "tsgx",
-    #     "vsys_id": 1,
-    #     "root_path": workdir,
-    #     "path": workdir + "/testcase/ui",
-    #     "module_name": "manipulation",
-    #     "test_case_name": os.path.basename(__file__)[:-3]
-    # }
-    # parameter = replace_paras(parameter)
-    # run(parameter)
     from support.ui_utils.element_position.map_element_position_library import replace_paras
     from support.ui_utils.workpath import workdir
 
     parameter = {
-        "username": "hebingning",
-        "password": "hbn66AAA",
+        "username": "zcw3",
+        "password": "qa111111",
         "test_pc_ip": "192.168.64.93",
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
@@ -152,7 +132,7 @@ if __name__ == '__main__':
         "env": "tsgx",
         "vsys_id": 1,
         "root_path": workdir,
-        "path": workdir + "/tests/api",
+        "path": workdir + "/testcase/ui",
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }

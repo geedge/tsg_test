@@ -5,7 +5,7 @@ from support.api_utils.log_in import *
 from support.api_utils.create_policy import *
 from support.packet_generator.api_verification import *
 from support.api_utils.delete_policy import *
-from support.api_utils.analysis_result import *
+from support.api_utils.analyse_result import *
 from support.app_utils.call_airtest import *
 
 def run(parameter):
@@ -36,9 +36,9 @@ def run(parameter):
         template_path = {}
         cfg_list = create.create_policy(parameter, test_data_json, template_path)
         # 分析验证结果，并返回给flask
-        analysis = AnalysisResult()
+        analysis = Analyse()
         verification_result = [True, True, True]
-        result = analysis.analysis_result(test_data_json, cfg_list, verification_result)
+        result = analysis.analyse_result(test_data_json, cfg_list, verification_result)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "analysis result: ", result)
     
     # 删除配置

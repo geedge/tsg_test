@@ -3,7 +3,6 @@
 import copy
 import os
 import sys
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import json
 import requests
@@ -87,13 +86,13 @@ class CreatePolicyRule:
         if action == 'deny' and policy_type == "security":
             rule_template_dict['rule']['action_parameter']['method'] = method
             if 'packet_capture_' + str(create_number) in condition:
+                rule_template_dict["rule"]["action_parameter"]["packet_capture"] = {}
                 rule_template_dict["rule"]["action_parameter"]["packet_capture"]["enable"] = condition['packet_capture_' + str(create_number)]["enable"]
                 if rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] in condition['packet_capture_' + str(create_number)]:
                     rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
                 else:
                     rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = 2000
-            else:
-                rule_template_dict['rule']['action_parameter']['packet_capture'] = {"enable":0}
+            rule_template_dict['rule']['user_region']['method'] = method
             if method == 'drop':
                 if 'after_n_packets_'+str(create_number) in condition:
                     rule_template_dict['rule']['action_parameter']['after_n_packets'] = condition['after_n_packets_'+str(create_number)]
@@ -352,12 +351,13 @@ class CreatePolicyRule:
                     rules.append(copy.deepcopy(rule_dict))
                 user_region["rules"] = rules
                 user_region["method"] = "edit_element"
-            rule_template_dict["rule"]["action_parameter"] = user_region
-            # rule_template_dict["rule"].pop("user_region")
+            rule_template_dict["rule"]["user_region"] = user_region
+
         elif condition["policy_type"] == "monitor":
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             if action == "monitor":
+                #user_region_data = condition["user_region"]
                 #设置 packet_capture 部分
                 if 'packet_capture' in condition['condition'] and isinstance(condition['condition']['packet_capture'],
                                                                              list):
@@ -396,20 +396,9 @@ class CreatePolicyRule:
                 else:
                     # 镜像未启用
                     user_region["traffic_mirror"] = {"enable": 0}
+
+            rule_template_dict["rule"]["user_region"] = user_region
             rule_template_dict["rule"]["action_parameter"] = user_region
-            #     # 设置 packet_capture 部分
-            #     user_region["packet_capture"] = {
-            #         "enable": 0  # 根据实际情况调整是否启用
-            #     }
-            #     # 设置 traffic_mirror 部分
-            #     user_region["traffic_mirror"] = {
-            #         "enable": 1,  # 启用流量镜像
-            #         "mirror_profile": create_profile_ids[0]["uuid"]  # 使用 create_profile_ids 中的第一个 ID 作为镜像配置
-            #     }
-            # rule_template_dict["rule"]["action_parameter"] = user_region
-
-            
-
 
         # 添加用例名称
         if "rule_name" in condition:
@@ -456,16 +445,16 @@ class CreatePolicyRule:
     def create_rule(self, rule_template_dict, headers, api_host, vsys_id):
         try:
             rule_type = rule_template_dict["rule"]["type"]
-            api_path_map = {  
+            api_path_map = {
                 "security": "security-rules",
-                "proxy_intercept": "proxy-intercept-rules",    
-                "proxy_manipulation": "proxy-manipulation-rules",  
-                "traffic_shaping": "traffic-shaping-rules",  
-                "service_chaining": "service-chaining-rules",  
-                "statistics": "statistics-rules",  
+                "proxy_intercept": "proxy-intercept-rules",
+                "proxy_manipulation": "proxy-manipulation-rules",
+                "traffic_shaping": "traffic-shaping-rules",
+                "service_chaining": "service-chaining-rules",
+                "statistics": "statistics-rules",
                 "monitor": "monitor-rules",
-                "dos_protection": "dos-protection-rules",  
-            }  
+                "dos_protection": "dos-protection-rules",
+            }
             api_path_rule_type = api_path_map.get(rule_type)
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)

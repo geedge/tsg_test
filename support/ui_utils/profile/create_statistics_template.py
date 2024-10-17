@@ -143,7 +143,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def _operate_radio(self, chart, data_index=0, no_modify="不修改", data_key="", ep_radio="", chart_id=""):
         """
@@ -179,7 +180,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", file=sys.stderr)
-            return 400
+            raise
+            #return 400
 
     def _get_value_from_data(self, data, key="", data_index=0):
         """
@@ -193,6 +195,7 @@ class CreateStatisticsTemplate():
             switch_value: str = data[key].split("->")[data_index].strip() # 用例数据
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
+            raise
         return switch_value
 
     def _operate_order_by(self, chart, data_index=0, no_modify="不修改", data_key="", chart_id=""):
@@ -200,17 +203,24 @@ class CreateStatisticsTemplate():
             data_value: str = self._get_value_from_data(chart, key=data_key, data_index=data_index)  # 提取数据 Table
             if data_value == "":
                 return 0
-            if data_value != no_modify:  # 判断修改时不修改时跳过操作。
+            elif "Random" == data_value:# 如果是Metrics Type为Distribution的Aggregate Function,则Order By为Random，只读不可操作
+                # Order By为Random,状态只读不可操作
+                # //form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][1]//label[normalize-space(text())='Order By']/parent::*//input
+                order_by_value = self.driver.find_element(By.XPATH, statisticsTemplates_input_posXpath.format(replaceChart = chart_id, repalceLabel = "Order By")).get_attribute("value")
+                order_by_status = self.driver.find_element(By.XPATH, statisticsTemplates_input_posXpath.format( replaceChart=chart_id, repalceLabel="Order By")).get_attribute("readonly")
+                if order_by_value == "Random" and order_by_status == "true":
+                    return 200
+                else:
+                    raise f"When Fields Metrics Type is distribution, the Order By value should be Random and the status is read-only. The actual value is {order_by_value} and the status is {order_by_status}."
+            elif data_value != no_modify:  # 判断修改时不修改时跳过操作。
                 dropdown_name = "Order By"
                 # 组织元素并点击下拉菜单
-                ep_order_by_Select = statisticsTemplates_input_other_posXpath.format(replaceChart=chart_id,
-                                                                                     repalceLabel=dropdown_name)  # 下拉框定位
+                ep_order_by_Select = statisticsTemplates_input_other_posXpath.format(replaceChart=chart_id, repalceLabel=dropdown_name)  # 下拉框定位
                 # 将span替换为label,定位不一样
                 ep_order_by_Select = ep_order_by_Select.replace("span", "label")
                 self.driver.find_element(By.XPATH, ep_order_by_Select).click()
                 # 点击下拉列表的item选项
-                ep_metricsAndDimensionsDropdownItem = statisticsTemplates_dropdown_posXpath.format(
-                    replaceChart=chart_id, repalceLabel=dropdown_name, replaceDropdownIterm=data_value)
+                ep_metricsAndDimensionsDropdownItem = statisticsTemplates_dropdown_posXpath.format(replaceChart=chart_id, repalceLabel=dropdown_name, replaceDropdownIterm=data_value)
                 element_dropdown_item = self.driver.find_element(By.XPATH, ep_metricsAndDimensionsDropdownItem)
                 # 移动元素到页面，在执行点击
                 #self.actions.move_to_element(element_dropdown_item).perform()
@@ -220,7 +230,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def _operate_metrics_or_dimensions_dropdown(self, chart, data_index=0, no_modify="不修改", data_key="",chart_id=""):
         """
@@ -281,7 +292,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def _operate_input(self, chart, data_index=0, no_modify="不修改", data_key="", element_position="",
                        chart_id=""):
@@ -341,7 +353,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def _operate_series_limit(self, chart, data_index=0, no_modify="不修改", data_key="", element_position="",
                               chart_id=""):
@@ -391,7 +404,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def dropdown_add(self, chart_id="", dropdown_name="", new_value="", dropdown_item_dict={}):
         """
@@ -563,7 +577,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def dropdown_del(self, chart_id="", dropdown_name="", old_value="", dropdown_item_dict={}):
         """
@@ -602,7 +617,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def dropdown_modify(self, chart_id="", dropdown_name="", old_value="", new_value="", dropdown_item_dict={}):
         """
@@ -671,7 +687,8 @@ class CreateStatisticsTemplate():
         except Exception as e:
             self.error_print_function(inspect.currentframe().f_code.co_name, e)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Class:CreateStatisticsTemplate;Funcation:dropdown_add();Exception: {e}")
-            return 400
+            raise
+            #return 400
 
     def error_print_function(self, function, error):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],

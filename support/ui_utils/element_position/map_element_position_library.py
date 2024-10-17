@@ -442,6 +442,102 @@ test_response_page_element_position = {
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_responsePages_button_yes_posXpath
     }
 }
+test_ssl_decryption_keyring_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_sslDecryptionKeyrings_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_sslDecryptionKeyrings_createButton_posId,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_sslDecryptionKeyrings_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_sslDecryptionKeyrings_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_sslDecryptionKeyrings_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_sslDecryptionKeyrings_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_sslDecryptionKeyrings_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_sslDecryptionKeyrings_button_yes_posXpath
+    }
+}
+test_ssl_decryption_profile_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_sslDecryptionProfiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_sslDecryptionProfiles_createButton_posId,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_sslDecryptionProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_sslDecryptionProfiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_sslDecryptionProfiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_sslDecryptionProfiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_sslDecryptionProfiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_sslDecryptionProfiles_button_yes_posXpath
+    }
+}
+test_tcp_proxy_profile_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tcpProxyProfiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_tcpProxyProfiles_createButton_posId,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_tcpProxyProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_tcpProxyProfiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_tcpProxyProfiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_tcpProxyProfiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_tcpProxyProfiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_tcpProxyProfiles_button_yes_posXpath
+    }
+}
+test_traffic_mirroring_profile_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posXpath
+    }
+}
 test_hijack_file_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -539,6 +635,15 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_chooseTargetedTraffic_posXpath": serviceChainingRulePage_decryptedTrafficButton_posXpath,
         "policyRulePage_addCondition_posXpath": policyRulePage_addCondition_posXpath,
         "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
+        "policyRulePage_negateSrcIP_posXpath":serviceChainingRulePage_negateSrcIP_posXpath,
+        "policyRulePage_negateDstIP_posXpath":serviceChainingRulePage_negateDstIP_posXpath,
+        "policyRulePage_negateUser_posXpath":serviceChainingRulePage_negateUser_posXpath,
+        "policyRulePage_negateImsi_posXpath":serviceChainingRulePage_negateImsi_posXpath,
+        "policyRulePage_negateSrcPort_posXpath":serviceChainingRulePage_negateSrcPort_posXpath,
+        "policyRulePage_negateDstPort_posXpath":serviceChainingRulePage_negateDstPort_posXpath,
+        "policyRulePage_negateServerFqdn_posXpath":serviceChainingRulePage_negateServerFqdn_posXpath,
+        "policyRulePage_negateInternalPort_posXpath":serviceChainingRulePage_negateInternalPort_posXpath,
+        "policyRulePage_negateExternalPort_posXpath":serviceChainingRulePage_negateExternalPort_posXpath,
         # Source IP
         "policyRulePage_addSrcIP_posXpath": serviceChainingRulePage_addSrcIP_posXpath,
         "policyRulePage_searchSrcIP_posXpath": serviceChainingRulePage_searchSrcIP_posXpath,
@@ -550,6 +655,15 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_searchUser_posXpath": serviceChainingRulePage_searchUser_posXpath,
         "policyRulePage_selectUser_posXpath": serviceChainingRulePage_selectUser_posXpath,
         "policyRulePage_closeUser_posXpath": serviceChainingRulePage_closeUser_posXpath,
+        # Device imsi imei phone number
+        "policyRulePage_addConditionImsi_posXpath": serviceChainingRulePage_addCondition_imsi_posXpath,
+        "policyRulePage_addImsi_posXpath": manipulationRulePage_addImsi_posXpath,
+        "policyRulePage_searchImsi_posXpath": manipulationRulePage_searchImsi_posXpath,
+        "policyRulePage_selectImsi_posXpath": manipulationRulePage_selectImsi_posXpath,
+        "policyRulePage_closeImsi_posXpath": manipulationRulePage_closeImsi_posXpath,
+        "policyRulePage_chooseImei_posXpath": policyRulePage_chooseImei_posXpath,
+        "policyRulePage_choosePhoneNumber_posXpath": policyRulePage_choosePhoneNumber_posXpath,
+        "policyRulePage_chooseApn_posXpath": policyRulePage_chooseApn_posXpath,
         # Dest IP
         "policyRulePage_addDstIP_posXpath": serviceChainingRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": serviceChainingRulePage_searchDstIP_posXpath,
@@ -722,6 +836,7 @@ test_manipulation_rule_element_position = {
         "policyRulePage_chooseApn_posXpath": policyRulePage_chooseApn_posXpath,
         # Application
         "policyRulePage_addApplication_posXpath": manipulationRulePage_addApplication_posXpath,
+        "policyRulePage_searchDoHApplication_posXpath": manipulationRulePage_searchDoHApplication_posXpath,
         "policyRulePage_searchApplication_posXpath": manipulationRulePage_searchApplication_posXpath,
         "policyRulePage_selectApplication_posXpath": manipulationRulePage_selectApplication_posXpath,
         "policyRulePage_closeApplication_posXpath": manipulationRulePage_closeApplication_posXpath,
@@ -733,6 +848,12 @@ test_manipulation_rule_element_position = {
         "policyRulePage_searchServerFqdn_posXpath": manipulationRulePage_searchServerFqdn_posXpath,
         "policyRulePage_selectServerFqdn_posXpath": manipulationRulePage_selectServerFqdn_posXpath,
         "policyRulePage_closeServerFqdn_posXpath": manipulationRulePage_closeServerFqdn_posXpath,
+        # Qname
+        "policyRulePage_addConditionQname_posXpath": manipulationRulePage_addCondition_qname_posXpath,
+        "policyRulePage_addQname_posXpath": manipulationRulePage_addServerQname_posXpath,
+        "policyRulePage_searchQname_posXpath": manipulationRulePage_searchQname_posXpath,
+        "policyRulePage_selectQname_posXpath": manipulationRulePage_selectQname_posXpath,
+        "policyRulePage_closeQname_posXpath": manipulationRulePage_closeServerQname_posXpath,
         # url
         "policyRulePage_addConditionUrl_posXpath": manipulationRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": manipulationRulePage_addUrl_posXpath,
@@ -772,10 +893,16 @@ test_manipulation_rule_element_position = {
         "policyRulePage_deny_addResponseContentProfileSelectBox_posXpath": manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath,
         "policyRulePage_deny_searchResponseProfile_posXpath": manipulationRulePage_deny_searchResponseProfile_posXpath,
         "policyRulePage_deny_searchResponseProfileDorpItem_posXpath": manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath,
-        # redirect http action parameter
+        # redirect http doh action parameter
         "policyRulePage_redirectHttp_addResponseCodeSelectBox_posXpath": manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath,
         "policyRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath": manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath,
         "policyRulePage_redirectHttp_redirectHttp_addRedirectUrlInput_posXpath": manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath,
+        "policyRulePage_redirectDoH_qtypeRadio_posXpath": manipulationRulePage_redirectDoH_qtypeRadio_posXpath,
+        "policyRulePage_redirectDoH_atypeSelectBox_posXpath": manipulationRulePage_redirectDoH_atypeSelectBox_posXpath,
+        "policyRulePage_redirectDoH_atypeSelectDropItem_posXpath": manipulationRulePage_redirectDoH_atypeSelectDropItem_posXpath,
+        "policyRulePage_redirectDoH_valueInput_posXpath": manipulationRulePage_redirectDoH_valueInput_posXpath,
+        "policyRulePage_redirectDoH_ttlInput_posXpath": manipulationRulePage_redirectDoH_ttlInput_posXpath,
+        "policyRulePage_redirectDoH_add_posXpath": manipulationRulePage_redirectDoH_add_posXpath,
         # replace action parameter
         "policyRulePage_replace_addRegex_posXpath": manipulationRulePage_replace_addRegex_posXpath,
         "policyRulePage_replace_addSearchInSelectBox_posXpath": manipulationRulePage_replace_addSearchInSelectBox_posXpath,
@@ -885,42 +1012,40 @@ test_security_rule_element_position = {
         "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
     }
 }
-
 test_monitor_profile_element_position = {
-                "page_jump": {
-                    "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
-                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-                    "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
-                },
-                "create": {
-                    "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
-                    "profilePage_inputName_posId": trafficMirroringProfiles_input_Name_posId,
-                    "profilePage_addLANID_posCss": trafficMirroringProfiles_button_vlanIdAdd_posCss,
-                    "trafficMirroringProfiles_input_vlanIdsInput_posXpath": trafficMirroringProfiles_input_vlanIdsInput_posXpath,
-                    "profilePage_button_oK_posCss": trafficMirroringProfiles_button_oK_posCss,
-                    "profilePage_button_cancel_posCss": trafficMirroringProfiles_button_cancel_posCss,
-                    "profilePage_button_warningSaveYes_posCss": trafficMirroringProfiles_button_warningSaveYes_posCss,
-                    # action
-                },
-                "edit": {
-                    "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
-                },
-                "search": {
-                    "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
-                    "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
-                    "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
-                    "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
-                },
-                "delete": {
-                    "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-                    "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
-                    "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posCss
-                }
-            }
-
+    "page_jump": {
+        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
+    },
+    "create": {
+        "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
+        "profilePage_inputName_posId": trafficMirroringProfiles_input_Name_posId,
+        "profilePage_addLANID_posCss": trafficMirroringProfiles_button_vlanIdAdd_posCss,
+        "trafficMirroringProfiles_input_vlanIdsInput_posXpath": trafficMirroringProfiles_input_vlanIdsInput_posXpath,
+        "profilePage_button_oK_posCss": trafficMirroringProfiles_button_oK_posCss,
+        "profilePage_button_cancel_posCss": trafficMirroringProfiles_button_cancel_posCss,
+        "profilePage_button_warningSaveYes_posCss": trafficMirroringProfiles_button_warningSaveYes_posCss,
+        # action
+    },
+    "edit": {
+        "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
+    },
+    "search": {
+        "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posXpath
+    }
+}
 test_imsi_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -984,7 +1109,6 @@ test_phone_number_object_element_position = {
                     "objectListPage_deleteButton_warningYes_posXpath": imsiObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
-
 test_monitor_rule_element_position = {
                 "page_jump": {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1041,6 +1165,8 @@ test_monitor_rule_element_position = {
                     "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
                     "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
                     "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
+                    #add Src ip negate
+                    "policyRulePage_negateSrcIP_posXpath":monitorRulePage_negateSrcIP_posXpath,
                     #add  dst ip
                     "policyRulePage_addDstIP_posXpath": policyRulePage_addDstIP_posXpath,
                     "policyRulePage_searchDstIP_posXpath": policyRulePage_searchDstIP_posXpath,
@@ -1206,8 +1332,6 @@ test_monitor_rule_element_position = {
                     "policyRuleListPage_okButton_warningNo_posXpath": monitorRuleListpage_okButton_warningNo_posXpath
                 }
             }
-
-
 test_dos_protection_rule_element_position = {
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1257,8 +1381,6 @@ test_dos_protection_rule_element_position = {
                         "policyRuleListPage_okButton_warningNo_posXpath":dosRuleListpage_okButton_warningNo_posXpath
                     }
                 }
-
-
 test_intercept_rule_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1291,15 +1413,44 @@ test_intercept_rule_element_position = {
         "policyRulePage_okButton_yes_posId": interceptRulePage_okButton_yes_posId,
         "policyRulePage_okButton_warningYes_posXpath": interceptRulePage_okButton_warningYes_posXpath,
         # Add Condition按钮定位
-        "policyRulePage_addCondition_posXpath": manipulationRulePage_addCondition_posXpath,
+        "policyRulePage_addCondition_posXpath": interceptRulePage_addCondition_posXpath,
         # add condition侧滑的关闭定位
-        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+        "policyRulePage_addCondition_close_posXpath": interceptRulePage_addCondition_close_posXpath,
         # Source IP
         "policyRulePage_addConditionSrcIP_posXpath": manipulationRulePage_addCondition_srcIP_posXpath,
         "policyRulePage_addSrcIP_posXpath": manipulationRulePage_addSrcIP_posXpath,
         "policyRulePage_searchSrcIP_posXpath": manipulationRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
+        "policyRulePage_negateSrcIP_posXpath":interceptRulePage_negateSrcIP_posXpath,
+        # Server FQDN
+        "policyRulePage_addConditionServerFqdn_posXpath": interceptRulePage_addCondition_serverFqdn_posXpath,
+        "policyRulePage_addServerFqdn_posXpath": interceptRulePage_addServerFqdn_posXpath,
+        "policyRulePage_searchServerFqdn_posXpath": interceptRulePage_searchServerFqdn_posXpath,
+        "policyRulePage_selectServerFqdn_posXpath": interceptRulePage_selectServerFqdn_posXpath,
+        "policyRulePage_closeServerFqdn_posXpath": interceptRulePage_closeServerFqdn_posXpath,
+        # action parameter trusted servers
+        "policyRulePage_intercept_addTrustedSelectBox_posXpath": interceptRulePage_intercept_addTrustedSelectBox_posXpath,
+        "policyRulePage_intercept_searchTrustedInput_posXpath": interceptRulePage_intercept_searchTrustedInput_posXpath,
+        "policyRulePage_intercept_searchTrustedDorpItem_posXpath": interceptRulePage_intercept_searchTrustedDorpItem_posXpath,
+        # action parameter untrusted servers
+        "policyRulePage_intercept_addUntrustedSelectBox_posXpath": interceptRulePage_intercept_addUntrustedSelectBox_posXpath,
+        "policyRulePage_intercept_searchUntrustedInput_posXpath": interceptRulePage_intercept_searchUntrustedInput_posXpath,
+        "policyRulePage_intercept_searchUntrustedDorpItem_posXpath": interceptRulePage_intercept_searchUntrustedDorpItem_posXpath,
+        # action parameter mirror decrypted traffic
+        "policyRulePage_intercept_addTrafficMirrorProfileButton_posXpath": interceptRulePage_intercept_addTrafficMirrorProfileButton_posXpath,
+        "policyRulePage_intercept_addVlanIDButton_posXpath": interceptRulePage_intercept_addVlanIDButton_posXpath,
+        "policyRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath": interceptRulePage_intercept_addTrafficMirrorProfileSelectBox_posXpath,
+        "policyRulePage_intercept_searcTrafficMirrorProfileInput_posXpath": interceptRulePage_intercept_searcTrafficMirrorProfileInput_posXpath,
+        "policyRulePage_intercept_searchTrafficMirrorProfileDorpItem_posXpath": interceptRulePage_intercept_searchTrafficMirrorProfileDorpItem_posXpath,
+        # action parameter decryption profile
+        "policyRulePage_intercept_addDecryptionProfileSelectBox_posXpath": interceptRulePage_intercept_addDecryptionProfileSelectBox_posXpath,
+        "policyRulePage_intercept_searchDecryptionProfileInput_posXpath": interceptRulePage_intercept_searchDecryptionProfileInput_posXpath,
+        "policyRulePage_intercept_searchDecryptionProfileDorpItem_posXpath": interceptRulePage_intercept_searchDecryptionProfileDorpItem_posXpath,
+        # action parameter tcp proxy profile
+        "policyRulePage_intercept_addTcpProfileSelectBox_posXpath": interceptRulePage_intercept_addTcpProfileSelectBox_posXpath,
+        "policyRulePage_intercept_searchTcpProfileInput_posXpath": interceptRulePage_intercept_searchTcpProfileInput_posXpath,
+        "policyRulePage_intercept_searchTcpProfileDorpItem_posXpath": interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath,
     },
     "search": {
         "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
@@ -1373,12 +1524,24 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchSrcIP_posXpath": statisticsRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": statisticsRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": statisticsRulePage_closeSrcIP_posXpath,
+        # source Port
+        "policyRulePage_addConditionSrcPort_posXpath": manipulationRulePage_addCondition_srcPort_posXpath,
+        "policyRulePage_addSrcPort_posXpath": manipulationPage_addSrcPort_posXpath,
+        "policyRulePage_searchSrcPort_posXpath": manipulationRulePage_searchSrcPort_posXpath,
+        "policyRulePage_selectSrcPort_posXpath": manipulationRulePage_selectSrcPort_posXpath,
+        "policyRulePage_closeSrcPort_posXpath": manipulationRulePage_closeSrcPort_posXpath,
         # Destination IP
         "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
         "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
         "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
         "policyRulePage_closeDstIP_posXpath": statisticsRulePage_closeDstIP_posXpath,
+        # Destination Port
+        "policyRulePage_addConditionDstPort_posXpath": manipulationRulePage_addCondition_destinationPort_posXpath,
+        "policyRulePage_addDstPort_posXpath": manipulationRulePage_addDstPort_posXpath,
+        "policyRulePage_searchDstPort_posXpath": manipulationRulePage_searchDstPort_posXpath,
+        "policyRulePage_selectDstPort_posXpath": manipulationRulePage_selectDstPort_posXpath,
+        "policyRulePage_closeDstPort_posXpath": manipulationRulePage_closeDstPort_posXpath,
         # Internal IP
         "policyRulePage_addConditionInternalIP_posXpath": statisticsRulePage_addCondition_internalIP_posXpath,
         "policyRulePage_addInternalIP_posXpath": statisticsRulePage_addInternalIP_posXpath,
@@ -1397,6 +1560,27 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchExternalIP_posXpath": statisticsRulePage_searchExternalIP_posXpath,
         "policyRulePage_selectExternalIP_posXpath": statisticsRulePage_selectExternalIP_posXpath,
         "policyRulePage_closeExternalIP_posXpath": statisticsRulePage_closeExternalIP_posXpath,
+        # external Port
+        "policyRulePage_addConditionExternalPort_posXpath": manipulationRulePage_addCondition_externalPort_posXpath,
+        "policyRulePage_addExternalPort_posXpath": manipulationRulePage_addExternalPort_posXpath,
+        "policyRulePage_searchExternalPort_posXpath": manipulationRulePage_searchExternalPort_posXpath,
+        "policyRulePage_selectExternalPort_posXpath": manipulationRulePage_selectExternalPort_posXpath,
+        "policyRulePage_closeExternalPort_posXpath": manipulationRulePage_closeExternalPort_posXpath,
+        # subid
+        "policyRulePage_addConditionUser_posXpath": manipulationRulePage_addCondition_user_posXpath,
+        "policyRulePage_addUser_posXpath": manipulationRulePage_addUser_posXpath,
+        "policyRulePage_searchUser_posXpath": manipulationRulePage_searchUser_posXpath,
+        "policyRulePage_selectUser_posXpath": manipulationRulePage_selectUser_posXpath,
+        "policyRulePage_closeUser_posXpath": manipulationRulePage_closeUser_posXpath,
+        # Device imsi imei phone number
+        "policyRulePage_addConditionImsi_posXpath": manipulationRulePage_addCondition_imsi_posXpath,
+        "policyRulePage_addImsi_posXpath": manipulationRulePage_addImsi_posXpath,
+        "policyRulePage_searchImsi_posXpath": manipulationRulePage_searchImsi_posXpath,
+        "policyRulePage_selectImsi_posXpath": manipulationRulePage_selectImsi_posXpath,
+        "policyRulePage_closeImsi_posXpath": manipulationRulePage_closeImsi_posXpath,
+        "policyRulePage_chooseImei_posXpath": policyRulePage_chooseImei_posXpath,
+        "policyRulePage_choosePhoneNumber_posXpath": policyRulePage_choosePhoneNumber_posXpath,
+        "policyRulePage_chooseApn_posXpath": policyRulePage_chooseApn_posXpath,
         # Application
         "policyRulePage_addApplication_posXpath": statisticsRulePage_addApplication_posXpath,
         "policyRulePage_searchApplication_posXpath": statisticsRulePage_searchApplication_posXpath,
@@ -1410,6 +1594,12 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchServerFqdn_posXpath": statisticsRulePage_searchServerFqdn_posXpath,
         "policyRulePage_selectServerFqdn_posXpath": statisticsRulePage_selectServerFqdn_posXpath,
         "policyRulePage_closeServerFqdn_posXpath": statisticsRulePage_closeServerFqdn_posXpath,
+        # Qname
+        "policyRulePage_addConditionQname_posXpath": manipulationRulePage_addCondition_qname_posXpath,
+        "policyRulePage_addQname_posXpath": manipulationRulePage_addServerQname_posXpath,
+        "policyRulePage_searchQname_posXpath": manipulationRulePage_searchQname_posXpath,
+        "policyRulePage_selectQname_posXpath": manipulationRulePage_selectQname_posXpath,
+        "policyRulePage_closeQname_posXpath": manipulationRulePage_closeServerQname_posXpath,
         # url
         "policyRulePage_addConditionUrl_posXpath": statisticsRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": statisticsRulePage_addUrl_posXpath,
@@ -1422,6 +1612,18 @@ test_statistics_rule_element_position = {
         "policyRulePage_searchRequestHeader_posXpath": securityRulePage_searchRequestHeader_posXpath,
         "policyRulePage_selectRequestHeader_posXpath": securityRulePage_selectRequestHeader_posXpath,
         "policyRulePage_closeRequestHeader_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        # request body
+        "policyRulePage_addConditionRequestBody_posXpath": securityRulePage_addCondition_requestBody_posXpath,
+        "policyRulePage_addRequestBody_posXpath": manipulationRulePage_addRequestBody_posXpath,
+        "policyRulePage_searchRequestBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
+        "policyRulePage_selectRequestBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
+        "policyRulePage_closeRequestBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
+        # response body
+        "policyRulePage_addConditionResponseBody_posXpath": securityRulePage_addCondition_responseBody_posXpath,
+        "policyRulePage_addResponseBody_posXpath": manipulationRulePage_addResponseBody_posXpath,
+        "policyRulePage_searchResponseBody_posXpath": securityRulePage_searchRequestHeader_posXpath,
+        "policyRulePage_selectResponseBody_posXpath": securityRulePage_selectRequestHeader_posXpath,
+        "policyRulePage_closeResponseBody_posXpath": securityRulePage_closeRequestHeader_posXpath,
         #add boolean
         "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
         "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
@@ -1466,7 +1668,6 @@ test_statistics_rule_element_position = {
         "policyRuleListPage_okButton_warningNo_posXpath": statisticsRulePage_delete_tip_button_warningNo_posXpath
     }
 }
-
 test_session_log_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
@@ -1515,9 +1716,9 @@ def get_name_list(test_data):
     if "rule_name" in test_data:
         tmp_name_dict["name"] = test_data["rule_name"]
         name_list.append(copy.deepcopy(tmp_name_dict))
-    # name_list.append(copy.deepcopy(tmp_name_dict))
+    
     # 停止收集新建的object、profile名称
-    #"""
+    """
     if "condition" in test_data.keys() and len(test_data["condition"]) != 0:
         for key, value in test_data["condition"].items():
             if key in manipulation_object_no_create_list:
@@ -1536,13 +1737,10 @@ def get_name_list(test_data):
                 for i in range(len(value)):
                     tmp_name_dict = {}
                     tmp_name_dict["type"] = value[i]["profile_type"]
-                    if tmp_name_dict["type"] == "statistics_template":
-                        tmp_name_dict["name"] = value[i]["name"]
-                    else:
-                        tmp_name_dict["name"] = value[i]["profile_file"]["name"]
+                    tmp_name_dict["name"] = value[i]["profile_file"]["name"]
                     name_list.append(copy.deepcopy(tmp_name_dict))
     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], name_list)
-    #"""
+    """
     return name_list
 
 def create_pre_policy(data, driver):
@@ -1732,6 +1930,14 @@ def get_element_position(key_name):
     # profile
     elif key_name == "response_page":
         element_position_map = test_response_page_element_position
+    elif key_name == "ssl_decryption_keyring":
+        element_position_map = test_ssl_decryption_keyring_element_position
+    elif key_name == "ssl_decryption_profile":
+        element_position_map = test_ssl_decryption_profile_element_position
+    elif key_name == "tcp_proxy_profile":
+        element_position_map = test_tcp_proxy_profile_element_position
+    elif key_name == "traffic_mirroring_profile":
+        element_position_map = test_traffic_mirroring_profile_element_position
     elif key_name == "hijack_file":
         element_position_map = test_hijack_file_element_position
     elif key_name == "insert_script":
@@ -1788,5 +1994,5 @@ def replace_paras(parameter):
     return parameter
 
 # 勿删 zcw make
-manipulation_object_no_create_list = ["application", "sub_action_override", "sub_action"]
-manipulation_profile_no_create_list = ["deny_response_text", "deny_response_block", "redirect_url", "replace_parameter", "edit_element_parameter"]
+manipulation_object_no_create_list = ["application", "sub_action_override"]
+manipulation_profile_no_create_list = ["deny_response_text", "deny_response_block", "redirect_url", "replace_parameter", "edit_element_parameter", "doh"]
