@@ -1287,7 +1287,7 @@ class DataTranslation:
                     }
                     for t in range(len(v)):
                         temp = {
-                            "profile_type2": "proxy_hijack_file",
+                            "profile_typ": "proxy_hijack_file",
                             "content_type": "text/html",
                             "name": "auto_test_obj",
                             "content_name": "Files-test-5.png",
