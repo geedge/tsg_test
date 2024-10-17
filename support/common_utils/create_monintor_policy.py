@@ -21,14 +21,14 @@ from support.packet_generator.verify import Verify
 from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list
 from support.ui_utils.element_position.map_element_position_library import test_monitor_profile_element_position,get_profile_element_position
 from support.api_utils.analyse_result import Analyse
-from support.instance_utils.data_translation import DataTranslation
+from support.common_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
 
 import copy
 
 
-class InstanceMonitor:
+class CreateMonitorPolicy:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter

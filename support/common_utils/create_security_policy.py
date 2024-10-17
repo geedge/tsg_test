@@ -23,10 +23,10 @@ from support.api_utils.delete_policy import DeletePolicy
 import support.ui_utils.env
 # from support.common.report import *
 from datetime import datetime
-from support.instance_utils.data_translation import DataTranslation
+from support.common_utils.data_translation import DataTranslation
 from support.ui_utils.element_position.map_element_position_library import *
 
-class InstanceSecurity:
+class CreateSecurityPolicy:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter

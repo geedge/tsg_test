@@ -2,7 +2,7 @@ import os
 import sys
 
 from support.api_utils.organize_config import OrganizeConfig
-from support.instance_utils.data_translation import DataTranslation
+from support.common_utils.data_translation import DataTranslation
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
@@ -26,7 +26,7 @@ import support.ui_utils.env
 from datetime import datetime
 import time
 
-class InstanceStatistics:
+class CreateStatisticsPolicy:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter

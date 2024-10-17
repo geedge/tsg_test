@@ -2,14 +2,15 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import support.ui_utils.env
 from support.api_utils.delete_policy import DeletePolicy
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class DeleteTempInstantiation:
-    def delete(self, parameter, test_data, creation_result):
+class DeleteSecurityPolicy:
+    def delete_security_policy(self, parameter, test_data, creation_result):
         ui_name_list = creation_result["ui_name_list"]
         api_name_list = creation_result["api_name_list"]
         ui_result, api_result = "", ""
@@ -71,10 +72,16 @@ class DeleteTempInstantiation:
                     # 退出遍历标志
                     if cond_status == 1:  # 失败，退出遍历创建
                         break
+            # 环境清理
+            support.ui_utils.env.teardown()
+            # 强行删除，防止有配置残留影响其他用例测试
+            delete.delete_policy_by_name(creation_result["token"], parameter, ui_name_list)
         if isinstance(api_name_list, list) and api_name_list != [] and "cfg_list" in creation_result and len(creation_result["cfg_list"]) > 0:
             cfg_list = creation_result["cfg_list"]
             # 按配置进行删除
             delete.delele_policy_by_cfg(test_data["token"], parameter, cfg_list)
+            # 强行删除，防止有配置残留影响其他用例测试
+            delete.delete_policy_by_name(creation_result["token"], parameter, api_name_list)
         deletion_result["ui_result"] = ui_result
         deletion_result["api_result"] = api_result
         return deletion_result

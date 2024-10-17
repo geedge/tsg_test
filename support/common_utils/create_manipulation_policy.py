@@ -19,13 +19,13 @@ from support.packet_generator.verify import Verify
 from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list, create_pre_policy, delete_pre_policy
 from support.ui_utils.element_position.map_element_position_library import manipulation_profile_no_create_list, manipulation_object_no_create_list
 from support.api_utils.analyse_result import Analyse
-from support.instance_utils.data_translation import DataTranslation
+from support.common_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
 import copy
 
 
-class InterceptInstance:
+class CreateManipulationPolicy:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
@@ -46,6 +46,7 @@ class InterceptInstance:
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+
         test_data["token"] = token
         self.test_data["token"] = token
 
@@ -126,13 +127,17 @@ class InterceptInstance:
                 if cond_code == 200 and prfi_code == 200:
                     create_rule = CreateRule(driver)
                     element_position_map = get_element_position(test_data["policy_type"])
+                    # 添加deny quic 和 intercept
+                    tmp_name_list = create_pre_policy(test_data, driver)
+                    for tmp in tmp_name_list:
+                        self.ui_name_list.insert(0, copy.deepcopy(tmp))
                     create_rule_code = create_rule.create(test_data, element_position_map)
                     if create_rule_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create intercept rule successfully.", flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create manipulation rule successfully.", flush=True)
                     elif create_rule_code != 200:
-                        ui_result = "Fail to create intercept rule."
+                        ui_result = "Fail to create manipulation rule."
                     time.sleep(2)
-                #"""
+
                 # 触发流量验证
                 if create_rule_code == 200:
                     search_rule = SearchRule(driver)
@@ -151,9 +156,11 @@ class InterceptInstance:
                 if len(verification_result) == 4:
                     analysis = Analyse()
                     ui_result = analysis.analyse_result(test_data["policy_type"], [], verification_result)
-                #"""
+
                 # 删除rule
                 if create_rule_code == 200:
+                    # 删除提前先发的security intercept策略
+                    delete_pre_policy(tmp_name_list, driver)
                     search_rule = SearchRule(driver)
                     element_position_map = get_element_position(test_data["policy_type"])
                     search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)
@@ -161,7 +168,7 @@ class InterceptInstance:
                         delete_rule = DeleteRule(driver)
                         delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                         if delete_rule_code == 200:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete intercept rule successfully.", flush=True)
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete manipulation rule successfully.", flush=True)
                         elif delete_rule_code != 200:
                             ui_result = ui_result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
                     else:
@@ -203,7 +210,6 @@ class InterceptInstance:
                         # 退出遍历标志
                         if cond_status == 1:  # 失败，退出遍历创建
                             break
-
                 # 删除profile
                 if delete_rule_code == 200 and "action_parameter" in test_data.keys():
                     # 删除

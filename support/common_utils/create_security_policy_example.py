@@ -10,17 +10,22 @@ from support.api_utils.create_policy import CreatePolicy
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class InstanceTemp:
-    def __init__(self, test_data, parameter, loop_number):
+class CreateSecurityPolicyExample:
+    def __init__(self, test_data, parameter, loop_number, driver):
         self.test_data = test_data
         self.parameter = parameter
         self.loop_number = loop_number
+        self.driver = driver
 
-    def create(self):
+    def create_policy(self): # 修改
         try:
             api_name_list, ui_name_list = [], []
-            ui_result, api_result, token, driver = "", "", "", ""
-            cfg_list, creation_result = {}
+            ui_result, api_result, token = "", "", ""
+            cfg_list = {}
+            creation_result = {
+                "ui_result": "",
+                "api_result": ""
+            }
             
             log_in = LogIn()
             pwd = log_in.encryptPwd(self.parameter["password"], self.parameter["api_server"])
@@ -61,9 +66,9 @@ class InstanceTemp:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
 
                 # 环境初始化
-                support.ui_utils.env.initiate_selenium_request()
-                driver = support.ui_utils.env.my_driver()
-                support.ui_utils.env.setup()
+                # support.ui_utils.env.initiate_selenium_request()
+                # driver = support.ui_utils.env.my_driver()
+                # support.ui_utils.env.setup()
 
                 if "condition" in self.test_data.keys():
                     for cond_key, cond_value in (self.test_data["condition"].items()):
@@ -73,7 +78,7 @@ class InstanceTemp:
                         cond_key_out = cond_key.replace("_", " ")
                         if len(cond_value) != 0:  # 不为空
                             cond_data = cond_value
-                            create_ip = CreateObject(driver)
+                            create_ip = CreateObject(self.driver)
                             for i in range(len(cond_data)):  # 遍历创建所有condition
                                 if cond_key == "protocol_filed":
                                     tmp_key = cond_data[i]["object_type"]
@@ -95,7 +100,7 @@ class InstanceTemp:
 
                 # 创建rule
                 if cond_code == 200:
-                    create_rule = CreateRule(driver)
+                    create_rule = CreateRule(self.driver)
                     element_position_map = get_element_position(self.test_data["policy_type"])
                     #动态选择变量
                     if self.test_data["threshold"]["type"] == "rate":
@@ -115,7 +120,7 @@ class InstanceTemp:
                     elif create_rule_code != 200:
                         ui_result = "Fail to create {} rule.".format(self.test_data["policy_type"])
 
-                creation_result["driver"] = driver
+                creation_result["driver"] = self.driver
                 # creation_result["element_position_map"] = element_position_map
                 
             if self.parameter["script_type"] == "api":

@@ -14,14 +14,14 @@ from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verify import Verify
 from support.api_utils.analyse_result import Analyse
-from support.instance_utils.data_translation import DataTranslation
+from support.common_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
 from support.ui_utils.element_position.map_element_position_library import *
 
 
 
-class InstanceDosProtection:
+class CreateDosProtectionPolicy:
     def __init__(self, test_data, parameter):
         self.test_data = test_data
         self.parameter = parameter
