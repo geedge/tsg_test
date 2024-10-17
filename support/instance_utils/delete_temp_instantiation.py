@@ -9,17 +9,17 @@ from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
 class DeleteTempInstantiation:
-    def delete(self, parameter, test_data, instantiation_result):
-        ui_name_list = instantiation_result["ui_name_list"]
-        api_name_list = instantiation_result["api_name_list"]
+    def delete(self, parameter, test_data, creation_result):
+        ui_name_list = creation_result["ui_name_list"]
+        api_name_list = creation_result["api_name_list"]
         ui_result, api_result = "", ""
         deletion_result = {
             "ui_result": "",
             "api_result": ""
         }
         delete = DeletePolicy()
-        if isinstance(ui_name_list, list) and ui_name_list != [] and "driver" in instantiation_result and len(instantiation_result["driver"]) > 0:
-            driver = instantiation_result["driver"]
+        if isinstance(ui_name_list, list) and ui_name_list != [] and "driver" in creation_result and len(creation_result["driver"]) > 0:
+            driver = creation_result["driver"]
             # 删除rule
             search_rule = SearchRule(driver)
             element_position_map = get_element_position(test_data["policy_configuration"]["type"])
@@ -71,8 +71,8 @@ class DeleteTempInstantiation:
                     # 退出遍历标志
                     if cond_status == 1:  # 失败，退出遍历创建
                         break
-        if isinstance(api_name_list, list) and api_name_list != [] and "cfg_list" in instantiation_result and len(instantiation_result["cfg_list"]) > 0:
-            cfg_list = instantiation_result["cfg_list"]
+        if isinstance(api_name_list, list) and api_name_list != [] and "cfg_list" in creation_result and len(creation_result["cfg_list"]) > 0:
+            cfg_list = creation_result["cfg_list"]
             # 按配置进行删除
             delete.delele_policy_by_cfg(test_data["token"], parameter, cfg_list)
         deletion_result["ui_result"] = ui_result

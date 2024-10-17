@@ -96,7 +96,7 @@
 #         # 清理环境并删除配置
 #         if isinstance(case_instance_generator, CaseInstance):
 #             if isinstance(instantiation, InstanceTestData):
-            instantiation.clean_up()
+            # instantiation.clean_up()
 #         # 统计脚本用时
 #         end_time = time.time()
 #         duration = end_time - start_time
