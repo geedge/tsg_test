@@ -68,7 +68,8 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,flush=True)
         return "Error: " + str(e)
     finally:
-        case_instance_generator.clean_up()
+        if isinstance(instantiation, InstanceTestData):
+            instantiation.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

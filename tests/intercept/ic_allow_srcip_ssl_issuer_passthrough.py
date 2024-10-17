@@ -77,7 +77,7 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "CN=CA UNTRUST",
+            "expected_return": "issuer: CN=TSG CA Untrusted",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "untrusted-root.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {

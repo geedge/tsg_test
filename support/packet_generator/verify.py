@@ -43,6 +43,7 @@ class Verify:
                 time.sleep(3)
             sender = SendTraffic()
             traffic_result = sender.send_traffic(parameter, test_data)
+            #print(traffic_result["result"])
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             if script_type == "ui":
                 traffic_verification = ApiVerification()

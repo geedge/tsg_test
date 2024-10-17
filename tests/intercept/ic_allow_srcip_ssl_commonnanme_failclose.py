@@ -77,7 +77,7 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "CN=CA TRUST",
+            "expected_return": "Connection reset by peer in connection to wrong.host.badssl.com",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "wrong.host.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
