@@ -293,7 +293,7 @@ class CreatePolicyRule:
                         user_region["keyring_for_trusted"] = 1
                         user_region["decryption_profile"] = 1
                         user_region["traffic_mirror"] = {"enable": 0}
-            rule_template_dict["rule"]["user_region"] = user_region
+            rule_template_dict["rule"]["action_parameter"] = user_region
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":
             # 创建manipulation策略前先下发一条deny_quic策略和一条intercept策略
@@ -352,7 +352,7 @@ class CreatePolicyRule:
                     rules.append(copy.deepcopy(rule_dict))
                 user_region["rules"] = rules
                 user_region["method"] = "edit_element"
-            rule_template_dict["rule"]["user_region"] = user_region
+            rule_template_dict["rule"]["action_parameter"] = user_region
 
         elif condition["policy_type"] == "monitor":
             user_region = {}
@@ -462,6 +462,7 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
+            #print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             if response.status_code == 200:

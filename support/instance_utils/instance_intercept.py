@@ -247,7 +247,8 @@ class InterceptInstance:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
 
                 parameter["script_type"] = "api"
-
+                # 需要增加api逻辑
+                return 0
 
                 # 数据转换，适配API的test_data
                 translation = DataTranslation()
