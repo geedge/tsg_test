@@ -65,7 +65,7 @@ def run(parameter):
                                 "item_key": "User-Agent",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "Wget&Windows&Win64&AppleWebKit&KHTML&Gecko&Chrome&Safari"
+                                    "Wget&Windows&Win64&AppleWebKit&KHTML&Gecko&Chrome"
                                 ]
                             }
                         ],

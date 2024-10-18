@@ -46,7 +46,7 @@ def local_run():
     n = 1
     sum_all = len(man_list)
     # 打开文件准备写入
-    with open("C:\\zcw\\tsg_test\\tests\\ui\\manipulation\\result.txt", "w", encoding="utf-8") as f:
+    with open("C:\\zcw\\tsg_test\\tests\\manipulation\\result.txt", "w", encoding="utf-8") as f:
         # 使用redirect_stdout将print的输出重定向到文件
         with redirect_stdout(f):
             for mani in man_list:

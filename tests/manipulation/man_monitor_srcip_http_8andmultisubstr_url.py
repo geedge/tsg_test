@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "www&bai&baidu&com&www.&baid&idu&.com"
+                                "item_value": "www&bai&baidu&com&www.&baid&idu"
                             }
                         ],
                     }

@@ -26,7 +26,7 @@ def run(parameter):
             "policy_type": "pxy_manipulation",
             "rule_name": parameter["test_case_name"],
             "rule_action": "monitor",
-            "effective_devices": ["group-xxg-tsgx"],
+            "effective_devices": ["City A"],
             "rule_type": "create",
             "condition": {
                 "source_ip": [

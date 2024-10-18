@@ -699,8 +699,8 @@ class DataTranslation:
                             tmp_expr = "^{}".format(expression[:-1])
                         elif expression.startswith("$"):  # exactly
                             tmp_expr = "^{}$".format(expression[1:])
-                        else:  # substring ^ $ 模式保持不变
-                            tmp_expr = expression
+                        else:  # subid  子匹配转换为全匹配
+                            tmp_expr = "^{}$".format(expression[1:])
                         add_item_dict["expression"] = tmp_expr
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     temp["is_negate"] = v[i]["negate"]

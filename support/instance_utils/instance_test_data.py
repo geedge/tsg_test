@@ -107,9 +107,9 @@ class InstanceTestData:
             self.statistics.clean_up()
         elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "dos_protection":
             self.dos_protection.clean_up()
-        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "proxy_intercept":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] in ["proxy_intercept", "pxy_intercept"]:
             self.intercept.clean_up()
-        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "proxy_manipulation":
+        elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] in ["proxy_manipulation", "pxy_manipulation"]:
             self.manipulation.clean_up()
         elif "policy_type" in self.policy_configuration.keys() and self.policy_configuration["policy_type"] == "shaping":
             print("todo")
