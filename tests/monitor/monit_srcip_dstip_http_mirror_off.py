@@ -4,12 +4,10 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 from support.ui_utils.element_position.map_element_position_library import *
-from datetime import datetime
 
 
 def run(parameter):
     try:
-        case_instance_generator = None
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化

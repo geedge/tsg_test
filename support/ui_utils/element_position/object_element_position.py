@@ -18,6 +18,8 @@ mainPage_secondLevelMenu_apn_posId = "Objects_apn"  # 二级菜单apn
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
 mainPage_secondLevelMenu_account_posId = "Objects_account"
 
+
+
 #Object Group公共定位
 ObjectListPage_searchLabel_posId = "select-label"  # 查询框id
 ObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"

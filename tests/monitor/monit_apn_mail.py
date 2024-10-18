@@ -38,7 +38,7 @@ def run(parameter):
                 "source_geography": [],
                 "destination_geography": [],
                 "sub_id": [],
-                "device": [
+                "apn": [
                     {
                         "name": "monitor_apn",
                         "object_type": "mobile_identity",

@@ -24,6 +24,7 @@ from support.api_utils.analyse_result import Analyse
 from support.instance_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
+import time
 
 import copy
 
@@ -304,7 +305,8 @@ class MonitorInstanceGenerator:
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
-
+                if cfg_list["create_library_tag_ids"] and cfg_list["create_library_catalog_ids"]:
+                    time.sleep(30)
                 # 流量验证
                 verification = Verify()
                 verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")

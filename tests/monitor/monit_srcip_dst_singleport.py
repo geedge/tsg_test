@@ -10,7 +10,6 @@ from datetime import datetime
 
 def run(parameter):
     try:
-        case_instance_generator = None
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
@@ -25,7 +24,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_destination_one_port",
+            "rule_name": os.path.basename(__file__)[:-3],
             "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
