@@ -436,7 +436,7 @@ class DeletePolicy:
             # self.delete_geolocation(geolocation_url, geolocation_template, headers, vsys_id)
         if len(name_list) > 0:
             for name_item in name_list:
-                if name_item["type"] in ["security", "service_chaining", "pxy_manipulation", "pxy_intercept", "monitor", "statistics", "dos_protection"]:
+                if name_item["type"] in ["security", "service_chaining", "proxy_manipulation", "proxy_intercept", "monitor", "statistics", "dos_protection"]:
                     api_path_map = {
                         "security": "security-rules",
                         "proxy_intercept": "proxy-intercept-rules",

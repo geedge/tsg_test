@@ -1713,11 +1713,11 @@ def get_name_list(test_data):
     tmp_name_dict = {}
     # 添加策略的
     tmp_name_dict["type"] = test_data["policy_type"]
+    if tmp_name_dict["type"] == "pxy_manipulation":
+        tmp_name_dict["type"] = "proxy_manipulation"
     if "rule_name" in test_data:
         tmp_name_dict["name"] = test_data["rule_name"]
         name_list.append(copy.deepcopy(tmp_name_dict))
-    
-    # 停止收集新建的object、profile名称
     #"""
     if "condition" in test_data.keys() and len(test_data["condition"]) != 0:
         for key, value in test_data["condition"].items():
@@ -1737,7 +1737,10 @@ def get_name_list(test_data):
                 for i in range(len(value)):
                     tmp_name_dict = {}
                     tmp_name_dict["type"] = value[i]["profile_type"]
-                    tmp_name_dict["name"] = value[i]["profile_file"]["name"]
+                    if value[i]["profile_type"] == "statistics_template":
+                        tmp_name_dict["name"] = value[i]["name"]
+                    else:
+                        tmp_name_dict["name"] = value[i]["profile_file"]["name"]
                     name_list.append(copy.deepcopy(tmp_name_dict))
     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], name_list)
     #"""
