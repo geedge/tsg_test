@@ -288,30 +288,30 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete traffic mirror profile failed.", flush=True)
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
             if len(create_library_catalog_ids) > 0:
-                delete_library_catalog_dict = {"catalog_ids": "", "vsy_id":1}
+                delete_library_catalog_dict = {"uuids": "", "vsys":1}
                 for catalog_id in create_library_catalog_ids:
                     if len(create_library_catalog_ids) == 1:
-                        delete_library_catalog_dict["catalog_ids"] = str(catalog_id)
+                        delete_library_catalog_dict["uuids"] = str(catalog_id)
                     elif len(create_library_catalog_ids) > 1:
                         sep = ","
-                        delete_library_catalog_dict["catalog_ids"] = sep.join(str(catalog_id))
-                delete_library_catalog_dict["vsy_id"] = vsys_id
-                url = api_server + "/v1/policy/library/catalog"
-                response = requests.delete(url, headers=headers, params=delete_library_catalog_dict, verify=False)
+                        delete_library_catalog_dict["uuids"] = sep.join(str(catalog_id))
+                delete_library_catalog_dict["vsys"] = vsys_id
+                url = api_server + "/v1/library/catalogs"
+                response = requests.delete(url, headers=headers, json=delete_library_catalog_dict, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library catalog successfully.", flush=True)
                     if len(create_library_tag_ids) > 0:
-                        delete_library_tag_dict = {"tag_ids": "", "vsy_id":1}
+                        delete_library_tag_dict = {"uuids": "", "vsys":1}
                         for tag_id in create_library_tag_ids:
                             if len(create_library_tag_ids) == 1:
-                                delete_library_tag_dict["tag_ids"] = str(tag_id)
+                                delete_library_tag_dict["uuids"] = str(tag_id)
                             elif len(create_library_tag_ids) > 1:
                                 sep = ","
-                                delete_library_tag_dict["tag_ids"] = sep.join(str(tag_id))
-                        delete_library_tag_dict["vsy_id"] = vsys_id
-                        url = api_server + "/v1/policy/library/tag"
-                        response = requests.delete(url, headers=headers, params=delete_library_tag_dict, verify=False)
+                                delete_library_tag_dict["uuids"] = sep.join(str(tag_id))
+                        delete_library_tag_dict["vsys"] = vsys_id
+                        url = api_server + "/v1/library/tags"
+                        response = requests.delete(url, headers=headers, json=delete_library_tag_dict, verify=False)
                         assert response.status_code == 200
                         if response.status_code == 200:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete library tag successfully.", flush=True)
