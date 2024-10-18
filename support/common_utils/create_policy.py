@@ -11,7 +11,6 @@ from support.common_utils.create_service_chaining_policy import CreateServiceCha
 from support.common_utils.create_monintor_policy import CreateMonitorPolicy
 from support.common_utils.create_dashboard import CreateDashbboard
 from support.common_utils.create_intercept_policy import CreateInterceptPolicy
-from support.common_utils.create_security_policy_example import CreateSecurityPolicyExample
 
 class CreatePolicy:
     def __init__(self, policy_configuration, parameter):
@@ -39,8 +38,6 @@ class CreatePolicy:
             result = self.create_dashboard(self.policy_configuration, self.parameter)
         elif "type" in self.policy_configuration.keys() and self.policy_configuration["type"] == "objects":
             result = self.create_objects(self.policy_configuration, self.parameter)
-        elif "type" in self.policy_configuration.keys() and self.policy_configuration["type"] == "example":
-            result = self.create_security_policy_example(self.policy_configuration, self.parameter, loop_number=0)
         else:
             pass
         return result
@@ -93,11 +90,6 @@ class CreatePolicy:
         result = self.objects.run()
         return result
 
-    def create_security_policy_example(self, policy_configuration, parameter, loop_number):
-        create = CreateSecurityPolicyExample(policy_configuration, parameter, loop_number)
-        result = create.create_policy()
-        return result
-    
     def clean_up(self):
         if "policy_type" in self.policy_configuration.keys() and self.self.policy_configuration["policy_type"] == "security":
              self.security.clean_up()

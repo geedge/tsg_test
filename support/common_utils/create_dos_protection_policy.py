@@ -237,7 +237,7 @@ class CreateDosProtectionPolicy:
                 result["ui_result"] = ui_result
                 # 删除配置
                 # delete = DeletePolicy()
-                # delete.delele_policy_by_cfg(token, parameter, temp_name_list)
+                # delete.delele_policy_by_uuid(token, parameter, temp_name_list)
 
         if parameter["script_type"] == "api" or need_initialization == True:
             try:
@@ -272,7 +272,7 @@ class CreateDosProtectionPolicy:
                 result["api_result"] = api_result
                 # 删除配置
                 delete = DeletePolicy()
-                delete.delele_policy_by_cfg(token, parameter, cfg_list)
+                delete.delele_policy_by_uuid(token, parameter, cfg_list)
 
         return result
 
