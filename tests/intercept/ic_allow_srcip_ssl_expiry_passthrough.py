@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.case_instance_generator import CaseInstanceGenerator
+from support.common_utils.create_policy import CreatePolicy
 from support.report_update import ReportUpdate
 
 
@@ -52,6 +52,26 @@ def run(parameter):
                 ],
             },
             "action_parameter": {
+                "ssl_decryption_keyring": [
+                    {
+                        "profile_type": "ssl_keyring",
+                        "decryption_keying_type": "untrusted",
+                        "profile_file": {
+                            "name": "manipulation_tango_untrust_ca",
+                            "model": "create",
+                            "file_certificate": "tango-ca-v3-untrust-ca.cer",
+                            "file_private_key": "tango-ca-v3-untrust-ca.key",
+                            "certificate_type": "Root-Certificate",
+                            "private_key_format": "true",
+                            "is_match": "match",
+                            "reissue_expiry_hours": "MSC",
+                            "type": "Root-Certificate",
+                            "public_key_algorithm": "RSA-2048",
+                            "certificate_revocation_list": "",
+                            "include_root": "on"
+                        }
+                    },
+                ],
                 "ssl_decryption_profile": [
                     {
                         "profile_type": "ssl_decryption",
@@ -77,9 +97,9 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "CN=CA UNTRUST",
+            "expected_return": "issuer: CN=TSG CA Untrusted",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "untrusted-root.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "expired.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
@@ -89,8 +109,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
-        result = case_instance_generator.run()
+        create = CreatePolicy(test_data, parameter)
+        result = create.create_policy()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -105,8 +125,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(case_instance_generator, CaseInstanceGenerator):
-            case_instance_generator.clean_up()
+        if isinstance(create, CreatePolicy):
+            create.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

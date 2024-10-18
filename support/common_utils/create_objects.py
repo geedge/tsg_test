@@ -20,7 +20,7 @@ from support.general_ui_utils.object.page_jump import PageJump
 from support.general_ui_utils.object.differrent_vsys_object_check import DifferentVsysObjectCheck
 from support.report_update import ReportUpdate
 
-class ObjectsInstanceGenerator:
+class CreateObjects:
 
     def __init__(self,test_data,parameter):
         self.test_data = test_data

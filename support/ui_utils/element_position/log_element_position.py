@@ -1,5 +1,5 @@
 #mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
-mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
+mainPage_firstLevelMenu_dashboards_posCss = ".MuiList-root.MuiList-padding.css-1ontqvh .menu-dashboard .MuiListItemText-root.css-1nmt8ps"
 mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss    # 改为引用dashboard路径
 mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
 mainPage_logSearch_buttonSearch_posId = "searchQuery"  # 查询按钮id

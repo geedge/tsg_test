@@ -1,21 +1,21 @@
 from datetime import datetime 
 class Analyse:
-    def analyse_result(self, condition, cfg_list, verification_result):
+    def analyse_result(self, policy_type, cfg_list, verification_result):
         if len(cfg_list) != 0:
             timeout_result = cfg_list["timeout_result"]
         else:
             timeout_result = True
         cmd_result = verification_result[0]
         log_result = verification_result[1]
-        if condition["policy_type"] == "statistics":
+        if policy_type == "statistics":
             metric_result = verification_result[1]
         else:
             metric_result = verification_result[2]
         fail_reason_template = "The verification result of policy effect is failed, the failure reasons are: "
         failure_reason = ""
-        if condition["policy_type"] == "statistics":
+        if policy_type == "statistics":
             failure_reason = verification_result[2]
-        elif condition["policy_type"] == "service_chaining":
+        elif policy_type == "service_chaining":
             if cmd_result == False:
                 failure_reason = failure_reason + "the metrics do not match the expectant value,"
             if log_result == False:
@@ -26,7 +26,7 @@ class Analyse:
                 failure_reason = fail_reason_template + failure_reason
                 # 把最后一个逗号改成句号
                 failure_reason = failure_reason[:failure_reason.rindex(',')] + '.' + failure_reason[failure_reason.rindex(',')+1:]
-        elif condition["policy_type"] == "security" or condition["policy_type"] == "monitor" or condition["policy_type"] == "pxy_manipulation" or condition["policy_type"] == "dos_protection":
+        elif policy_type == "security" or policy_type == "monitor" or policy_type == "pxy_manipulation" or policy_type == "dos_protection":
             if cmd_result == False:
                 failure_reason = failure_reason + "the contents returned by the command do not contain the expected value, "
             if metric_result == False:
