@@ -10,7 +10,7 @@ from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
 class DeleteSecurityPolicyExample:
-    def delete_security_policy_example(self, parameter, policy_configuration, configured_policy):
+    def delete_policy(self, parameter, policy_configuration, configured_policy):
         result = ""
         driver = configured_policy["driver"]
         

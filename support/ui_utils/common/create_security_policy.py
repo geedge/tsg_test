@@ -31,7 +31,7 @@ class CreateSecurityPolicy:
         self.test_data = test_data
         self.parameter = parameter
 
-    def create_policy(self, test_data, parameter):
+    def create_rule(self, test_data, parameter):
         # 参数初始化
         ui_result, api_result= "", ""
         self.api_name_list, self.ui_name_list = [], []

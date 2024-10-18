@@ -5,13 +5,12 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from datetime import datetime
 from support.ui_utils.workpath import workdir
-from support.ui_utils.common.create_policy import CreatePolicy as CreatePolicyByUI
-from support.ui_utils.common.delete_policy import DeletePolicy as DeletePolicyByUI
-from support.api_utils.create_policy import CreatePolicy as CreatePolicyByAPI
-from support.api_utils.delete_policy import DeletePolicy as DeletePolicyByAPI
+from support.ui_utils.common.ui_client import UIClient
+from support.api_utils.api_client import APIClient
 from support.analyse_result import Analyse
+from support.cmdb_collector import CMDBCollector
 from support.packet_generator.verify import Verify
-from support.packet_generator.trigger_traffic import *
+from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -20,6 +19,10 @@ def run(parameter):
         
         # 参数初始化
         result, exception_result = "", ""
+        configuration_manager = {
+            "object_uuid_list": [],
+            "rule_uuid_list": []
+        }
         
         # 脚本启动时间
         start_time = time.time()
@@ -91,10 +94,12 @@ def run(parameter):
             },
             "is_enabled": True
         }
+        
         traffic_generation = {
             "tool": "curl", # or trex/http
             "command": "curl -kv --connect-timeout 10 -m 10 http://www.example.com/"
         }
+        
         verification = {
             "expected_result": "Example Domain",
             "metric_query": {"hits": 2},
@@ -104,40 +109,39 @@ def run(parameter):
         }
 
         # 创建
+        cmdb_collector = CMDBCollector()
         if parameter["initiation_method"] == "ui":
-            create = CreatePolicyByUI()
-            configured_policy = create.create_policy(parameter, policy_configuration)
+            ui_client = UIClient()
+            configured_policy = ui_client.create_rule(parameter, policy_configuration)
         elif parameter["initiation_method"] == "api":
-            create = CreatePolicyByAPI()
-            configured_policy = create.create_policy(parameter, policy_configuration)
+            api_client = APIClient()
+            object_uuid = api_client.create_object()
+            configuration_manager["object_uuid_list"] = cmdb_collector.collect(object_uuid)
+            rule_uuid = api_client.create_rule(object_uuid)
+            configuration_manager["rule_uuid_list"] = cmdb_collector.collect(rule_uuid)
         
-        if len(configured_policy["result"]) == 0:
-            # 触发流量
-            send = SendTraffic()
-            traffic_result = send.send_traffic(parameter, traffic_generation)
-            
-            # 验证
-            verify = Verify()
-            verification_result = verify.verify_result(parameter, verification, configured_policy, traffic_result)
-            
-            if len(verification_result) == 4:
-                # 分析结果
-                analyse = Analyse()
-                result = analyse.analyse_result(policy_configuration["type"], configured_policy, verification_result)
-                
-                # 删除
-                if parameter["initiation_method"] == "ui":
-                    delete = DeletePolicyByUI()
-                    deleted_policy_result = delete.delete_policy(parameter, policy_configuration, configured_policy)
-                elif parameter["initiation_method"] == "api":
-                    delete = DeletePolicyByAPI()
-                    deleted_policy_result = delete.delete_policy(parameter, configured_policy)
-                if len(deleted_policy_result) > 0:
-                        result = result + deleted_policy_result
-            else:
-                result = verification_result
-        else:
-            result = configured_policy
+        if len(configured_policy["result"]) != 0:
+            result = configured_policy["result"]
+            return result
+
+        # 触发流量
+        generator = TrafficGenerator()
+        traffic_result = generator.generate_traffic(traffic_generation)
+        
+        # 验证流量生成器的返回值是否符合策略执行的预期
+        verify = Verify()
+        verification_result = verify.verify_result(parameter, verification, configured_policy, traffic_result)
+        
+        # 验证tsg的日志和metric是否符合策略执行的预期
+        
+        
+        if len(verification_result) != 4:
+            result = verification_result
+            return result
+
+        # 分析结果
+        analyse = Analyse()
+        result = analyse.analyse_result(verification_result)
         
         return result
     except Exception as e:
@@ -145,6 +149,8 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", e, flush=True)
         return "Exception Error: " + str(e)
     finally:
+        # 删除
+        cmdb_collector.cleanup(parameter, configured_policy["token"], configuration_manager)
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
@@ -162,7 +168,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "initiation_method": "",
+        "initiation_method": "api",
         "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,

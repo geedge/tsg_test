@@ -8,7 +8,7 @@ class DeletePolicy:
     def delete_policy(self, parameter, policy_configuration, configured_policy):
         if "type" in policy_configuration.keys() and policy_configuration["type"] == "security":
             delete = DeleteSecurityPolicyExample()
-            result = delete.delete_security_policy_example(parameter, policy_configuration, configured_policy)
+            result = delete.delete_policy(parameter, policy_configuration, configured_policy)
         elif "type" in policy_configuration.keys() and policy_configuration["type"] == "monitor":
             print("to be added")
         return result

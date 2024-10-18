@@ -9,7 +9,7 @@ from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
 class CreateSecurityPolicyExample:
-    def create_policy(self, parameter, policy_configuration, driver):
+    def create_rule(self, parameter, policy_configuration):
         try:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
             
