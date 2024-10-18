@@ -1718,7 +1718,7 @@ def get_name_list(test_data):
         name_list.append(copy.deepcopy(tmp_name_dict))
     
     # 停止收集新建的object、profile名称
-    """
+    #"""
     if "condition" in test_data.keys() and len(test_data["condition"]) != 0:
         for key, value in test_data["condition"].items():
             if key in manipulation_object_no_create_list:
@@ -1740,7 +1740,7 @@ def get_name_list(test_data):
                     tmp_name_dict["name"] = value[i]["profile_file"]["name"]
                     name_list.append(copy.deepcopy(tmp_name_dict))
     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], name_list)
-    """
+    #"""
     return name_list
 
 def create_pre_policy(data, driver):
@@ -1994,5 +1994,5 @@ def replace_paras(parameter):
     return parameter
 
 # 勿删 zcw make
-manipulation_object_no_create_list = ["application", "sub_action_override"]
+manipulation_object_no_create_list = ["application", "sub_action_override", "sub_action"]
 manipulation_profile_no_create_list = ["deny_response_text", "deny_response_block", "redirect_url", "replace_parameter", "edit_element_parameter", "doh"]
