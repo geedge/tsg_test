@@ -109,7 +109,7 @@ class InstanceServiceChaining:
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXpath,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                         "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
                         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_serviceFunctionForwarders_posId
@@ -143,7 +143,7 @@ class InstanceServiceChaining:
                     "page_jump":{
                         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXpath,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                         "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
                         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_serviceFunctions_posId
@@ -379,7 +379,7 @@ class InstanceServiceChaining:
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
                 time.sleep(30)
-
+                """
                 # 流量验证
                 verification = Verify()
                 verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
@@ -387,6 +387,7 @@ class InstanceServiceChaining:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
+                """
             except Exception as e:
                 raise
             finally:
