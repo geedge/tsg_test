@@ -1019,16 +1019,16 @@ class DataTranslation:
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "boolean":
-                        boolean_id_tmps = 3
+                        boolean_id_tmps = "00000000-0000-0000-0000-000000000003"
                         if v[i]["name"] == 'True':
-                            boolean_id_tmps = 2
+                            boolean_id_tmps = "00000000-0000-0000-0000-000000000002"
                         filter_temp = {
-                            "is_negate": 0,
+                            "negate_option": False,
                             "attribute_name": "ATTR_SSL_{}".format(v[i]["boolean_type"]),
                             "objects": [
                                 {
                                     "object_type": "boolean",
-                                    "object_ids": [boolean_id_tmps]
+                                    "object_uuids": [boolean_id_tmps]
                                 }
                             ],
                             "library_tags": [
@@ -1038,6 +1038,7 @@ class DataTranslation:
                         if filter_temp["attribute_name"] == "ATTR_SSL_NO SNI":
                             filter_temp["attribute_name"] = "ATTR_SSL_NO_SNI"
                         object.append(copy.deepcopy(filter_temp))
+                        # temp["negate_option"] = False
                     elif v[i]["object_type"] == "fqdn":
                         if v[i]["items"][0]["item_type"] == "cn" or v[i]["items"][0]["item_type"] == "san" or v[i]["items"][0]["item_type"] == "qname":
                             temp = {
