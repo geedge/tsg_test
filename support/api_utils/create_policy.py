@@ -195,15 +195,6 @@ class CreatePolicy:
         return cfg_list
     
     def generate_random_ip(self, config, run_env, vsys_id):
-        # statistics中将ip改为随机
-        # temp_obj_condition = "obj_condition_1"
-        # temp_library_condition = "library_condition"
-        # if temp_obj_condition in config.keys():
-        #     object_condition_value = config[temp_obj_condition]
-        # elif temp_library_condition in config.keys():
-        #     object_condition_value = config[temp_library_condition]
-        # else:
-        #     object_condition_value = config["obj_condition"]
         for k,v in config.items():
             if k in {"obj_condition_1", "library_condition"}:
                 object_condition_value = v
@@ -244,19 +235,17 @@ class CreatePolicy:
                             two_ip_list = src_ip.split("-")
                             ip_list_1 = two_ip_list[0].split(".")
                             ip_list_2 = two_ip_list[1].split(".")
-                            if str(vsys_id) == "6":
+                            if str(vsys_id) == "1":
                                 ip_list_1[2] = str(random.randint(1, 100))
-                            elif str(vsys_id) == "6":
-                                ip_list_1[2] = str(random.randint(200, 222))
+                            elif str(vsys_id) == "5":
+                                ip_list_1[2] = str(random.randint(226, 236))
                             elif str(vsys_id) == "4":   #根据vsys id，确认IP范围
                                 src_ip_list[2] = str(random.randint(192, 223))    
                             else:
                                 ip_list_1[2] = str(random.randint(224, 250))
-                            ip_list_1[3] = str(random.randint(1, 50))
+                            ip_list_1[3] = str(random.randint(66, 88))
                             ip_list_2[2] = ip_list_1[2]
-                            ip_list_2[3] = str(int(ip_list_1[3]) + 200)
-                            new_ip_1 = ".".join(ip_list_1)
-                            new_ip_2 = ".".join(ip_list_2)
+                            ip_list_2[3] = str(int(ip_list_1[3]) + 100)
                             if run_env == "9140":
                                 ip_list_1[0] = "172"
                                 ip_list_1[1] = "56"
@@ -268,6 +257,8 @@ class CreatePolicy:
                                 ip_list_2[0] = "10"
                                 ip_list_2[1] = "64"
                             new_two_ip_list = []
+                            new_ip_1 = ".".join(ip_list_1)
+                            new_ip_2 = ".".join(ip_list_2)
                             new_two_ip_list.append(new_ip_1)
                             new_two_ip_list.append(new_ip_2)
                             new_two_ip = "-".join(new_two_ip_list)

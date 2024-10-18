@@ -62,7 +62,7 @@ class CreateServiceChainingPolicy:
             if conditions:  # 确保conditions不为空  
                 if con_key in service_chaining_no_create_list:
                     continue
-                if con_key in {"source_library", "destination_library","server_fqdn_library"}:
+                if con_key in {"source_library", "destination_library","server_fqdn_library","internal_library","external_library"}:
                     continue
                 for condition in conditions:  
                     # 为每个条件项创建一个新的字典  
