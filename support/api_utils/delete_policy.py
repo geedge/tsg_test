@@ -30,7 +30,6 @@ class DeletePolicy:
             create_flag_ids = cfg_list["create_flag_ids"]
             create_keywords_ids = cfg_list["create_keywords_ids"]
             create_account_ids = cfg_list["create_account_ids"]
-            create_http_signature_ids = cfg_list["create_http_signature_ids"]
             create_profile_ids = cfg_list["create_profile_ids"]
             create_policies_ids = cfg_list["create_policies_ids"]
             create_geo_name_ids = cfg_list["create_geo_name_ids"]
@@ -173,15 +172,6 @@ class DeletePolicy:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete account successfully.", flush=True)
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete account failed.", flush=True)
-            if len(create_http_signature_ids) > 0:
-                delete_object_template['uuids'] = create_http_signature_ids
-                url = api_server + "/v1/objects/{}".format("http_signature")
-                response = requests.delete(url, headers=headers, json=delete_object_template, verify=False)
-                assert response.status_code == 200
-                if response.status_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete http signature successfully.", flush=True)
-                else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete http signature failed.", flush=True)
             if len(create_geo_name_ids) > 0:
                 del delete_object_template["type"]
                 del delete_object_template["ids"]
@@ -452,7 +442,7 @@ class DeletePolicy:
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
                     self.query_and_delete_by_name(temp_url, template, headers)
-                elif name_item["type"] in ["ip", "port", "url", "fqdn", "http_signature", "mobile_identity", "keywords", "account", "subscriberid"]:
+                elif name_item["type"] in ["ip", "port", "url", "fqdn", "mobile_identity", "keywords", "account", "subscriberid"]:
                     api_path_map = {
                         "ip": "ip-addresses",
                         "url": "urls",

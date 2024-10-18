@@ -194,16 +194,16 @@ class CreatePolicyRule:
             rule_template_dict['rule']['application'] = None
 
         if "ip_protocol" in condition.keys():
-            ip_protocol_id_dict = {"ICMP": 5, "TCP": 6, "UDP": 7}
+            ip_protocol_id_dict = {"ICMP": "00000000-0000-0000-0000-000000000005", "TCP": "00000000-0000-0000-0000-000000000006", "UDP": "00000000-0000-0000-0000-000000000007"}
             if len(condition["ip_protocol"]) > 0:
                 ip_protocol_id_list = []
                 for ip_protocol in condition["ip_protocol"]:
-                    ip_protocol_id = int(ip_protocol_id_dict.get(ip_protocol))
+                    ip_protocol_id = ip_protocol_id_dict.get(ip_protocol)
                     ip_protocol_id_list.append(ip_protocol_id)
                 objects_list = []
-                object_ids = dict(object_ids=ip_protocol_id_list)
+                object_ids = dict(object_uuids=ip_protocol_id_list)
                 objects_list.append(object_ids)
-                ip_protocol_dict = dict(objects=objects_list, attribute_name='ATTR_IP_PROTOCOL', is_negate=0)
+                ip_protocol_dict = dict(objects=objects_list, attribute_name='ATTR_IP_PROTOCOL', negate_option=False)
                 rule_template_dict['rule']['ip_protocol'] = ip_protocol_dict
             else:
                 rule_template_dict['rule']['ip_protocol'] = None
@@ -461,7 +461,6 @@ class CreatePolicyRule:
                 rule_template_dict['vsys'] = vsys_id
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
-            #print(json.dumps(rule_template_dict))
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
