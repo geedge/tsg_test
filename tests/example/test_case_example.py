@@ -33,6 +33,7 @@ def run(parameter):
             "action": "deny",
             "source": [
                 {
+                    "attribute_name": "ATTR_SOURCE_IP",
                     "negate_option": False,
                     "objects": [
                         {
@@ -50,33 +51,15 @@ def run(parameter):
                     ]
                 }
             ],
-            "destination": [
-                {
-                    "negate_option": False,
-                    "objects": [
-                        {
-                            "object_type": "fqdn",
-                            "object_sub_type": "fqdn",
-                            "name": "secy_fqdn",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "expr_type":"and",
-                                    "expression": "^example.com"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
             "application": {
+                "attribute_name": "ATTR_APP_ID",
+                "negate_option": False,
                 "objects": [
                     {
                         "object_type": "application",
                         "name": "http"
                     }
                 ],
-                "negate_option": False
             },
             "action_parameter": {
                 "method": "block",
@@ -115,7 +98,7 @@ def run(parameter):
             configured_policy = ui_client.create_rule(parameter, policy_configuration)
         elif parameter["initiation_method"] == "api":
             api_client = APIClient()
-            object_uuid = api_client.create_object()
+            object_uuid = api_client.create_object(parameter, policy_configuration)
             configuration_manager["object_uuid_list"] = cmdb_collector.collect(object_uuid)
             rule_uuid = api_client.create_rule(object_uuid)
             configuration_manager["rule_uuid_list"] = cmdb_collector.collect(rule_uuid)

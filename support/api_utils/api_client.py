@@ -1,8 +1,10 @@
+# -*- coding: UTF-8 -*-
 import copy
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import random
+from support.api_utils.log_in import LogIn
 from support.api_utils.create_object import CreateObject
 from support.api_utils.create_rule import CreatePolicyRule
 from support.api_utils.create_profile import CreateProfile
@@ -13,10 +15,19 @@ import configparser
 import os
 
 class APIClient:
-    def create_object(self, token, parameter, object_condition_value, api_server, vsys_id):
-        create_object = CreateObject()
-        object_template = parameter["root_path"] + "/support/api_utils/template/object_template.json"
-        object_uuid = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, vsys_id)
+    def __init__(self, parameter):
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        self.token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        
+    def create_object(self, parameter, policy_configuration):
+        headers = {"Content-Type": "application/json", "Authorization": self.token}
+        api_server = parameter["api_server"]
+        vsys_id = parameter["vsys_id"]
+        
+        object_uuid = {
+            "ip": ["111"]
+        }
         return object_uuid
         
     def create_rule(self, token, condition_ids_by_api_dict, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids):
