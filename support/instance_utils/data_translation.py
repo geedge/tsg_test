@@ -883,6 +883,18 @@ class DataTranslation:
                                     }
                                 ]
                             }
+                        elif v[i]["item"][0]["item_type"] == "attachment_content" and data["condition"]["application"][0]["name"] == "mail":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_MAIL_ATT_CONTENT",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [],
+                                    }
+                                ]
+                            }
                         elif v[i]["item"][0]["item_type"] == "content" and data["condition"]["application"][0]["name"] == "mail":
                             temp = {
                                 "name": v[i]["name"],
