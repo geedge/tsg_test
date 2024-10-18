@@ -457,6 +457,11 @@ class CreatePolicyRule:
                 "dos_protection": "dos-protection-rules",
             }
             api_path_rule_type = api_path_map.get(rule_type)
+            if "vsys" not in rule_template_dict:
+                rule_template_dict['vsys'] = vsys_id
+            if "vsys_id" in rule_template_dict:
+                del rule_template_dict["vsys_id"]
+            print(json.dumps(rule_template_dict))
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)

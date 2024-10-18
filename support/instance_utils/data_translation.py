@@ -725,8 +725,10 @@ class DataTranslation:
                                 }
                             ]
                         }
-                        if v[i]["items"][0]["item_type"] == "ftp_url":
-                            temp["attribute_name"] = "ATTR_FTP_URI"
+                        if "items" in v[i]:
+                            if v[i]["items"][0]["item_type"] == "url" and data["condition"]["application"][0]["name"] == "ftp":
+                                temp["attribute_name"] = "ATTR_FTP_URI"
+
 
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
@@ -881,26 +883,31 @@ class DataTranslation:
                                     }
                                 ]
                             }
-                            # for u in range(len(v[i]["item"])):
-                            #     # 添加多个item
-                            #     add_item_dict = {
-                            #         "keyword_array": [],
-                            #         "is_hexbin": 0,
-                            #         "expr_type": 0
-                            #     }
-                            #     add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
-                            #     temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
-                            # object.append(copy.deepcopy(temp))
-                            # for u in range(len(v[i]["item"])):
-                            #     # 添加多个item
-                            #     add_item_dict = {
-                            #         "keyword_array": [],
-                            #         "is_hexbin": 0,
-                            #         "expr_type": 0
-                            #     }
-                            #     add_item_dict["keyword_array"].append(v[i]["item"][u]["value"][0])
-                            #     temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
-                            # object.append(copy.deepcopy(temp))
+                        elif v[i]["item"][0]["item_type"] == "content" and data["condition"]["application"][0]["name"] == "mail":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_MAIL_CONTENT",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [],
+                                    }
+                                ]
+                            }
+                        elif v[i]["item"][0]["item_type"] == "attachment_name" and data["condition"]["application"][0]["name"] == "mail":
+                            temp = {
+                                "name": v[i]["name"],
+                                "attribute_name": "ATTR_MAIL_ATT_NAME",
+                                "object_type": "keyword",
+                                "object_sub_type": "keyword",
+                                "object_list": [
+                                    {
+                                        "add_item_list": [],
+                                    }
+                                ]
+                            }
+
                         elif v[i]["item"][0]["item_type"] == "ftp_content":
                             temp = {
                                 "name": v[i]["name"],
@@ -1430,6 +1437,27 @@ class DataTranslation:
                 profile.append(copy.deepcopy(temp))
         return profile
 
+    def push_library_data(self, data):     # 组织library数据
+        library = []
+        for k, v in data["condition"].items():
+            temp = {
+                "attribute_name": "",
+                "is_negate":"",
+                "library":[]
+            }
+            if k == "source_library" and len(v) > 0:
+                temp["attribute_name"] = "ATTR_SOURCE_IP"       # 添加attribute_name用于判断library添加至那个
+            elif k == "destination_library" and len(v) > 0:
+                temp["attribute_name"] = "ATTR_DESTINATION_IP"
+            elif k == "server_fqdn_library" and len(v) > 0:
+                temp["attribute_name"] = "ATTR_SERVER_FQDN"
+            else:
+                continue
+            for i in range(len(v)):
+                temp["is_negate"] = v[i]["negate"]
+            temp["library"] = v
+            library.append(copy.deepcopy(temp))
+        return library
 
 if __name__ == '__main__':
     policy_type = "dos_protection"
@@ -1541,5 +1569,6 @@ if __name__ == '__main__':
             ]
         }
     }
+
     translation = DataTranslation()
     temp_test_data = translation.data_translation(policy_type, test_data)

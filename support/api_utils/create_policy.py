@@ -218,7 +218,7 @@ class CreatePolicy:
                         if "library" in obj.keys():
                             src_ip = obj["library"][0]["catalogs"][0]["ip_entries"]
                         else:
-                            src_ip = obj["object_list"][0]["add_item_list"][0]["ip_address"]
+                            src_ip = obj["object_list"][0]["add_item_list"][0]["ip"]
                         if "default" in src_ip:
                             src_ip = "10.64.77.11"
                         if "-" not in src_ip and "/" not in src_ip:
