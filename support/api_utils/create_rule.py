@@ -390,7 +390,7 @@ class CreatePolicyRule:
                                 break  # 找到后退出循环
                         else:
                             # 没有找到具体的 traffic_mirror 配置，使用默认配置
-                            user_region["traffic_mirror"] = {"enable": 1, "mirror_profile": create_profile_ids[0]["id"]}
+                            user_region["traffic_mirror"] = {"enable": 1, "mirror_profile": create_profile_ids[0]["uuid"]}
                     else:
                         # 没有 profile_condition，但镜像需要启用
                         user_region["traffic_mirror"] = {"enable": 1}
@@ -398,7 +398,7 @@ class CreatePolicyRule:
                     # 镜像未启用
                     user_region["traffic_mirror"] = {"enable": 0}
 
-            rule_template_dict["rule"]["user_region"] = user_region
+            # rule_template_dict["rule"]["user_region"] = user_region
             rule_template_dict["rule"]["action_parameter"] = user_region
 
         # 添加用例名称
