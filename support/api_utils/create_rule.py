@@ -92,7 +92,8 @@ class CreatePolicyRule:
                     rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
                 else:
                     rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = 2000
-            rule_template_dict['rule']['user_region']['method'] = method
+            else:
+                rule_template_dict['rule']['action_parameter']['packet_capture'] = {"enable": 0}
             if method == 'drop':
                 if 'after_n_packets_'+str(create_number) in condition:
                     rule_template_dict['rule']['action_parameter']['after_n_packets'] = condition['after_n_packets_'+str(create_number)]
