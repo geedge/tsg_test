@@ -1144,8 +1144,7 @@ class DataTranslation:
                             },
                             "admin_status": 1,
                             "connectivity": {
-                                "method": "vxlan_g",
-                                "dest_ip": "2.2.2.53"
+                                "method": "vxlan_g"
                             },
                             "health_check": {
                                 "method": "bfd",
@@ -1438,6 +1437,10 @@ class DataTranslation:
                 temp["attribute_name"] = "ATTR_DESTINATION_IP"
             elif k == "server_fqdn_library" and len(v) > 0:
                 temp["attribute_name"] = "ATTR_SERVER_FQDN"
+            elif k == "internal_library"and len(v) > 0:
+                temp["attribute_name"] = "ATTR_INTERNAL_IP"
+            elif k == "external_library"and len(v) > 0:
+                temp["attribute_name"] = "ATTR_EXTERNAL_IP"    
             else:
                 continue
             for i in range(len(v)):

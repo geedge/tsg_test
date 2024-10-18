@@ -1,13 +1,9 @@
 import os.path
-import time
 import sys
 import ipaddress
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import requests
-import json
-import string
 from datetime import datetime
-from support.api_utils.log_in import LogIn
 
 class CreateLibrary:
     def __init__(self):
@@ -118,6 +114,8 @@ class CreateLibrary:
                     ip_template["ip_cidr"] = ip
                 else:
                     ip_template["ip_address"] = ip
+                ip_type = self.identify_ip_type(ip)
+                ip_template["add_type"] = ip_type
                 catalog_template["catalog"]["ip_entries"].append(ip_template)
         if "fqdn_entries" in catalog_data.keys() and catalog_data["fqdn_entries"] != "":
             fqdns = catalog_data["fqdn_entries"].split(",")
@@ -137,6 +135,20 @@ class CreateLibrary:
             catalog_template["catalog"]["tag_ids"] = separator.join(self.tag_ids)
         return catalog_template
     
+    def identify_ip_type(self, ip_data):
+        if "-" in ip_data:
+            ip_list = ip_data.split("-")
+            for ip in ip_list:
+                ip_obj = ipaddress.ip_address(ip)
+        elif "/" in ip_data:
+            ip_obj = ipaddress.ip_network(ip_data, strict=True)
+        else:
+            ip_obj = ipaddress.ip_address(ip_data)
+        ip_type = ip_obj.version
+        return ip_type
+
+
+    
     def tag_ids_to_policy_obj_list(self, attribute_name, is_negate): # 处理tag_id
         temp_list = []
         for tag in self.tag_ids:
@@ -154,6 +166,10 @@ class CreateLibrary:
                 condition_ids_by_api_dict["src_list"].append(library_condition)
             elif library_condition["attribute_name"] == "ATTR_DESTINATION_IP" or library_condition["attribute_name"] == "ATTR_SERVER_FQDN":
                 condition_ids_by_api_dict["dst_list"].append(library_condition)
+            elif library_condition["attribute_name"] == "ATTR_INTERNAL_IP":
+                condition_ids_by_api_dict["int_list"].append(library_condition)
+            elif library_condition["attribute_name"] == "ATTR_EXTERNAL_IP":
+                condition_ids_by_api_dict["ext_list"].append(library_condition)
         return condition_ids_by_api_dict
 
 if __name__ == '__main__':
