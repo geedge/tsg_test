@@ -1336,11 +1336,10 @@ class DataTranslation:
                     }
                     for t in range(len(v)):
                         temp = {
-                            "profile_typ": "proxy_hijack_file",
+                            "profile_type": "proxy_hijack_file",
                             "content_type": "text/html",
                             "name": "auto_test_obj",
                             "content_name": "Files-test-5.png",
-                            "vsys_id": 6,
                             "return_data": 1
                         }
                         temp["content_type"] = element_type_replace_name[v[t]["profile_file"]["file_type"]]

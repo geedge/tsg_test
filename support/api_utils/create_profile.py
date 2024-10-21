@@ -852,6 +852,7 @@ class CreateProfile:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added the other profile.")
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"AssertionError: {e}", flush=True)
+            raise
 
     def search_statistics_templates(self, template_id, profile_type, headers, api_host, vsys_id):
         if profile_type == "statistics_template":
