@@ -50,7 +50,7 @@ class CreatePolicy:
             object_template = template_path["object_template"]
             #print("object_condition_value: {}".format(object_condition_value))
             timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template)
-            if "library_condition" in test_data.keys():# 创建library
+            if "library_condition" in test_data.keys() and len(test_data["library_condition"]) > 0:# 创建library
                 library_condition = test_data["library_condition"]
                 create_library = CreateLibrary()
                 library_condition_ids_dict, library_tag_ids, library_catalog_ids = create_library.create_library(token, library_condition, api_server, vsys_id)

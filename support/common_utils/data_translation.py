@@ -28,9 +28,9 @@ class DataTranslation:
                     temp_test_data["ip_protocol"] = data["condition"]["ip_protocol"]
             if key in {"action_parameter", "profile"}:
                 temp_test_data["profile_condition"] = self.push_profile_data(parameter, data)
-        if len(temp_test_data["obj_condition"]) > 0:
+        if len(temp_test_data["obj_condition"]) >= 0:
             data["obj_condition"] = temp_test_data["obj_condition"]
-        if len(temp_test_data["library_condition"]) > 0:
+        if len(temp_test_data["library_condition"]) >= 0:
             data["library_condition"] = temp_test_data["library_condition"]
         if len(temp_test_data["application"]) >= 0:
             data["application"] = temp_test_data["application"]
