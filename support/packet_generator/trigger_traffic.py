@@ -179,21 +179,22 @@ class SendTraffic:
                     else:
                         test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                         test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
-            for ip_item in test_data["library_condition"]:
-                    if "ATTR_SOURCE_IP" in ip_item.values():
-                        if "-" in ip_item["library"][0]["catalogs"][0]["ip_entries"]:
-                            test_data["traffic"]["clients_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[0]
-                            test_data["traffic"]["clients_end_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[-1]
-                        else:
-                            test_data["traffic"]["clients_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"]
-                            test_data["traffic"]["clients_end_ip"] = test_data["traffic"]["clients_start_ip"]
-                    if "ATTR_DESTINATION_IP" in ip_item.values():
-                        if "-" in ip_item["library"][0]["catalogs"][0]["ip_entries"]:
-                            test_data["traffic"]["servers_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[0]
-                            test_data["traffic"]["servers_end_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[-1]
-                        else:
-                            test_data["traffic"]["servers_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"]
-                            test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
+            if "library_condition" in test_data:
+                for ip_item in test_data["library_condition"]:
+                        if "ATTR_SOURCE_IP" in ip_item.values():
+                            if "-" in ip_item["library"][0]["catalogs"][0]["ip_entries"]:
+                                test_data["traffic"]["clients_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[0]
+                                test_data["traffic"]["clients_end_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[-1]
+                            else:
+                                test_data["traffic"]["clients_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"]
+                                test_data["traffic"]["clients_end_ip"] = test_data["traffic"]["clients_start_ip"]
+                        if "ATTR_DESTINATION_IP" in ip_item.values():
+                            if "-" in ip_item["library"][0]["catalogs"][0]["ip_entries"]:
+                                test_data["traffic"]["servers_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[0]
+                                test_data["traffic"]["servers_end_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[-1]
+                            else:
+                                test_data["traffic"]["servers_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"]
+                                test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
         return test_data
     
 if __name__ == "__main__":
