@@ -7,7 +7,7 @@ from support.api_utils.log_in import LogIn
 from support.packet_generator.ui_verification import *
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from support.instance_utils.data_translation import DataTranslation
+from support.common_utils.data_translation import DataTranslation
 
 import support.api_utils.get_log
 import support.api_utils.policy_verify
@@ -21,7 +21,7 @@ from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verify import Verify
 from support.api_utils.analyse_result import Analyse
-from support.instance_utils.data_translation import DataTranslation
+from support.common_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
 from support.ui_utils.element_position.map_element_position_library import *
@@ -229,7 +229,7 @@ def main():
 
     # 删除配置
     delete = DeletePolicy()
-    delete.delele_policy_by_cfg(token, parameter, cfg_list)
+    delete.delele_policy_by_uuid(token, parameter, cfg_list)
     # #2.ui校验
     # api_verification_result = [True,True,True]
     #

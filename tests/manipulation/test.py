@@ -278,8 +278,8 @@ def run(parameter):
         replace_text
 
         # 测试用例实例化
-        instantiation = InstanceTestData(test_data, parameter)
-        result = instantiation.create()
+        create = CreatePolicy(test_data, parameter)
+        result = create.create_policy()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -294,8 +294,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(instantiation, InstanceTestData):
-            instantiation.clean_up()
+        if isinstance(create, CreatePolicy):
+            create.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

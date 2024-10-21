@@ -3,7 +3,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from support.packet_generator.capture_packet import *
-from support.packet_generator.trigger_traffic import *
+from support.packet_generator.traffic_generator import *
 from support.packet_generator.api_verification import *
 from support.packet_generator.ui_verification import *
 from support.packet_generator.workpath import workdir
@@ -41,8 +41,8 @@ class Verify:
             """
             if script_type == "api":
                 time.sleep(3)
-            sender = SendTraffic()
-            traffic_result = sender.send_traffic(parameter, test_data)
+            sender = TrafficGenerator()
+            traffic_result = sender.generate_traffic(parameter, test_data)
             #print(traffic_result["result"])
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             if script_type == "ui":
