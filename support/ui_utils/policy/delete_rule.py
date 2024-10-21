@@ -21,7 +21,7 @@ class DeleteRule:
             else:
                 first_row_checkbox_element.click()
             time.sleep(0.3)
-            self.driver.find_element(By.ID, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
+            self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_deleteButton_posId"]).click()
             self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
             time.sleep(2)
             return 200

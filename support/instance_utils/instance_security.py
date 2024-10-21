@@ -91,18 +91,18 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
                         },
                         "create": {
-                            "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
-                            "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
+                            "objectListPage_createButton_posId": ipObjectListPage_createButton_posXpath,
+                            "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posXpath,
                             "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
-                            "objectPage_ipType_posId": ipObjectPage_ipType_posId,
-                            "objectPage_addItem_posId": ipObjectPage_addItem_posId,
+                            "objectPage_ipType_posId": ipObjectPage_ipType_posXpath,
+                            "objectPage_addItem_posId": ipObjectPage_addItem_posXpath,
                             "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
                             "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
-                            "objectPage_okButton_posId": ipObjectPage_okButton_posId,
+                            "objectPage_okButton_posId": ipObjectPage_okButton_posXpath,
                             "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath
                         },
                         "search": {
@@ -122,7 +122,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_fqdn_posId
                         },
                         "create": {
@@ -152,7 +152,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
                         },
                         "create": {
@@ -183,7 +183,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
                         },
                         "create": {
@@ -214,7 +214,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
                         },
                         "create": {
@@ -245,7 +245,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_httpSignature_posId
                         },
                         "create": {
@@ -279,7 +279,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_port_posId
                         },
                         "create": {
@@ -309,7 +309,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
                         },
                         "create": {
@@ -341,7 +341,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_account_posId
                         },
                         "create": {
@@ -407,7 +407,7 @@ class InstanceSecurity:
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
+                            "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_security_posId
                         },
                         "create": {

@@ -1,7 +1,7 @@
 #login page 登录页面
-loginPage_userName_posName = "username"
-loginPage_passwd_posName = "password"
-loginPage_signIn_posId = "login"
+loginPage_userName_posName = '//input[@placeholder="User name"]'
+loginPage_passwd_posName = '//input[@placeholder="Password"]'
+loginPage_signIn_posXpath = '//*[@id=":r0:"]'
 loginPage_error_posXpath = "//p[@class='el-message__content']"
 
 #main页面
@@ -14,9 +14,9 @@ mainPage_language_change_posXpath = "//span[@class='el-input__prefix']//i"
 mainPage_language_chinese_posXpath = "//div/ul/li/span[contains(text(),'简体中文')]"
 mainPage_language_russian_posXpath = "//div/ul/li/span[contains(text(),'Русский')]"
 mainPage_language_english_posXpath = "//div/ul/li/span[contains(text(),'English')]"
-mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
+mainPage_button_menu_posXCss = '//*[@class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart MuiIconButton-sizeLarge ml-[20px!important] font-bold cursor-pointer css-134pika"]'    #menu按钮定位
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
-mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
+mainPage_vsysTree_vsysName_posXpath = '//*[@id="systemPopover"]//span[@class="vsysItem"]'    # vsys tree中vsys name定位
 mainPage_vsysTree_DefaultVsys_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys1']"
 mainPage_vsysTree_Vsys1_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys10']"
 mainPage_vsysTree_Vsys3_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys3']"
