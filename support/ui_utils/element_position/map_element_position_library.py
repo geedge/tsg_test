@@ -125,32 +125,32 @@ test_ip_group_object_element_position = {
     }
 }
 test_port_object_element_position = {
-    "page_jump": {
+    "page_jump":{
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_port_posId
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_port_posXpath
     },
     "create": {
-        "objectListPage_createButton_posId": portObjectListPage_createButton_posId,
-        "objectListPage_dropDown_createButton_posId": portObjectListPage_dropDown_createButton_posId,
+        "objectListPage_createButton_posXpath": portObjectListPage_createButton_posXpath,
+        "objectListPage_dropDown_createButton_posXpath": portObjectListPage_dropDown_createButton_posXpath,
         "objectPage_inputName_posXpath": portObjectPage_inputName_posXpath,
-        "objectPage_addItem_posXpath": portobjectPage_addItem_posXpath,
+        # "objectPage_addItem_posId": portObjectPage_addItem_posId,
         "objectPage_inputItem_posXpath": portObjectPage_inputItem_posXpath,
         "objectPage_button_saveItem_posXpath": portObjectPage_button_saveItem_posXpath,
-        "objectPage_okButton_posId": portObjectPage_okButton_posId,
+        "objectPage_okButton_posXpath": portObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": portObjectPage_okButton_warningYes_posXpath
     },
     "search": {
-        "objectListPage_searchLabel_posId": portObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_posXpath": portObjectListPage_searchLabel_posXpath,
         "objectListPage_searchLabel_selectName_posXpath": portObjectListPage_searchLabel_selectName_posXpath,
         "objectListPage_tableTbody_posXpath": portObjectListPage_tableTbody_posXpath
     },
     "delete": {
         "objectListPage_allSelect_posXpath": portObjectListPage_allSelect_posXpath,
-        "objectListPage_deleteButton_posId": portObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_posId": portObjectListPage_deleteButton_posXpath,
         "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
     }
 }
