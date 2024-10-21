@@ -6,6 +6,7 @@ loginPage_error_posXpath = "//p[@class='el-message__content']"
 
 #main页面
 ##上导航栏及语言切换按钮
+mainPage_menu_bar_posXpath = "//div[@class='systemMenu']"
 #mainPage_navigationBar_logo_posXpath = ".logo"
 mainPage_secondLevelMenu_ipAddress_posXpath = "#dashboard .level1-title"
 mainPage_navigationBar_logo_posXpath = mainPage_secondLevelMenu_ipAddress_posXpath
@@ -15,8 +16,8 @@ mainPage_language_chinese_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//
 mainPage_language_russian_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), 'Русский')]"
 mainPage_language_english_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), 'English')]"
 mainPage_button_menu_posXpath = "//div[@id='root']//header//div[@class='systemMenu']//button//i"    #menu按钮定位
-mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
-mainPage_vsysTree_vsysName_posXpath = "//div[@class='MuiStack-root css-1r1y6jm']//li/div"    # vsys tree中vsys name定位
+mainPage_currentPage_vsysName_posXpath = "//div[@class='MuiStack-root mt-[40px] css-1t9fcl0']/div"    # 当前页面中vsys name
+mainPage_vsysTree_vsysName_posXpath = "/div[@class='vsysList___vaaU6']/ul//li//span[@class='vsysItem']/parent::*/parent::*"    # vsys tree中vsys name定位
 mainPage_vsysTree_DefaultVsys_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys1']"
 mainPage_vsysTree_Vsys1_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys10']"
 mainPage_vsysTree_Vsys3_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys3']"
@@ -24,7 +25,9 @@ mainPage_vsysTree_Vsys4_posXpath = "//article/div/ul//div[normalize-space(text()
 mainPage_vsysTree_Vsys5_posXpath = "//article/div/ul//div[normalize-space(text())='Vsys5']"
 #菜单栏================================菜单栏===================================菜单栏================================菜单栏==================================菜单栏========================菜单栏
 ##菜单栏
-mainPage_firstLevelMenu_profiles_posId = "Profiles"  # 一级菜单Profiles
+mainPage_firstLevelMenu_profiles_posName = "Profiles"
+mainPage_firstLevelMenu_profiles_posXpath = "//*[normalize-space(text())='Profiles']"  # 一级菜单Profiles
+mainPage_leftMenu_posXpath = "//*[normalize-space(text())='{}']" #根据菜单名称文本定位：
 mainPage_secondLevelMenu_responsePages_posId = "Proxy_Profiles/Profile_ResponsePages"  # 二级菜单response pages
 mainPage_secondLevelMenu_dnsRecords_posId = "Proxy_Profiles/DNS_record_profile"  # 二级菜单dns records
 mainPage_secondLevelMenu_trafficMirroringProfiles_posId = "Proxy_Profiles/Profile_TrafficMirrorProfiles"  # 二级菜单traffic mirroring profiles
@@ -43,7 +46,8 @@ mainPage_secondLevelMenu_dosDetectionProfiles_posId = "Proxy_Profiles/detectionP
 mainPage_secondLevelMenu_shapingProfiles_posId = "Proxy_Profiles/ShapingProfile"  # 二级菜单shaping profiles
 mainPage_secondLevelMenu_serviceFunctionForwarders_posId = "Proxy_Profiles/ServiceFunctionForwarderProfile"  # 二级菜单service functions forwarders
 mainPage_secondLevelMenu_serviceFunctions_posId = "Proxy_Profiles/ServiceFunctionProfile"  # 二级菜单service functions
-mainPage_secondLevelMenu_statisticsTemplates_posId = "Proxy_Profiles/statisticTemplate"  # 二级菜单statistics templates
+mainPage_secondLevelMenu_statisticsTemplates_posXpath = "//*[normalize-space(text())='Statistics Templates']"  # 二级菜单statistics templates
+mainPage_secondLevelMenu_statisticsTemplates_Name = "Statistics Templates"  # 二级菜单statistics templates
 
 
 # Profiles 查询栏===================Profiles 查询栏=====================Profiles 查询栏=================Profiles 查询栏=======================Profiles 查询栏=================Profiles 查询栏
@@ -853,7 +857,8 @@ serviceFunctions_auditLogsPage_modificationPage_button_close_posXpath = "//*[@id
 
 # Profiles statistics templates===================Profiles statistics templates====================Profiles statistics templates=================Profiles statistics templates=======================Profiles statistics templates
 # listPage->tsg dos detection profiles list page  列表页
-listPage_profile_statisticsTemplates_createButton_posId = "app_create-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"     #create按钮id
+listPage_profileHandleButton_posXpath = "//span[@class='text-[14px] inline-block max-w-[50px] normal-case']"
+listPage_profile_statisticsTemplates_createButton_posId = "Create" #"app_create-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"     #create按钮id
 listPage_profile_statisticsTemplates_editButton_posId = "appEdit-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #edit按钮id
 listPage_profile_statisticsTemplates_delButton_posId = "appDel-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #del按钮id
 listPage_profileSearch_statisticsTemplates_selectLabel_posId = mainPage_profileSearch_selectLabel_posId      #查询框id    定位形式一样
@@ -868,28 +873,55 @@ listPage_dialogTips_statisticsTemplates_button_yes_posXpath = listPage_dialogTip
 listPage_dialogTips_statisticsTemplates_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath   #删除提示的Tips的close按钮
 #Create statistics templates page 和 Edit statistics templates page   新增和编辑页
 statisticsTemplates_input_Name_posId = "advancedAdd_policyName"    # name输入框id
-statisticsTemplates_input_metricsAndDimensionsSelect_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class,'margin-top-2')]/div[@class='el-row']"  # Metrics输入框的定位，可能包含多个。replaceChart repalceLabel需要二次处理
+statisticsTemplates_input_Name_posXpath = "//input[@class='MuiInput-input css-fqt4w4']" # name输入框xpath
+#Metrics 选择列表：//ul[@class='base-Popper-root MuiAutocomplate-listbox css-1m20s0g'][contains(@style,'position: absolute')]
+# metrics field行：//form[1]//div[@class='timeDimension MuiBox-root css-0']//div[@class='MuiStack-root css-fhxiwe']
+# Metrics field行的每个Input：//div[contains(@class,'MuiBox-root css-1ozlgi5')]
+# metrics field行对应的删除按钮：/button
+# metrics Funcation input：
+# # metrics Funcation选择列表：//ul[@class='base-Popper-root MuiSelect-listbox Mui-expanded css-1bxrsif'][contains(@style,'position: absolute')]/li[contains(@class, 'MuiOption-root')]
+# Dimensions，每行：//form[1]//div[@class='DimentionList MuiBox-root css-0']//div[@class='MuiStack-root css-fhxiwe']
+# Dimensions，每行的每个input：//div[contains(@class,'MuiBox-root css-1ozlgi5')]
+# Dimensions field选择列表、Order By选择列表：//ul[@class='base-Popper-root MuiSelect-listbox Mui-expanded css-1bxrsif'][contains(@style,'position: absolute')]/li[contains(@class, 'MuiOption-root')]
+# Order By、Row Limit/Series Limit Input://form[1]//label[normalize-space(text())='Series Limit']/parent::*//input
+#Minimum Coming/Outgoing size Input ://form[2]//div[normalize-space(text())='Minimum Incoming size']/parent::*//input
+# Chart OK/Cancel按钮：//form[2]//div[@class='text-center MuiBox-root css-0']/button[1/2]
+statisticsTemplates_input_metricsAndDimensionsSelect_posXpath = "//form[{replaceChart}]//div[@class='{repalceLabel}List MuiBox-root css-0']//div[@class='MuiStack-root css-fhxiwe']"#MetricList/DimentionList MuiBox-root css-0#"//form[{replaceChart}]//div[@class='timeDimension {repalceLabel}MuiBox-root css-0']//div[@class='MuiStack-root css-fhxiwe']"#timeDimension
+#"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class,'margin-top-2')]/div[@class='el-row']"  # Metrics输入框的定位，可能包含多个。replaceChart repalceLabel需要二次处理
 # statisticsTemplates_button_metricsAndDimensionsAdd_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'addCondition')]"    # Metrics的add添加按钮。replaceChart repalceLabel 需要二次处理
-statisticsTemplates_button_metricsAndDimensionsAdd_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'addCondition')]"  # Metrics的add添加按钮。replaceChart repalceLabel 需要二次处理
-statisticsTemplates_radio_visualizationType_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//span[normalize-space(text())='{replaceType}']/parent::*/span[contains(@class, 'el-radio__input')]"  # Visualization Type 单选按钮按钮。replaceChart repalceLabel replaceType 需要二次处理
+statisticsTemplates_button_metricsAndDimensionsAdd_posXpath = "//form[{replaceChart}]//div[contains(@class,'MuiBox-root css-0')]/div/label[normalize-space(text())='{repalceLabel}']/parent::*/button"
+#"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'addCondition')]"  # Metrics的add添加按钮。replaceChart repalceLabel 需要二次处理
+statisticsTemplates_radio_visualizationType_posXpath = "//form[{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//span[@class='MuiBox-root css-10rvbm3'][normalize-space(text())='{replaceType}']/parent::*/parent::*/parent::*"
+#"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//span[normalize-space(text())='{replaceType}']/parent::*/span[contains(@class, 'el-radio__input')]"  # Visualization Type 单选按钮按钮。replaceChart repalceLabel replaceType 需要二次处理
 #tatisticsTemplates_radio_visualizationType_posXpath = "//label[normalize-space(text())='{replaceChart}']/parent::*//label[normalize-space(text())='{repalceLabel}']/parent::*//span[normalize-space(text())='{replaceType}']/parent::*/span[contains(@class, 'el-radio__input')]"    # Visualization Type 单选按钮按钮。replaceChart repalceLabel replaceType 需要二次处理
 statisticsTemplates_radio_sampling_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//span[normalize-space(text())='{replaceSampling}']"  # sampling 单选按钮按钮。replaceName需要二次处理
-statisticsTemplates_input_other_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//span[normalize-space(text())='{repalceLabel}']/parent::*//input"  # 其它的输入框和下拉输入框 。replaceName需要二次处理
+statisticsTemplates_input_other_posXpath = "//form[{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//input"
+statisticsTemplates_input_thresholds_posXpath = "//form[{replaceChart}]//div[normalize-space(text())='{repalceLabel}']/parent::*//input[@name='{replaceName}']"
+#//form[1]//label[normalize-space(text())='Thresholds']/parent::*//input[@name='threshold.in_bytes']
+statisticsTemplates_button_other_posXpath = "//form[{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//button"
+#"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//span[normalize-space(text())='{repalceLabel}']/parent::*//input"  # 其它的输入框和下拉输入框 。replaceName需要二次处理
 statisticsTemplates_input_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//input"  # 其它的输入框和下拉输入框 。replaceName需要二次处理
 statisticsTemplates_LabelName_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')]//*[normalize-space(text())='{repalceLabel}']"
-statisticsTemplates_dropdown_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'el-popper')]//span[normalize-space(text())='{replaceDropdownIterm}']"  # 所有的下拉列表中内容定位 。replaceDropdownIterm 二次处理
-statisticsTemplates_button_chartAdd_posXpath = "//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath
+statisticsTemplates_dropdownMetrics_posXpath = "//ul[contains(@class,'base-Popper-root MuiAutocomplete-listbox')]//li[contains(@class,'MuiAutocomplete-option')]//li[normalize-space(text())='{replaceDropdownIterm}']"
+statisticsTemplates_dropdown_posXpath = "//ul[contains(@class,'base-Popper-root MuiSelect-listbox')][contains(@style,'position: absolute')]//li[normalize-space(text())='{replaceDropdownIterm}']"
+#"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'el-popper')]//span[normalize-space(text())='{replaceDropdownIterm}']"  # 所有的下拉列表中内容定位 。replaceDropdownIterm 二次处理
+statisticsTemplates_button_chartAdd_posXpath = "//div[@class='ChartList MuiBox-root css-0']"#"//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath
 statisticsTemplates_button_chartEdit_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//div[@class='operateIcon']//i[contains(@class, 'icon-Edit')]"  # 编辑图标按钮 xpath
-statisticsTemplates_metrics_dropdown_item_posXpath = "//div[@class='el-select-dropdown el-popper is-multiple'][contains(@style,'position: absolute;')]//li/span[normalize-space(text())='{}']" #24.08版本，Metrics item定位#[not(contains(@style,'display: none;'))]
-statisticsTemplates_dimensions_dropdown_item_posXpath = "//div[@class='Dimension margin-top-2']//div[@class='el-select-dropdown el-popper'][contains(@style,'position: absolute;')]//li/span[normalize-space(text())='{}']" #24.08版本，Dimensions item定位
-statisticsTemplates_div_paperGrid_posXpath = "//*[@id='proxyTCP']/div[contains(@class, 'paper-grid')]"    # div的包含滚动条的长页面 xpath
+statisticsTemplates_metrics_dropdown_item_posXpath = "//ul[contains(@class, 'base-Popper-root MuiAutocomplate-listbox')]"#[contains(@style,'position: absolute;')]//li[normalize-space(text())='{replaceMetricsField}']"
+    #"//div[@class='el-select-dropdown el-popper is-multiple'][contains(@style,'position: absolute;')]//li/span[normalize-space(text())='{}']" #24.08版本，Metrics item定位#[not(contains(@style,'display: none;'))]
+statisticsTemplates_metrics_function_dropdown_item_posXpath = "//ul[contains(@class, 'base-Popper-root MuiSelect-listbox')][contains(@style,'position: absolute;')]//*[normalize-space(text())='{}']"
+statisticsTemplates_dimensions_dropdown_item_posXpath = "//ul[contains(@class, 'base-Popper-root MuiSelect-listbox')][contains(@style,'position: absolute')]//li[normalize-space(text())='{}']"
+#"//div[@class='Dimension margin-top-2']//div[@class='el-select-dropdown el-popper'][contains(@style,'position: absolute;')]//li/span[normalize-space(text())='{}']" #24.08版本，Dimensions item定位
+statisticsTemplates_div_paperGrid_posXpath = "//div[@class=' statistics-template-page MuiBox-root css-o7xelj']"#"//*[@id='proxyTCP']/div[contains(@class, 'paper-grid')]"    # div的包含滚动条的长页面 xpath
 statisticsTemplates_div_rightDetails_posXpath = "//div[@id='router-view-container']//div[@class='paper-grid-right']//form/div"  # 右侧详情div容器 xpath
 statisticsTemplates_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss    #提示保存按钮警告框OK按钮
 statisticsTemplates_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss    #提示保存警告框Cancel按钮
-statisticsTemplates_button_ChartOK_posXpath = "//*[@id='chart-ok']/span"  # 保存chart的OK按钮 xpath定位
-statisticsTemplates_button_oK_posCss = "#Success span"     #OK按钮css
-statisticsTemplates_button_cancel_posCss = "#Cancel span"      #Cancel按钮
+statisticsTemplates_button_chartSubmit_posXpath = "//form[{replaceChart}]//div[@class='text-center MuiBox-root css-0']/button[1]"  # 保存chart的OK按钮 xpath定位
+statisticsTemplates_button_chartCancel_posXpath = "//form[{replaceChart}]//div[@class='text-center MuiBox-root css-0']/button[2]"  # 保存chart的OK按钮 xpath定位
+statisticsTemplates_button_oK_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[1]"     #OK按钮css
+statisticsTemplates_button_cancel_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[2]"      #Cancel按钮
 statisticsTemplates_charts_posXpath = "//div[@class='el-form-item template-edit-chart el-form-item--small']"#"//form[@class='el-form el-form--label-top']" # 编辑页码获取所有Chart Name所在Chart
 statisticsTemplates_label_chart_name_posXpath = ".//label[@for='name']/..//div[normalize-space(text())='{repalceLabel}']" # 编辑页码Chart Name定位Chart
 statisticsTemplates_button_chart_edit_posXpath = ".//div[@class='operateIcon']/i[contains(@class,'icon-Edit')]" # chart编辑按钮
 statisticsTemplates_button_chart_delete_posXpath = ".//div[@class='operateIcon']/i[contains(@class,'icon-Delete')]" # chart删除按钮
+statisticsTemplates_alert_unSaveChart_posXpath = "//div[@class='MuiAlert-message css-1xsto0d']" # Chart未保存提示
