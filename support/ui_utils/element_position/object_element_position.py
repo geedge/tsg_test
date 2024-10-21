@@ -1,12 +1,12 @@
-#mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
-mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
-mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss    # 改为引用dashboard路径
+#mainPage_navigationBar_logo_posXpath = ".tsg-img-logo"
+mainPage_secondLevelMenu_ipAddress_posXpath = "#dashboard .level1-title"
+mainPage_navigationBar_logo_posXpath = mainPage_secondLevelMenu_ipAddress_posXpath    # 改为引用dashboard路径
 mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
-mainPage_objectSearch_buttonSearch_posId = '//*[@class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w"]'  # 查询按钮id
+mainPage_objectSearch_buttonSearch_posXpath = '//*[@class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w"]'  # 查询按钮id
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
-mainPage_firstLevelMenu_Objects_posId = "//*[normalize-space(text())='Objects']" # 一级菜单Global Objects
-mainPage_secondLevelMenu_ipAddress_posId = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="IP Addresses"]' # 二级菜单IP Addresses
+mainPage_firstLevelMenu_Objects_posXpath = "//*[normalize-space(text())='Objects']" # 一级菜单Global Objects
+mainPage_secondLevelMenu_ipAddress_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="IP Addresses"]' # 二级菜单IP Addresses
 mainPage_secondLevelMenu_port_posId = "Objects_port"
 mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
 mainPage_secondLevelMenu_keywords_posId = "Objects_keywords"

@@ -104,7 +104,7 @@ class CreateServiceChainingPolicy:
 
                 test_service_function_forwarder_profile_element_position = {
                     "page_jump":{
-                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
@@ -138,7 +138,7 @@ class CreateServiceChainingPolicy:
                 }
                 test_service_function_profile_element_position = {
                     "page_jump":{
-                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,

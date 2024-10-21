@@ -6,9 +6,9 @@ loginPage_error_posXpath = "//p[@class='el-message__content']"
 
 #main页面
 ##上导航栏及语言切换按钮
-#mainPage_navigationBar_logo_posCss = ".logo"
-mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
-mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss
+#mainPage_navigationBar_logo_posXpath = ".logo"
+mainPage_secondLevelMenu_ipAddress_posXpath = "#dashboard .level1-title"
+mainPage_navigationBar_logo_posXpath = mainPage_secondLevelMenu_ipAddress_posXpath
 mainPage_input_language_posXpath = "//button[@id='header-profile-button']/i"
 mainPage_language_change_posXpath = "//button[@id='header-profile-button']/i"
 mainPage_language_chinese_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), '中文')]"

@@ -83,12 +83,12 @@ class CreateSecurityPolicy:
                 if test_data["policy_type"] == "security":
                     test_ip_object_element_position = {
                         "page_jump":{
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
+                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posXpath
                         },
                         "create": {
                             "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
@@ -114,11 +114,11 @@ class CreateSecurityPolicy:
                     }
                     test_fqdn_object_element_position = {
                         "page_jump":{
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_fqdn_posId
                         },
                         "create": {
@@ -144,11 +144,11 @@ class CreateSecurityPolicy:
                     }
                     test_url_object_element_position = {
                         "page_jump": {
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
                         },
                         "create": {
@@ -175,11 +175,11 @@ class CreateSecurityPolicy:
                     }
                     test_imsi_object_element_position = {
                         "page_jump":{
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
                         },
                         "create": {
@@ -206,11 +206,11 @@ class CreateSecurityPolicy:
                     }
                     test_phone_number_object_element_position = {
                         "page_jump":{
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
                         },
                         "create": {
@@ -237,11 +237,11 @@ class CreateSecurityPolicy:
                     }
                     test_http_signature_object_element_position = {
                         "page_jump": {
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_httpSignature_posId
                         },
                         "create": {
@@ -271,11 +271,11 @@ class CreateSecurityPolicy:
                     }
                     test_port_object_element_position = {
                         "page_jump":{
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_port_posId
                         },
                         "create": {
@@ -301,11 +301,11 @@ class CreateSecurityPolicy:
                     }
                     test_keywords_object_element_position = {
                         "page_jump": {
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
                         },
                         "create": {
@@ -333,11 +333,11 @@ class CreateSecurityPolicy:
                     }
                     test_account_object_element_position = {
                         "page_jump": {
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                            "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
                             "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_account_posId
                         },
                         "create": {
@@ -364,7 +364,7 @@ class CreateSecurityPolicy:
                     }
                     test_dns_records_profile_element_position = {
                         "page_jump": {
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
@@ -399,7 +399,7 @@ class CreateSecurityPolicy:
                     }
                     test_rule_element_position = {
                         "page_jump":{
-                            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
