@@ -8,7 +8,7 @@ from support.ui_utils.element_position.map_element_position_library import repla
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import traceback
 from datetime import datetime
-from support.instance_utils.instance_test_data import InstanceTestData
+from support.common_utils.create_policy import CreatePolicy
 from support.report_update import ReportUpdate
 
 
@@ -189,8 +189,8 @@ def run(parameter):
         }
         # name_list汇总
         # 测试用例实例化
-        instantiation = InstanceTestData(test_data, parameter)
-        result = instantiation.create()
+        create = CreatePolicy(test_data, parameter)
+        result = create.create_policy()
 
         # 脚本结束时间和耗时
         end_time = time.time()
@@ -209,8 +209,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境
-        if isinstance(instantiation, InstanceTestData):
-            instantiation.clean_up()
+        if isinstance(create, CreatePolicy):
+            create.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

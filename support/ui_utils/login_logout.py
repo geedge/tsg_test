@@ -23,17 +23,24 @@ class LogInOut:
 
     def login(self, vsys_name=""):
         self.driver.get(self.tsglogin_url)
+        # 需要判断，遇到https不安全时，点击高级-继续登录才可以访问https-tsg
+        if "https" in self.tsglogin_url:
+            is_exist = self.driver.is_exist_element("//*[@id='details-button']", timeout=1.5)
+            if is_exist == True:
+                if "高级" in self.driver.find_element(By.XPATH, "//*[@id='details-button']").text.strip():
+                    self.driver.find_element(By.XPATH, "//*[@id='details-button']").click()
+                    self.driver.find_element(By.XPATH, "//*[@id='proceed-link']").click()
         # 输入账户和密码
-        self.driver.find_element(By.XPATH, loginPage_userName_posName).send_keys(self.loginout_parse.get("account", "username"))
-        self.driver.find_element(By.XPATH, loginPage_passwd_posName).send_keys(self.loginout_parse.get("account", "password"))
+        self.driver.find_element(By.XPATH, loginPage_userName_posXpath).send_keys(self.loginout_parse.get("account", "username"))
+        self.driver.find_element(By.XPATH, loginPage_passwd_posXpath).send_keys(self.loginout_parse.get("account", "password"))
         self.driver.find_element(By.XPATH, loginPage_signIn_posXpath).click()
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Login to TSG successfully.", flush=True)
         # 消除右上角弹框
         self.dismiss_right_top_tips()
         # 切换至默认ui_vsys
-        #self._change_vsys(vsys_name=vsys_name)
+        self._change_vsys(vsys_name=vsys_name)
         # 默认更改为英语
-        #self._default_language()
+        self._default_language()
         # 如果是centos虚拟机，要调整分辨率，不然会导致元素定位失败
         # os_name = platform.system()
         # if os_name == "Linux":
@@ -42,15 +49,13 @@ class LogInOut:
 
     def _default_language(self):
         # 获取当前默认语言，并设置为英语
-        current_language = self.driver.find_element(By.XPATH, mainPage_input_language_posXpath).get_attribute("value").strip()
-        if "english" != current_language.lower():
+        current_language_element_i_class = self.driver.find_element(By.XPATH, mainPage_input_language_posXpath).get_attribute("class").strip()
+        if "icon-Lang_enSelect".lower() not in current_language_element_i_class.lower():
             self.driver.find_element(By.XPATH, mainPage_language_change_posXpath).click()
             self.driver.find_element(By.XPATH, mainPage_language_english_posXpath).click()
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Change language to English successfully.", flush=True)
 
     def _change_vsys(self, vsys_name=""):
-        #current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
-        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the current vsys: {current_vsys_name}")
         current_path = os.path.dirname(__file__)  # 当前文件目录
         temp_path = os.path.dirname(os.path.dirname(current_path))
         conf_path = os.path.join(temp_path, "configuration_file.ini")
@@ -59,13 +64,15 @@ class LogInOut:
         conf.read(conf_path, encoding="utf-8")
         id_for_ui = conf.get("vsys", "for_traffic_verification")
         id_vsys_format = "vsys{}".format(id_for_ui)  # 使用配置变量值
+        if id_vsys_format == "vsys1":   # 临时调整
+            id_vsys_format = "Default Vsys"
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_vsys_format)
         # 传入vsys_name值区分
         if vsys_name == "":  # 空，vsys值来自配置文件
             change_vsys_name = id_vsys_format
         else:  # 切换到指定vsys
             change_vsys_name = vsys_name
-        self.driver.find_element(By.XPATH, mainPage_button_menu_posXCss).click()  # 点击vsys menu
+        self.driver.find_element(By.XPATH, mainPage_button_menu_posXpath).click()  # 点击vsys menu
         vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath, find_before_wait_time=0.5, find_after_wait_time=0.1)
         time.sleep(0.5)
         flag_num = 0
@@ -75,7 +82,7 @@ class LogInOut:
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], vsys_item_name_list)
             if change_vsys_name.lower() in vsys_item_name_list:
                 flag_num = 1
-                el_vsys_item.find_element(By.XPATH,'//*[@id="systemPopover"]//span[@class="vsysItem"]').click()
+                el_vsys_item.find_element(By.XPATH, ".//span[@class='vsysItem']").click()
                 break
         if flag_num == 0:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"no vsys: {change_vsys_name}", flush=True)
@@ -110,9 +117,9 @@ class LogInOut:
         """
         self.driver.get(self.tsglogin_url)
         # 输入账户和密码
-        self.driver.find_element(By.NAME, loginPage_userName_posName).send_keys(user_name)
-        self.driver.find_element(By.NAME, loginPage_passwd_posName).send_keys(passowrd)
-        self.driver.find_element(By.ID, loginPage_signIn_posXpath).click()
+        self.driver.find_element(By.Xpath, loginPage_userName_posXpath).send_keys(user_name)
+        self.driver.find_element(By.Xpath, loginPage_passwd_posXpath).send_keys(passowrd)
+        self.driver.find_element(By.Xpath, loginPage_signIn_posXpath).click()
 
     def logout(self):
         user_btn = self.driver.find_element(By.XPATH, "//*[@id='user_avator']//i")    # 点击账户按钮

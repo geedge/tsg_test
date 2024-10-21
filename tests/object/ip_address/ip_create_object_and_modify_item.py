@@ -11,7 +11,7 @@ from support.general_ui_utils.object.edit_objects import EditObjects
 from support.general_ui_utils.object.search_objects import SearchObjects
 from support.general_ui_utils.object.delete_objects import DeleteObjects
 from support.general_ui_utils.element_position.object_element_position import *
-from support.instance_utils.instance_test_data import InstanceTestData
+from support.common_utils.create_policy import CreatePolicy
 from support.report_update import ReportUpdate
 
 
@@ -55,8 +55,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        instantiation = InstanceTestData(test_data, parameter)
-        result = instantiation.create()
+        create = CreatePolicy(test_data, parameter)
+        result = create.create_policy()
 
     except Exception as e:
         exception_result = str(e)
@@ -64,8 +64,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(instantiation, InstanceTestData):
-            instantiation.clean_up()
+        if isinstance(create, CreatePolicy):
+            create.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from datetime import datetime
 from support.report_update import ReportUpdate
-from support.instance_utils.instance_test_data import InstanceTestData
+from support.common_utils.create_policy import CreatePolicy
 
 def run(parameter):
     try:
@@ -82,8 +82,8 @@ def run(parameter):
             "token": ""
         }
         # 测试用例实例化
-        instantiation = InstanceTestData(test_data, parameter)
-        result = instantiation.create()
+        create = CreatePolicy(test_data, parameter)
+        result = create.create_policy()
         
         return result
     except Exception as e:
@@ -92,8 +92,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(instantiation, InstanceTestData):
-            instantiation.clean_up()
+        if isinstance(create, CreatePolicy):
+            create.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time

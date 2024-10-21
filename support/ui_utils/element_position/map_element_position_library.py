@@ -53,7 +53,7 @@ test_application_group_object_element_position = {
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-        "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
         "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_appliactionGroup_posId
     },
     "create": {
@@ -625,11 +625,11 @@ test_service_chaining_rule_element_position = {
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-        "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posXpath,
-        "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_servicechaining_posId
+        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posXpath,
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_servicechaining_posXpath
     },
     "create": {
-        "policyRuleListPage_createButton_posId":serviceChainingRuleListPage_createButton_posId,
+        "policyRuleListPage_createButton_posId":serviceChainingRuleListPage_createButton_posXpath,
         "policyRulePage_inputName_posXpath": serviceChainingRulePage_inputName_posXpath,
         # Target Traffic
         "policyRulePage_chooseTargetedTraffic_posXpath": serviceChainingRulePage_decryptedTrafficButton_posXpath,
@@ -724,16 +724,16 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
         "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
         # SFF Profile
-        "policyRulePage_addSFFProfile_posId": serviceChainingRulePage_addSFFProfile_posId,
+        "policyRulePage_addSFFProfile_posXpath": serviceChainingRulePage_addSFFProfile_posXpath,
         "policyRulePage_searchSFFProfile_posXpath":serviceChainingRulePage_searchSFFProfile_posXpath,
         "policyRulePage_selectSFFProfile_posXpath":serviceChainingRulePage_selectSFFProfile_posXpath,
         "policyRulePage_closeSFFProfile_posXpath":serviceChainingRulePage_closeSFFProfile_posXpath,
         "policyRulePage_enable_posXpath": serviceChainingRulePage_enable_posXpath,
-        "policyRulePage_okButton_yes_posId": serviceChainingRulePage_okButton_posId,
+        "policyRulePage_okButton_yes_posXpath": serviceChainingRulePage_okButton_posXpach,
         "policyRulePage_okButton_warningYes_posXpath": serviceChainingRulePage_warningYes_posXpath
     },
     "search": {
-        "policyRuleListPage_searchLable_posId": serviceChainingRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLable_posXpath": serviceChainingRuleListPage_searchLable_posXpath,
         "policyRuleListPage_searchLable_dropDown_item_posXpath": serviceChainingRuleListPage_searchLable_dropDown_item_posXpath,
         "policyRuleListPage_searchLable_input_itemContent_posXpath": serviceChainingRuleListPage_searchLable_input_itemContent_posXpath,
         "policyRuleListPage_searchLable_searchButton_posId": serviceChainingRuleListPage_searchLable_searchButton_posId,
@@ -741,7 +741,7 @@ test_service_chaining_rule_element_position = {
     },
     "delete": {
         "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
-        "policyRuleListPage_deleteButton_posId": serviceChainingRuleListPage_deleteButton_posId,
+        "policyRuleListPage_deleteButton_posId": serviceChainingRuleListPage_deleteButton_posXpath,
         "policyRuleListPage_okButton_warningYes_posXpath": serviceChainingRuleListPage_warningYes_posXpath
     }
 }
@@ -751,7 +751,7 @@ test_manipulation_rule_element_position = {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-        "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posXpath,
+        "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posId,
         "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_manipulation_posId
     },
     "create": {
@@ -962,7 +962,7 @@ test_security_rule_element_position = {
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-        "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
         "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_security_posId
     },
     "create": {
@@ -1052,7 +1052,7 @@ test_imsi_object_element_position = {
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-        "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
         "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
     },
     "create": {
@@ -1084,7 +1084,7 @@ test_phone_number_object_element_position = {
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                     # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                    "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
                     "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
                 },
                 "create": {
@@ -1114,7 +1114,7 @@ test_monitor_rule_element_position = {
                     "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                     "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                     "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                    "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posXpath,
+                    "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
                     "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_monitor_posId
                 },
                 "create": {
@@ -1387,7 +1387,7 @@ test_intercept_rule_element_position = {
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-        "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
         "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_intercept_posId
     },
     "create": {
@@ -1507,7 +1507,7 @@ test_statistics_rule_element_position = {
         "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-        "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posXpath,
+        "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
         "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_statistics_posId
     },
     "create": {
