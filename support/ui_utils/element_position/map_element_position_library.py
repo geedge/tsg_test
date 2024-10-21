@@ -730,7 +730,6 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_closeSFFProfile_posXpath":serviceChainingRulePage_closeSFFProfile_posXpath,
         "policyRulePage_enable_posXpath": serviceChainingRulePage_enable_posXpath,
         "policyRulePage_okButton_yes_posXpath": serviceChainingRulePage_okButton_posXpach,
-        "policyRulePage_okButton_yes_posId": serviceChainingRulePage_okButton_posId,
         "policyRulePage_okButton_warningYes_posXpath": serviceChainingRulePage_warningYes_posXpath
     },
     "search": {
