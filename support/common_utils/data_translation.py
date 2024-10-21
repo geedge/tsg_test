@@ -1462,15 +1462,13 @@ class DataTranslation:
                         "vsys_id": 1
                     }
                 }
-                for i in range(len(temp_profile)):
-                    temp["profile_type"] = temp_profile[i]["profile_type"]
-                    temp["traffic_mirror_profile"]["name"] = temp_profile[i]["name"]
-                    temp["traffic_mirror_profile"]["vlan_array"].append(str(temp_profile[i]["vlan_count"]))
-                # temp["name"] = temp_profile[i]["name"]
-                # temp["profile_type"] = temp_profile[i]["profile_type"]
-                # temp["vlan_array"].append(str(temp_profile[i]["vlan_count"]))
-                # temp["vlan_array"] = temp_profile[i]["vlan_count"]
+                vlan_count = temp_profile[i]["vlan_count"]  # 获取 vlan_count 的值
+                # 生成从 3 到 66 范围内的 vlan_count 个随机数
+                if vlan_count > 0:
+                    temp["traffic_mirror_profile"]["vlan_array"] = random.sample(range(3, 67), min(vlan_count,6))
+                temp["profile_type"] = temp_profile[i]["profile_type"]
                 profile.append(copy.deepcopy(temp))
+
         return profile
 
     def push_library_data(self, data):     # 组织library数据
