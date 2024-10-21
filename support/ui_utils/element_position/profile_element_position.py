@@ -706,6 +706,7 @@ shapingProfilePage_auditLogsPage_modificationPage_button_close_posXpath = "//*[@
 
 #Profiles Service Function Forwarders===================Profiles Service Function Forwarders====================Profiles Service Function Forwarders=================Profiles Service Function Forwarders=======================Profiles Service Function Forwarders
 #listPage->Service Function Forwarders list page  列表页
+mainPage_secondLevelMenu_serviceFunctionForwarders_posXpath = "//div[@class='MuiListItem-root MuiListItem-gutters menu-service-chaining css-1l56wwh']//span[text()='Service Function Forwarders']"
 listPage_profile_serviceFunctionForwarders_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"     #create按钮id
 listPage_profile_serviceFunctionForwarders_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"     #create按钮id
 listPage_profile_serviceFunctionForwarders_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #edit按钮id
@@ -761,17 +762,13 @@ serviceFunctionForwarders_button_cancel_posCss = "#runScriptCancel1 span"      #
 serviceFunctionForwarders_button_leaveOK_posXpath = "//div[@role='dialog']//button[contains(@class, 'operation-confirm-Leave')]"      #Cancel按钮
 
 # Profiles Service Functions===================Profiles Service Functions====================Profiles Service Functions=================Profiles Service Functions=======================Profiles Service Functions
+mainPage_secondLevelMenu_serviceFunctions_posXpath = "//div[@class='MuiListItem-root MuiListItem-gutters menu-service-chaining css-1l56wwh']//span[text()='Service Functions']"
 listPage_profileBottomPage_serviceFunctions_button_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//span[@class='MuiCheckbox-action css-kit57i']"
 listPage_profile_serviceFunctions_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"  
 listPage_profile_serviceFunctions_editButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Edit']"
 listPage_profile_serviceFunctions_delButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"  # del按钮id
 listPage_profileBottomPage_serviceFunctions_button_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//span[@class='MuiCheckbox-action css-kit57i']"
-listPage_profile_serviceFunctions_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"  
-listPage_profile_serviceFunctions_editButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Edit']"
-listPage_profile_serviceFunctions_delButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"  # del按钮id
 listPage_profile_serviceFunctions_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_Functions_Home_App_anonymousComponent"  # link按钮id
-listPage_profileColumn_serviceFunctions_button_columnAll_posXpath = "//div[@class='MuiDataGrid-columnsManagementFooter css-1l93brk']//span[@class='MuiCheckbox-checkbox MuiCheckbox-indeterminate css-28xynh']"  # 列选择Xpath按钮   列选择all按钮
-listPage_profileColumn_serviceFunctions_button_columnCancel_posXpath = listPage_profileColumn_serviceFunctions_button_columnAll_posXpath
 listPage_profileColumn_serviceFunctions_button_columnAll_posXpath = "//div[@class='MuiDataGrid-columnsManagementFooter css-1l93brk']//span[@class='MuiCheckbox-checkbox MuiCheckbox-indeterminate css-28xynh']"  # 列选择Xpath按钮   列选择all按钮
 listPage_profileColumn_serviceFunctions_button_columnCancel_posXpath = listPage_profileColumn_serviceFunctions_button_columnAll_posXpath
 listPage_profileColumn_serviceFunctions_button_cancel_posId = "dropColcancel-_ElementSet_Profile_Functions_Home_App_anonymousComponent"  # cancel按钮
