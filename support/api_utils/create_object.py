@@ -369,6 +369,7 @@ class CreateObject:
                 time1 = datetime.now()
                 #print(json.dumps(obj_template_dict))
                 response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
+                #print(response.json())
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(obj_template_dict['object']['type']), flush=True)
