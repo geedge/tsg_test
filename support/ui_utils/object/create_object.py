@@ -22,9 +22,9 @@ class CreateObject:
             page_jump.jump_sub_object_page(page_jump_element_position)
             # 点击creat
             time.sleep(10)
-            self.driver.find_element(By.XPATH, '//span[@class="action-create inline-flex mr-[8px] "]/button').click()
+            self.driver.find_element(By.XPATH, create_element_position["objectListPage_createButton_posXpath"]).click()
             time.sleep(1)
-            self.driver.find_element(By.XPATH, create_element_position["objectListPage_dropDown_createButton_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["objectListPage_dropDown_createButton_posXpath"]).click()
             time.sleep(1)
             # 输入name
             object_name = data["name"]
@@ -32,7 +32,7 @@ class CreateObject:
             # 添加item
             if data["object_type"] == "http_signature":
                 for i in range(len(data["item"])):
-                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
+                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_item_key_dropDown_posXpath"]).click()
                     temp_element_position = create_element_position["objectPage_item_key_dropDown_select_posXpath"].format(replaceValue=data["item"][i]["item_key"])
                     self.driver.find_element(By.XPATH, temp_element_position).click()
@@ -72,7 +72,7 @@ class CreateObject:
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] == "keywords":
                 for i in range(len(data["item"])):
-                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
+                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posXpath"]).click()
                     temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=data["item"][i]["item_value"])
                     self.driver.find_element(By.XPATH, temp_element_position).click()
                     if data["item"][i]["item_operation"] == "add":   # 直接 新增 模式
@@ -99,7 +99,7 @@ class CreateObject:
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] in ["url", "account", "phone_number", "fqdn", "subscriberid", "apn"]:
                 for i in range(len(data["items"])):   #
-                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
+                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posXpath"]).click()
                     if data["items"][i]["item_operation"] == "add":   # 直接 新增 模式
                         if "->" in data["items"][i]["item_value"]:   # -> 存在，需要拆分
                             item_value_str = data["items"][i]["item_value"].split("->")[0].strip()
@@ -134,7 +134,7 @@ class CreateObject:
             else:
                 for i in range(len(data["item"])):
                     if data["object_type"] == "ip":
-                        self.driver.find_element(By.XPATH, create_element_position["objectPage_ipType_posId"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_ipType_posXpath"]).click()
                     if data["item"][i]["item_type"] == "imsi":
                         self.driver.find_element(By.ID, create_element_position["objectPage_imsiType_posId"]).click()
                     elif data["item"][i]["item_type"] == "phone_number":
@@ -142,7 +142,7 @@ class CreateObject:
                     elif data["item"][i]["item_type"] == "imei":
                         self.driver.find_element(By.ID, create_element_position["objectPage_imeiType_posId"]).click()
                     if data["item"][i]["item_operation"] == "add":
-                        self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posId"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(data["item"][i]["item_value"])
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
 

@@ -88,14 +88,14 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posXpath
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_ipAddress_posXpath
                         },
                         "create": {
                             "objectListPage_createButton_posId": ipObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
-                            "objectPage_ipType_posId": ipObjectPage_ipType_posId,
-                            "objectPage_addItem_posId": ipObjectPage_addItem_posId,
+                            "objectPage_ipType_posXpath": ipobjectPage_ipType_posXpath,
+                            "objectPage_addItem_posXpath": ipobjectPage_addItem_posXpath,
                             "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
                             "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
                             "objectPage_okButton_posId": ipObjectPage_okButton_posId,
@@ -119,13 +119,13 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_fqdn_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_fqdn_posId
                         },
                         "create": {
                             "objectListPage_createButton_posId": fqdnObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": fqdnObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": fqdnObjectPage_inputName_posXpath,
-                            "objectPage_addItem_posId": fqdnObjectPage_addItem_posId,
+                            "objectPage_addItem_posXpath": fqdnobjectPage_addItem_posXpath,
                             "objectPage_inputItem_posXpath": fqdnObjectPage_inputItem_posXpath,
                             "objectPage_button_saveItem_posXpath": fqdnObjectPage_button_saveItem_posXpath,
                             "objectPage_okButton_posId": fqdnObjectPage_okButton_posId,
@@ -149,13 +149,13 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_url_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_url_posId
                         },
                         "create": {
                             "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
-                            "objectPage_addItem_posId": urlObjectPage_addItem_posId,
+                            "objectPage_addItem_posXpath": urlobjectPage_addItem_posXpath,
                             # item简单定位
                             "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
                             "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
@@ -180,14 +180,14 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_mobileIdentify_posId
                         },
                         "create": {
                             "objectListPage_createButton_posId": mobile_identitiesObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": mobile_identitiesObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": mobile_identitiesObjectPage_inputName_posXpath,
                             "objectPage_imsiType_posId": imsiObjectPage_imsiType_posId,
-                            "objectPage_addItem_posId": imsiObjectPage_addItem_posId,
+                            "objectPage_addItem_posXpath": imsiobjectPage_addItem_posXpath,
                             "objectPage_inputItem_posXpath": imsiObjectPage_inputItem_posXpath,
                             "objectPage_button_saveItem_posXpath": imsiObjectPage_button_saveItem_posXpath,
                             "objectPage_okButton_posId": imsiObjectPage_okButton_posId,
@@ -211,14 +211,14 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_mobileIdentify_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_mobileIdentify_posId
                         },
                         "create": {
                             "objectListPage_createButton_posId": mobile_identitiesObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": mobile_identitiesObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": mobile_identitiesObjectPage_inputName_posXpath,
                             "objectPage_phnoeNumberType_posId": phoneNumberObjectPage_phoneNumberType_posId,
-                            "objectPage_addItem_posId": phoneNumberObjectPage_addItem_posId,
+                            "objectPage_addItem_posXpath": phoneNumberobjectPage_addItem_posXpath,
                             "objectPage_inputItem_posXpath": phoneNumberObjectPage_inputItem_posXpath,
                             "objectPage_button_saveItem_posXpath": phoneNumberObjectPage_button_saveItem_posXpath,
                             "objectPage_okButton_posId": phoneNumberObjectPage_okButton_posId,
@@ -242,13 +242,13 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_httpSignature_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_httpSignature_posId
                         },
                         "create": {
                             "objectListPage_createButton_posId": httpSignatureObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": httpSignatureObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": httpSignatureObjectPage_inputName_posXpath,
-                            "objectPage_addItem_posId": httpSignatureObjectPage_addItem_posId,
+                            "objectPage_addItem_posXpath": httpSignatureobjectPage_addItem_posXpath,
                             "objectPage_item_key_dropDown_posXpath": httpSignatureObjectPage_item_key_dropDown_posXpath,
                             "objectPage_item_key_dropDown_select_posXpath": httpSignatureObjectPage_item_key_dropDown_select_posXpath,
                             "objectPage_item_value_select_posXpath": httpSignatureObjectPage_item_value_select_posXpath,
@@ -276,13 +276,13 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_port_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_port_posId
                         },
                         "create": {
                             "objectListPage_createButton_posId": portObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": portObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": portObjectPage_inputName_posXpath,
-                            "objectPage_addItem_posId": portObjectPage_addItem_posId,
+                            "objectPage_addItem_posXpath": portobjectPage_addItem_posXpath,
                             "objectPage_inputItem_posXpath": portObjectPage_inputItem_posXpath,
                             "objectPage_button_saveItem_posXpath": portObjectPage_button_saveItem_posXpath,
                             "objectPage_okButton_posId": portObjectPage_okButton_posId,
@@ -306,13 +306,13 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_keywords_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_keywords_posId
                         },
                         "create": {
                             "objectListPage_createButton_posId": keywordsObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": keywordsObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": keywordsObjectPage_inputName_posXpath,
-                            "objectPage_addItem_posId": keywordsObjectPage_addItem_posId,
+                            "objectPage_addItem_posXpath": keywordsobjectPage_addItem_posXpath,
                             "objectPage_item_value_select_posXpath": keywordsObjectPage_item_value_select_posXpath,
                             "objectPage_inputItem_posXpath": keywordsObjectPage_inputItem_posXpath,
                             "objectPage_item_value_plus_posXpath": keywordsObjectPage_item_value_plus_posXpath,
@@ -338,13 +338,13 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_account_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_account_posId
                         },
                         "create": {
                             "objectListPage_createButton_posId": accountObjectListPage_createButton_posId,
                             "objectListPage_dropDown_createButton_posId": accountObjectListPage_dropDown_createButton_posId,
                             "objectPage_inputName_posXpath": accountObjectPage_inputName_posXpath,
-                            "objectPage_addItem_posId": accountObjectPage_addItem_posId,
+                            "objectPage_addItem_posXpath": accountobjectPage_addItem_posXpath,
                             # item简单定位
                             "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
                             "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
@@ -404,7 +404,7 @@ class CreateSecurityPolicy:
                             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                             # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                             "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
-                            "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_security_posId
+                            "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_security_posId
                         },
                         "create": {
                             "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
