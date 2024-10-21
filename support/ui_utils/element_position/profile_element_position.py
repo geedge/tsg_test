@@ -24,10 +24,10 @@ mainPage_vsysTree_Vsys4_posXpath = "//article/div/ul//div[normalize-space(text()
 mainPage_vsysTree_Vsys5_posXpath = "//article/div/ul//div[normalize-space(text())='Vsys5']"
 #菜单栏================================菜单栏===================================菜单栏================================菜单栏==================================菜单栏========================菜单栏
 ##菜单栏
-mainPage_firstLevelMenu_profiles_posId = "Profiles"  # 一级菜单Profiles
+mainPage_firstLevelMenu_profiles_posId = '//span[@class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1cxrtde" and text()="Profiles"]'  # 一级菜单Profiles
 mainPage_secondLevelMenu_responsePages_posId = "Proxy_Profiles/Profile_ResponsePages"  # 二级菜单response pages
 mainPage_secondLevelMenu_dnsRecords_posId = "Proxy_Profiles/DNS_record_profile"  # 二级菜单dns records
-mainPage_secondLevelMenu_trafficMirroringProfiles_posId = "Proxy_Profiles/Profile_TrafficMirrorProfiles"  # 二级菜单traffic mirroring profiles
+mainPage_secondLevelMenu_trafficMirroringProfiles_posId = '//span[@class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1cxrtde" and text()="Traffic Mirroring Profiles"]'  # 二级菜单traffic mirroring profiles
 mainPage_secondLevelMenu_sslDecryptionKeyrings_posId = "Proxy_CertificateManagement/Certificate_Keyrings"  # 二级菜单ssl decryption keyrings
 mainPage_secondLevelMenu_sslDecryptionProfiles_posId = "Proxy_Profiles/Profile_DecryptionProfile"  # 二级菜单ssl decryption Profiles
 mainPage_secondLevelMenu_trustedCertificateAuthorities_posId = "Proxy_CertificateManagement/Certificate_Authorities"  # 二级菜单 Trusted Certificate Authorities
@@ -48,8 +48,8 @@ mainPage_secondLevelMenu_statisticsTemplates_posId = "Proxy_Profiles/statisticTe
 
 # Profiles 查询栏===================Profiles 查询栏=====================Profiles 查询栏=================Profiles 查询栏=======================Profiles 查询栏=================Profiles 查询栏
 ##profiles模块查询栏
-mainPage_profileSearch_selectLabel_posId = "select-label"  # 查询框id
-mainPage_profileSearch_buttonSearch_posId = "searchQuery"  # 查询按钮id
+mainPage_profileSearch_selectLabel_posId = '//input[@class="MuiAutocomplete-input css-qdyksh"]'  # 查询框id
+mainPage_profileSearch_buttonSearch_posId = '//div[@class="flex"]/button' # 查询按钮id
 mainPage_profileSearch_buttonClear_posId = "searchClear"  # 清空查询按钮id
 # profiles模块列设置
 mainPage_profileColumn_columnSetting_posId = "eventfixed"  # 列设置按钮
@@ -81,13 +81,13 @@ listPage_profileColumn_dnsRecords_button_ok_posId = "dropColOK-_ElementSet_DNSRe
 listPage_profileSearch_dnsRecords_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id
 listPage_profileSearch_dnsRecords_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id
 listPage_profileSearch_dnsRecords_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id
-listPage_profileSearch_dnsRecords_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"  # 下拉菜单定位
-listPage_profileSearch_dnsRecords_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceName}']/ancestor::div[contains(@class,'ListItem')]//input"  # 输入item的值，replaceName替换实际查询值
+listPage_profileSearch_dnsRecords_dropDown_item_posXpath = "//div[@class='dune-search-option-content']//span[contains(text(),'Name')]/ancestor::div[1]"  # 下拉菜单定位
+listPage_profileSearch_dnsRecords_input_itemContent_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'  # 输入item的值，replaceName替换实际查询值
 listPage_profileSearch_dnsRecords_dropDown_typeItem_posXpath = "//div[contains(@class,'select-popper')]//span[normalize-space(text())='{replaceName}']"  # 查询中type的下拉item定位,replaceName替换实际查询值
-listPage_profilTable_dnsRecords_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"  # 列表tabel body  xpath
+listPage_profilTable_dnsRecords_tableTbody_posXpath = '//div[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'  # 列表tabel body  xpath
 listPage_profilTable_dnsRecords_tableHeader_posXpath = "//div[contains(@class,'ly-table1')]//table[@class='el-table__header']//thead//tr"  # 列表table 表头xpath
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_dnsRecords_button_yes_posXpath = "//body/*[@class='el-dialog__wrapper']//*[contains(@class, 'delComponents-ok')]//span"  # 删除提示的Tips的yes按钮
+listPage_dialogTips_dnsRecords_button_yes_posXpath = 'ogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[1]'  # 删除提示的Tips的yes按钮
 listPage_dialogTips_dnsRecords_button_no_posXpath = "//body/*[@class='el-dialog__wrapper']//*[contains(@class, 'delComponents-close')]//span"  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_dnsRecords_input_clusterSelect_posXpath = "//*[@id='clusterId']/parent::*//span[@class='el-input__suffix']"  # cluster 下拉选择按钮
@@ -155,11 +155,11 @@ responsePage_button_cancel_posCss = "#responseAddCancel1-_interceptionadd_Home_A
 
 # Profiles traffic mirroring profiles===================Profiles traffic mirroring profiles====================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles=======================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles
 # listPage->traffic mirroring profiles list page  列表页
-listPage_profile_trafficMirroringProfiles_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # create按钮id
-listPage_profile_trafficMirroringProfiles_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # edit按钮id
-listPage_profile_trafficMirroringProfiles_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # del按钮id
+listPage_profile_trafficMirroringProfiles_createButton_posXpath = '//i[@class="iconfont icon-Create"]'  # create按钮id
+listPage_profile_trafficMirroringProfiles_editButton_posId = '//i[@class="iconfont icon-Editinpage"]'  # edit按钮id
+listPage_profile_trafficMirroringProfiles_delButton_posId = '//i[@class="iconfont icon-Delete"]'  # del按钮id
 listPage_profile_trafficMirroringProfiles_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # link按钮id
-listPage_profileColumn_trafficMirroringProfiles_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
+listPage_profileColumn_trafficMirroringProfiles_button_columnAll_posXpath = '//div[@class="MuiDataGrid-columnsManagementFooter css-1l93brk"]//input'  # 列选择All按钮
 listPage_profileColumn_trafficMirroringProfiles_button_cancel_posId = "dropColcancel-_ElementSet_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_trafficMirroringProfiles_button_ok_posId = "dropColOK-_ElementSet_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # ok按钮
 listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
@@ -178,13 +178,13 @@ listPage_linkTips_trafficMirroringProfiles_button_add_posXpath = "//*[@id='tempo
 listPage_linkTips_trafficMirroringProfiles_button_OK_posXpath = "//*[@id='copyOk-_copyComponents_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent']/span"    # OK 按钮 xpath
 # Create traffic mirroring profile page 和 Edit traffic mirroring profile page   新增和编辑页
 trafficMirroringProfiles_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-trafficMirroringProfiles_input_Name_posId = "trafficmirror_profileName"  # name输入框id
-trafficMirroringProfiles_button_vlanIdAdd_posCss = "#addrTypeAdd i"  # vlan id 添加按钮css
-trafficMirroringProfiles_input_vlanIdsInput_posXpath = "//form//div[contains(@class, 'addel-form')]//input"  # 所有显示的vlan id的所有input定位，需要通过value二次处理，css
+trafficMirroringProfiles_input_Name_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]'  # name输入框id
+trafficMirroringProfiles_button_vlanIdAdd_posXpath = "//i[@class=\"iconfont icon-Create1 font-[700]\"]"  # vlan id 添加按钮css
+trafficMirroringProfiles_input_vlanIdsInput_posXpath = '//input[@class="MuiInput-input css-1u0jcuo"]'  # 所有显示的vlan id的所有input定位，需要通过value二次处理，css
 trafficMirroringProfiles_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 trafficMirroringProfiles_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
-trafficMirroringProfiles_button_oK_posCss = "#trafficMirrorProfile_ok span"  # OK按钮css
-trafficMirroringProfiles_button_cancel_posCss = "#trafficMirrorProfile_cancel span"  # Cancel按钮
+trafficMirroringProfiles_button_oK_posXpath = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'  # OK按钮css
+trafficMirroringProfiles_button_cancel_posCss = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[2]'  # Cancel按钮
 
 # Profiles ssl decryption keyrings===================Profiles ssl decryption keyrings====================Profiles ssl decryption keyrings=================Profiles ssl decryption keyrings=======================Profiles ssl decryption keyrings
 # listPage->ssl decryption keyrings list page  列表页

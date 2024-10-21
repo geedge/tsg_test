@@ -24,7 +24,7 @@ class CreateObject:
             time.sleep(10)
             self.driver.find_element(By.XPATH, '//span[@class="action-create inline-flex mr-[8px] "]/button').click()
             time.sleep(1)
-            self.driver.find_element(By.XPATH, create_element_position["objectListPage_dropDown_createButton_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["objectListPage_dropDown_createButton_posXpath"]).click()
             time.sleep(1)
             # 输入name
             object_name = data["name"]

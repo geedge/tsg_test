@@ -15,10 +15,10 @@ mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//a
 
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
 language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']/.."#快捷切换语言按钮
-policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
-policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addSrcIP_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][1]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchSrcIP_posXpath = '//div[@class="px-[12px] py-[4px] flex"]//input'
+policyRulePage_selectSrcIP_posXpath = '//ul[@class="MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3"]//li[1]//span[@class="truncate"]'
+policyRulePage_closeSrcIP_posXpath = '//div[@class="absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]"]/button'
 policyRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']/span[1]"
 
 policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
@@ -31,10 +31,10 @@ policyRulePage_searchSrcPort_posXpath = "//div[@class='SourceList list-box']//in
 policyRulePage_selectSrcPort_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeSrcPort_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
-policyRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchApplication_posXpath = "//div[@class='AppList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectApplication_posXpath = '//div[@class="LocalationDraswer lstsub policy-right-show-edit v-draswer"]//li[1]//div[@class="row-content-cell"]'
-policyRulePage_closeApplication_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addApplication_posXpath = "//label[normalize-space(text())='Application']/following-sibling::div/button"
+policyRulePage_searchApplication_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
+policyRulePage_selectApplication_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeApplication_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 policyRulePage_selectApplicationLabel_posXpath = "//div[@class='el-tabs__nav is-top']//div[normalize-space(text())='Application']"
 policyRulePage_selectApplicationGroupLabel_posXpath = "//div[normalize-space(text())='Group']"
 policyRulePage_little_button_addApplication_posId = "policy_app_create-_AppSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_monitor_write_Home_App_anonymousComponent"
@@ -83,7 +83,7 @@ policyRulePage_chooseImei_posXpath = "//*[@id='tab-imei' and contains(concat(' '
 # apn
 policyRulePage_chooseApn_posXpath = "//*[@id='tab-apn' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'APN')]"
 
-policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
+policyRulePage_addCondition_posXpath = '//div[@class="flex flex-row"]//span'
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
 policyRulePage_addCondition_dstPort_posXpath = "//div[@class='SourceList list-box']//li[4]//div[normalize-space(text())='Port']"
@@ -93,12 +93,12 @@ policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList l
 policyRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Header']"
 policyRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Body']"
 policyRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Body']"
-policyRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addCondition_close_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_internalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[3]//div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[4]//div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[4]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[4]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='IP Protocol']"
 policyRulePage_addCondition_Boolean_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='{replaceValue}']"
 policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
@@ -173,40 +173,40 @@ policyRulePage_selectFtpContent_posXpath = "//ul[@class='row-container tableList
 policyRulePage_closeFtpContent_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 #mail from
-policyRulePage_addMailFrom_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='From']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchMailFrom_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectMailFrom_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeMailFrom_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addMailFrom_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchMailFrom_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_selectMailFrom_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeMailFrom_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail to
-policyRulePage_addMailTo_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='To']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchMailTo_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectMailTo_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeMailTo_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addMailTo_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchMailTo_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_selectMailTo_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeMailTo_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail account
-policyRulePage_addMailAccount_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Account']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchMailAccount_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectMailAccount_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeMailAccount_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addMailAccount_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchMailAccount_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_selectMailAccount_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeMailAccount_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail subject
-policyRulePage_addMailSubject_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Subject']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchMailSubject_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectMailSubject_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeMailSubject_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addMailSubject_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchMailSubject_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_selectMailSubject_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeMailSubject_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail attachment name
-policyRulePage_addMailAttachmentName_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Attachment Name']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchMailAttachmentName_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectMailAttachmentName_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeMailAttachmentName_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addMailAttachmentName_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchMailAttachmentName_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_selectMailAttachmentName_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeMailAttachmentName_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail attachment content
-policyRulePage_addMailAttachmentContent_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Attachment Content']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchMailAttachmentContent_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectMailAttachmentContent_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeMailAttachmentContent_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addMailAttachmentContent_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchMailAttachmentContent_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_selectMailAttachmentContent_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeMailAttachmentContent_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #add mail content
-policyRulePage_addMailContent_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Content']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchMailContent_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectMailContent_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeMailContent_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addMailContent_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchMailContent_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_selectMailContent_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeMailContent_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 # security
 securityRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
 securityRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_Objects_ProxyInterception_Home_App_anonymousComponent"
@@ -728,21 +728,21 @@ shapingRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-bu
 
 #monitor
 #monitor列表页按钮
-mainPage_policySecondLevelMenu_monitor_posId = "policy_monitor"
-monitorRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
-monitorRuleListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
-monitorRuleListPage_searchLable_posId = "select-label"
-monitorRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
-monitorRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
-monitorRuleListPage_searchLable_searchButton_posId = "searchQuery"
-monitorRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
-monitorRulelistPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
-monitorRuleListpage_okButton_warningYes_posXpath= "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
-monitorRuleListpage_okButton_warningNo_posXpath= "//button[@class='el-button delComponents-close el-button--info el-button--small']"
+mainPage_policySecondLevelMenu_monitor_posId = "//span[normalize-space(text())='Monitor']"
+monitorRuleListPage_createButton_posId = '//i[@class="iconfont icon-Create"]'
+monitorRuleListPage_deleteButton_posId = '//i[@class="iconfont icon-Delete"]'
+monitorRuleListPage_searchLable_posId = '//input[@class="MuiAutocomplete-input css-qdyksh"]'
+monitorRuleListPage_searchLable_dropDown_item_posXpath = "//div[@class='dune-search-option-content']//span[contains(text(),'{replaceValue}')]/ancestor::div[1]"   #下拉菜单定位
+monitorRuleListPage_searchLable_input_itemContent_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'   #输入item的值，replaceValue替换实际查询值
+monitorRuleListPage_searchLable_searchButton_posId = '//div[@class="flex"]/button'
+monitorRuleListPage_tableTbody_posXpath = '//div[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'
+monitorRulelistPage_allSelect_posXpath = '//div[@class="flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]"]//input[@class="MuiCheckbox-input css-1jj0cvj"]'
+monitorRuleListpage_okButton_warningYes_posXpath= '//div[@class="MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[1]'
+monitorRuleListpage_okButton_warningNo_posXpath= '//div[@class="MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[2]'
 #monitor新建页/编辑页面按钮
-monitorRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
-monitorRulePage_mirrorTrafficButton_posXpath ='//*[text()="Mirror Traffic"]/ancestor::div[@class="el-form-item el-form-item--small"]//*[@class="el-switch__core"]'
-monitorRulePage_packetCaptureButton_posXpath = '//*[text()="Packet Capture"]/ancestor::div[@class="el-form-item el-form-item--small"]//span[@class="el-switch__core"]'
+monitorRulePage_inputName_posXpath = '//div[@class="monitor-policy-name"]//input'
+monitorRulePage_mirrorTrafficButton_posXpath ='//*[text()="Mirror Traffic"]/ancestor::div[@class="MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw"]//*[@class="MuiSwitch-root MuiSwitch-sizeMedium css-wj9ris"]'
+monitorRulePage_packetCaptureButton_posXpath = '//*[text()="Packet Capture"]/ancestor::div[@class="MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw"]//*[@class="MuiSwitch-root MuiSwitch-sizeMedium css-wj9ris"]'
 monitorRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
 monitorRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 monitorRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
@@ -756,23 +756,23 @@ monitorRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicati
 monitorRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
 monitorRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 monitorRulePage_packetCapture_posXpath = "//form[@class='el-form policy_edit el-form--label-left']//div[17]//span"
-monitorRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labelStyle padding-left20 el-form-item--small']//input[@class='el-input__inner']"
+monitorRulePage_packetCapture_depth_posXpath = '//div[@class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-sizeSmall css-6a5w4u"]/input'
+monitorRulePage_logOptions_all_posXpath = '//div[@ class="monitor-policy-log_option"]//button[2]'
 monitorRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
-monitorRulePage_logOptions_all_posXpath = '//*[@id="monitor_log_options-_policy_monitor_write_Home_App_anonymousComponent"]//span[normalize-space(text())="All"]'
 ##monitor 添加profile的按钮
-monitorRulePage_addVLANIDButton_posXpath = '//*[text()="Add VLAN ID"]/ancestor::div[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//div[@class="el-switch"]'
-monitorRulePage_firstSelectMirrorProfile_posXpath='//*[@class="el-form-item padding-left20 Capture_Depth el-form-item--small"]//input[@class="el-input__inner"]'
-monitorRulePage_searchMirrorProfile_posXpath = '//input[@type="search"]'
-monitorRulePage_selectMirrorProfile_posXpath = "//li[@class='el-select-dropdown__item' and contains(text(),'{replaceValue}')]"
-monitorRulePage_addProfile_plusButton_posXpath= '(//i[@class="iconfont icon-Create1"])[last()]'
-monitorRulePage_addProfile_inputName_posXpath='//*[@id="trafficmirror_profileName"]'
-monitorRulePage_addProfile_inputVLANID_posXpath='//*[@id="trafficmirror_addrArray0"]'
-monitorRulePage_addProfile_addVLANID_plusButton_posXpath='//*[@id="addrTypeAdd"]/i'
-monitorRulePage_saveProile_ok_posXpath='//*[@id="trafficMirrorProfile_ok"]'
+monitorRulePage_addVLANIDButton_posXpath = '//div[@class="monitor-policy-vlanID"]'
+monitorRulePage_firstSelectMirrorProfile_posXpath='//div[@class="monitor-policy-mirror_profile"]//i'
+monitorRulePage_searchMirrorProfile_posXpath = '//div[@class="px-[12px] py-[4px] flex"]//input'
+monitorRulePage_selectMirrorProfile_posXpath = "//div[contains(@class, 'MuiListItemButton-root MuiListItemButton-colorNeutral MuiListItemButton-variantPlain css-18mv95p') and div[contains(text(), '{replaceValue}')]]"
+monitorRulePage_addProfile_plusButton_posXpath= '//i[@class="iconfont icon-Create1"]'
+monitorRulePage_addProfile_inputName_posXpath='//div[@class="[object Object]-name"]//input[@class="MuiInput-input css-fqt4w4"]'
+monitorRulePage_addProfile_inputVLANID_posXpath='//div[@class="[object Object]-value"]//input'
+monitorRulePage_addProfile_addVLANID_plusButton_posXpath='//div[@class="css-1v3ex2l"]/div[2]//i' #创建profile的时候多点了一步加号
+monitorRulePage_saveProile_ok_posXpath='//div[@class="MuiDrawer-content css-10lcz44"]//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]/button[1]'
 monitorRulePage_saveProile_warningYes_posXpath='//button[@class="el-button el-button--default el-button--small el-button--primary operation-confirm"]'
 #monitor新建页/编辑页按钮
-monitorRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
-monitorRulePage_okButton_posId = "OK-_policy_monitor_write_Home_App_anonymousComponent"
+monitorRulePage_enable_posXpath = '//*[text()="Enabled"]/ancestor::div[@class="MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw"]//*[@class="MuiSwitch-root MuiSwitch-sizeMedium css-wj9ris"]'
+monitorRulePage_okButton_posId = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]/button[1]'
 monitorRulePage_warningYes_posXpath =shapingRulePage_okButton_warningYes_posXpath
 monitorRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 #monitor add response header

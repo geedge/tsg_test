@@ -24,7 +24,7 @@ test_ip_object_element_position = {
     },
     "create": {
         "objectListPage_createButton_posId": ipObjectListPage_createButton_posXpath,
-        "objectListPage_dropDown_createButton_posId": ipObjectListPage_dropDown_createButton_posXpath,
+        "objectListPage_dropDown_createButton_posXpath": ipObjectListPage_dropDown_createButton_posXpath,
         "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
         "objectPage_ipType_posId": ipObjectPage_ipType_posXpath,
         "objectPage_addItem_posId": ipObjectPage_addItem_posXpath,
@@ -524,7 +524,7 @@ test_traffic_mirroring_profile_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_trafficMirroringProfiles_createButton_posXpath,
     },
     "search": {
         "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
@@ -1022,11 +1022,11 @@ test_monitor_profile_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_trafficMirroringProfiles_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_trafficMirroringProfiles_createButton_posId,
-        "profilePage_inputName_posId": trafficMirroringProfiles_input_Name_posId,
-        "profilePage_addLANID_posCss": trafficMirroringProfiles_button_vlanIdAdd_posCss,
+        "profileListPage_createButton_posXpath": listPage_profile_trafficMirroringProfiles_createButton_posXpath,
+        "profilePage_inputName_posXpath": trafficMirroringProfiles_input_Name_posXpath,
+        "profilePage_addLANID_posXpath": trafficMirroringProfiles_button_vlanIdAdd_posXpath,
         "trafficMirroringProfiles_input_vlanIdsInput_posXpath": trafficMirroringProfiles_input_vlanIdsInput_posXpath,
-        "profilePage_button_oK_posCss": trafficMirroringProfiles_button_oK_posCss,
+        "profilePage_button_oK_posXpath": trafficMirroringProfiles_button_oK_posXpath,
         "profilePage_button_cancel_posCss": trafficMirroringProfiles_button_cancel_posCss,
         "profilePage_button_warningSaveYes_posCss": trafficMirroringProfiles_button_warningSaveYes_posCss,
         # action

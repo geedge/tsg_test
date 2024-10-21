@@ -20,12 +20,12 @@ class PageJump:
         vsys_name:空值时，参数来自配置文件
         """
         # 菜单操作，先判断是否是当前Vsys再判断是否重新选择Vsys
-        btn = self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posCss"])
+        btn = self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_navigationBar_logo_posCss"])
         self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
         #self.change_vsys(vsys_name=vsys_name, page_jump_element_position=page_jump_element_position)   # 调整到页面登录时切换vsys
-        btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"])
+        btn = self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"])
         self.driver.execute_script("arguments[0].click()", btn)
-        btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"])
+        btn = self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"])
         self.driver.execute_script("arguments[0].click()", btn)
         # self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"]).click()
         # self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"]).click()
