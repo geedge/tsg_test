@@ -446,12 +446,13 @@ class DeletePolicy:
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
                     self.query_and_delete_by_name(temp_url, template, headers)
-                elif name_item["type"] in ["ip", "port", "url", "fqdn", "mobile_identity", "keywords", "account", "subscriberid"]:
+                elif name_item["type"] in ["ip", "port", "url", "fqdn", "mobile_identity", "keywords", "account", "subscriberid", "http_signature"]:
                     api_path_map = {
                         "ip": "ip-addresses",
                         "url": "urls",
                         "fqdn": "fqdns",
                         "keywords": "keywords",
+                        "http_signature": "keywords",
                         "subscriberid": "subscriber-ids",
                         "account": "accounts",
                         "mobile_identity": "mobile-identities",
@@ -469,6 +470,8 @@ class DeletePolicy:
                     temp_url = "{}/{}".format(obj_url, api_path_obj_type)
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
+                    if template['type'] == "http_signature":   #signature 更换位keyword
+                        template['type'] = "keyword"
                     if template['type'] == "keywords":
                         template['type'] = "keyword"
                     self.query_and_delete_by_name(temp_url, template, headers)
