@@ -966,9 +966,9 @@ test_security_rule_element_position = {
         "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_security_posId
     },
     "create": {
-        "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
+        # "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
         "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
-        "policyRulePage_selectAction_posId": securityRulePage_selectDeny_posId,
+        "policyRulePage_selectAction_posXpath": securityRulePage_selectDeny_posXpath,
         "policyRulePage_addConditionInternalPort_posXpath": securityRulePage_addCondition_internalPort_posXpath,
         "policyRulePage_addInternalPort_posXpath": securityRulePage_addInternalPort_posXpath,
         "policyRulePage_searchApplication_posXpath": securityRulePage_searchApplication_posXpath,
