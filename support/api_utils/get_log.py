@@ -387,7 +387,7 @@ class GetLog:
             "start_time": "",
             "end_time": "",
             "filter": "",
-            "vsys_id": 1
+            "vsys": 1
         }
         schema_type = "session_record"
         log_condition_dict = json.loads(json.dumps(log_condition))
@@ -395,7 +395,7 @@ class GetLog:
         log_condition_dict['columns'] = fields
         log_condition_dict['start_time'] = start_time
         log_condition_dict['end_time'] = end_time
-        log_condition_dict['vsys_id'] = v_id
+        log_condition_dict['vsys'] = v_id
         log_condition_dict['source'] = "session_record"
         log_condition_dict['identifier_name'] = "session-record-list"
         log_condition_dict['execution_mode'] = 'oneshot'
@@ -407,11 +407,11 @@ class GetLog:
                 log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts in (0)"
             else:
                 log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts in (0,1)"
-        url = api_host + "/v1/vsys{}/log/query".format(v_id)
+        url = api_host + "/v1/logs/query".format(v_id)
         response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
         assert response.status_code == 200
         log_list = json.loads(response.text)
-        log_list = log_list['data']['result']
+        log_list = log_list['data']['list']
         log_entry= log_list[0]
         # 获取 received_pkts 和 sent_pkts
         received_pkts = log_entry['received_pkts']
@@ -552,13 +552,13 @@ class GetLog:
                 counter = test_data[temp_counters]
             else:
                 counter = test_data['counters']
-            result_len = len(response['data']['result'])
+            result_len = len(response['data']['list'])
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare metric with test data.", flush=True)
             # 需要hits == 0时，则验证，验证通过metric置为true
             if 'hits' in counter and counter['hits'] == 0 and result_len == 0:
                 metric_result = True
             elif 'hits' in counter and result_len > 0:
-                metric = response['data']['result'][0]
+                metric = response['data']['list'][0]
                 if counter['hits'] == 1:
                     for key, value in counter.items():
                         # 接口返回的统计是否与预期的一致
@@ -790,7 +790,7 @@ class GetLog:
         post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
         post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
         post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
-        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_uuid = {} and template_uuid = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
+        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_uuid = {} and template_uuid = {} and chart_uuid = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
         if statistics_info["chart_type"] == "bar":
             variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
@@ -820,7 +820,7 @@ class GetLog:
         else:
             post_data_ori_dict_dsl.pop("limit")  # 不存在，暂时删除key
         post_data_ori_dict["dsl"] = post_data_ori_dict_dsl
-        post_data_ori_dict["vsys_id"] = vsys_id
+        post_data_ori_dict["vsys"] = vsys_id
         # 请求接口获取Metrics数据
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
