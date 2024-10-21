@@ -26,7 +26,7 @@ class CreateRule:
 
             # 点击create
             time.sleep(0.3)
-            self.driver.find_element(By.XPATH, create_element_position["policyRuleListPage_createButton_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRuleListPage_createButton_posXpath"]).click()
             
             # 输入name
             rule_name = test_data["rule_name"]
@@ -35,7 +35,7 @@ class CreateRule:
             
             # 选择action
             if test_data["policy_type"] == "security" or test_data["policy_type"] == "pxy_intercept" or test_data["policy_type"] == "dos_protection":
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posId"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posXpath"]).click()
             # 选择target traffic 
             elif test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
                 self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chooseTargetedTraffic_posXpath"]).click()
