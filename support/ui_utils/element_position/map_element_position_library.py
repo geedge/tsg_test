@@ -30,7 +30,7 @@ test_ip_object_element_position = {
         "objectPage_addItem_posXpath": ipObjectPage_addItem_posXpath,
         "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
         "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
-        "objectPage_okButton_posId": ipObjectPage_okButton_posXpath,
+        "objectPage_okButton_posXpath": ipObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath,
         "objectPage_statistics_select_posId": ObjectPage_statistics_select_posId,
         "objectPage_statistics_select_option_posXpath": ObjectPage_statistics_select_option_posXpath
@@ -42,7 +42,7 @@ test_ip_object_element_position = {
     },
     "delete": {
         "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
-        "objectListPage_deleteButton_posId": ipObjectListPage_deleteButton_posXpath,
+        "objectListPage_deleteButton_posXpath": ipObjectListPage_deleteButton_posXpath,
         "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
     }
 }

@@ -54,7 +54,7 @@ ipObjectListPage_searchLabel_selectName_posXpath = '//*[@class="MuiInput-input c
 ipObjectListPage_deleteButton_posXpath = '//*[@class="action-delete inline-flex mr-[8px] "]'
 ipObjectListPage_deleteButton_warningYes_posXpath = '//button[normalize-space(text())="Yes"]'
 ipObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
-ipObjectListPage_allSelect_posXpath = '(//*[@class="MuiCheckbox-action css-kit57i"]/parent::span)[last()]'
+ipObjectListPage_allSelect_posXpath = '(//*[@class="MuiCheckbox-action css-kit57i"]/parent::span)[last()]//input'
 ipObjectListPage_tableTbody_posXpath = '//*[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'
 ipObjectPage_inputName_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]' # name输入框Xpath
 ipObjectPage_ipType_posXpath = "//*[normalize-space(text())='IP']"

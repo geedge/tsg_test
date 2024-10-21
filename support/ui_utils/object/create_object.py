@@ -217,7 +217,7 @@ class CreateObject:
                     if len(group_exclude_data) > 1 and y < len(group_exclude_data) - 1:
                         self.driver.find_element(By.ID, create_element_position["groupObjectPage_addExcludeObject_posId"]).click()
             # 确认创建
-            self.driver.find_element(By.ID, create_element_position["objectPage_okButton_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
