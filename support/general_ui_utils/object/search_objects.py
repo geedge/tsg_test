@@ -56,7 +56,7 @@ class SearchObjects:
                 self.driver.find_element(By.XPATH, listPage_objectSearch_ip_address_select_IP_posXpath).click()
             elif "global" in search_type :
                 self.driver.find_element(By.ID, listPage_objectSearch_ip_address_selectLabel_posId).send_keys(search_value + Keys.ENTER)
-        self.driver.find_element(By.ID, mainPage_ObjectSearch_buttonSearch_posId).click()
+        self.driver.find_element(By.ID, mainPage_objectSearch_buttonSearch_posXpath).click()
         time.sleep(0.5)
         row = self.driver.find_elements(By.XPATH, "//div[contains(@class,'ly-table1')]//tbody/tr")
         if len(row) != 0:

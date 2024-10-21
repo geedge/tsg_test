@@ -1,6 +1,6 @@
-#mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
-mainPage_firstLevelMenu_dashboards_posCss = ".MuiList-root.MuiList-padding.css-1ontqvh .menu-dashboard .MuiListItemText-root.css-1nmt8ps"
-mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss    # 改为引用dashboard路径
+#mainPage_navigationBar_logo_posXpath = ".tsg-img-logo"
+mainPage_secondLevelMenu_ipAddress_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="IP Addresses"]'
+mainPage_navigationBar_logo_posXpath = mainPage_secondLevelMenu_ipAddress_posXpath    # 改为引用dashboard路径
 mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
 mainPage_logSearch_buttonSearch_posId = "searchQuery"  # 查询按钮id
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
