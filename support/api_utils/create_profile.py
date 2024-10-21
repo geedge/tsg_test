@@ -848,6 +848,24 @@ class CreateProfile:
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
+            elif profile_type == "ssl_keyring":
+                files = {"file": ("tango-ca-v3-trust-ca.cer", open(path_dict["profiles_ssl_keyring_path"], 'rb'), "text/plain")}
+                del profile_data["profile_type"]
+                # 添加vsys id
+                profile_data["vsys"] = vsys_id
+                url = "{}/v1/profiles/decryption-keyrings".format(api_host)
+                response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
+                response_dict = response.json()
+                profile_id = response_dict["data"]["ssl_keyring"]["uuid"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["uuid"] = profile_id
+                return create_profile_id_dict
             else:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added the other profile.")
         except AssertionError as e:

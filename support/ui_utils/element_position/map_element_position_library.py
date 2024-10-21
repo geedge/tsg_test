@@ -1715,6 +1715,8 @@ def get_name_list(test_data):
     tmp_name_dict["type"] = test_data["policy_type"]
     if tmp_name_dict["type"] == "pxy_manipulation":
         tmp_name_dict["type"] = "proxy_manipulation"
+    if tmp_name_dict["type"] == "pxy_intercept":
+        tmp_name_dict["type"] = "proxy_intercept"
     if "rule_name" in test_data:
         tmp_name_dict["name"] = test_data["rule_name"]
         name_list.append(copy.deepcopy(tmp_name_dict))

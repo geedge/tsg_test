@@ -1305,6 +1305,31 @@ class DataTranslation:
                         temp["chart_list"][t]["metrics"][k]["function"] = temp_profile["charts"][t]["metrics"][k].split(":")[1]
                 """
                 profile.append(temp)
+        elif policy_type == "pxy_intercept":
+            temp_profile = data["action_parameter"]
+            for k, v in temp_profile.items():
+                if len(v) == 0:
+                    continue
+                if k == "response_page":
+                    for t in range(len(v)):
+                        temp = {
+                            "profile_type": "response_page",
+                            "format": "html",
+                            "name": "auto_test_obj",
+                            "content_name": "testa.html",
+                            "return_data": 1
+                        }
+                        temp["name"] = v[t]["profile_file"]["name"]
+                        temp["content_name"] = v[t]["profile_file"]["file"]
+                        file_name = v[t]["profile_file"]["file"]
+                        if file_name.endswith(".html"):
+                            temp["format"] = "html"
+                        elif file_name.endswith(".htm"):
+                            temp["format"] = "htm"
+                        else:
+                            print("check file type: {}".format(file_name))
+                        profile.append(copy.deepcopy(temp))
+
         elif policy_type == "pxy_manipulation":
             temp_profile = data["action_parameter"]
             for k, v in temp_profile.items():

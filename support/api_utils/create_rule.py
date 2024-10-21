@@ -270,29 +270,37 @@ class CreatePolicyRule:
         # 添加intercept逻辑, 填写和Intercept相关的user_region
         elif condition["policy_type"] == "pxy_intercept":
             user_region = {"protocol": "", "tcp_option_profile": 1}
-            rule_template_dict["rule"]["type"] = condition["policy_type"]
+            rule_template_dict["rule"]["type"] = condition["policy_type"] = "proxy_intercept"
+
+            pre_intercept_path = path_dict["pre_intercept_template_path"]
+            # 新建intercept策略，只取source_list和dst_list
+            with open(pre_intercept_path, 'r', encoding='utf-8') as f:
+                pre_intercept_template = json.load(f)
+                keyring_for_untrusted = pre_intercept_template["rule"]["action_parameter"]["keyring_for_untrusted"]
+                keyring_for_trusted = pre_intercept_template["rule"]["action_parameter"]["keyring_for_trusted"]
+                decryption_profile = pre_intercept_template["rule"]["action_parameter"]["decryption_profile"]
+                tcp_option_profile = pre_intercept_template["rule"]["action_parameter"]["tcp_option_profile"]
+
+            # 获取原始api优先级的数据，重定义temp_application值
             temp_application = 'application_' + str(create_number)
             if temp_application in condition.keys():
-                if len(condition[temp_application]) == 0:
-                    user_region["protocol"] = ""
-                else:
-                    user_region["protocol"] = condition[temp_application][0]
-                    # 当且仅当application=ssl且action=intercept时, user_region包含解密profiles和解密kering
-                    if "ssl" in condition[temp_application][0] and action == "intercept":
-                        user_region["keyring_for_untrusted"] = 0
-                        user_region["keyring_for_trusted"] = 1
-                        user_region["decryption_profile"] = 1
-                        user_region["traffic_mirror"] = {"enable": 0}
+                temp_application = temp_application
             else:
-                if len(condition["application"]) == 0:
+                temp_application = "application"
+
+            if len(condition[temp_application]) == 0:
                     user_region["protocol"] = ""
-                else:
-                    user_region["protocol"] = condition["application"][0]
-                    if "ssl" in condition["application"][0] and action == "intercept":
-                        user_region["keyring_for_untrusted"] = 0
-                        user_region["keyring_for_trusted"] = 1
-                        user_region["decryption_profile"] = 1
-                        user_region["traffic_mirror"] = {"enable": 0}
+            else:
+                user_region["protocol"] = condition[temp_application][0]
+                # 当且仅当application=ssl且action=intercept时, user_region包含解密profiles和解密kering
+                if "ssl" in condition[temp_application][0] and action == "intercept":
+                    user_region["keyring_for_untrusted"] = keyring_for_untrusted
+                    user_region["keyring_for_trusted"] = keyring_for_trusted
+                    user_region["decryption_profile"] = decryption_profile
+                    user_region["tcp_option_profile"] = tcp_option_profile
+                    user_region["traffic_mirror"] = {"enable": 0}
+
+
             rule_template_dict["rule"]["action_parameter"] = user_region
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":

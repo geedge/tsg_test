@@ -247,8 +247,6 @@ class CreateInterceptPolicy:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run api test case", flush=True)
 
                 parameter["script_type"] = "api"
-                # 需要增加api逻辑
-                return 0
 
                 # 数据转换，适配API的test_data
                 translation = DataTranslation()
@@ -256,7 +254,6 @@ class CreateInterceptPolicy:
                 #print(test_data)
 
                 self.api_name_list = get_name_list(test_data)
-                self.api_name_list.insert(0, {'type': 'pxy_intercept', 'name': 'manipulation_pre_intercept'})
 
                 # 添加测试过程中涉及的template
                 template_path = {}
@@ -267,8 +264,8 @@ class CreateInterceptPolicy:
                 if "profile_condition" in test_data and len(test_data["profile_condition"]) > 0:
                     tmp_dir = parameter["root_path"] + "/support/ui_utils/profile/profile_file/"
                     profile_type = test_data["profile_condition"][0]["profile_type"].strip()
-                    if profile_type == "response_page":
-                        template_path["profiles_deny_path"] = tmp_dir + "response_pages/" + test_data["profile_condition"][0]["content_name"]
+                    if profile_type == "ssl_decryption_keyring":
+                        template_path["profiles_ssl_decryption_keyring_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][0]["content_name"]
                     elif profile_type == "hijack_files":
                         template_path["profiles_hijack_file_path"] = tmp_dir + "hijack_file/" + test_data["profile_condition"][0]["content_name"]
                     elif profile_type == "insert_profile":
