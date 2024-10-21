@@ -26,7 +26,7 @@ class CreateRule:
 
             # 点击create
             time.sleep(0.3)
-            self.driver.find_element(By.ID, create_element_position["policyRuleListPage_createButton_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRuleListPage_createButton_posId"]).click()
             
             # 输入name
             rule_name = test_data["rule_name"]
@@ -35,7 +35,7 @@ class CreateRule:
             
             # 选择action
             if test_data["policy_type"] == "security" or test_data["policy_type"] == "pxy_intercept" or test_data["policy_type"] == "dos_protection":
-                self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAction_posId"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posId"]).click()
             # 选择target traffic 
             elif test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
                 self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chooseTargetedTraffic_posXpath"]).click()
@@ -220,15 +220,15 @@ class CreateRule:
                         override_flag = True
                     is_first_iteration = True
                     for j in range(len(application_data)):
-                        if application_data[j]["object_type"] == "application":
-                            if test_data["policy_type"] == "pxy_intercept":
-                                pass    # intercept 不用点击 application 或 group
-                            else:
-                                if is_first_iteration:
-                                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationLabel_posXpath"]).click()
-                                else:
-                                    self.driver.find_element(By.ID,create_element_position["policyRulePage_little_button_addApplication_posId"]).click()
-                        elif application_data[j]["object_type"] == "application_group":
+                        # if application_data[j]["object_type"] == "application":
+                        #     if test_data["policy_type"] == "pxy_intercept":
+                        #         pass    # intercept 不用点击 application 或 group
+                        #     else:
+                        #         if is_first_iteration:
+                        #             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationLabel_posXpath"]).click()
+                        #         else:
+                        #             self.driver.find_element(By.ID,create_element_position["policyRulePage_little_button_addApplication_posId"]).click()
+                        if application_data[j]["object_type"] == "application_group":
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationGroupLabel_posXpath"]).click()
                         if test_data["policy_type"] == "pxy_intercept":  # intercept 中 application不用搜索，直接选择
                             app_name = application_data[j]["name"].strip()
@@ -821,7 +821,7 @@ class CreateRule:
 
             # 配置DoS的Threshold和Mitigation
             if test_data["policy_type"] == "dos_protection":
-                self.driver.find_element(By.ID, create_element_position["policyRulePage_thresholdType_posId"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_thresholdType_posId"]).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_groupBy_dropDownBox_posXpath"]).click()
                 if test_data["threshold"]["type"] == "rate":
                     if test_data["threshold"]["rate_threshold"]["group_by"] == "source_ip":
@@ -854,11 +854,12 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_concurrentSsessions_posXpath"]).send_keys(test_data["threshold"]["concurrency_threshold"]["concurrent_sessions"])
                 #self.driver.find_element(By.ID, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
                 if test_data["mitigation"]["behavior"] == "deny":
+                    self.driver.find_element(By.XPATH, dosRulePage_mitigationBehavior_deny_posId).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationTimeouts_dropDownBox_posXpath"]).click()
                     temp_mitigation_timeout_element_position = create_element_position["policyRulePage_mitigationTimeouts_select_posXpath"].format(replaceValue=test_data["mitigation"]["timeout"])
                     self.driver.find_element(By.XPATH, temp_mitigation_timeout_element_position).click()
                 elif test_data["mitigation"]["behavior"] == "none":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
 
             # other options 操作
             if test_data["policy_type"] == "pxy_manipulation":
@@ -878,8 +879,8 @@ class CreateRule:
             btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
             self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             # 确认创建
-            self.driver.find_element(By.ID, create_element_position["policyRulePage_okButton_yes_posId"]).click()
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_yes_posId"]).click()
+            #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)

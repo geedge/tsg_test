@@ -43,7 +43,7 @@ def run(parameter):
     
     # 删除配置
     delete = DeletePolicy()
-    delete.delele_policy_by_cfg(token, parameter, cfg_list)
+    delete.delele_policy_by_uuid(token, parameter, cfg_list)
             
 if __name__ == '__main__':
     parameter = {

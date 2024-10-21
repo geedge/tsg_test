@@ -1,13 +1,13 @@
 #mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
-mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
+mainPage_firstLevelMenu_dashboards_posCss = '(//span[@class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1cxrtde"])[1]'
 mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss    # 改为引用dashboard路径
-mainPage_policyFirstLevelMenu_posId = "policy"  # 一级菜单Policies
+mainPage_policyFirstLevelMenu_posXpath = "//*[normalize-space(text())='Policies']" # 一级菜单Policies
 mainPage_policySecondLevelMenu_security_posId = "Objects_ProxyInterception"
 mainPage_policySecondLevelMenu_intercept_posId = "policy_Intercept"  # 二级菜单intercept
 mainPage_policySecondLevelMenu_manipulation_posId = "policy_Manipulation"  # 二级菜单manipulatjion
 mainPage_policySecondLevelMenu_shaping_posId = "policy_trafficShaping"  # 二级菜单Shaping
 mainPage_policySecondLevelMenu_statistics_posId = "policy_statistics"  # 二级菜单Statistics
-mainPage_policySecondLevelMenu_dos_posId = "policy_DoSProtection"  # 二级菜单DoS Protection
+mainPage_policySecondLevelMenu_dos_posXpath = "//*[normalize-space(text())='DoS Protection']" # 二级菜单DoS Protection
 
 mainPage_button_menu_posXCss = ".menu-btn span"
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
@@ -630,20 +630,19 @@ manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
 manipulationRulePage_okButton_warningYes_posXpath = "//div[@class='el-message-box__btns']//button[contains(@class, 'el-button--primary')]"
 
 #service chaining
-mainPage_policySecondLevelMenu_servicechaining_posId = "policy_ServiceChaining"
+mainPage_policySecondLevelMenu_servicechaining_posXpath = "//span[normalize-space(text()) = 'Service Chaining']"
 
-serviceChainingRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_ServiceChaining_Home_App_anonymousComponent"
-serviceChainingRuleListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_policy_ServiceChaining_Home_App_anonymousComponent"
-serviceChainingRuleListPage_searchLable_posId = "select-label"
-serviceChainingRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
-serviceChainingRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
+serviceChainingRuleListPage_createButton_posXpath = "//span[@class='action-create inline-flex mr-[8px] ']"
+serviceChainingRuleListPage_deleteButton_posXpath = "//span[@class='action-edit inline-flex mr-[8px] ']"
+serviceChainingRuleListPage_searchLable_posXpath = "//div[@class='MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5']//input[@placeholder='Please enter search content']"
+serviceChainingRuleListPage_searchLable_dropDown_item_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[normalize-space(text())='{replaceValue} contains']"   #下拉菜单定位
+serviceChainingRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'flex-1 overflow-hidden')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'flex-1 overflow-hidden')]//input"   #输入item的值，replaceValue替换实际查询值
 serviceChainingRuleListPage_searchLable_searchButton_posId = "searchQuery"
-serviceChainingRuleListPage_selectRule_posXpath = "//div[contains(@class,'ly-table1')]//tbody//sapn[@class='el-checkbox__inner']"
-serviceChainingRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
+serviceChainingRuleListPage_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"
 
-serviceChainingRulePage_inputName_posXpath = "//*[@class='biFangName']//input" 
-serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small is-active']" 
-serviceChainingRulePage_decryptedTrafficButton_posXpath = "//div[@id='TargetedTraffic-group-_policy_service_chaining_write_Home_App_anonymousComponent']//label[@class='el-radio-button el-radio-button--small']" 
+serviceChainingRulePage_inputName_posXpath = "//*[@class='service-chaining-policy-name']//input" 
+serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@class='service-chaining-policy-targeted_traffic']//button[1]" 
+serviceChainingRulePage_decryptedTrafficButton_posXpath = "//div[@class='service-chaining-policy-targeted_traffic']//button[2]" 
 serviceChainingRulePage_negateSrcIP_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_negateDstIP_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_negateUser_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='User']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
@@ -658,18 +657,18 @@ serviceChainingRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpa
 serviceChainingRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 serviceChainingRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
 
-serviceChainingRulePage_addCondition_user_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='User']/parent::*//div[normalize-space(text())='User']"
+serviceChainingRulePage_addCondition_user_posXpath = "//div[normalize-space(text())='User']"
 serviceChainingRulePage_addUser_posXpath = policyRulePage_addUser_posXpath
 serviceChainingRulePage_searchUser_posXpath = policyRulePage_searchUser_posXpath
 serviceChainingRulePage_selectUser_posXpath = policyRulePage_selectUser_posXpath
 serviceChainingRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
 
-serviceChainingRulePage_addCondition_imsi_posXpath = "//div[@class='SourceList list-box']/parent::*//div[normalize-space(text())='Device']"
+serviceChainingRulePage_addCondition_imsi_posXpath = "div[normalize-space(text())='Device']"
 
-serviceChainingRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
-serviceChainingRulePage_searchDstIP_posXpath =  "//div[@class='destinations list-box']//div[contains(@class, 'object-item-seach')]//input"
-serviceChainingRulePage_selectDstIP_posXpath = "//div[@class='destinations list-box']//span[normalize-space(text())='{replaceValue}']"
-serviceChainingRulePage_closeDstIP_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+serviceChainingRulePage_addDstIP_posXpath = "//label[normalize-space()='Destination']/ancestor::div[@class='MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby']//i[@class='iconfont icon-Create1 font-[700]']"
+serviceChainingRulePage_searchDstIP_posXpath =  "//input[@class='MuiInput-input css-za5rna']"
+serviceChainingRulePage_selectDstIP_posXpath = "//div[@class='pt-[2px] overflow-hidden flex-1']//span[normalize-space(text())='{replaceValue}']"
+serviceChainingRulePage_closeDstIP_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button"
 
 serviceChainingRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 serviceChainingRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
@@ -686,15 +685,15 @@ serviceChainingRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerF
 serviceChainingRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
 serviceChainingRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 
-serviceChainingRulePage_addSFFProfile_posId = "policy_sff_add-_SFFSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_service_chaining_write_Home_App_anonymousComponent"
-serviceChainingRulePage_searchSFFProfile_posXpath = "//div[@class='SFFList list-box']//input"
-serviceChainingRulePage_selectSFFProfile_posXpath = "//div[@class='SFFList list-box']//span[@class='ellipsis list-popover-click' and text()='{replaceValue}']"
-serviceChainingRulePage_closeSFFProfile_posXpath = "//div[@class='SFFList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
-serviceChainingRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
-serviceChainingRulePage_okButton_posId = "OK-_policy_service_chaining_write_Home_App_anonymousComponent"
+serviceChainingRulePage_addSFFProfile_posXpath = "//label[normalize-space(text())='SFF Profile']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i[@class='iconfont icon-Create1 font-[700]']"
+serviceChainingRulePage_searchSFFProfile_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//input[@class='MuiInput-input css-za5rna']"
+serviceChainingRulePage_selectSFFProfile_posXpath = "//div[@class='pt-[2px] overflow-hidden flex-1']//div[text()='{replaceValue}']"
+serviceChainingRulePage_closeSFFProfile_posXpath = serviceChainingRulePage_closeDstIP_posXpath
+serviceChainingRulePage_enable_posXpath = "//div[@class='service-chaining-policy-is_enabled']//span[@class='MuiTouchRipple-root css-w0pj6f']"
+serviceChainingRulePage_okButton_posXpach = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[1]"
 serviceChainingRulePage_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 serviceChainingRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
-serviceChainingRulePage_addConditionQname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='QNAME']"
+serviceChainingRulePage_addConditionQname_posXpath = "//div[normalize-space(text())='QNAME']"
 
 # shaping
 shapingRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_trafficShaping_Home_App_anonymousComponent"
@@ -997,53 +996,54 @@ statisticsRulePage_rightInfo_hitCount_posXpath = "//form[@class='el-form paper-g
 statisticsRulePage_rightInfo_72hoursHitCount_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[5]//td[2]"#//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr/td[2]
 
 # DoS Protection
-dosRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
-dosRuleListPage_editButton_posId = "appEdit-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
-dosRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_DoSProtection_Home_App_anonymousComponent"
-dosRuleListpage_okButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+dosRuleListPage_createButton_posId = '//*[@class="action-create inline-flex mr-[8px] "]'
+dosRuleListPage_editButton_posId = '//*[@class="action-edit inline-flex mr-[8px] "]'
+dosRuleListPage_deleteButton_posId ='//*[@class="action-delete inline-flex mr-[8px] "]'
+dosRuleListpage_okButton_warningYes_posXpath = '//div[@class="MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]//button[normalize-space(text())="Yes"]'
 dosRuleListpage_okButton_warningNo_posXpath = "//button[@class='el-button delComponents-close el-button--info el-button--small']"
-dosRuleListPage_searchLable_posId = "select-label"
-dosRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
-dosRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
-dosRuleListPage_searchLable_searchButton_posId = "searchQuery"
-dosRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
-dosRuleListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
+dosRuleListPage_searchLable_posId = '//*[@class="MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5"]'
+dosRuleListPage_searchLable_dropDown_item_posXpath = '//span[normalize-space(text())="{replaceValue}"]/../..'   #下拉菜单定位
+dosRuleListPage_searchLable_input_itemContent_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'  #输入item的值，replaceValue替换实际查询值
+dosRuleListPage_searchLable_searchButton_posXpath = '//*[@class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w"]'
+dosRuleListPage_tableTbody_posXpath = '//*[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'
+dosRuleListPage_allSelect_posXpath = '(//*[@class="MuiCheckbox-action css-kit57i"]/parent::span)[last()]'
 
-dosRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
-dosRulePage_selectShunt_posId = "protectprotect"
-dosRulePage_selectDeny_posId = "denydeny"
-dosRulePage_selectAllow_posId = "allowallow"
+dosRulePage_inputName_posXpath = '//*[@class="MuiInput-input css-fqt4w4"]'
+dosRulePage_selectShunt_posId ='//button[normalize-space(text())="Protect"]'
+dosRulePage_selectDeny_posId = "(//button[normalize-space(text())='Deny'])[1]"
+dosRulePage_selectAllow_posId = "//button[normalize-space(text())='Allow']"
 
-dosRulePage_addSrcIP_posXpath = policyRulePage_addSrcIP_posXpath
-dosRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
-dosRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
-dosRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
+dosRulePage_addApplication_posXpath = "//label[normalize-space(text())='Application']/following-sibling::div/button"
+dosRulePage_searchApplication_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
+dosRulePage_selectApplication_posXpath = '//ul[@class="MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3"]//li[1]//span[@class="truncate"]'
+dosRulePage_closeApplication_posXpath ='//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
+dosRulePage_selectApplicationLabel_posXpath = ''
 
-dosRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
-dosRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
-dosRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
-dosRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
-dosRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
+dosRulePage_addSrcIP_posXpath = "(//label[normalize-space(text())='IP Address']/following-sibling::div/button)[1]"
+dosRulePage_searchSrcIP_posXpath = dosRulePage_searchApplication_posXpath
+dosRulePage_selectSrcIP_posXpath = dosRulePage_selectApplication_posXpath
+dosRulePage_closeSrcIP_posXpath = dosRulePage_closeApplication_posXpath
 
-dosRulePage_thresholdRateType_posId = "custom0-_Counting_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
-dosRulePage_thresholdConcurrencyType_posId = "custom1-_Counting_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
-dosRulePage_groupBy_dropDownBox_posXpath = "//label[normalize-space(text())='Group By']/parent::*//i"
-dosRulePage_groupBy_select_posXpath = "//li//span[normalize-space(text())='{replaceValue}']"
+dosRulePage_thresholdRateType_posId = "//button[normalize-space(text())='Rate']"
+dosRulePage_thresholdConcurrencyType_posId = "//button[normalize-space(text())='Concurrency']"
+dosRulePage_groupBy_dropDownBox_posXpath = '//*[@class="dos-protection-policy-group_by"]'
+dosRulePage_groupBy_select_posXpath = "//li[normalize-space(text())='{replaceValue}']"
 dosRulePage_requestPerPeriod_posXpath = "//label[normalize-space(text())='Request Per Period']/parent::*//input"
-dosRulePage_countingPeriod_dropDownBox_posXpath = "//label[normalize-space(text())='Counting Period']/parent::*//i"
-dosRulePage_countingPeriod_select_posXpath = "//div[@x-placement='bottom-start']//li//span[normalize-space(text())='{replaceValue}']"
+dosRulePage_countingPeriod_dropDownBox_posXpath = '//*[@class="dos-protection-policy-counting_period"]'
+dosRulePage_countingPeriod_select_posXpath =  "//ul[@class='base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1']//li[normalize-space(text())='{replaceValue}']"
 dosRulePage_concurrentSsessions_posXpath = "//label[normalize-space(text())='Concurrent Sessions']/parent::*//input"
 
-dosRulePage_mitigationBehavior_deny_posId = "custom0-_ActionParameters_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
-dosRulePage_mitigationBehavior_none_posId = "custom1-_ActionParameters_ElForm_VPanel_VEditPanel_Dos_protection_edit_Home_App_anonymousComponent"
-dosRulePage_mitigationTimeouts_dropDownBox_posXpath = "//label[normalize-space(text())='Mitigation Timeouts']/parent::*//i"
-dosRulePage_mitigationTimeouts_select_top_posXpath = "//div[@x-placement='top-start']//li//span[normalize-space(text())='{replaceValue}']"
-dosRulePage_mitigationTimeouts_select_bottom_posXpath = "//div[@x-placement='bottom-start']//li//span[normalize-space(text())='{replaceValue}']"
+dosRulePage_mitigationBehavior_deny_posId = "(//button[normalize-space(text())='Deny'])[last()]"
+dosRulePage_mitigationBehavior_none_posId = "//button[normalize-space(text())='None']"
+dosRulePage_mitigationTimeouts_dropDownBox_posXpath = "//label[normalize-space(text())='Mitigation Timeouts']/parent::*//button"
+policyRulePage_mitigationTimeouts_select_posXpath =  "//ul[@class='base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1']//li[normalize-space(text())='{replaceValue}']"
+dosRulePage_mitigationTimeouts_select_top_posXpath = policyRulePage_mitigationTimeouts_select_posXpath
+dosRulePage_mitigationTimeouts_select_bottom_posXpath =policyRulePage_mitigationTimeouts_select_posXpath
 
-dosRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
-dosRulePage_ok_posId = "OK-_Dos_protection_edit_Home_App_anonymousComponent"
+dosRulePage_enable_posXpath = '//*[@class="dos-protection-policy-is_enabled"]'
+dosRulePage_ok_posId = "//button[normalize-space(text())='OK']"
 dosRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
-dosRulePage_cancel_posId = "Cancle-_Dos_protection_edit_Home_App_anonymousComponent"
+dosRulePage_cancel_posId = "//button[normalize-space(text())='Cancel']"
 
-policyRulePage_mitigationTimeouts_select_posXpath =  "//div[@x-placement='top-start']//span[normalize-space(text())='{replaceValue}']  | //div[@x-placement='bottom-start']//span[normalize-space(text())='{replaceValue}']"
+
 

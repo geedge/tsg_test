@@ -17,7 +17,7 @@ class DeleteObject:
                 self.select_lock_and_referenceCount(rows)
             else:
                 first_row_checkbox_element.click()
-            self.driver.find_element(By.ID, delete_element_position["objectListPage_deleteButton_posId"]).click()
+                self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_posId"]).click()
             self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(3)
             return 200

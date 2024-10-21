@@ -107,7 +107,7 @@ class CreateObjects:
                 "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
                 "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                 "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
+                "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
                 "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
             },
             "create":{
@@ -460,7 +460,7 @@ class CreateObjects:
                 result["api_result"] = api_result
                 # 删除配置
                 delete = DeletePolicy()
-                #delete.delele_policy_by_cfg(token, parameter, cfg_list)
+                #delete.delele_policy_by_uuid(token, parameter, cfg_list)
 
         return result
 

@@ -10,8 +10,7 @@
         },
         "admin_status":1,
         "connectivity":{
-            "method":"vxlan_g",
-            "dest_ip":"2.2.22.22"
+            "method":"vxlan_g"
         },
         "health_check":{
             "method":"none"

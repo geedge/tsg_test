@@ -10,7 +10,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 from support.api_utils.log_in import LogIn
 
 class DeletePolicy:    
-    def delele_policy_by_cfg(self, token, parameter, cfg_list):
+    def delete_policy(self, parameter, configured_policy):
+        self.delele_policy_by_uuid(configured_policy["token"], parameter, configured_policy["cfg_list"])
+        self.delete_policy_by_name(configured_policy["token"], parameter)
+    
+    def delele_policy_by_uuid(self, token, parameter, cfg_list):
         try:
             headers = {"Authorization": token}
             api_server = parameter["api_server"]

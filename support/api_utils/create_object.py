@@ -112,7 +112,7 @@ class CreateObject:
                                 create_port_ids.extend(self.port_ids)
                                 cfg_list["create_port_ids"] = create_port_ids
                             delete = DeletePolicy()
-                            delete.delele_policy_by_cfg(token, parameter, cfg_list)
+                            delete.delele_policy_by_uuid(token, parameter, cfg_list)
 
         condition_ids_by_api_dict["src_list"] = source_list
         condition_ids_by_api_dict["dst_list"] = dst_list

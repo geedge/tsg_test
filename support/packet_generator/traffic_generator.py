@@ -21,8 +21,8 @@ from support.packet_generator.unordered_tcp_player import UnorderedTcpPlayer
 from support.packet_generator.workpath import workdir
 from datetime import datetime
 
-class SendTraffic:
-    def send_traffic(self, parameter, test_data):
+class TrafficGenerator:
+    def generate_traffic(self, parameter, test_data):
         script_type = parameter["script_type"]
         debug_flag = ""
         if "debug_flag" in parameter.keys():
@@ -179,7 +179,7 @@ class SendTraffic:
                     else:
                         test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
                         test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
-            if "library_condition" in test_data:
+            if "library_condition" in test_data.keys():
                 for ip_item in test_data["library_condition"]:
                         if "ATTR_SOURCE_IP" in ip_item.values():
                             if "-" in ip_item["library"][0]["catalogs"][0]["ip_entries"]:
@@ -294,5 +294,5 @@ if __name__ == "__main__":
             },
         "token": ""
     }
-    sender = SendTraffic()
-    result = sender.send_traffic(parameter, test_data)
+    sender = TrafficGenerator()
+    result = sender.generate_traffic(parameter, test_data)

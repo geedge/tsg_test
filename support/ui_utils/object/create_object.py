@@ -20,9 +20,11 @@ class CreateObject:
             # 页面跳转
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_object_page(page_jump_element_position)
-            # 点击create
-            self.driver.find_element(By.ID, create_element_position["objectListPage_createButton_posId"], find_after_wait_time=0.5).click()
-            self.driver.find_element(By.ID, create_element_position["objectListPage_dropDown_createButton_posId"]).click()
+            # 点击creat
+            time.sleep(10)
+            self.driver.find_element(By.XPATH, '//span[@class="action-create inline-flex mr-[8px] "]/button').click()
+            time.sleep(1)
+            self.driver.find_element(By.XPATH, create_element_position["objectListPage_dropDown_createButton_posId"]).click()
             time.sleep(1)
             # 输入name
             object_name = data["name"]
@@ -132,7 +134,7 @@ class CreateObject:
             else:
                 for i in range(len(data["item"])):
                     if data["object_type"] == "ip":
-                        self.driver.find_element(By.ID, create_element_position["objectPage_ipType_posId"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_ipType_posId"]).click()
                     if data["item"][i]["item_type"] == "imsi":
                         self.driver.find_element(By.ID, create_element_position["objectPage_imsiType_posId"]).click()
                     elif data["item"][i]["item_type"] == "phone_number":
@@ -140,7 +142,7 @@ class CreateObject:
                     elif data["item"][i]["item_type"] == "imei":
                         self.driver.find_element(By.ID, create_element_position["objectPage_imeiType_posId"]).click()
                     if data["item"][i]["item_operation"] == "add":
-                        self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posId"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posId"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(data["item"][i]["item_value"])
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
 
@@ -155,8 +157,8 @@ class CreateObject:
                     self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                     self.driver.execute_script("arguments[0].click();", element_dropdown_item)
             # 确认创建
-            self.driver.find_element(By.ID, create_element_position["objectPage_okButton_posId"]).click()
-            self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posId"]).click()
+            #self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
