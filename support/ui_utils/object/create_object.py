@@ -157,7 +157,7 @@ class CreateObject:
                     self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
                     self.driver.execute_script("arguments[0].click();", element_dropdown_item)
             # 确认创建
-            self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
             #self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
