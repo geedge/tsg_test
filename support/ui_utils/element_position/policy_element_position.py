@@ -84,7 +84,7 @@ policyRulePage_chooseImei_posXpath = "//*[@id='tab-imei' and contains(concat(' '
 # apn
 policyRulePage_chooseApn_posXpath = "//*[@id='tab-apn' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'APN')]"
 
-policyRulePage_addCondition_posXpath = '//div[@class="flex flex-row"]//span'
+policyRulePage_addCondition_posXpath = '//div[@class="flex flex-row"]//button'
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
 policyRulePage_addCondition_dstPort_posXpath = "//div[@class='SourceList list-box']//li[4]//div[normalize-space(text())='Port']"
@@ -108,13 +108,13 @@ policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='SourceList list
 policyRulePage_addCondition_cn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='CN']"
 policyRulePage_addCondition_san_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='SAN']"
 policyRulePage_addCondition_qname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='QNAME']"
-policyRulePage_addCondition_mailSubject_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Subject']"
-policyRulePage_addCondition_mailContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Content']"
-policyRulePage_addCondition_mailFrom_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='From']"
-policyRulePage_addCondition_mailTo_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='To']"
-policyRulePage_addCondition_mailAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
-policyRulePage_addCondition_mailAttachmentName_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Attachment Name']"
-policyRulePage_addCondition_mailAttachmentContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Attachment Content']"
+policyRulePage_addCondition_mailSubject_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Subject']"
+policyRulePage_addCondition_mailContent_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Content']"
+policyRulePage_addCondition_mailFrom_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='From']"
+policyRulePage_addCondition_mailTo_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='To']"
+policyRulePage_addCondition_mailAccount_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Account']"
+policyRulePage_addCondition_mailAttachmentName_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Attachment Name']"
+policyRulePage_addCondition_mailAttachmentContent_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Attachment Content']"
 
 policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -175,37 +175,37 @@ policyRulePage_closeFtpContent_posXpath = "//div[@class='FilterList list-box']//
 
 #mail from
 policyRulePage_addMailFrom_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchMailFrom_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_searchMailFrom_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectMailFrom_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
 policyRulePage_closeMailFrom_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail to
 policyRulePage_addMailTo_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchMailTo_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_searchMailTo_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectMailTo_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
 policyRulePage_closeMailTo_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail account
 policyRulePage_addMailAccount_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchMailAccount_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_searchMailAccount_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectMailAccount_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
 policyRulePage_closeMailAccount_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail subject
 policyRulePage_addMailSubject_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchMailSubject_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_searchMailSubject_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectMailSubject_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
 policyRulePage_closeMailSubject_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail attachment name
 policyRulePage_addMailAttachmentName_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchMailAttachmentName_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_searchMailAttachmentName_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectMailAttachmentName_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
 policyRulePage_closeMailAttachmentName_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #mail attachment content
 policyRulePage_addMailAttachmentContent_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchMailAttachmentContent_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_searchMailAttachmentContent_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectMailAttachmentContent_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
 policyRulePage_closeMailAttachmentContent_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 #add mail content
 policyRulePage_addMailContent_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchMailContent_posXpath = '//input[@class="MuiInput-input css-za5rna"]'
+policyRulePage_searchMailContent_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectMailContent_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
 policyRulePage_closeMailContent_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 # security
@@ -729,13 +729,13 @@ shapingRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-bu
 
 #monitor
 #monitor列表页按钮
-mainPage_policySecondLevelMenu_monitor_posId = "//span[normalize-space(text())='Monitor']"
-monitorRuleListPage_createButton_posId = '//i[@class="iconfont icon-Create"]'
-monitorRuleListPage_deleteButton_posId = '//i[@class="iconfont icon-Delete"]'
-monitorRuleListPage_searchLable_posId = '//input[@class="MuiAutocomplete-input css-qdyksh"]'
+mainPage_policySecondLevelMenu_monitor_posXpath = "//span[normalize-space(text())='Monitor']"
+monitorRuleListPage_createButton_posXpath = '//i[@class="iconfont icon-Create"]'
+monitorRuleListPage_deleteButton_posXpath = '//i[@class="iconfont icon-Delete"]'
+monitorRuleListPage_searchLable_posXpath = '//input[@class="MuiAutocomplete-input css-qdyksh"]'
 monitorRuleListPage_searchLable_dropDown_item_posXpath = "//div[@class='dune-search-option-content']//span[contains(text(),'{replaceValue}')]/ancestor::div[1]"   #下拉菜单定位
 monitorRuleListPage_searchLable_input_itemContent_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'   #输入item的值，replaceValue替换实际查询值
-monitorRuleListPage_searchLable_searchButton_posId = '//div[@class="flex"]/button'
+monitorRuleListPage_searchLable_searchButton_posXpath = '//div[@class="flex"]/button'
 monitorRuleListPage_tableTbody_posXpath = '//div[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'
 monitorRulelistPage_allSelect_posXpath = '//div[@class="flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]"]//input[@class="MuiCheckbox-input css-1jj0cvj"]'
 monitorRuleListpage_okButton_warningYes_posXpath= '//div[@class="MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[1]'

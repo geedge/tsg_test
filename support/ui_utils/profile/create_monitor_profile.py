@@ -28,6 +28,7 @@ class CreateMonitorProfile():
             # 页面跳转
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_profile_page(page_jump_element_position)
+            time.sleep(1)
             self.driver.find_element(By.XPATH, create_element_position["profileListPage_createButton_posXpath"]).click()
             # 在create 创建页面操作
             self.my_random = RandomName()
@@ -83,11 +84,11 @@ class CreateMonitorProfile():
             for element_vlan_id in elements_vlan_ids_input:
                 if element_vlan_id.get_attribute("value") == "":  # 创建时，只是往input.value=none中键入数据
                     element_pos_by_id = element_vlan_id.get_attribute("id")
-                    # input_element = self.driver.find_element(By.ID, element_pos_by_id)
-                    # for char in str(vlan_ids_create[j]):
-                    #     input_element.send_keys(char)  # 逐个字符输入
-                    #     time.sleep(0.1)
-                    self.driver.find_element(By.ID, element_pos_by_id).send_keys(vlan_ids_create[j])  # 输入vlan id的值
+                    input_element = self.driver.find_element(By.ID, element_pos_by_id)
+                    for char in str(vlan_ids_create[j]):
+                        input_element.send_keys(char)  # 逐个字符输入
+                        time.sleep(0.1)
+                    #self.driver.find_element(By.ID, element_pos_by_id).send_keys(vlan_ids_create[j])  # 输入vlan id的值
                     self.driver.find_element(By.XPATH, "//label[text()='VLAN ID']").click()
                     if "reverse_case" in data.keys():  # 其它字符判断条件使用
                         error_vlan_id = ""

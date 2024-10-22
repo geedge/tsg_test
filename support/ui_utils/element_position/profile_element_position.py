@@ -48,6 +48,7 @@ mainPage_secondLevelMenu_serviceFunctionForwarders_posId = "Proxy_Profiles/Servi
 mainPage_secondLevelMenu_serviceFunctions_posId = "Proxy_Profiles/ServiceFunctionProfile"  # 二级菜单service functions
 mainPage_secondLevelMenu_statisticsTemplates_posXpath = "//*[normalize-space(text())='Statistics Templates']"  # 二级菜单statistics templates
 mainPage_secondLevelMenu_statisticsTemplates_Name = "Statistics Templates"  # 二级菜单statistics templates
+mainPage_secondLevelMenu_trafficTemplates_Name = "Traffic Mirroring Profiles"
 
 
 # Profiles 查询栏===================Profiles 查询栏=====================Profiles 查询栏=================Profiles 查询栏=======================Profiles 查询栏=================Profiles 查询栏
@@ -159,7 +160,7 @@ responsePage_button_cancel_posCss = "#responseAddCancel1-_interceptionadd_Home_A
 
 # Profiles traffic mirroring profiles===================Profiles traffic mirroring profiles====================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles=======================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles
 # listPage->traffic mirroring profiles list page  列表页
-listPage_profile_trafficMirroringProfiles_createButton_posXpath = '//i[@class="iconfont icon-Create"]'  # create按钮id
+listPage_profile_trafficMirroringProfiles_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"  # create按钮id
 listPage_profile_trafficMirroringProfiles_editButton_posId = '//i[@class="iconfont icon-Editinpage"]'  # edit按钮id
 listPage_profile_trafficMirroringProfiles_delButton_posId = '//i[@class="iconfont icon-Delete"]'  # del按钮id
 listPage_profile_trafficMirroringProfiles_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # link按钮id

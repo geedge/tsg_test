@@ -10,14 +10,14 @@ mainPage_secondLevelMenu_ipAddress_posXpath = '//*[@class="MuiListItemText-root 
 # mainPage_secondLevelMenu_port_posId = "Objects_port"
 mainPage_secondLevelMenu_port_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Ports"]' # 二级菜单Ports
 mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
-mainPage_secondLevelMenu_keywords_posId = "Objects_keywords"
+mainPage_secondLevelMenu_keywords_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Keywords"]'
 mainPage_secondLevelMenu_url_posId = "Objects_url"
 mainPage_secondLevelMenu_mobileIdentify_posId = "Objects_mobile_identity"
 mainPage_secondLevelMenu_fqdn_posId = "Objects_fqdn"  # 二级菜单 fqdn
 mainPage_secondLevelMenu_subid_posId = "Objects_subscriberid"  # 二级菜单sub id
 mainPage_secondLevelMenu_apn_posId = "Objects_apn"  # 二级菜单apn
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
-mainPage_secondLevelMenu_account_posId = "Objects_account"
+mainPage_secondLevelMenu_account_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Accounts"]'
 
 
 
@@ -197,15 +197,15 @@ apnObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button
 # http signature
 httpSignatureObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_http_signature_Home_App_anonymousComponent"
 httpSignatureObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_http_signature_Home_App_anonymousComponent"
-httpSignatureObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+httpSignatureObjectListPage_deleteButton_warningYes_posXpath = '//button[normalize-space(text())="Yes"]'
 # httpSignatureObjectListPage_deleteButton_warningNo_posCss
 httpSignatureObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_http_signature_Home_App_anonymousComponent"
-httpSignatureObjectListPage_searchLabel_posId = "select-label"
+httpSignatureObjectListPage_searchLabel_posXpath = '//*[@class="MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5"]//input'
 httpSignatureObjectListPage_searchLabel_selectName_posXpath = "//li[@id='2-_FilteredSearch_ElRow_Objects_http_signature_Home_App_anonymousComponent']"
-httpSignatureObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
-httpSignatureObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
-httpSignatureObjectPage_inputName_posXpath = "//*[@class='biFangName']//input"
-httpSignatureobjectPage_addItem_posXpath = "temporary_form"
+httpSignatureObjectListPage_allSelect_posXpath = '(//*[@class="MuiCheckbox-action css-kit57i"]/parent::span)[last()]//input'
+httpSignatureObjectListPage_tableTbody_posXpath = '//*[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'
+httpSignatureObjectPage_inputName_posXpath = '//*[@class="MuiInput-root MuiInput-variantOutlined MuiInput-colorNeutral MuiInput-sizeMd MuiInput-formControl css-uzf287"]//input'
+httpSignatureobjectPage_addItem_posXpath = '//*[@class="mt-[10px] flex justify-center"]//i'
 httpSignatureObjectPage_item_key_dropDown_posXpath = "//div[@class='SelectInput district-select']//div[@class='el-select inline-input el-select--small']//input"
 httpSignatureObjectPage_item_key_dropDown_select_posXpath = "//span[normalize-space(text())='{replaceValue}']"
 httpSignatureObjectPage_item_value_select_posXpath  = "//span[normalize-space(text())='{replaceValue}']"
@@ -222,14 +222,14 @@ urlObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_url_Ho
 urlObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
 urlObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
 urlobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath
-urlObjectPage_inputItem_posXpath = "//div[@class='item-box']//input"     # input 输入框，简单的第一个定位，后期优化
+urlObjectPage_inputItem_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'     # input 输入框，简单的第一个定位，后期优化
 urlObjectPage_saveItem_posXpath = "//div[@class='item-box']//i[contains(@class, 'save-color')]"     # input item保存，简单的第一个定位，后期优化
 urlObjectPage_sameItem_inputItem_posXpath='(//div[@class="item-box"]//input)[last()]'
-urlObjectPage_sameItem_addItem_posXpath='//div[@class="expr-box"]//i[@class="iconfont icon-Create1 cursor"]'
+urlObjectPage_sameItem_addItem_posXpath='//*[@class="mt-[10px] flex justify-center"]//i'
 urlObjectPage_okButton_posId = "OK-_URLDetail_Home_App_anonymousComponent"
 urlObjectPage_okButton_warningYes_posXpath = httpSignatureObjectPage_okButton_warningYes_posXpath
 # 查询
-urlObjectPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posId
+urlObjectPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posXpath
 urlObjectListPage_searchLabel_selectName_posXpath = "//*[@id='2-_FilteredSearch_ElRow_Objects_url_Home_App_anonymousComponent']"
 urlObjectPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
 urlObjectPage_allSelect_posXpath = httpSignatureObjectListPage_allSelect_posXpath
@@ -237,44 +237,44 @@ urlObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage
 
 
 # keywords
-keywordsObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_keywords_Home_App_anonymousComponent"
-keywordsObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_keywords_Home_App_anonymousComponent"
+keywordsObjectListPage_createButton_posXpath = '//span[@class="action-create inline-flex mr-[8px] "]/button'
+keywordsObjectListPage_deleteButton_posId = '//*[@class="action-delete inline-flex mr-[8px] "]'
 keywordsObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
 # httpSignatureObjectListPage_deleteButton_warningNo_posCss
-keywordsObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_keywords_Home_App_anonymousComponent"
-keywordsObjectListPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posId
-keywordsObjectListPage_searchLabel_selectName_posXpath = "//li[@id='2-_FilteredSearch_ElRow_Objects_keywords_Home_App_anonymousComponent']"
+keywordsObjectListPage_dropDown_createButton_posXpath = '//li[@class="MuiMenuItem-root MuiMenuItem-colorNeutral MuiMenuItem-variantPlain keyword-item css-1rt9hnn"]'
+keywordsObjectListPage_searchLabel_posXpath = httpSignatureObjectListPage_searchLabel_posXpath
+keywordsObjectListPage_searchLabel_selectName_posXpath = '//*[@class="base-Popper-root MuiAutocomplete-listbox css-18r31z0"]//li[2]'
 keywordsObjectListPage_allSelect_posXpath = httpSignatureObjectListPage_allSelect_posXpath
 keywordsObjectListPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
 keywordsObjectPage_inputName_posXpath = httpSignatureObjectPage_inputName_posXpath
 keywordsobjectPage_addItem_posXpath = httpSignatureobjectPage_addItem_posXpath
 httpSignatureObjectPage_item_key_dropDown_posXpath = "//div[@class='SelectInput district-select']//div[@class='el-select inline-input el-select--small']//input"
 httpSignatureObjectPage_item_key_dropDown_select_posXpath = "//span[normalize-space(text())='{replaceValue}']"
-keywordsObjectPage_item_value_select_posXpath  = "//span[normalize-space(text())='{replaceValue}']"
-keywordsObjectPage_inputItem_posXpath = "//div[contains(@class, 'expr-collection')]//div[{replaceValue}]//input"
-keywordsObjectPage_item_value_plus_posXpath = "//div[@class='v-fill-available']//i"
-keywordsObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon iconfont icon-save check']"
-keywordsObjectPage_okButton_posId = "OK-_keywordsDetail_Home_App_anonymousComponent"
+keywordsObjectPage_item_value_select_posXpath  = "//button[normalize-space(text())='{replaceValue}']"
+keywordsObjectPage_inputItem_posXpath = "//div[contains(@class, 'pl-[40px] pt-[0!important]')]//div[{replaceValue}]//input"
+keywordsObjectPage_item_value_plus_posXpath = '//*[@class="customRow css-863uk6"]//i'
+keywordsObjectPage_button_saveItem_posXpath = '//*[@class="flex flex-row items-center"]//i[@class="operate-icon iconfont icon-save"]'
+keywordsObjectPage_okButton_posXpath = '//*[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'
 keywordsObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
 
 # account
-accountObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
+accountObjectListPage_createButton_posXpath = '//span[@class="action-create inline-flex mr-[8px] "]/button'
 accountObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
 accountObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
-accountObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
+accountObjectListPage_dropDown_createButton_posXpath = '//li[@class="MuiMenuItem-root MuiMenuItem-colorNeutral MuiMenuItem-variantPlain account-item css-1rt9hnn"]'
 accountObjectPage_inputName_posXpath = keywordsObjectPage_inputName_posXpath
 accountobjectPage_addItem_posXpath = keywordsobjectPage_addItem_posXpath
 accountObjectPage_inputItem_posXpath = urlObjectPage_inputItem_posXpath
-accountObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon iconfont icon-save check color31739C']"
-accountObjectPage_okButton_posId = "OK-_accountsDetail_Home_App_anonymousComponent"
+accountObjectPage_button_saveItem_posXpath = '//*[@class="flex flex-row items-center"]//i[@class="operate-icon iconfont icon-save"]'
+accountObjectPage_okButton_posXpath = '//*[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'
 accountObjectPage_okButton_warningYes_posXpath = keywordsObjectPage_okButton_warningYes_posXpath
 # 查询
-accountObjectPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posId
-accountObjectListPage_searchLabel_selectName_posXpath = "//*[@id='2-_FilteredSearch_ElRow_Objects_account_Home_App_anonymousComponent']"
+accountObjectPage_searchLabel_posXpath = httpSignatureObjectListPage_searchLabel_posXpath
+accountObjectListPage_searchLabel_selectName_posXpath = '//*[@class="base-Popper-root MuiAutocomplete-listbox css-18r31z0"]//li[2]'
 accountObjectPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
 accountObjectPage_allSelect_posXpath = httpSignatureObjectListPage_allSelect_posXpath
 accountObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
-accountObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
+accountObjectListPage_deleteButton_posId = '//*[@class="action-delete inline-flex mr-[8px] "]'
 
 
 
