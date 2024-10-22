@@ -17,7 +17,7 @@ mainPage_language_russian_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//
 mainPage_language_english_posXpath = "//div[@id='fade-menu']//ul[@role='menu']//span[contains(text(), 'English')]"
 mainPage_button_menu_posXpath = "//div[@id='root']//header//div[@class='systemMenu']//button//i"    #menu按钮定位
 mainPage_currentPage_vsysName_posXpath = "//div[@class='MuiStack-root mt-[40px] css-1t9fcl0']/div"    # 当前页面中vsys name
-mainPage_vsysTree_vsysName_posXpath = "/div[@class='vsysList___vaaU6']/ul//li//span[@class='vsysItem']/parent::*/parent::*"    # vsys tree中vsys name定位
+mainPage_vsysTree_vsysName_posXpath = "//div[@class='MuiStack-root css-1r1y6jm']//li/div"    # vsys tree中vsys name定位
 mainPage_vsysTree_DefaultVsys_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys1']"
 mainPage_vsysTree_Vsys1_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys10']"
 mainPage_vsysTree_Vsys3_posXpath = "//article/div/ul/li[1]/div[2]/ul//div[normalize-space(text())='Vsys3']"
