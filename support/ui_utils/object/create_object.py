@@ -99,7 +99,7 @@ class CreateObject:
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] in ["url", "account", "phone_number", "fqdn", "subscriberid", "apn"]:
                 for i in range(len(data["items"])):   #
-                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
                     if data["items"][i]["item_operation"] == "add":   # 直接 新增 模式
                         if "->" in data["items"][i]["item_value"]:   # -> 存在，需要拆分
                             item_value_str = data["items"][i]["item_value"].split("->")[0].strip()
@@ -116,7 +116,11 @@ class CreateObject:
                     for j, item_value in enumerate(item_values): # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
                         if j == 0:
-                            self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(item_value)
+                        # 适配24.10 版本，需要逐个字符输入
+                            input_field = self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]) 
+                            for char in str(item_value):  
+                                input_field.send_keys(char)  
+                                time.sleep(0.1)
                         else:
                             self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
                             self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)

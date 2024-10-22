@@ -110,12 +110,15 @@ class CreateServiceChainingPolicy:
 
                 test_service_function_forwarder_profile_element_position = {
                     "page_jump":{
-                        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+                        "mainPage_menu_bar_posXpath": mainPage_menu_bar_posXpath,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                         "mainPage_button_menu_posXCss": mainPage_button_menu_posXpath,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
-                        "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_serviceFunctionForwarders_posXpath
+                        "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_statisticsTemplates_posXpath,
+                        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+                        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+                        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_serviceFunctionForwarders_posName
                     },
                     "create": {
                         "profileListPage_createButton_posXpath": listPage_profile_serviceFunctionForwarders_createButton_posXpath,
@@ -144,12 +147,15 @@ class CreateServiceChainingPolicy:
                 }
                 test_service_function_profile_element_position = {
                     "page_jump":{
-                        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+                        "mainPage_menu_bar_posXpath": mainPage_menu_bar_posXpath,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                         "mainPage_button_menu_posXCss": mainPage_button_menu_posXpath,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
-                        "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_serviceFunctions_posXpath
+                        "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_statisticsTemplates_posXpath,
+                        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+                        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+                        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_serviceFunctions_posName
                     },
                     "create":{
                         "profileListPage_createButton_posXpath": listPage_profile_serviceFunctions_createButton_posXpath,

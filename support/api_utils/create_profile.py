@@ -887,6 +887,7 @@ class CreateProfile:
             elif profile_type == "ssl_decryption":
                 del profile_data["profile_type"]
                 url = "{}/v1/profiles/decryption-profiles".format(api_host)
+                #print(json.dumps(profile_data))
                 response = requests.post(url=url, headers=headers, json=profile_data, verify=False)
                 #print(response.text)
                 assert response.status_code == 200
