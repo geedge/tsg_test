@@ -245,7 +245,7 @@ class CreatePolicyRule:
             # 如果sc为Decrypted Traffic, 先创建一条intercept策略
             tmp_list = []
             if condition["targeted_traffic"] == "decrypted":
-                pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, tmp_list, path_dict, vsys_id, "service_chaining")
+                pre_policy_id_list = self.create_associated_rule(headers, api_host, and_conditions_list, tmp_list, path_dict, vsys_id, "service_chaining")
             user_region = {"targeted_traffic": "", "sff_profiles": []}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             temp_rule_action = 'rule_action_' + str(create_number)
