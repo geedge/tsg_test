@@ -21,7 +21,7 @@ class CreateObject:
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_object_page(page_jump_element_position)
             # 点击creat
-            time.sleep(10)
+            time.sleep(1)
             self.driver.find_element(By.XPATH, create_element_position["objectListPage_createButton_posXpath"]).click()
             time.sleep(1)
             self.driver.find_element(By.XPATH, create_element_position["objectListPage_dropDown_createButton_posXpath"]).click()
@@ -143,7 +143,12 @@ class CreateObject:
                         self.driver.find_element(By.ID, create_element_position["objectPage_imeiType_posId"]).click()
                     if data["item"][i]["item_operation"] == "add":
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]).send_keys(data["item"][i]["item_value"])
+                        # 适配24.10 版本，需要逐个字符输入
+                        send_data = data["item"][i]["item_value"]
+                        input_field = self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"]) 
+                        for char in str(send_data):  
+                            input_field.send_keys(char)  
+                            time.sleep(0.1)
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
 
             if "statistics_option" in data.keys():

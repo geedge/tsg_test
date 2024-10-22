@@ -3,11 +3,12 @@ import sys
 import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from support.ui_utils.element_position.object_element_position import *
+from support.ui_utils.element_position.profile_element_position import *
+#from support.ui_utils.element_position.object_element_position import *
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from support.ui_utils.element_position.policy_element_position import *
+#from support.ui_utils.element_position.policy_element_position import *
 import configparser
 from datetime import datetime 
 
@@ -20,15 +21,20 @@ class PageJump:
         vsys_name:空值时，参数来自配置文件
         """
         # 菜单操作，先判断是否是当前Vsys再判断是否重新选择Vsys
-        btn = self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posXpath"])
-        self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
-        #self.change_vsys(vsys_name=vsys_name, page_jump_element_position=page_jump_element_position)   # 调整到页面登录时切换vsys
-        btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"])
-        self.driver.execute_script("arguments[0].click()", btn)
-        btn = self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"])
-        self.driver.execute_script("arguments[0].click()", btn)
-        # self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileFirstLevelMenu_posId"]).click()
-        # self.driver.find_element(By.ID, page_jump_element_position["mainPage_profileSecondLevelMenu_posId"]).click()
+        btn = self.driver.find_element(By.XPATH,
+                                       '(//span[@class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1cxrtde"])[1]')
+        btn = self.driver.execute_script("arguments[0].click()", btn)
+        #btn = self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_menu_bar_posXpath"])
+        #self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
+        #self.change_vsys(vsys_name=vsys_name, page_jump_element_position=page_jump_element_position)
+        self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_leftMenu_posXpath"].format(
+            page_jump_element_position["mainPage_profileFirstLevelMenu_Name"])).click()
+        self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_leftMenu_posXpath"].format(
+            page_jump_element_position["mainPage_profileSecondLevelMenu_Name"])).click()
+        """
+        self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_profileFirstLevelMenu_posXpath"]).click()
+        self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_profileSecondLevelMenu_posXpath"]).click()
+        """
 
     def change_vsys(self, vsys_name="", page_jump_element_position=""):
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()
@@ -48,9 +54,9 @@ class PageJump:
         else:     # 切换到指定vsys
             change_vsys_name = vsys_name
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"the change_vsys_name: {change_vsys_name}")
-        if change_vsys_name != current_vsys_name:
-            self.driver.find_element(By.CSS_SELECTOR,page_jump_element_position["mainPage_navigationBar_logo_posXpath"]).click()
-        self.driver.find_element(By.CSS_SELECTOR, mainPage_button_menu_posXCss).click()     # 点击vsys menu
+        #if change_vsys_name != current_vsys_name:
+        #    self.driver.find_element(By.XPATH,page_jump_element_position["mainPage_menu_bar_posXpath"]).click()
+        self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_menu_bar_posXpath"]).click()     # 点击vsys menu
         vsys_tree_name_list = self.driver.find_elements(By.XPATH, mainPage_vsysTree_vsysName_posXpath)
         time.sleep(0.5)
         flag_num = 0
