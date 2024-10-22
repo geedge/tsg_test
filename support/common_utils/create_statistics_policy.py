@@ -52,6 +52,8 @@ class CreateStatisticsPolicy:
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
+        if "library_condition" not in test_data:
+            test_data["library_condition"] = []
 
         need_initialization = False
         if len(parameter["script_type"]) == 0:
@@ -75,7 +77,7 @@ class CreateStatisticsPolicy:
                 #template_path = {}
                 #template_path["trex_workpath"] = "/opt/trex/v3.03"
                 #template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
-
+                """"""
                 # 创建object
                 if "condition" in test_data.keys():
                     for cond_key, cond_value in (test_data["condition"].items()):
@@ -110,7 +112,7 @@ class CreateStatisticsPolicy:
                             break
 
                 # 创建profile
-                prfi_code = 200
+                #cond_code = 200
                 # 创建Statistics Template
                 create_statistics_template_code = 0
                 if cond_code == 200:

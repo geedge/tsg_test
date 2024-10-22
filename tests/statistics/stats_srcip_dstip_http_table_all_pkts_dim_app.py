@@ -61,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.24",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -105,11 +105,29 @@ def run(parameter):
                             "out_pkts:SUM:out pkts",
                             "in_pkts+out_pkts:SUM:pkts"
                           ],
-                          "dimensions": ["app"],
+                          "dimensions": [
+                            "app"
+                          ],
                           "order_by": "pkts",
-                          "row_limit": "500",
-                          "min_in_size": "1",
-                          "min_out_size": "1"
+                          "row_limit": "10",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "in_pkts:RATE:in pkts",
+                                "out_pkts:RATE:out pkts",
+                                "in_pkts+out_pkts:RATE:pkts"
+                            ],
+                            "dimensions": [
+                                "app"
+                            ],
+                            "order_by": "pkts",
+                            "row_limit": "5",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
@@ -120,17 +138,17 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.24",
-                "clients_end_ip": "10.64.224.24",
-                "servers_start_ip": "2.1.1.24",
-                "servers_end_ip": "2.1.1.24",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
             "statists_metric_results": [
-                {"application": "2407TCP", "in_pkts": 19, "out_pkts": 64, "pkts": 83}
+                {"app": "123","app_category": "234", "in_pkts": 19, "out_pkts": 64, "pkts": 83}
             ],
             # "traffic": {
             #     "type": "trex",

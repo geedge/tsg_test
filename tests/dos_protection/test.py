@@ -29,16 +29,16 @@ def main():
     # 已知参数
     test_rule_element_position = {
         "page_jump": {
-            "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+            "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
             "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
             "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_dos_posId
         },
         "create": {
-            "policyRuleListPage_createButton_posId": dosRuleListPage_createButton_posId,
+            "policyRuleListPage_createButton_posId": dosRuleListPage_createButton_posXpath,
             "policyRulePage_inputName_posXpath": dosRulePage_inputName_posXpath,
-            "policyRulePage_selectAction_posId": dosRulePage_selectShunt_posId,
+            "policyRulePage_selectAction_posId": dosRulePage_selectShunt_posXpath,
             "policyRulePage_addSrcIP_posXpath": dosRulePage_addSrcIP_posXpath,
             "policyRulePage_searchSrcIP_posXpath": dosRulePage_searchSrcIP_posXpath,
             "policyRulePage_selectSrcIP_posXpath": dosRulePage_selectSrcIP_posXpath,
@@ -63,7 +63,7 @@ def main():
             "policyRulePage_okButton_warningYes_posXpath": dosRulePage_okButton_warningYes_posXpath
         },
         "search": {
-            "policyRuleListPage_searchLable_posId": dosRuleListPage_searchLable_posId,
+            "policyRuleListPage_searchLable_posId": dosRuleListPage_searchLable_posXpath,
             "policyRuleListPage_searchLable_dropDown_item_posXpath": dosRuleListPage_searchLable_dropDown_item_posXpath,
             "policyRuleListPage_searchLable_input_itemContent_posXpath": dosRuleListPage_searchLable_input_itemContent_posXpath,
             "policyRuleListPage_searchLable_searchButton_posId": dosRuleListPage_searchLable_searchButton_posId,
@@ -71,7 +71,7 @@ def main():
         },
         "delete": {
             "policyRuleListPage_allSelect_posXpath": dosRuleListPage_allSelect_posXpath,
-            "policyRuleListPage_deleteButton_posId": dosRuleListPage_deleteButton_posId,
+            "policyRuleListPage_deleteButton_posId": dosRuleListPage_deleteButton_posXpath,
             "policyRuleListPage_okButton_warningYes_posXpath": dosRuleListpage_okButton_warningYes_posXpath,
             "policyRuleListPage_okButton_warningNo_posXpath": dosRuleListpage_okButton_warningNo_posXpath
         }

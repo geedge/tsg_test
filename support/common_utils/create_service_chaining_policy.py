@@ -108,16 +108,19 @@ class CreateServiceChainingPolicy:
 
                 test_service_function_forwarder_profile_element_position = {
                     "page_jump":{
-                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_menu_bar_posXpath": mainPage_menu_bar_posXpath,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-                        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_serviceFunctionForwarders_posId
+                        "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
+                        "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_statisticsTemplates_posXpath,
+                        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+                        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+                        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_serviceFunctionForwarders_posName
                     },
                     "create": {
-                        "profileListPage_createButton_posId": listPage_profile_serviceFunctionForwarders_createButton_posId,
-                        "profilePge_inputName_posId": serviceFunctionForwarders_input_Name_posId,
+                        "profileListPage_createButton_posXpath": listPage_profile_serviceFunctionForwarders_createButton_posXpath,
+                        "profilePge_inputName_posXpath": serviceFunctionForwarders_input_Name_posXpath,
                         "profilePage_operateRadio_posXpath": serviceFunctionForwarders_radio_labelAndRadioName_posXpath,
                         "profilePage_operateUnavailabilityAction_Radio_posXpath":serviceFunctionForwarders_radio_unavailabilityAction_posXpath,
                         "profilePage_inputMiniHealthServerFunctions_posXpath":serviceFunctionForwarders_input_minHealthServiceFunctions_posXpath,
@@ -125,13 +128,13 @@ class CreateServiceChainingPolicy:
                         "profilePage_searchSF_posXpath":serviceFunctionForwarders_rightDrawer_input_sfDrawerSearch_posXpath,
                         "profilePage_chooseSF_posXpath":serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath,
                         "profilePage_closeSFProfile_posXpath":serviceFunctionForwarders_rightDrawer_button_sfDrawerClose_posXpath,
-                        "profilePge_okButton_posXCss":serviceFunctionForwarders_button_oK_posCss,
-                        "profilePge_okButton_warningYes_posXpath":serviceFunctionForwarders_button_warningSaveYes_posCss
+                        "profilePage_okButton_posXpath":serviceFunctionForwarders_button_oK_posXpath,
                     },
                     "search": {
-                        "profileListPage_searchLabel_posId": listPage_profileSearch_serviceFunctionForwarders_selectLabel_posId,
+                        "profileListPage_searchLabel_posXpath": listPage_profileSearch_serviceFunctionForwarders_selectLabel_posXpath,
                         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath,
                         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath,
+                        "profileListPage_searchButton_posXpath": listPage_profileSearch_serviceFunctions_buttonSearch_posXpath,
                         "profileListPage_tableTbody_posXpath": listPage_profilTable_serviceFunctionForwarders_tableTbody_posXpath
                     },
                     "delete": {
@@ -142,19 +145,24 @@ class CreateServiceChainingPolicy:
                 }
                 test_service_function_profile_element_position = {
                     "page_jump":{
-                        "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                        "mainPage_menu_bar_posXpath": mainPage_menu_bar_posXpath,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
-                        "mainPage_profileFirstLevelMenu_posId": mainPage_firstLevelMenu_profiles_posId,
-                        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_serviceFunctions_posId
+                        "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
+                        "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_statisticsTemplates_posXpath,
+                        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+                        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+                        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_serviceFunctions_posName
                     },
                     "create":{
-                        "profileListPage_createButton_posId":listPage_profile_serviceFunctions_createButton_posId,
-                        "profileListPage_inputName_posId":serviceFunctions_input_Name_posId,
-                        "profilePage_operateDeviceRadio_posXpath":serviceFunctions_radio_selectDevice_posXpath,
+                        "profileListPage_createButton_posXpath": listPage_profile_serviceFunctions_createButton_posXpath,
+                        "profileListPage_inputName_posXpath": serviceFunctions_input_Name_posXpath,
                         "profilePage_addDeviceTag_posXpath": serviceFunctions_button_deviceGroupAdd_posXpath,
-                        "profilePage_effectiveDevicesDrawerOk_posXpath": serviceFunctions_button_effectiveDevicesDrawerOk_posXpath,
+                        "profilePage_selectDeviceType_posXpath": serviceFunctions_radio_selectDeviceType_posXpath,
+                        "profilePage_searchDevice_inputName_posXpath": serviceFunctions_searchDevice_input_Name_posXpath,
+                        "profilePage_selectDevice_posXpath": serviceFunctions_radio_selectDevice_posXpath,
+                        "profilePage_closeSidePage_posXpath": serviceFunctions_button_closeSidePage_Cancel_posXpath,
                         # vxlan
                         "profilePage_Vxlan_G_posXpath": serviceFunctions_radio_connectivityXvlan_posXpath,
                         "profilePage_inputDestIP_posXpath": serviceFunctions_input_destinationIpAddress_posXpath,
@@ -166,18 +174,19 @@ class CreateServiceChainingPolicy:
                         "profilePage_intInternalVlan_posXpath": serviceFunctions_input_internalVlan_posXpath,
                         "profilePage_intExternalVlan_posXpath": serviceFunctions_input_externalVlan_posXpath,
                         "profilePage_switch_enableButton_posXpath":serviceFunctions_switch_enalbe_posXpath,
-                        "profilePage_okButton_posCss": serviceFunctions_button_oK_posCss,
+                        "profilePage_okButton_posXpath": serviceFunctions_button_oK_posXpath,
                         "profilePage_okButton_warningYes_posCss": serviceFunctions_button_warningSaveYes_posCss
                     },
                     "search": {
-                        "profileListPage_searchLabel_posId": listPage_profileSearch_serviceFunctions_selectLabel_posId,
+                        "profileListPage_searchLabel_posXpath": listPage_profileSearch_serviceFunctions_selectLabel_posXpath,
                         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_serviceFunctions_dropDown_item_posXpath,
                         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_serviceFunctions_input_itemContent_posXpath,
+                        "profileListPage_searchButton_posXpath": listPage_profileSearch_serviceFunctions_buttonSearch_posXpath,
                         "profileListPage_tableTbody_posXpath": listPage_profilTable_serviceFunctions_tableTbody_posXpath
                     },
                     "delete": {
                         "profileListPage_allSelect_posXpath": listPage_profileBottomPage_serviceFunctions_button_allSelect_posXpath,
-                        "profileListPage_deleteButton_posId": listPage_profile_serviceFunctions_delButton_posId,
+                        "profileListPage_deleteButton_posXpath": listPage_profile_serviceFunctions_delButton_posXpath,
                         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_serviceFunctions_button_yes_posCss
                     }
                 }

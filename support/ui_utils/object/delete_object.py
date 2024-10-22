@@ -13,11 +13,11 @@ class DeleteObject:
         try:
             time.sleep(0.5)
             if is_del_all == True:
-                rows = self.driver.find_element(By.XPATH, ipObjectListPage_tableTbody_posXpath).find_elements(By.XPATH, "./tr")
+                rows = self.driver.find_element(By.XPATH, ipObjectListPage_tableTbody_posXpath).find_elements(By.XPATH, "./div")
                 self.select_lock_and_referenceCount(rows)
             else:
                 first_row_checkbox_element.click()
-            self.driver.find_element(By.ID, delete_element_position["objectListPage_deleteButton_posId"]).click()
+                self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_posXpath"]).click()
             self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(3)
             return 200
@@ -38,7 +38,7 @@ class DeleteObject:
             referenceCount = (referenceCount)
             return_code = 1
             for row_item in rows:  # 每一行操作
-                el_td_1 = row_item.find_element(By.XPATH, "./td[1]")
+                el_td_1 = row_item.find_element(By.XPATH, "./div[2]")
                 # 获取第一列元素下所有的属性
                 child_class_list = []
                 el_child_list = el_td_1.find_elements(By.XPATH, ".//*")
@@ -62,10 +62,10 @@ class DeleteObject:
                     td_item_id_list = []  # 每一列存放id的属性
                     td_item_childs = el_td_item.find_elements(By.XPATH, ".//*")
                     for td_child in td_item_childs:
-                        td_item_id_list.append(td_child.get_attribute("id"))
+                        td_item_id_list.append(td_child.get_attribute("data-field"))
                     td_item_id_list = list(set(td_item_id_list))  # 去重
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], td_item_id_list)
-                    refer_except = "objectReferenceData"  # objectReferenceData3738465-_Objects_ip_Home_App_anonymousComponent  id中存在预期值即可
+                    refer_except = "reference_count"  # objectReferenceData3738465-_Objects_ip_Home_App_anonymousComponent  id中存在预期值即可
                     for td_id_item in td_item_id_list:
                         if refer_except in td_id_item:  # 存在这个部分id属性即可
                             refer_counter_actual = el_td_item.find_element(By.XPATH, f".//*[@id='{td_id_item}']").text.strip()

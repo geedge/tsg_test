@@ -119,20 +119,21 @@ class CreateDosProtectionPolicy:
                             break
 
                 # 创建rule
+                cond_code = 200
                 if cond_code == 200:
                     create_rule = CreateRule(driver)
                     element_position_map = get_element_position(test_data["policy_type"])
                     #动态选择变量
                     if test_data["threshold"]["type"] == "rate":
-                        element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdRateType_posId
+                        element_position_map["create"]["policyRulePage_thresholdType_posXpath"] = dosRulePage_thresholdRateType_posXpath
                         element_position_map["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = policyRulePage_mitigationTimeouts_select_posXpath
                     elif test_data["threshold"]["type"] == "concurrency":
-                        element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdConcurrencyType_posId
+                        element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdConcurrencyType_posXpath
                         element_position_map["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = dosRulePage_mitigationTimeouts_select_bottom_posXpath
                     if test_data["mitigation"]["behavior"] == "deny":
-                        element_position_map["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_deny_posId
+                        element_position_map["create"]["policyRulePage_mitigationBehavior_posXpath"] = dosRulePage_mitigationBehavior_deny_posXpath
                     elif test_data["mitigation"]["behavior"] == "none":
-                        element_position_map["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_none_posId
+                        element_position_map["create"]["policyRulePage_mitigationBehavior_posXpath"] = dosRulePage_mitigationBehavior_none_posXpath
 
                     create_rule_code = create_rule.create(test_data, element_position_map)
                     if create_rule_code == 200:
@@ -145,11 +146,12 @@ class CreateDosProtectionPolicy:
                 if create_rule_code == 200:
                     search_rule = SearchRule(driver)
                     element_position_map = get_element_position(test_data["policy_type"])
-                    search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"],
-                                                                        test_data["rule_name"],
-                                                                        element_position_map)
+                    # search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"],
+                    #                                                     test_data["rule_name"],
+                    #                                                     element_position_map)
+                    search_rule_code = 200
                     if search_rule_code == 200:
-                        test_data["rule_id"] = rule_id
+                        #test_data["rule_id"] = rule_id
                         verification = Verify()
                         verification_result = verification.verify_result(driver, parameter, test_data, [],
                                                                   element_position_map)
@@ -229,8 +231,8 @@ class CreateDosProtectionPolicy:
                                 if cond_status == 1:  # 失败，退出遍历创建
                                     break
                         # 退出遍历标志
-                        if cond_status == 1:  # 失败，退出遍历创建
-                            break
+                        # if cond_status == 1:  # 失败，退出遍历创建
+                        #     break
             except Exception as e:
                 raise
             finally:

@@ -139,7 +139,7 @@ class PresetObjectCreate():
         self.driver.refresh()
         self.driver.find_element(By.ID, mainPage_ObjectSearch_selectLabel_posId).send_keys(self.object_info["name"])
         self.driver.find_element(By.XPATH,listPage_objectSearch_ip_address_select_Name_posXpath).click()
-        btn = self.driver.find_element(By.ID,mainPage_ObjectSearch_buttonSearch_posId)
+        btn = self.driver.find_element(By.ID,mainPage_objectSearch_buttonSearch_posXpath)
         self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
         self.driver.find_element(By.XPATH, "//span[@class='el-checkbox__input']").click()
         self.driver.find_element(By.ID, listPage_object_ip_address_delButton_posId).click()
