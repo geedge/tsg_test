@@ -782,8 +782,8 @@ listPage_rightReferenceDrawer_serviceFunctions_referencedItems = listPage_profil
 serviceFunctions_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
 serviceFunctions_input_Name_posXpath = "//div[@class='service-function-name']//input"
 serviceFunctions_button_deviceGroupAdd_posXpath = "//label[text()='Device Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"  # device group 添加按钮 xpath
-serviceFunctions_input_Name_posXpath = "//div[@class='service-function-name']//input"
-serviceFunctions_button_deviceGroupAdd_posXpath = "//label[text()='Device Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"  # device group 添加按钮 xpath
+# serviceFunctions_input_Name_posXpath = "//div[@class='service-function-name']//input"
+# serviceFunctions_button_deviceGroupAdd_posXpath = "//label[text()='Device Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"  # device group 添加按钮 xpath
 # //*[contains(@class, 'drawer-box')]//*[@class='title' and contains(normalize-space(text()), 'Select Device Group')]/parent::*//span[normalize-space(text())='City A']/parent::*//input//parent::*
 serviceFunctions_radio_selectDeviceType_posXpath = "//div[@class='bg-default mb-[4px]']//button[text()='{deviceType}']"  #deviceType替换为Group/Center
 serviceFunctions_searchDevice_input_Name_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
@@ -799,21 +799,21 @@ serviceFunctions_input_interval_posXpath = "//label[text()='Internal VLAN Tag']/
 serviceFunctions_input_retries_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # retires 输入框 xpath
 serviceFunctions_switch_enalbe_posXpath = "//label[text()='Enable']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//span"  # enable 开关 xpath
 serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"
-serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"
-serviceFunctions_radio_selectDeviceType_posXpath = "//div[@class='bg-default mb-[4px]']//button[text()='{deviceType}']"  #deviceType替换为Group/Center
-serviceFunctions_searchDevice_input_Name_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
-serviceFunctions_radio_selectDevice_posXpath = "//div[@class='px-[12px]  pb-[40px] overflow-hidden']//li[1]//i"
-serviceFunctions_button_closeSidePage_Cancel_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"  # effective devices 侧滑中Cancel按钮 xpath
-serviceFunctions_radio_connectivityLayer2Switch_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='Layer 2 Switch']"  # Layer 2 Switch 单选按钮 xpath
-serviceFunctions_radio_connectivityXvlan_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='VXLAN-G']"  # Function-internal 单选按钮 xpath
-serviceFunctions_input_internalVlan_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # Internal VLAN Tag 输入框 xpath
-serviceFunctions_input_externalVlan_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # external VLAN Tag 输入框 xpath
-serviceFunctions_input_destinationIpAddress_posXpath = "//label[text()='Destination IP Address']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # destination Ip Address 输入框 xpath
-serviceFunctions_radio_healthCheck_posXpath = "//div[@class='service-function-checkMethod']//button[text()='{type}']"  # health Check 单选按钮 xpath   replaceIndex需要二次处理
-serviceFunctions_input_interval_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # interval 输入框 xpath
-serviceFunctions_input_retries_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # retires 输入框 xpath
-serviceFunctions_switch_enalbe_posXpath = "//label[text()='Enable']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//span"  # enable 开关 xpath
-serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"
+# serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"
+# serviceFunctions_radio_selectDeviceType_posXpath = "//div[@class='bg-default mb-[4px]']//button[text()='{deviceType}']"  #deviceType替换为Group/Center
+# serviceFunctions_searchDevice_input_Name_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
+# serviceFunctions_radio_selectDevice_posXpath = "//div[@class='px-[12px]  pb-[40px] overflow-hidden']//li[1]//i"
+# serviceFunctions_button_closeSidePage_Cancel_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"  # effective devices 侧滑中Cancel按钮 xpath
+# serviceFunctions_radio_connectivityLayer2Switch_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='Layer 2 Switch']"  # Layer 2 Switch 单选按钮 xpath
+# serviceFunctions_radio_connectivityXvlan_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='VXLAN-G']"  # Function-internal 单选按钮 xpath
+# serviceFunctions_input_internalVlan_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # Internal VLAN Tag 输入框 xpath
+# serviceFunctions_input_externalVlan_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # external VLAN Tag 输入框 xpath
+# serviceFunctions_input_destinationIpAddress_posXpath = "//label[text()='Destination IP Address']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # destination Ip Address 输入框 xpath
+# serviceFunctions_radio_healthCheck_posXpath = "//div[@class='service-function-checkMethod']//button[text()='{type}']"  # health Check 单选按钮 xpath   replaceIndex需要二次处理
+# serviceFunctions_input_interval_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # interval 输入框 xpath
+# serviceFunctions_input_retries_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # retires 输入框 xpath
+# serviceFunctions_switch_enalbe_posXpath = "//label[text()='Enable']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//span"  # enable 开关 xpath
+# serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"
 serviceFunctions_div_rightDetails_clearCounter_posXpath = "//*[@id='porfileResetBtn-_anonymousComponent_anonymousComponent_VPanel_VEditPanel_Profile_Functions_edit_Home_App_anonymousComponent']/span/span"  # 右侧详情---clear counter元素定位 xpath
 serviceFunctions_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 serviceFunctions_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
