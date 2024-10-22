@@ -236,7 +236,7 @@ securityRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class
 securityRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
 securityRuleListPage_searchLable_searchButton_posId = "searchQuery"
 securityRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
-securityRulelistPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
+securityRulelistPage_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//span[@class='MuiCheckbox-checkbox css-n110n']"
 
 securityRulePage_inputName_posXpath = "//*[contains(@class, 'MuiInput-input') and contains(@class, 'css-fqt4w4')]"
 securityRulePage_selectShunt_posXpath = "//*[contains(@class, 'iconfont') and contains(@class, 'text-[18px]') and contains(@class, 'text-[--color-primary]') and contains(@class, 'icon-Shunt')]"
@@ -652,11 +652,11 @@ manipulationRulePage_okButton_warningYes_posXpath = "//div[@class='el-message-bo
 mainPage_policySecondLevelMenu_servicechaining_posXpath = "//span[normalize-space(text()) = 'Service Chaining']"
 
 serviceChainingRuleListPage_createButton_posXpath = "//span[@class='action-create inline-flex mr-[8px] ']"
-serviceChainingRuleListPage_deleteButton_posXpath = "//span[@class='action-edit inline-flex mr-[8px] ']"
+serviceChainingRuleListPage_deleteButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"
 serviceChainingRuleListPage_searchLable_posXpath = "//div[@class='MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5']//input[@placeholder='Please enter search content']"
-serviceChainingRuleListPage_searchLable_dropDown_item_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[normalize-space(text())='{replaceValue} contains']"   #下拉菜单定位
+serviceChainingRuleListPage_searchLable_dropDown_item_posXpath = "//span[normalize-space(text())='{replaceValue}']/../.."   #下拉菜单定位
 serviceChainingRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'flex-1 overflow-hidden')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'flex-1 overflow-hidden')]//input"   #输入item的值，replaceValue替换实际查询值
-serviceChainingRuleListPage_searchLable_searchButton_posId = "searchQuery"
+serviceChainingRuleListPage_searchLable_searchButton_posXpath = "//div[@class='flex-1 overflow-hidden']//i[@class='iconfont icon-sousuo text-[19px]']"
 serviceChainingRuleListPage_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"
 
 serviceChainingRulePage_inputName_posXpath = "//*[@class='service-chaining-policy-name']//input" 
@@ -711,7 +711,7 @@ serviceChainingRulePage_closeSFFProfile_posXpath = serviceChainingRulePage_close
 serviceChainingRulePage_enable_posXpath = "//div[@class='service-chaining-policy-is_enabled']//span[@class='MuiTouchRipple-root css-w0pj6f']"
 serviceChainingRulePage_okButton_posXpach = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[1]"
 serviceChainingRulePage_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
-serviceChainingRuleListPage_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+serviceChainingRuleListPage_warningYes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[text()='Yes']"
 serviceChainingRulePage_addConditionQname_posXpath = "//div[normalize-space(text())='QNAME']"
 
 # shaping

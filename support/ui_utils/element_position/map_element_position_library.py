@@ -254,20 +254,20 @@ test_fqdn_object_element_position = {
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_fqdn_posId
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_fqdn_posXpath
     },
     "create": {
-        "objectListPage_createButton_posId": fqdnObjectListPage_createButton_posId,
-        "objectListPage_dropDown_createButton_posId": fqdnObjectListPage_dropDown_createButton_posId,
+        "objectListPage_createButton_posXpath": fqdnObjectListPage_createButton_posXpath,
+        "objectListPage_dropDown_createButton_posXpath": fqdnObjectListPage_dropDown_createButton_posXpath,
         "objectPage_inputName_posXpath": fqdnObjectPage_inputName_posXpath,
         "objectPage_addItem_posXpath": fqdnobjectPage_addItem_posXpath,
         "objectPage_inputItem_posXpath": fqdnObjectPage_inputItem_posXpath,
         "objectPage_button_saveItem_posXpath": fqdnObjectPage_button_saveItem_posXpath,
-        "objectPage_okButton_posId": fqdnObjectPage_okButton_posId,
+        "objectPage_okButton_posXpath": fqdnObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": fqdnObjectPage_okButton_warningYes_posXpath
     },
     "search": {
-        "objectListPage_searchLabel_posId": fqdnObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_posXpath": fqdnObjectListPage_searchLabel_posXpath,
         "objectListPage_searchLabel_selectName_posXpath": fqdnObjectListPage_searchLabel_selectName_posXpath,
         "objectListPage_tableTbody_posXpath": fqdnObjectListPage_tableTbody_posXpath
     },
@@ -632,7 +632,8 @@ test_service_chaining_rule_element_position = {
         "policyRuleListPage_createButton_posXpath":serviceChainingRuleListPage_createButton_posXpath,
         "policyRulePage_inputName_posXpath": serviceChainingRulePage_inputName_posXpath,
         # Target Traffic
-        "policyRulePage_chooseTargetedTraffic_posXpath": serviceChainingRulePage_decryptedTrafficButton_posXpath,
+        "policyRulePage_rawTraffic_posXpath": serviceChainingRulePage_rawTrafficButton_posXpath,
+        "policyRulePage_decryptedTraffic_posXpath": serviceChainingRulePage_decryptedTrafficButton_posXpath,
         "policyRulePage_addCondition_posXpath": policyRulePage_addCondition_posXpath,
         "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
         "policyRulePage_negateSrcIP_posXpath":serviceChainingRulePage_negateSrcIP_posXpath,
@@ -736,7 +737,7 @@ test_service_chaining_rule_element_position = {
         "policyRuleListPage_searchLable_posXpath": serviceChainingRuleListPage_searchLable_posXpath,
         "policyRuleListPage_searchLable_dropDown_item_posXpath": serviceChainingRuleListPage_searchLable_dropDown_item_posXpath,
         "policyRuleListPage_searchLable_input_itemContent_posXpath": serviceChainingRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLable_searchButton_posId": serviceChainingRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_searchLable_searchButton_posXpath": serviceChainingRuleListPage_searchLable_searchButton_posXpath,
         "policyRuleListPage_tableTbody_posXpath": serviceChainingRuleListPage_tableTbody_posXpath
     },
     "delete": {

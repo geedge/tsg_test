@@ -36,9 +36,6 @@ class CreateRule:
             # 选择action
             if test_data["policy_type"] == "security" or test_data["policy_type"] == "pxy_intercept" or test_data["policy_type"] == "dos_protection":
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posXpath"]).click()
-            # 选择target traffic 
-            elif test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
-                self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chooseTargetedTraffic_posXpath"]).click()
             elif test_data["policy_type"] == "pxy_manipulation":
                 if test_data["rule_action"] == "allow":
                     self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAllow_posId"]).click()
@@ -416,6 +413,13 @@ class CreateRule:
             else:
                 override_flag = False
             
+            # 选择target traffic 
+            if test_data["policy_type"] == "service_chaining":
+                if test_data["targeted_traffic"] == "decrypted":
+                    self.driver.find_element(By.XPATH,create_element_position["policyRulePage_decryptedTraffic_posXpath"]).click()
+                else:
+                    self.driver.find_element(By.XPATH,create_element_position["policyRulePage_rawTraffic_posXpath"]).click()
+
             # 添加sub action
             if "sub_action" in test_data["condition"] and len(test_data["condition"]["sub_action"]) != 0 and test_data["condition"]["sub_action_override"] == True:
                 sub_action_data = test_data["condition"]["sub_action"]
