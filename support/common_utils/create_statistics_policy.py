@@ -77,7 +77,7 @@ class CreateStatisticsPolicy:
                 #template_path = {}
                 #template_path["trex_workpath"] = "/opt/trex/v3.03"
                 #template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
-                """
+                """"""
                 # 创建object
                 if "condition" in test_data.keys():
                     for cond_key, cond_value in (test_data["condition"].items()):
@@ -110,10 +110,9 @@ class CreateStatisticsPolicy:
                                     break
                         if cond_status == 1:   # 创建失败，退出遍历创建
                             break
-                """
+
                 # 创建profile
-                prfi_code = 200
-                cond_code = 200
+                #cond_code = 200
                 # 创建Statistics Template
                 create_statistics_template_code = 0
                 if cond_code == 200:
