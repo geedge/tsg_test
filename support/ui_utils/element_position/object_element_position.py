@@ -13,7 +13,7 @@ mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
 mainPage_secondLevelMenu_keywords_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Keywords"]'
 mainPage_secondLevelMenu_url_posId = "Objects_url"
 mainPage_secondLevelMenu_mobileIdentify_posId = "Objects_mobile_identity"
-mainPage_secondLevelMenu_fqdn_posId = "Objects_fqdn"  # 二级菜单 fqdn
+mainPage_secondLevelMenu_fqdn_posXpath = "//div[@class='MuiCollapse-wrapper MuiCollapse-vertical css-hboir5']//span[text()='FQDNs']"  # 二级菜单 fqdn
 mainPage_secondLevelMenu_subid_posId = "Objects_subscriberid"  # 二级菜单sub id
 mainPage_secondLevelMenu_apn_posId = "Objects_apn"  # 二级菜单apn
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
@@ -144,22 +144,22 @@ portObjectPage_okButton_posXpath = ipObjectPage_okButton_posXpath
 portObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
 
 # fqdn
-fqdnObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_fqdn_Home_App_anonymousComponent"  # create按钮id
-fqdnObjectListPage_dropDown_createButton_posId = 'object0-_OperateBtns_ElRow_Objects_fqdn_Home_App_anonymousComponent'  # 从下拉菜单中选择FQDN
-fqdnObjectListPage_dropDown_createGroupButton_posId = "object1-_OperateBtns_ElRow_Objects_fqdn_Home_App_anonymousComponent"
-fqdnObjectListPage_searchLabel_posId = "select-label"  # 查询框id
-fqdnObjectListPage_searchLabel_selectName_posXpath = '//li[@id="2-_FilteredSearch_ElRow_Objects_fqdn_Home_App_anonymousComponent"]'  # 查询Name
+fqdnObjectListPage_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"  # create按钮
+fqdnObjectListPage_dropDown_createButton_posXpath = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[1]"  # 从下拉菜单中选择FQDN
+fqdnObjectListPage_dropDown_createGroupButton_posXpath = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[2]"
+fqdnObjectListPage_searchLabel_posXpath = "//div[@class='MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5']//input" # 查询框
+fqdnObjectListPage_searchLabel_selectName_posXpath = "//span[normalize-space(text())='{replaceValue}']/../.."  # 查询Name
 fqdnObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
-fqdnObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_fqdn_Home_App_anonymousComponent"
-fqdnObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+fqdnObjectListPage_deleteButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"
+fqdnObjectListPage_deleteButton_warningYes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[text()='Yes']"
 fqdnObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
 fqdnObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
-fqdnObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
-fqdnObjectPage_inputName_posXpath = "//*[@class='biFangName']//input" # name输入框Xpath
-fqdnobjectPage_addItem_posXpath = "temporary_form"  # 添加item_id
-fqdnObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
-fqdnObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
-fqdnObjectPage_okButton_posId = "OK-_FqdnDetail_Home_App_anonymousComponent"  # OK按钮
+fqdnObjectListPage_tableTbody_posXpath = ipObjectListPage_tableTbody_posXpath 
+fqdnObjectPage_inputName_posXpath = "//*[@class='fqdn-object-name']//input" # name输入框Xpath
+fqdnobjectPage_addItem_posXpath = "//div[@class='mt-[10px] flex justify-center']//i"  # 添加item_id
+fqdnObjectPage_inputItem_posXpath = "//div[@class='scrollbar']//input"
+fqdnObjectPage_button_saveItem_posXpath = "//div[@class='scrollbar']//i[@class='operate-icon iconfont icon-save']"  # 保存item按钮
+fqdnObjectPage_okButton_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='OK']"  # OK按钮
 fqdnObjectPage_okButton_warningYes_posXpath = "//div[@class='el-message-box__wrapper']//button[contains(@class, 'el-button--primary operation-confirm')]//span"
 
 # subid
