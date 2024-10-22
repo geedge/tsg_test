@@ -49,14 +49,16 @@ class DeletePolicy:
                     api_path_map = {
                         "security": "security-rules",
                         "pxy_intercept": "proxy-intercept-rules",
+                        "proxy_intercept": "proxy-intercept-rules",
                         "pxy_manipulation": "proxy-manipulation-rules",
+                        "proxy_manipulation": "proxy-manipulation-rules",
                         "traffic_shaping": "traffic-shaping-rules",
                         "service_chaining": "service-chaining-rules",
                         "statistics": "statistics-rules",
                         "monitor": "monitor-rules",
                         "dos_protection": "dos-protection-rules",
                     }
-                    api_path_rule_type = api_path_map.get(delete_rule_template['type'])
+                    api_path_rule_type = api_path_map[delete_rule_template['type']]
                     delete_rule_template['uuids'] = list(create_policies_ids[i].values())[0]
                     delete_rule_template['vsys'] = vsys_id
                     url = api_server + "/v1/policies/{}".format(api_path_rule_type)
@@ -471,7 +473,7 @@ class DeletePolicy:
                         "monitor": "monitor-rules",
                         "dos_protection": "dos-protection-rules",
                     }
-                    api_path_rule_type = api_path_map.get(name_item["type"])
+                    api_path_rule_type = api_path_map[name_item["type"]]
                     temp_url = "{}/{}".format(rule_url, api_path_rule_type)
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
@@ -496,7 +498,7 @@ class DeletePolicy:
                         "ip_protocol": "ip-protocols",
                         "tunnel_level": "tunnel-levels"
                     }
-                    api_path_obj_type = api_path_map.get(name_item["type"])
+                    api_path_obj_type = api_path_map[name_item["type"]]
                     temp_url = "{}/{}".format(obj_url, api_path_obj_type)
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
@@ -524,7 +526,7 @@ class DeletePolicy:
                         "ssl_decryption": "decryption-profiles",
                         "tcp_option": "proxy-tcp-options",
                     }
-                    api_path_profile_type = api_path_map.get(name_item["type"])
+                    api_path_profile_type = api_path_map[name_item["type"]]
                     template['name'] = name_item["name"]
                     temp_url = "{}/{}".format(profile_url, api_path_profile_type)
                     self.query_and_delete_by_name(temp_url, template, headers)
@@ -612,8 +614,8 @@ class DeletePolicy:
         # 遍历列表中的每个 JSON 对象
         for i, json_obj in enumerate(list_data):
             # 提取 uuid 键的值
-            if template["name"] == json_obj.get("name"):
-                uuid = json_obj.get("uuid")
+            if template["name"] == json_obj["name"]:
+                uuid = json_obj["uuid"]
                 temp_template.append(uuid)
         return temp_template
 

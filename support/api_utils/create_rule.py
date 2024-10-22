@@ -469,15 +469,10 @@ class CreatePolicyRule:
             pre_intercept_template_path["vsys_id"] = vsys_id
             pre_intercept_template_path["rule"]["vsys_id"] = vsys_id
 
-        if len(and_conditions_list) > 0:
-            pre_intercept_template_path['rule']['and_conditions'].append(and_conditions_list)
-        # else:
-        #     pre_intercept_template_path['rule']['source'] = []
+        for i in range(len(and_conditions_list)):
+            if and_conditions_list[i]["or_conditions"][0]["attribute_name"] in ["ATTR_SOURCE_IP", "ATTR_DESTINATION_IP", "ATTR_SERVER_FQDN"]:
+                pre_intercept_template_path['rule']['and_conditions'].append(and_conditions_list[i])
 
-        # if len(dst_list) > 0:
-        #     pre_intercept_template_path['rule']['destination'] = dst_list
-        # else:
-        #     pre_intercept_template_path['rule']['destination'] = []
         if associated_policy == "pxy_manipulation":
             tmp_name = "manipulation_pre_intercept"
         else:
@@ -503,13 +498,13 @@ class CreatePolicyRule:
                 "monitor": "monitor-rules",
                 "dos_protection": "dos-protection-rules",
             }
-            api_path_rule_type = api_path_map.get(rule_type)
+            api_path_rule_type = api_path_map[rule_type]
             if "vsys" not in rule_template_dict:
                 rule_template_dict['vsys'] = vsys_id
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            print(json.dumps(rule_template_dict))
+            #print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             #print(return_json_data)
