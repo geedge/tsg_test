@@ -33,9 +33,9 @@ policyRulePage_selectSrcPort_posXpath = "//div[@class='reference-box el-popover_
 policyRulePage_closeSrcPort_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 policyRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchApplication_posXpath = "//div[@class='AppList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectApplication_posXpath = '//div[@class="LocalationDraswer lstsub policy-right-show-edit v-draswer"]//li[1]//div[@class="row-content-cell"]'
-policyRulePage_closeApplication_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_searchApplication_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
+policyRulePage_selectApplication_posXpath = "//div[@class='css-dob60y']//li[1]//span[text()='{appName}']"
+policyRulePage_closeApplication_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
 policyRulePage_selectApplicationLabel_posXpath = "//div[@class='el-tabs__nav is-top']//div[normalize-space(text())='Application']"
 policyRulePage_selectApplicationGroupLabel_posXpath = "//div[normalize-space(text())='Group']"
 policyRulePage_little_button_addApplication_posId = "policy_app_create-_AppSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_monitor_write_Home_App_anonymousComponent"
@@ -671,7 +671,7 @@ serviceChainingRulePage_searchDstIP_posXpath =  "//input[@class='MuiInput-input 
 serviceChainingRulePage_selectDstIP_posXpath = "//div[@class='pt-[2px] overflow-hidden flex-1']//span[normalize-space(text())='{replaceValue}']"
 serviceChainingRulePage_closeDstIP_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button"
 
-serviceChainingRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
+serviceChainingRulePage_addApplication_posXpath = "//div[@class='service-chaining-policy-application']//i[@class='iconfont icon-Create1 font-[700]']"
 serviceChainingRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 serviceChainingRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
 serviceChainingRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posXpath
@@ -687,7 +687,7 @@ serviceChainingRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerF
 serviceChainingRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 
 serviceChainingRulePage_addSFFProfile_posXpath = "//label[normalize-space(text())='SFF Profile']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i[@class='iconfont icon-Create1 font-[700]']"
-serviceChainingRulePage_searchSFFProfile_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//input[@class='MuiInput-input css-za5rna']"
+serviceChainingRulePage_searchSFFProfile_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
 serviceChainingRulePage_selectSFFProfile_posXpath = "//div[@class='pt-[2px] overflow-hidden flex-1']//div[text()='{replaceValue}']"
 serviceChainingRulePage_closeSFFProfile_posXpath = serviceChainingRulePage_closeDstIP_posXpath
 serviceChainingRulePage_enable_posXpath = "//div[@class='service-chaining-policy-is_enabled']//span[@class='MuiTouchRipple-root css-w0pj6f']"

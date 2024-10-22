@@ -237,7 +237,7 @@ class CreateRule:
                         else:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=1).send_keys(application_data[j]["name"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"], find_after_wait_time=0.5).click()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"].format(appName = application_data[j]["name"]), find_after_wait_time=0.5).click()
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
                             is_first_iteration =False
                 
@@ -797,7 +797,7 @@ class CreateRule:
                 elif test_data["policy_type"] == "service_chaining":
                     sff_data = test_data["profile"]
                     # 点击SFF Profile添加按钮
-                    self.driver.find_element(By.ID,create_element_position["policyRulePage_addSFFProfile_posId"]).click()
+                    self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addSFFProfile_posXpath"]).click()
                     time.sleep(1)
                     #在侧滑框中搜索sff并选中
                     for sff in sff_data:

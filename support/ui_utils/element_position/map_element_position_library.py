@@ -629,7 +629,7 @@ test_service_chaining_rule_element_position = {
         "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_servicechaining_posXpath
     },
     "create": {
-        "policyRuleListPage_createButton_posId":serviceChainingRuleListPage_createButton_posXpath,
+        "policyRuleListPage_createButton_posXpath":serviceChainingRuleListPage_createButton_posXpath,
         "policyRulePage_inputName_posXpath": serviceChainingRulePage_inputName_posXpath,
         # Target Traffic
         "policyRulePage_chooseTargetedTraffic_posXpath": serviceChainingRulePage_decryptedTrafficButton_posXpath,
