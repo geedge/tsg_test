@@ -26,7 +26,7 @@ class CreateRule:
 
             # 点击create
             time.sleep(0.3)
-            self.driver.find_element(By.XPATH, create_element_position["policyRuleListPage_createButton_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRuleListPage_createButton_posXpath"]).click()
             
             # 输入name
             rule_name = test_data["rule_name"]
@@ -35,7 +35,7 @@ class CreateRule:
             
             # 选择action
             if test_data["policy_type"] == "security" or test_data["policy_type"] == "pxy_intercept" or test_data["policy_type"] == "dos_protection":
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posId"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posXpath"]).click()
             # 选择target traffic 
             elif test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "decrypted":
                 self.driver.find_element(By.XPATH,create_element_position["policyRulePage_chooseTargetedTraffic_posXpath"]).click()
@@ -862,7 +862,7 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_concurrentSsessions_posXpath"]).send_keys(test_data["threshold"]["concurrency_threshold"]["concurrent_sessions"])
                 #self.driver.find_element(By.ID, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
                 if test_data["mitigation"]["behavior"] == "deny":
-                    self.driver.find_element(By.XPATH, dosRulePage_mitigationBehavior_deny_posId).click()
+                    self.driver.find_element(By.XPATH, dosRulePage_mitigationBehavior_deny_posXpath).click()
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationTimeouts_dropDownBox_posXpath"]).click()
                     temp_mitigation_timeout_element_position = create_element_position["policyRulePage_mitigationTimeouts_select_posXpath"].format(replaceValue=test_data["mitigation"]["timeout"])
                     self.driver.find_element(By.XPATH, temp_mitigation_timeout_element_position).click()

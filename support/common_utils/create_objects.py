@@ -56,11 +56,11 @@ class CreateObjects:
 
         test_ip_object_element_position = {
             "page_jump": {
-                "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                 "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                 "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posId,
-                "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
+                "mainPage_policyFirstLevelMenu_posId": mainPage_firstLevelMenu_Objects_posXpath,
+                "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posXpath
             },
             "create": {
                 "objectPage_ipType_posId": ipObjectPage_ipType_posId,
@@ -104,11 +104,11 @@ class CreateObjects:
 
         test_ip_learning_object_element_position = {
             "page_jump": {
-                "mainPage_navigationBar_logo_posCss": mainPage_navigationBar_logo_posCss,
+                "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                 "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
                 "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-                "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posId,
-                "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posId
+                "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
+                "mainPage_policySecondLevelMenu_posId": mainPage_secondLevelMenu_ipAddress_posXpath
             },
             "create":{
                 "objectPage_ipLearing_type_posId": ip_addressObjectPage_radioButton_IP_learning_posId,

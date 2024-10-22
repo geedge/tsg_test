@@ -1,8 +1,8 @@
-#mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
-mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
-mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss    # 改为引用dashboard路径
-mainPage_firstLevelMenu_Objects_posId = "object"  # 一级菜单Global Objects
-mainPage_secondLevelMenu_ipAddress_posId = "Objects_ip"  # 二级菜单IP Addresses
+#mainPage_navigationBar_logo_posXpath = ".tsg-img-logo"
+mainPage_secondLevelMenu_ipAddress_posXpath = "#dashboard .level1-title"
+mainPage_navigationBar_logo_posXpath = mainPage_secondLevelMenu_ipAddress_posXpath    # 改为引用dashboard路径
+mainPage_firstLevelMenu_Objects_posXpath = "object"  # 一级菜单Global Objects
+mainPage_secondLevelMenu_ipAddress_posXpath = "Objects_ip"  # 二级菜单IP Addresses
 mainPage_secondLevelMenu_Ports_posId = "Objects_port"  # 二级菜单Ports
 mainPage_secondLevelMenu_FQDNs_posId = "Objects_fqdn"  # 二级菜单FQDNs
 mainPage_secondLevelMenu_Subscriber_ids_posId = "Objects_subscriberid"  # 二级菜单Subscriber IDs
@@ -22,7 +22,7 @@ mainPage_secondLevelMenu_Flags_posId = "Objects_flag"  # 二级菜单Flag
 mainPage_secondLevelMenu_Intervals_posId = "Objects_interval"  # 二级菜单Intervals
 
 mainPage_ObjectSearch_selectLabel_posId = "select-label"  # 查询框id
-mainPage_ObjectSearch_buttonSearch_posId = "searchQuery"  # 查询按钮id
+mainPage_objectSearch_buttonSearch_posXpath = "searchQuery"  # 查询按钮id
 mainPage_ObjectSearch_buttonClear_posId = "searchClear"  # 清空查询按钮id
 mainPage_ObjectSearch_buttonSearch_Item_posId = "object_ip_search"  # 查询item输入框id
 mainPage_ObjectSearch_buttonSearch_Item_first_content_posXpath = "//div[@class='view-row']//span[@class='el-tooltip content-show']"  # item搜索框第一个元素

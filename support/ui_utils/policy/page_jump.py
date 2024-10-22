@@ -21,7 +21,7 @@ class PageJump:
             self.driver.find_element(By.XPATH, '(//span[@class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1cxrtde"])[1]').click()
             #self.change_vsys(vsys_name=vsys_name)     # 调整到页面登录时切换vsys
             self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_policyFirstLevelMenu_posXpath"]).click()
-            btn = self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_policySecondLevelMenu_posId"])
+            btn = self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_policySecondLevelMenu_posXpath"])
             self.driver.execute_script("arguments[0].click()", btn)
             time.sleep(1)
         except Exception as e:

@@ -45,7 +45,7 @@ class SystemAuditLogCheck():
             element_user_name = self.driver.find_element(By.XPATH,f"//div[@x-placement='bottom-start']//span[text()='{user_name}']")
             self.driver.execute_script("arguments[0].click()", element_user_name)  # 强制点击搜索出来的Name
             # 搜索
-            self.driver.find_element(By.ID, mainPage_ObjectSearch_buttonSearch_posId).click()
+            self.driver.find_element(By.ID, mainPage_objectSearch_buttonSearch_posXpath).click()
             # 搜索结果校验
             assert len(self.driver.find_elements(By.XPATH,"//div[@class='el-table__body-wrapper is-scrolling-none']//span[text()='Create']")) == 1, "Create日记大于1"
             assert len(self.driver.find_elements(By.XPATH,"//div[@class='el-table__body-wrapper is-scrolling-none']//span[text()='Edit']")) == 1, "Edit日志大于1"
@@ -78,7 +78,7 @@ class SystemAuditLogCheck():
             time.sleep(2)
             self.driver.find_element(By.XPATH,f"//div[@x-placement='bottom-start']//span[text()='{user_name}']").click()
             # 搜索
-            self.driver.find_element(By.ID, mainPage_ObjectSearch_buttonSearch_posId).click()
+            self.driver.find_element(By.ID, mainPage_objectSearch_buttonSearch_posXpath).click()
 
             time.sleep(7)
             operation_text_elements = self.driver.find_elements(By.XPATH,"(//table[@class='el-table__body'])[1]//tbody/tr/td[3]//span")

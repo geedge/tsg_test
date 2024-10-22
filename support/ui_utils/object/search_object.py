@@ -14,16 +14,19 @@ class SearchObject:
         page_jump = PageJump(self.driver)
         time.sleep(0.5)
         page_jump.jump_sub_object_page(page_jump_element_position)
-        self.driver.find_element(By.ID, search_element_position["objectListPage_searchLabel_posId"]).send_keys(name)
-        self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_selectName_posXpath"]).click()
-        btn = self.driver.find_element(By.ID, mainPage_objectSearch_buttonSearch_posId)
-        self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
+        self.driver.find_element(By.XPATH, '//*[@class="MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5"]/input').click()
+        self.driver.find_element(By.XPATH, ipObjectPage_searchLable_dropDown_item_posXpath).click()
+        #input_item_posXpath = search_element_position["objectListPage_searchLabel_selectName_posXpath"].format(replaceValue="Name")
+        self.driver.find_element(By.XPATH, '//*[@class="MuiInput-input css-1u0jcuo"]').send_keys(name)
+        self.driver.find_element(By.XPATH, mainPage_objectSearch_buttonSearch_posXpath).click()
         time.sleep(0.5)
         element_tr = self.driver.find_element(By.XPATH, search_element_position["objectListPage_tableTbody_posXpath"])
-        row = element_tr.find_elements(By.XPATH, "tr") 
+        row = element_tr.find_elements(By.XPATH, "div")
         if len(row) != 0 :
             first_row = row[0]
-            first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
+            first_row_checkBox_element = first_row.find_element(By.XPATH, '//*[@inputprops="[object Object]"]')
             return 200, first_row_checkBox_element
         else:
             return 400, ""
+
+

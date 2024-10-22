@@ -1,13 +1,14 @@
-#mainPage_navigationBar_logo_posCss = ".tsg-img-logo"
-mainPage_firstLevelMenu_dashboards_posCss = "#dashboard .level1-title"
-mainPage_navigationBar_logo_posCss = mainPage_firstLevelMenu_dashboards_posCss    # 改为引用dashboard路径
+#mainPage_navigationBar_logo_posXpath = ".tsg-img-logo"
+mainPage_secondLevelMenu_ipAddress_posXpath = "#dashboard .level1-title"
+mainPage_navigationBar_logo_posXpath = mainPage_secondLevelMenu_ipAddress_posXpath    # 改为引用dashboard路径
 mainPage_button_menu_posXCss = ".menu-btn span"    #menu按钮定位
-mainPage_objectSearch_buttonSearch_posId = '//*[@class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w"]'  # 查询按钮id
+mainPage_objectSearch_buttonSearch_posXpath = '//*[@class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w"]'  # 查询按钮id
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
-mainPage_firstLevelMenu_Objects_posId = "//*[normalize-space(text())='Objects']" # 一级菜单Global Objects
-mainPage_secondLevelMenu_ipAddress_posId = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="IP Addresses"]' # 二级菜单IP Addresses
-mainPage_secondLevelMenu_port_posId = "Objects_port"
+mainPage_firstLevelMenu_Objects_posXpath = "//*[normalize-space(text())='Objects']" # 一级菜单Global Objects
+mainPage_secondLevelMenu_ipAddress_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="IP Addresses"]' # 二级菜单IP Addresses
+# mainPage_secondLevelMenu_port_posId = "Objects_port"
+mainPage_secondLevelMenu_port_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Ports"]' # 二级菜单Ports
 mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
 mainPage_secondLevelMenu_keywords_posId = "Objects_keywords"
 mainPage_secondLevelMenu_url_posId = "Objects_url"
@@ -48,7 +49,7 @@ appllicationGroupObjectPage_okButton_warningYes_posXpath = "//div[@class='el-mes
 applicationGroupObjectListPage_deleteButton_posId = id="appDel-_OperateBtns_ElCol_ElRow_Application_appGroups_Home_App_anonymousComponent"
 
 # ip object
-ipObjectListPage_createButton_posXpath= '//button[@class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeSmall MuiButton-containedSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeSmall MuiButton-containedSizeSmall MuiButton-colorPrimary MuiMenuButton-root MuiMenuButton-variantOutlined MuiMenuButton-colorNeutral MuiMenuButton-sizeMd css-uaj8zt"]'  # create按钮id
+ipObjectListPage_createButton_posXpath= '//span[@class="action-create inline-flex mr-[8px] "]/button' # create按钮id
 ipObjectListPage_dropDown_createButton_posXpath = '//li[@class="MuiMenuItem-root MuiMenuItem-colorNeutral MuiMenuItem-variantPlain ip-item css-1rt9hnn"]'  # 从下拉菜单中选择Address
 ipObjectListPage_dropDown_createGroupButton_posId = "object1-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent"
 ipObjectListPage_searchLabel_posXpath =  '//*[@class="MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5"]/input' # 查询框id
@@ -56,7 +57,7 @@ ipObjectListPage_searchLabel_selectName_posXpath = '//*[@class="MuiInput-input c
 ipObjectListPage_deleteButton_posXpath = '//*[@class="action-delete inline-flex mr-[8px] "]'
 ipObjectListPage_deleteButton_warningYes_posXpath = '//button[normalize-space(text())="Yes"]'
 ipObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
-ipObjectListPage_allSelect_posXpath = '(//*[@class="MuiCheckbox-action css-kit57i"]/parent::span)[last()]'
+ipObjectListPage_allSelect_posXpath = '(//*[@class="MuiCheckbox-action css-kit57i"]/parent::span)[last()]//input'
 ipObjectListPage_tableTbody_posXpath = '//*[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'
 ipObjectPage_inputName_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]' # name输入框Xpath
 ipObjectPage_ipType_posXpath = "//*[normalize-space(text())='IP']"
@@ -85,7 +86,7 @@ ipGroupObjectPage_addExcludeObject_posId = "temporary_form"
 
 # imsi object
 imsiObjectPage_imsiType_posId = "IMSIimsi"
-imsiObjectPage_addItem_posId = ipObjectPage_addItem_posXpath  # 添加item_id
+imsiobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath  # 添加item_id
 #imsiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
 imsiObjectPage_inputItem_posXpath = '//div[@class="item-box"]//div[contains(@class, "el-input el-input--small")]//input'
 imsiObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
@@ -106,35 +107,40 @@ mobile_identitiesObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
 
 # phone number
 phoneNumberObjectPage_phoneNumberType_posId = "Phone Numberphone_number"
-phoneNumberObjectPage_addItem_posId = ipObjectPage_addItem_posXpath  # 添加item_id
-phoneNumberObjectPage_inputItem_posXpath = '//div[@class="content-input el-input el-input--small"]//input'
+phoneNumberobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath  # 添加item_id
+phoneNumberObjectPage_inputItem_posXpath = ipObjectPage_addItem_posXpath
 phoneNumberObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
 phoneNumberObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
 phoneNumberObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
 
 # imei
 imeiObjectPage_imsiType_posId = "IMEIimei"
-imeiObjectPage_addItem_posId = ipObjectPage_addItem_posXpath  # 添加item_id
+imeiobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath  # 添加item_id
 imeiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
 imeiObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
 imeiObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
 imeiObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
 
 # port
-portObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
-portObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
-portObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+# portObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
+portObjectListPage_createButton_posXpath = ipObjectListPage_createButton_posXpath
+#portObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
+portObjectListPage_deleteButton_posXpath = ipObjectListPage_deleteButton_posXpath
+portObjectListPage_deleteButton_warningYes_posXpath = ipObjectListPage_deleteButton_warningYes_posXpath
 portObjectListPage_deleteButton_warningNo_posCss = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
-portObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
-portObjectListPage_searchLabel_posId = "select-label"
-portObjectListPage_searchLabel_selectName_posXpath = "//li[@id='2-_FilteredSearch_ElRow_Objects_port_Home_App_anonymousComponent']"
-portObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
-portObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
-portObjectPage_inputName_posXpath = "//*[@class='biFangName']//input"
-portObjectPage_addItem_posId = "temporary_form"
-portObjectPage_inputItem_posXpath = "//div[@class='port-input el-input el-input--small']//input"
-portObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon iconfont icon-save check']"
-portObjectPage_okButton_posId= "OK-_PortDetail_Home_App_anonymousComponent"
+# portObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
+portObjectListPage_dropDown_createButton_posXpath = "//*[contains(@class, 'MuiMenuItem-root') and contains(@class, 'MuiMenuItem-colorNeutral') and contains(@class, 'MuiMenuItem-variantPlain') and contains(@class, 'port-item') and contains(@class, 'css-1rt9hnn')]"
+# portObjectListPage_searchLabel_posId = "select-label"
+portObjectListPage_searchLabel_posXpath = ipObjectListPage_searchLabel_posXpath
+portObjectListPage_searchLabel_selectName_posXpath = "//*[contains(@class, 'dune-search-option-content') and .//*[contains(text(), 'Name')] and .//*[contains(text(), 'contains')]]"
+portObjectListPage_allSelect_posXpath = ipObjectListPage_allSelect_posXpath
+portObjectListPage_tableTbody_posXpath = ipObjectListPage_tableTbody_posXpath
+portObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
+portobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath
+portObjectPage_inputItem_posXpath = '//*[@class="port-object-interval"]//input'
+portObjectPage_button_saveItem_posXpath = ipObjectPage_button_saveItem_posXpath
+# portObjectPage_okButton_posId= "OK-_PortDetail_Home_App_anonymousComponent"
+portObjectPage_okButton_posXpath = ipObjectPage_okButton_posXpath
 portObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
 
 # fqdn
@@ -150,7 +156,7 @@ fqdnObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .de
 fqdnObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
 fqdnObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
 fqdnObjectPage_inputName_posXpath = "//*[@class='biFangName']//input" # name输入框Xpath
-fqdnObjectPage_addItem_posId = "temporary_form"  # 添加item_id
+fqdnobjectPage_addItem_posXpath = "temporary_form"  # 添加item_id
 fqdnObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
 fqdnObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
 fqdnObjectPage_okButton_posId = "OK-_FqdnDetail_Home_App_anonymousComponent"  # OK按钮
@@ -160,7 +166,7 @@ fqdnObjectPage_okButton_warningYes_posXpath = "//div[@class='el-message-box__wra
 subscriberidObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_subscriberid_Home_App_anonymousComponent"
 subscriberidObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_subscriberid_Home_App_anonymousComponent"
 subscriberidObjectPage_inputName_posXpath = "//*[@class='biFangName']//input"
-subscriberidObjectPage_addItem_posId = "temporary_form"
+subscriberidobjectPage_addItem_posXpath = "temporary_form"
 subscriberidObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
 subscriberidPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'
 subscriberidObjectPage_okButton_posId = "OK-_SubscriberidDetail_Home_App_anonymousComponent"
@@ -176,7 +182,7 @@ subscriberiObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='e
 apnObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_apn_Home_App_anonymousComponent"
 apnObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_apn_Home_App_anonymousComponent"
 apnObjectPage_inputName_posXpath = "//*[@class='biFangName']//input"
-apnObjectPage_addItem_posId = "temporary_form"
+apnobjectPage_addItem_posXpath = "temporary_form"
 apnObjectPage_inputItem_posXpath = '//div[@class="edit-row"]//input'
 apnPage_button_saveItem_posXpath = '//div[@class="edit-row"]//div[@class="IconBtn"]//i[contains(class, icon-save)]'
 apnObjectPage_okButton_posId = "OK-_apnDetail_Home_App_anonymousComponent"
@@ -199,7 +205,7 @@ httpSignatureObjectListPage_searchLabel_selectName_posXpath = "//li[@id='2-_Filt
 httpSignatureObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
 httpSignatureObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
 httpSignatureObjectPage_inputName_posXpath = "//*[@class='biFangName']//input"
-httpSignatureObjectPage_addItem_posId = "temporary_form"
+httpSignatureobjectPage_addItem_posXpath = "temporary_form"
 httpSignatureObjectPage_item_key_dropDown_posXpath = "//div[@class='SelectInput district-select']//div[@class='el-select inline-input el-select--small']//input"
 httpSignatureObjectPage_item_key_dropDown_select_posXpath = "//span[normalize-space(text())='{replaceValue}']"
 httpSignatureObjectPage_item_value_select_posXpath  = "//span[normalize-space(text())='{replaceValue}']"
@@ -215,7 +221,7 @@ urlObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_
 urlObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
 urlObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
 urlObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
-urlObjectPage_addItem_posId = ipObjectPage_addItem_posXpath
+urlobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath
 urlObjectPage_inputItem_posXpath = "//div[@class='item-box']//input"     # input 输入框，简单的第一个定位，后期优化
 urlObjectPage_saveItem_posXpath = "//div[@class='item-box']//i[contains(@class, 'save-color')]"     # input item保存，简单的第一个定位，后期优化
 urlObjectPage_sameItem_inputItem_posXpath='(//div[@class="item-box"]//input)[last()]'
@@ -241,7 +247,7 @@ keywordsObjectListPage_searchLabel_selectName_posXpath = "//li[@id='2-_FilteredS
 keywordsObjectListPage_allSelect_posXpath = httpSignatureObjectListPage_allSelect_posXpath
 keywordsObjectListPage_tableTbody_posXpath = httpSignatureObjectListPage_tableTbody_posXpath
 keywordsObjectPage_inputName_posXpath = httpSignatureObjectPage_inputName_posXpath
-keywordsObjectPage_addItem_posId = httpSignatureObjectPage_addItem_posId
+keywordsobjectPage_addItem_posXpath = httpSignatureobjectPage_addItem_posXpath
 httpSignatureObjectPage_item_key_dropDown_posXpath = "//div[@class='SelectInput district-select']//div[@class='el-select inline-input el-select--small']//input"
 httpSignatureObjectPage_item_key_dropDown_select_posXpath = "//span[normalize-space(text())='{replaceValue}']"
 keywordsObjectPage_item_value_select_posXpath  = "//span[normalize-space(text())='{replaceValue}']"
@@ -257,7 +263,7 @@ accountObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_ac
 accountObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
 accountObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
 accountObjectPage_inputName_posXpath = keywordsObjectPage_inputName_posXpath
-accountObjectPage_addItem_posId = keywordsObjectPage_addItem_posId
+accountobjectPage_addItem_posXpath = keywordsobjectPage_addItem_posXpath
 accountObjectPage_inputItem_posXpath = urlObjectPage_inputItem_posXpath
 accountObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon iconfont icon-save check color31739C']"
 accountObjectPage_okButton_posId = "OK-_accountsDetail_Home_App_anonymousComponent"

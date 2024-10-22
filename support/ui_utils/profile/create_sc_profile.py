@@ -50,16 +50,15 @@ class CreateServiceFunctionForwarderProfile:
                 page_jump.jump_sub_profile_page(page_jump_element_position)
                 time.sleep(1)
                 # 点击create
-                self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["profileListPage_createButton_posXpath"]).click()
                 time.sleep(1)
                 # 输入name
                 sff_name = sff_profile_data["name"]
-                self.driver.find_element(By.ID, create_element_position["profilePge_inputName_posId"]).send_keys(sff_name)
+                self.driver.find_element(By.XPATH, create_element_position["profilePge_inputName_posXpath"]).send_keys(sff_name)
                 #页面除name外其他选项的操作
                 self.operate_sff_page(sff_profile_data,sf_name_list,sff_profile_element_position)
                 # 确认创建
-                self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_posXCss"]).click()
-                self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePge_okButton_warningYes_posXpath"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["profilePage_okButton_posXpath"]).click()
                 return 200,self.sc_info
             except Exception as e:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
@@ -120,7 +119,7 @@ class CreateServiceFunctionForwarderProfile:
             time.sleep(0.5)
             self.driver.find_element(By.XPATH,create_element_position["profilePage_searchSF_posXpath"]).send_keys(Keys.ENTER)
             time.sleep(1)
-            self.driver.find_element(By.XPATH,create_element_position["profilePage_chooseSF_posXpath"].format(replaceValue=name)).click()
+            self.driver.find_element(By.XPATH,create_element_position["profilePage_chooseSF_posXpath"].format(replaceName=name)).click()
             time.sleep(1)
         self.driver.find_element(By.XPATH,create_element_position["profilePage_closeSFProfile_posXpath"]).click()
 
@@ -171,34 +170,34 @@ class CreateServiceFunctionForwarderProfile:
         return sf_name_list
     
     def create_sf_profile(self,data, profile_element_position):
-        self.sc_info["sf_id_list"] = []
+        # self.sc_info["sf_id_list"] = []
         page_jump_element_position = profile_element_position["page_jump"]
         create_element_position = profile_element_position["create"]
+        # search_element_position = profile_element_position["search"]
         #页面跳转
         page_jump = PageJump(self.driver)
         page_jump.jump_sub_profile_page(page_jump_element_position)
         time.sleep(1)
         #点击create
-        self.driver.find_element(By.ID,create_element_position["profileListPage_createButton_posId"]).click()
+        self.driver.find_element(By.XPATH,create_element_position["profileListPage_createButton_posXpath"]).click()
         #在打开页面操作：输入name
         sf_name = data["name"]
-        self.driver.find_element(By.ID,create_element_position["profileListPage_inputName_posId"]).send_keys(sf_name)
+        self.driver.find_element(By.XPATH,create_element_position["profileListPage_inputName_posXpath"]).send_keys(sf_name)
         #页面其它选项操作
         self.operate_sf_page(data,create_element_position)
         #点击OK
-        self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_posCss"]).click()
-        self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_okButton_warningYes_posCss"]).click()
+        self.driver.find_element(By.XPATH, create_element_position["profilePage_okButton_posXpath"]).click()
         time.sleep(2)
-        # 在列表页以name搜索sf 获取sf id
-        btn = self.driver.find_element(By.ID,"select-label")
-        self.driver.execute_script("arguments[0].click()", btn)
-        self.driver.find_element(By.ID,"2-_FilteredSearch_ElRow_Profile_Functions_Home_App_anonymousComponent").click()
-        self.driver.find_element(By.XPATH,"//div[@class='rel-input v-input input el-input el-input--mini']//input").send_keys(sf_name)
-        btn = self.driver.find_element(By.ID,"searchQuery")
-        self.driver.execute_script("arguments[0].click()", btn)
-        time.sleep(2)
-        sf_id = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']//span").text
-        self.sc_info["sf_id_list"].append(int(sf_id))
+        # # 在列表页以name搜索sf 获取sf id
+        # btn = self.driver.find_element(By.XPATH,search_element_position["profileListPage_searchLabel_posXpath"])
+        # self.driver.execute_script("arguments[0].click()", btn)
+        # self.driver.find_element(By.XPATH, search_element_position["profileListPage_searchLabel_selectName_posXpath"]).click()
+        # self.driver.find_element(By.XPATH,search_element_position["profileListPage_searchLabel_inputContent_posXpath"]).send_keys(sf_name)
+        # btn = self.driver.find_element(By.XPATH, search_element_position["profileListPage_searchButton_posXpath"])
+        # self.driver.execute_script("arguments[0].click()", btn)
+        # time.sleep(2)
+        # sf_id = self.driver.find_element(By.XPATH,"//div[@class='table-status-item-id']//span").text
+        # self.sc_info["sf_id_list"].append(int(sf_id))
         return sf_name
     
     def operate_sf_page(self,data,create_element_position):
@@ -207,20 +206,26 @@ class CreateServiceFunctionForwarderProfile:
         device_group_list = device_group.split(":")
         self.sc_info["device_tag"] = device_group_list[-1]
         #替换元素定位中的值，组织元素定位
-        effective_devices_group_dict = {"device_group": "Select Device Group", "data_center": "Select Data Center"}
+        effective_devices_group_dict = {"device_group": "Group", "data_center": "Center"}
         effective_devices_name_dict = {'group-xxg-tsgxsfcos': 'group-xxg-tsgxSfcOs', 'group-xxg-7400': 'group-xxg-7400', 'group-xxg-9140': 'group-xxg-9140', 'group-xxg-tsgx': 'group-xxg-tsgx',
                                         'center-xxg-7400': 'center-xxg-7400', 'center-xxg-9140': 'center-xxg-9140', 'center-xxg-tsgx': 'center-xxg-tsgx', 'center_02': 'Center 02', 'city_a': 'City A',
                                         'group_华严3楼':'GROUP 华严3楼', 'group_华严4楼':'GROUP 华严4楼', 'center_华严3楼':'Center 华严3楼', 'center_华严4楼':'Center 华严4楼'}
-        replaceGroup = effective_devices_group_dict[device_group_list[0]]
+        replaceDeviceType = effective_devices_group_dict[device_group_list[0]]
         replaceDeviceName = effective_devices_name_dict[device_group_list[-1]]
-        ep_dropdown_item = create_element_position["profilePage_operateDeviceRadio_posXpath"].format(replaceGroup=replaceGroup, replaceDeviceName=replaceDeviceName)
         #点击添加框
         self.driver.find_element(By.XPATH, create_element_position["profilePage_addDeviceTag_posXpath"]).click()
+        time.sleep(0.5)
+        # 点击侧滑框中Device类型
+        self.driver.find_element(By.XPATH, create_element_position["profilePage_selectDeviceType_posXpath"].format(deviceType=replaceDeviceType)).click()
+        time.sleep(0.5)
+        # 选择Device
+        self.driver.find_element(By.XPATH, create_element_position["profilePage_searchDevice_inputName_posXpath"]).click
+        self.driver.find_element(By.XPATH, create_element_position["profilePage_searchDevice_inputName_posXpath"]).send_keys(replaceDeviceName)
+        self.driver.find_element(By.XPATH, create_element_position["profilePage_searchDevice_inputName_posXpath"]).send_keys(Keys.ENTER)
         time.sleep(1)
-        #点击侧滑里列表中按钮
-        self.driver.find_element(By.XPATH, ep_dropdown_item).click()
-        time.sleep(1)
-        self.driver.find_element(By.XPATH, create_element_position["profilePage_effectiveDevicesDrawerOk_posXpath"]).click()
+        self.driver.find_element(By.XPATH, create_element_position["profilePage_selectDevice_posXpath"]).click()
+        # 关闭侧滑框
+        self.driver.find_element(By.XPATH, create_element_position["profilePage_closeSidePage_posXpath"]).click()
         time.sleep(0.5)
         # Connectivity选择操作
         connectivity = self.format_from_data_lower_and_underline(data, key="connectivity")
@@ -247,11 +252,11 @@ class CreateServiceFunctionForwarderProfile:
         health_check = self.format_from_data_lower_and_underline(data, key="health_check")
         time.sleep(1)
         # 组织元素定位
-        health_check_radio_index_dict = {'none': 0, 'in-band_bfd': 1, 'bfd': 2, 'http': 3}
+        health_check_radio_index_dict = {'none': 'None', 'in-band_bfd': 'In-band BFD', 'bfd': 'BFD', 'http': 'HTTP'}
         health_item = health_check.split(":")[0]
-        replaceIndex = health_check_radio_index_dict[health_item]
+        replaceValue = health_check_radio_index_dict[health_item]
         # 点击health check单选按钮
-        self.driver.find_element(By.XPATH,create_element_position["profilePage_operateHealthCheckRadio_posXpath"].format(replaceIndex=replaceIndex)).click()
+        self.driver.find_element(By.XPATH,create_element_position["profilePage_operateHealthCheckRadio_posXpath"].format(type=replaceValue)).click()
         time.sleep(1)
         if health_check.startswith("bfd:"):
             health_check_list = health_check.split(":")
@@ -277,15 +282,15 @@ class CreateServiceFunctionForwarderProfile:
             self.driver.find_element(By.XPATH, ep_input).clear()
         self.driver.find_element(By.XPATH, ep_input).send_keys(data_input)
 
-    def operate_drawer_box(self, ep_dropdown_input="", ep_dropdown_item=""):
-        """
-        侧滑选择点击操作
-        :param ep_dropdown_input:   下拉菜单输入框定位
-        :param ep_dropdown_item:     下拉菜单列表选项定位
-        :return:
-        """
-        #点击添加框
-        self.driver.find_element(By.XPATH, ep_dropdown_input).click()
-        #点击侧滑里列表中按钮
-        self.driver.find_element(By.XPATH, ep_dropdown_item).click()
-        self.driver.find_element(By.XPATH, serviceFunctions_button_effectiveDevicesDrawerOk_posXpath).click()        
+    # def operate_drawer_box(self, ep_dropdown_input="", ep_dropdown_item=""):
+    #     """
+    #     侧滑选择点击操作
+    #     :param ep_dropdown_input:   下拉菜单输入框定位
+    #     :param ep_dropdown_item:     下拉菜单列表选项定位
+    #     :return:
+    #     """
+    #     #点击添加框
+    #     self.driver.find_element(By.XPATH, ep_dropdown_input).click()
+    #     #点击侧滑里列表中按钮
+    #     self.driver.find_element(By.XPATH, ep_dropdown_item).click()
+    #     self.driver.find_element(By.XPATH, serviceFunctions_button_effectiveDevicesDrawerOk_posXpath).click()        

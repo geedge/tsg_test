@@ -125,15 +125,15 @@ class CreateDosProtectionPolicy:
                     element_position_map = get_element_position(test_data["policy_type"])
                     #动态选择变量
                     if test_data["threshold"]["type"] == "rate":
-                        element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdRateType_posId
+                        element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdRateType_posXpath
                         element_position_map["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = policyRulePage_mitigationTimeouts_select_posXpath
                     elif test_data["threshold"]["type"] == "concurrency":
-                        element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdConcurrencyType_posId
+                        element_position_map["create"]["policyRulePage_thresholdType_posId"] = dosRulePage_thresholdConcurrencyType_posXpath
                         element_position_map["create"]["policyRulePage_mitigationTimeouts_select_posXpath"] = dosRulePage_mitigationTimeouts_select_bottom_posXpath
                     if test_data["mitigation"]["behavior"] == "deny":
-                        element_position_map["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_deny_posId
+                        element_position_map["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_deny_posXpath
                     elif test_data["mitigation"]["behavior"] == "none":
-                        element_position_map["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_none_posId
+                        element_position_map["create"]["policyRulePage_mitigationBehavior_posId"] = dosRulePage_mitigationBehavior_none_posXpath
 
                     create_rule_code = create_rule.create(test_data, element_position_map)
                     if create_rule_code == 200:
