@@ -104,7 +104,7 @@ policyRulePage_chooseApn_posXpath = "//*[@id='tab-apn' and contains(concat(' ', 
 
 policyRulePage_addCondition_posXpath = "//div[@class='flex flex-row']//button"#"//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
-policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
+policyRulePage_addCondition_serverFqdn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1xyc0ec']//div[text()='Server FQDN']"
 policyRulePage_addCondition_dstPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[2]/following-sibling::div//div[contains(text(), 'Port')]"
 policyRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
 policyRulePage_addCondition_uri_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URI']"
@@ -112,7 +112,7 @@ policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList l
 policyRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Header']"
 policyRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Body']"
 policyRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Body']"
-policyRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addCondition_close_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
 policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='IP Address']"
 policyRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='IP Address']"
@@ -146,10 +146,10 @@ policyRulePage_selectIpProtocol_posXpath = "//div[@class='ProtocolList list-box'
 policyRulePage_closeIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 policyRulePage_little_button_addIpProtocol_posXpath='//div[@zs-label="Protocol"]//*[@class="operate-icon row-edit iconfont icon-Create1"]'
 
-policyRulePage_addServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchServerFqdn_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
-policyRulePage_selectServerFqdn_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeServerFqdn_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addServerFqdn_posXpath = "//label[text()='Server FQDN']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
+policyRulePage_searchServerFqdn_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
+policyRulePage_selectServerFqdn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
+policyRulePage_closeServerFqdn_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
 policyRulePage_negateServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//label[@id='policy_not_negate-_PolicySwitch_ElFormItem_DestinationsItem_DestinationsModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']//span[@class='el-checkbox__input']"
 
 # cn

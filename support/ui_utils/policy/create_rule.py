@@ -250,9 +250,9 @@ class CreateRule:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
                         # 点server fqdn的+，因为dst ip已经是第一层且t初始值是0，所以要+2
-                        temp = t + 2
-                        temp_element_position = create_element_position["policyRulePage_addServerFqdn_posXpath"].format(replaceValue=temp)
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # temp = t + 2
+                        # temp_element_position = create_element_position["policyRulePage_addServerFqdn_posXpath"].format(replaceValue=temp)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addServerFqdn_posXpath"]).click()
                         time.sleep(1)
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(server_fqdn_data[t]["name"])
