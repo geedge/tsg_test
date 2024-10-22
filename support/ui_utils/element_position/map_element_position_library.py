@@ -273,7 +273,7 @@ test_fqdn_object_element_position = {
     },
     "delete": {
         "objectListPage_allSelect_posXpath": fqdnObjectListPage_allSelect_posXpath,
-        "objectListPage_deleteButton_posId": fqdnObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_posXpath": fqdnObjectListPage_deleteButton_posXpath,
         "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
     }
 }
