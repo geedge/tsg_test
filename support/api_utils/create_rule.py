@@ -271,15 +271,30 @@ class CreatePolicyRule:
         elif condition["policy_type"] == "pxy_intercept":
             user_region = {"protocol": "", "tcp_option_profile": 1}
             rule_template_dict["rule"]["type"] = condition["policy_type"] = "proxy_intercept"
-
             pre_intercept_path = path_dict["pre_intercept_template_path"]
-            # 新建intercept策略，只取source_list和dst_list
+            # 读取json模块中默认的uuid
             with open(pre_intercept_path, 'r', encoding='utf-8') as f:
                 pre_intercept_template = json.load(f)
                 keyring_for_untrusted = pre_intercept_template["rule"]["action_parameter"]["keyring_for_untrusted"]
                 keyring_for_trusted = pre_intercept_template["rule"]["action_parameter"]["keyring_for_trusted"]
                 decryption_profile = pre_intercept_template["rule"]["action_parameter"]["decryption_profile"]
                 tcp_option_profile = pre_intercept_template["rule"]["action_parameter"]["tcp_option_profile"]
+                traffic_mirror = 0
+            # 如果测试数据中有新建的profile，则重新赋值uuid
+            for i in range(len(create_profile_ids)):
+                profile_type = create_profile_ids[i]["profile_type"]
+                uuid = create_profile_ids[i]["uuid"]
+                if profile_type == "ssl_keyring":
+                    if create_profile_ids[i]["decryption_keying_type"] == "trusted":
+                        keyring_for_trusted = uuid
+                    else:  # untrusted
+                        keyring_for_untrusted = uuid
+                elif profile_type == "ssl_decryption":
+                    decryption_profile = uuid
+                elif profile_type == "tcp_option":
+                    tcp_option_profile = uuid
+                else:   # traffic_mirror
+                    traffic_mirror = uuid
 
             # 获取原始api优先级的数据，重定义temp_application值
             temp_application = 'application_' + str(create_number)
@@ -299,8 +314,10 @@ class CreatePolicyRule:
                     user_region["decryption_profile"] = decryption_profile
                     user_region["tcp_option_profile"] = tcp_option_profile
                     user_region["traffic_mirror"] = {"enable": 0}
-
-
+                    if traffic_mirror != 0:
+                        user_region["traffic_mirror"]["enable"] = 1
+                        user_region["traffic_mirror"]["vlanID"] = 1
+                        user_region["traffic_mirror"]["mirror_profile"] = traffic_mirror
             rule_template_dict["rule"]["action_parameter"] = user_region
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":
@@ -361,7 +378,6 @@ class CreatePolicyRule:
                 user_region["rules"] = rules
                 user_region["method"] = "edit_element"
             rule_template_dict["rule"]["action_parameter"] = user_region
-
         elif condition["policy_type"] == "monitor":
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]

@@ -281,6 +281,36 @@ class DeletePolicy:
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete traffic mirror profile failed.", flush=True)
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
+                    elif create_profile_ids[del_porfile_index]["profile_type"] == "ssl_keyring":  # 删除ssl keyring
+                        profile_id = create_profile_ids[del_porfile_index]["uuid"]
+                        url = "{}/v1/profiles/decryption-keyrings".format(api_server, vsys_id)
+                        del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ssl keyring successfully.", flush=True)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ssl keyring failed.", flush=True)
+                    elif create_profile_ids[del_porfile_index]["profile_type"] == "ssl_decryption":  # 删除ssl decryption
+                        profile_id = create_profile_ids[del_porfile_index]["uuid"]
+                        url = "{}/v1/profiles/decryption-profiles".format(api_server, vsys_id)
+                        del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ssl decryption successfully.", flush=True)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete ssl decryption failed.", flush=True)
+                    elif create_profile_ids[del_porfile_index]["profile_type"] == "tcp_option":  # 删除tcp option
+                        profile_id = create_profile_ids[del_porfile_index]["uuid"]
+                        url = "{}/v1/profiles/proxy-tcp-options".format(api_server, vsys_id)
+                        del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
+                        response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete tcp option successfully.", flush=True)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete tcp option failed.", flush=True)
             if len(create_library_catalog_ids) > 0:
                 delete_library_catalog_dict = {"uuids": "", "vsys":1}
                 for catalog_id in create_library_catalog_ids:
@@ -477,7 +507,7 @@ class DeletePolicy:
                     self.query_and_delete_by_name(temp_url, template, headers)
 
                 elif name_item["type"] in ["service_function_forwarder", "service_function", "statistics_template", "response_page", "hijack_file",
-                                         "insert_script", "traffic_mirror", "run_script", "dns_record"]:
+                                         "insert_script", "traffic_mirror", "run_script", "dns_record", "ssl_keyring", "ssl_decryption", "tcp_option"]:
                     if 'type' in template:
                         del template["type"]
                     api_path_map = {
@@ -489,7 +519,10 @@ class DeletePolicy:
                         "insert_script": "proxy-inject-scripts",
                         "traffic_mirror": "traffic-mirror-profiles",
                         "run_script": "http-manipulation-scripts",
-                        "dns_record": "dns-records"
+                        "dns_record": "dns-records",
+                        "ssl_keyring": "decryption-keyrings",
+                        "ssl_decryption": "decryption-profiles",
+                        "tcp_option": "proxy-tcp-options",
                     }
                     api_path_profile_type = api_path_map.get(name_item["type"])
                     template['name'] = name_item["name"]
@@ -549,16 +582,26 @@ class DeletePolicy:
             elif 'traffic-mirror-profiles' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'traffic_mirror'.replace("_", " ")
+            elif 'decryption-keyrings' in url:
+                data_list = return_json_data['data']['list']
+                delete_info = 'ssl_keyring'.replace("_", " ")
+            elif 'decryption-profiles' in url:
+                data_list = return_json_data['data']['list']
+                delete_info = 'ssl_decryption'.replace("_", " ")
+            elif 'proxy-tcp-options' in url:
+                data_list = return_json_data['data']['list']
+                delete_info = 'tcp_proxy_profile'.replace("_", " ")
             if len(data_list) > 0:
                 delete_data = self.combine_delete_ids(template, data_list)
                 for i in range(len(delete_data)):
                     tmp_delete = {"uuids":""}
                     tmp_delete["uuids"] = delete_data[i]
                     response = requests.delete(url, headers=headers, json=tmp_delete, verify=False)
-                if response.status_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(delete_info), flush=True)
-                else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} failed, please check {}".format(delete_info, delete_data))
+                if len(delete_data) > 0:
+                    if response.status_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(delete_info), flush=True)
+                    else:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} failed, please check {}".format(delete_info, delete_data))
             # else:
             #     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "No configuration needs to be deleted.", flush=True)
         except AssertionError as e:
@@ -569,8 +612,9 @@ class DeletePolicy:
         # 遍历列表中的每个 JSON 对象
         for i, json_obj in enumerate(list_data):
             # 提取 uuid 键的值
-            uuid = json_obj.get("uuid")
-            temp_template.append(uuid)
+            if template["name"] == json_obj.get("name"):
+                uuid = json_obj.get("uuid")
+                temp_template.append(uuid)
         return temp_template
 
     def delete_geolocation(self, geolocation_url, geolocation_template, headers, vsys_id):

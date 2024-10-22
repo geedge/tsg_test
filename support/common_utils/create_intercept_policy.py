@@ -263,17 +263,22 @@ class CreateInterceptPolicy:
                 # 添加测试过程中涉及的response pages
                 if "profile_condition" in test_data and len(test_data["profile_condition"]) > 0:
                     tmp_dir = parameter["root_path"] + "/support/ui_utils/profile/profile_file/"
-                    profile_type = test_data["profile_condition"][0]["profile_type"].strip()
-                    if profile_type == "ssl_decryption_keyring":
-                        template_path["profiles_ssl_decryption_keyring_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "hijack_files":
-                        template_path["profiles_hijack_file_path"] = tmp_dir + "hijack_file/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "insert_profile":
-                        template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "run_script":
-                        template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][0]["content_name"]
-                    # else:
-                    #     print("check profile path")
+
+                    for i in range(len(test_data["profile_condition"])):
+                        profile_type = test_data["profile_condition"][i]["profile_type"].strip()
+                        if profile_type == "ssl_keyring":
+                            if "trusted" == test_data["profile_condition"][i]["decryption_keying_type"].strip():
+                                template_path["profiles_trust_ssl_keyring_public_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][i]["public_file"]
+                                template_path["profiles_trust_ssl_keyring_private_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][i]["private_file"]
+                            else:
+                                template_path["profiles_untrust_ssl_keyring_public_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][i]["public_file"]
+                                template_path["profiles_untrust_ssl_keyring_private_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][i]["private_file"]
+                        elif profile_type == "insert_profile":
+                            template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][i]["content_name"]
+                        elif profile_type == "run_script":
+                            template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][i]["content_name"]
+                        # else:
+                        #     print("check profile path")
 
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
@@ -294,7 +299,7 @@ class CreateInterceptPolicy:
                 result["api_result"] = api_result
                 # 删除配置
                 delete = DeletePolicy()
-                delete.delele_policy_by_uuid(token, parameter, cfg_list)
+                #delete.delele_policy_by_uuid(token, parameter, cfg_list)
 
         return result
 

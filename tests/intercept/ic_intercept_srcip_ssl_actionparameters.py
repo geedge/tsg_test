@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -57,7 +57,7 @@ def run(parameter):
                         "profile_type": "ssl_keyring",
                         "decryption_keying_type": "trusted",
                         "profile_file": {
-                            "name": "manipulation_trusted_page",
+                            "name": "intercept_trusted_page",
                             "model": "create",
                             "file_certificate": "test_root_cert_catest.cer",
                             "file_private_key": "test_root_key_catest.key",
@@ -75,7 +75,7 @@ def run(parameter):
                         "profile_type": "ssl_keyring",
                         "decryption_keying_type": "untrusted",
                         "profile_file": {
-                            "name": "manipulation_untrusted_page",
+                            "name": "intercept_untrusted_page",
                             "model": "create",
                             "file_certificate": "test_root_cert_catest.cer",
                             "file_private_key": "test_root_key_catest.key",
@@ -94,7 +94,7 @@ def run(parameter):
                     {
                         "profile_type": "ssl_decryption",
                         "profile_file": {
-                            "name": "manipulation_ssl_decryption_profile",
+                            "name": "intercept_ssl_decryption_profile",
                             "model": "create",
                             "common_name": "on",
                             "issuer": "on",
@@ -118,7 +118,7 @@ def run(parameter):
                     {
                         "profile_type": "tcp_option",
                         "profile_file": {
-                            "name": "manipulation_tcp_proxy_profile",
+                            "name": "intercept_tcp_proxy_profile",
                             "model": "create",
                             "enable_TCP_passthrough": "off",
                             "c_override_MSS": "off",
@@ -149,7 +149,7 @@ def run(parameter):
                         "profile_type": "traffic_mirror",
                         "vlan_id": "no_default",
                         "profile_file": {
-                            "name": "manipulation_traffic_mirroring_profile",
+                            "name": "intercept_traffic_mirroring_profile",
                             "model": "create",
                             "vlan_id":
                                 [

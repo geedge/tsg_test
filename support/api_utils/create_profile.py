@@ -836,7 +836,9 @@ class CreateProfile:
                 profile_data["vsys"] = vsys_id
                 del profile_data['profile_type']
                 url = "{}/v1/profiles/traffic-mirror-profiles".format(api_host, vsys_id)
+                #print(json.dumps(profile_data))
                 response = requests.post(url=url, json=profile_data, headers=headers, verify=False)
+                #print(response.text)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
@@ -849,12 +851,27 @@ class CreateProfile:
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
             elif profile_type == "ssl_keyring":
-                files = {"file": ("tango-ca-v3-trust-ca.cer", open(path_dict["profiles_ssl_keyring_path"], 'rb'), "text/plain")}
+                decryption_keying_type = profile_data["decryption_keying_type"]
+                public_file_name = profile_data["public_file"]
+                private_file_name = profile_data["private_file"]
+                if decryption_keying_type == "trusted":
+                    files = {
+                        "public_file": (public_file_name, open(path_dict["profiles_trust_ssl_keyring_public_path"], 'rb'), "text/plain"),
+                        "private_file": (private_file_name, open(path_dict["profiles_trust_ssl_keyring_private_path"], 'rb'), "text/plain"),
+                    }
+                else:
+                    files = {
+                        "public_file": (public_file_name, open(path_dict["profiles_untrust_ssl_keyring_public_path"], 'rb'), "text/plain"),
+                        "private_file": (private_file_name, open(path_dict["profiles_untrust_ssl_keyring_private_path"], 'rb'), "text/plain"),
+                    }
+                    time.sleep(1)   # 避免两次创建时间间隔小
                 del profile_data["profile_type"]
-                # 添加vsys id
-                profile_data["vsys"] = vsys_id
+                del profile_data["decryption_keying_type"]
+                del profile_data["public_file"]
+                del profile_data["private_file"]
                 url = "{}/v1/profiles/decryption-keyrings".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+                #print(response.text)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
                 if response.status_code == 200:
@@ -863,6 +880,40 @@ class CreateProfile:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
                 profile_id = response_dict["data"]["ssl_keyring"]["uuid"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["decryption_keying_type"] = decryption_keying_type
+                create_profile_id_dict["uuid"] = profile_id
+                return create_profile_id_dict
+            elif profile_type == "ssl_decryption":
+                del profile_data["profile_type"]
+                url = "{}/v1/profiles/decryption-profiles".format(api_host)
+                response = requests.post(url=url, headers=headers, json=profile_data, verify=False)
+                #print(response.text)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
+                response_dict = response.json()
+                profile_id = response_dict["data"]["decryption_profile"]["uuid"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["uuid"] = profile_id
+                return create_profile_id_dict
+            elif profile_type == "tcp_option":
+                del profile_data["profile_type"]
+                url = "{}/v1/profiles/proxy-tcp-options".format(api_host)
+                #print(json.dumps(profile_data))
+                response = requests.post(url=url, headers=headers, json=profile_data, verify=False)
+                #print(response.text)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
+                response_dict = response.json()
+                profile_id = response_dict["data"]["proxy_tcp_option"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict

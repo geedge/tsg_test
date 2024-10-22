@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -57,7 +57,7 @@ def run(parameter):
                         "profile_type": "ssl_keyring",
                         "decryption_keying_type": "trusted",
                         "profile_file": {
-                            "name": "manipulation_tango_trust_ca",
+                            "name": "intercept_tango_trust_ca",
                             "model": "create",
                             "file_certificate": "test_root_cert_catest.cer",
                             "file_private_key": "test_root_key_catest.key",
@@ -66,14 +66,14 @@ def run(parameter):
                             "is_match": "match",
                             "reissue_expiry_hours": "MSC",
                             "type": "Root-Certificate",
-                            "public_key_algorithm": "RSA-1024",
+                            "public_key_algorithm": "RSA-2048",
                             "certificate_revocation_list": "",
                             "include_root": "on"
                         }
                     },
                 ]
             },
-            "expected_return": "CN=CA TRUST,Server public key is 1024 bit",
+            "expected_return": "CN=CA TRUST,Server public key is 2048 bit",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {

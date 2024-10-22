@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -51,18 +51,43 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "关于百度,CN=TSG",
+            "action_parameter": {
+                "ssl_decryption_profile": [
+                    {
+                        "profile_type": "ssl_decryption",
+                        "profile_file": {
+                            "name": "intercept_ssl_decryption_profile",
+                            "model": "create",
+                            "common_name": "on",
+                            "issuer": "on",
+                            "self_signed": "on",
+                            "expiry_date": "on",
+                            "fail_action": "Pass-through",
+                            "ev_certificate": "off",
+                            "certificate_transparency": "off",
+                            "mutual_authentication": "off",
+                            "protocol_errors": "off",
+                            "certificate_pinning": "off",
+                            "certificate_not_installed": "off",
+                            "mirror_client_versions": "on",
+                            "min_client_version": "TLSv1.0",
+                            "max_client_version": "TLSv1.2",
+                            "allow_HTTP2": "on"
+                        }
+                    }
+                ],
+            },
+            "expected_return": "issuer: CN=TSG CA",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.icbc.com.cn"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.icbc.com.cn/",
             },
             "token": ""
         }
 
-        # 测试用例实例化
         create = CreatePolicy(test_data, parameter)
         result = create.create_policy()
 
