@@ -21,18 +21,20 @@
         "sources": [],
         "destinations": [],
         "filters": "",
-        "application": {
+        "and_conditions": [
+        {
             "negate_option": false,
-            "objects": [
+            "or_conditions": [
                 {
+                    "attribute_name": "ATTR_APP_ID",
                     "object_uuids": [
                         "80791b3a-e700-2cb8-8c24-6876d9faa8f8",
                         "f9d5c16a-7f42-203f-8c19-5432354a3271"
                     ]
                 }
-            ],
-            "attribute_name": "ATTR_APP_ID"
-        },
+            ]      
+        }
+        ],
         "is_enabled": 1,
         "description": "test",
         "vsys_id": 6,

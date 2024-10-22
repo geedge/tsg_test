@@ -328,7 +328,7 @@ class CreatePolicyRule:
         elif condition["policy_type"] == "pxy_manipulation":
             # 创建manipulation策略前先下发一条deny_quic策略和一条intercept策略
             tmp_list = []  # 前置拦截策略，只添加src ip
-            pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, tmp_list, path_dict, vsys_id, "pxy_manipulation")
+            pre_policy_id_list = self.create_associated_rule(headers, api_host, and_conditions_list, tmp_list, path_dict, vsys_id, "pxy_manipulation")
             user_region = {}
             # rule_template_dict["rule"]["type"] = condition["policy_type"]
             rule_template_dict["rule"]["type"] = condition["policy_type"] = "proxy_manipulation"
@@ -444,7 +444,7 @@ class CreatePolicyRule:
 
         return policy_id_list_temp
 
-    def create_associated_rule(self, headers, api_host, source_list, dst_list, path_dict, vsys_id, associated_policy):
+    def create_associated_rule(self, headers, api_host, and_conditions_list, dst_list, path_dict, vsys_id, associated_policy):
         pre_intercept_path = path_dict["pre_intercept_template_path"]
 
         # 新建intercept策略，只取source_list和dst_list
@@ -453,20 +453,21 @@ class CreatePolicyRule:
             pre_intercept_template_path["vsys_id"] = vsys_id
             pre_intercept_template_path["rule"]["vsys_id"] = vsys_id
 
-        if len(source_list) > 0:
-            pre_intercept_template_path['rule']['source'] = source_list
-        else:
-            pre_intercept_template_path['rule']['source'] = []
+        if len(and_conditions_list) > 0:
+            pre_intercept_template_path['rule']['and_conditions'].append(and_conditions_list)
+        # else:
+        #     pre_intercept_template_path['rule']['source'] = []
 
-        if len(dst_list) > 0:
-            pre_intercept_template_path['rule']['destination'] = dst_list
-        else:
-            pre_intercept_template_path['rule']['destination'] = []
+        # if len(dst_list) > 0:
+        #     pre_intercept_template_path['rule']['destination'] = dst_list
+        # else:
+        #     pre_intercept_template_path['rule']['destination'] = []
         if associated_policy == "pxy_manipulation":
             tmp_name = "manipulation_pre_intercept"
         else:
             tmp_name = "service_chaining_pre_intercept"
         pre_intercept_template_path["rule"]["name"] = tmp_name
+        # print(json.dumps(pre_intercept_template_path))
         pre_intercept_policy_id_dict = self.create_rule(pre_intercept_template_path, headers, api_host, vsys_id)
         pre_policy_id_list = pre_intercept_policy_id_dict
         #pre_policy_id_list = []
@@ -492,7 +493,7 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            # print(json.dumps(rule_template_dict))
+            print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             #print(return_json_data)
