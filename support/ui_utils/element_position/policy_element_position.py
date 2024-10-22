@@ -1042,7 +1042,7 @@ dosRulePage_mitigationTimeouts_select_top_posXpath = policyRulePage_mitigationTi
 dosRulePage_mitigationTimeouts_select_bottom_posXpath =policyRulePage_mitigationTimeouts_select_posXpath
 
 dosRulePage_enable_posXpath = '//*[@class="dos-protection-policy-is_enabled"]'
-dosRulePage_ok_posId = "//button[normalize-space(text())='OK']"
+dosRulePage_ok_posXpath = "//button[normalize-space(text())='OK']"
 dosRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 dosRulePage_cancel_posId = "//button[normalize-space(text())='Cancel']"
 

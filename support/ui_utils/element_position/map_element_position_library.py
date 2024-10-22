@@ -1341,9 +1341,9 @@ test_dos_protection_rule_element_position = {
                         "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_dos_posXpath
                     },
                     "create": {
-                        "policyRuleListPage_createButton_posId": dosRuleListPage_createButton_posXpath,
+                        "policyRuleListPage_createButton_posXpath": dosRuleListPage_createButton_posXpath,
                         "policyRulePage_inputName_posXpath": dosRulePage_inputName_posXpath,
-                        "policyRulePage_selectAction_posId": dosRulePage_selectProtect_posXpath,
+                        "policyRulePage_selectAction_posXpath": dosRulePage_selectProtect_posXpath,
                         "policyRulePage_addSrcIP_posXpath": dosRulePage_addSrcIP_posXpath,
                         "policyRulePage_searchSrcIP_posXpath": dosRulePage_searchSrcIP_posXpath,
                         "policyRulePage_selectSrcIP_posXpath": dosRulePage_selectSrcIP_posXpath,
@@ -1353,18 +1353,18 @@ test_dos_protection_rule_element_position = {
                         "policyRulePage_searchApplication_posXpath": dosRulePage_searchApplication_posXpath,
                         "policyRulePage_selectApplication_posXpath": dosRulePage_selectApplication_posXpath,
                         "policyRulePage_closeApplication_posXpath": dosRulePage_closeApplication_posXpath,
-                        "policyRulePage_thresholdType_posId": "",
+                        "policyRulePage_thresholdType_posXpath": "",
                         "policyRulePage_groupBy_dropDownBox_posXpath": dosRulePage_groupBy_dropDownBox_posXpath,
                         "policyRulePage_groupBy_select_posXpath": dosRulePage_groupBy_select_posXpath,
                         "policyRulePage_requestPerPeriod_posXpath": dosRulePage_requestPerPeriod_posXpath,
                         "policyRulePage_countingPeriod_dropDownBox_posXpath": dosRulePage_countingPeriod_dropDownBox_posXpath,
                         "policyRulePage_countingPeriod_select_posXpath": dosRulePage_countingPeriod_select_posXpath,
                         "policyRulePage_concurrentSsessions_posXpath" : dosRulePage_concurrentSsessions_posXpath,
-                        "policyRulePage_mitigationBehavior_posId": "",
+                        "policyRulePage_mitigationBehavior_posXpath": "",
                         "policyRulePage_mitigationTimeouts_dropDownBox_posXpath": dosRulePage_mitigationTimeouts_dropDownBox_posXpath,
                         "policyRulePage_mitigationTimeouts_select_posXpath": "",
                         "policyRulePage_enable_posXpath": dosRulePage_enable_posXpath,
-                        "policyRulePage_okButton_yes_posId": dosRulePage_ok_posId,
+                        "policyRulePage_okButton_yes_posXpath": dosRulePage_ok_posXpath,
                         "policyRulePage_okButton_warningYes_posXpath": dosRulePage_okButton_warningYes_posXpath
                     },
                     "search": {

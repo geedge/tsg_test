@@ -821,7 +821,7 @@ class CreateRule:
 
             # 配置DoS的Threshold和Mitigation
             if test_data["policy_type"] == "dos_protection":
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_thresholdType_posId"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_thresholdType_posXpath"]).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_groupBy_dropDownBox_posXpath"]).click()
                 if test_data["threshold"]["type"] == "rate":
                     if test_data["threshold"]["rate_threshold"]["group_by"] == "source_ip":
@@ -859,7 +859,7 @@ class CreateRule:
                     temp_mitigation_timeout_element_position = create_element_position["policyRulePage_mitigationTimeouts_select_posXpath"].format(replaceValue=test_data["mitigation"]["timeout"])
                     self.driver.find_element(By.XPATH, temp_mitigation_timeout_element_position).click()
                 elif test_data["mitigation"]["behavior"] == "none":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationBehavior_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationBehavior_posXpath"]).click()
 
             # other options 操作
             if test_data["policy_type"] == "pxy_manipulation":
@@ -879,7 +879,7 @@ class CreateRule:
             btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
             self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             # 确认创建
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_yes_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_yes_posXpath"]).click()
             #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
