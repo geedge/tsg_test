@@ -19,6 +19,16 @@ language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousCo
 ruleListPage_createButton_posXpath = "//*[@class='action-create inline-flex mr-[8px] ']" #Rule列表上方Create按钮
 ruleListPage_editButton_posXpath = "//*[@class='action-edit inline-flex mr-[8px] ']" #Rule列表上方Create按钮
 ruleListPage_deleteButton_posXpath ="//*[@class='action-delete inline-flex mr-[8px] ']" #Rule列表上方Create按钮
+ruleListPage_searchLable_posXpath = "//div[contains(@class,'MuiAutocomplete-wrapper MuiAutocomplete-multiple')]//input[contains(@class,'MuiAutocomplete-input')]" #搜索输入框
+ruleListPage_searchLable_dropDown_item_posXpath = '//span[normalize-space(text())="{replaceValue}"]/../..' #下拉菜单定位
+ruleListPage_searchLable_input_itemContent_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'  #输入item的值，replaceValue替换实际查询值
+ruleListPage_searchLable_searchButton_posXpath = '//*[@class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w"]'
+ruleListPage_tableTbody_posXpath = '//*[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]' #Rule列表table
+ruleListPage_allSelect_posXpath = '(//*[@class="MuiCheckbox-action css-kit57i"]/parent::span)[last()]' # Rule列表选择所有搜索结果All按钮
+ruleListPage_delete_tip_warning_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//div[contains(@class,'text-center color-[--color-text] mt-[12px] MuiBox-root')]" #删除告警页面提示信息
+ruleListPage_delete_tip_button_warningYes_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[@type='danger']" #删除告警页面，Yes确认删除按钮
+ruleListPage_delete_tip_button_warningNo_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[contains(@class,'MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary')]" ##删除告警页面，No取消删除按钮
+
 rulePage_inputName_posXpath = "//*[@class='MuiInput-input css-fqt4w4']"
 rulePage_button_add2Level_conditon_posXpath = "//label[normalize-space(text())='{firstType}']/following-sibling::div//label[normalize-space(text())='{secondType}']/following-sibling::div/button"#多层对象添加按钮，例如：Source-IP Address policyRulePage_addSrcIP_posXpath
 rulePage_button_add_conditon_posXpath = "//label[normalize-space(text())='{}']/following-sibling::div//button"
@@ -31,9 +41,7 @@ rulePage_okButton_posXpath = "//div[@class='form-action bg-[--color-background] 
 rulePage_cancelButton_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[2]" # Cancel按钮定位
 rulePage_okButton_warningYes_posXpath = ""
 rulePage_okButton_warningNo_posXpath = ""
-rulePage_delete_tip_warning_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//div[contains(@class,'text-center color-[--color-text] mt-[12px] MuiBox-root')]" #删除告警页面提示信息
-rulePage_delete_tip_button_warningYes_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[@type='danger']" #删除告警页面，Yes确认删除按钮
-rulePage_delete_tip_button_warningNo_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[contains(@class,'MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary')]" ##删除告警页面，No取消删除按钮
+
 policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
 policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
@@ -924,6 +932,14 @@ statisticsRuleListPage_createButton_posXpath = ruleListPage_createButton_posXpat
 statisticsRuleListPage_editButton_posXpath = ruleListPage_editButton_posXpath
 statisticsRuleListPage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
 statisticsRuleListpage_okButton_warningYes_posXpath = securityRuleListpage_okButton_warningYes_posXpath
+statisticsRuleListPage_searchLabel_posXpath = ruleListPage_searchLable_posXpath #
+statisticsRuleListPage_searchLabel_dropDown_item_posXpath = ruleListPage_searchLable_dropDown_item_posXpath #
+statisticsRuleListPage_searchLabel_input_itemContent_posXpath = ruleListPage_searchLable_input_itemContent_posXpath #
+statisticsRuleListPage_searchLabel_searchButton_posXpath = ruleListPage_searchLable_searchButton_posXpath #
+statisticsRruleListPage_tableTbody_posXpath = ruleListPage_tableTbody_posXpath #
+statisticsRruleListPage_allSelect_posXpath = ruleListPage_allSelect_posXpath #
+statisticsRuleListPage_delete_tip_button_warningYes_posXpath = ruleListPage_delete_tip_button_warningYes_posXpath #"//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+statisticsRuleListPage_delete_tip_button_warningNo_posXpath = ruleListPage_delete_tip_button_warningNo_posXpath #"//button[@class='el-button delComponents-close el-button--info el-button--small']"
 # 名字输入定位
 statisticsRulePage_inputName_posXpath = rulePage_inputName_posXpath
 # rule 页面中Add Condition按钮定位
@@ -1047,8 +1063,7 @@ statisticsRulePage_okButton_posXpath = rulePage_okButton_posXpath # ""
 statisticsRulePage_cancelButton_posXpath = rulePage_cancelButton_posXpath #"//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[2]"
 statisticsRulePage_okButton_warningYes_posXpath = rulePage_okButton_warningYes_posXpath #"//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 statisticsRulePage_okButton_warningNo_posXpath = rulePage_okButton_warningNo_posXpath #"//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
-statisticsRulePage_delete_tip_button_warningYes_posXpath = rulePage_delete_tip_button_warningYes_posXpath #"//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
-statisticsRulePage_delete_tip_button_warningNo_posXpath = rulePage_delete_tip_button_warningNo_posXpath #"//button[@class='el-button delComponents-close el-button--info el-button--small']"
+
 
 # 策略编辑界面右侧信息
 statisticsRulePage_rightInfo_lastHitTime_posXpath = "//form[@class='el-form paper-grid-right el-form--label-top']//table//tr[1]//td[2]"
