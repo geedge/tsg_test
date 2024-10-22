@@ -706,7 +706,9 @@ shapingProfilePage_auditLogsPage_modificationPage_button_close_posXpath = "//*[@
 
 #Profiles Service Function Forwarders===================Profiles Service Function Forwarders====================Profiles Service Function Forwarders=================Profiles Service Function Forwarders=======================Profiles Service Function Forwarders
 #listPage->Service Function Forwarders list page  列表页
-listPage_profile_serviceFunctionForwarders_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"     #create按钮id
+mainPage_secondLevelMenu_serviceFunctionForwarders_posXpath = "//div[@class='MuiListItem-root MuiListItem-gutters menu-service-chaining css-1l56wwh']//span[text()='Service Function Forwarders']"
+listPage_profile_serviceFunctionForwarders_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"     #create按钮id
+listPage_profile_serviceFunctionForwarders_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"     #create按钮id
 listPage_profile_serviceFunctionForwarders_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #edit按钮id
 listPage_profile_serviceFunctionForwarders_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #del按钮id
 listPage_profile_serviceFunctionForwarders_viewButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #view按钮id
@@ -714,12 +716,15 @@ listPage_profileColumn_serviceFunctionForwarders_button_columnAll_posId = "dropC
 listPage_profileColumn_serviceFunctionForwarders_button_columnCancel_posId = "dropColALlFalse-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #列选择Cancel按钮
 listPage_profileColumn_serviceFunctionForwarders_button_cancel_posId = "dropColcancel-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #cancel按钮
 listPage_profileColumn_serviceFunctionForwarders_button_ok_posId = "dropColOK-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #ok按钮
-listPage_profileSearch_serviceFunctionForwarders_selectLabel_posId = mainPage_profileSearch_selectLabel_posId      #查询框id    定位形式一样
+listPage_profileSearch_serviceFunctionForwarders_selectLabel_posXpath = "//div[@class='MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 dune-ui-page relative service-function-forwarder-page dune-container-table css-1823oea']//input"
+listPage_profileSearch_serviceFunctionForwarders_selectLabel_posXpath = "//div[@class='MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 dune-ui-page relative service-function-forwarder-page dune-container-table css-1823oea']//input"
 listPage_profileSearch_serviceFunctionForwarders_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId    #查询按钮id       定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_searchName_posId = "2-_FilteredSearch_ElRow_Profile_Forwarders_Home_App_anonymousComponent"
-listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath   #下拉菜单定位   定位形式一样
-listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath   #输入item的值，replaceName替换实际查询值    定位形式一样
+listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span"
+listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath = "//div[@class='base-Popper-root']//input"   #输入item的值，replaceName替换实际查询值    定位形式一样
+listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span"
+listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath = "//div[@class='base-Popper-root']//input"   #输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_serviceFunctionForwarders_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
 listPage_profilTable_serviceFunctionForwarders_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
 listPage_profileBottomPage_serviceFunctionForwarders_button_allSelect_posXpath = mainPage_profileBottomPage_button_allSelect_posXpath     # 底部页面all选择按钮
@@ -730,88 +735,55 @@ listPage_dialogTips_serviceFunctionForwarders_button_no_posCss = listPage_dialog
 #listpage->right-menu-content   列表页 引用计数侧滑box
 listPage_rightReferenceDrawer_serviceFunctionForwarders_referencedItems = listPage_profileRightReferenceDrawer_referencedItems      # 引用侧滑中被引用对象的选项div容器
 #Create Service Function Forwarders page 和 Edit Service Function Forwarders   新增和编辑页
-serviceFunctionForwarders_input_Name_posId = "ShapingProfile_profileName"    # name输入框id
+serviceFunctionForwarders_input_Name_posXpath = "//label[text()='Name']/parent::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"    # name输入框id
+serviceFunctionForwarders_input_Name_posXpath = "//label[text()='Name']/parent::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"    # name输入框id
 #//*[@class='content-box']//*[normalize-space(text())='Failure Action']/parent::*//span[normalize-space(text())='Re-dispatch']
-serviceFunctionForwarders_radio_labelAndRadioName_posXpath = "//*[@class='panel-content']//*[normalize-space(text())='{replaceLabel}']/parent::*//span[normalize-space(text())='{replaceRadioName}']"         # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
-serviceFunctionForwarders_radio_unavailabilityAction_posXpath = "//*[@class='panel-content']//*[normalize-space(text())='{replaceLabel}']/following-sibling::div[1]//span[normalize-space(text())='{replaceRadioName}']"         # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
-serviceFunctionForwarders_input_minHealthServiceFunctions_posXpath = "//*[@id='ShapingProfile-service']"         # Minimum Health Service Functions 输入框 xpath
-serviceFunctionForwarders_button_serviceFunctionsAdd_posXpath = "//*[@class='panel-content']//div[@class='MultipleSelect FlagSelect']//i"         #  Service Functions 添加 xpath
-serviceFunctionForwarders_rightDrawer_input_sfDrawerSearch_posXpath = "//*[@class='ToggleDraw']//input[@id='object_ip_search']"         #  sf侧滑 搜索框 xpath
-serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath = "//div[@class='SFList list-box']//span[@class='table-hide name-fontFamily' and normalize-space(text())='{replaceValue}']"         #  sf搜索框第一条数据 xpath
-serviceFunctionForwarders_rightDrawer_button_sfDrawerClose_posXpath = "//*[@class='ToggleDraw']//button[contains(@class, 'right-menu-button-close')]//span"         #  sf侧滑 close按钮 xpath
+serviceFunctionForwarders_radio_labelAndRadioName_posXpath = "//label[text()='{replaceLabel}']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='{replaceRadioName}']"         # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
+serviceFunctionForwarders_radio_unavailabilityAction_posXpath = serviceFunctionForwarders_radio_labelAndRadioName_posXpath        # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
+serviceFunctionForwarders_input_minHealthServiceFunctions_posXpath = "//label[text()='Minimum Health Service Functions']/parent::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"         # Minimum Health Service Functions 输入框 xpath
+serviceFunctionForwarders_button_serviceFunctionsAdd_posXpath = "//label[text()='Service Functions']/parent::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"         #  Service Functions 添加 xpath
+serviceFunctionForwarders_rightDrawer_input_sfDrawerSearch_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"         #  sf侧滑 搜索框 xpath
+serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath = "//div[@class='px-[12px]  pb-[40px] overflow-hidden']//div[text()='{replaceName}']"         #  sf搜索框第一条数据 xpath
+serviceFunctionForwarders_rightDrawer_button_sfDrawerClose_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button"         #  sf侧滑 close按钮 xpath
+serviceFunctionForwarders_radio_labelAndRadioName_posXpath = "//label[text()='{replaceLabel}']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='{replaceRadioName}']"         # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
+serviceFunctionForwarders_radio_unavailabilityAction_posXpath = serviceFunctionForwarders_radio_labelAndRadioName_posXpath        # 单选按钮 xpath  二次处理  replaceLabel=标签名称  replaceRadioName=按钮名称
+serviceFunctionForwarders_input_minHealthServiceFunctions_posXpath = "//label[text()='Minimum Health Service Functions']/parent::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"         # Minimum Health Service Functions 输入框 xpath
+serviceFunctionForwarders_button_serviceFunctionsAdd_posXpath = "//label[text()='Service Functions']/parent::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"         #  Service Functions 添加 xpath
+serviceFunctionForwarders_rightDrawer_input_sfDrawerSearch_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"         #  sf侧滑 搜索框 xpath
+serviceFunctionForwarders_rightDrawer_li_sfDrawerFirerRowItem_posXpath = "//div[@class='px-[12px]  pb-[40px] overflow-hidden']//div[text()='{replaceName}']"         #  sf搜索框第一条数据 xpath
+serviceFunctionForwarders_rightDrawer_button_sfDrawerClose_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button"         #  sf侧滑 close按钮 xpath
 serviceFunctionForwarders_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='ShapingProfile-box-right']/div[1]/div"            # enable 开关 xpath
 serviceFunctionForwarders_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss    #提示保存按钮警告框OK按钮
 serviceFunctionForwarders_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss    #提示保存警告框Cancel按钮
 serviceFunctionForwarders_alert_topInfo_Xpath = profilePage_alert_topInfo_Xpath      # 顶部提示信息alert框
-serviceFunctionForwarders_button_oK_posCss = "#runScriptOk1 span"     #OK按钮css
+serviceFunctionForwarders_button_oK_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='OK']"     #OK按钮css
+serviceFunctionForwarders_button_oK_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='OK']"     #OK按钮css
 serviceFunctionForwarders_button_cancel_posCss = "#runScriptCancel1 span"      #Cancel按钮
 serviceFunctionForwarders_button_leaveOK_posXpath = "//div[@role='dialog']//button[contains(@class, 'operation-confirm-Leave')]"      #Cancel按钮
 
-
-#Profiles Service Functions===================Profiles Service Functions====================Profiles Service Functions=================Profiles Service Functions=======================Profiles Service Functions
-#listPage->Service Functions list page  列表页
-listPage_profile_serviceFunctions_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_Functions_Home_App_anonymousComponent"     #create按钮id
-listPage_profile_serviceFunctions_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Functions_Home_App_anonymousComponent"          #edit按钮id
-listPage_profile_serviceFunctions_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_Functions_Home_App_anonymousComponent"          #del按钮id
-listPage_profileColumn_serviceFunctions_button_columnAll_posId = "dropColAll-_ElementSet_Profile_Functions_Home_App_anonymousComponent"  #列选择All按钮
-listPage_profileColumn_serviceFunctions_button_columnCancel_posId = "dropColALlFalse-_ElementSet_Profile_Functions_Home_App_anonymousComponent"  #列选择Cancel按钮
-listPage_profileColumn_serviceFunctions_button_cancel_posId = "dropColcancel-_ElementSet_Profile_Functions_Home_App_anonymousComponent"  #cancel按钮
-listPage_profileColumn_serviceFunctions_button_ok_posId = "dropColOK-_ElementSet_Profile_Functions_Home_App_anonymousComponent"  #ok按钮
-listPage_profileSearch_serviceFunctions_selectLabel_posId = mainPage_profileSearch_selectLabel_posId      #查询框id    定位形式一样
-listPage_profileSearch_serviceFunctions_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId    #查询按钮id       定位形式一样
-listPage_profileSearch_serviceFunctions_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
-listPage_profileSearch_serviceFunctions_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath   #下拉菜单定位   定位形式一样
-listPage_profileSearch_serviceFunctions_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath   #输入item的值，replaceName替换实际查询值    定位形式一样
-listPage_profilTable_serviceFunctions_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
-listPage_profilTable_serviceFunctions_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
-listPage_profileBottomPage_serviceFunctions_button_allSelect_posXpath = mainPage_profileBottomPage_button_allSelect_posXpath     # 底部页面all选择按钮
-listPage_profileBottomPageNum_serviceFunctions_posXpath = "//*[@id='pagination-_pagination_Profile_Functions_Home_App_anonymousComponent']"    # 页面底部翻页 定位
-#listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_serviceFunctions_button_yes_posCss = listPage_dialogTips_serviceFunctionForwarders_button_yes_posCss   #删除提示的Tips的yes按钮
-listPage_dialogTips_serviceFunctions_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath   #删除提示的Tips的close按钮
-#listpage->right-menu-content   列表页 引用计数侧滑box
-listPage_rightReferenceDrawer_serviceFunctions_referencedItems = listPage_profileRightReferenceDrawer_referencedItems      # 引用侧滑中被引用对象的选项div容器
-#Create Service Functions page 和 Edit Service Functions   新增和编辑页
-serviceFunctions_input_Name_posId = "Function_profileName"    # name输入框id
-serviceFunctions_button_deviceGroupAdd_posXpath = "//*[contains(@class, 'v-panel-container')]//i[contains(@class, 'icon-Create1')]"    # device group 添加按钮 xpath
-#//*[contains(@class, 'drawer-box')]//*[@class='title' and contains(normalize-space(text()), 'Select Device Group')]/parent::*//span[normalize-space(text())='City A']/parent::*//input//parent::*
-serviceFunctions_radio_selectDevice_posXpath = "//*[contains(@class, 'drawer-box')]//*[@class='title' and contains(normalize-space(text()), '{replaceGroup}')]/parent::*//span[normalize-space(text())='{replaceDeviceName}']/parent::*//input//parent::*"    # effective devices设备名称 xpath，  replaceGroup  replaceDeviceName需要二次替换
-serviceFunctions_button_effectiveDevicesDrawerOk_posXpath = "//*[@id='proxyManipulationConditionsAreaSuccess']//span"            #effective devices 侧滑中OK按钮 xpath
-serviceFunctions_button_effectiveDevicesDrawerCancel_posXpath = "//*[@id='proxyManipulationConditionsAreaCancel']//span"            #effective devices 侧滑中Cancel按钮 xpath
-serviceFunctions_radio_connectivityLayer2Switch_posXpath = "//*[@id='vsys0-_Profile_Functions_edit_Home_App_anonymousComponent']"         # Layer 2 Switch 单选按钮 xpath
-serviceFunctions_radio_connectivityXvlan_posXpath = "//*[@id='vsys1-_Profile_Functions_edit_Home_App_anonymousComponent']"          # vxlan-g 单选按钮 xpath
-serviceFunctions_input_internalVlan_posXpath = "//*[@id='Function-internal']"          # Internal VLAN Tag 输入框 xpath
-serviceFunctions_input_externalVlan_posXpath = "//*[@id='Function-external']"          # external VLAN Tag 输入框 xpath
-serviceFunctions_input_destinationIpAddress_posXpath = "//*[@id='Function-destination']"          # destination Ip Address 输入框 xpath
-serviceFunctions_radio_healthCheck_posXpath = "//*[@id='vsys{replaceIndex}-_Profile_Functions_edit_Home_App_anonymousComponent']"       # health Check 单选按钮 xpath   replaceIndex需要二次处理
-serviceFunctions_input_interval_posXpath = "//*[@id='Function-interval']"          # interval 输入框 xpath
-serviceFunctions_input_retries_posXpath = "//*[@id='Function-retires']"            # retires 输入框 xpath
-serviceFunctions_switch_enalbe_posXpath = "//*[@id='Function-admin_status']/parent::*"            # enable 开关 xpath
-serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"            # enable 开关 xpath
-serviceFunctions_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss    #提示保存按钮警告框OK按钮
-serviceFunctions_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss    #提示保存警告框Cancel按钮
-serviceFunctions_alert_topInfo_Xpath = profilePage_alert_topInfo_Xpath     # 顶部提示信息alert框
-serviceFunctions_button_oK_posCss = "#runScriptOk1 span"     #OK按钮css
-serviceFunctions_button_cancel_posCss = "#runScriptCancel1 span"      #Cancel按钮
-
 # Profiles Service Functions===================Profiles Service Functions====================Profiles Service Functions=================Profiles Service Functions=======================Profiles Service Functions
-# listPage->Service Functions list page  列表页
-listPage_profile_serviceFunctions_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_Functions_Home_App_anonymousComponent"  # create按钮id
-listPage_profile_serviceFunctions_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Functions_Home_App_anonymousComponent"  # edit按钮id
-listPage_profile_serviceFunctions_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_Functions_Home_App_anonymousComponent"  # del按钮id
+mainPage_secondLevelMenu_serviceFunctions_posXpath = "//div[@class='MuiListItem-root MuiListItem-gutters menu-service-chaining css-1l56wwh']//span[text()='Service Functions']"
+listPage_profileBottomPage_serviceFunctions_button_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//span[@class='MuiCheckbox-action css-kit57i']"
+listPage_profile_serviceFunctions_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"  
+listPage_profile_serviceFunctions_editButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Edit']"
+listPage_profile_serviceFunctions_delButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"  # del按钮id
+listPage_profileBottomPage_serviceFunctions_button_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//span[@class='MuiCheckbox-action css-kit57i']"
 listPage_profile_serviceFunctions_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_Functions_Home_App_anonymousComponent"  # link按钮id
-listPage_profileColumn_serviceFunctions_button_columnAll_posXpath = "//div[@class='all-btn']//label"  # 列选择Xpath按钮   列选择all按钮
-listPage_profileColumn_serviceFunctions_button_columnCancel_posId = "dropColALlFalse-_ElementSet_Profile_Functions_Home_App_anonymousComponent"  # 列选择Cancel按钮
+listPage_profileColumn_serviceFunctions_button_columnAll_posXpath = "//div[@class='MuiDataGrid-columnsManagementFooter css-1l93brk']//span[@class='MuiCheckbox-checkbox MuiCheckbox-indeterminate css-28xynh']"  # 列选择Xpath按钮   列选择all按钮
+listPage_profileColumn_serviceFunctions_button_columnCancel_posXpath = listPage_profileColumn_serviceFunctions_button_columnAll_posXpath
 listPage_profileColumn_serviceFunctions_button_cancel_posId = "dropColcancel-_ElementSet_Profile_Functions_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_serviceFunctions_button_ok_posId = "dropColOK-_ElementSet_Profile_Functions_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_serviceFunctions_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_serviceFunctions_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_serviceFunctions_selectLabel_posXpath = "//span[@class='action-search inline-flex mr-[8px] flex-1']//input"
+listPage_profileSearch_serviceFunctions_buttonSearch_posXpath = "//button[@class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w']"
+listPage_profileSearch_serviceFunctions_selectLabel_posXpath = "//span[@class='action-search inline-flex mr-[8px] flex-1']//input"
+listPage_profileSearch_serviceFunctions_buttonSearch_posXpath = "//button[@class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w']"
 listPage_profileSearch_serviceFunctions_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
-listPage_profileSearch_serviceFunctions_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
-listPage_profileSearch_serviceFunctions_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
+listPage_profileSearch_serviceFunctions_dropDown_item_posXpath = listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath
+listPage_profileSearch_serviceFunctions_input_itemContent_posXpath = listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
+listPage_profileSearch_serviceFunctions_dropDown_item_posXpath = listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath
+listPage_profileSearch_serviceFunctions_input_itemContent_posXpath = listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_serviceFunctions_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_serviceFunctions_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
-listPage_profileBottomPageNum_serviceFunctions_posXpath = "//*[@id='pagination-_pagination_Profile_Functions_Home_App_anonymousComponent']"  # 页面底部翻页 定位
 # listPage->Tips dialog  列表页 tips对话框
 listPage_dialogTips_serviceFunctions_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
 listPage_dialogTips_serviceFunctions_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
@@ -823,31 +795,47 @@ listPage_linkTips_serviceFunctions_button_OK_posXpath = "//*[@id='copyOk-_copyCo
 listPage_rightReferenceDrawer_serviceFunctions_referencedItems = listPage_profileRightReferenceDrawer_referencedItems  # 引用侧滑中被引用对象的选项div容器
 # Create Service Functions page 和 Edit Service Functions   新增和编辑页
 serviceFunctions_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-serviceFunctions_input_Name_posId = "Function_profileName"  # name输入框id
-serviceFunctions_button_deviceGroupAdd_posXpath = "//*[contains(@class, 'v-panel-container')]//i[contains(@class, 'icon-Create1')]"  # device group 添加按钮 xpath
+serviceFunctions_input_Name_posXpath = "//div[@class='service-function-name']//input"  
+serviceFunctions_button_deviceGroupAdd_posXpath = "//label[text()='Device Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"  # device group 添加按钮 xpath
+serviceFunctions_input_Name_posXpath = "//div[@class='service-function-name']//input"  
+serviceFunctions_button_deviceGroupAdd_posXpath = "//label[text()='Device Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"  # device group 添加按钮 xpath
 # //*[contains(@class, 'drawer-box')]//*[@class='title' and contains(normalize-space(text()), 'Select Device Group')]/parent::*//span[normalize-space(text())='City A']/parent::*//input//parent::*
-serviceFunctions_radio_selectDevice_posXpath = "//*[contains(@class, 'drawer-box')]//*[@class='title' and contains(normalize-space(text()), '{replaceGroup}')]/parent::*//span[normalize-space(text())='{replaceDeviceName}']/parent::*//input//parent::*"  # effective devices设备名称 xpath，  replaceGroup  replaceDeviceName需要二次替换
-serviceFunctions_button_effectiveDevicesDrawerOk_posXpath = "//*[@id='proxyManipulationConditionsAreaSuccess']//span"  # effective devices 侧滑中OK按钮 xpath
-serviceFunctions_button_effectiveDevicesDrawerCancel_posXpath = "//*[@id='proxyManipulationConditionsAreaCancel']//span"  # effective devices 侧滑中Cancel按钮 xpath
-serviceFunctions_radio_connectivityLayer2Switch_posXpath = "//*[@id='vsys0-_Profile_Functions_edit_Home_App_anonymousComponent']"  # Layer 2 Switch 单选按钮 xpath
-serviceFunctions_radio_connectivityXvlan_posXpath = "//*[@id='vsys1-_Profile_Functions_edit_Home_App_anonymousComponent']"  # Function-internal 单选按钮 xpath
-serviceFunctions_input_internalVlan_posXpath = "//*[@id='Function-internal']"  # Internal VLAN Tag 输入框 xpath
-serviceFunctions_input_externalVlan_posXpath = "//*[@id='Function-external']"  # external VLAN Tag 输入框 xpath
-serviceFunctions_input_destinationIpAddress_posXpath = "//*[@id='Function-destination']"  # destination Ip Address 输入框 xpath
-serviceFunctions_radio_healthCheck_posXpath = "//label[normalize-space(text())='Health Check']/ancestor::div[@class='el-form-item el-form-item--small']//*[@id='vsys{replaceIndex}-_Profile_Functions_edit_Home_App_anonymousComponent']"  # health Check 单选按钮 xpath   replaceIndex需要二次处理
-serviceFunctions_input_interval_posXpath = "//*[@id='Function-interval']"  # interval 输入框 xpath
-serviceFunctions_input_retries_posXpath = "//*[@id='Function-retires']"  # retires 输入框 xpath
-serviceFunctions_switch_enalbe_posXpath = "//*[@id='Function-admin_status']/parent::*"  # enable 开关 xpath
-serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"  # enable 开关 xpath
+serviceFunctions_radio_selectDeviceType_posXpath = "//div[@class='bg-default mb-[4px]']//button[text()='{deviceType}']"  #deviceType替换为Group/Center
+serviceFunctions_searchDevice_input_Name_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
+serviceFunctions_radio_selectDevice_posXpath = "//div[@class='px-[12px]  pb-[40px] overflow-hidden']//li[1]//i"
+serviceFunctions_button_closeSidePage_Cancel_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"  # effective devices 侧滑中Cancel按钮 xpath
+serviceFunctions_radio_connectivityLayer2Switch_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='Layer 2 Switch']"  # Layer 2 Switch 单选按钮 xpath
+serviceFunctions_radio_connectivityXvlan_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='VXLAN-G']"  # Function-internal 单选按钮 xpath
+serviceFunctions_input_internalVlan_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # Internal VLAN Tag 输入框 xpath
+serviceFunctions_input_externalVlan_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # external VLAN Tag 输入框 xpath
+serviceFunctions_input_destinationIpAddress_posXpath = "//label[text()='Destination IP Address']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # destination Ip Address 输入框 xpath
+serviceFunctions_radio_healthCheck_posXpath = "//div[@class='service-function-checkMethod']//button[text()='{type}']"  # health Check 单选按钮 xpath   replaceIndex需要二次处理
+serviceFunctions_input_interval_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # interval 输入框 xpath
+serviceFunctions_input_retries_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # retires 输入框 xpath
+serviceFunctions_switch_enalbe_posXpath = "//label[text()='Enable']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//span"  # enable 开关 xpath
+serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"  
+serviceFunctions_radio_selectDeviceType_posXpath = "//div[@class='bg-default mb-[4px]']//button[text()='{deviceType}']"  #deviceType替换为Group/Center
+serviceFunctions_searchDevice_input_Name_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
+serviceFunctions_radio_selectDevice_posXpath = "//div[@class='px-[12px]  pb-[40px] overflow-hidden']//li[1]//i"
+serviceFunctions_button_closeSidePage_Cancel_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"  # effective devices 侧滑中Cancel按钮 xpath
+serviceFunctions_radio_connectivityLayer2Switch_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='Layer 2 Switch']"  # Layer 2 Switch 单选按钮 xpath
+serviceFunctions_radio_connectivityXvlan_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='VXLAN-G']"  # Function-internal 单选按钮 xpath
+serviceFunctions_input_internalVlan_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # Internal VLAN Tag 输入框 xpath
+serviceFunctions_input_externalVlan_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # external VLAN Tag 输入框 xpath
+serviceFunctions_input_destinationIpAddress_posXpath = "//label[text()='Destination IP Address']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # destination Ip Address 输入框 xpath
+serviceFunctions_radio_healthCheck_posXpath = "//div[@class='service-function-checkMethod']//button[text()='{type}']"  # health Check 单选按钮 xpath   replaceIndex需要二次处理
+serviceFunctions_input_interval_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # interval 输入框 xpath
+serviceFunctions_input_retries_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # retires 输入框 xpath
+serviceFunctions_switch_enalbe_posXpath = "//label[text()='Enable']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//span"  # enable 开关 xpath
+serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"  
 serviceFunctions_div_rightDetails_clearCounter_posXpath = "//*[@id='porfileResetBtn-_anonymousComponent_anonymousComponent_VPanel_VEditPanel_Profile_Functions_edit_Home_App_anonymousComponent']/span/span"  # 右侧详情---clear counter元素定位 xpath
-serviceFunctions_clickClearCounter_tipsYes_posXpath = shapingProfilePage_clickClearCounter_tipsYes_posXpath  # 右侧详情---点击 clear counter元素定位后弹出的 tip--yes定位 xpath
-serviceFunctions_hoverClearCounter_tooltip_name_xpath = shapingProfilePage_hoverClearCounter_tooltip_name_xpath        # 右侧详情---悬停 clear counter元素定位后弹出的 --toottip--name定位 xpath
-serviceFunctions_hoverClearCounter_tooltip_value_xpath = shapingProfilePage_hoverClearCounter_tooltip_value_xpath      # 右侧详情---悬停 clear counter元素定位后弹出的 --toottip--value定位 xpath
 serviceFunctions_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 serviceFunctions_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
 serviceFunctions_alert_topInfo_Xpath = profilePage_alert_topInfo_Xpath  # 顶部提示信息alert框
-serviceFunctions_button_oK_posCss = "#runScriptOk1 span"  # OK按钮css
-serviceFunctions_button_cancel_posCss = "#runScriptCancel1 span"  # Cancel按钮
+serviceFunctions_button_oK_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='OK']"  # OK按钮
+serviceFunctions_button_cancel_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='Cancel']"  # Cancel按钮
+serviceFunctions_button_oK_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='OK']"  # OK按钮
+serviceFunctions_button_cancel_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='Cancel']"  # Cancel按钮
 # create_edit_page->侧滑中Audit Logs页面
 serviceFunctions_auditLogsPage_firstRowItemSelect_posXpath = profilePage_auditLogsPage_firstRowItemSelect_posXpath  # Audit logs中第一行变更记录的勾选框
 serviceFunctions_auditLogsPage_button_compare_posXpath = "//*[@id='test-compare-_AuditLogs_anonymousComponent_VPanel_VEditPanel_Profile_Functions_edit_Home_App_anonymousComponent']"  # compare 按钮
@@ -902,7 +890,7 @@ statisticsTemplates_button_other_posXpath = "//form[{replaceChart}]//label[norma
 #"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//span[normalize-space(text())='{repalceLabel}']/parent::*//input"  # 其它的输入框和下拉输入框 。replaceName需要二次处理
 statisticsTemplates_input_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//input"  # 其它的输入框和下拉输入框 。replaceName需要二次处理
 statisticsTemplates_LabelName_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')]//*[normalize-space(text())='{repalceLabel}']"
-statisticsTemplates_dropdownMetrics_posXpath = "//ul[contains(@class,'base-Popper-root MuiAutocomplete-listbox')]//li[contains(@class,'MuiAutocomplete-option')]//li[normalize-space(text())='{replaceDropdownIterm}']"
+statisticsTemplates_dropdownMetrics_posXpath = "//ul[contains(@class,'base-Popper-root MuiAutocomplete-listbox')]//li[contains(@class,'MuiAutocomplete-option')][normalize-space(text())='{replaceDropdownIterm}']"#//li[contains(@class,'MuiAutocomplete-option')][normalize-space(text())='{replaceDropdownIterm}']
 statisticsTemplates_dropdown_posXpath = "//ul[contains(@class,'base-Popper-root MuiSelect-listbox')][contains(@style,'position: absolute')]//li[normalize-space(text())='{replaceDropdownIterm}']"
 #"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'el-popper')]//span[normalize-space(text())='{replaceDropdownIterm}']"  # 所有的下拉列表中内容定位 。replaceDropdownIterm 二次处理
 statisticsTemplates_button_chartAdd_posXpath = "//div[@class='ChartList MuiBox-root css-0']"#"//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath

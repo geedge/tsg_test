@@ -575,8 +575,11 @@ class CreateStatisticsTemplate():
                                 for metric_temp in metric_temp_list:
                                     #element_dropdown_item = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(
                                         #(By.XPATH,statisticsTemplates_metrics_dropdown_item_posXpath.format(replaceMetricsField=dropdown_item_dict[metric_temp]))))
-                                    temp_element = self.driver.find_elements(By.XPATH, "//ul")
-                                    element_dropdown_item = temp_element[-1].find_element(By.XPATH, ".//*[normalize-space(text())='{repalceLabel}']".format(repalceLabel=dropdown_item_dict[metric_temp]))
+                                    #全部ul定位，取最后一个
+                                    #temp_element = self.driver.find_elements(By.XPATH, "//ul")
+                                    #element_dropdown_item = temp_element[-1].find_element(By.XPATH, ".//*[normalize-space(text())='{repalceLabel}']".format(repalceLabel=dropdown_item_dict[metric_temp]))
+                                    time.sleep(2)
+                                    element_dropdown_item = self.driver.find_element(By.XPATH, statisticsTemplates_dropdownMetrics_posXpath.format(replaceDropdownIterm=dropdown_item_dict[metric_temp]))
                                     #element_dropdown_item = self.driver.find_element(By.XPATH,statisticsTemplates_metrics_dropdown_item_posXpath.format(replaceMetricsField=dropdown_item_dict[metric_temp]))
                                     # 移动元素到页面，在执行点击
                                     self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
