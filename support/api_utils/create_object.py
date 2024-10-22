@@ -56,25 +56,6 @@ class CreateObject:
                 for i in range(repeat_time):
                     index = i + 1
                     objects_list, timeout_result = self.organize_objects_data(obj_template_dict, key, headers, parameter, index, repeat_time)
-                    # 构造condi数据，创建策略时的引用数据
-                    # if attribute_name in ["ATTR_SOURCE_IP", "ATTR_SUBSCRIBER_ID", "ATTR_SOURCE_PORT", "ATTR_GTP_IMSI", "ATTR_GTP_PHONE_NUMBER", "ATTR_GTP_IMEI", "ATTR_GTP_APN"]:
-                    #     for obj_dict in objects_list:
-                    #         source_list.append(copy.deepcopy(obj_dict))
-                    # elif attribute_name in ["ATTR_DESTINATION_IP", "ATTR_DESTINATION_PORT", "ATTR_DESTINATION_GEO_COUNTRY", "ATTR_SERVER_FQDN"]:
-                    #     for obj_dict in objects_list:
-                    #         dst_list.append(copy.deepcopy(obj_dict))
-                    # elif attribute_name in ["ATTR_EXTERNAL_IP", "ATTR_EXTERNAL_PORT"]:
-                    #     for obj_dict in objects_list:
-                    #         external_list.append(copy.deepcopy(obj_dict))
-                    # elif attribute_name in ["ATTR_INTERNAL_IP", "ATTR_INTERNAL_PORT"]:
-                    #     for obj_dict in objects_list:
-                    #         internal_list.append(copy.deepcopy(obj_dict))
-                    # elif attribute_name == 'ATTR_FLAG':
-                    #     for obj_dict in objects_list:
-                    #         flag_list.append(copy.deepcopy(obj_dict))
-                    # else:
-                    #     for obj_dict in objects_list:
-                    #         filter_list.append(copy.deepcopy(obj_dict))
                     for obj_dict in objects_list:
                         and_condition_list.append(copy.deepcopy(obj_dict)) 
                     # 删除创建的object，且删除次数等于repeat_time-1，保留最后一次的object用于验证功能
@@ -115,13 +96,6 @@ class CreateObject:
                                 cfg_list["create_port_ids"] = create_port_ids
                             delete = DeletePolicy()
                             delete.delele_policy_by_uuid(token, parameter, cfg_list)
-
-        # condition_ids_by_api_dict["src_list"] = source_list
-        # condition_ids_by_api_dict["dst_list"] = dst_list
-        # condition_ids_by_api_dict["int_list"] = internal_list
-        # condition_ids_by_api_dict["ext_list"] = external_list
-        # condition_ids_by_api_dict["filter_list"] = filter_list
-        # condition_ids_by_api_dict["flag_list"] = flag_list
         condition_ids_by_api_dict["and_conditions"] = and_condition_list
         condition_ids_by_api_dict["ip_ids"] = self.ip_ids
         condition_ids_by_api_dict["subid_ids"] = self.subid_ids
@@ -152,7 +126,17 @@ class CreateObject:
         attribute_name = condition['attribute_name']
         if "objects" in condition.keys():  # 如果是SSL相关True False相关属性则不进行新增操作,直接使用数据
             object_temp_list = []
-            object_temp_list.append(copy.deepcopy(condition))
+            # object_temp_list.append(copy.deepcopy(condition))
+            and_condition_dict = {
+                "negate_option": False,
+                "or_conditions": [],
+            }
+            or_condition_dict = {}
+            or_condition_dict["attribute_name"] = attribute_name
+            or_condition_dict["object_uuids"] = condition["objects"][0]["object_uuids"]
+            copy_dict = copy.deepcopy(or_condition_dict)
+            and_condition_dict["or_conditions"].append(copy_dict)
+            object_temp_list.append(copy.deepcopy(and_condition_dict))
             timeout_result = True
         else:
             obj_type = condition["object_type"]
