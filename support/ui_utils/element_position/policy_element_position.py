@@ -45,25 +45,25 @@ policyRulePage_searchInternalIP_posXpath = "//div[@class='CommonListDetail list-
 policyRulePage_selectInternalIP_posXpath = "//div[@class='InternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeInternalIP_posXpath = "//div[@class='InternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
-policyRulePage_addInternalPort_posXpath = "//div[@zs-label='Internal']//div[@class='MultipleSelect InternalsSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchInternalPort_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectInternalPort_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeInternalPort_posXpath = "//div[@class='InternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addInternalPort_posXpath = "//label[normalize-space(text())='Internal']/..//label[normalize-space(text())='Port']/following-sibling::div/button"
+policyRulePage_searchInternalPort_posXpath = "//input[contains(@class, 'MuiInput-input') and contains(@class, 'css-za5rna')]"
+policyRulePage_selectInternalPort_posXpath = "//div[@class='MuiBox-root css-8vsxvh']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeInternalPort_posXpath = "(//span[contains(@class, 'MuiTouchRipple-root') and contains(@class, 'css-w0pj6f') and ancestor::*[contains(normalize-space(text()), 'Cancel')]])[1]"
 
-policyRulePage_addDstPort_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchDstPort_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectDstPort_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeDstPort_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addDstPort_posXpath = "//label[normalize-space(text())='Destination']/..//label[normalize-space(text())='Port']/following-sibling::div/button"
+policyRulePage_searchDstPort_posXpath = policyRulePage_searchInternalPort_posXpath
+policyRulePage_selectDstPort_posXpath = policyRulePage_selectInternalPort_posXpath
+policyRulePage_closeDstPort_posXpath = policyRulePage_closeInternalPort_posXpath
 
 policyRulePage_addExternalIP_posXpath = "//div[@zs-label='External']//div[@class='MultipleSelect ExternalsSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchExternalIP_posXpath = "//div[@class='ExternalsList list-box']//input[@id='object_ip_search']"
 policyRulePage_selectExternalIP_posXpath = "//div[@class='ExternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeExternalIP_posXpath = "//div[@class='ExternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
-policyRulePage_addExternalPort_posXpath = "//div[@zs-label='External']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchExternalPort_posXpath = "//div[@class='ExternalsList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectExternalPort_posXpath = "//div[@class='ExternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeExternalPort_posXpath = "//div[@class='ExternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addExternalPort_posXpath = "//label[normalize-space(text())='External']/..//label[normalize-space(text())='Port']/following-sibling::div/button"
+policyRulePage_searchExternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
+policyRulePage_selectExternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
+policyRulePage_closeExternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
 
 policyRulePage_addUser_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='User']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchUser_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
@@ -87,7 +87,7 @@ policyRulePage_chooseApn_posXpath = "//*[@id='tab-apn' and contains(concat(' ', 
 policyRulePage_addCondition_posXpath = "//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Server FQDN']"
-policyRulePage_addCondition_dstPort_posXpath = "//div[@class='SourceList list-box']//li[4]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_dstPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[2]/following-sibling::div//div[contains(text(), 'Port')]"
 policyRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
 policyRulePage_addCondition_uri_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URI']"
 policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
@@ -98,8 +98,8 @@ policyRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']//button
 policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='IP Address']"
 policyRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceList list-box']//li[5]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//li[6]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_internalPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[3]/following-sibling::div//div[contains(text(), 'Port')]"
+policyRulePage_addCondition_externalPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[4]/following-sibling::div//div[contains(text(), 'Port')]"
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='IP Protocol']"
 policyRulePage_addCondition_Boolean_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='{replaceValue}']"
 policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
