@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -57,7 +57,7 @@ def run(parameter):
                         "profile_type": "ssl_keyring",
                         "decryption_keying_type": "trusted",
                         "profile_file": {
-                            "name": "manipulation_tango_trust_ca",
+                            "name": "intercept_tango_trust_ca",
                             "model": "create",
                             "file_certificate": "test_end_cert_caentitytest.chain.pem",
                             "file_private_key": "test_end_keycaentitytest.key",

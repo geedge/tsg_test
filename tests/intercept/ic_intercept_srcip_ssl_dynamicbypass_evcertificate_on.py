@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -52,42 +52,22 @@ def run(parameter):
                 ],
             },
             "action_parameter": {
-                "ssl_decryption_keyring": [
-                    {
-                        "profile_type": "ssl_keyring",
-                        "decryption_keying_type": "trusted",
-                        "profile_file": {
-                            "name": "manipulation_tango_trust_ca",
-                            "model": "create",
-                            "file_certificate": "test_root_cert_catest.cer",
-                            "file_private_key": "test_root_key_catest.key",
-                            "certificate_type": "Root-Certificate",
-                            "private_key_format": "true",
-                            "is_match": "match",
-                            "reissue_expiry_hours": "C-120",
-                            "type": "Root-Certificate",
-                            "public_key_algorithm": "RSA-2048",
-                            "certificate_revocation_list": "",
-                            "include_root": "on"
-                        }
-                    },
-                ],
                 "ssl_decryption_profile": [
                     {
                         "profile_type": "ssl_decryption",
                         "profile_file": {
-                            "name": "manipulation_ssl_decryption_profile",
+                            "name": "intercept_ssl_decryption_profile",
                             "model": "create",
-                            "common_name": "off",
-                            "issuer": "off",
-                            "self_signed": "off",
-                            "expiry_date": "off",
-                            "fail_action": "Fail-Close",
-                            "ev_certificate": "off",
+                            "common_name": "on",
+                            "issuer": "on",
+                            "self_signed": "on",
+                            "expiry_date": "on",
+                            "fail_action": "Pass-through",
+                            "ev_certificate": "on",
                             "certificate_transparency": "off",
-                            "mutual_authentication": "on",
-                            "protocol_errors": "on",
-                            "certificate_pinning": "on",
+                            "mutual_authentication": "off",
+                            "protocol_errors": "off",
+                            "certificate_pinning": "off",
                             "certificate_not_installed": "off",
                             "mirror_client_versions": "on",
                             "min_client_version": "TLSv1.0",
@@ -97,13 +77,13 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "CN=CA TRUST",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "expired.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
+            "expected_return": "issuer,www.icbc.com.cn",
+            "counters": {"hits": 2},
+            "log_query_param": [{"query_field_key": "proxy_intercept_status", "query_value": "passthrough"}, {"query_field_key": "proxy_passthrough_reason", "query_value": "EV Certificate"},],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://expired.badssl.com/",
+                "command": "curl -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.icbc.com.cn/ ; sleep 10 ; curl -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.icbc.com.cn/",
             },
             "token": ""
         }

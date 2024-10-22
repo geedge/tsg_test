@@ -1310,26 +1310,250 @@ class DataTranslation:
             for k, v in temp_profile.items():
                 if len(v) == 0:
                     continue
-                if k == "response_page":
+                if k == "ssl_decryption_keyring":
                     for t in range(len(v)):
                         temp = {
-                            "profile_type": "response_page",
-                            "format": "html",
-                            "name": "auto_test_obj",
-                            "content_name": "testa.html",
-                            "return_data": 1
+                            "profile_type": "ssl_keyring",
+                            "decryption_keying_type": "",
+                            "return_data": 1,
+                            "vsys": 1,
+                            "name": "auto_test",
+                            "public_file": "",
+                            "private_file": "",
+                            "reissue_expiry_hour": 0,
+                            "keyring_type": "root",
+                            "public_key_algo": "rsa2048",
+                            "include_root": 0,
+                            "crl": "http: // www.example.com"
                         }
                         temp["name"] = v[t]["profile_file"]["name"]
-                        temp["content_name"] = v[t]["profile_file"]["file"]
-                        file_name = v[t]["profile_file"]["file"]
-                        if file_name.endswith(".html"):
-                            temp["format"] = "html"
-                        elif file_name.endswith(".htm"):
-                            temp["format"] = "htm"
+                        temp["vsys"] = vsys_id
+                        temp["public_file"] = v[t]["profile_file"]["file_certificate"]
+                        temp["private_file"] = v[t]["profile_file"]["file_private_key"]
+                        temp["decryption_keying_type"] = v[t]["decryption_keying_type"]
+                        # 数据转换适合api使用
+                        reissue_expiry_hours = str(v[t]["profile_file"]["reissue_expiry_hours"]).lower()
+                        if "msc" in reissue_expiry_hours:
+                            reissue_expiry_hours = 0
                         else:
-                            print("check file type: {}".format(file_name))
-                        profile.append(copy.deepcopy(temp))
+                            reissue_expiry_hours = int(reissue_expiry_hours.split("-")[-1])
+                        temp["reissue_expiry_hour"] = reissue_expiry_hours
 
+                        keyring_type = str(v[t]["profile_file"]["type"]).lower()
+                        if "root" in keyring_type:
+                            keyring_type = "root"
+                        elif "intermediate" in keyring_type:
+                            keyring_type = "intermediate"
+                        else:
+                            keyring_type = "end-entity"
+                        temp["keyring_type"] = keyring_type
+
+                        public_key_algo = str(v[t]["profile_file"]["public_key_algorithm"]).lower()
+                        pka_map = {
+                            "rsa-1024": "rsa1024",
+                            "rsa-2048": "rsa2048",
+                            "secp-256r1": "secp256r1",
+                            "secp-384r1": "secp384r1"
+                        }
+                        public_key_algo = pka_map[public_key_algo]
+                        temp["public_key_algo"] = public_key_algo
+
+                        include_root = str( v[t]["profile_file"]["include_root"]).lower()
+                        if "on" in include_root:
+                            include_root = 1
+                        else:
+                            include_root = 0
+                        temp["include_root"] = include_root
+
+                        crl =  v[t]["profile_file"]["certificate_revocation_list"]
+                        if crl == "":
+                            crl = "http://www.example.com"
+                        temp["crl"] = crl
+                        profile.append(copy.deepcopy(temp))
+                elif k == "ssl_decryption_profile":
+                    for t in range(len(v)):
+                        temp = {
+                            "profile_type": "ssl_decryption",
+                            "return_data": 1,
+                            "vsys": 1,
+                            "decryption_profile": {
+                                "name": "auto_test",
+                                "decryption": {
+                                    "certificate_checks": {
+                                        "approach": {
+                                            "cn": 1,
+                                            "issuer": 1,
+                                            "self-signed": 1,
+                                            "expiration": 1
+                                        },
+                                        "fail_action": "pass-through"
+                                    },
+                                    "dynamic_bypass": {
+                                        "ev_cert": 0,
+                                        "cert_transparency": 0,
+                                        "mutual_authentication": 1,
+                                        "protocol_errors": 1,
+                                        "cert_pinning": 1,
+                                        "trusted_root_cert_is_not_installed_on_client": 0
+                                    },
+                                    "protocol_version": {
+                                        "mirror_client": 1,
+                                        "allow_http2": 1,
+                                        "min": "tls10",
+                                        "max": "tls13"
+                                    },
+                                },
+                            }
+                        }
+                        # 数据转换适合api使用
+                        map_on_off = {"on": 1, "off": 0}
+                        temp["profile_type"] = v[t]["profile_type"]
+                        temp["vsys"] = vsys_id
+                        temp["decryption_profile"]["name"] = v[t]["profile_file"]["name"]
+                        temp["decryption_profile"]["decryption"]["certificate_checks"]["approach"]["cn"] = map_on_off[(v[t]["profile_file"]["common_name"]).lower()]
+                        temp["decryption_profile"]["decryption"]["certificate_checks"]["approach"]["issuer"] = map_on_off[(v[t]["profile_file"]["issuer"]).lower()]
+                        temp["decryption_profile"]["decryption"]["certificate_checks"]["approach"]["self-signed"] = map_on_off[(v[t]["profile_file"]["self_signed"]).lower()]
+                        temp["decryption_profile"]["decryption"]["certificate_checks"]["approach"]["expiration"] = map_on_off[(v[t]["profile_file"]["expiry_date"]).lower()]
+                        fail_action = str(v[t]["profile_file"]["fail_action"]).lower()
+                        if fail_action == "pass-through":
+                            fail_action = "pass-through"
+                        else:
+                            fail_action = "fail-close"
+                        temp["decryption_profile"]["decryption"]["certificate_checks"]["fail_action"] = fail_action
+                        temp["decryption_profile"]["decryption"]["dynamic_bypass"]["ev_cert"] = map_on_off[(v[t]["profile_file"]["ev_certificate"]).lower()]
+                        temp["decryption_profile"]["decryption"]["dynamic_bypass"]["cert_transparency"] = map_on_off[(v[t]["profile_file"]["certificate_transparency"]).lower()]
+                        temp["decryption_profile"]["decryption"]["dynamic_bypass"]["mutual_authentication"] = map_on_off[(v[t]["profile_file"]["mutual_authentication"]).lower()]
+                        temp["decryption_profile"]["decryption"]["dynamic_bypass"]["protocol_errors"] = map_on_off[(v[t]["profile_file"]["protocol_errors"]).lower()]
+                        temp["decryption_profile"]["decryption"]["dynamic_bypass"]["cert_pinning"] = map_on_off[(v[t]["profile_file"]["certificate_pinning"]).lower()]
+                        temp["decryption_profile"]["decryption"]["dynamic_bypass"]["trusted_root_cert_is_not_installed_on_client"] = map_on_off[(v[t]["profile_file"]["certificate_not_installed"]).lower()]
+                        map_version = {
+                            "sslv3.0": "ssl3",
+                            "tlsv1.0": "tls10",
+                            "tlsv1.1": "tls11",
+                            "tlsv1.2": "tls12",
+                            "tlsv1.3": "tls13",
+                        }
+                        temp["decryption_profile"]["decryption"]["protocol_version"]["mirror_client"] = map_on_off[(v[t]["profile_file"]["mirror_client_versions"]).lower()]
+                        temp["decryption_profile"]["decryption"]["protocol_version"]["allow_http2"] = map_on_off[(v[t]["profile_file"]["allow_HTTP2"]).lower()]
+                        temp["decryption_profile"]["decryption"]["protocol_version"]["min"] = map_version[(v[t]["profile_file"]["min_client_version"]).lower()]
+                        temp["decryption_profile"]["decryption"]["protocol_version"]["max"] = map_version[(v[t]["profile_file"]["max_client_version"]).lower()]
+                        if temp["decryption_profile"]["decryption"]["protocol_version"]["mirror_client"] == 0:
+                            del temp["decryption_profile"]["decryption"]["protocol_version"]["min"]
+                            del temp["decryption_profile"]["decryption"]["protocol_version"]["max"]
+                        profile.append(copy.deepcopy(temp))
+                elif k == "tcp_proxy_profile":
+                    for t in range(len(v)):
+                        temp = {
+                            "vsys": 1,
+                            "profile_type": "tcp_option",
+                            "return_data": 1,
+                            "proxy_tcp_option": {
+                                "name": "testazaa",
+                                "tcp_passthrough": 0,
+                                "bypass_duplicated_packet": 0,
+                                "client_side_conn_param": {
+                                    "tcp_maxseg": {
+                                        "enable": 1,
+                                        "maxseg": 678
+                                    },
+                                    "nodelay": 1,
+                                    "ttl": 70,
+                                    "keep_alive": {
+                                        "enable": 1,
+                                        "tcp_keepcnt": 32,
+                                        "tcp_keepidle": 344,
+                                        "tcp_keepintvl": 23
+                                    },
+                                    "user_timeout": {
+                                        "enable": 1,
+                                        "timeout_ms": 332
+                                    }
+                                },
+                                "server_side_conn_param": {
+                                    "tcp_maxseg": {
+                                        "enable": 0
+                                    },
+                                    "nodelay": 0,
+                                    "ttl": 75,
+                                    "keep_alive": {
+                                        "enable": 0
+                                    },
+                                    "user_timeout": {
+                                        "enable": 0
+                                    }
+                                }
+                            }
+                        }
+                        # 数据转换适合api使用
+                        map_on_off = {"on": 1, "off": 0}
+                        temp["profile_type"] = v[t]["profile_type"]
+                        temp["vsys"] = vsys_id
+                        temp["proxy_tcp_option"]["name"] = v[t]["profile_file"]["name"]
+
+                        temp["proxy_tcp_option"]["tcp_passthrough"] = map_on_off[(v[t]["profile_file"]["enable_TCP_passthrough"]).lower()]
+                        temp["proxy_tcp_option"]["client_side_conn_param"]["tcp_maxseg"]["enable"] = map_on_off[(v[t]["profile_file"]["c_override_MSS"]).lower()]
+                        if temp["proxy_tcp_option"]["client_side_conn_param"]["tcp_maxseg"]["enable"] == 0:
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["tcp_maxseg"].pop("maxseg", None)
+                        else:
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["tcp_maxseg"]["maxseg"] = v[t]["profile_file"]["c_overrideMSS"]
+                        temp["proxy_tcp_option"]["client_side_conn_param"]["nodelay"] = map_on_off[(v[t]["profile_file"]["c_no_delay"]).lower()]
+                        temp["proxy_tcp_option"]["client_side_conn_param"]["ttl"] = v[t]["profile_file"]["c_ttl"]
+                        temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["enable"] = map_on_off[(v[t]["profile_file"]["c_keepalive"]).lower()]
+                        if temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["enable"] == 0:
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepcnt", None)
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepidle", None)
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepintvl", None)
+                        else:
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["tcp_keepcnt"] = v[t]["profile_file"]["c_probe_number"]
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["tcp_keepidle"] = v[t]["profile_file"]["c_idle_time"]
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["tcp_keepintvl"] = v[t]["profile_file"]["c_interval"]
+                        temp["proxy_tcp_option"]["client_side_conn_param"]["user_timeout"]["enable"] = map_on_off[(v[t]["profile_file"]["c_UserTimeout_switch"]).lower()]
+                        if temp["proxy_tcp_option"]["client_side_conn_param"]["user_timeout"]["enable"] == 0:
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["user_timeout"].pop("timeout_ms", None)
+                        else:
+                            temp["proxy_tcp_option"]["client_side_conn_param"]["user_timeout"]["timeout_ms"] = v[t]["profile_file"]["c_userTimeout"]
+
+                        temp["proxy_tcp_option"]["server_side_conn_param"]["tcp_maxseg"]["enable"] = map_on_off[(v[t]["profile_file"]["s_override_MSS"]).lower()]
+                        if temp["proxy_tcp_option"]["server_side_conn_param"]["tcp_maxseg"]["enable"] == 0:
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["tcp_maxseg"].pop("maxseg", None)
+                        else:
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["tcp_maxseg"]["maxseg"] = v[t]["profile_file"]["s_overrideMSS"]
+                        temp["proxy_tcp_option"]["server_side_conn_param"]["nodelay"] = map_on_off[(v[t]["profile_file"]["s_no_delay"]).lower()]
+                        temp["proxy_tcp_option"]["server_side_conn_param"]["ttl"] = v[t]["profile_file"]["s_ttl"]
+                        temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["enable"] = map_on_off[(v[t]["profile_file"]["s_keepalive"]).lower()]
+                        if temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["enable"] == 0:
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepcnt", None)
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepidle", None)
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepintvl", None)
+                        else:
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["tcp_keepcnt"] = v[t]["profile_file"]["s_probe_number"]
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["tcp_keepidle"] = v[t]["profile_file"]["s_idle_time"]
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["tcp_keepintvl"] = v[t]["profile_file"]["s_interval"]
+                        temp["proxy_tcp_option"]["server_side_conn_param"]["user_timeout"]["enable"] = map_on_off[(v[t]["profile_file"]["s_UserTimeout_switch"]).lower()]
+                        if temp["proxy_tcp_option"]["server_side_conn_param"]["user_timeout"]["enable"] == 0:
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["user_timeout"].pop("timeout_ms", None)
+                        else:
+                            temp["proxy_tcp_option"]["server_side_conn_param"]["user_timeout"]["timeout_ms"] = v[t]["profile_file"]["s_userTimeout"]
+                        profile.append(copy.deepcopy(temp))
+                elif k == "traffic_mirroring_profile":
+                    for t in range(len(v)):
+                        temp = {
+                            "vsys": 1,
+                            "return_data": 1,
+                            "profile_type": "traffic_mirror",
+                            "traffic_mirror_profile": {
+                                "name": "tewstsa",
+                                "vlan_array": []
+                            }
+                        }
+                        # 数据转换适合api使用
+                        temp["profile_type"] = v[t]["profile_type"]
+                        temp["vsys"] = vsys_id
+                        temp["traffic_mirror_profile"]["name"] = v[t]["profile_file"]["name"]
+                        vlan_id = v[t]["profile_file"]["vlan_id"]
+                        for i in range(len(vlan_id)):
+                            temp["traffic_mirror_profile"]["vlan_array"].append(vlan_id[i])
+                        profile.append(copy.deepcopy(temp))
         elif policy_type == "pxy_manipulation":
             temp_profile = data["action_parameter"]
             for k, v in temp_profile.items():

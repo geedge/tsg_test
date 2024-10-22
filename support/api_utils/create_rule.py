@@ -257,7 +257,7 @@ class CreatePolicyRule:
             # 如果sc为Decrypted Traffic, 先创建一条intercept策略
             tmp_list = []
             if condition["targeted_traffic"] == "decrypted":
-                pre_policy_id_list = self.create_associated_rule(headers, api_host, source_list, tmp_list, path_dict, vsys_id, "service_chaining")
+                pre_policy_id_list = self.create_associated_rule(headers, api_host, and_conditions_list, tmp_list, path_dict, vsys_id, "service_chaining")
             user_region = {"targeted_traffic": "", "sff_profiles": []}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
             temp_rule_action = 'rule_action_' + str(create_number)
@@ -305,15 +305,30 @@ class CreatePolicyRule:
         elif condition["policy_type"] == "pxy_intercept":
             user_region = {"protocol": "", "tcp_option_profile": 1}
             rule_template_dict["rule"]["type"] = condition["policy_type"] = "proxy_intercept"
-
             pre_intercept_path = path_dict["pre_intercept_template_path"]
-            # 新建intercept策略，只取source_list和dst_list
+            # 读取json模块中默认的uuid
             with open(pre_intercept_path, 'r', encoding='utf-8') as f:
                 pre_intercept_template = json.load(f)
                 keyring_for_untrusted = pre_intercept_template["rule"]["action_parameter"]["keyring_for_untrusted"]
                 keyring_for_trusted = pre_intercept_template["rule"]["action_parameter"]["keyring_for_trusted"]
                 decryption_profile = pre_intercept_template["rule"]["action_parameter"]["decryption_profile"]
                 tcp_option_profile = pre_intercept_template["rule"]["action_parameter"]["tcp_option_profile"]
+                traffic_mirror = 0
+            # 如果测试数据中有新建的profile，则重新赋值uuid
+            for i in range(len(create_profile_ids)):
+                profile_type = create_profile_ids[i]["profile_type"]
+                uuid = create_profile_ids[i]["uuid"]
+                if profile_type == "ssl_keyring":
+                    if create_profile_ids[i]["decryption_keying_type"] == "trusted":
+                        keyring_for_trusted = uuid
+                    else:  # untrusted
+                        keyring_for_untrusted = uuid
+                elif profile_type == "ssl_decryption":
+                    decryption_profile = uuid
+                elif profile_type == "tcp_option":
+                    tcp_option_profile = uuid
+                else:   # traffic_mirror
+                    traffic_mirror = uuid
 
             # 获取原始api优先级的数据，重定义temp_application值
             temp_application = 'application_' + str(create_number)
@@ -333,8 +348,10 @@ class CreatePolicyRule:
                     user_region["decryption_profile"] = decryption_profile
                     user_region["tcp_option_profile"] = tcp_option_profile
                     user_region["traffic_mirror"] = {"enable": 0}
-
-
+                    if traffic_mirror != 0:
+                        user_region["traffic_mirror"]["enable"] = 1
+                        user_region["traffic_mirror"]["vlanID"] = 1
+                        user_region["traffic_mirror"]["mirror_profile"] = traffic_mirror
             rule_template_dict["rule"]["action_parameter"] = user_region
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":
@@ -395,7 +412,6 @@ class CreatePolicyRule:
                 user_region["rules"] = rules
                 user_region["sub_action"] = "edit_element"
             rule_template_dict["rule"]["action_parameter"] = user_region
-
         elif condition["policy_type"] == "monitor":
             user_region = {}
             rule_template_dict["rule"]["type"] = condition["policy_type"]
@@ -465,15 +481,10 @@ class CreatePolicyRule:
             pre_intercept_template_path["vsys_id"] = vsys_id
             pre_intercept_template_path["rule"]["vsys_id"] = vsys_id
 
-        if len(and_conditions_list) > 0:
-            pre_intercept_template_path['rule']['and_conditions'].append(and_conditions_list)
-        # else:
-        #     pre_intercept_template_path['rule']['source'] = []
+        for i in range(len(and_conditions_list)):
+            if and_conditions_list[i]["or_conditions"][0]["attribute_name"] in ["ATTR_SOURCE_IP", "ATTR_DESTINATION_IP", "ATTR_SERVER_FQDN"]:
+                pre_intercept_template_path['rule']['and_conditions'].append(and_conditions_list[i])
 
-        # if len(dst_list) > 0:
-        #     pre_intercept_template_path['rule']['destination'] = dst_list
-        # else:
-        #     pre_intercept_template_path['rule']['destination'] = []
         if associated_policy == "pxy_manipulation":
             tmp_name = "manipulation_pre_intercept"
         else:
@@ -499,13 +510,13 @@ class CreatePolicyRule:
                 "monitor": "monitor-rules",
                 "dos_protection": "dos-protection-rules",
             }
-            api_path_rule_type = api_path_map.get(rule_type)
+            api_path_rule_type = api_path_map[rule_type]
             if "vsys" not in rule_template_dict:
                 rule_template_dict['vsys'] = vsys_id
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            print(json.dumps(rule_template_dict))
+            #print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             #print(return_json_data)

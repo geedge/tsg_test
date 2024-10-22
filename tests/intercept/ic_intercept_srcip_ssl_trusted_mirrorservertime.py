@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -52,38 +52,34 @@ def run(parameter):
                 ],
             },
             "action_parameter": {
-                "ssl_decryption_profile": [
+                "ssl_decryption_keyring": [
                     {
-                        "profile_type": "ssl_decryption",
+                        "profile_type": "ssl_keyring",
+                        "decryption_keying_type": "trusted",
                         "profile_file": {
-                            "name": "manipulation_ssl_decryption_profile",
+                            "name": "intercept_tango_trust_ca",
                             "model": "create",
-                            "common_name": "off",
-                            "issuer": "on",
-                            "self_signed": "off",
-                            "expiry_date": "off",
-                            "fail_action": "Pass-through",
-                            "ev_certificate": "off",
-                            "certificate_transparency": "off",
-                            "mutual_authentication": "on",
-                            "protocol_errors": "on",
-                            "certificate_pinning": "on",
-                            "certificate_not_installed": "off",
-                            "mirror_client_versions": "on",
-                            "min_client_version": "TLSv1.0",
-                            "max_client_version": "TLSv1.2",
-                            "allow_HTTP2": "on"
+                            "file_certificate": "test_root_cert_catest.cer",
+                            "file_private_key": "test_root_key_catest.key",
+                            "certificate_type": "Root-Certificate",
+                            "private_key_format": "true",
+                            "is_match": "match",
+                            "reissue_expiry_hours": "MSC",
+                            "type": "Root-Certificate",
+                            "public_key_algorithm": "RSA-2048",
+                            "certificate_revocation_list": "",
+                            "include_root": "on"
                         }
-                    }
-                ],
+                    },
+                ]
             },
-            "expected_return": "issuer: CN=TSG CA Untrusted",
+            "expected_return": "关于百度,CN=CA TRUST",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "untrusted-root.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://untrusted-root.badssl.com/",
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
             },
             "token": ""
         }

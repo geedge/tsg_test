@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -57,7 +57,7 @@ def run(parameter):
                         "profile_type": "ssl_keyring",
                         "decryption_keying_type": "trusted",
                         "profile_file": {
-                            "name": "manipulation_tango_trust_ca",
+                            "name": "intercept_tango_trust_ca",
                             "model": "create",
                             "file_certificate": "test_root_cert_catest.cer",
                             "file_private_key": "test_root_key_catest.key",
@@ -76,13 +76,13 @@ def run(parameter):
                     {
                         "profile_type": "ssl_decryption",
                         "profile_file": {
-                            "name": "manipulation_ssl_decryption_profile",
+                            "name": "intercept_ssl_decryption_profile",
                             "model": "create",
-                            "common_name": "on",
+                            "common_name": "off",
                             "issuer": "off",
                             "self_signed": "off",
                             "expiry_date": "off",
-                            "fail_action": "Pass-through",
+                            "fail_action": "Fail-Close",
                             "ev_certificate": "off",
                             "certificate_transparency": "off",
                             "mutual_authentication": "on",
@@ -99,11 +99,11 @@ def run(parameter):
             },
             "expected_return": "CN=CA TRUST",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "wrong.host.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "self-signed.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://wrong.host.badssl.com/",
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://self-signed.badssl.com/",
             },
             "token": ""
         }
