@@ -85,7 +85,7 @@ listPage_profileColumn_dnsRecords_button_ok_posId = "dropColOK-_ElementSet_DNSRe
 listPage_profileSearch_dnsRecords_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id
 listPage_profileSearch_dnsRecords_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id
 listPage_profileSearch_dnsRecords_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id
-listPage_profileSearch_dnsRecords_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"  # 下拉菜单定位
+listPage_profileSearch_dnsRecords_dropDown_item_posXpath = "//div[contains(@class, 'el-select-dropdown el-popper select-popper')]//ul[@class='el-scrollbar__view el-select-dropdown__list']/li/span[normalize-space(text())='{replaceName}']"#"//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"  # 下拉菜单定位
 listPage_profileSearch_dnsRecords_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceName}']/ancestor::div[contains(@class,'ListItem')]//input"  # 输入item的值，replaceName替换实际查询值
 listPage_profileSearch_dnsRecords_dropDown_typeItem_posXpath = "//div[contains(@class,'select-popper')]//span[normalize-space(text())='{replaceName}']"  # 查询中type的下拉item定位,replaceName替换实际查询值
 listPage_profilTable_dnsRecords_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"  # 列表tabel body  xpath

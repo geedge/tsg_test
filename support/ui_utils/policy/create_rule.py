@@ -237,7 +237,7 @@ class CreateRule:
                         else:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=1).send_keys(application_data[j]["name"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"].format(appName = application_data[j]["name"]), find_after_wait_time=0.5).click()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"].format(replaceValue = application_data[j]["name"]), find_after_wait_time=0.5).click()
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
                             is_first_iteration =False
                 
@@ -792,7 +792,7 @@ class CreateRule:
                     for template in range(len(profile_data)):
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchProfile_posXpath"], find_after_wait_time=1).send_keys(profile_data[template]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchProfile_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectProfile_posXpath"], find_after_wait_time=0.5).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectProfile_posXpath"].format(replaceValue=profile_data[template]["name"]), find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeProfile_posXpath"]).click()
                 elif test_data["policy_type"] == "service_chaining":
                     sff_data = test_data["profile"]
@@ -879,7 +879,7 @@ class CreateRule:
             btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
             self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             # 确认创建
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_yes_posXpath"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_posXpath"]).click()
             #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
             return 200
         except Exception as e:
