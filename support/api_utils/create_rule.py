@@ -18,53 +18,60 @@ class CreatePolicyRule:
 
         source_list, dst_list, filter_list, flag_list = [], [], [], []
         for k, v in condition_ids_by_api_dict.items():
-            if k == "src_list":
-                source_list = v
-            elif k == "dst_list":
-                dst_list = v
-            elif k == "int_list":
-                int_list = v
-            elif k == "ext_list":
-                ext_list = v
-            elif k == "filter_list":
-                filter_list = v
-            elif k == "flag_list":
-                flag_list = v
+            # if k == "src_list":
+            #     source_list = v
+            # elif k == "dst_list":
+            #     dst_list = v
+            # elif k == "int_list":
+            #     int_list = v
+            # elif k == "ext_list":
+            #     ext_list = v
+            # elif k == "filter_list":
+            #     filter_list = v
+            # elif k == "flag_list":
+            #     flag_list = v
+            if k == "and_conditions":
+                and_conditions_list = v
         template = path_dict["rule_template"]
         with open(template, 'r', encoding='utf-8') as f:
             rule_template_dict = json.load(f)
 
-        if len(source_list) > 0:
-            rule_template_dict['rule']['source'] = source_list
-        else:
-            rule_template_dict['rule']['source'] = []
+        # if len(source_list) > 0:
+        #     rule_template_dict['rule']['source'] = source_list
+        # else:
+        #     rule_template_dict['rule']['source'] = []
 
-        if len(dst_list) > 0:
-            rule_template_dict['rule']['destination'] = dst_list
-        else:
-            rule_template_dict['rule']['destination'] = []
+        # if len(dst_list) > 0:
+        #     rule_template_dict['rule']['destination'] = dst_list
+        # else:
+        #     rule_template_dict['rule']['destination'] = []
 
-        if len(int_list) > 0:
-            rule_template_dict['rule']['internal'] = int_list
-        else:
-            rule_template_dict['rule']['internal'] = []
+        # if len(int_list) > 0:
+        #     rule_template_dict['rule']['internal'] = int_list
+        # else:
+        #     rule_template_dict['rule']['internal'] = []
 
-        if len(ext_list) > 0:
-            rule_template_dict['rule']['external'] = ext_list
-        else:
-            rule_template_dict['rule']['external'] = []
+        # if len(ext_list) > 0:
+        #     rule_template_dict['rule']['external'] = ext_list
+        # else:
+        #     rule_template_dict['rule']['external'] = []
 
-        if len(filter_list) > 0:
-            filter_list = filter_list
-            rule_template_dict['rule']['filter'] = filter_list
-        else:
-            rule_template_dict['rule']['filter'] = []
+        # if len(filter_list) > 0:
+        #     filter_list = filter_list
+        #     rule_template_dict['rule']['filter'] = filter_list
+        # else:
+        #     rule_template_dict['rule']['filter'] = []
 
-        if len(flag_list) > 0:
-            flag_list = flag_list[0]
-            rule_template_dict['rule']['flag'] = flag_list
+        # if len(flag_list) > 0:
+        #     flag_list = flag_list[0]
+        #     rule_template_dict['rule']['flag'] = flag_list
+        # else:
+        #     rule_template_dict['rule']['flag'] = None
+        
+        if len(and_conditions_list) > 0:
+            rule_template_dict['rule']['and_conditions'] = and_conditions_list
         else:
-            rule_template_dict['rule']['flag'] = None
+            rule_template_dict['rule']['and_conditions'] = []
 
         temp_rule_action = 'rule_action_' + str(create_number)
         if temp_rule_action in condition.keys():
@@ -84,7 +91,7 @@ class CreatePolicyRule:
             method = ''
 
         if action == 'deny' and policy_type == "security":
-            rule_template_dict['rule']['action_parameter']['method'] = method
+            rule_template_dict['rule']['action_parameter']['sub_action'] = method
             if 'packet_capture_' + str(create_number) in condition:
                 rule_template_dict["rule"]["action_parameter"]["packet_capture"] = {}
                 rule_template_dict["rule"]["action_parameter"]["packet_capture"]["enable"] = condition['packet_capture_' + str(create_number)]["enable"]
@@ -116,7 +123,7 @@ class CreatePolicyRule:
                     rule_template_dict['rule']['action_parameter']['resolution'] = condition['resolution_' + str(create_number)]
                     if "record_id" in condition['resolution_'+str(create_number)][0]["answer"][0].keys():
                         del condition['resolution_'+str(create_number)][0]["answer"][0]["record_id"]
-                        rule_template_dict['rule']['action_parameter']['resolution'][0]["answer"][0]["record_uuid"] = create_profile_ids[0]["uuid"]
+                        rule_template_dict['rule']['action_parameter']['resolution'][0]["answer"][0]["record_profile"] = create_profile_ids[0]["uuid"]
             elif method == "block" and 'message_'+str(create_number) in condition:
                 rule_template_dict['rule']['action_parameter']['code'] = condition['code_'+str(create_number)]
                 rule_template_dict['rule']['action_parameter']["message"] = condition['message_'+str(create_number)]
@@ -185,13 +192,28 @@ class CreatePolicyRule:
             app_name = condition['application']
         if len(app_name) > 0:
             app_group_id_list = get_application_id.get_group_id(str(app_name), api_host)
-            objects_list = []
-            object_ids = dict(object_uuids=app_group_id_list)
-            objects_list.append(object_ids)
-            application_dict = dict(objects=objects_list, attribute_name='ATTR_APP_ID', negate_option=False)
-            rule_template_dict['rule']['application'] = application_dict
-        else:
-            rule_template_dict['rule']['application'] = None
+            # or_conditions_list = []
+            # # or_condition_dict = {}
+            # or_condition_dict = dict(attribute_name='ATTR_APP_ID', object_uuids=app_group_id_list)
+            # objects_list.append(object_ids)
+            # application_dict = dict(objects=objects_list, attribute_name='ATTR_APP_ID', negate_option=False)
+            
+            and_condition_dict = {
+                "negate_option": False,
+                "or_conditions": [],
+            }
+            or_condition_dict = {}
+            or_condition_dict["attribute_name"] = 'ATTR_APP_ID'
+            or_condition_dict["object_uuids"] = app_group_id_list
+            copy_dict = copy.deepcopy(or_condition_dict)
+            and_condition_dict["or_conditions"].append(copy_dict)
+            # or_condition_dict.append(and_condition_dict["or_conditions"])
+            
+            rule_template_dict['rule']['and_conditions'].append(and_condition_dict)
+            # print(json.dumps(and_condition_dict))
+            # rule_template_dict['rule']['application'] = application_dict
+        # else:
+            # rule_template_dict['rule']['application'] = None
 
         if "ip_protocol" in condition.keys():
             ip_protocol_id_dict = {"ICMP": "00000000-0000-0000-0000-000000000005", "TCP": "00000000-0000-0000-0000-000000000006", "UDP": "00000000-0000-0000-0000-000000000007"}
@@ -265,7 +287,7 @@ class CreatePolicyRule:
                     user_region["protocol"] = ""
                 else:
                     user_region["protocol"] = condition["application"][0]
-            user_region["template_uuid"] = create_profile_ids[0]["uuid"]
+            user_region["template_profile"] = create_profile_ids[0]["uuid"]
             rule_template_dict["rule"]["action_parameter"] = user_region
         # 添加intercept逻辑, 填写和Intercept相关的user_region
         elif condition["policy_type"] == "pxy_intercept":
@@ -329,25 +351,25 @@ class CreatePolicyRule:
             rule_template_dict["rule"]["type"] = condition["policy_type"] = "proxy_manipulation"
             # 填写不同动作的user_region
             if action == "deny" and 'message_' + str(create_number) in condition:
-                user_region["method"] = "block"
+                user_region["sub_action"] = "block"
                 user_region["code"] = condition["code_" + str(create_number)]
                 user_region["message"] = condition["message_" + str(create_number)]
             elif action == "deny" and 'message_' + str(create_number) not in condition:
-                user_region["method"] = "block"
+                user_region["sub_action"] = "block"
                 user_region["message"] = "html_profile"
                 user_region["code"] = condition["code_" + str(create_number)]
                 user_region["profile"] = create_profile_ids[0]["uuid"]
             elif action == "hijack":
-                user_region["method"] = "hijack"
+                user_region["sub_action"] = "hijack"
                 user_region["hijack_profile"] = create_profile_ids[0]["uuid"]
             elif action == "insert":
-                user_region["method"] = "insert"
+                user_region["sub_action"] = "insert"
                 user_region["insert_profile"] = create_profile_ids[0]["uuid"]
             elif action == "run_script":
-                user_region["method"] = "run_script"
+                user_region["sub_action"] = "run_script"
                 user_region["run_script_profile"] = create_profile_ids[0]["uuid"]
             elif action == "redirect":
-                user_region["method"] = "redirect"
+                user_region["sub_action"] = "redirect"
                 user_region["code"] = condition["code_" + str(create_number)]
                 user_region["to"] = condition["to_" + str(create_number)]
             elif action == "replace":
@@ -361,7 +383,7 @@ class CreatePolicyRule:
                     rule_dict["replace_with"] = user_region_data[i]["replace_with"]
                     rules.append(copy.deepcopy(rule_dict))
                 user_region["rules"] = rules
-                user_region["method"] = "replace"
+                user_region["sub_action"] = "replace"
             elif action == "edit_element":
                 user_region_data = condition["user_region"]
                 rules = []
@@ -376,7 +398,7 @@ class CreatePolicyRule:
                     rule_dict["target_element"]["element_treatment"] = user_region_data[i]["element_treatment"]
                     rules.append(copy.deepcopy(rule_dict))
                 user_region["rules"] = rules
-                user_region["method"] = "edit_element"
+                user_region["sub_action"] = "edit_element"
             rule_template_dict["rule"]["action_parameter"] = user_region
         elif condition["policy_type"] == "monitor":
             user_region = {}
@@ -486,7 +508,7 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            #print(json.dumps(rule_template_dict))
+            # print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             #print(return_json_data)
