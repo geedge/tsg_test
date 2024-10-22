@@ -222,13 +222,25 @@ class CreatePolicyRule:
                 for ip_protocol in condition["ip_protocol"]:
                     ip_protocol_id = ip_protocol_id_dict.get(ip_protocol)
                     ip_protocol_id_list.append(ip_protocol_id)
-                objects_list = []
-                object_ids = dict(object_uuids=ip_protocol_id_list)
-                objects_list.append(object_ids)
-                ip_protocol_dict = dict(objects=objects_list, attribute_name='ATTR_IP_PROTOCOL', negate_option=False)
-                rule_template_dict['rule']['ip_protocol'] = ip_protocol_dict
-            else:
-                rule_template_dict['rule']['ip_protocol'] = None
+                and_condition_dict = {
+                    "negate_option": False,
+                    "or_conditions": [],
+                }
+                or_condition_dict = {}
+                or_condition_dict["attribute_name"] = 'ATTR_IP_PROTOCOL'
+                or_condition_dict["object_uuids"] = ip_protocol_id_list
+                copy_dict = copy.deepcopy(or_condition_dict)
+                and_condition_dict["or_conditions"].append(copy_dict)
+                # or_condition_dict.append(and_condition_dict["or_conditions"])
+                
+                rule_template_dict['rule']['and_conditions'].append(and_condition_dict)
+                # objects_list = []
+                # object_ids = dict(object_uuids=ip_protocol_id_list)
+                # objects_list.append(object_ids)
+                # ip_protocol_dict = dict(objects=objects_list, attribute_name='ATTR_IP_PROTOCOL', negate_option=False)
+                # rule_template_dict['rule']['ip_protocol'] = ip_protocol_dict
+            # else:
+            #     rule_template_dict['rule']['ip_protocol'] = None
 
         temp_do_log = 'do_log_' + str(create_number)
         if temp_do_log in condition.keys():
