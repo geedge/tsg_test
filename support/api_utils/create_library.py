@@ -1,6 +1,8 @@
+import copy
 import os.path
 import sys
 import ipaddress
+import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import requests
 from datetime import datetime
@@ -166,14 +168,16 @@ class CreateLibrary:
     
     def tags_ids_to_policy_condition_list(self, library_condition_ids_dict, condition_ids_by_api_dict):
         for library_condition in library_condition_ids_dict:
-            if library_condition["attribute_name"] == "ATTR_SOURCE_IP":
-                condition_ids_by_api_dict["src_list"].append(library_condition)
-            elif library_condition["attribute_name"] == "ATTR_DESTINATION_IP" or library_condition["attribute_name"] == "ATTR_SERVER_FQDN":
-                condition_ids_by_api_dict["dst_list"].append(library_condition)
-            elif library_condition["attribute_name"] == "ATTR_INTERNAL_IP":
-                condition_ids_by_api_dict["int_list"].append(library_condition)
-            elif library_condition["attribute_name"] == "ATTR_EXTERNAL_IP":
-                condition_ids_by_api_dict["ext_list"].append(library_condition)
+            and_condition_dict = {
+                "negate_option": False,
+                "or_conditions": [],
+            }
+            or_condition_dict = {}
+            or_condition_dict["attribute_name"] = library_condition["attribute_name"]
+            or_condition_dict["object_uuids"] = library_condition["library_tags"][0]["tag_uuids"]
+            copy_dict = copy.deepcopy(or_condition_dict)
+            and_condition_dict["or_conditions"].append(copy_dict)
+            condition_ids_by_api_dict["and_conditions"].append(and_condition_dict)
         return condition_ids_by_api_dict
 
 if __name__ == '__main__':
