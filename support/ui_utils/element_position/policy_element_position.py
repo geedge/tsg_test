@@ -683,7 +683,7 @@ serviceChainingRuleListPage_createButton_posXpath = "//span[@class='action-creat
 serviceChainingRuleListPage_deleteButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"
 serviceChainingRuleListPage_searchLable_posXpath = "//div[@class='MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5']//input[@placeholder='Please enter search content']"
 serviceChainingRuleListPage_searchLable_dropDown_item_posXpath = "//span[normalize-space(text())='{replaceValue}']/../.."   #下拉菜单定位
-serviceChainingRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'flex-1 overflow-hidden')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'flex-1 overflow-hidden')]//input"   #输入item的值，replaceValue替换实际查询值
+serviceChainingRuleListPage_searchLable_input_itemContent_posXpath = ruleListPage_searchLabel_input_itemContent_posXpath
 serviceChainingRuleListPage_searchLable_searchButton_posXpath = "//div[@class='flex-1 overflow-hidden']//i[@class='iconfont icon-sousuo text-[19px]']"
 serviceChainingRuleListPage_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"
 
