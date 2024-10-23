@@ -713,7 +713,7 @@ mainPage_secondLevelMenu_serviceFunctionForwarders_posName = "Service Function F
 mainPage_secondLevelMenu_serviceFunctionForwarders_posXpath = "//div[@class='MuiListItem-root MuiListItem-gutters menu-service-chaining css-1l56wwh']//span[text()='Service Function Forwarders']"
 listPage_profile_serviceFunctionForwarders_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"     #create按钮
 listPage_profile_serviceFunctionForwarders_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #edit按钮id
-listPage_profile_serviceFunctionForwarders_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #del按钮id
+listPage_profile_serviceFunctionForwarders_delButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"          #del按钮id
 listPage_profile_serviceFunctionForwarders_viewButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #view按钮id
 listPage_profileColumn_serviceFunctionForwarders_button_columnAll_posId = "dropColAll-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #列选择All按钮
 listPage_profileColumn_serviceFunctionForwarders_button_columnCancel_posId = "dropColALlFalse-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #列选择Cancel按钮

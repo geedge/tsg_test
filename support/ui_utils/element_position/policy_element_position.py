@@ -176,10 +176,10 @@ policyRulePage_searchSan_posXpath = "//div[@class='FilterList list-box']//input[
 policyRulePage_selectSan_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
 policyRulePage_closeSan_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 # qname
-policyRulePage_addQname_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='QNAME']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchQname_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectQname_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeQname_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addQname_posXpath = "//label[normalize-space(text())='QNAME']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
+policyRulePage_searchQname_posXpath = policyRulePage_searchServerFqdn_posXpath
+policyRulePage_selectQname_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
+policyRulePage_closeQname_posXpath = policyRulePage_closeServerFqdn_posXpath
 
 #url
 policyRulePage_addUrl_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
@@ -705,7 +705,7 @@ serviceChainingRulePage_searchUser_posXpath = policyRulePage_searchUser_posXpath
 serviceChainingRulePage_selectUser_posXpath = policyRulePage_selectUser_posXpath
 serviceChainingRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
 
-serviceChainingRulePage_addCondition_imsi_posXpath = "div[normalize-space(text())='Device']"
+serviceChainingRulePage_addCondition_imsi_posXpath = "//div[normalize-space(text())='Device']"
 
 serviceChainingRulePage_addDstIP_posXpath = "//label[normalize-space()='Destination']/ancestor::div[@class='MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby']//i[@class='iconfont icon-Create1 font-[700]']"
 serviceChainingRulePage_searchDstIP_posXpath =  policyRulePage_searchSrcIP_posXpath
