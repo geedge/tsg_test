@@ -8,6 +8,7 @@ import json
 import requests
 import support.api_utils.get_application_id as get_application_id
 from datetime import datetime
+import time
 
 
 class CreatePolicyRule:
@@ -375,8 +376,8 @@ class CreatePolicyRule:
                 user_region["sub_action"] = "hijack"
                 user_region["hijack_profile"] = create_profile_ids[0]["uuid"]
             elif action == "insert":
-                user_region["sub_action"] = "insert"
-                user_region["insert_profile"] = create_profile_ids[0]["uuid"]
+                user_region["sub_action"] = "inject"
+                user_region["inject_profile"] = create_profile_ids[0]["uuid"]
             elif action == "run_script":
                 user_region["sub_action"] = "run_script"
                 user_region["run_script_profile"] = create_profile_ids[0]["uuid"]
@@ -516,7 +517,9 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            #print(json.dumps(rule_template_dict))
+            # print(json.dumps(rule_template_dict))
+            # 44.3 运行用例临时添加，防止创建过快导致的用例失败
+            time.sleep(1)
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             #print(return_json_data)
