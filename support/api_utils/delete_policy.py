@@ -252,7 +252,7 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete insert profile successfully.", flush=True)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete insert profile failed.", flush=True)
-                    elif create_profile_ids[del_porfile_index]["profile_type"] == ["run_script", "http_manipulation_script"]:  # 删除run_script
+                    elif create_profile_ids[del_porfile_index]["profile_type"] in ["run_script", "http_manipulation_script"]:  # 删除run_script
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
                         url = "{}/v1/profiles/http-manipulation-scripts".format(api_server)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
