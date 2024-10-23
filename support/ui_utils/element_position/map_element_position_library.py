@@ -767,7 +767,7 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_okButton_warningYes_posXpath": serviceChainingRulePage_warningYes_posXpath
     },
     "search": {
-        "policyRuleListPage_searchLabel_posId": serviceChainingRuleListPage_searchLable_posXpath,
+        "policyRuleListPage_searchLabel_posXpath": serviceChainingRuleListPage_searchLable_posXpath,
         "policyRuleListPage_searchLabel_dropDown_item_posXpath": serviceChainingRuleListPage_searchLable_dropDown_item_posXpath,
         "policyRuleListPage_searchLabel_input_itemContent_posXpath": serviceChainingRuleListPage_searchLable_input_itemContent_posXpath,
         "policyRuleListPage_searchLabel_searchButton_posId": serviceChainingRuleListPage_searchLable_searchButton_posXpath,
@@ -977,7 +977,7 @@ test_manipulation_rule_element_position = {
         "policyRulePage_okButton_warningYes_posXpath": manipulationRulePage_okButton_warningYes_posXpath
     },
     "search": {
-        "policyRuleListPage_searchLabel_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLabel_posXpath": securityRuleListPage_searchLable_posId,
         "policyRuleListPage_searchLabel_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
         "policyRuleListPage_searchLabel_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
         "policyRuleListPage_searchLabel_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
@@ -1033,7 +1033,7 @@ test_security_rule_element_position = {
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
     },
     "search": {
-        "policyRuleListPage_searchLabel_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLabel_posXpath": securityRuleListPage_searchLable_posId,
         "policyRuleListPage_searchLabel_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
         "policyRuleListPage_searchLabel_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
         "policyRuleListPage_searchLabel_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
@@ -1414,7 +1414,7 @@ test_dos_protection_rule_element_position = {
                         "policyRulePage_okButton_warningYes_posXpath": dosRulePage_okButton_warningYes_posXpath
                     },
                     "search": {
-                        "policyRuleListPage_searchLabel_posId": dosRuleListPage_searchLable_posXpath,
+                        "policyRuleListPage_searchLabel_posXpath": dosRuleListPage_searchLable_posXpath,
                         "policyRuleListPage_searchLabel_dropDown_item_posXpath": dosRuleListPage_searchLable_dropDown_item_posXpath,
                         "policyRuleListPage_searchLabel_input_itemContent_posXpath": dosRuleListPage_searchLable_input_itemContent_posXpath,
                         "policyRuleListPage_searchLabel_searchButton_posId": dosRuleListPage_searchLable_searchButton_posXpath,
@@ -1503,7 +1503,7 @@ test_intercept_rule_element_position = {
         "policyRulePage_intercept_searchTcpProfileDorpItem_posXpath": interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath,
     },
     "search": {
-        "policyRuleListPage_searchLabel_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLabel_posXpath": securityRuleListPage_searchLable_posId,
         "policyRuleListPage_searchLabel_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
         "policyRuleListPage_searchLabel_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
         "policyRuleListPage_searchLabel_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
@@ -1714,7 +1714,7 @@ test_statistics_rule_element_position = {
         "policyRulePage_okButton_warningNo_posXpath": statisticsRulePage_okButton_warningNo_posXpath
     },
     "search": {
-        "policyRuleListPage_searchLabel_posId": statisticsRuleListPage_searchLabel_posXpath,
+        "policyRuleListPage_searchLabel_posXpath": statisticsRuleListPage_searchLabel_posXpath,
         "policyRuleListPage_searchLabel_dropDown_item_posXpath": statisticsRuleListPage_searchLabel_dropDown_item_posXpath,
         "policyRuleListPage_searchLabel_input_itemContent_posXpath": statisticsRuleListPage_searchLabel_input_itemContent_posXpath,
         "policyRuleListPage_searchLabel_searchButton_posId": statisticsRuleListPage_searchLabel_searchButton_posXpath,
