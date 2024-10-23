@@ -40,7 +40,7 @@ rulePage_button_add_condition_posXpath = "//label[normalize-space(text())='{}']/
 rulePage_object_list_search_input_posXpath = "//div[contains(@class,'MuiDrawer-content')]//input[contains(@class,'MuiInput-input')]" #Rule打开Obeject侧滑列表，搜索Object搜索框定位
 rulePage_object_list_select_name_posXpath = "//ul[contains(@class,'MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd')]//li//*[normalize-space(text())='{replaceValue}']"#Rule打开Obeject侧滑列表，搜索后选择Object定位
 rulePage_object_list_close_button_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button" #Rule打开Obeject侧滑列表，列表界面的关闭按钮定位
-rulePage_enable_posXpath = "//div[@class='statistics-policy-is_enabled']//span" #Rule生效/失效按钮
+rulePage_enable_posXpath = "//input[@class='PrivateSwitchBase-input MuiSwitch-input css-1m9pwf3']" #//div[@class='statistics-policy-is_enabled']//span" #Rule生效/失效按钮
 rulePage_okButton_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[1]" # OK按钮定位
 rulePage_cancelButton_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[2]" # Cancel按钮定位
 rulePage_okButton_warningYes_posXpath = ""
