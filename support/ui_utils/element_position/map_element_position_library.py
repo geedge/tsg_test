@@ -759,15 +759,15 @@ test_manipulation_rule_element_position = {
         "policyRuleListPage_createButton_posXpath": manipulationRuleListPage_createButton_posXpath,
         # action
         "policyRulePage_inputName_posXpath": manipulationRulePage_inputName_posXpath,
-        "policyRulePage_selectAllow_posId": manipulationRulePage_selectAllow_posId,
-        "policyRulePage_selectDeny_posId": manipulationRulePage_selectDeny_posId,
-        "policyRulePage_selectMonitor_posId": manipulationRulePage_selectMonitor_posId,
-        "policyRulePage_selectRedirect_posId": manipulationRulePage_selectRedirect_posId,
-        "policyRulePage_selectReplace_posId": manipulationRulePage_selectReplace_posId,
-        "policyRulePage_selectHijack_posId": manipulationRulePage_selectHijack_posId,
-        "policyRulePage_selectInsert_posId": manipulationRulePage_selectInsert_posId,
-        "policyRulePage_selectEditElement_posId": manipulationRulePage_selectEditElement_posId,
-        "policyRulePage_selectRunScript_posId": manipulationRulePage_selectRunScript_posId,
+        "policyRulePage_selectAllow_posXpath": manipulationRulePage_selectAllow_posXpath,
+        "policyRulePage_selectDeny_posXpath": manipulationRulePage_selectDeny_posXpath,
+        "policyRulePage_selectMonitor_posXpath": manipulationRulePage_selectMonitor_posXpath,
+        "policyRulePage_selectRedirect_posXpath": manipulationRulePage_selectRedirect_posXpath,
+        "policyRulePage_selectReplace_posXpath": manipulationRulePage_selectReplace_posXpath,
+        "policyRulePage_selectHijack_posXpath": manipulationRulePage_selectHijack_posXpath,
+        "policyRulePage_selectInsert_posXpath": manipulationRulePage_selectInsert_posXpath,
+        "policyRulePage_selectEditElement_posXpath": manipulationRulePage_selectEditElement_posXpath,
+        "policyRulePage_selectRunScript_posXpath": manipulationRulePage_selectRunScript_posXpath,
         # Add Condition按钮定位
         "policyRulePage_addCondition_posXpath": manipulationRulePage_addCondition_posXpath,
         # add condition侧滑的关闭定位
@@ -940,8 +940,8 @@ test_manipulation_rule_element_position = {
         "policyRulePage_closeEffectiveDevices_posXpath": manipulationRulePage_closeEffectiveDevices_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": manipulationRulePage_enable_posXpath,
-        "policyRulePage_okButton_yes_posId": manipulationRulePage_okButton_yes_posId,
-        "policyRulePage_okButton_warningYes_posXpath": manipulationRulePage_okButton_warningYes_posXpath
+        "policyRulePage_okButton_posXpath": manipulationRulePage_okButton_posXpath,
+        "policyRulePage_okButton_warningYes_posXpath": manipulationRulePage_okButton_warningYes_posXpath,
     },
     "search": {
         "policyRuleListPage_searchLabel_posId": securityRuleListPage_searchLable_posId,

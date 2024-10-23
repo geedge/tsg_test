@@ -38,23 +38,23 @@ class CreateRule:
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posXpath"]).click()
             elif test_data["policy_type"] == "pxy_manipulation":
                 if test_data["rule_action"] == "allow":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAllow_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAllow_posXpath"]).click()
                 elif test_data["rule_action"] == "deny":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectDeny_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectDeny_posXpath"]).click()
                 elif test_data["rule_action"] == "monitor":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectMonitor_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectMonitor_posXpath"]).click()
                 elif test_data["rule_action"] == "redirect":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectRedirect_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectRedirect_posXpath"]).click()
                 elif test_data["rule_action"] == "replace":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectReplace_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectReplace_posXpath"]).click()
                 elif test_data["rule_action"] == "hijack":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectHijack_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectHijack_posXpath"]).click()
                 elif test_data["rule_action"] == "insert":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectInsert_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectInsert_posXpath"]).click()
                 elif test_data["rule_action"] == "edit_element":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectEditElement_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEditElement_posXpath"]).click()
                 else:   # run script
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectRunScript_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectRunScript_posXpath"]).click()
             elif test_data["policy_type"]== "monitor" and  "is_mirror" in test_data :
                 if test_data["is_mirror"] == "on":
                     self.driver.find_element(By.XPATH,create_element_position["policyRulePage_mirrorTrafficButton_posXpath"]).click()

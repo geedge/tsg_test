@@ -479,21 +479,21 @@ interceptRulePage_okButton_warningYes_posXpath = rulePage_okButton_warningYes_po
 interceptRulePage_okButton_warningNo_posXpath = rulePage_okButton_warningNo_posXpath
 
 #### manipulation
-manipulationRuleListPage_createButton_posXpath = "app_create-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
-manipulationRuleListPage_deleteButton_posXpath = "appDel-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
+manipulationRuleListPage_createButton_posXpath = ruleListPage_createButton_posXpath
+manipulationRuleListPage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
 manipulationRuleListpage_okButton_warningYes_posXpath = securityRuleListpage_okButton_warningYes_posXpath
 # 名字输入定位
 manipulationRulePage_inputName_posXpath = securityRulePage_inputName_posXpath
 # 动作action定位
-manipulationRulePage_selectAllow_posId = "allowallow"
-manipulationRulePage_selectDeny_posId = "denydeny"
-manipulationRulePage_selectMonitor_posId = "monitormonitor"
-manipulationRulePage_selectRedirect_posId = "redirectredirect"
-manipulationRulePage_selectReplace_posId = "replacereplace"
-manipulationRulePage_selectHijack_posId = "hijackhijack"
-manipulationRulePage_selectInsert_posId = "insertinsert"
-manipulationRulePage_selectEditElement_posId = "edit_elementedit_element"
-manipulationRulePage_selectRunScript_posId = "run_scriptrun_script"
+manipulationRulePage_selectAllow_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Allow')]"
+manipulationRulePage_selectDeny_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Deny')]"
+manipulationRulePage_selectMonitor_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Monitor')]"
+manipulationRulePage_selectRedirect_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Redirect')]"
+manipulationRulePage_selectReplace_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Replace')]"
+manipulationRulePage_selectHijack_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Hijack')]"
+manipulationRulePage_selectInsert_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Insert')]"
+manipulationRulePage_selectEditElement_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-a-ElementEditing1')]"
+manipulationRulePage_selectRunScript_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-run-script')]"
 # rule 页面中Add Condition按钮定位
 manipulationRulePage_addCondition_posXpath = "//*[@id='policy_condition-_ConditionModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_Edit_Home_App_anonymousComponent']"
 manipulationRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
@@ -663,9 +663,9 @@ manipulationRulePage_selectEffectiveDevices_posXpath = "//div[@class='rm-top']//
 manipulationRulePage_closeEffectiveDevices_posXpath = "//div[@class='rm-top']//span[normalize-space(text())='Effective Devices']/ancestor::div[@class='right-menu-content']//div[@class='rigth-menu-button-info']/button/span"
 
 # 保存策略时，ok cancel warnging定位
-manipulationRulePage_enable_posXpath = securityRulePage_enable_posXpath
-manipulationRulePage_okButton_yes_posId = "OK-_Edit_Home_App_anonymousComponent"
-manipulationRulePage_okButton_warningYes_posXpath = "//div[@class='el-message-box__btns']//button[contains(@class, 'el-button--primary')]"
+manipulationRulePage_enable_posXpath = "//div[@class='manipulation-policy-is_enabled']//span[contains(@class, 'MuiSwitch-switchBase')]"
+manipulationRulePage_okButton_posXpath = rulePage_okButton_posXpath
+manipulationRulePage_okButton_warningYes_posXpath = rulePage_okButton_warningYes_posXpath
 
 #service chaining
 mainPage_policySecondLevelMenu_servicechaining_posXpath = "//span[normalize-space(text()) = 'Service Chaining']"
