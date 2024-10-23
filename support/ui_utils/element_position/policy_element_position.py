@@ -112,7 +112,7 @@ policyRulePage_chooseImei_posXpath = "//*[@id='tab-imei' and contains(concat(' '
 # apn
 policyRulePage_chooseApn_posXpath = "//*[@id='tab-apn' and contains(concat(' ', @class, ' '), ' el-tabs__item is-top ') and contains(text(), 'APN')]"
 
-policyRulePage_addCondition_posXpath = "//div[@class='flex flex-row']//button"#"//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
+policyRulePage_addCondition_posXpath = "//button[contains(., 'Add conditions')]//span[contains(@class, 'MuiTouchRipple-root css-w0pj6f')]"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1xyc0ec']//div[text()='Server FQDN']"
 policyRulePage_addCondition_dstPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[2]/following-sibling::div//div[contains(text(), 'Port')]"
