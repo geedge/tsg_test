@@ -81,6 +81,7 @@ class CreateLibrary:
     def create_catalog(self, headers, catalog_data, api_host):
         try:
             url = "{}/v1/library/catalogs".format(api_host)
+            print(json.dumps(catalog_data))
             response = requests.post(headers=headers, url=url, json=catalog_data, verify=False)
             catalog_data = response.json()
             catalog_id = catalog_data["data"]["uuid"]
@@ -114,9 +115,9 @@ class CreateLibrary:
                 }
                 ip_template["op"] = catalog_data["op"]
                 if "-" in ip:
-                    ip_template["ip_range"] = ip
+                    ip_template["ip"] = ip
                 elif "/" in ip:
-                    ip_template["ip_cidr"] = ip
+                    ip_template["ip"] = ip
                 else:
                     ip_template["ip"] = ip
                 ip_type = self.identify_ip_type(ip)
