@@ -4,8 +4,8 @@ mainPage_navigationBar_logo_posXpath = mainPage_secondLevelMenu_ipAddress_posXpa
 mainPage_policyFirstLevelMenu_posXpath = "//*[normalize-space(text())='Policies']" # 一级菜单Policies
 mainPage_policySecondLevelMenu_security_posId = "Objects_ProxyInterception"
 mainPage_policySecondLevelMenu_security_posXpath = "//*[contains(@class, 'MuiListItem-root') and contains(@class, 'MuiListItem-gutters') and contains(@class, 'menu-security-policy') and contains(@class, 'css-1l56wwh')]"
-mainPage_policySecondLevelMenu_intercept_posId = "policy_Intercept"  # 二级菜单intercept
-mainPage_policySecondLevelMenu_manipulation_posId = "policy_Manipulation"  # 二级菜单manipulatjion
+mainPage_policySecondLevelMenu_intercept_posXpath = "//div[contains(@class, 'menu-intercept-policy')]//span[contains(@class, 'MuiListItemText-primary')]"  # 二级菜单intercept
+mainPage_policySecondLevelMenu_manipulation_posXpath = "//div[contains(@class, 'menu-manipulation-policy')]//span[contains(@class, 'MuiListItemText-primary')]"  # 二级菜单manipulatjion
 mainPage_policySecondLevelMenu_shaping_posId = "policy_trafficShaping"  # 二级菜单Shaping
 mainPage_policySecondLevelMenu_statistics_posXpath = "//li[contains(@class,'menu-policy')]//span[normalize-space(text())='Statistics']"  # 二级菜单Statistics
 mainPage_policySecondLevelMenu_dos_posXpath = "//*[normalize-space(text())='DoS Protection']" # 二级菜单DoS Protection
@@ -429,10 +429,10 @@ securityRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labe
 
  
 # intercept
-interceptRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
-interceptRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
-interceptRulePage_inputName_posXpath = "//*[@class='biFangName']//input"
-interceptRulePage_selectDeny_posId = "interceptintercept"
+interceptRuleListPage_createButton_posXpath = ruleListPage_createButton_posXpath
+interceptRuleListPage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
+interceptRulePage_inputName_posXpath = rulePage_inputName_posXpath
+interceptRulePage_selectAction_posXpath = "//div[@class='intercept-policy-action']//button[1]"
 # rule 页面中Add Condition按钮定位
 interceptRulePage_addCondition_posXpath = "//*[@id='policy_condition-_ConditionModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']"
 interceptRulePage_addCondition_close_posXpath = "//div[@class='ToggleDraw']/div[last()]//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
@@ -441,6 +441,13 @@ interceptRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-b
 interceptRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
 # source ip
 interceptRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']/span[1]"
+# Application的添加、查询、选中、关闭操作
+interceptRulePage_addApplication_posXpath = rulePage_button_add_condition_posXpath.format("Application")
+interceptRulePage_searchApplication_posXpath = rulePage_object_list_search_input_posXpath
+interceptRulePage_selectApplication_posXpath = rulePage_object_list_select_name_posXpath
+interceptRulePage_closeApplication_posXpath = rulePage_object_list_close_button_posXpath
+interceptRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
+interceptRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
 # Server FQDN的添加、查询、选中、关闭操作
 interceptRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
 interceptRulePage_searchServerFqdn_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
@@ -468,14 +475,16 @@ interceptRulePage_intercept_searchDecryptionProfileDorpItem_posXpath = "//body/d
 interceptRulePage_intercept_addTcpProfileSelectBox_posXpath = "//div[@zs-label='TCP Proxy Profile']//span[@class='el-input__suffix']//i"   # tcp proxy profile  选择框  定位
 interceptRulePage_intercept_searchTcpProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # tcp proxy profile 对话框查询输入框
 interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # tcp proxy profile 对话框查询下拉列表第一个元素
-interceptRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
-interceptRulePage_okButton_yes_posId = "OK-_policy_Intercept_edit_Home_App_anonymousComponent"
-interceptRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
-
+# # 保存策略时，ok cancel warnging定位
+interceptRulePage_enable_posXpath = "//div[@class='intercept-policy-is_enabled']//span[contains(@class, 'MuiSwitch-switchBase')]"
+interceptRulePage_okButton_posXpath = rulePage_okButton_posXpath
+interceptRulePage_cancelButton_posXpath = rulePage_cancelButton_posXpath
+interceptRulePage_okButton_warningYes_posXpath = rulePage_okButton_warningYes_posXpath
+interceptRulePage_okButton_warningNo_posXpath = rulePage_okButton_warningNo_posXpath
 
 #### manipulation
-manipulationRuleListPage_createButton_posId = "app_create-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
-manipulationRuleListPage_deleteButton_posId ="appDel-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
+manipulationRuleListPage_createButton_posXpath = "app_create-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
+manipulationRuleListPage_deleteButton_posXpath = "appDel-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
 manipulationRuleListpage_okButton_warningYes_posXpath = securityRuleListpage_okButton_warningYes_posXpath
 # 名字输入定位
 manipulationRulePage_inputName_posXpath = securityRulePage_inputName_posXpath
@@ -516,10 +525,10 @@ manipulationRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceLi
 manipulationRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Body']"
 # rule 页面中不同condition的添加+符号定位操作
 ## Sorce IP Address的添加、查询、选中、关闭操作
-manipulationRulePage_addSrcIP_posXpath = "//div[@zs-label='Source']//div[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//i[contains(@class, 'icon-Create1')]"
-manipulationRulePage_searchSrcIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
-manipulationRulePage_selectSrcIP_posXpath ="//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
-manipulationRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//div[@class='rigth-menu-button-info']//button"
+manipulationRulePage_addSrcIP_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Source", secondType="IP Address")
+manipulationRulePage_searchSrcIP_posXpath = rulePage_object_list_search_input_posXpath
+manipulationRulePage_selectSrcIP_posXpath = rulePage_object_list_select_name_posXpath
+manipulationRulePage_closeSrcIP_posXpath = rulePage_object_list_close_button_posXpath
 ## Internal IP的添加、查询、选中、关闭操作
 manipulationRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
 manipulationRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath

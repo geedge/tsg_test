@@ -201,7 +201,6 @@ class CreateRule:
 
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
-                # 点application的+
                 if test_data["policy_type"] == "pxy_manipulation":
                     if  test_data["condition"]["application"][0]["name"].lower() == "doh":  # doh需要操作application
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addApplication_posXpath"]).click()
@@ -213,31 +212,18 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addApplication_posXpath"]).click()
                     application_data = test_data["condition"]["application"]
                     # 通过application name搜索并选中
-                    if len(application_data) == 1:
-                        override_flag = True
-                    is_first_iteration = True
                     for j in range(len(application_data)):
-                        # if application_data[j]["object_type"] == "application":
-                        #     if test_data["policy_type"] == "pxy_intercept":
-                        #         pass    # intercept 不用点击 application 或 group
-                        #     else:
-                        #         if is_first_iteration:
-                        #             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationLabel_posXpath"]).click()
-                        #         else:
-                        #             self.driver.find_element(By.ID,create_element_position["policyRulePage_little_button_addApplication_posId"]).click()
                         if application_data[j]["object_type"] == "application_group":
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationGroupLabel_posXpath"]).click()
                         if test_data["policy_type"] == "pxy_intercept":  # intercept 中 application不用搜索，直接选择
-                            app_name = application_data[j]["name"].strip()
-                            app_position = "//div[@class='paper-grid-middle']//div[@class='ToggleDraw']/div[1]//div[@class='rm-content-default']//span[normalize-space(text())='{app_name}']".format(app_name=app_name)
-                            self.driver.find_element(By.XPATH, app_position).click()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"].format(replaceValue=application_data[j]["name"]), find_after_wait_time=0.5).click()
                         else:
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=0.5).clear()
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=1).send_keys(application_data[j]["name"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"].format(replaceValue = application_data[j]["name"]), find_after_wait_time=0.5).click()
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
-                            is_first_iteration =False
-                
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
+
             # 添加server fqdn
             if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
                 server_fqdn_data = test_data["condition"]["server_fqdn"]
