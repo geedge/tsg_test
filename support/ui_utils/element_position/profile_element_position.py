@@ -58,7 +58,7 @@ mainPage_profileSearch_buttonClear_posId = "searchClear"  # 清空查询按钮id
 # profiles模块列设置
 mainPage_profileColumn_columnSetting_posId = "eventfixed"  # 列设置按钮
 # profiles模块页面底部all、页面跳转设置
-mainPage_profileBottomPage_button_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"  # 底部页面设置中ALl选择按钮
+mainPage_profileBottomPage_button_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//input[contains(@class,'MuiCheckbox-input')]" #"//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"  # 底部页面设置中ALl选择按钮
 # profiles模块引用侧滑
 listPage_profileRightReferenceDrawer_referencedItems = "//div[@class='ReachTest']//div[@class='right-menu-content']//div[contains(@class, 'policy-item')]"  # 引用侧滑中被引用对象定位
 # profiles编辑对象页面
@@ -88,7 +88,7 @@ listPage_profileSearch_dnsRecords_buttonClear_posId = mainPage_profileSearch_but
 listPage_profileSearch_dnsRecords_dropDown_item_posXpath = "//div[contains(@class, 'el-select-dropdown el-popper select-popper')]//ul[@class='el-scrollbar__view el-select-dropdown__list']/li/span[normalize-space(text())='{replaceName}']"#"//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"  # 下拉菜单定位
 listPage_profileSearch_dnsRecords_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceName}']/ancestor::div[contains(@class,'ListItem')]//input"  # 输入item的值，replaceName替换实际查询值
 listPage_profileSearch_dnsRecords_dropDown_typeItem_posXpath = "//div[contains(@class,'select-popper')]//span[normalize-space(text())='{replaceName}']"  # 查询中type的下拉item定位,replaceName替换实际查询值
-listPage_profilTable_dnsRecords_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"  # 列表tabel body  xpath
+listPage_profilTable_dnsRecords_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"#//div[contains(@class,'ly-table1')]//tbody"  # 列表tabel body  xpath
 listPage_profilTable_dnsRecords_tableHeader_posXpath = "//div[contains(@class,'ly-table1')]//table[@class='el-table__header']//thead//tr"  # 列表table 表头xpath
 # listPage->Tips dialog  列表页 tips对话框
 listPage_dialogTips_dnsRecords_button_yes_posXpath = "//body/*[@class='el-dialog__wrapper']//*[contains(@class, 'delComponents-ok')]//span"  # 删除提示的Tips的yes按钮
@@ -811,10 +811,10 @@ serviceFunctions_auditLogsPage_modificationPage_button_close_posXpath = "//*[@id
 
 # Profiles statistics templates===================Profiles statistics templates====================Profiles statistics templates=================Profiles statistics templates=======================Profiles statistics templates
 # listPage->tsg dos detection profiles list page  列表页
-listPage_profileHandleButton_posXpath = "//span[@class='text-[14px] inline-block max-w-[50px] normal-case']"
-listPage_profile_statisticsTemplates_createButton_posId = "Create" #"app_create-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"     #create按钮id
-listPage_profile_statisticsTemplates_editButton_posId = "appEdit-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #edit按钮id
-listPage_profile_statisticsTemplates_delButton_posId = "appDel-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #del按钮id
+listPage_profileHandleButton_posXpath = "//i[@class='iconfont icon-{replaceName}']/parent::*/parent::*" #"//span[@class='text-[14px] inline-block max-w-[50px] normal-case'][normalize-space(text())='{replaceName}']"
+listPage_profile_statisticsTemplates_createButton_name = "Create" #"app_create-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"     #create按钮id
+listPage_profile_statisticsTemplates_editButton_name = "Editinpage" #"appEdit-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #edit按钮id
+listPage_profile_statisticsTemplates_delButton_name = "Delete" #"appDel-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #del按钮id
 listPage_profileSearch_statisticsTemplates_selectLabel_posId = mainPage_profileSearch_selectLabel_posId      #查询框id    定位形式一样
 listPage_profileSearch_statisticsTemplates_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId    #查询按钮id       定位形式一样
 listPage_profileSearch_statisticsTemplates_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
@@ -823,8 +823,10 @@ listPage_profileSearch_statisticsTemplates_input_itemContent_posXpath = listPage
 listPage_profilTable_statisticsTemplates_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
 listPage_profilTable_statisticsTemplates_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
 #listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_statisticsTemplates_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath   #删除提示的Tips的yes按钮
-listPage_dialogTips_statisticsTemplates_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath   #删除提示的Tips的close按钮
+listPage_profile_delete_dialogTips_button_yes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[@type='danger']" #profile列表删除提示的Tips的yes按钮
+listPage_profile_delete_dialogTips_button_no_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[@type='button']" #profile列表删除提示的Tips的yes按钮
+listPage_dialogTips_statisticsTemplates_button_yes_posXpath = listPage_profile_delete_dialogTips_button_yes_posXpath   #删除提示的Tips的yes按钮
+listPage_dialogTips_statisticsTemplates_button_no_posXpath = listPage_profile_delete_dialogTips_button_no_posXpath   #删除提示的Tips的close按钮
 #Create statistics templates page 和 Edit statistics templates page   新增和编辑页
 statisticsTemplates_input_Name_posId = "advancedAdd_policyName"    # name输入框id
 statisticsTemplates_input_Name_posXpath = "//input[@class='MuiInput-input css-fqt4w4']" # name输入框xpath

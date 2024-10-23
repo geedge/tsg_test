@@ -19,19 +19,19 @@ class SearchRule:
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)
             # 点击search查询框
-            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLable_posId"])
+            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posId"])
             self.driver.execute_script("arguments[0].click()", btn)
-            dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
+            dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLabel_dropDown_item_posXpath"].format(replaceValue="Name")
             btn = self.driver.find_element(By.XPATH, dropdown_item_posXpath)
             self.driver.execute_script("arguments[0].click()", btn)
-            input_item_posXpath = search_element_position["policyRuleListPage_searchLable_input_itemContent_posXpath"].format(replaceValue="Name")
+            input_item_posXpath = search_element_position["policyRuleListPage_searchLabel_input_itemContent_posXpath"].format(replaceValue="Name")
             self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
             # 强制点击js方法
-            # btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLable_searchButton_posId"])
+            # btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_searchButton_posId"])
             # self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
-            self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
+            self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_searchButton_posId"]).click()
             time.sleep(0.3)
-            #self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLable_searchButton_posId"]).click()
+            #self.driver.find_element(By.ID, search_element_position["policyRuleListPage_searchLabel_searchButton_posId"]).click()
             element_tr = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_tableTbody_posXpath"])
             row = element_tr.find_elements(By.XPATH, "div")
             if len(row) != 0:
@@ -51,13 +51,13 @@ class SearchRule:
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)
             # 强制点击search查询框
-            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLable_posId"])
+            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posId"])
             self.driver.execute_script("arguments[0].click()", btn)
-            dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLable_dropDown_item_posXpath"].format(replaceValue="Name")
+            dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLabel_dropDown_item_posXpath"].format(replaceValue="Name")
             self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
-            input_item_posXpath = search_element_position["policyRuleListPage_searchLable_input_itemContent_posXpath"].format(replaceValue="Name")
+            input_item_posXpath = search_element_position["policyRuleListPage_searchLabel_input_itemContent_posXpath"].format(replaceValue="Name")
             self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
-            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLable_searchButton_posId"])
+            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_searchButton_posId"])
             self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             time.sleep(1)
             if type == "security":
