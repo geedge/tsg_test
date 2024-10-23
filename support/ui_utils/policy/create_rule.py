@@ -874,9 +874,9 @@ class CreateRule:
 
             # 点enable
             # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
-            # btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
-            # self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
+            btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
+            self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
+            #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
             # 确认创建
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_posXpath"]).click()
             #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
@@ -945,8 +945,9 @@ class CreateRule:
 
     def add_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
         try:
-            # 点add condition的+
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+            # 强制点击add condition的+
+            btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"])
+            self.driver.execute_script("arguments[0].click()", btn)
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
             # 点protocol filed的+
