@@ -29,41 +29,43 @@ class CMDBCollector:
         api_server = parameter["api_server"]
         vsys_id = parameter["vsys_id"]
         
-        rule_uuid_list = configuration_manager["rule_uuid_list"]
-        if len(rule_uuid_list) > 0:
-            for key, value in rule_uuid_list.items():
-                if key == "security":
-                    deleted_rule_dict = {"type": "tsg_security", "ids": [], "vsys_id": 1}
-                for i in range(len(value)):
-                    deleted_rule_dict['type'] = key
-                    deleted_rule_dict['ids'] = value[i]
-                    deleted_rule_dict['vsys_id'] = vsys_id
-                    url = api_server + "/v1/policy/rule"
-                    response = requests.delete(url, headers=headers, params=deleted_rule_dict, verify=False)
-                    assert response.status_code == 200
-                    if response.status_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(key), flush=True)
-                    else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} failed.".format(key), flush=True)
-                        
-        object_uuid_list = configuration_manager["object_uuid_list"]
-        if len(object_uuid_list) > 0:
-            for key, value in object_uuid_list.items():
-                if key == "ip":
-                    deleted_object_dict = {"type": "ip", "ids": [], "vsys_id": 1}
-                if key == "port":
-                    deleted_object_dict = {"type": "port", "ids": [], "vsys_id": 1}
-                for i in range(len(value)):
-                    deleted_object_dict['type'] = key
-                    deleted_object_dict['ids'] = value[i]
-                    deleted_object_dict["vsys_id"] = vsys_id
-                    url = api_server + "/v1/policy/object"
-                    response = requests.delete(url, headers=headers, params=deleted_object_dict, verify=False)
-                    assert response.status_code == 200
-                    if response.status_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(key), flush=True)
-                    else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} failed.".format(key), flush=True)
+        if len(configuration_manager["rule_uuid_list"]) > 0:
+            rule_uuid_list = configuration_manager["rule_uuid_list"]
+            if len(rule_uuid_list) > 0:
+                for key, value in rule_uuid_list.items():
+                    if key == "security":
+                        deleted_rule_dict = {"type": "tsg_security", "ids": [], "vsys_id": 1}
+                    for i in range(len(value)):
+                        deleted_rule_dict['type'] = key
+                        deleted_rule_dict['ids'] = value[i]
+                        deleted_rule_dict['vsys_id'] = vsys_id
+                        url = api_server + "/v1/policy/rule"
+                        response = requests.delete(url, headers=headers, params=deleted_rule_dict, verify=False)
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(key), flush=True)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} failed.".format(key), flush=True)
+               
+        if len(configuration_manager["object_uuid_list"]) > 0:         
+            object_uuid_list = configuration_manager["object_uuid_list"]
+            if len(object_uuid_list) > 0:
+                for key, value in object_uuid_list.items():
+                    if key == "ip":
+                        deleted_object_dict = {"type": "ip", "ids": [], "vsys_id": 1}
+                    if key == "port":
+                        deleted_object_dict = {"type": "port", "ids": [], "vsys_id": 1}
+                    for i in range(len(value)):
+                        deleted_object_dict['type'] = key
+                        deleted_object_dict['ids'] = value[i]
+                        deleted_object_dict["vsys_id"] = vsys_id
+                        url = api_server + "/v1/policy/object"
+                        response = requests.delete(url, headers=headers, params=deleted_object_dict, verify=False)
+                        assert response.status_code == 200
+                        if response.status_code == 200:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} successfully.".format(key), flush=True)
+                        else:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} failed.".format(key), flush=True)
         
 if __name__ == "__main__":
     uuid = {

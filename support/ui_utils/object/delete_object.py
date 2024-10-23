@@ -17,7 +17,7 @@ class DeleteObject:
                 self.select_lock_and_referenceCount(rows)
             else:
                 first_row_checkbox_element.click()
-                self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_posXpath"]).click()
+            self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_posXpath"]).click()
             self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(3)
             return 200
@@ -90,7 +90,7 @@ class DeleteObject:
                             click_flag = 1
 
                 if click_flag == 1:  # 没有 icon-lock  引用为0，， 需要点击
-                    el_td_1.find_element(By.XPATH, ".//*[@class='el-checkbox__input']").click()
+                    el_td_1.find_element(By.XPATH, ".//*[@class='MuiCheckbox-input css-1jj0cvj']").click()
                     return_code = 0
                     time.sleep(0.1)
             return return_code

@@ -11,7 +11,8 @@ from support.analyse_result import Analyse
 from support.cmdb_collector import CMDBCollector
 # from support.packet_generator.verify import Verify
 from support.verify import Verify
-from support.packet_generator.traffic_generator import *
+# from support.packet_generator.traffic_generator import *
+from support.traffic_generator import *
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -41,7 +42,7 @@ def run(parameter):
                             "items": [
                                 {
                                     "op": "add",
-                                    "ip": "1.1.1.1",
+                                    "ip": parameter["test_pc_ip"],
                                     "interval": "0-65535"
                                 }
                             ]
@@ -54,7 +55,7 @@ def run(parameter):
                         {
                             "attribute_name": "ATTR_APP_ID",
                             "type": "application",
-                            "name": "http"
+                            "items": ["http"]
                         }
                     ],
                 }
@@ -72,7 +73,7 @@ def run(parameter):
         }
         
         traffic_generation = {
-            "tool": "curl", # or trex/http
+            "tool": "http", # or trex/http
             "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
         }
         
@@ -104,29 +105,29 @@ def run(parameter):
             configuration_manager["rule_uuid_list"] = cmdb_collector.collect(rule_uuid)
 
         # 触发流量
+        time.sleep(3)
         generator = TrafficGenerator()
-        traffic_result = generator.generate_traffic(traffic_generation)
+        traffic_result = generator.generate_traffic(policy_configuration, traffic_generation)
         
-        verify = Verify()
+        verification = Verify()
         # 验证流量生成器的返回值是否符合策略执行的预期
-        excepted_result, error = verify.verify_excepted_result(verification, traffic_result)
+        excepted_result, error = verification.verify_excepted_result(verification, traffic_result)
         if excepted_result == False:
             return error
         
         # 验证tsg的日志和metric是否符合策略执行的预期
-        verification_result = verify.verify_metric_log(parameter, policy_configuration, verification, configuration_manager, traffic_result)
-        if len(verification_result) != 3:
-            result = verification_result
-            return result
+        metric_log_result = verification.verify_metric_log(parameter, policy_configuration, traffic_generation, verification, configuration_manager, traffic_result)
+        if len(metric_log_result) != 3:
+            return metric_log_result
 
         # 分析结果
         analyse = Analyse()
-        result = analyse.analyse_result(verification_result)
+        result = analyse.analyse_result(policy_configuration["type"], metric_log_result)
         
         return result
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", e, flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", str(e), flush=True)
         return "Exception Error: " + str(e)
     finally:
         # 删除
@@ -144,14 +145,14 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.86",
+        "test_pc_ip": "192.168.64.87",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "debug": "local",
         "initiation_method": "api",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 5,
         "root_path": workdir,
         "path": workdir + "/tests",
         "module_name": "security",

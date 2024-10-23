@@ -14,7 +14,7 @@ from threading import Thread
 class Verify:
     def verify_excepted_result(self, verification, traffic_result):
         try:
-            debug = ""
+            debug = "local"
             if debug == "local":
                 traffic_result_temp = traffic_result["result"]
             else:
@@ -28,10 +28,10 @@ class Verify:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return result does not match the expected result.', flush=True)
                 return False, "The traffic returned result does not match the expected result."
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", e, flush=True)
-            return False, "Exception Error: " + str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", str(e), flush=True)
+            return False, "Exception Error when verify excepted result: " + str(e)
         
-    def verify_metric_log(self, parameter, policy_configuration, verification, configuration_manager, traffic_result):
+    def verify_metric_log(self, parameter, policy_configuration, traffic_generation, verification, configuration_manager, traffic_result):
         try:
             initiation_method = parameter["initiation_method"]
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to send traffic.", flush=True)
@@ -39,17 +39,17 @@ class Verify:
                 time.sleep(3)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             if initiation_method == "ui":
-                traffic_verification = APIVerification()
-                api_verification_result = traffic_verification.api_verification(configuration_manager["driver"], parameter, policy_configuration, verification, configuration_manager, traffic_result)
+                api_verification = APIVerification(parameter, policy_configuration, traffic_generation, verification, configuration_manager)
+                api_verification_result = api_verification.api_verification(traffic_result)
                 if len(api_verification_result) == 3:
                     my_driver = api_verification_result[2]
-                policy_type = test_data["policy_type"]
-                if len(api_verification_result) > 0 and policy_type != "statistics":
+                rule_type = policy_configuration["type"]
+                if len(api_verification_result) > 0 and rule_type != "statistics":
                     verification_result = [False for _ in range(3)]
                     ui_verification = UiVerification()
-                    ui_verification_result = ui_verification.ui_verification(my_driver, parameter, test_data, api_verification_result, configuration_manager["element_position_map"], traffic_result, cfg_list)
+                    ui_verification_result = ui_verification.ui_verification(my_driver, parameter, policy_configuration, configuration_manager, traffic_result, api_verification_result)
                     # 对比api和ui返回的每个结果，如果都一样，则结果是true，如果二者有一个不同，就为false
-                    if policy_type == "security" or policy_type == "service_chaining" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
+                    if rule_type == "security" or rule_type == "service_chaining" or rule_type == "pxy_intercept" or rule_type == "pxy_manipulation" or rule_type == "monitor":
                         if api_verification_result[0] == True and ui_verification_result[0] == True or (api_verification_result[1] == 'no_set' and ui_verification_result[1] == 'no_set'):
                             verification_result[0] = True
                         else:
@@ -63,11 +63,12 @@ class Verify:
                 else:
                     return api_verification_result
             elif initiation_method == "api":
-                traffic_verification = APIVerification()
-                verification_result = traffic_verification.api_verification("", parameter, policy_configuration, verification, configuration_manager, traffic_result)
+                api_verification = APIVerification(parameter, policy_configuration, traffic_generation, verification, configuration_manager)
+                verification_result = api_verification.api_verification(traffic_result)
                 return verification_result
         except Exception as e:
-            return "Exception Error: " + str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error when verify metric and log: ", str(e), flush=True)
+            return "Exception Error when verify metric and log : " + str(e)
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

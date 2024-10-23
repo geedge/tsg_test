@@ -74,8 +74,8 @@ class APIClient:
                         object_uuid_dict["port"] = port_uuid_temp_list
             return object_uuid_dict, ""
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", e, flush=True)
-            return "" ,"Exception Error: " + str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create object exception error: ", str(e), flush=True)
+            return "" ,"Create object exception error: " + str(e)
     
     def get_uuid(self, response_dict, type):
         if type == "ip":
@@ -154,8 +154,8 @@ class APIClient:
                 return "", "Create {} rule failed.".format(policy_configuration["type"])
             return rule_uuid_dict, ""
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", e, flush=True)
-            return "", "Exception Error: " + str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create rule exception error: ", str(e), flush=True)
+            return "", "Create rule exception error: " + str(e)
     
     def generate_rule_condition_list(self, and_condition, object_uuid, condition_type):
         if condition_type in ["attr_source", "attr_destination"]:
@@ -215,6 +215,9 @@ if __name__ == "__main__":
         "test_case_name": os.path.basename(__file__)[:-3]
     }
     api_client = APIClient(parameter)
+    from support.cmdb_collector import CMDBCollector
+    cmdb_collector = CMDBCollector()
+    configuration_manager = {}
     """
     # object_uuid = {
     #     "ip": [
@@ -251,19 +254,24 @@ if __name__ == "__main__":
         "name": "automation_test_zk",
         "type": "security",
         "action": "deny",
-        "and_conditions": [
+        "and_conditions": [ # 一个rule选了两个source、一个destination、一个application
             {
                 "negate_option": 0,
-                "or_conditions": [
+                "or_conditions": [ # 一个source ip address选了两个object
                     {
                         "attribute_name": "ATTR_SOURCE_IP",
                         "type": "ip",
                         "sub_type": "ip",
                         "name": "secy_srcip",
-                        "items": [
+                        "items": [ # 一个object中包含多个item
                             {
                                 "op": "add",
                                 "ip": "1.1.1.1",
+                                "interval": "0-65535"
+                            },
+                            {
+                                "op": "add",
+                                "ip": "2.1.1.1",
                                 "interval": "0-65535"
                             }
                         ]
@@ -342,5 +350,9 @@ if __name__ == "__main__":
         "is_enabled": 1
     }
     object_uuid, _ = api_client.create_object(policy_configuration)
+    configuration_manager["object_uuid_list"] = cmdb_collector.collect(object_uuid)
     rule_uuid, _ = api_client.create_rule(policy_configuration, object_uuid)
+    configuration_manager["rule_uuid_list"] = cmdb_collector.collect(rule_uuid)
+    temp = json.dumps(configuration_manager)
+    print(temp)
     api_client.generate_rule_condition_list(policy_configuration, object_uuid, "source")

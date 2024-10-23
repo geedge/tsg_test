@@ -148,11 +148,11 @@ fqdnObjectListPage_dropDown_createGroupButton_posXpath = "//ul[@class='base-Popp
 fqdnObjectListPage_searchLabel_posXpath = "//div[@class='MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5']//input" # 查询框
 fqdnObjectListPage_searchLabel_selectName_posXpath = "//span[normalize-space(text())='{replaceValue}']/../.."  # 查询Name
 fqdnObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
-fqdnObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_fqdn_Home_App_anonymousComponent"
-fqdnObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+fqdnObjectListPage_deleteButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"
+fqdnObjectListPage_deleteButton_warningYes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[text()='Yes']"
 fqdnObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
 fqdnObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
-fqdnObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
+fqdnObjectListPage_tableTbody_posXpath = ipObjectListPage_tableTbody_posXpath 
 fqdnObjectPage_inputName_posXpath = "//*[@class='fqdn-object-name']//input" # name输入框Xpath
 fqdnobjectPage_addItem_posXpath = "//div[@class='mt-[10px] flex justify-center']//i"  # 添加item_id
 fqdnObjectPage_inputItem_posXpath = "//div[@class='scrollbar']//input"
