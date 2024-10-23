@@ -413,7 +413,9 @@ class CreatePolicyRule:
             rule_template_dict["rule"]["effective_range"] = condition["effective_range"]
         
         # 开始创建rule
+        print("rule_template_dict:{}".format(rule_template_dict))
         policy_id_list_temp = self.create_rule(rule_template_dict, headers, api_host)
+        print("policy_id_list_temp:{}".format(policy_id_list_temp))
         if condition["policy_type"] == "pxy_manipulation" or (condition["policy_type"] == "service_chaining" and condition["targeted_traffic"] == "decrypted"):
             policy_id_list_temp = [*policy_id_list_temp, *pre_policy_id_list]
         

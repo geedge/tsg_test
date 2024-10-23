@@ -40,7 +40,7 @@ def run(parameter):
                 "device": [],
                 "apn": [
                     {
-                        "name": "manipulation_apn",
+                        "name": "monitor_apn",
                         "object_type": "apn",
                         "select_type": False,
                         "negate": False,
@@ -48,7 +48,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "apn",
-                                "item_value": '$' + parameter["test_apn"],
+                                "item_value": '^' + parameter["test_apn"]+'$',
                             }
                         ]
                     }
