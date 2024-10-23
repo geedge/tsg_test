@@ -19,7 +19,7 @@ class SearchRule:
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)
             # 点击search查询框
-            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posId"])
+            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posXpath"])
             self.driver.execute_script("arguments[0].click()", btn)
             dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLabel_dropDown_item_posXpath"].format(replaceValue="Name")
             btn = self.driver.find_element(By.XPATH, dropdown_item_posXpath)

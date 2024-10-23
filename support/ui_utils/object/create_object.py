@@ -140,11 +140,11 @@ class CreateObject:
                     if data["object_type"] == "ip":
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_ipType_posXpath"]).click()
                     if data["item"][i]["item_type"] == "imsi":
-                        self.driver.find_element(By.ID, create_element_position["objectPage_imsiType_posId"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_imsiType_posXpath"]).click()
                     elif data["item"][i]["item_type"] == "phone_number":
-                        self.driver.find_element(By.ID, create_element_position["objectPage_phnoeNumberType_posId"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_phnoeNumberType_posXpath"]).click()
                     elif data["item"][i]["item_type"] == "imei":
-                        self.driver.find_element(By.ID, create_element_position["objectPage_imeiType_posId"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_imeiType_posXpath"]).click()
                     if data["item"][i]["item_operation"] == "add":
                         self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
                         # 适配24.10 版本，需要逐个字符输入

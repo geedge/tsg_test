@@ -48,7 +48,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "apn",
-                                "item_value": '$' + parameter['test_apn'],
+                                "item_value": '^' + parameter["test_apn"]+'$',
                             }
                         ]
                     }
