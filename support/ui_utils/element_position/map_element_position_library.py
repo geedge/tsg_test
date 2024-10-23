@@ -32,7 +32,7 @@ test_ip_object_element_position = {
         "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
         "objectPage_okButton_posXpath": ipObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath,
-        "objectPage_statistics_select_posId": ObjectPage_statistics_select_posId,
+        "objectPage_statistics_select_posXpath": ObjectPage_statistics_select_posXpath,
         "objectPage_statistics_select_option_posXpath": ObjectPage_statistics_select_option_posXpath
     },
     "search": {
