@@ -438,7 +438,7 @@ interceptRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList l
 # source ip
 interceptRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_Intercept_edit_Home_App_anonymousComponent']/span[1]"
 # Application的添加、查询、选中、关闭操作
-interceptRulePage_addApplication_posXpath = rulePage_button_add_conditon_posXpath.format("Application")
+interceptRulePage_addApplication_posXpath = rulePage_button_add_condition_posXpath.format("Application")
 interceptRulePage_searchApplication_posXpath = rulePage_object_list_search_input_posXpath
 interceptRulePage_selectApplication_posXpath = rulePage_object_list_select_name_posXpath
 interceptRulePage_closeApplication_posXpath = rulePage_object_list_close_button_posXpath
@@ -472,7 +472,7 @@ interceptRulePage_intercept_addTcpProfileSelectBox_posXpath = "//div[@zs-label='
 interceptRulePage_intercept_searchTcpProfileInput_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # tcp proxy profile 对话框查询输入框
 interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath = "//body/div[last()]/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[2]"   # tcp proxy profile 对话框查询下拉列表第一个元素
 # # 保存策略时，ok cancel warnging定位
-interceptRulePage_enable_posXpath = "//div[@class='intercept-policy-is_enabled']//span[contains(@class, 'MuiSwitch-thumb')]"
+interceptRulePage_enable_posXpath = "//div[@class='intercept-policy-is_enabled']//span[contains(@class, 'MuiSwitch-switchBase')]"
 interceptRulePage_okButton_posXpath = rulePage_okButton_posXpath
 interceptRulePage_cancelButton_posXpath = rulePage_cancelButton_posXpath
 interceptRulePage_okButton_warningYes_posXpath = rulePage_okButton_warningYes_posXpath
@@ -521,7 +521,7 @@ manipulationRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceLi
 manipulationRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Body']"
 # rule 页面中不同condition的添加+符号定位操作
 ## Sorce IP Address的添加、查询、选中、关闭操作
-manipulationRulePage_addSrcIP_posXpath = rulePage_button_add2Level_conditon_posXpath.format(firstType="Source", secondType="IP Address")
+manipulationRulePage_addSrcIP_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Source", secondType="IP Address")
 manipulationRulePage_searchSrcIP_posXpath = rulePage_object_list_search_input_posXpath
 manipulationRulePage_selectSrcIP_posXpath = rulePage_object_list_select_name_posXpath
 manipulationRulePage_closeSrcIP_posXpath = rulePage_object_list_close_button_posXpath

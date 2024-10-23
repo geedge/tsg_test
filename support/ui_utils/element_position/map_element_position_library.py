@@ -1410,6 +1410,7 @@ test_intercept_rule_element_position = {
         "policyRulePage_subAction_drop_dropPkt_posXpath": securityRulePage_subAction_drop_dropPkt_posXpath,
         "policyRulePage_subAction_drop_sendTcpRst_posXpath": securityRulePage_subAction_drop_sendTcpRst_posXpath,
         "policyRulePage_subAction_drop_sendIcmp_posXpath": securityRulePage_subAction_drop_sendIcmp_posXpath,
+        # ok
         "policyRulePage_enable_posXpath": interceptRulePage_enable_posXpath,
         "policyRulePage_okButton_posXpath": interceptRulePage_okButton_posXpath,
         "policyRulePage_okButton_warningYes_posXpath": interceptRulePage_okButton_warningYes_posXpath,
