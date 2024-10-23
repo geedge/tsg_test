@@ -30,7 +30,7 @@ mainPage_firstLevelMenu_profiles_posXpath = "//*[normalize-space(text())='Profil
 mainPage_leftMenu_posXpath = "//*[normalize-space(text())='{}']" #根据菜单名称文本定位：
 mainPage_secondLevelMenu_responsePages_posId = "Proxy_Profiles/Profile_ResponsePages"  # 二级菜单response pages
 mainPage_secondLevelMenu_dnsRecords_posId = "Proxy_Profiles/DNS_record_profile"  # 二级菜单dns records
-mainPage_secondLevelMenu_trafficMirroringProfiles_posId = "Proxy_Profiles/Profile_TrafficMirrorProfiles"  # 二级菜单traffic mirroring profiles
+mainPage_secondLevelMenu_trafficMirroringProfiles_posId = '//span[@class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1cxrtde" and text()="Traffic Mirroring Profiles"]'  # 二级菜单traffic mirroring profiles
 mainPage_secondLevelMenu_sslDecryptionKeyrings_posId = "Proxy_CertificateManagement/Certificate_Keyrings"  # 二级菜单ssl decryption keyrings
 mainPage_secondLevelMenu_sslDecryptionProfiles_posId = "Proxy_Profiles/Profile_DecryptionProfile"  # 二级菜单ssl decryption Profiles
 mainPage_secondLevelMenu_trustedCertificateAuthorities_posId = "Proxy_CertificateManagement/Certificate_Authorities"  # 二级菜单 Trusted Certificate Authorities
@@ -48,12 +48,15 @@ mainPage_secondLevelMenu_serviceFunctionForwarders_posId = "Proxy_Profiles/Servi
 mainPage_secondLevelMenu_serviceFunctions_posId = "Proxy_Profiles/ServiceFunctionProfile"  # 二级菜单service functions
 mainPage_secondLevelMenu_statisticsTemplates_posXpath = "//*[normalize-space(text())='Statistics Templates']"  # 二级菜单statistics templates
 mainPage_secondLevelMenu_statisticsTemplates_Name = "Statistics Templates"  # 二级菜单statistics templates
+mainPage_secondLevelMenu_trafficTemplates_Name = "Traffic Mirroring Profiles"
 
 
 # Profiles 查询栏===================Profiles 查询栏=====================Profiles 查询栏=================Profiles 查询栏=======================Profiles 查询栏=================Profiles 查询栏
 ##profiles模块查询栏
-mainPage_profileSearch_selectLabel_posId = "select-label"  # 查询框id
-mainPage_profileSearch_buttonSearch_posId = "searchQuery"  # 查询按钮id
+mainPage_profileSearch_selectLabel_posId = '//input[@class="MuiAutocomplete-input css-qdyksh"]'  # 查询框id
+mainPage_profileSearch_buttonSearch_posId = '//div[@class="flex"]/button' # 查询按钮id
+mainPage_profileSearch_selectLabel_posXpath = "//input[contains(@class,'MuiAutocomplete-input')]" #"select-label"  # 查询框id
+mainPage_profileSearch_buttonSearch_posXpath = "//*[@class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w']"#"searchQuery"  # 查询按钮id
 mainPage_profileSearch_buttonClear_posId = "searchClear"  # 清空查询按钮id
 # profiles模块列设置
 mainPage_profileColumn_columnSetting_posId = "eventfixed"  # 列设置按钮
@@ -82,8 +85,8 @@ listPage_profile_dnsRecords_linkButton_posId = "btnCopy-_OperateBtns_ElRow_DNSRe
 listPage_profileColumn_dnsRecords_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_dnsRecords_button_cancel_posId = "dropColcancel-_ElementSet_DNSRecordProfile_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_dnsRecords_button_ok_posId = "dropColOK-_ElementSet_DNSRecordProfile_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_dnsRecords_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id
-listPage_profileSearch_dnsRecords_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id
+listPage_profileSearch_dnsRecords_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id
+listPage_profileSearch_dnsRecords_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id
 listPage_profileSearch_dnsRecords_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id
 listPage_profileSearch_dnsRecords_dropDown_item_posXpath = "//div[contains(@class, 'el-select-dropdown el-popper select-popper')]//ul[@class='el-scrollbar__view el-select-dropdown__list']/li/span[normalize-space(text())='{replaceName}']"#"//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"  # 下拉菜单定位
 listPage_profileSearch_dnsRecords_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceName}']/ancestor::div[contains(@class,'ListItem')]//input"  # 输入item的值，replaceName替换实际查询值
@@ -91,7 +94,7 @@ listPage_profileSearch_dnsRecords_dropDown_typeItem_posXpath = "//div[contains(@
 listPage_profilTable_dnsRecords_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"#//div[contains(@class,'ly-table1')]//tbody"  # 列表tabel body  xpath
 listPage_profilTable_dnsRecords_tableHeader_posXpath = "//div[contains(@class,'ly-table1')]//table[@class='el-table__header']//thead//tr"  # 列表table 表头xpath
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_dnsRecords_button_yes_posXpath = "//body/*[@class='el-dialog__wrapper']//*[contains(@class, 'delComponents-ok')]//span"  # 删除提示的Tips的yes按钮
+listPage_dialogTips_dnsRecords_button_yes_posXpath = 'ogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[1]'  # 删除提示的Tips的yes按钮
 listPage_dialogTips_dnsRecords_button_no_posXpath = "//body/*[@class='el-dialog__wrapper']//*[contains(@class, 'delComponents-close')]//span"  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_dnsRecords_input_clusterSelect_posXpath = "//*[@id='clusterId']/parent::*//span[@class='el-input__suffix']"  # cluster 下拉选择按钮
@@ -133,8 +136,8 @@ listPage_profile_responsePages_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Pr
 listPage_profileColumn_responsePages_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_responsePages_button_cancel_posId = "dropColcancel-_ElementSet_Profile_ResponsePages_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_responsePages_button_ok_posId = "dropColOK-_ElementSet_Profile_ResponsePages_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_responsePages_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_responsePages_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_responsePages_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_responsePages_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_responsePages_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_responsePages_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_responsePages_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -159,15 +162,15 @@ responsePage_button_cancel_posCss = "#responseAddCancel1-_interceptionadd_Home_A
 
 # Profiles traffic mirroring profiles===================Profiles traffic mirroring profiles====================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles=======================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles
 # listPage->traffic mirroring profiles list page  列表页
-listPage_profile_trafficMirroringProfiles_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # create按钮id
+listPage_profile_trafficMirroringProfiles_createButton_posXpath = "app_create-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # create按钮id
 listPage_profile_trafficMirroringProfiles_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # edit按钮id
 listPage_profile_trafficMirroringProfiles_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # del按钮id
 listPage_profile_trafficMirroringProfiles_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # link按钮id
-listPage_profileColumn_trafficMirroringProfiles_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
+listPage_profileColumn_trafficMirroringProfiles_button_columnAll_posXpath = '//div[@class="MuiDataGrid-columnsManagementFooter css-1l93brk"]//input'  # 列选择All按钮
 listPage_profileColumn_trafficMirroringProfiles_button_cancel_posId = "dropColcancel-_ElementSet_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_trafficMirroringProfiles_button_ok_posId = "dropColOK-_ElementSet_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_trafficMirroringProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_trafficMirroringProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_trafficMirroringProfiles_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -182,12 +185,12 @@ listPage_linkTips_trafficMirroringProfiles_button_add_posXpath = "//*[@id='tempo
 listPage_linkTips_trafficMirroringProfiles_button_OK_posXpath = "//*[@id='copyOk-_copyComponents_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent']/span"    # OK 按钮 xpath
 # Create traffic mirroring profile page 和 Edit traffic mirroring profile page   新增和编辑页
 trafficMirroringProfiles_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-trafficMirroringProfiles_input_Name_posId = "trafficmirror_profileName"  # name输入框id
-trafficMirroringProfiles_button_vlanIdAdd_posCss = "#addrTypeAdd i"  # vlan id 添加按钮css
+trafficMirroringProfiles_input_Name_posXpath = "trafficmirror_profileName"  # name输入框id
+trafficMirroringProfiles_button_vlanIdAdd_posXpath = "#addrTypeAdd i"  # vlan id 添加按钮css
 trafficMirroringProfiles_input_vlanIdsInput_posXpath = "//form//div[contains(@class, 'addel-form')]//input"  # 所有显示的vlan id的所有input定位，需要通过value二次处理，css
 trafficMirroringProfiles_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 trafficMirroringProfiles_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
-trafficMirroringProfiles_button_oK_posCss = "#trafficMirrorProfile_ok span"  # OK按钮css
+trafficMirroringProfiles_button_oK_posXpath = "#trafficMirrorProfile_ok span"  # OK按钮css
 trafficMirroringProfiles_button_cancel_posCss = "#trafficMirrorProfile_cancel span"  # Cancel按钮
 
 # Profiles ssl decryption keyrings===================Profiles ssl decryption keyrings====================Profiles ssl decryption keyrings=================Profiles ssl decryption keyrings=======================Profiles ssl decryption keyrings
@@ -199,8 +202,8 @@ listPage_profile_sslDecryptionKeyrings_linkButton_posId = "btnCopy-_OperateBtns_
 listPage_profileColumn_sslDecryptionKeyrings_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_sslDecryptionKeyrings_button_cancel_posId = "dropColcancel-_ElementSet_Certificate_Keyrings_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_sslDecryptionKeyrings_button_ok_posId = "dropColOK-_ElementSet_Certificate_Keyrings_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_sslDecryptionKeyrings_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_sslDecryptionKeyrings_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_sslDecryptionKeyrings_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_sslDecryptionKeyrings_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_sslDecryptionKeyrings_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_sslDecryptionKeyrings_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_sslDecryptionKeyrings_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -244,8 +247,8 @@ listPage_profile_sslDecryptionProfiles_linkButton_posId = "btnCopy-_OperateBtns_
 listPage_profileColumn_sslDecryptionProfiles_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_sslDecryptionProfiles_button_cancel_posId = "dropColcancel-_ElementSet_Profile_Decryption_Profile_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_sslDecryptionProfiles_button_ok_posId = "dropColOK-_ElementSet_Profile_Decryption_Profile_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_sslDecryptionProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_sslDecryptionProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_sslDecryptionProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_sslDecryptionProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_sslDecryptionProfiles_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_sslDecryptionProfiles_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_sslDecryptionProfiles_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -297,8 +300,8 @@ listPage_profile_trustedCertificateAuthorities_allButton_posId = "authorities_bu
 listPage_profile_trustedCertificateAuthorities_builtinButton_posId = "authorities_built1"  # Built-in按钮id
 listPage_profile_trustedCertificateAuthorities_importedButton_posId = "authorities_built2"  # Imported按钮id
 listPage_profile_trustedCertificateAuthorities_button_allSelect_posXpath = mainPage_profileBottomPage_button_allSelect_posXpath  # 页面底部all选择按钮
-listPage_profileSearch_trustedCertificateAuthorities_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_trustedCertificateAuthorities_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_trustedCertificateAuthorities_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_trustedCertificateAuthorities_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_trustedCertificateAuthorities_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_trustedCertificateAuthorities_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_trustedCertificateAuthorities_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -325,8 +328,8 @@ trustedCertificateAuthorities_button_cancel_posCss = "#authoritiesAdd_cancel spa
 listPage_profileColumn_cachedIntermediateCertificates_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_cachedIntermediateCertificates_button_cancel_posId = "dropColcancel-_ElementSet_Certificate_Intermediacert_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_cachedIntermediateCertificates_button_ok_posId = "dropColOK-_ElementSet_Certificate_Intermediacert_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_cachedIntermediateCertificates_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_cachedIntermediateCertificates_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_cachedIntermediateCertificates_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_cachedIntermediateCertificates_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_cachedIntermediateCertificates_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_cachedIntermediateCertificates_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_cachedIntermediateCertificates_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -353,8 +356,8 @@ listPage_profile_sslFingerprints_importUpload_Button_posXpath = "//*[@id='SSLFin
 listPage_profile_sslFingerprints_importUploadUA_Button_posXpath = "//*[@enctype='multipart/form-data']//input"      # 上传文件 按钮定位 xpath
 listPage_profile_sslFingerprints_importUploadOk_Button_posXpath = "//button[contains(@class, 'upload-button')]//span"      # 上传文件 OK 钮定位 xpath
 listPage_profile_sslFingerprints_importUploadUserAgentOk_Button_posXpath = "//*[@id='Import_ua_Ok']//span"      # 上传User Agent文件 OK 钮定位 xpath
-listPage_profileSearch_sslFingerprints_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_sslFingerprints_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_sslFingerprints_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath # 查询框id    定位形式一样
+listPage_profileSearch_sslFingerprints_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_sslFingerprints_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_sslFingerprints_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_sslFingerprints_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -388,8 +391,8 @@ listPage_profile_tcpProxyProfiles_linkButton_posId = "btnCopy-_OperateBtns_ElRow
 listPage_profileColumn_tcpProxyProfiles_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_tcpProxyProfiles_button_cancel_posId = "dropColcancel-_ElementSet_advanced_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_tcpProxyProfiles_button_ok_posId = "dropColOK-_ElementSet_advanced_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_tcpProxyProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_tcpProxyProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_tcpProxyProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_tcpProxyProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_tcpProxyProfiles_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_tcpProxyProfiles_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_tcpProxyProfiles_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -440,8 +443,8 @@ listPage_profile_hijackFiles_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Prof
 listPage_profileColumn_hijackFiles_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_hijackFiles_button_cancel_posId = "dropColcancel-_ElementSet_Profile_HijackFiles_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_hijackFiles_button_ok_posId = "dropColOK-_ElementSet_Profile_HijackFiles_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_hijackFiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_hijackFiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_hijackFiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_hijackFiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_hijackFiles_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_hijackFiles_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_hijackFiles_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -476,8 +479,8 @@ listPage_profile_insertScripts_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Pr
 listPage_profileColumn_insertScripts_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_insertScripts_button_cancel_posId = "dropColcancel-_ElementSet_Profile_Insert_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_insertScripts_button_ok_posId = "dropColOK-_ElementSet_Profile_Insert_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_insertScripts_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_insertScripts_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_insertScripts_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_insertScripts_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_insertScripts_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_insertScripts_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_insertScripts_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -514,8 +517,8 @@ listPage_profile_tsgProxyScripts_delButton_posId = "appDel-_OperateBtns_ElRow_Pr
 listPage_profileColumn_tsgProxyScripts_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_tsgProxyScripts_button_cancel_posId = "dropColcancel-_ElementSet_Profile_RunScript_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_tsgProxyScripts_button_ok_posId = "dropColOK-_ElementSet_Profile_RunScript_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_tsgProxyScripts_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_tsgProxyScripts_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_tsgProxyScripts_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_tsgProxyScripts_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_tsgProxyScripts_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_tsgProxyScripts_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_tsgProxyScripts_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -540,8 +543,8 @@ tsgProxyScripts_button_cancel_posCss = "#runScriptCancel1 span"  # Cancel按钮
 listPage_profile_vpnAccounts_createButton_posId = "app_create-_OperateBtns_ElCol_ElRow_Setting_Wannat_Home_App_anonymousComponent"  # create按钮id
 listPage_profile_vpnAccounts_editButton_posId = "appEdit-_OperateBtns_ElCol_ElRow_Setting_Wannat_Home_App_anonymousComponent"  # edit按钮id
 listPage_profile_vpnAccounts_delButton_posId = "appDel-_OperateBtns_ElCol_ElRow_Setting_Wannat_Home_App_anonymousComponent"  # del按钮id
-listPage_profileSearch_vpnAccounts_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_vpnAccounts_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_vpnAccounts_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_vpnAccounts_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_vpnAccounts_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_vpnAccounts_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_vpnAccounts_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -563,8 +566,8 @@ vpnAccounts_button_cancel_posCss = "#wanAdd_cancel-_Setting_WannatDetail_Home_Ap
 listPage_profile_wannatTestServers_createButton_posId = "app_create-_OperateBtns_ElCol_ElRow_Setting_Wannat_Home_App_anonymousComponent"  # create按钮id
 listPage_profile_wannatTestServers_editButton_posId = "appEdit-_OperateBtns_ElCol_ElRow_Setting_Wannat_Home_App_anonymousComponent"  # edit按钮id
 listPage_profile_wannatTestServers_delButton_posId = "appDel-_OperateBtns_ElCol_ElRow_Setting_Wannat_Home_App_anonymousComponent"  # del按钮id
-listPage_profileSearch_wannatTestServers_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_wannatTestServers_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_wannatTestServers_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_wannatTestServers_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_wannatTestServers_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_wannatTestServers_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_wannatTestServers_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -599,8 +602,8 @@ listPage_profileColumn_dosDetectionProfiles_button_columnAll_posXpath = "//div[@
 listPage_profileColumn_dosDetectionProfiles_button_columnCancel_posId = "dropColALlFalse-_ElementSet_detectionProfiles_Home_App_anonymousComponent"  # 列选择Cancel按钮
 listPage_profileColumn_dosDetectionProfiles_button_cancel_posId = "dropColcancel-_ElementSet_detectionProfiles_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_dosDetectionProfiles_button_ok_posId = "dropColOK-_ElementSet_detectionProfiles_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_dosDetectionProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_dosDetectionProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_dosDetectionProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_dosDetectionProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_dosDetectionProfiles_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_dosDetectionProfiles_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_dosDetectionProfiles_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -646,8 +649,8 @@ listPage_profileColumn_shapingProfiles_button_columnAll_posXpath = "//div[@class
 listPage_profileColumn_shapingProfiles_button_columnCancel_posId = "dropColALlFalse-_ElementSet_Profile_ShapingProfile_Home_App_anonymousComponent"  # 列选择Cancel按钮
 listPage_profileColumn_shapingProfiles_button_cancel_posId = "dropColcancel-_ElementSet_Profile_ShapingProfile_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_shapingProfiles_button_ok_posId = "dropColOK-_ElementSet_Profile_ShapingProfile_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_shapingProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posId  # 查询框id    定位形式一样
-listPage_profileSearch_shapingProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId  # 查询按钮id       定位形式一样
+listPage_profileSearch_shapingProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_shapingProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_shapingProfiles_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
 listPage_profileSearch_shapingProfiles_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_shapingProfiles_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
@@ -717,7 +720,7 @@ listPage_profileColumn_serviceFunctionForwarders_button_columnCancel_posId = "dr
 listPage_profileColumn_serviceFunctionForwarders_button_cancel_posId = "dropColcancel-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #cancel按钮
 listPage_profileColumn_serviceFunctionForwarders_button_ok_posId = "dropColOK-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #ok按钮
 listPage_profileSearch_serviceFunctionForwarders_selectLabel_posXpath = "//div[@class='MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 dune-ui-page relative service-function-forwarder-page dune-container-table css-1823oea']//input"
-listPage_profileSearch_serviceFunctionForwarders_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId    #查询按钮id       定位形式一样
+listPage_profileSearch_serviceFunctionForwarders_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath    #查询按钮id       定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_searchName_posId = "2-_FilteredSearch_ElRow_Profile_Forwarders_Home_App_anonymousComponent"
 listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span"
@@ -815,12 +818,12 @@ listPage_profileHandleButton_posXpath = "//i[@class='iconfont icon-{replaceName}
 listPage_profile_statisticsTemplates_createButton_name = "Create" #"app_create-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"     #create按钮id
 listPage_profile_statisticsTemplates_editButton_name = "Editinpage" #"appEdit-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #edit按钮id
 listPage_profile_statisticsTemplates_delButton_name = "Delete" #"appDel-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #del按钮id
-listPage_profileSearch_statisticsTemplates_selectLabel_posId = mainPage_profileSearch_selectLabel_posId      #查询框id    定位形式一样
-listPage_profileSearch_statisticsTemplates_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId    #查询按钮id       定位形式一样
+listPage_profileSearch_statisticsTemplates_selectLabel_posXpath = mainPage_profileSearch_selectLabel_posXpath     #查询框id    定位形式一样
+listPage_profileSearch_statisticsTemplates_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath    #查询按钮id       定位形式一样
 listPage_profileSearch_statisticsTemplates_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
-listPage_profileSearch_statisticsTemplates_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath   #下拉菜单定位   定位形式一样
+listPage_profileSearch_statisticsTemplates_dropDown_item_posXpath = "//ul[@role='listbox']//li//div//span[normalize-space(text())='{replaceValue}']/.."   #下拉菜单定位   定位形式一样
 listPage_profileSearch_statisticsTemplates_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath   #输入item的值，replaceName替换实际查询值    定位形式一样
-listPage_profilTable_statisticsTemplates_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
+listPage_profilTable_statisticsTemplates_tableTbody_posXpath = "//*[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"   #列表tabel body  xpath   定位形式一样
 listPage_profilTable_statisticsTemplates_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
 #listPage->Tips dialog  列表页 tips对话框
 listPage_profile_delete_dialogTips_button_yes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[@type='danger']" #profile列表删除提示的Tips的yes按钮

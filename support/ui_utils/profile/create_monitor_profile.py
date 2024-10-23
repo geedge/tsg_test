@@ -28,23 +28,26 @@ class CreateMonitorProfile():
             # 页面跳转
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_profile_page(page_jump_element_position)
-            self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
+            time.sleep(1)
+            self.driver.find_element(By.XPATH, create_element_position["profileListPage_createButton_posXpath"]).click()
             # 在create 创建页面操作
             self.my_random = RandomName()
             if source_name:
                 self.random_name = source_name
-                self.driver.find_element(By.ID, create_element_position["profilePage_inputName_posId"]).send_keys(self.random_name)
+                self.driver.find_element(By.XPATH, create_element_position["profilePage_inputName_posXpath"]).send_keys(self.random_name)
             else:
                 self.random_name = self.my_random.random_name()
-                self.driver.find_element(By.ID,create_element_position["profilePage_inputName_posId"] ).send_keys(self.random_name)
+                self.driver.find_element(By.XPATH,create_element_position["profilePage_inputName_posXpath"] ).send_keys(self.random_name)
+            # 点击添加按钮
+            self.driver.find_element(By.XPATH, "//i[@class=\"iconfont icon-Create1 font-[700]\"]").click()
             # 解析输入的vlan id数据
             self.process_vlan_ids(data)
             # elements_vlan_ids_input = self.driver.find_element(By.XPATH, self.create_element_position["trafficMirroringProfiles_input_vlanIdsInput_posXpath"])
             # var = data["vlan_id"]
             # elements_vlan_ids_input.send_keys(int(var))
             # 点击OK
-            self.driver.find_element(By.CSS_SELECTOR, create_element_position["profilePage_button_oK_posCss"]).click()
-            self.driver.find_element(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["profilePage_button_oK_posXpath"]).click()
+            #self.driver.find_element(By.CSS_SELECTOR, self.create_element_position["profilePage_button_warningSaveYes_posCss"]).click()
 
             # self.validate_after_ok(self,self.random_name)
             # if "reverse_case" in data.keys():  # 其它字符输入用例判断使用
@@ -81,7 +84,11 @@ class CreateMonitorProfile():
             for element_vlan_id in elements_vlan_ids_input:
                 if element_vlan_id.get_attribute("value") == "":  # 创建时，只是往input.value=none中键入数据
                     element_pos_by_id = element_vlan_id.get_attribute("id")
-                    self.driver.find_element(By.ID, element_pos_by_id).send_keys(vlan_ids_create[j])  # 输入vlan id的值
+                    input_element = self.driver.find_element(By.ID, element_pos_by_id)
+                    for char in str(vlan_ids_create[j]):
+                        input_element.send_keys(char)  # 逐个字符输入
+                        time.sleep(0.1)
+                    #self.driver.find_element(By.ID, element_pos_by_id).send_keys(vlan_ids_create[j])  # 输入vlan id的值
                     self.driver.find_element(By.XPATH, "//label[text()='VLAN ID']").click()
                     if "reverse_case" in data.keys():  # 其它字符判断条件使用
                         error_vlan_id = ""
@@ -105,8 +112,7 @@ class CreateMonitorProfile():
                             error_vlan_id = ""
                     break
             if (len(vlan_ids_create) - 1) - j > 0:  # 点击add按钮比数据个数少一次
-                self.driver.find_element(By.CSS_SELECTOR,
-                                         trafficMirroringProfiles_button_vlanIdAdd_posCss).click()  # 点击add添加
+                self.driver.find_element(By.XPATH,trafficMirroringProfiles_button_vlanIdAdd_posXpath).click()  # 点击add添加
             if error_vlan_id != "":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "error_vlan_id=", error_vlan_id)
                 element_vlan_del = self.driver.find_element(By.XPATH,

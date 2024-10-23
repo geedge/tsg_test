@@ -376,7 +376,7 @@ class CreateSecurityPolicy:
                             "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_security_posXpath
                         },
                         "create": {
-                            "objectListPage_createButton_posXpath": securityRuleListPage_createButton_posXpath,
+                            "policyRuleListPage_createButton_posXpath": securityRuleListPage_createButton_posXpath,
                             "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
                             "policyRulePage_selectAction_posXpath": securityRulePage_selectDeny_posXpath,
                             # srcip
