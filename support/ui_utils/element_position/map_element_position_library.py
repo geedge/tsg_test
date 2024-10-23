@@ -734,7 +734,7 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_okButton_warningYes_posXpath": serviceChainingRulePage_warningYes_posXpath
     },
     "search": {
-        "policyRuleListPage_searchLabel_posXpath": serviceChainingRuleListPage_searchLable_posXpath,
+        "policyRuleListPage_searchLabel_posId": serviceChainingRuleListPage_searchLable_posXpath,
         "policyRuleListPage_searchLabel_dropDown_item_posXpath": serviceChainingRuleListPage_searchLable_dropDown_item_posXpath,
         "policyRuleListPage_searchLabel_input_itemContent_posXpath": serviceChainingRuleListPage_searchLable_input_itemContent_posXpath,
         "policyRuleListPage_searchLabel_searchButton_posXpath": serviceChainingRuleListPage_searchLable_searchButton_posXpath,

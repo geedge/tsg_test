@@ -695,8 +695,8 @@ serviceChainingRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
 serviceChainingRulePage_addCondition_imsi_posXpath = "div[normalize-space(text())='Device']"
 
 serviceChainingRulePage_addDstIP_posXpath = "//label[normalize-space()='Destination']/ancestor::div[@class='MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby']//i[@class='iconfont icon-Create1 font-[700]']"
-serviceChainingRulePage_searchDstIP_posXpath =  "//input[@class='MuiInput-input css-za5rna']"
-serviceChainingRulePage_selectDstIP_posXpath = "//div[@class='pt-[2px] overflow-hidden flex-1']//span[normalize-space(text())='{replaceValue}']"
+serviceChainingRulePage_searchDstIP_posXpath =  policyRulePage_searchSrcIP_posXpath
+serviceChainingRulePage_selectDstIP_posXpath = policyRulePage_selectSrcIP_posXpath
 serviceChainingRulePage_closeDstIP_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button"
 
 serviceChainingRulePage_addApplication_posXpath = "//div[@class='service-chaining-policy-application']//i[@class='iconfont icon-Create1 font-[700]']"
@@ -718,7 +718,7 @@ serviceChainingRulePage_addSFFProfile_posXpath = "//label[normalize-space(text()
 serviceChainingRulePage_searchSFFProfile_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
 serviceChainingRulePage_selectSFFProfile_posXpath = "//div[@class='pt-[2px] overflow-hidden flex-1']//div[text()='{replaceValue}']"
 serviceChainingRulePage_closeSFFProfile_posXpath = serviceChainingRulePage_closeDstIP_posXpath
-serviceChainingRulePage_enable_posXpath = "//div[@class='service-chaining-policy-is_enabled']//span[@class='MuiTouchRipple-root css-w0pj6f']"
+serviceChainingRulePage_enable_posXpath = "//div[@class='service-chaining-policy-is_enabled']//span[@class='MuiSwitch-root MuiSwitch-sizeMedium css-wj9ris']"
 serviceChainingRulePage_okButton_posXpach = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[1]"
 serviceChainingRulePage_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 serviceChainingRuleListPage_warningYes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[text()='Yes']"

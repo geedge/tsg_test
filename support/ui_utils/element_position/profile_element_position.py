@@ -711,7 +711,7 @@ mainPage_secondLevelMenu_serviceFunctionForwarders_posName = "Service Function F
 mainPage_secondLevelMenu_serviceFunctionForwarders_posXpath = "//div[@class='MuiListItem-root MuiListItem-gutters menu-service-chaining css-1l56wwh']//span[text()='Service Function Forwarders']"
 listPage_profile_serviceFunctionForwarders_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"     #create按钮
 listPage_profile_serviceFunctionForwarders_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #edit按钮id
-listPage_profile_serviceFunctionForwarders_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #del按钮id
+listPage_profile_serviceFunctionForwarders_delButton_posXpath = "//span[text()='Delete']"          #del按钮
 listPage_profile_serviceFunctionForwarders_viewButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Forwarders_Home_App_anonymousComponent"          #view按钮id
 listPage_profileColumn_serviceFunctionForwarders_button_columnAll_posId = "dropColAll-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #列选择All按钮
 listPage_profileColumn_serviceFunctionForwarders_button_columnCancel_posId = "dropColALlFalse-_ElementSet_Profile_Forwarders_Home_App_anonymousComponent"  #列选择Cancel按钮
@@ -721,14 +721,14 @@ listPage_profileSearch_serviceFunctionForwarders_selectLabel_posXpath = "//div[@
 listPage_profileSearch_serviceFunctionForwarders_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId    #查询按钮id       定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
 listPage_profileSearch_serviceFunctionForwarders_searchName_posId = "2-_FilteredSearch_ElRow_Profile_Forwarders_Home_App_anonymousComponent"
-listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span"
+listPage_profileSearch_serviceFunctionForwarders_dropDown_item_posXpath = "//span[normalize-space(text())='{replaceValue}']/../.."
 listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath = "//div[@class='base-Popper-root']//input"   #输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_serviceFunctionForwarders_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
 listPage_profilTable_serviceFunctionForwarders_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
 listPage_profileBottomPage_serviceFunctionForwarders_button_allSelect_posXpath = mainPage_profileBottomPage_button_allSelect_posXpath     # 底部页面all选择按钮
 listPage_profileBottomPageNum_serviceFunctionForwarders_posXpath = "//*[@id='pagination-_pagination_Profile_Forwarders_Home_App_anonymousComponent']"    # 页面底部翻页 定位
 #listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_serviceFunctionForwarders_button_yes_posCss = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"   #删除提示的Tips的yes按钮
+listPage_dialogTips_serviceFunctionForwarders_button_yes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[text()='Yes']"   #删除提示的Tips的yes按钮
 listPage_dialogTips_serviceFunctionForwarders_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath   #删除提示的Tips的close按钮
 #listpage->right-menu-content   列表页 引用计数侧滑box
 listPage_rightReferenceDrawer_serviceFunctionForwarders_referencedItems = listPage_profileRightReferenceDrawer_referencedItems      # 引用侧滑中被引用对象的选项div容器
@@ -770,7 +770,7 @@ listPage_profileSearch_serviceFunctions_input_itemContent_posXpath = listPage_pr
 listPage_profilTable_serviceFunctions_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_serviceFunctions_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_serviceFunctions_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
+listPage_dialogTips_serviceFunctions_button_yes_posXpath = listPage_dialogTips_serviceFunctionForwarders_button_yes_posXpath  # 删除提示的Tips的yes按钮
 listPage_dialogTips_serviceFunctions_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_serviceFunctions_button_save_posXpath = "//*[@id='clusterSave-_ClusterTable_ElDialog_copyComponents_Profile_Functions_Home_App_anonymousComponent']/i"  # 选择cluster后，save行 按钮 xpath
