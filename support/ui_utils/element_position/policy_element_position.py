@@ -130,7 +130,7 @@ policyRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList li
 policyRulePage_addCondition_close_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_internalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[3]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[4]//div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='IP Address']"
 policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[7]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='IP Protocol']"

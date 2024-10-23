@@ -87,7 +87,7 @@ class ApiVerification:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The value of parameter 'is_log' is True.", flush=True)
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
                     query_time = 70
-                    if test_data["traffic"]["protocol"] == "mail":
+                    if test_data["traffic"]["protocol"] == "mail" or test_data["traffic"]["protocol"] == "quic":
                         query_time = 90
                     for i in range(int(query_time)):
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log and metric for the {} time.".format(i+1), flush=True)
