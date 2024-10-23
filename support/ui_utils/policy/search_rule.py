@@ -21,11 +21,15 @@ class SearchRule:
             # 点击search查询框
             btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posId"])
             self.driver.execute_script("arguments[0].click()", btn)
+            # 查询框输入搜索内容
+            self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_input_itemContent_posXpath"]).send_keys(name)
+            #input_item_posXpath = search_element_position["policyRuleListPage_searchLabel_input_itemContent_posXpath"]
+            #self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
+            # 选择匹配的选项，内容示例：Name contains rulename 定位：//div[@class='dune-search-option-content']//span[normalize-space(text())='Name']/parent::*
             dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLabel_dropDown_item_posXpath"].format(replaceValue="Name")
             btn = self.driver.find_element(By.XPATH, dropdown_item_posXpath)
             self.driver.execute_script("arguments[0].click()", btn)
-            input_item_posXpath = search_element_position["policyRuleListPage_searchLabel_input_itemContent_posXpath"].format(replaceValue="Name")
-            self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
+
             # 强制点击js方法
             # btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_searchButton_posId"])
             # self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
