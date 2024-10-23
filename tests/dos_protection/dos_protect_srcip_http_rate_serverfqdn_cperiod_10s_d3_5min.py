@@ -2,6 +2,9 @@
 import time
 import os
 import sys
+
+from support.ui_utils.element_position.map_element_position_library import replace_paras
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from datetime import datetime
 from support.report_update import ReportUpdate
@@ -124,7 +127,7 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 0,
@@ -134,4 +137,6 @@ if __name__ == '__main__':
         "module_name": "dos_protection",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
+
     run(parameter)

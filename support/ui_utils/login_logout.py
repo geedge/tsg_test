@@ -66,6 +66,12 @@ class LogInOut:
         id_vsys_format = "vsys{}".format(id_for_ui)  # 使用配置变量值
         if id_vsys_format == "vsys1":   # 临时调整
             id_vsys_format = "Default Vsys"
+        elif id_vsys_format == "vsys2":
+            id_vsys_format = "UIAutoTestVsys"
+        elif id_vsys_format == "vsys3":
+            id_vsys_format = "PerformanceTestVsys"
+        elif id_vsys_format == "vsys5":
+            id_vsys_format = "UIwithTrafficTestVsys"
         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], id_vsys_format)
         # 传入vsys_name值区分
         if vsys_name == "":  # 空，vsys值来自配置文件

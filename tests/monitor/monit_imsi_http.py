@@ -47,7 +47,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "imsi",
-                                "item_value": '$' + parameter['test_imsi'],
+                                "item_value": '^' + parameter['test_imsi']+'$',
                             }
                         ]
                     }
