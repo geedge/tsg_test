@@ -254,26 +254,26 @@ test_fqdn_object_element_position = {
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_fqdn_posId
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_fqdn_posXpath
     },
     "create": {
-        "objectListPage_createButton_posId": fqdnObjectListPage_createButton_posId,
-        "objectListPage_dropDown_createButton_posId": fqdnObjectListPage_dropDown_createButton_posId,
+        "objectListPage_createButton_posXpath": fqdnObjectListPage_createButton_posXpath,
+        "objectListPage_dropDown_createButton_posXpath": fqdnObjectListPage_dropDown_createButton_posXpath,
         "objectPage_inputName_posXpath": fqdnObjectPage_inputName_posXpath,
         "objectPage_addItem_posXpath": fqdnobjectPage_addItem_posXpath,
         "objectPage_inputItem_posXpath": fqdnObjectPage_inputItem_posXpath,
         "objectPage_button_saveItem_posXpath": fqdnObjectPage_button_saveItem_posXpath,
-        "objectPage_okButton_posId": fqdnObjectPage_okButton_posId,
+        "objectPage_okButton_posXpath": fqdnObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": fqdnObjectPage_okButton_warningYes_posXpath
     },
     "search": {
-        "objectListPage_searchLabel_posId": fqdnObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_posXpath": fqdnObjectListPage_searchLabel_posXpath,
         "objectListPage_searchLabel_selectName_posXpath": fqdnObjectListPage_searchLabel_selectName_posXpath,
         "objectListPage_tableTbody_posXpath": fqdnObjectListPage_tableTbody_posXpath
     },
     "delete": {
         "objectListPage_allSelect_posXpath": fqdnObjectListPage_allSelect_posXpath,
-        "objectListPage_deleteButton_posId": fqdnObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_posXpath": fqdnObjectListPage_deleteButton_posXpath,
         "objectListPage_deleteButton_warningYes_posXpath": fqdnObjectListPage_deleteButton_warningYes_posXpath
     }
 }
@@ -629,10 +629,11 @@ test_service_chaining_rule_element_position = {
         "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_servicechaining_posXpath
     },
     "create": {
-        "policyRuleListPage_createButton_posId":serviceChainingRuleListPage_createButton_posXpath,
+        "policyRuleListPage_createButton_posXpath":serviceChainingRuleListPage_createButton_posXpath,
         "policyRulePage_inputName_posXpath": serviceChainingRulePage_inputName_posXpath,
         # Target Traffic
-        "policyRulePage_chooseTargetedTraffic_posXpath": serviceChainingRulePage_decryptedTrafficButton_posXpath,
+        "policyRulePage_rawTraffic_posXpath": serviceChainingRulePage_rawTrafficButton_posXpath,
+        "policyRulePage_decryptedTraffic_posXpath": serviceChainingRulePage_decryptedTrafficButton_posXpath,
         "policyRulePage_addCondition_posXpath": policyRulePage_addCondition_posXpath,
         "policyRulePage_addCondition_close_posXpath": policyRulePage_addCondition_close_posXpath,
         "policyRulePage_negateSrcIP_posXpath":serviceChainingRulePage_negateSrcIP_posXpath,
@@ -729,14 +730,14 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_selectSFFProfile_posXpath":serviceChainingRulePage_selectSFFProfile_posXpath,
         "policyRulePage_closeSFFProfile_posXpath":serviceChainingRulePage_closeSFFProfile_posXpath,
         "policyRulePage_enable_posXpath": serviceChainingRulePage_enable_posXpath,
-        "policyRulePage_okButton_yes_posXpath": serviceChainingRulePage_okButton_posXpach,
+        "policyRulePage_okButton_posXpath": serviceChainingRulePage_okButton_posXpach,
         "policyRulePage_okButton_warningYes_posXpath": serviceChainingRulePage_warningYes_posXpath
     },
     "search": {
-        "policyRuleListPage_searchLable_posXpath": serviceChainingRuleListPage_searchLable_posXpath,
-        "policyRuleListPage_searchLable_dropDown_item_posXpath": serviceChainingRuleListPage_searchLable_dropDown_item_posXpath,
-        "policyRuleListPage_searchLable_input_itemContent_posXpath": serviceChainingRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLable_searchButton_posId": serviceChainingRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_searchLabel_posXpath": serviceChainingRuleListPage_searchLable_posXpath,
+        "policyRuleListPage_searchLabel_dropDown_item_posXpath": serviceChainingRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLabel_input_itemContent_posXpath": serviceChainingRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLabel_searchButton_posXpath": serviceChainingRuleListPage_searchLable_searchButton_posXpath,
         "policyRuleListPage_tableTbody_posXpath": serviceChainingRuleListPage_tableTbody_posXpath
     },
     "delete": {
@@ -755,7 +756,7 @@ test_manipulation_rule_element_position = {
         "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_manipulation_posId
     },
     "create": {
-        "policyRuleListPage_createButton_posId": manipulationRuleListPage_createButton_posId,
+        "policyRuleListPage_createButton_posXpath": manipulationRuleListPage_createButton_posId,
         # action
         "policyRulePage_inputName_posXpath": manipulationRulePage_inputName_posXpath,
         "policyRulePage_selectAllow_posId": manipulationRulePage_selectAllow_posId,
@@ -943,10 +944,10 @@ test_manipulation_rule_element_position = {
         "policyRulePage_okButton_warningYes_posXpath": manipulationRulePage_okButton_warningYes_posXpath
     },
     "search": {
-        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_searchLabel_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLabel_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLabel_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLabel_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
         "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
     },
     "delete": {
@@ -966,7 +967,7 @@ test_security_rule_element_position = {
         "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_security_posId
     },
     "create": {
-        # "policyRuleListPage_createButton_posId": securityRuleListPage_createButton_posId,
+        # "policyRuleListPage_createButton_posXpath": securityRuleListPage_createButton_posId,
         "policyRulePage_inputName_posXpath": securityRulePage_inputName_posXpath,
         "policyRulePage_selectAction_posXpath": securityRulePage_selectDeny_posXpath,
         "policyRulePage_addConditionInternalPort_posXpath": securityRulePage_addCondition_internalPort_posXpath,
@@ -999,10 +1000,10 @@ test_security_rule_element_position = {
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
     },
     "search": {
-        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_searchLabel_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLabel_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLabel_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLabel_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
         "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
     },
     "delete": {
@@ -1032,7 +1033,7 @@ test_monitor_profile_element_position = {
         # action
     },
     "edit": {
-        "templates_button_chartEdit_posXpath": listPage_profile_statisticsTemplates_editButton_posId
+        "templates_button_chartEdit_posXpath": listPage_profileHandleButton_posXpath.format(replaceName=listPage_profile_statisticsTemplates_editButton_name)
     },
     "search": {
         "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
@@ -1118,7 +1119,7 @@ test_monitor_rule_element_position = {
                     "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_monitor_posId
                 },
                 "create": {
-                    "policyRuleListPage_createButton_posId": monitorRuleListPage_createButton_posId,
+                    "policyRuleListPage_createButton_posXpath": monitorRuleListPage_createButton_posId,
                     "policyRulePage_inputName_posXpath": monitorRulePage_inputName_posXpath,
                     #add Condition,close Condition
                     "policyRulePage_addCondition_posXpath": monitorRulePage_addCondition_posXpath,
@@ -1319,10 +1320,10 @@ test_monitor_rule_element_position = {
                     "policyRulePage_packetCapture_depth_posXpath": monitorRulePage_packetCapture_depth_posXpath,
                 },
                 "search": {
-                    "policyRuleListPage_searchLable_posId": monitorRuleListPage_searchLable_posId,
-                    "policyRuleListPage_searchLable_dropDown_item_posXpath": monitorRuleListPage_searchLable_dropDown_item_posXpath,
-                    "policyRuleListPage_searchLable_input_itemContent_posXpath": monitorRuleListPage_searchLable_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLable_searchButton_posId": monitorRuleListPage_searchLable_searchButton_posId,
+                    "policyRuleListPage_searchLabel_posId": monitorRuleListPage_searchLable_posId,
+                    "policyRuleListPage_searchLabel_dropDown_item_posXpath": monitorRuleListPage_searchLable_dropDown_item_posXpath,
+                    "policyRuleListPage_searchLabel_input_itemContent_posXpath": monitorRuleListPage_searchLable_input_itemContent_posXpath,
+                    "policyRuleListPage_searchLabel_searchButton_posId": monitorRuleListPage_searchLable_searchButton_posId,
                     "policyRuleListPage_tableTbody_posXpath": monitorRuleListPage_tableTbody_posXpath
                 },
                 "delete": {
@@ -1364,14 +1365,14 @@ test_dos_protection_rule_element_position = {
                         "policyRulePage_mitigationTimeouts_dropDownBox_posXpath": dosRulePage_mitigationTimeouts_dropDownBox_posXpath,
                         "policyRulePage_mitigationTimeouts_select_posXpath": "",
                         "policyRulePage_enable_posXpath": dosRulePage_enable_posXpath,
-                        "policyRulePage_okButton_yes_posXpath": dosRulePage_ok_posXpath,
+                        "policyRulePage_okButton_posXpath": dosRulePage_ok_posXpath,
                         "policyRulePage_okButton_warningYes_posXpath": dosRulePage_okButton_warningYes_posXpath
                     },
                     "search": {
-                        "policyRuleListPage_searchLable_posId": dosRuleListPage_searchLable_posXpath,
-                        "policyRuleListPage_searchLable_dropDown_item_posXpath": dosRuleListPage_searchLable_dropDown_item_posXpath,
-                        "policyRuleListPage_searchLable_input_itemContent_posXpath": dosRuleListPage_searchLable_input_itemContent_posXpath,
-                        "policyRuleListPage_searchLable_searchButton_posId": dosRuleListPage_searchLable_searchButton_posXpath,
+                        "policyRuleListPage_searchLabel_posId": dosRuleListPage_searchLable_posXpath,
+                        "policyRuleListPage_searchLabel_dropDown_item_posXpath": dosRuleListPage_searchLable_dropDown_item_posXpath,
+                        "policyRuleListPage_searchLabel_input_itemContent_posXpath": dosRuleListPage_searchLable_input_itemContent_posXpath,
+                        "policyRuleListPage_searchLabel_searchButton_posId": dosRuleListPage_searchLable_searchButton_posXpath,
                         "policyRuleListPage_tableTbody_posXpath": dosRuleListPage_tableTbody_posXpath
                     },
                     "delete": {
@@ -1391,7 +1392,7 @@ test_intercept_rule_element_position = {
         "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_intercept_posId
     },
     "create": {
-        "policyRuleListPage_createButton_posId": interceptRuleListPage_createButton_posId,
+        "policyRuleListPage_createButton_posXpath": interceptRuleListPage_createButton_posId,
         "policyRulePage_inputName_posXpath": interceptRulePage_inputName_posXpath,
         "policyRulePage_selectAction_posId": interceptRulePage_selectDeny_posId,
         "policyRulePage_addConditionInternalPort_posXpath": securityRulePage_addCondition_internalPort_posXpath,
@@ -1453,10 +1454,10 @@ test_intercept_rule_element_position = {
         "policyRulePage_intercept_searchTcpProfileDorpItem_posXpath": interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath,
     },
     "search": {
-        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
+        "policyRuleListPage_searchLabel_posId": securityRuleListPage_searchLable_posId,
+        "policyRuleListPage_searchLabel_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
+        "policyRuleListPage_searchLabel_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
+        "policyRuleListPage_searchLabel_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
         "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
     },
     "delete": {
@@ -1479,7 +1480,7 @@ test_statistics_template_element_position = {
         "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_statisticsTemplates_Name
     },
     "create": {
-        "templateListPage_createButton_posId": listPage_profile_statisticsTemplates_createButton_posId,
+        "templateListPage_createButton_posXpath": listPage_profileHandleButton_posXpath.format(replaceName=listPage_profile_statisticsTemplates_createButton_name),
         "templatePage_inputName_posId": statisticsTemplates_input_Name_posId,
         "statisticsTemplates_input_Name_posXpath": statisticsTemplates_input_Name_posXpath,
         "templates_button_chartAdd_posXpath": statisticsTemplates_button_chartAdd_posXpath,
@@ -1493,21 +1494,21 @@ test_statistics_template_element_position = {
         "templates_button_oK_posCss": statisticsTemplates_button_oK_posXpath,
         "templates_button_cacel_posCss": statisticsTemplates_button_cancel_posXpath,
         "templates_button_warningSaveYes_posCss": statisticsTemplates_button_warningSaveYes_posCss,
-        "listPage_profileHandleButton_posXpath": listPage_profileHandleButton_posXpath
+        #"listPage_profileHandleButton_posXpath": listPage_profileHandleButton_posXpath
         # action
     },
     "edit":{
-        "templates_button_chartEdit_posXpath":listPage_profile_statisticsTemplates_editButton_posId
+        "templates_button_chartEdit_posXpath": listPage_profileHandleButton_posXpath.format(replaceName=listPage_profile_statisticsTemplates_editButton_name)
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_statisticsTemplates_selectLabel_posId,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_statisticsTemplates_selectLabel_posId,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_statisticsTemplates_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_statisticsTemplates_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_statisticsTemplates_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_statisticsTemplates_delButton_posId,
+        "profileListPage_deleteButton_posXpath": listPage_profileHandleButton_posXpath.format(replaceName=listPage_profile_statisticsTemplates_delButton_name),
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_statisticsTemplates_button_yes_posXpath
     }
 }
@@ -1517,16 +1518,16 @@ test_statistics_rule_element_position = {
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_policyFirstLevelMenu_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_statistics_posId
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_statistics_posXpath
     },
     "create": {
-        "policyRuleListPage_createButton_posId": statisticsRuleListPage_createButton_posId,
+        "policyRuleListPage_createButton_posXpath": statisticsRuleListPage_createButton_posXpath,
         # action
         "policyRulePage_inputName_posXpath": statisticsRulePage_inputName_posXpath,
         # Add Condition按钮定位
-        "policyRulePage_addCondition_posXpath": statisticsRulePage_addCondition_posXpath,
+        #"policyRulePage_addCondition_posXpath": statisticsRulePage_addCondition_posXpath,
         # add condition侧滑的关闭定位
-        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+        #"policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
         # Source IP
         "policyRulePage_addConditionSrcIP_posXpath": statisticsRulePage_addCondition_srcIP_posXpath,
         "policyRulePage_addSrcIP_posXpath": statisticsRulePage_addSrcIP_posXpath,
@@ -1659,22 +1660,22 @@ test_statistics_rule_element_position = {
         "policyRulePage_closeProfile_posXpath": statisticsRulePage_close_template_posXpath,
         # 保存策略时，ok cancel warnging定位
         "policyRulePage_enable_posXpath": statisticsRulePage_enable_posXpath,
-        "policyRulePage_okButton_yes_posId": statisticsRulePage_okButton_yes_posId,
+        "policyRulePage_okButton_posXpath": rulePage_okButton_posXpath,
         "policyRulePage_okButton_warningYes_posXpath": statisticsRulePage_okButton_warningYes_posXpath,
         "policyRulePage_okButton_warningNo_posXpath": statisticsRulePage_okButton_warningNo_posXpath
     },
     "search": {
-        "policyRuleListPage_searchLable_posId": securityRuleListPage_searchLable_posId,
-        "policyRuleListPage_searchLable_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-        "policyRuleListPage_searchLable_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLable_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
-        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+        "policyRuleListPage_searchLabel_posId": statisticsRuleListPage_searchLabel_posXpath,
+        "policyRuleListPage_searchLabel_dropDown_item_posXpath": statisticsRuleListPage_searchLabel_dropDown_item_posXpath,
+        "policyRuleListPage_searchLabel_input_itemContent_posXpath": statisticsRuleListPage_searchLabel_input_itemContent_posXpath,
+        "policyRuleListPage_searchLabel_searchButton_posId": statisticsRuleListPage_searchLabel_searchButton_posXpath,
+        "policyRuleListPage_tableTbody_posXpath": statisticsRruleListPage_tableTbody_posXpath
     },
     "delete": {
-        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
-        "policyRuleListPage_deleteButton_posId": statisticsRuleListPage_deleteButton_posId,
-        "policyRuleListPage_okButton_warningYes_posXpath": statisticsRulePage_delete_tip_button_warningYes_posXpath,
-        "policyRuleListPage_okButton_warningNo_posXpath": statisticsRulePage_delete_tip_button_warningNo_posXpath
+        "policyRuleListPage_allSelect_posXpath": statisticsRruleListPage_allSelect_posXpath,
+        "policyRuleListPage_deleteButton_posXpath": statisticsRuleListPage_deleteButton_posXpath,
+        "policyRuleListPage_okButton_warningYes_posXpath": statisticsRuleListPage_delete_tip_button_warningYes_posXpath,
+        "policyRuleListPage_okButton_warningNo_posXpath": statisticsRuleListPage_delete_tip_button_warningNo_posXpath
     }
 }
 test_session_log_element_position = {

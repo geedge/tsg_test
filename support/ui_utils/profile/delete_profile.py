@@ -14,11 +14,12 @@ class DeleteProfile:
         try:
             if is_del_all == True:
                 #self.driver.find_element(By.XPATH, delete_element_position["profileListPage_allSelect_posXpath"]).click()   #遇到无reference count在优化
-                rows = self.driver.find_element(By.XPATH, listPage_profilTable_dnsRecords_tableTbody_posXpath).find_elements(By.XPATH, "./tr")
-                self.select_lock_and_referenceCount(rows)
+                #rows = self.driver.find_element(By.XPATH, listPage_profilTable_dnsRecords_tableTbody_posXpath).find_elements(By.XPATH, "./tr")
+                #self.select_lock_and_referenceCount(rows)
+                element = self.driver.find_element(By.XPATH, mainPage_profileBottomPage_button_allSelect_posXpath).click()
             else:
                 first_row_checkbox_element.click()
-            self.driver.find_element(By.ID, delete_element_position["profileListPage_deleteButton_posId"]).click()
+            self.driver.find_element(By.XPATH, delete_element_position["profileListPage_deleteButton_posXpath"]).click()
             time.sleep(0.5)
             self.driver.find_element(By.XPATH, delete_element_position["profileListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(2)
