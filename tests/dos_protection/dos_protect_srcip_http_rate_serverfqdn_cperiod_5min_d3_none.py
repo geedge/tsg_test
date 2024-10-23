@@ -59,8 +59,7 @@ def run(parameter):
                 }
             },
             "mitigation": {
-                "behavior": "deny",
-                "timeout": "none"
+                "behavior": "none",
             },
             "expected_return": "",
             "counters": {"hits": "many"},

@@ -1343,7 +1343,7 @@ test_dos_protection_rule_element_position = {
                     "create": {
                         "policyRuleListPage_createButton_posXpath": dosRuleListPage_createButton_posXpath,
                         "policyRulePage_inputName_posXpath": dosRulePage_inputName_posXpath,
-                        "policyRulePage_selectAction_posXpath": dosRulePage_selectProtect_posXpath,
+                        "policyRulePage_selectAction_posXpath": "",
                         "policyRulePage_addSrcIP_posXpath": dosRulePage_addSrcIP_posXpath,
                         "policyRulePage_searchSrcIP_posXpath": dosRulePage_searchSrcIP_posXpath,
                         "policyRulePage_selectSrcIP_posXpath": dosRulePage_selectSrcIP_posXpath,
