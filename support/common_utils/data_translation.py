@@ -1541,7 +1541,7 @@ class DataTranslation:
                             "vsys": 1,
                             "return_data": 1,
                             "profile_type": "traffic_mirror",
-                            "traffic_mirror_profile": {
+                            "traffic_mirroring_profile": {
                                 "name": "tewstsa",
                                 "vlan_array": []
                             }
@@ -1549,10 +1549,10 @@ class DataTranslation:
                         # 数据转换适合api使用
                         temp["profile_type"] = v[t]["profile_type"]
                         temp["vsys"] = vsys_id
-                        temp["traffic_mirror_profile"]["name"] = v[t]["profile_file"]["name"]
+                        temp["traffic_mirroring_profile"]["name"] = v[t]["profile_file"]["name"]
                         vlan_id = v[t]["profile_file"]["vlan_id"]
                         for i in range(len(vlan_id)):
-                            temp["traffic_mirror_profile"]["vlan_array"].append(vlan_id[i])
+                            temp["traffic_mirroring_profile"]["vlan_array"].append(vlan_id[i])
                         profile.append(copy.deepcopy(temp))
         elif policy_type == "pxy_manipulation":
             temp_profile = data["action_parameter"]
@@ -1677,7 +1677,7 @@ class DataTranslation:
                     "profile_type": "traffic_mirror",  # 外层包含profile类型
                     "op_action": "add",
                     "return_data": 1,
-                    "traffic_mirror_profile": {  # 将所有相关属性放入这个嵌套字典中
+                    "traffic_mirroring_profile": {  # 将所有相关属性放入这个嵌套字典中
                         "name": temp_profile[i]["name"],
                         "isShared": 0,
                         "addrType": "",
@@ -1689,7 +1689,7 @@ class DataTranslation:
                 vlan_count = temp_profile[i]["vlan_count"]  # 获取 vlan_count 的值
                 # 生成从 3 到 66 范围内的 vlan_count 个随机数
                 if vlan_count > 0:
-                    temp["traffic_mirror_profile"]["vlan_array"] = random.sample(range(3, 67), min(vlan_count,6))
+                    temp["traffic_mirroring_profile"]["vlan_array"] = random.sample(range(3, 67), min(vlan_count,6))
                 temp["profile_type"] = temp_profile[i]["profile_type"]
                 profile.append(copy.deepcopy(temp))
 

@@ -274,7 +274,7 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete dns record failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "traffic_mirror":  # 删除traffic mirror
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
-                        url = "{}/v1/profiles/traffic-mirror-profiles".format(api_server, vsys_id)
+                        url = "{}/v1/profiles/traffic-mirroring-profiles".format(api_server, vsys_id)
                         del_profile_sf = {"uuids": str(profile_id), "vsys_id": vsys_id}
                         response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
@@ -519,7 +519,7 @@ class DeletePolicy:
                         "response_page": "response-pages",
                         "hijack_file": "proxy-hijack-files",
                         "insert_script": "proxy-inject-scripts",
-                        "traffic_mirror": "traffic-mirror-profiles",
+                        "traffic_mirror": "traffic-mirroring-profiles",
                         "run_script": "http-manipulation-scripts",
                         "dns_record": "dns-records",
                         "ssl_keyring": "decryption-keyrings",
@@ -581,7 +581,7 @@ class DeletePolicy:
             elif 'statistics-templates' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'statistics_template'.replace("_", " ")
-            elif 'traffic-mirror-profiles' in url:
+            elif 'traffic-mirroring-profiles' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'traffic_mirror'.replace("_", " ")
             elif 'decryption-keyrings' in url:
