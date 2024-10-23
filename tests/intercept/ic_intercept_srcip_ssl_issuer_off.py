@@ -82,7 +82,7 @@ def run(parameter):
                             "issuer": "off",
                             "self_signed": "off",
                             "expiry_date": "off",
-                            "fail_action": "Fail-Close",
+                            "fail_action": "Pass-Through",
                             "ev_certificate": "off",
                             "certificate_transparency": "off",
                             "mutual_authentication": "on",

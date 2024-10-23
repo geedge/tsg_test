@@ -1447,7 +1447,7 @@ class DataTranslation:
                             "vsys": 1,
                             "profile_type": "tcp_option",
                             "return_data": 1,
-                            "proxy_tcp_option": {
+                            "proxy_tcp_option_profile": {
                                 "name": "testazaa",
                                 "tcp_passthrough": 0,
                                 "bypass_duplicated_packet": 0,
@@ -1488,52 +1488,52 @@ class DataTranslation:
                         map_on_off = {"on": 1, "off": 0}
                         temp["profile_type"] = v[t]["profile_type"]
                         temp["vsys"] = vsys_id
-                        temp["proxy_tcp_option"]["name"] = v[t]["profile_file"]["name"]
+                        temp["proxy_tcp_option_profile"]["name"] = v[t]["profile_file"]["name"]
 
-                        temp["proxy_tcp_option"]["tcp_passthrough"] = map_on_off[(v[t]["profile_file"]["enable_TCP_passthrough"]).lower()]
-                        temp["proxy_tcp_option"]["client_side_conn_param"]["tcp_maxseg"]["enable"] = map_on_off[(v[t]["profile_file"]["c_override_MSS"]).lower()]
-                        if temp["proxy_tcp_option"]["client_side_conn_param"]["tcp_maxseg"]["enable"] == 0:
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["tcp_maxseg"].pop("maxseg", None)
+                        temp["proxy_tcp_option_profile"]["tcp_passthrough"] = map_on_off[(v[t]["profile_file"]["enable_TCP_passthrough"]).lower()]
+                        temp["proxy_tcp_option_profile"]["client_side_conn_param"]["tcp_maxseg"]["enable"] = map_on_off[(v[t]["profile_file"]["c_override_MSS"]).lower()]
+                        if temp["proxy_tcp_option_profile"]["client_side_conn_param"]["tcp_maxseg"]["enable"] == 0:
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["tcp_maxseg"].pop("maxseg", None)
                         else:
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["tcp_maxseg"]["maxseg"] = v[t]["profile_file"]["c_overrideMSS"]
-                        temp["proxy_tcp_option"]["client_side_conn_param"]["nodelay"] = map_on_off[(v[t]["profile_file"]["c_no_delay"]).lower()]
-                        temp["proxy_tcp_option"]["client_side_conn_param"]["ttl"] = v[t]["profile_file"]["c_ttl"]
-                        temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["enable"] = map_on_off[(v[t]["profile_file"]["c_keepalive"]).lower()]
-                        if temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["enable"] == 0:
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepcnt", None)
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepidle", None)
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepintvl", None)
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["tcp_maxseg"]["maxseg"] = v[t]["profile_file"]["c_overrideMSS"]
+                        temp["proxy_tcp_option_profile"]["client_side_conn_param"]["nodelay"] = map_on_off[(v[t]["profile_file"]["c_no_delay"]).lower()]
+                        temp["proxy_tcp_option_profile"]["client_side_conn_param"]["ttl"] = v[t]["profile_file"]["c_ttl"]
+                        temp["proxy_tcp_option_profile"]["client_side_conn_param"]["keep_alive"]["enable"] = map_on_off[(v[t]["profile_file"]["c_keepalive"]).lower()]
+                        if temp["proxy_tcp_option_profile"]["client_side_conn_param"]["keep_alive"]["enable"] == 0:
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepcnt", None)
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepidle", None)
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["keep_alive"].pop("tcp_keepintvl", None)
                         else:
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["tcp_keepcnt"] = v[t]["profile_file"]["c_probe_number"]
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["tcp_keepidle"] = v[t]["profile_file"]["c_idle_time"]
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["keep_alive"]["tcp_keepintvl"] = v[t]["profile_file"]["c_interval"]
-                        temp["proxy_tcp_option"]["client_side_conn_param"]["user_timeout"]["enable"] = map_on_off[(v[t]["profile_file"]["c_UserTimeout_switch"]).lower()]
-                        if temp["proxy_tcp_option"]["client_side_conn_param"]["user_timeout"]["enable"] == 0:
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["user_timeout"].pop("timeout_ms", None)
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["keep_alive"]["tcp_keepcnt"] = v[t]["profile_file"]["c_probe_number"]
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["keep_alive"]["tcp_keepidle"] = v[t]["profile_file"]["c_idle_time"]
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["keep_alive"]["tcp_keepintvl"] = v[t]["profile_file"]["c_interval"]
+                        temp["proxy_tcp_option_profile"]["client_side_conn_param"]["user_timeout"]["enable"] = map_on_off[(v[t]["profile_file"]["c_UserTimeout_switch"]).lower()]
+                        if temp["proxy_tcp_option_profile"]["client_side_conn_param"]["user_timeout"]["enable"] == 0:
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["user_timeout"].pop("timeout_ms", None)
                         else:
-                            temp["proxy_tcp_option"]["client_side_conn_param"]["user_timeout"]["timeout_ms"] = v[t]["profile_file"]["c_userTimeout"]
+                            temp["proxy_tcp_option_profile"]["client_side_conn_param"]["user_timeout"]["timeout_ms"] = v[t]["profile_file"]["c_userTimeout"]
 
-                        temp["proxy_tcp_option"]["server_side_conn_param"]["tcp_maxseg"]["enable"] = map_on_off[(v[t]["profile_file"]["s_override_MSS"]).lower()]
-                        if temp["proxy_tcp_option"]["server_side_conn_param"]["tcp_maxseg"]["enable"] == 0:
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["tcp_maxseg"].pop("maxseg", None)
+                        temp["proxy_tcp_option_profile"]["server_side_conn_param"]["tcp_maxseg"]["enable"] = map_on_off[(v[t]["profile_file"]["s_override_MSS"]).lower()]
+                        if temp["proxy_tcp_option_profile"]["server_side_conn_param"]["tcp_maxseg"]["enable"] == 0:
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["tcp_maxseg"].pop("maxseg", None)
                         else:
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["tcp_maxseg"]["maxseg"] = v[t]["profile_file"]["s_overrideMSS"]
-                        temp["proxy_tcp_option"]["server_side_conn_param"]["nodelay"] = map_on_off[(v[t]["profile_file"]["s_no_delay"]).lower()]
-                        temp["proxy_tcp_option"]["server_side_conn_param"]["ttl"] = v[t]["profile_file"]["s_ttl"]
-                        temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["enable"] = map_on_off[(v[t]["profile_file"]["s_keepalive"]).lower()]
-                        if temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["enable"] == 0:
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepcnt", None)
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepidle", None)
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepintvl", None)
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["tcp_maxseg"]["maxseg"] = v[t]["profile_file"]["s_overrideMSS"]
+                        temp["proxy_tcp_option_profile"]["server_side_conn_param"]["nodelay"] = map_on_off[(v[t]["profile_file"]["s_no_delay"]).lower()]
+                        temp["proxy_tcp_option_profile"]["server_side_conn_param"]["ttl"] = v[t]["profile_file"]["s_ttl"]
+                        temp["proxy_tcp_option_profile"]["server_side_conn_param"]["keep_alive"]["enable"] = map_on_off[(v[t]["profile_file"]["s_keepalive"]).lower()]
+                        if temp["proxy_tcp_option_profile"]["server_side_conn_param"]["keep_alive"]["enable"] == 0:
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepcnt", None)
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepidle", None)
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["keep_alive"].pop("tcp_keepintvl", None)
                         else:
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["tcp_keepcnt"] = v[t]["profile_file"]["s_probe_number"]
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["tcp_keepidle"] = v[t]["profile_file"]["s_idle_time"]
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["keep_alive"]["tcp_keepintvl"] = v[t]["profile_file"]["s_interval"]
-                        temp["proxy_tcp_option"]["server_side_conn_param"]["user_timeout"]["enable"] = map_on_off[(v[t]["profile_file"]["s_UserTimeout_switch"]).lower()]
-                        if temp["proxy_tcp_option"]["server_side_conn_param"]["user_timeout"]["enable"] == 0:
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["user_timeout"].pop("timeout_ms", None)
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["keep_alive"]["tcp_keepcnt"] = v[t]["profile_file"]["s_probe_number"]
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["keep_alive"]["tcp_keepidle"] = v[t]["profile_file"]["s_idle_time"]
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["keep_alive"]["tcp_keepintvl"] = v[t]["profile_file"]["s_interval"]
+                        temp["proxy_tcp_option_profile"]["server_side_conn_param"]["user_timeout"]["enable"] = map_on_off[(v[t]["profile_file"]["s_UserTimeout_switch"]).lower()]
+                        if temp["proxy_tcp_option_profile"]["server_side_conn_param"]["user_timeout"]["enable"] == 0:
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["user_timeout"].pop("timeout_ms", None)
                         else:
-                            temp["proxy_tcp_option"]["server_side_conn_param"]["user_timeout"]["timeout_ms"] = v[t]["profile_file"]["s_userTimeout"]
+                            temp["proxy_tcp_option_profile"]["server_side_conn_param"]["user_timeout"]["timeout_ms"] = v[t]["profile_file"]["s_userTimeout"]
                         profile.append(copy.deepcopy(temp))
                 elif k == "traffic_mirroring_profile":
                     for t in range(len(v)):
@@ -1541,7 +1541,7 @@ class DataTranslation:
                             "vsys": 1,
                             "return_data": 1,
                             "profile_type": "traffic_mirror",
-                            "traffic_mirror_profile": {
+                            "traffic_mirroring_profile": {
                                 "name": "tewstsa",
                                 "vlan_array": []
                             }
@@ -1549,10 +1549,10 @@ class DataTranslation:
                         # 数据转换适合api使用
                         temp["profile_type"] = v[t]["profile_type"]
                         temp["vsys"] = vsys_id
-                        temp["traffic_mirror_profile"]["name"] = v[t]["profile_file"]["name"]
+                        temp["traffic_mirroring_profile"]["name"] = v[t]["profile_file"]["name"]
                         vlan_id = v[t]["profile_file"]["vlan_id"]
                         for i in range(len(vlan_id)):
-                            temp["traffic_mirror_profile"]["vlan_array"].append(vlan_id[i])
+                            temp["traffic_mirroring_profile"]["vlan_array"].append(vlan_id[i])
                         profile.append(copy.deepcopy(temp))
         elif policy_type == "pxy_manipulation":
             temp_profile = data["action_parameter"]
