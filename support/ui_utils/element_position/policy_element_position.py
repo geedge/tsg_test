@@ -23,6 +23,16 @@ policyRulePage_closeSrcIP_posXpath = '//div[@class="absolute bottom-0 h-[40px] w
 ruleListPage_createButton_posXpath = "//*[@class='action-create inline-flex mr-[8px] ']" #Rule列表上方Create按钮
 ruleListPage_editButton_posXpath = "//*[@class='action-edit inline-flex mr-[8px] ']" #Rule列表上方Create按钮
 ruleListPage_deleteButton_posXpath ="//*[@class='action-delete inline-flex mr-[8px] ']" #Rule列表上方Create按钮
+ruleListPage_searchLable_posXpath = "//div[contains(@class,'MuiAutocomplete-wrapper MuiAutocomplete-multiple')]//input[contains(@class,'MuiAutocomplete-input')]" #搜索输入框
+ruleListPage_searchLable_dropDown_item_posXpath = '//span[normalize-space(text())="{replaceValue}"]/../..' #下拉菜单定位
+ruleListPage_searchLable_input_itemContent_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'  #输入item的值，replaceValue替换实际查询值
+ruleListPage_searchLable_searchButton_posXpath = '//*[@class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w"]'
+ruleListPage_tableTbody_posXpath = '//*[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]' #Rule列表table
+ruleListPage_allSelect_posXpath = '(//*[@class="MuiCheckbox-action css-kit57i"]/parent::span)[last()]' # Rule列表选择所有搜索结果All按钮
+ruleListPage_delete_tip_warning_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//div[contains(@class,'text-center color-[--color-text] mt-[12px] MuiBox-root')]" #删除告警页面提示信息
+ruleListPage_delete_tip_button_warningYes_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[@type='danger']" #删除告警页面，Yes确认删除按钮
+ruleListPage_delete_tip_button_warningNo_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[contains(@class,'MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary')]" ##删除告警页面，No取消删除按钮
+
 rulePage_inputName_posXpath = "//*[@class='MuiInput-input css-fqt4w4']"
 rulePage_button_add2Level_conditon_posXpath = "//label[normalize-space(text())='{firstType}']/following-sibling::div//label[normalize-space(text())='{secondType}']/following-sibling::div/button"#多层对象添加按钮，例如：Source-IP Address policyRulePage_addSrcIP_posXpath
 rulePage_button_add_conditon_posXpath = "//label[normalize-space(text())='{}']/following-sibling::div//button"
@@ -42,6 +52,11 @@ rulePage_delete_tip_button_warningNo_posXpath = "//div[contains(@class,'MuiPaper
 # policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
 # policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 # policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+
+policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
+policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
+policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 policyRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']/span[1]"
 
 policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
@@ -782,6 +797,7 @@ monitorRulePage_packetCapture_posXpath = "//form[@class='el-form policy_edit el-
 monitorRulePage_packetCapture_depth_posXpath = '//div[@class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-sizeSmall css-6a5w4u"]/input'
 monitorRulePage_logOptions_all_posXpath = '//div[@ class="monitor-policy-log_option"]//button[2]'
 monitorRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
+monitorRulePage_logOptions_all_posXpath = '//*[@id="monitor_log_options-_policy_monitor_write_Home_App_anonymousComponent"]//span[normalize-space(text())="All"]'
 ##monitor 添加profile的按钮
 monitorRulePage_addVLANIDButton_posXpath = '//div[@class="monitor-policy-vlanID"]'
 monitorRulePage_firstSelectMirrorProfile_posXpath='//div[@class="monitor-policy-mirror_profile"]//i'
@@ -928,6 +944,14 @@ statisticsRuleListPage_createButton_posXpath = ruleListPage_createButton_posXpat
 statisticsRuleListPage_editButton_posXpath = ruleListPage_editButton_posXpath
 statisticsRuleListPage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
 statisticsRuleListpage_okButton_warningYes_posXpath = securityRuleListpage_okButton_warningYes_posXpath
+statisticsRuleListPage_searchLabel_posXpath = ruleListPage_searchLable_posXpath #
+statisticsRuleListPage_searchLabel_dropDown_item_posXpath = ruleListPage_searchLable_dropDown_item_posXpath #
+statisticsRuleListPage_searchLabel_input_itemContent_posXpath = ruleListPage_searchLable_input_itemContent_posXpath #
+statisticsRuleListPage_searchLabel_searchButton_posXpath = ruleListPage_searchLable_searchButton_posXpath #
+statisticsRruleListPage_tableTbody_posXpath = ruleListPage_tableTbody_posXpath #
+statisticsRruleListPage_allSelect_posXpath = ruleListPage_allSelect_posXpath #
+statisticsRuleListPage_delete_tip_button_warningYes_posXpath = ruleListPage_delete_tip_button_warningYes_posXpath #"//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
+statisticsRuleListPage_delete_tip_button_warningNo_posXpath = ruleListPage_delete_tip_button_warningNo_posXpath #"//button[@class='el-button delComponents-close el-button--info el-button--small']"
 # 名字输入定位
 statisticsRulePage_inputName_posXpath = rulePage_inputName_posXpath
 # rule 页面中Add Condition按钮定位

@@ -59,7 +59,7 @@ mainPage_profileSearch_buttonClear_posId = "searchClear"  # 清空查询按钮id
 # profiles模块列设置
 mainPage_profileColumn_columnSetting_posId = "eventfixed"  # 列设置按钮
 # profiles模块页面底部all、页面跳转设置
-mainPage_profileBottomPage_button_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"  # 底部页面设置中ALl选择按钮
+mainPage_profileBottomPage_button_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//input[contains(@class,'MuiCheckbox-input')]" #"//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"  # 底部页面设置中ALl选择按钮
 # profiles模块引用侧滑
 listPage_profileRightReferenceDrawer_referencedItems = "//div[@class='ReachTest']//div[@class='right-menu-content']//div[contains(@class, 'policy-item')]"  # 引用侧滑中被引用对象定位
 # profiles编辑对象页面
@@ -89,7 +89,7 @@ listPage_profileSearch_dnsRecords_buttonClear_posId = mainPage_profileSearch_but
 listPage_profileSearch_dnsRecords_dropDown_item_posXpath = "//div[contains(@class, 'el-select-dropdown el-popper select-popper')]//ul[@class='el-scrollbar__view el-select-dropdown__list']/li/span[normalize-space(text())='{replaceName}']"#"//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceName}']"  # 下拉菜单定位
 listPage_profileSearch_dnsRecords_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceName}']/ancestor::div[contains(@class,'ListItem')]//input"  # 输入item的值，replaceName替换实际查询值
 listPage_profileSearch_dnsRecords_dropDown_typeItem_posXpath = "//div[contains(@class,'select-popper')]//span[normalize-space(text())='{replaceName}']"  # 查询中type的下拉item定位,replaceName替换实际查询值
-listPage_profilTable_dnsRecords_tableTbody_posXpath = '//div[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'  # 列表tabel body  xpath
+listPage_profilTable_dnsRecords_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"#//div[contains(@class,'ly-table1')]//tbody"  # 列表tabel body  xpath
 listPage_profilTable_dnsRecords_tableHeader_posXpath = "//div[contains(@class,'ly-table1')]//table[@class='el-table__header']//thead//tr"  # 列表table 表头xpath
 # listPage->Tips dialog  列表页 tips对话框
 listPage_dialogTips_dnsRecords_button_yes_posXpath = 'ogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[1]'  # 删除提示的Tips的yes按钮
@@ -782,8 +782,6 @@ listPage_rightReferenceDrawer_serviceFunctions_referencedItems = listPage_profil
 serviceFunctions_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
 serviceFunctions_input_Name_posXpath = "//div[@class='service-function-name']//input"
 serviceFunctions_button_deviceGroupAdd_posXpath = "//label[text()='Device Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"  # device group 添加按钮 xpath
-# serviceFunctions_input_Name_posXpath = "//div[@class='service-function-name']//input"
-# serviceFunctions_button_deviceGroupAdd_posXpath = "//label[text()='Device Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//i"  # device group 添加按钮 xpath
 # //*[contains(@class, 'drawer-box')]//*[@class='title' and contains(normalize-space(text()), 'Select Device Group')]/parent::*//span[normalize-space(text())='City A']/parent::*//input//parent::*
 serviceFunctions_radio_selectDeviceType_posXpath = "//div[@class='bg-default mb-[4px]']//button[text()='{deviceType}']"  #deviceType替换为Group/Center
 serviceFunctions_searchDevice_input_Name_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
@@ -798,22 +796,7 @@ serviceFunctions_radio_healthCheck_posXpath = "//div[@class='service-function-ch
 serviceFunctions_input_interval_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # interval 输入框 xpath
 serviceFunctions_input_retries_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # retires 输入框 xpath
 serviceFunctions_switch_enalbe_posXpath = "//label[text()='Enable']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//span"  # enable 开关 xpath
-serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"
-# serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"
-# serviceFunctions_radio_selectDeviceType_posXpath = "//div[@class='bg-default mb-[4px]']//button[text()='{deviceType}']"  #deviceType替换为Group/Center
-# serviceFunctions_searchDevice_input_Name_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
-# serviceFunctions_radio_selectDevice_posXpath = "//div[@class='px-[12px]  pb-[40px] overflow-hidden']//li[1]//i"
-# serviceFunctions_button_closeSidePage_Cancel_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"  # effective devices 侧滑中Cancel按钮 xpath
-# serviceFunctions_radio_connectivityLayer2Switch_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='Layer 2 Switch']"  # Layer 2 Switch 单选按钮 xpath
-# serviceFunctions_radio_connectivityXvlan_posXpath = "//label[text()='Type']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//button[text()='VXLAN-G']"  # Function-internal 单选按钮 xpath
-# serviceFunctions_input_internalVlan_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # Internal VLAN Tag 输入框 xpath
-# serviceFunctions_input_externalVlan_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # external VLAN Tag 输入框 xpath
-# serviceFunctions_input_destinationIpAddress_posXpath = "//label[text()='Destination IP Address']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # destination Ip Address 输入框 xpath
-# serviceFunctions_radio_healthCheck_posXpath = "//div[@class='service-function-checkMethod']//button[text()='{type}']"  # health Check 单选按钮 xpath   replaceIndex需要二次处理
-# serviceFunctions_input_interval_posXpath = "//label[text()='Internal VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # interval 输入框 xpath
-# serviceFunctions_input_retries_posXpath = "//label[text()='External VLAN Tag']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//input"  # retires 输入框 xpath
-# serviceFunctions_switch_enalbe_posXpath = "//label[text()='Enable']/ancestor::div[@class='MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw']//span"  # enable 开关 xpath
-# serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"
+serviceFunctions_div_rightDetails_posXpath = "//div[@class='paper-right-content']//div[@class='Function-box-right']/div"    
 serviceFunctions_div_rightDetails_clearCounter_posXpath = "//*[@id='porfileResetBtn-_anonymousComponent_anonymousComponent_VPanel_VEditPanel_Profile_Functions_edit_Home_App_anonymousComponent']/span/span"  # 右侧详情---clear counter元素定位 xpath
 serviceFunctions_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 serviceFunctions_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
@@ -829,10 +812,10 @@ serviceFunctions_auditLogsPage_modificationPage_button_close_posXpath = "//*[@id
 
 # Profiles statistics templates===================Profiles statistics templates====================Profiles statistics templates=================Profiles statistics templates=======================Profiles statistics templates
 # listPage->tsg dos detection profiles list page  列表页
-listPage_profileHandleButton_posXpath = "//span[@class='text-[14px] inline-block max-w-[50px] normal-case']"
-listPage_profile_statisticsTemplates_createButton_posId = "Create" #"app_create-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"     #create按钮id
-listPage_profile_statisticsTemplates_editButton_posId = "appEdit-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #edit按钮id
-listPage_profile_statisticsTemplates_delButton_posId = "appDel-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #del按钮id
+listPage_profileHandleButton_posXpath = "//i[@class='iconfont icon-{replaceName}']/parent::*/parent::*" #"//span[@class='text-[14px] inline-block max-w-[50px] normal-case'][normalize-space(text())='{replaceName}']"
+listPage_profile_statisticsTemplates_createButton_name = "Create" #"app_create-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"     #create按钮id
+listPage_profile_statisticsTemplates_editButton_name = "Editinpage" #"appEdit-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #edit按钮id
+listPage_profile_statisticsTemplates_delButton_name = "Delete" #"appDel-_OperateBtns_ElRow_Statistic_Template_Home_App_anonymousComponent"          #del按钮id
 listPage_profileSearch_statisticsTemplates_selectLabel_posId = mainPage_profileSearch_selectLabel_posId      #查询框id    定位形式一样
 listPage_profileSearch_statisticsTemplates_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posId    #查询按钮id       定位形式一样
 listPage_profileSearch_statisticsTemplates_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
@@ -841,8 +824,10 @@ listPage_profileSearch_statisticsTemplates_input_itemContent_posXpath = listPage
 listPage_profilTable_statisticsTemplates_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath   #列表tabel body  xpath   定位形式一样
 listPage_profilTable_statisticsTemplates_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
 #listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_statisticsTemplates_button_yes_posXpath = listPage_dialogTips_dnsRecords_button_yes_posXpath   #删除提示的Tips的yes按钮
-listPage_dialogTips_statisticsTemplates_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath   #删除提示的Tips的close按钮
+listPage_profile_delete_dialogTips_button_yes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[@type='danger']" #profile列表删除提示的Tips的yes按钮
+listPage_profile_delete_dialogTips_button_no_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[@type='button']" #profile列表删除提示的Tips的yes按钮
+listPage_dialogTips_statisticsTemplates_button_yes_posXpath = listPage_profile_delete_dialogTips_button_yes_posXpath   #删除提示的Tips的yes按钮
+listPage_dialogTips_statisticsTemplates_button_no_posXpath = listPage_profile_delete_dialogTips_button_no_posXpath   #删除提示的Tips的close按钮
 #Create statistics templates page 和 Edit statistics templates page   新增和编辑页
 statisticsTemplates_input_Name_posId = "advancedAdd_policyName"    # name输入框id
 statisticsTemplates_input_Name_posXpath = "//input[@class='MuiInput-input css-fqt4w4']" # name输入框xpath
