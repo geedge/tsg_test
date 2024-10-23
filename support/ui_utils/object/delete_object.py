@@ -38,7 +38,7 @@ class DeleteObject:
             referenceCount = (referenceCount)
             return_code = 1
             for row_item in rows:  # 每一行操作
-                el_td_1 = row_item.find_element(By.XPATH, "./div[2]")
+                el_td_1 = row_item.find_element(By.XPATH, "./div[3]")
                 # 获取第一列元素下所有的属性
                 child_class_list = []
                 el_child_list = el_td_1.find_elements(By.XPATH, ".//*")
@@ -56,7 +56,7 @@ class DeleteObject:
                         break
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], child_class_list)
                 # 再次查找元素是引用是否不为0
-                el_td_list = row_item.find_elements(By.XPATH, "./td")  # 每一列操作
+                el_td_list = row_item.find_elements(By.XPATH, "./div")  # 每一列操作
                 # 判断一下，是否存在 Reference Count 列，如果存在，则需要进一步操作
                 for el_td_item in el_td_list:
                     td_item_id_list = []  # 每一列存放id的属性
@@ -68,7 +68,7 @@ class DeleteObject:
                     refer_except = "reference_count"  # objectReferenceData3738465-_Objects_ip_Home_App_anonymousComponent  id中存在预期值即可
                     for td_id_item in td_item_id_list:
                         if refer_except in td_id_item:  # 存在这个部分id属性即可
-                            refer_counter_actual = el_td_item.find_element(By.XPATH, f".//*[@id='{td_id_item}']").text.strip()
+                            refer_counter_actual = el_td_item.find_element(By.XPATH, f".//*[@data-field='{td_id_item}']").text.strip()
                             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], td_id_item, ">>>", refer_counter_actual)
                             if refer_counter_actual != "0":    #
                                 refer_count = 1  # 引用数不为 0

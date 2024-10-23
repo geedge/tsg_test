@@ -42,34 +42,38 @@ rulePage_cancelButton_posXpath = "//div[@class='form-action bg-[--color-backgrou
 rulePage_okButton_warningYes_posXpath = ""
 rulePage_okButton_warningNo_posXpath = ""
 
-policyRulePage_addSrcIP_posXpath = "//div[@class='MultipleSelect SourceModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchSrcIP_posXpath = "//div[@class='SourceList list-box']//div[contains(@class, 'object-item-seach')]//input"
-policyRulePage_selectSrcIP_posXpath = "//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeSrcIP_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_searchCondition_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
+policyRulePage_selectCondition_posXpath= "//ul[contains(@class,'MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd')]//li//*[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeCondition_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
+
+policyRulePage_addSrcIP_posXpath = "//label[normalize-space(text())='Source']/..//label[normalize-space(text())='IP Address']/following-sibling::div/button"
+policyRulePage_searchSrcIP_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectSrcIP_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeSrcIP_posXpath = policyRulePage_closeCondition_posXpath
 policyRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']/span[1]"
 
-policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//input[contains(@id, 'object_ip_search')]"
-policyRulePage_selectDstIP_posXpath = "//div[@class='CommonListDetail list-detail']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeDstIP_posXpath = "//div[@class='destinations list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addDstIP_posXpath = "//label[normalize-space(text())='Destination']/..//label[normalize-space(text())='IP Address']/following-sibling::div/button"
+policyRulePage_searchDstIP_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectDstIP_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeDstIP_posXpath = policyRulePage_closeCondition_posXpath
 
-policyRulePage_addSrcPort_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Port']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchSrcPort_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectSrcPort_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeSrcPort_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addSrcPort_posXpath = "//label[normalize-space(text())='Source']/..//label[normalize-space(text())='Port']/following-sibling::div/button"
+policyRulePage_searchSrcPort_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectSrcPort_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeSrcPort_posXpath = policyRulePage_closeCondition_posXpath
 
-policyRulePage_addApplication_posXpath = "//div[@class='MultipleSelect AppSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchApplication_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
-policyRulePage_selectApplication_posXpath = "//div[@class='css-dob60y']//li[1]//span[text()='{appName}']"
-policyRulePage_closeApplication_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
-policyRulePage_selectApplicationLabel_posXpath = "//div[@class='el-tabs__nav is-top']//div[normalize-space(text())='Application']"
-policyRulePage_selectApplicationGroupLabel_posXpath = "//div[normalize-space(text())='Group']"
-policyRulePage_little_button_addApplication_posId = "policy_app_create-_AppSelect_ElFormItem_ElForm_VPanel_VEditPanel_policy_monitor_write_Home_App_anonymousComponent"
+policyRulePage_addApplication_posXpath = "//label[normalize-space(text())='Application']/..//label/following-sibling::div/button"
+policyRulePage_searchApplication_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectApplication_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeApplication_posXpath = policyRulePage_closeCondition_posXpath
+policyRulePage_selectApplicationLabel_posXpath = ""
+policyRulePage_selectApplicationGroupLabel_posXpath = ""
+policyRulePage_little_button_addApplication_posId = ""
 
-policyRulePage_addInternalIP_posXpath = "//div[@zs-label='Internal']//div[@class='MultipleSelect InternalsSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchInternalIP_posXpath = "//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']"
-policyRulePage_selectInternalIP_posXpath = "//div[@class='InternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeInternalIP_posXpath = "//div[@class='InternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addInternalIP_posXpath = "//label[normalize-space(text())='Internal']/..//label[normalize-space(text())='IP Address']/following-sibling::div/button"
+policyRulePage_searchInternalIP_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectInternalIP_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeInternalIP_posXpath = policyRulePage_closeCondition_posXpath
 
 policyRulePage_addInternalPort_posXpath = "//label[normalize-space(text())='Internal']/..//label[normalize-space(text())='Port']/following-sibling::div/button"
 policyRulePage_searchInternalPort_posXpath = "//input[contains(@class, 'MuiInput-input') and contains(@class, 'css-za5rna')]"
@@ -81,20 +85,20 @@ policyRulePage_searchDstPort_posXpath = policyRulePage_searchInternalPort_posXpa
 policyRulePage_selectDstPort_posXpath = policyRulePage_selectInternalPort_posXpath
 policyRulePage_closeDstPort_posXpath = policyRulePage_closeInternalPort_posXpath
 
-policyRulePage_addExternalIP_posXpath = "//div[@zs-label='External']//div[@class='MultipleSelect ExternalsSelect']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchExternalIP_posXpath = "//div[@class='ExternalsList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectExternalIP_posXpath = "//div[@class='ExternalsList list-box']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeExternalIP_posXpath = "//div[@class='ExternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addExternalIP_posXpath = "//label[normalize-space(text())='External']/..//label[normalize-space(text())='IP Address']/following-sibling::div/button"
+policyRulePage_searchExternalIP_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectExternalIP_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeExternalIP_posXpath = policyRulePage_closeCondition_posXpath
 
 policyRulePage_addExternalPort_posXpath = "//label[normalize-space(text())='External']/..//label[normalize-space(text())='Port']/following-sibling::div/button"
 policyRulePage_searchExternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
 policyRulePage_selectExternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
 policyRulePage_closeExternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
 
-policyRulePage_addUser_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='User']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchUser_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectUser_posXpath = "//div[@class='reference-box el-popover__reference']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeUser_posXpath = "//div[@class='SourceList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addUser_posXpath = "//label[normalize-space(text())='User']/following-sibling::div/button"
+policyRulePage_searchUser_posXpath = policyRulePage_searchInternalPort_posXpath
+policyRulePage_selectUser_posXpath = policyRulePage_selectInternalPort_posXpath
+policyRulePage_closeUser_posXpath = policyRulePage_closeInternalPort_posXpath
 
 policyRulePage_addImsi_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='Device']/ancestor::div[@zs-label='SourceItem']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchImsi_posXpath = "//div[@class='SourceList list-box']//input[@id='object_ip_search']"
@@ -1096,7 +1100,7 @@ dosRulePage_selectApplication_posXpath = rulePage_object_list_select_name_posXpa
 dosRulePage_closeApplication_posXpath ='//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 dosRulePage_selectApplicationLabel_posXpath = ''
 
-dosRulePage_addSrcIP_posXpath = "(//label[normalize-space(text())='IP Address']/following-sibling::div/button)[1]"
+dosRulePage_addSrcIP_posXpath = "//label[normalize-space(text())='Source']/..//label[normalize-space(text())='IP Address']/following-sibling::div/button"
 dosRulePage_searchSrcIP_posXpath = dosRulePage_searchApplication_posXpath
 dosRulePage_selectSrcIP_posXpath = dosRulePage_selectApplication_posXpath
 dosRulePage_closeSrcIP_posXpath = dosRulePage_closeApplication_posXpath
@@ -1122,5 +1126,128 @@ dosRulePage_ok_posXpath = "//button[normalize-space(text())='OK']"
 dosRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 dosRulePage_cancel_posId = "//button[normalize-space(text())='Cancel']"
 
-
+#dos add response header
+dosRulePage_addResponseHeader_posXpath = manipulationRulePage_addResponseHeader_posXpath
+dosRulePage_searchResponseHeader_posXpath = manipulationRulePage_searchResponseHeader_posXpath
+dosRulePage_selectResponseHeader_posXpath = manipulationRulePage_selectResponseHeader_posXpath
+dosRulePage_closeResponseHeader_posXpath = manipulationRulePage_closeResponseHeader_posXpath
+#dos add src port
+dosRulePage_addSrcPort_posXpath = policyRulePage_addSrcPort_posXpath
+dosRulePage_searchSrcPort_posXpath = policyRulePage_searchSrcPort_posXpath
+dosRulePage_selectSrcPort_posXpath = policyRulePage_selectSrcPort_posXpath
+dosRulePage_closeSrcPort_posXpath = policyRulePage_closeSrcPort_posXpath
+#dos add internal ip
+dosRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
+dosRulePage_searchInternalIP_posXpath = policyRulePage_searchInternalIP_posXpath
+dosRulePage_selectInternalIP_posXpath = policyRulePage_selectInternalIP_posXpath
+dosRulePage_closeInternalIP_posXpath = policyRulePage_closeInternalIP_posXpath
+#dos add internal port
+dosRulePage_addInternalPort_posXpath = policyRulePage_addInternalPort_posXpath
+dosRulePage_searchInternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
+dosRulePage_selectInternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
+dosRulePage_closeInternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
+#dos add dst port
+dosRulePage_addDstPort_posXpath = policyRulePage_addDstPort_posXpath
+dosRulePage_searchDstPort_posXpath = policyRulePage_searchDstPort_posXpath
+dosRulePage_selectDstPort_posXpath = policyRulePage_selectDstPort_posXpath
+dosRulePage_closeDstPort_posXpath = policyRulePage_closeDstPort_posXpath
+#dos add external port
+dosRulePage_addExternalPort_posXpath = policyRulePage_addExternalPort_posXpath
+dosRulePage_searchExternalPort_posXpath = policyRulePage_searchExternalPort_posXpath
+dosRulePage_selectExternalPort_posXpath = policyRulePage_selectExternalPort_posXpath
+dosRulePage_closeExternalPort_posXpath = policyRulePage_closeExternalPort_posXpath
+#dos add external ip
+dosRulePage_addExternalIP_posXpath = policyRulePage_addExternalIP_posXpath
+dosRulePage_searchExternalIP_posXpath = policyRulePage_searchExternalIP_posXpath
+dosRulePage_selectExternalIP_posXpath = policyRulePage_selectExternalIP_posXpath
+dosRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
+#dos add server fqdn
+dosRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
+#dos add ....
+dosRulePage_addCondition_imsi_posXpath = policyRulePage_addConditionImsi_posXpath
+dosRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']  |  //div[@class='SourceList list-box']//div[normalize-space(text())='URI']"
+dosRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
+dosRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
+dosRulePage_addCondition_requestBody_posXpath = policyRulePage_addCondition_requestBody_posXpath
+dosRulePage_addCondition_responseBody_posXpath = policyRulePage_addCondition_responseBody_posXpath
+dosRulePage_addCondition_responseHeader_posXpath = policyRulePage_addCondition_responseHeader_posXpath
+dosRulePage_addCondition_srcPort_posXpath = policyRulePage_addCondition_srcPort_posXpath
+dosRulePage_addCondition_dstPort_posXpath = policyRulePage_addCondition_dstPort_posXpath
+dosRulePage_addCondition_externalPort_posXpath = policyRulePage_addCondition_externalPort_posXpath
+dosRulePage_addCondition_internalIP_posXpath = policyRulePage_addCondition_internalIP_posXpath
+dosRulePage_addCondition_externalIP_posXpath = policyRulePage_addCondition_externalIP_posXpath
+dosRulePage_addCondition_internalPort_posXpath = policyRulePage_addCondition_internalPort_posXpath
+dosRulePage_addCondition_ftpAccount_posXpath = policyRulePage_addCondition_ftpAccount_posXpath
+dosRulePage_addCondition_ftpContent_posXpath = policyRulePage_addCondition_ftpContent_posXpath
+dosRulePage_addCondition_cn_posXpath = policyRulePage_addCondition_cn_posXpath
+dosRulePage_addCondition_san_posXpath = policyRulePage_addCondition_san_posXpath
+dosRulePage_addCondition_qname_posXpath = policyRulePage_addCondition_qname_posXpath
+dosRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
+#dos_add server fqdn
+dosRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
+dosRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
+dosRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
+dosRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
+#dos add url
+dosRulePage_addUrl_posXpath = "//p[normalize-space(text())='URL']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+dosRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
+dosRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
+dosRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
+#dos add requset header
+dosRulePage_addRequestHeader_posXpath =  "//p[normalize-space(text())='Request Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+dosRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
+dosRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
+dosRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
+#dos add imsi
+dosRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
+dosRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
+dosRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
+dosRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
+#dos add ftp account
+dosRulePage_addftpAccount_posXpath = policyRulePage_addFtpAccount_posXpath
+dosRulePage_searchftpAccount_posXpath = policyRulePage_searchFtpAccount_posXpath
+dosRulePage_selectftpAccount_posXpath = policyRulePage_selectFtpAccount_posXpath
+dosRulePage_closeftpAccount_posXpath = policyRulePage_closeFtpAccount_posXpath
+#dos add  ftp content
+dosRulePage_addftpContent_posXpath = policyRulePage_addFtpContent_posXpath
+dosRulePage_searchftpContent_posXpath = policyRulePage_searchFtpContent_posXpath
+dosRulePage_selectftpContent_posXpath = policyRulePage_selectFtpContent_posXpath
+dosRulePage_closeftpContent_posXpath = policyRulePage_closeFtpContent_posXpath
+#dos add  phone number
+dosRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath
+#dos add mail account
+dosRulePage_addmailAccount_posXpath = policyRulePage_addMailAccount_posXpath
+dosRulePage_searchmailAccount_posXpath = policyRulePage_searchMailAccount_posXpath
+dosRulePage_selectmailAccount_posXpath = policyRulePage_selectMailAccount_posXpath
+dosRulePage_closemailAccount_posXpath = policyRulePage_closeMailAccount_posXpath
+#dos add mail from
+dosRulePage_addmailFrom_posXpath = policyRulePage_addMailFrom_posXpath
+dosRulePage_searchmailFrom_posXpath = policyRulePage_searchMailFrom_posXpath
+dosRulePage_selectmailFrom_posXpath = policyRulePage_selectMailFrom_posXpath
+dosRulePage_closemailFrom_posXpath = policyRulePage_closeMailFrom_posXpath
+#dos add mail to
+dosRulePage_addmailTo_posXpath = policyRulePage_addMailTo_posXpath
+dosRulePage_searchmailTo_posXpath = policyRulePage_searchMailTo_posXpath
+dosRulePage_selectmailTo_posXpath = policyRulePage_selectMailTo_posXpath
+dosRulePage_closemailTo_posXpath = policyRulePage_closeMailTo_posXpath
+#dos add mail subject
+dosRulePage_addmailSubject_posXpath = policyRulePage_addMailSubject_posXpath
+dosRulePage_searchmailSubject_posXpath = policyRulePage_searchMailSubject_posXpath
+dosRulePage_selectmailSubject_posXpath = policyRulePage_selectMailSubject_posXpath
+dosRulePage_closemailSubject_posXpath = policyRulePage_closeMailSubject_posXpath
+#dos add cn
+dosRulePage_addCn_posXpath = policyRulePage_addCn_posXpath
+dosRulePage_searchCn_posXpath = policyRulePage_searchCn_posXpath
+dosRulePage_selectCn_posXpath = policyRulePage_selectCn_posXpath
+dosRulePage_closeCn_posXpath = policyRulePage_closeCn_posXpath
+#dos add san
+dosRulePage_addSan_posXpath = policyRulePage_addSan_posXpath
+dosRulePage_searchSan_posXpath = policyRulePage_searchSan_posXpath
+dosRulePage_selectSan_posXpath = policyRulePage_selectSan_posXpath
+dosRulePage_closeSan_posXpath = policyRulePage_closeSan_posXpath
+#dos add qname
+dosRulePage_addQname_posXpath = policyRulePage_addQname_posXpath
+dosRulePage_searchQname_posXpath = policyRulePage_searchQname_posXpath
+dosRulePage_selectQname_posXpath = policyRulePage_selectQname_posXpath
+dosRulePage_closeQname_posXpath = policyRulePage_closeQname_posXpath
 

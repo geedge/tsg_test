@@ -36,7 +36,7 @@ test_ip_object_element_position = {
         "objectPage_statistics_select_option_posXpath": ObjectPage_statistics_select_option_posXpath
     },
     "search": {
-        "objectListPage_searchLabel_posId": ipObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_posXpath": ipObjectListPage_searchLabel_posXpath,
         "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
         "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath
     },
