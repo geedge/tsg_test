@@ -932,7 +932,8 @@ class CreateRule:
     def add_port(self, port_data, port_condition_type, create_element_position):
         try:
             # 点add condition的+
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+            btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"])
+            self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             # 选中port
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(port_condition_type)]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
