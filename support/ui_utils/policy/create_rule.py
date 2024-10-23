@@ -832,7 +832,7 @@ class CreateRule:
                         # self.driver.find_element(By.XPATH,selectProfileXpath, find_after_wait_time=0.5).click()
 
             # 配置DoS的Threshold和Mitigation
-            if test_data["policy_type"] == "dos_protection":
+            if test_data["policy_type"] == "dos_protection" and test_data["rule_action"] == "protect":
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_thresholdType_posXpath"]).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_groupBy_dropDownBox_posXpath"]).click()
                 if test_data["threshold"]["type"] == "rate":
