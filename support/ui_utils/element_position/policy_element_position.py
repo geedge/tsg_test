@@ -74,9 +74,9 @@ policyRulePage_selectInternalIP_posXpath = "//div[@class='InternalsList list-box
 policyRulePage_closeInternalIP_posXpath = "//div[@class='InternalsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 
 policyRulePage_addInternalPort_posXpath = "//label[normalize-space(text())='Internal']/..//label[normalize-space(text())='Port']/following-sibling::div/button"
-policyRulePage_searchInternalPort_posXpath = "//input[contains(@class, 'MuiInput-input') and contains(@class, 'css-za5rna')]"
+policyRulePage_searchInternalPort_posXpath = '//div[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectInternalPort_posXpath = "//div[@class='MuiBox-root css-8vsxvh']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeInternalPort_posXpath = "(//span[contains(@class, 'MuiTouchRipple-root') and contains(@class, 'css-w0pj6f') and ancestor::*[contains(normalize-space(text()), 'Cancel')]])[1]"
+policyRulePage_closeInternalPort_posXpath = '//div[@class="absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]"]/button'
 
 policyRulePage_addDstPort_posXpath = "//label[normalize-space(text())='Destination']/..//label[normalize-space(text())='Port']/following-sibling::div/button"
 policyRulePage_searchDstPort_posXpath = policyRulePage_searchInternalPort_posXpath
@@ -126,8 +126,8 @@ policyRulePage_addCondition_close_posXpath = '//*[@class="MuiDrawer-content css-
 policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_internalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[3]//div[normalize-space(text())='IP Address']"
 policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[4]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[4]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[4]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[7]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='IP Protocol']"
 policyRulePage_addCondition_Boolean_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='{replaceValue}']"
 #policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
@@ -377,19 +377,19 @@ securityRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_p
 #phone number 
 securityRulePage_chooseImei_posXpath = policyRulePage_chooseImei_posXpath
 
-securityRulePage_enable_posXpath = "//div[@zs-label='Enabled']//span[@class='el-switch__core']"
-securityRulePage_okButton_yes_posId = "OK-_SecurityAdd_Home_App_anonymousComponent"
+securityRulePage_enable_posXpath = '//*[text()="Enabled"]/ancestor::div[@class="MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw"]//*[@class="MuiSwitch-root MuiSwitch-sizeMedium css-wj9ris"]'
+securityRulePage_okButton_yes_posId = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]/button[1]'
 securityRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
 
-securityRulePage_subAction_override_posXpath = "//label[@zs-label='Override Application Deny Action']//span[@class='el-checkbox__inner']"
-securityRulePage_subAction_drop_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Drop']"
-securityRulePage_subAction_drop_dropPkt_posXpath = "//div[@zs-label='Drop packet after N packet']//input[@class='el-input__inner']"
-securityRulePage_subAction_drop_sendTcpRst_posXpath = "//label[contains(@class, 'checkbox-value-label')]//span[normalize-space(text())='Send TCP reset']"
-securityRulePage_subAction_drop_sendIcmp_posXpath = "//label[contains(@class, 'checkbox-value-label')]//span[normalize-space(text())='Send ICMP unreachable']"
-securityRulePage_subAction_rateLimit_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Rate Limit']"
-securityRulePage_subAction_rateLimit_rate_posXpath = "//div[@class='margin-right5 el-input el-input--small']//input"
-securityRulePage_subAction_tamper_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Tamper']"
-securityRulePage_subAction_block_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Block']"
+securityRulePage_subAction_override_posXpath = "//input[ancestor::*[contains(@class, 'security-policy-sub_action')]]"
+securityRulePage_subAction_drop_posXpath = "//button[contains(text(), 'Drop') and ancestor::*[contains(@class, 'security-policy-sub_action')]]"
+securityRulePage_subAction_drop_dropPkt_posXpath = "//*[contains(@class, 'security-policy-after_n_packets')]//input"
+securityRulePage_subAction_drop_sendTcpRst_posXpath = "//*[contains(@class, 'security-policy-send_tcp_reset')]"
+securityRulePage_subAction_drop_sendIcmp_posXpath = "//*[contains(@class, 'security-policy-send_icmp_unreachable')]"
+securityRulePage_subAction_rateLimit_posXpath = "//button[contains(normalize-space(.), 'Rate Limit') and ancestor::*[contains(@class, 'security-policy-sub_action')]]"
+securityRulePage_subAction_rateLimit_rate_posXpath = "//input[contains(@class, 'MuiInputBase-input') and contains(@class, 'MuiOutlinedInput-input') and contains(@class, 'MuiInputBase-inputSizeSmall') and contains(@class, 'css-yush35')]"
+securityRulePage_subAction_tamper_posXpath = "//button[contains(normalize-space(.), 'Tamper') and ancestor::*[contains(@class, 'security-policy-sub_action')]]"
+securityRulePage_subAction_block_posXpath = "//button[contains(normalize-space(.), 'Block') and ancestor::*[contains(@class, 'security-policy-sub_action')]]"
 securityRulePage_subAction_block_responseCode_posXpath = "//div[contains(@zs-label, '应答码')]//input[@class='el-input__inner']"
 securityRulePage_subAction_block_responseCode_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"
 securityRulePage_subAction_block_responseContent_posXpath = "//div[@class='margin-bottom6 box-sizing']//input[@class='el-input__inner']"
@@ -398,7 +398,7 @@ securityRulePage_subAction_block_responseContent_text_posId = "myEditor1"
 securityRulePage_subAction_block_responseContent_clickProfile_posXpath = "//div[@class='box-sizing']//input[@class='el-input__inner']"
 securityRulePage_subAction_block_responseContent_searchProfile_posXpath = "//input[@class='width85']"
 securityRulePage_subAction_block_responseContent_selectProfile_posId = "filelist_select0"
-securityRulePage_subAction_redirect_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Redirect']"
+securityRulePage_subAction_redirect_posXpath = "//button[contains(normalize-space(.), 'Redirect') and ancestor::*[contains(@class, 'security-policy-sub_action')]]"
 securityRulePage_subAction_redirect_input_posXpath = "myEditor1"
 # redirect- dns
 securityRulePage_subAction_redirect_answer0ValueType_posId = "blockselect00"
@@ -414,7 +414,7 @@ securityRulePage_subAction_redirect_dnsAnswer0ATextPlaceholder_posId = "A001"
 securityRulePage_subAction_redirect_dnsAnswer0AAAATextPlaceholder_posId = "AAAA001"
 securityRulePage_subAction_redirect_dnsAnswer0CnameTextPlaceholder_posId = "Cname001"
 #alert
-securityRulePage_subAction_alert_posXpath = "//div[@zs-label='Sub Action']//span[normalize-space(text())='Alert']"
+securityRulePage_subAction_alert_posXpath = "//button[contains(normalize-space(.), 'Alert') and ancestor::*[contains(@class, 'security-policy-sub_action')]]"
 securityRulePage_subAction_alert_responseCode_posXpath = "//div[contains(@zs-label, '应答码')]//input[@class='el-input__inner']"
 securityRulePage_subAction_alert_responseCode_change_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"
 securityRulePage_subAction_alert_responseContent_posXpath = "//div[@class='margin-bottom6 box-sizing']//input[@class='el-input__inner']"
