@@ -519,7 +519,7 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            print(json.dumps(rule_template_dict))
+            # print(json.dumps(rule_template_dict))
             # 44.3 运行用例临时添加，防止创建过快导致的用例失败
             time.sleep(1)
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
