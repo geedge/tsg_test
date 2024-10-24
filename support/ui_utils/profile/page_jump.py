@@ -20,7 +20,6 @@ class PageJump:
         """
         vsys_name:空值时，参数来自配置文件
         """
-        # 菜单操作，先判断是否是当前Vsys再判断是否重新选择Vsys
         btn = self.driver.find_element(By.XPATH,
                                        '(//span[@class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1cxrtde"])[1]')
         btn = self.driver.execute_script("arguments[0].click()", btn)

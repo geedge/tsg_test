@@ -28,7 +28,8 @@ mainPage_vsysTree_Vsys5_posXpath = "//article/div/ul//div[normalize-space(text()
 mainPage_firstLevelMenu_profiles_posName = "Profiles"
 mainPage_firstLevelMenu_profiles_posXpath = "//*[normalize-space(text())='Profiles']"  # 一级菜单Profiles
 mainPage_leftMenu_posXpath = "//*[normalize-space(text())='{}']" #根据菜单名称文本定位：
-mainPage_secondLevelMenu_responsePages_posId = "Proxy_Profiles/Profile_ResponsePages"  # 二级菜单response pages
+mainPage_secondLevelMenu_responsePages_posXpath = "//div[contains(@class, 'menu-response-page')]"  # 二级菜单response pages
+mainPage_secondLevelMenu_responsePages_Name = "Response Pages"  # 二级菜单response pages
 mainPage_secondLevelMenu_dnsRecords_posId = "Proxy_Profiles/DNS_record_profile"  # 二级菜单dns records
 mainPage_secondLevelMenu_trafficMirroringProfiles_posId = '//span[@class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1cxrtde" and text()="Traffic Mirroring Profiles"]'  # 二级菜单traffic mirroring profiles
 mainPage_secondLevelMenu_sslDecryptionKeyrings_posId = "Proxy_CertificateManagement/Certificate_Keyrings"  # 二级菜单ssl decryption keyrings
@@ -95,8 +96,8 @@ listPage_profileSearch_dnsRecords_dropDown_typeItem_posXpath = "//div[contains(@
 listPage_profilTable_dnsRecords_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"#//div[contains(@class,'ly-table1')]//tbody"  # 列表tabel body  xpath
 listPage_profilTable_dnsRecords_tableHeader_posXpath = "//div[contains(@class,'ly-table1')]//table[@class='el-table__header']//thead//tr"  # 列表table 表头xpath
 # listPage->Tips dialog  列表页 tips对话框
-listPage_dialogTips_dnsRecords_button_yes_posXpath = 'ogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[1]'  # 删除提示的Tips的yes按钮
-listPage_dialogTips_dnsRecords_button_no_posXpath = "//body/*[@class='el-dialog__wrapper']//*[contains(@class, 'delComponents-close')]//span"  # 删除提示的Tips的close按钮
+listPage_dialogTips_dnsRecords_button_yes_posXpath = "//div[@role='dialog']//div[contains(@class, 'MuiDialogActions-spacing')]//button[1]" # 删除提示的Tips的yes按钮
+listPage_dialogTips_dnsRecords_button_no_posXpath = "//div[@role='dialog']//div[contains(@class, 'MuiDialogActions-spacing')]//button[2]"  # 删除提示的Tips的close按钮
 # listPage-> Link提示对话框
 listPage_linkTips_dnsRecords_input_clusterSelect_posXpath = "//*[@id='clusterId']/parent::*//span[@class='el-input__suffix']"  # cluster 下拉选择按钮
 listPage_linkTips_dnsRecords_dropitem_clusterDrop_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replaceName}']"  # cluster 下拉列表 选择按钮
@@ -130,17 +131,17 @@ dnsRecordsProfilePage_button_cancel_posCss = "#dnsRecord_cancel-_DNSRecordPrfile
 
 # Profiles Response-Pages===================Profiles Response-Pages====================Profiles Response-Pages=================Profiles Response-Pages=======================Profiles Response-Pages=================Profiles Response-Pages
 # Response Pages list page  列表页
-listPage_profile_responsePages_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_ResponsePages_Home_App_anonymousComponent"  # create按钮id
-listPage_profile_responsePages_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_ResponsePages_Home_App_anonymousComponent"  # edit按钮id
-listPage_profile_responsePages_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_ResponsePages_Home_App_anonymousComponent"  # del按钮id
+listPage_profile_responsePages_createButton_posXpath = "//button//i[contains(@class, 'icon-Create')]"  # create按钮id
+listPage_profile_responsePages_editButton_posXpath = "//button//i[contains(@class, 'icon-Editinpage')]"  # edit按钮id
+listPage_profile_responsePages_delButton_posXpath = "//button//i[contains(@class, 'icon-Delete')]"  # del按钮id
 listPage_profile_responsePages_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_ResponsePages_Home_App_anonymousComponent"  # link按钮id
 listPage_profileColumn_responsePages_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_responsePages_button_cancel_posId = "dropColcancel-_ElementSet_Profile_ResponsePages_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_responsePages_button_ok_posId = "dropColOK-_ElementSet_Profile_ResponsePages_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_responsePages_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
-listPage_profileSearch_responsePages_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
-listPage_profileSearch_responsePages_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
-listPage_profileSearch_responsePages_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
+listPage_profileSearch_responsePages_selectLabel_posXpath = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_responsePages_buttonSearch_posXpath = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
+listPage_profileSearch_responsePages_buttonClear_posXpath = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
+listPage_profileSearch_responsePages_dropDown_item_posXpath = mainPage_profileSearch_searchLabel_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_responsePages_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_responsePages_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_responsePages_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
@@ -153,12 +154,12 @@ listPage_linkTips_responsePages_button_add_posXpath = "//*[@id='temporary_form-_
 listPage_linkTips_responsePages_button_OK_posXpath = "//*[@id='copyOk-_copyComponents_Profile_ResponsePages_Home_App_anonymousComponent']/span"    # OK 按钮 xpath
 # Create Response Page 和 Edit Response Page   新增和编辑页
 responsePage_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-responsePage_input_Name_posId = "responsepages_profileName"  # name输入框id
-responsePage_input_file_posXpath = "//*[@id='responseAddUpload']/parent::*//input"  # File上次输入按钮
-responsePage_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
+responsePage_input_Name_posXpath = "//div[@class='response-page-name']//input"  # name输入框xpath
+responsePage_input_file_posXpath = "//div[@class='response-page-file']//input"  # File上次输入按钮
+responsePage_button_warningSaveYes_posXpath = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 responsePage_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
-responsePage_button_oK_posCss = "#responseAddOk1-_interceptionadd_Home_App_anonymousComponent span"  # OK按钮css
-responsePage_button_cancel_posCss = "#responseAddCancel1-_interceptionadd_Home_App_anonymousComponent span"  # Cancel按钮
+responsePage_button_oK_posXpath = "//div[contains(@class, 'response-page-page')]//div[contains(@class, 'form-action')]//button[1]"  # OK按钮xpath
+responsePage_button_cancel_posXpath = "//div[contains(@class, 'response-page-page')]//div[contains(@class, 'form-action')]//button[2]"  # Cancel按钮xpath
 
 
 # Profiles traffic mirroring profiles===================Profiles traffic mirroring profiles====================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles=======================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles
