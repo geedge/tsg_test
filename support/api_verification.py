@@ -47,7 +47,6 @@ class APIVerification:
             
             get_metric_log = GetMetricLog(self.parameter, self.policy_configuration, self.traffic_generation, self.configuration_manager)
             if self.rule_type == "security" or self.rule_type == "pxy_intercept" or self.rule_type == "pxy_manipulation" or self.rule_type == "monitor" :
-                # 获取开始时间
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -111,7 +110,61 @@ class APIVerification:
             elif self.rule_type == "service_chaining":
                 print("to be added...")
             elif self.rule_type == "dos_protection":
-                print("to be added...")
+                utc_tz = pytz.timezone('UTC')
+                current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
+                start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
+                metric_query_flag, log_query_flag = self.check_validation('metric_query', 'log_query')
+                log_result, metric_result = None, None
+                if metric_query_flag == True or log_query_flag == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Ready to get log and metric by api.", flush=True)
+                    for i in range(150):
+                        if i in {30,60,90} and initiation_method == "ui" and self.configuration_manager["driver"]:
+                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do the browser keepalive.", flush=True)
+                            support.ui_utils.env.teardown()
+                            support.ui_utils.env.initiate_selenium_request()
+                            my_driver = support.ui_utils.env.my_driver()
+                            support.ui_utils.env.setup()
+                        utc_tz = pytz.timezone('UTC')
+                        current_utc_time = datetime.now(utc_tz)
+                        end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                        time.sleep(7)
+                        if log_query_flag == True and log_result == None:
+                            log_dict, error = get_metric_log.get_log(self.token, start_time, end_time)
+                            if len(error) != 0:
+                                return error, None, my_driver
+                            log_result = self.verify_log(log_dict, traffic_result)
+                        if log_query_flag == False:
+                            log_result = "no_set"
+                        if metric_query_flag == True and metric_result == None:
+                            metric_dict, error = get_metric_log.get_metric(self.token, start_time, end_time)
+                            if len(error) != 0:
+                                return None, error, my_driver
+                            metric_result = self.verify_metric(metric_dict, traffic_result)
+                        if metric_query_flag == False:
+                            log_result = "no_set"
+                        if log_result != None and metric_result != None:
+                            break
+                
+                if metric_result == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is {}.'.format(metric_result), flush=True)
+                elif metric_result == False:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is {}.'.format(metric_result), flush=True)
+                elif metric_result == None:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is none.', flush=True)
+                elif metric_result == "no_set":
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is no_set.', flush=True)
+                
+                if log_result == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is {}.'.format(log_result), flush=True)
+                elif log_result == False:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is {}.'.format(log_result), flush=True)
+                elif log_result == None:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is none.', flush=True)
+                elif log_result == "no_set":
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is no_set.', flush=True)
+                
+                return log_result, metric_result, my_driver
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "API verification exception error: ", str(e), flush=True)
             return "API verification exception error: " + str(e)

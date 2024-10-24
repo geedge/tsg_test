@@ -21,7 +21,7 @@ class CreateObject:
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_object_page(page_jump_element_position)
             # 点击creat
-            time.sleep(3)
+            time.sleep(8)
             self.driver.find_element(By.XPATH, create_element_position["objectListPage_createButton_posXpath"]).click()
             time.sleep(1)
             self.driver.find_element(By.XPATH, create_element_position["objectListPage_dropDown_createButton_posXpath"]).click()
@@ -160,7 +160,7 @@ class CreateObject:
                 statistics_option_temp = data["statistics_option"]
                 time.sleep(1)
                 if statistics_option_temp in {"None","Brief","Elaborate"}:
-                    self.driver.find_element(By.ID, create_element_position["objectPage_statistics_select_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_statistics_select_posXpath"]).click()
                     element_dropdown_item = self.driver.find_element(By.XPATH, create_element_position["objectPage_statistics_select_option_posXpath"].format(statistics_option_temp))
                     # 移动元素到页面，在执行点击
                     self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)

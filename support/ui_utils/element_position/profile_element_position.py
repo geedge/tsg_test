@@ -58,6 +58,7 @@ mainPage_profileSearch_buttonSearch_posId = '//div[@class="flex"]/button' # 查�
 mainPage_profileSearch_selectLabel_posXpath = "//input[contains(@class,'MuiAutocomplete-input')]" #"select-label"  # 查询框id
 mainPage_profileSearch_buttonSearch_posXpath = "//*[@class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w']"#"searchQuery"  # 查询按钮id
 mainPage_profileSearch_buttonClear_posId = "searchClear"  # 清空查询按钮id
+mainPage_profileSearch_searchLabel_dropDown_item_posXpath = "//ul[@role='listbox']//li//div//span[normalize-space(text())='{replaceValue}']/.."   #下拉菜单定位   定位形式一样
 # profiles模块列设置
 mainPage_profileColumn_columnSetting_posId = "eventfixed"  # 列设置按钮
 # profiles模块页面底部all、页面跳转设置
@@ -729,6 +730,8 @@ listPage_profilTable_serviceFunctionForwarders_tableTbody_posXpath = listPage_pr
 listPage_profilTable_serviceFunctionForwarders_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样
 listPage_profileBottomPage_serviceFunctionForwarders_button_allSelect_posXpath = mainPage_profileBottomPage_button_allSelect_posXpath     # 底部页面all选择按钮
 listPage_profileBottomPageNum_serviceFunctionForwarders_posXpath = "//*[@id='pagination-_pagination_Profile_Forwarders_Home_App_anonymousComponent']"    # 页面底部翻页 定位
+# 删除弹框中的yes按钮
+listPage_profilTable_serviceFunctionForwarders_deleteButton_warningYes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[1]"
 #listPage->Tips dialog  列表页 tips对话框
 listPage_dialogTips_serviceFunctionForwarders_button_yes_posCss = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"   #删除提示的Tips的yes按钮
 listPage_dialogTips_serviceFunctionForwarders_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath   #删除提示的Tips的close按钮
@@ -771,6 +774,8 @@ listPage_profileSearch_serviceFunctions_dropDown_item_posXpath = listPage_profil
 listPage_profileSearch_serviceFunctions_input_itemContent_posXpath = listPage_profileSearch_serviceFunctionForwarders_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_serviceFunctions_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_serviceFunctions_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
+# 删除弹框中的yes按钮
+listPage_profilTable_serviceFunctions_deleteButton_warningYes_posXpath = listPage_profilTable_serviceFunctionForwarders_deleteButton_warningYes_posXpath
 # listPage->Tips dialog  列表页 tips对话框
 listPage_dialogTips_serviceFunctions_button_yes_posCss = listPage_dialogTips_dnsRecords_button_yes_posXpath  # 删除提示的Tips的yes按钮
 listPage_dialogTips_serviceFunctions_button_no_posCss = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
@@ -821,7 +826,7 @@ listPage_profile_statisticsTemplates_delButton_name = "Delete" #"appDel-_Operate
 listPage_profileSearch_statisticsTemplates_selectLabel_posXpath = mainPage_profileSearch_selectLabel_posXpath     #查询框id    定位形式一样
 listPage_profileSearch_statisticsTemplates_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath    #查询按钮id       定位形式一样
 listPage_profileSearch_statisticsTemplates_buttonClear_posId = mainPage_profileSearch_buttonClear_posId       #清空查询按钮id    定位形式一样
-listPage_profileSearch_statisticsTemplates_dropDown_item_posXpath = "//ul[@role='listbox']//li//div//span[normalize-space(text())='{replaceValue}']/.."   #下拉菜单定位   定位形式一样
+listPage_profileSearch_statisticsTemplates_dropDown_item_posXpath = mainPage_profileSearch_searchLabel_dropDown_item_posXpath #"//ul[@role='listbox']//li//div//span[normalize-space(text())='{replaceValue}']/.."   #下拉菜单定位   定位形式一样
 listPage_profileSearch_statisticsTemplates_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath   #输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_statisticsTemplates_tableTbody_posXpath = "//*[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"   #列表tabel body  xpath   定位形式一样
 listPage_profilTable_statisticsTemplates_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath    #列表table 表头xpath   定位形式一样

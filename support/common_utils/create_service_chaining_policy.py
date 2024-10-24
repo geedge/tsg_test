@@ -51,7 +51,7 @@ class CreateServiceChainingPolicy:
         self.test_data["token"] = token
 
         # 无需创建的condition
-        service_chaining_no_create_list = ["application", "ip_protocol","sub_action_override"]
+        service_chaining_no_create_list = ["application", "ip_protocol","sub_action_override","boolean"]
         # name_list汇总
         temp_name_list = []
         policy_name_dict = {}
@@ -140,7 +140,7 @@ class CreateServiceChainingPolicy:
                     "delete": {
                         "profileListPage_allSelect_posXpath": listPage_profileBottomPage_serviceFunctionForwarders_button_allSelect_posXpath,
                         "profileListPage_deleteButton_posXpath": listPage_profile_serviceFunctionForwarders_delButton_posXpath,
-                        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_serviceFunctionForwarders_button_yes_posCss
+                        "profileListPage_deleteButton_warningYes_posXpath": listPage_profilTable_serviceFunctionForwarders_deleteButton_warningYes_posXpath
                     }
                 }
                 test_service_function_profile_element_position = {
@@ -187,7 +187,7 @@ class CreateServiceChainingPolicy:
                     "delete": {
                         "profileListPage_allSelect_posXpath": listPage_profileBottomPage_serviceFunctions_button_allSelect_posXpath,
                         "profileListPage_deleteButton_posXpath": listPage_profile_serviceFunctions_delButton_posXpath,
-                        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_serviceFunctions_button_yes_posCss
+                        "profileListPage_deleteButton_warningYes_posXpath": listPage_profilTable_serviceFunctions_deleteButton_warningYes_posXpath
                     }
                 }
 
@@ -204,6 +204,8 @@ class CreateServiceChainingPolicy:
                             for i in range(len(cond_data)):  # 遍历创建所有condition
                                 if cond_key == "protocol_filed":
                                     tmp_key = cond_data[i]["object_type"]
+                                    if tmp_key in service_chaining_no_create_list:
+                                        continue
                                     cond_key_out = tmp_key.replace("_", " ")
                                     element_position_map = get_element_position(tmp_key)
                                 else:

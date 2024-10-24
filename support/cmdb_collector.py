@@ -7,6 +7,7 @@ import support.ui_utils.env
 from datetime import datetime
 
 class CMDBCollector:
+    # configuration management database resource collector
     def collect(self, uuid):
         uuid_dict = {}
         for key, value in uuid.items():

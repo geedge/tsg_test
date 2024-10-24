@@ -38,23 +38,23 @@ class CreateRule:
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posXpath"]).click()
             elif test_data["policy_type"] == "pxy_manipulation":
                 if test_data["rule_action"] == "allow":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectAllow_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAllow_posXpath"]).click()
                 elif test_data["rule_action"] == "deny":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectDeny_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectDeny_posXpath"]).click()
                 elif test_data["rule_action"] == "monitor":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectMonitor_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectMonitor_posXpath"]).click()
                 elif test_data["rule_action"] == "redirect":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectRedirect_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectRedirect_posXpath"]).click()
                 elif test_data["rule_action"] == "replace":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectReplace_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectReplace_posXpath"]).click()
                 elif test_data["rule_action"] == "hijack":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectHijack_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectHijack_posXpath"]).click()
                 elif test_data["rule_action"] == "insert":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectInsert_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectInsert_posXpath"]).click()
                 elif test_data["rule_action"] == "edit_element":
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectEditElement_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEditElement_posXpath"]).click()
                 else:   # run script
-                    self.driver.find_element(By.ID, create_element_position["policyRulePage_selectRunScript_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectRunScript_posXpath"]).click()
             elif test_data["policy_type"]== "monitor" and  "is_mirror" in test_data :
                 if test_data["is_mirror"] == "on":
                     self.driver.find_element(By.XPATH,create_element_position["policyRulePage_mirrorTrafficButton_posXpath"]).click()
@@ -243,7 +243,7 @@ class CreateRule:
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time= 1)
+                        btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"].format(replaceValue=server_fqdn_data[t]["name"]), find_after_wait_time= 1)
                         self.driver.execute_script("arguments[0].click()", btn)
                         # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
@@ -872,10 +872,8 @@ class CreateRule:
                 if "effective_devices" in test_data:
                     self.add_effective_devices(test_data["effective_devices"], create_element_position)
 
-            # 点enable
-            # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
-            # btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
-            # self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
+            # 点enable，不加sleep有一定几率点不上
+            time.sleep(1)
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
             # 确认创建
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_posXpath"]).click()
@@ -957,7 +955,7 @@ class CreateRule:
             for x in range(len(protocol_field_data)):
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=1).send_keys(protocol_field_data[x]["name"])
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)], find_after_wait_time=0.5).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)].format(replaceValue=protocol_field_data[x]["name"]), find_after_wait_time=0.5).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
         except Exception as e:
             raise
