@@ -48,7 +48,7 @@ rulePage_okButton_warningNo_posXpath = ""
 rulePage_delete_tip_warning_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//div[contains(@class,'text-center color-[--color-text] mt-[12px] MuiBox-root')]" #删除告警页面提示信息
 rulePage_delete_tip_button_warningYes_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[@type='danger']" #删除告警页面，Yes确认删除按钮
 rulePage_delete_tip_button_warningNo_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[contains(@class,'MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary')]" ##删除告警页面，No取消删除按钮
-policyRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']/span[1]"
+policyRulePage_negateSrcIP_posXpath = '//*[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][1]//span[@class="MuiCheckbox-action css-kit57i"]/input'
 
 policyRulePage_addDstIP_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//i[@class='iconfont icon-Create1 cursor']"
 policyRulePage_searchDstIP_posXpath = "//div[@class='destinations list-box']//input[contains(@id, 'object_ip_search')]"
@@ -92,6 +92,12 @@ policyRulePage_addExternalPort_posXpath = "//label[normalize-space(text())='Exte
 policyRulePage_searchExternalPort_posXpath = policyRulePage_searchInternalPort_posXpath
 policyRulePage_selectExternalPort_posXpath = policyRulePage_selectInternalPort_posXpath
 policyRulePage_closeExternalPort_posXpath = policyRulePage_closeInternalPort_posXpath
+#flag
+policyRulePage_addFlag_posXpath = '//*[@class="monitor-policy-flag"]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchFlag_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
+policyRulePage_selectFlag_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeFlag_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
+
 # user
 policyRulePage_addUser_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][1]//div[@class="relative z-10"][2]//i[@class="iconfont icon-Create1 font-[700]"]'
 policyRulePage_searchUser_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
@@ -143,7 +149,8 @@ policyRulePage_addCondition_mailTo_posXpath = "//div[@class='css-dob60y']//div[n
 policyRulePage_addCondition_mailAccount_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Account']"
 policyRulePage_addCondition_mailAttachmentName_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Attachment Name']"
 policyRulePage_addCondition_mailAttachmentContent_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Attachment Content']"
-policyRulePage_addCondition_User_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[2]//div[normalize-space(text())='User']"
+policyRulePage_addCondition_User_posXpath = "//div[@class='px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden']//li[3]//div[normalize-space(text())='User']"
+policyRulePage_addCondition_flag_posXpath = "//div[@class='px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden']//li[7]"
 
 policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
 policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
@@ -790,6 +797,7 @@ monitorRulePage_searchSrcIP_posXpath = policyRulePage_searchSrcIP_posXpath
 monitorRulePage_selectSrcIP_posXpath = policyRulePage_selectSrcIP_posXpath
 monitorRulePage_closeSrcIP_posXpath = policyRulePage_closeSrcIP_posXpath
 monitorRulePage_negateSrcIP_posXpath = policyRulePage_negateSrcIP_posXpath
+monitorRulePage_negateServerFqdn_posXpath = policyRulePage_negateServerFqdn_posXpath
 monitorRulePage_addApplication_posXpath = policyRulePage_addApplication_posXpath
 monitorRulePage_searchApplication_posXpath = policyRulePage_searchApplication_posXpath
 monitorRulePage_selectApplication_posXpath = policyRulePage_selectApplication_posXpath
@@ -797,7 +805,7 @@ monitorRulePage_closeApplication_posXpath = policyRulePage_closeApplication_posX
 monitorRulePage_selectApplicationLabel_posXpath = policyRulePage_selectApplicationLabel_posXpath
 monitorRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectApplicationGroupLabel_posXpath
 monitorRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
-monitorRulePage_packetCapture_posXpath = "//form[@class='el-form policy_edit el-form--label-left']//div[17]//span"
+monitorRulePage_packetCapture_posXpath = '//*[text()="Packet Capture"]/ancestor::div[@class="MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw"]//*[@class="MuiSwitch-root MuiSwitch-sizeMedium css-wj9ris"]'
 monitorRulePage_packetCapture_depth_posXpath = '//div[@class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-sizeSmall css-6a5w4u"]/input'
 monitorRulePage_logOptions_all_posXpath = '//div[@ class="monitor-policy-log_option"]//button[2]'
 monitorRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']"
@@ -896,6 +904,12 @@ monitorRulePage_addUser_posXpath =  policyRulePage_addUser_posXpath
 monitorRulePage_searchUser_posXpath = policyRulePage_searchUser_posXpath
 monitorRulePage_selectUser_posXpath = policyRulePage_selectUser_posXpath
 monitorRulePage_closeUser_posXpath = policyRulePage_closeUser_posXpath
+
+#monitor add flag
+monitorRulePage_addFlag_posXpath =  policyRulePage_addFlag_posXpath
+monitorRulePage_searchFlag_posXpath = policyRulePage_searchFlag_posXpath
+monitorRulePage_selectFlag_posXpath = policyRulePage_selectFlag_posXpath
+monitorRulePage_closeFlag_posXpath = policyRulePage_closeFlag_posXpath
 #monitor add imsi
 monitorRulePage_addImsi_posXpath = policyRulePage_addImsi_posXpath
 monitorRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath

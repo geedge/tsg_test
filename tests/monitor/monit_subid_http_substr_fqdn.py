@@ -43,7 +43,7 @@ def run(parameter):
                 "destination_geography": [],
                 "sub_id": [
                     {
-                        "name": "secy_subid",
+                        "name": "monitor_subid",
                         "object_type": "subscriberid",
                         "select_type": False,
                         "negate": False,

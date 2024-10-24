@@ -18,6 +18,7 @@ mainPage_secondLevelMenu_subid_posXpath = "//div[@class='MuiCollapse-wrapper Mui
 mainPage_secondLevelMenu_apn_posXpath = "//div[@class='MuiCollapse-wrapper MuiCollapse-vertical css-hboir5']//span[text()='APNs']"  # 二级菜单apn
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
 mainPage_secondLevelMenu_account_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Accounts"]'
+mainPage_secondLevelMenu_flag_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Flags"]'
 
 
 
@@ -268,6 +269,18 @@ accountObjectPage_inputItem_posXpath = urlObjectPage_inputItem_posXpath
 accountObjectPage_button_saveItem_posXpath = '//*[@class="flex flex-row items-center"]//i[@class="operate-icon iconfont icon-save"]'
 accountObjectPage_okButton_posXpath = '//*[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'
 accountObjectPage_okButton_warningYes_posXpath = keywordsObjectPage_okButton_warningYes_posXpath
+
+#flag
+flagObjectListPage_createButton_posXpath = '//span[@class="action-create inline-flex mr-[8px] "]/button'
+flagObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_account_Home_App_anonymousComponent"
+flagObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
+flagObjectListPage_dropDown_createButton_posXpath = '//*[@class="MuiMenuItem-root MuiMenuItem-colorNeutral MuiMenuItem-variantPlain flag-item css-1rt9hnn"]'
+flagObjectPage_inputName_posXpath = keywordsObjectPage_inputName_posXpath
+flagObjectPage_addItem_posXpath = keywordsobjectPage_addItem_posXpath
+flagObjectPage_inputItem_posXpath = urlObjectPage_inputItem_posXpath
+flagObjectPage_button_saveItem_posXpath = '//*[@class="flex flex-row items-center"]//i[@class="operate-icon iconfont icon-save"]'
+flagObjectPage_okButton_posXpath = '//*[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'
+flagObjectPage_okButton_warningYes_posXpath = keywordsObjectPage_okButton_warningYes_posXpath
 # 查询
 accountObjectPage_searchLabel_posXpath = httpSignatureObjectListPage_searchLabel_posXpath
 accountObjectListPage_searchLabel_selectName_posXpath = '//*[@class="base-Popper-root MuiAutocomplete-listbox css-18r31z0"]//li[2]'

@@ -2,8 +2,11 @@
 # import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
+from telnetlib import EC
 
 from selenium.webdriver import ActionChains
+from selenium.webdriver.support.wait import WebDriverWait
+from trio import sleep
 
 from support.ui_utils.policy.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
@@ -502,14 +505,37 @@ class CreateRule:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_searchProfile_posXpath"]).send_keys(sub_action_data[0]["content"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_searchProfile_posXpath"]).send_keys(Keys.ENTER)
                             self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_alert_responseContent_selectProfile_posId"]).click()
-            
+            # 添加flag
+            if "flag" in test_data["condition"] and len(test_data["condition"]["flag"]) != 0:
+                flag_data = test_data["condition"]["flag"]
+                for t in range(len(flag_data)):
+                    if flag_data[t]['item'][0]["item_type"] == "flag":
+                        # 点add condition的+
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        # 调用flag的定位
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionFlag_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                        # 点flag的+
+                        temp_element_position = create_element_position["policyRulePage_addFlag_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 通过flag搜索并选中(与imsi共用)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchFlag_posXpath"], find_after_wait_time=1).send_keys(flag_data[t]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchFlag_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectFlag_posXpath"], find_after_wait_time=0.5).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeFlag_posXpath"]).click()
+
             # 添加packet capture
             if "packet_capture" in test_data["condition"] and len(test_data["condition"]["packet_capture"]) != 0 and test_data["condition"]["packet_capture"][0]["enable"] == True:
                 packet_capture_data = test_data["condition"]["packet_capture"]
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_posXpath"]).click()
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).clear()
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).send_keys(packet_capture_data[0]["capture_depth"])
-           
+                # 获取元素
+                input_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"])
+                # 使用JavaScript完全清除并设置新值
+                self.driver.execute_script("arguments[0].value = '';", input_element)
+                self.driver.execute_script("arguments[0].value = arguments[1];", input_element,packet_capture_data[0]["capture_depth"])
+                # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).clear()
+                # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).send_keys(packet_capture_data[0]["capture_depth"])
+                #
             # 添加shaping的priority和fair factor
             if test_data["policy_type"] == "shaping":
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_priority_posId"]).clear()
@@ -910,8 +936,14 @@ class CreateRule:
                 if ip_data[j]["negate"] == True:
                     time.sleep(1)  # 暂停1秒
                     negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)])
-                    ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
-                    negate_element.click()
+                    # 使用JavaScript确保元素完全进入视图
+                    self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});",negate_element)
+                    # 使用JavaScript执行悬停
+                    self.driver.execute_script("var evt = new MouseEvent('mouseover', {'view': window, 'bubbles': true, 'cancelable': true}); arguments[0].dispatchEvent(evt);",negate_element)
+                    # 确保元素可点击后进行点击
+                    self.driver.execute_script("arguments[0].click();", negate_element)
+                    # ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                    # negate_element.click()
         except Exception as e:
             raise
     
