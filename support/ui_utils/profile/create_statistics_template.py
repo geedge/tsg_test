@@ -429,9 +429,9 @@ class CreateStatisticsTemplate():
                 self.driver.find_element(By.XPATH, element_position_1).send_keys(data_value_1)
                 #element_dropdown_item = self.driver.find_element(By.XPATH, element_position_1). \
                     #find_element(By.XPATH, f"./ancestor::*[contains(@class, 'el-form-item el-form-item--small')]//*[contains(@class, 'el-select-dropdown__list')]/li/span[normalize-space(text())='{data_value_1}']")
-                element_dropdown_items = self.driver.find_elements(By.XPATH, statisticsTemplates_dropdown_posXpath.format(replaceDropdownIterm = data_value_1))
+                element_dropdown_items = self.driver.find_elements(By.XPATH, statisticsTemplates_after_search_dropdown_posXpath.format(replaceDropdownIterm = data_value_1))
                 if len(element_dropdown_items) == 1:
-                    element_dropdown_item = self.driver.find_element(By.XPATH, statisticsTemplates_dropdown_posXpath.format(replaceDropdownIterm = data_value_1))
+                    element_dropdown_item = self.driver.find_element(By.XPATH, statisticsTemplates_after_search_dropdown_posXpath.format(replaceDropdownIterm = data_value_1))
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "template10,No Row Limit")
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], element_dropdown_item.is_enabled())
                     #self.actions.move_to_element(element_dropdown_item).perform()

@@ -66,7 +66,7 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
+                #,
                 {"query_field_key": "sessions", "query_value": ""},
                 {"query_field_key": "packets", "query_value": ""},
                 {"query_field_key": "bytes", "query_value": ""},

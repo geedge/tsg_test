@@ -291,7 +291,7 @@ class GetLog:
                             else:
                                 temp_log_result_list.append(False)
                         elif query_field_key in dos_verify_fields:
-                            self.get_dos_temp_log_result_full_process(log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id)
+                            temp_log_result_list= self.get_dos_temp_log_result_full_process(log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id)
                         elif query_field_key in {"proxy_pinning_status", "proxy_intercept_status", "proxy_passthrough_reason"}:
                             actual_value = log[query_field_key]   # 日志查询到的值
                             except_value = query_value     # 断言的预期值
@@ -375,8 +375,8 @@ class GetLog:
         # For mitigation none,one session with full packets.
 
         #To verify the log query param
-        self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets,total_bytes, test_data, time,policy_id)
-
+        temp_log_result_list =  self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets,total_bytes, test_data, time,policy_id)
+        return temp_log_result_list
     def get_session_value_in_session_records(self, token,  api_host, start_time, end_time, v_id, test_data):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         log_condition = {
@@ -428,12 +428,12 @@ class GetLog:
         return dos_deny_sessions_count,total_packets,total_bytes
 
 
-    def validate_dos_values(self, log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,totapl_packets ,total_bytes,test_data, time,policy_id):
+    def validate_dos_values(self, log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets ,total_bytes,test_data, time,policy_id):
         #三种情况：
         #① deny:src ip+application
         #② deny:src ip
         #③ none:
-        exp_packets_count = exp_sessions_count * totapl_packets
+        exp_packets_count = exp_sessions_count * total_packets
         exp_bytes_count = exp_sessions_count * total_bytes
         #字段的验证:Bytes验证是否大于0、为负数;不再验证具体的值，不同用例回放数据包不同，Bytes无固定值
         if query_field_key == "attack_type":
