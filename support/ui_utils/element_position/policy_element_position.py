@@ -117,11 +117,12 @@ policyRulePage_chooseImei_posXpath = '//*[@class="h-[32px] bg-default mb-[4px]"]
 # apn
 policyRulePage_chooseApn_posXpath = '//*[@class="h-[32px] bg-default mb-[4px]"]//button[4]'
 
+policyRulePage_chooseCondition_posXpath = "//div[normalize-space(text())='{level1}']/parent::*//div[normalize-space(text())='{level2}']"
 policyRulePage_addCondition_posXpath = "//div[@class='flex flex-row']//button"#"//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[2]//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1xyc0ec']//div[text()='Server FQDN']"
 policyRulePage_addCondition_dstPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[2]/following-sibling::div//div[contains(text(), 'Port')]"
-policyRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
+policyRulePage_addCondition_url_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Protocol Field', level2='URL') #"//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
 policyRulePage_addCondition_uri_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URI']"
 policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
 policyRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Header']"
@@ -134,7 +135,7 @@ policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-conte
 policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[7]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='IP Protocol']"
-policyRulePage_addCondition_Boolean_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='{replaceValue}']"
+policyRulePage_addCondition_Boolean_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='{replaceValue}']"
 #policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
 policyRulePage_addCondition_ftpAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
 policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Content']"
@@ -150,10 +151,10 @@ policyRulePage_addCondition_mailAttachmentName_posXpath = "//div[@class='css-dob
 policyRulePage_addCondition_mailAttachmentContent_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Attachment Content']"
 policyRulePage_addCondition_User_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[2]//div[normalize-space(text())='User']"
 
-policyRulePage_addBoolean_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
-policyRulePage_searchBoolean_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectBoolean_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeBoolean_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addBoolean_posXpath = "//label[text()='Protocol Field']/ancestor::div[@class='MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby']//div[@class='relative z-10'][{replaceValue}]//i[@class='iconfont icon-Create1 font-[700]']"
+policyRulePage_searchBoolean_posXpath = policyRulePage_searchSrcIP_posXpath
+policyRulePage_selectBoolean_posXpath = policyRulePage_selectSrcIP_posXpath
+policyRulePage_closeBoolean_posXpath = policyRulePage_closeSrcIP_posXpath
 policyRulePage_little_button_addBoolean_posXpath='//p[normalize-space(text())="{replaceValue}"]//ancestor::div[@class="FilterItem"]//i[@class="operate-icon row-edit iconfont icon-Create1"]'
 
 #IpProtocol
@@ -1006,7 +1007,7 @@ statisticsRulePage_addCondition_internalPort_posXpath = "//div[@class='SourceLis
 statisticsRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='IP Address']"
 statisticsRulePage_addCondition_externalPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='External']/parent::*//div[normalize-space(text())='Port']"
 statisticsRulePage_addCondition_Protocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol']"
-statisticsRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URL']"
+#statisticsRulePage_addCondition_url_posXpath = policyRulePage_chooseCondition_posXpath #"//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URL']"
 statisticsRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Header']"
 statisticsRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Header']"
 statisticsRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Body']"
