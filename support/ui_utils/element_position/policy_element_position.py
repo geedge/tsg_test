@@ -133,7 +133,7 @@ policyRulePage_addCondition_internalIP_posXpath = "//div[@class='MuiDrawer-conte
 policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='IP Address']"
 policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[7]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='IP Protocol']"
+policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='IP Protocol']"
 policyRulePage_addCondition_Boolean_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='{replaceValue}']"
 #policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
 policyRulePage_addCondition_ftpAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
@@ -157,11 +157,11 @@ policyRulePage_closeBoolean_posXpath = "//div[@class='FilterList list-box']//but
 policyRulePage_little_button_addBoolean_posXpath='//p[normalize-space(text())="{replaceValue}"]//ancestor::div[@class="FilterItem"]//i[@class="operate-icon row-edit iconfont icon-Create1"]'
 
 #IpProtocol
-policyRulePage_addIpProtocol_posXpath = "//div[@zs-label='Protocol']//p[normalize-space(text())='IP Protocol']/ancestor::div[@zs-label='Protocol']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//span[normalize-space(text())='{replaceValue}']"
-policyRulePage_closeIpProtocol_posXpath = "//div[@class='ProtocolList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
-policyRulePage_little_button_addIpProtocol_posXpath='//div[@zs-label="Protocol"]//*[@class="operate-icon row-edit iconfont icon-Create1"]'
+policyRulePage_addIpProtocol_posXpath = "//div[@class='service-chaining-policy-ip_protocol']//i[@class='iconfont icon-Create1 font-[700]']"
+policyRulePage_searchIpProtocol_posXpath = policyRulePage_searchSrcIP_posXpath
+policyRulePage_selectIpProtocol_posXpath = "//div[@class='pt-[2px] overflow-hidden flex-1']//span[normalize-space(text())='{replaceValue}']"
+policyRulePage_closeIpProtocol_posXpath = policyRulePage_closeSrcIP_posXpath
+policyRulePage_little_button_addIpProtocol_posXpath = "//div[@class='service-chaining-policy-ip_protocol']//i[@class='iconfont icon-Create1 text-[18px] font-[700] text-[--color-primary] cursor-pointer']"
 
 #ServerFqdn
 policyRulePage_addServerFqdn_posXpath = "//label[text()='Server FQDN']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
