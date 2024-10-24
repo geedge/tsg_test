@@ -825,6 +825,7 @@ class DataTranslation:
                                     else:  # substring ^ $ 模式保持不变
                                         tmp_expr = expression
                             tmp_expr = tmp_expr + "&" + v[i]["item"][u]["item_key"]
+                            tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
                             add_item_dict["expression"] = tmp_expr
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
@@ -919,7 +920,6 @@ class DataTranslation:
                                     }
                                 ]
                             }
-
                         elif v[i]["item"][0]["item_type"] == "ftp_content":
                             temp = {
                                 "name": v[i]["name"],
@@ -982,6 +982,7 @@ class DataTranslation:
                                         tmp_expr = "^{}$".format(expression[1:])
                                     else:  # substring ^ $ 模式保持不变
                                         tmp_expr = expression
+                            tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
                             add_item_dict["expression"] = tmp_expr
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
