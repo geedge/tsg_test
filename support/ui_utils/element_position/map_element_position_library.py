@@ -751,6 +751,13 @@ test_service_chaining_rule_element_position = {
         "policyRulePage_searchIpProtocol_posXpath": policyRulePage_searchIpProtocol_posXpath,
         "policyRulePage_selectIpProtocol_posXpath": policyRulePage_selectIpProtocol_posXpath,
         "policyRulePage_closeIpProtocol_posXpath": policyRulePage_closeIpProtocol_posXpath,
+        # add ssl boolean type
+        "policyRulePage_addConditionBoolean_posXpath": policyRulePage_addCondition_Boolean_posXpath,
+        "policyRulePage_addBoolean_posXpath": policyRulePage_addBoolean_posXpath,
+        "policyRulePage_searchBoolean_posXpath": policyRulePage_searchBoolean_posXpath,
+        "policyRulePage_selectBoolean_posXpath": policyRulePage_selectBoolean_posXpath,
+        "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
+        "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
         # URL
         "policyRulePage_addConditionUrl_posXpath": policyRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
