@@ -52,7 +52,6 @@ rulePage_delete_tip_button_warningNo_posXpath = "//div[contains(@class,'MuiPaper
 policyRulePage_searchCondition_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectCondition_posXpath= "//ul[contains(@class,'MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd')]//li//*[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeCondition_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
-
 policyRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']/span[1]"
 
 policyRulePage_addDstIP_posXpath = "//label[normalize-space(text())='Destination']/..//label[normalize-space(text())='IP Address']/following-sibling::div/button"
@@ -121,7 +120,7 @@ policyRulePage_chooseCondition_posXpath = "//div[normalize-space(text())='{level
 policyRulePage_addCondition_posXpath = "//div[@class='flex flex-row']//button"#"//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[2]//div[normalize-space(text())='Device']"
 policyRulePage_addCondition_serverFqdn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1xyc0ec']//div[text()='Server FQDN']"
-policyRulePage_addCondition_dstPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[2]/following-sibling::div//div[contains(text(), 'Port')]"
+policyRulePage_addCondition_dstPort_posXpath = "//div[normalize-space(text())='Destination']/following-sibling::div/div[normalize-space(text())='Port']"
 policyRulePage_addCondition_url_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Protocol Field', level2='URL') #"//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
 policyRulePage_addCondition_uri_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='URI']"
 policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Request Header']"
@@ -129,11 +128,11 @@ policyRulePage_addCondition_responseHeader_posXpath = "//div[@class='css-dob60y'
 policyRulePage_addCondition_requestBody_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Request Body']"
 policyRulePage_addCondition_responseBody_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Response Body']"
 policyRulePage_addCondition_close_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
-policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_internalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[3]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[7]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_srcPort_posXpath = "//div[normalize-space(text())='Source']/following-sibling::div/div[normalize-space(text())='Port']"
+policyRulePage_addCondition_internalIP_posXpath = "//div[normalize-space(text())='Internal']/following-sibling::div/div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_externalIP_posXpath = "//div[normalize-space(text())='External']/following-sibling::div/div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_internalPort_posXpath = "//div[normalize-space(text())='Internal']/following-sibling::div/div[normalize-space(text())='Port']"
+policyRulePage_addCondition_externalPort_posXpath = "//div[normalize-space(text())='External']/following-sibling::div/div[normalize-space(text())='Port']"
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='IP Protocol']"
 policyRulePage_addCondition_Boolean_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='{replaceValue}']"
 #policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
@@ -1210,7 +1209,7 @@ dosRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
 dosRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
 #dos add ....
 dosRulePage_addCondition_imsi_posXpath = policyRulePage_addConditionImsi_posXpath
-dosRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']  |  //div[@class='SourceList list-box']//div[normalize-space(text())='URI']"
+dosRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
 dosRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
 dosRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
 dosRulePage_addCondition_requestBody_posXpath = policyRulePage_addCondition_requestBody_posXpath
@@ -1234,12 +1233,12 @@ dosRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
 dosRulePage_selectServerFqdn_posXpath = rulePage_object_list_select_name_posXpath
 dosRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 #dos add url
-dosRulePage_addUrl_posXpath = "//p[normalize-space(text())='URL']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+dosRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
 dosRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
 dosRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
 dosRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
 #dos add requset header
-dosRulePage_addRequestHeader_posXpath =  "//p[normalize-space(text())='Request Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+dosRulePage_addRequestHeader_posXpath =  policyRulePage_addRequestHeader_posXpath
 dosRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 dosRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 dosRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
