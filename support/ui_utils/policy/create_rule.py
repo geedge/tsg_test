@@ -243,7 +243,7 @@ class CreateRule:
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time= 1)
+                        btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"].format(replaceValue=server_fqdn_data[t]["name"]), find_after_wait_time= 1)
                         self.driver.execute_script("arguments[0].click()", btn)
                         # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
@@ -955,7 +955,7 @@ class CreateRule:
             for x in range(len(protocol_field_data)):
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=1).send_keys(protocol_field_data[x]["name"])
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(filed_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)], find_after_wait_time=0.5).click()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(filed_type)].format(replaceValue=protocol_field_data[x]["name"]), find_after_wait_time=0.5).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(filed_type)]).click()
         except Exception as e:
             raise

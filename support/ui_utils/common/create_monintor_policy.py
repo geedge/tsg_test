@@ -19,7 +19,7 @@ from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verify import Verify
 from support.ui_utils.element_position.map_element_position_library import get_element_position, get_name_list
-from support.ui_utils.element_position.map_element_position_library import test_monitor_profile_element_position,get_profile_element_position
+from support.ui_utils.element_position.map_element_position_library import profile_monitor_profile_element_position,get_profile_element_position
 from support.api_utils.analyse_result import Analyse
 from support.common_utils.data_translation import DataTranslation
 import support.ui_utils.env
@@ -137,7 +137,7 @@ class CreateMonitorPolicy:
                     create_monitor_profile = CreateMonitorProfile(driver, element_position_map)
                     for i in range(len(profile_data)):
                         create_monitor_profile_code = create_monitor_profile.create_monitor_profile(profile_data[i],
-                                                                                                    test_monitor_profile_element_position,
+                                                                                                    profile_monitor_profile_element_position,
                                                                                                     test_data[
                                                                                                         "profile"][i][
                                                                                                         "name"])
@@ -248,11 +248,11 @@ class CreateMonitorPolicy:
                         for x in range(len(profile_data)):
                             search_mirror_profile = SearchProfile(driver)
                             profile_return_code, first_row_checkbox_element = search_mirror_profile.search(
-                                profile_data[x]['name'], test_monitor_profile_element_position)
+                                profile_data[x]['name'], profile_monitor_profile_element_position)
                             if profile_return_code == 200:
                                 delete_mirror_profile = DeleteProfile(driver)
                                 delete_profile_code = delete_mirror_profile.delete(
-                                    test_monitor_profile_element_position,
+                                    profile_monitor_profile_element_position,
                                     first_row_checkbox_element, True)
                                 if delete_profile_code == 200:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

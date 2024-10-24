@@ -11,7 +11,7 @@ mainPage_secondLevelMenu_ipAddress_posXpath = '//*[@class="MuiListItemText-root 
 mainPage_secondLevelMenu_port_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Ports"]' # 二级菜单Ports
 mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
 mainPage_secondLevelMenu_keywords_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Keywords"]'
-mainPage_secondLevelMenu_url_posId = "Objects_url"
+mainPage_secondLevelMenu_url_posXpath = "//span[text()='URLs']"
 mainPage_secondLevelMenu_mobileIdentify_posXpath = "//div[@class='MuiListItemText-root css-1wojmrk']//span[text()='Mobile Identities']"
 mainPage_secondLevelMenu_fqdn_posXpath = "//div[@class='MuiCollapse-wrapper MuiCollapse-vertical css-hboir5']//span[text()='FQDNs']"  # 二级菜单 fqdn
 mainPage_secondLevelMenu_subid_posXpath = "//div[@class='MuiCollapse-wrapper MuiCollapse-vertical css-hboir5']//span[text()='Subscriber IDs']"  # 二级菜单sub id
@@ -26,7 +26,8 @@ objectListPage_search_button_posXpath = "//*[@class='MuiButtonBase-root MuiButto
 objectListPage_tableTbody_posXpath = "//*[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"
 objectListPage_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//*[@class='MuiCheckbox-action css-kit57i']/parent::span[last()]//input"
 objectListPage_full_text_search_dropDown_item_posXpath = "//ul[@role='listbox']//li[1]" # Object全文检索串
-
+objectListPage_handleButton_posXpath = "//i[@class='iconfont icon-{replaceName}']/parent::*/parent::*" # Object 列表Create、Edit、Delete、Link等操作按钮根据名称定位
+objectListPage_dropDown_createButton_posXpath = "//li[@class='MuiMenuItem-root MuiMenuItem-colorNeutral MuiMenuItem-variantPlain {}-item css-1rt9hnn']"
 #Object Group公共定位
 ObjectListPage_searchLabel_posId = "select-label"  # 查询框id
 ObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
@@ -165,8 +166,8 @@ fqdnObjectListPage_searchLabel_selectName_posXpath = "//span[normalize-space(tex
 fqdnObjectListPage_deleteButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"
 fqdnObjectListPage_deleteButton_warningYes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[text()='Yes']"
 fqdnObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
-fqdnObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
-fqdnObjectListPage_tableTbody_posXpath = ipObjectListPage_tableTbody_posXpath
+fqdnObjectListPage_allSelect_posXpath = objectListPage_allSelect_posXpath
+fqdnObjectListPage_tableTbody_posXpath = objectListPage_tableTbody_posXpath
 fqdnObjectListPage_search_input_posXpath = objectListPage_search_input_posXpath
 fqdnObjectListPage_search_dropDown_item_posXpath = objectListPage_search_dropDown_item_posXpath
 fqdnObjectListPage_search_button_posXpath = objectListPage_search_button_posXpath
@@ -249,20 +250,27 @@ httpSignatureObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon
 httpSignatureObjectPage_okButton_posId = "OK-_HttpSigDetail_Home_App_anonymousComponent"
 httpSignatureObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
 
+objectPage_inputName_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]' # name输入框Xpath
+objectPage_addItem_button_posXpath = "//div[@class='mt-[10px] flex justify-center']/button" #添加Item按钮#//div[@class='mt-[10px] flex justify-center']//i[contains(@class,'icon-Create1')]
+objectPage_addItemSubstring_button_posXpath = "//div[@class='form-list-row css-xpbhx9']//div[@class='MuiBox-root css-0']//i[@class='iconfont icon-Create1 font-[700]']" #添加Item 子串按钮
+objectPage_item_input_posXpath = "(//div[@class='form-list-row css-xpbhx9']//div[@class='MuiBox-root css-0']//input[@class='MuiInput-input css-1u0jcuo'])[last()]" #根据UI特性获取最后一个Item子串输入框
+objectPage_saveItem_posXpath = "//div[@class='MuiTableCell-root MuiTableCell-sizeMedium css-zhiahd']//i[@class='operate-icon iconfont icon-save']"
+objectPage_okButton_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[normalize-space(text())='OK']" #Object界面保存对象按钮
 # url
-urlObjectListPage_createButton_posId = "objectCreate-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
-urlObjectListPage_deleteButton_posId = "appDel-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
-urlObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
-urlObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
-urlobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath
-urlObjectPage_inputItem_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'     # input 输入框，简单的第一个定位，后期优化
-urlObjectPage_saveItem_posXpath = "//div[@class='item-box']//i[contains(@class, 'save-color')]"     # input item保存，简单的第一个定位，后期优化
-urlObjectPage_sameItem_inputItem_posXpath='(//div[@class="item-box"]//input)[last()]'
-urlObjectPage_sameItem_addItem_posXpath='//*[@class="mt-[10px] flex justify-center"]//i'
-urlObjectPage_okButton_posId = "OK-_URLDetail_Home_App_anonymousComponent"
+urlObjectListPage_createButton_posXpath = objectListPage_handleButton_posXpath.format(replaceName='Create')
+urlObjectListPage_deleteButton_posXpath = objectListPage_handleButton_posXpath.format(replaceName='Delete')#"appDel-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"
+urlObjectListPage_dropDown_createButton_posXpath = objectListPage_dropDown_createButton_posXpath.format("url")
+urlObjectPage_inputName_posXpath = objectPage_inputName_posXpath
+urlObjectPage_addItem_posXpath = objectPage_addItem_button_posXpath
+urlObjectPage_addItemSubstring_button_posXpath = objectPage_addItemSubstring_button_posXpath
+urlObjectPage_inputItem_posXpath = objectPage_item_input_posXpath #'//*[@class="MuiInput-input css-1u0jcuo"]'     # input 输入框，简单的第一个定位，后期优化
+urlObjectPage_saveItem_posXpath = objectPage_saveItem_posXpath #"//div[@class='item-box']//i[contains(@class, 'save-color')]"     # input item保存，简单的第一个定位，后期优化
+urlObjectPage_sameItem_inputItem_posXpath ='(//div[@class="item-box"]//input)[last()]'
+urlObjectPage_sameItem_addItem_posXpath ='//*[@class="mt-[10px] flex justify-center"]//i'
+urlObjectPage_okButton_posXpath = objectPage_okButton_posXpath
 urlObjectPage_okButton_warningYes_posXpath = httpSignatureObjectPage_okButton_warningYes_posXpath
 # 查询
-urlObjectPage_searchLabel_posId = httpSignatureObjectListPage_searchLabel_posXpath
+urlObjectPage_searchLabel_posXpath = httpSignatureObjectListPage_searchLabel_posXpath
 urlObjectListPage_searchLabel_selectName_posXpath = "//*[@id='2-_FilteredSearch_ElRow_Objects_url_Home_App_anonymousComponent']"
 urlObjectListPage_allSelect_posXpath = objectListPage_allSelect_posXpath
 urlObjectListPage_search_input_posXpath = objectListPage_search_input_posXpath
