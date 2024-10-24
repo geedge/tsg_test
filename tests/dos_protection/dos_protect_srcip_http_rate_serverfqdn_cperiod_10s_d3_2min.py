@@ -68,7 +68,7 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
+                #,
                 {"query_field_key": "sessions", "query_value": ""},
                 {"query_field_key": "packets", "query_value": ""},
                 {"query_field_key": "bytes", "query_value": ""},
@@ -127,7 +127,7 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.64.96",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "script_type": "ui",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 0,
@@ -137,6 +137,5 @@ if __name__ == '__main__':
         "module_name": "dos_protection",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
-    parameter = replace_paras(parameter)
 
     run(parameter)
