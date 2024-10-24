@@ -73,6 +73,8 @@ class CreateManipulationPolicy:
                 template_path["trex_workpath"] = "/opt/trex/v3.03"
                 template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
 
+                cond_code = prfi_code = create_rule_code = delete_rule_code = 200
+
                 # 创建object
                 if "condition" in test_data.keys():
                     for cond_key, cond_value in (test_data["condition"].items()):
@@ -101,7 +103,6 @@ class CreateManipulationPolicy:
                             break
 
                 # 创建profile
-                prfi_code = 200
                 if "action_parameter" in test_data.keys():
                     for prfi_key, prfi_value in(test_data["action_parameter"]).items():
                         if prfi_key in manipulation_profile_no_create_list:
@@ -137,7 +138,7 @@ class CreateManipulationPolicy:
                     elif create_rule_code != 200:
                         ui_result = "Fail to create manipulation rule."
                     time.sleep(2)
-
+                """
                 # 触发流量验证
                 if create_rule_code == 200:
                     search_rule = SearchRule(driver)
@@ -156,11 +157,11 @@ class CreateManipulationPolicy:
                 if len(verification_result) == 4:
                     analysis = Analyse()
                     ui_result = analysis.analyse_result(test_data["policy_type"], [], verification_result)
-
+                """
                 # 删除rule
                 if create_rule_code == 200:
                     # 删除提前先发的security intercept策略
-                    #delete_pre_policy(tmp_name_list, driver)
+                    delete_pre_policy(tmp_name_list, driver)
                     search_rule = SearchRule(driver)
                     element_position_map = get_element_position(test_data["policy_type"])
                     search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)

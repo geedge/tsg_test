@@ -1033,7 +1033,7 @@ statisticsRulePage_searchSrcIP_posXpath = rulePage_object_list_search_input_posX
 statisticsRulePage_selectSrcIP_posXpath = rulePage_object_list_select_name_posXpath #"//div[@class='SourceList list-box']//span[normalize-space(text())='{replaceValue}']"
 statisticsRulePage_closeSrcIP_posXpath = rulePage_object_list_close_button_posXpath #"//div[@class='SourceList list-box']//div[@class='rigth-menu-button-info']//button"
 # Source Port的添加、查询、选中、关闭操作
-statisticsRulePage_addSourcePort_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Source", secondType="IP Port") #policyRulePage_addInternalPort_posXpath
+statisticsRulePage_addSourcePort_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Source", secondType="Port") #policyRulePage_addInternalPort_posXpath
 statisticsRulePage_searchSourcePort_posXpath = rulePage_object_list_search_input_posXpath #policyRulePage_searchInternalPort_posXpath
 statisticsRulePage_selectSourcePort_posXpath = rulePage_object_list_select_name_posXpath #policyRulePage_selectInternalPort_posXpath
 statisticsRulePage_closeSourcePort_posXpath = rulePage_object_list_close_button_posXpath #policyRulePage_closeInternalPort_posXpath
@@ -1053,7 +1053,7 @@ statisticsRulePage_searchDstIP_posXpath = rulePage_object_list_search_input_posX
 statisticsRulePage_selectDstIP_posXpath = rulePage_object_list_select_name_posXpath #"//div[@class='destinations list-box']//span[normalize-space(text())='{replaceValue}']"
 statisticsRulePage_closeDstIP_posXpath = rulePage_object_list_close_button_posXpath #"//div[@class='destinations list-box']//div[@class='rigth-menu-button-info']//button"
 # Source Port的添加、查询、选中、关闭操作
-statisticsRulePage_addDestinationPort_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Destination",secondType="IP Port") #policyRulePage_addInternalPort_posXpath
+statisticsRulePage_addDestinationPort_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Destination",secondType="Port") #policyRulePage_addInternalPort_posXpath
 statisticsRulePage_searchDestinationPort_posXpath = rulePage_object_list_search_input_posXpath #policyRulePage_searchInternalPort_posXpath
 statisticsRulePage_selectDestinationPort_posXpath = rulePage_object_list_select_name_posXpath #policyRulePage_selectInternalPort_posXpath
 statisticsRulePage_closeDestinationPort_posXpath = rulePage_object_list_close_button_posXpath #policyRulePage_closeInternalPort_posXpath
@@ -1063,7 +1063,7 @@ statisticsRulePage_searchInternalIP_posXpath = rulePage_object_list_search_input
 statisticsRulePage_selectInternalIP_posXpath = rulePage_object_list_select_name_posXpath #policyRulePage_selectInternalIP_posXpath
 statisticsRulePage_closeInternalIP_posXpath = rulePage_object_list_close_button_posXpath #policyRulePage_closeInternalIP_posXpath
 # Internal Port的添加、查询、选中、关闭操作
-statisticsRulePage_addInternalPort_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Internal",secondType="IP Port") #policyRulePage_addInternalPort_posXpath
+statisticsRulePage_addInternalPort_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Internal",secondType="Port") #policyRulePage_addInternalPort_posXpath
 statisticsRulePage_searchInternalPort_posXpath = rulePage_object_list_search_input_posXpath #policyRulePage_searchInternalPort_posXpath
 statisticsRulePage_selectInternalPort_posXpath = rulePage_object_list_select_name_posXpath #policyRulePage_selectInternalPort_posXpath
 statisticsRulePage_closeInternalPort_posXpath = rulePage_object_list_close_button_posXpath #policyRulePage_closeInternalPort_posXpath
@@ -1073,7 +1073,7 @@ statisticsRulePage_searchExternalIP_posXpath = rulePage_object_list_search_input
 statisticsRulePage_selectExternalIP_posXpath = rulePage_object_list_select_name_posXpath #policyRulePage_selectExternalIP_posXpath
 statisticsRulePage_closeExternalIP_posXpath = rulePage_object_list_close_button_posXpath #policyRulePage_closeExternalIP_posXpath
 # External Port的添加、查询、选中、关闭操作
-statisticsRulePage_addExternalPort_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="External",secondType="IP Port") #policyRulePage_addInternalPort_posXpath
+statisticsRulePage_addExternalPort_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="External",secondType="Port") #policyRulePage_addInternalPort_posXpath
 statisticsRulePage_searchExternalPort_posXpath = rulePage_object_list_search_input_posXpath #policyRulePage_searchInternalPort_posXpath
 statisticsRulePage_selectExternalPort_posXpath = rulePage_object_list_select_name_posXpath #policyRulePage_selectInternalPort_posXpath
 statisticsRulePage_closeExternalPort_posXpath = rulePage_object_list_close_button_posXpath #policyRulePage_closeInternalPort_posXpath
@@ -1224,7 +1224,7 @@ dosRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
 dosRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
 #dos add ....
 dosRulePage_addCondition_imsi_posXpath = policyRulePage_addConditionImsi_posXpath
-dosRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']  |  //div[@class='SourceList list-box']//div[normalize-space(text())='URI']"
+dosRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
 dosRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
 dosRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
 dosRulePage_addCondition_requestBody_posXpath = policyRulePage_addCondition_requestBody_posXpath
@@ -1248,12 +1248,12 @@ dosRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
 dosRulePage_selectServerFqdn_posXpath = rulePage_object_list_select_name_posXpath
 dosRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 #dos add url
-dosRulePage_addUrl_posXpath = "//p[normalize-space(text())='URL']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+dosRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
 dosRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
 dosRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
 dosRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
 #dos add requset header
-dosRulePage_addRequestHeader_posXpath =  "//p[normalize-space(text())='Request Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+dosRulePage_addRequestHeader_posXpath =  policyRulePage_addRequestHeader_posXpath
 dosRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 dosRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 dosRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath

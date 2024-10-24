@@ -39,6 +39,7 @@ mainPage_secondLevelMenu_cachedIntermediateCertificates_posId = "Proxy_Certifica
 mainPage_secondLevelMenu_sslFingerprint_posId = "Proxy_CertificateManagement/SSL_Fingerprint"  # 二级菜单SSL Fingerprint
 mainPage_secondLevelMenu_tcpProxyProfiles_posId = "Advanced/advanced"  # 二级菜单tcp proxy profiles
 mainPage_secondLevelMenu_hijackFiles_posId = "Proxy_Profiles/Profile_HijackFiles"  # 二级菜单hijack files
+mainPage_secondLevelMenu_hijackFiles_posName = "JS Files"  # 二级菜单hijack files
 mainPage_secondLevelMenu_insertScripts_posId = "Proxy_Profiles/Profile_Insert"  # 二级菜单insert scripts
 mainPage_secondLevelMenu_tsgProxyScripts_posId = "Proxy_Profiles/runScript"  # 二级菜单tsg proxy scripts
 mainPage_secondLevelMenu_vpnAccounts_posId = "Setting_Wannat/VPN_Account"  # 二级菜单vpn accounts
@@ -438,17 +439,17 @@ tcpProxyProfiles_button_cancel_posCss = "#proxyTCPCancel span"  # Cancel按钮cs
 
 # Profiles hijack files===================Profiles hijack files====================Profiles hijack files=================Profiles hijack files=======================Profiles hijack files
 # listPage->hijack files list page  列表页
-listPage_profile_hijackFiles_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_HijackFiles_Home_App_anonymousComponent"  # create按钮id
-listPage_profile_hijackFiles_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_HijackFiles_Home_App_anonymousComponent"  # edit按钮id
-listPage_profile_hijackFiles_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_HijackFiles_Home_App_anonymousComponent"  # del按钮id
+listPage_profile_hijackFiles_createButton_posXpath = "//button//i[contains(@class, 'icon-Create')]"  # create按钮id
+listPage_profile_hijackFiles_editButton_posXpath = "//button//i[contains(@class, 'icon-Editinpage')]"  # edit按钮id
+listPage_profile_hijackFiles_delButton_posXpath = "//button//i[contains(@class, 'icon-Delete')]"  # del按钮id
 listPage_profile_hijackFiles_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_HijackFiles_Home_App_anonymousComponent"  # link按钮id
 listPage_profileColumn_hijackFiles_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_hijackFiles_button_cancel_posId = "dropColcancel-_ElementSet_Profile_HijackFiles_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_hijackFiles_button_ok_posId = "dropColOK-_ElementSet_Profile_HijackFiles_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_hijackFiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
-listPage_profileSearch_hijackFiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
+listPage_profileSearch_hijackFiles_selectLabel_posXpath = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_hijackFiles_buttonSearch_posXpath = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_hijackFiles_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
-listPage_profileSearch_hijackFiles_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
+listPage_profileSearch_hijackFiles_dropDown_item_posXpath = mainPage_profileSearch_searchLabel_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_hijackFiles_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_hijackFiles_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_hijackFiles_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
