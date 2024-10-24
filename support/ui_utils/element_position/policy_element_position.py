@@ -11,7 +11,7 @@ mainPage_policySecondLevelMenu_statistics_posXpath = "//li[contains(@class,'menu
 mainPage_policySecondLevelMenu_dos_posXpath = "//*[normalize-space(text())='DoS Protection']" # 二级菜单DoS Protection
 
 mainPage_button_menu_posXCss = ".menu-btn span"
-mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']" 
+mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
 
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
@@ -129,11 +129,11 @@ policyRulePage_addConditionImsi_posXpath = "//div[@class='MuiDrawer-content css-
 policyRulePage_addCondition_serverFqdn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1xyc0ec']//div[text()='Server FQDN']"
 policyRulePage_addCondition_dstPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[2]/following-sibling::div//div[contains(text(), 'Port')]"
 policyRulePage_addCondition_url_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Protocol Field', level2='URL') #"//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
-policyRulePage_addCondition_uri_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URI']"
-policyRulePage_addCondition_requestHeader_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="Request Header"]'
-policyRulePage_addCondition_responseHeader_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="Response Header"]'
-policyRulePage_addCondition_requestBody_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="Request Body"]'
-policyRulePage_addCondition_responseBody_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="Response Body"]'
+policyRulePage_addCondition_uri_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='URI']"
+policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Request Header']"
+policyRulePage_addCondition_responseHeader_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Response Header']"
+policyRulePage_addCondition_requestBody_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Request Body']"
+policyRulePage_addCondition_responseBody_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Response Body']"
 policyRulePage_addCondition_close_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 policyRulePage_addCondition_srcPort_posXpath = "//div[@class='px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden']//li[3]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_internalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[5]//div[normalize-space(text())='IP Address']"
@@ -143,10 +143,10 @@ policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-con
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='IP Protocol']"
 policyRulePage_addCondition_Boolean_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='{replaceValue}']"
 #policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
-policyRulePage_addCondition_ftpAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
-policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Content']"
-policyRulePage_addCondition_cn_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="CN"]'
-policyRulePage_addCondition_san_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="SAN"]'
+policyRulePage_addCondition_ftpAccount_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Account']"
+policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Content']"
+policyRulePage_addCondition_cn_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='CN']"
+policyRulePage_addCondition_san_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='SAN']"
 policyRulePage_addCondition_qname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='QNAME']"
 policyRulePage_addCondition_mailSubject_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Subject']"
 policyRulePage_addCondition_mailContent_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Content']"
@@ -174,49 +174,49 @@ policyRulePage_little_button_addIpProtocol_posXpath = "//div[@class='service-cha
 #ServerFqdn
 policyRulePage_addServerFqdn_posXpath = "//label[text()='Server FQDN']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
-policyRulePage_selectServerFqdn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
+policyRulePage_selectServerFqdn_posXpath = "//ul[contains(@class,'MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd')]//li//*[normalize-space(text())='{replaceValue}']"#Rule打开Obeject侧滑列表，搜索后选择Object定位 #仅选择指定记录"//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
 policyRulePage_closeServerFqdn_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
 policyRulePage_negateServerFqdn_posXpath = '//*[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][2]//*[@class="relative z-10"][2]//span[@class="MuiCheckbox-action css-kit57i"]/input'
 
 # cn
-policyRulePage_addCn_posXpath = "//label[normalize-space(text())='CN']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
-policyRulePage_searchCn_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
-policyRulePage_selectCn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
-policyRulePage_closeCn_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
+policyRulePage_addCn_posXpath = "///label[normalize-space(text())='CN']/following-sibling::div/button"
+policyRulePage_searchCn_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectCn_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeCn_posXpath = policyRulePage_closeCondition_posXpath
 # san
-policyRulePage_addSan_posXpath = "//label[normalize-space(text())='SAN']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
-policyRulePage_searchSan_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
-policyRulePage_selectSan_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
-policyRulePage_closeSan_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
+policyRulePage_addSan_posXpath = "//label[normalize-space(text())='SAN']/following-sibling::div/button"
+policyRulePage_searchSan_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectSan_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeSan_posXpath = policyRulePage_closeCondition_posXpath
 # qname
 policyRulePage_addQname_posXpath = "//label[normalize-space(text())='QNAME']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 policyRulePage_searchQname_posXpath = policyRulePage_searchServerFqdn_posXpath
-policyRulePage_selectQname_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
+policyRulePage_selectQname_posXpath = policyRulePage_selectCondition_posXpath
 policyRulePage_closeQname_posXpath = policyRulePage_closeServerFqdn_posXpath
 
 #url
-policyRulePage_addUrl_posXpath = '//*[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//*[@class="relative z-10"][{replaceValue}]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchUrl_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
-policyRulePage_selectUrl_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
-policyRulePage_closeUrl_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
+policyRulePage_addUrl_posXpath = "//label[normalize-space(text())='URL']/following-sibling::div/button"
+policyRulePage_searchUrl_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectUrl_posXpath =  policyRulePage_selectCondition_posXpath
+policyRulePage_closeUrl_posXpath = policyRulePage_closeCondition_posXpath
 
 #RequestHeader
-policyRulePage_addRequestHeader_posXpath = '//*[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//*[@class="relative z-10"][{replaceValue}]//i[@class="iconfont icon-Create1 font-[700]"]'
-policyRulePage_searchRequestHeader_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
-policyRulePage_selectRequestHeader_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
-policyRulePage_closeRequestHeader_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
+policyRulePage_addRequestHeader_posXpath = "//label[normalize-space(text())='Request Header']/following-sibling::div/button"
+policyRulePage_searchRequestHeader_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectRequestHeader_posXpath =  policyRulePage_selectCondition_posXpath
+policyRulePage_closeRequestHeader_posXpath = policyRulePage_closeCondition_posXpath
 
 #ftp account
-policyRulePage_addFtpAccount_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Account']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchFtpAccount_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectFtpAccount_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeFtpAccount_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addFtpAccount_posXpath = "//label[normalize-space(text())='Account']/following-sibling::div/button"
+policyRulePage_searchFtpAccount_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectFtpAccount_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeFtpAccount_posXpath =  policyRulePage_closeCondition_posXpath
 
 # ftp content
-policyRulePage_addFtpContent_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Content']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchFtpContent_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectFtpContent_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeFtpContent_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addFtpContent_posXpath = "//label[normalize-space(text())='Content']/following-sibling::div/button"
+policyRulePage_searchFtpContent_posXpath = policyRulePage_searchCondition_posXpath
+policyRulePage_selectFtpContent_posXpath = policyRulePage_selectCondition_posXpath
+policyRulePage_closeFtpContent_posXpath =  policyRulePage_closeCondition_posXpath
 
 #mail from
 policyRulePage_addMailFrom_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//i[@class="iconfont icon-Create1 font-[700]"]'
@@ -262,7 +262,7 @@ securityRuleListPage_searchLable_posId = "select-label"
 securityRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
 securityRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
 securityRuleListPage_searchLable_searchButton_posId = "searchQuery"
-securityRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
+securityRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
 securityRulelistPage_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]']//span[@class='MuiCheckbox-checkbox css-n110n']"
 
 securityRulePage_inputName_posXpath = "//*[contains(@class, 'MuiInput-input') and contains(@class, 'css-fqt4w4')]"
@@ -336,7 +336,7 @@ securityRulePage_addCondition_cn_posXpath = policyRulePage_addCondition_cn_posXp
 securityRulePage_addCondition_san_posXpath = policyRulePage_addCondition_san_posXpath
 securityRulePage_addCondition_qname_posXpath = policyRulePage_addCondition_qname_posXpath
 securityRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
- 
+
 
 securityRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
 securityRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
@@ -373,21 +373,21 @@ securityRulePage_searchImsi_posXpath = policyRulePage_searchImsi_posXpath
 securityRulePage_selectImsi_posXpath = policyRulePage_selectImsi_posXpath
 securityRulePage_closeImsi_posXpath = policyRulePage_closeImsi_posXpath
 # ftp account
-securityRulePage_addftpAccount_posXpath = policyRulePage_addFtpAccount_posXpath 
-securityRulePage_searchftpAccount_posXpath = policyRulePage_searchFtpAccount_posXpath 
-securityRulePage_selectftpAccount_posXpath = policyRulePage_selectFtpAccount_posXpath 
+securityRulePage_addftpAccount_posXpath = policyRulePage_addFtpAccount_posXpath
+securityRulePage_searchftpAccount_posXpath = policyRulePage_searchFtpAccount_posXpath
+securityRulePage_selectftpAccount_posXpath = policyRulePage_selectFtpAccount_posXpath
 securityRulePage_closeftpAccount_posXpath = policyRulePage_closeFtpAccount_posXpath
 # ftp content
-securityRulePage_addftpContent_posXpath = policyRulePage_addFtpContent_posXpath 
-securityRulePage_searchftpContent_posXpath = policyRulePage_searchFtpContent_posXpath 
-securityRulePage_selectftpContent_posXpath = policyRulePage_selectFtpContent_posXpath 
+securityRulePage_addftpContent_posXpath = policyRulePage_addFtpContent_posXpath
+securityRulePage_searchftpContent_posXpath = policyRulePage_searchFtpContent_posXpath
+securityRulePage_selectftpContent_posXpath = policyRulePage_selectFtpContent_posXpath
 securityRulePage_closeftpContent_posXpath = policyRulePage_closeFtpContent_posXpath
 
 
-#phone number 
+#phone number
 securityRulePage_choosePhoneNumber_posXpath = policyRulePage_choosePhoneNumber_posXpath
 
-#phone number 
+#phone number
 securityRulePage_chooseImei_posXpath = policyRulePage_chooseImei_posXpath
 
 securityRulePage_enable_posXpath = '//*[text()="Enabled"]/ancestor::div[@class="MuiFormControl-root MuiFormControl-horizontal MuiFormControl-sizeMd css-90yvhw"]//*[@class="MuiSwitch-root MuiSwitch-sizeMedium css-wj9ris"]'
@@ -440,10 +440,21 @@ securityRulePage_subAction_alert_responseContent_selectProfile_posId = "filelist
 securityRulePage_packetCapture_posXpath = "//form[@class='el-form policy_edit el-form--label-left']//div[17]//span"
 securityRulePage_packetCapture_depth_posXpath = "//div[@class='el-form-item labelStyle padding-left20 el-form-item--small']//input[@class='el-input__inner']"
 
- 
-# intercept
+
+# intercept 策略
 interceptRuleListPage_createButton_posXpath = ruleListPage_createButton_posXpath
+# search
+interceptRuleListPage_searchLabel_posXpath = ruleListPage_searchLabel_posXpath
+interceptRuleListPage_searchLabel_dropDown_item_posXpath = ruleListPage_searchLabel_dropDown_item_posXpath
+interceptRuleListPage_searchLabel_input_itemContent_posXpath = ruleListPage_searchLabel_input_itemContent_posXpath
+interceptRuleListPage_searchLabel_searchButton_posXpath = ruleListPage_searchLabel_searchButton_posXpath
+interceptRuleListPage_tableTbody_posXpath = ruleListPage_tableTbody_posXpath
+# delete
 interceptRuleListPage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
+interceptRuleListPage_allSelect_posXpath = ruleListPage_allSelect_posXpath #
+interceptRuleListPage_deleteTipButton_warningYes_posXpath = ruleListPage_delete_tip_button_warningYes_posXpath
+interceptRuleListPage_deleteTipButton_warningNo_posXpath = ruleListPage_delete_tip_button_warningNo_posXpath
+# name
 interceptRulePage_inputName_posXpath = rulePage_inputName_posXpath
 interceptRulePage_selectAction_posXpath = "//div[@class='intercept-policy-action']//button[1]"
 # rule 页面中Add Condition按钮定位
@@ -464,7 +475,7 @@ interceptRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_selectAp
 # Server FQDN的添加、查询、选中、关闭操作
 interceptRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
 interceptRulePage_searchServerFqdn_posXpath = "//div[@class='rm-content']//input[@id='object_ip_search']"
-interceptRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
+interceptRulePage_selectServerFqdn_posXpath = rulePage_object_list_select_name_posXpath
 interceptRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 # action parameter trusted
 interceptRulePage_intercept_addTrustedSelectBox_posXpath = "//div[@zs-label='keyring_for_trusted']//span[@class='el-input__suffix']//i"   # trusted  选择框  定位
@@ -497,8 +508,17 @@ interceptRulePage_okButton_warningNo_posXpath = rulePage_okButton_warningNo_posX
 
 #### manipulation
 manipulationRuleListPage_createButton_posXpath = ruleListPage_createButton_posXpath
-manipulationRuleListPage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
-manipulationRuleListpage_okButton_warningYes_posXpath = securityRuleListpage_okButton_warningYes_posXpath
+# search
+manipulationRuleListpage_searchLabel_posXpath = ruleListPage_searchLabel_posXpath
+manipulationRuleListpage_searchLabel_dropDown_item_posXpath = ruleListPage_searchLabel_dropDown_item_posXpath
+manipulationRuleListpage_searchLabel_input_itemContent_posXpath = ruleListPage_searchLabel_input_itemContent_posXpath
+manipulationRuleListpage_searchLabel_searchButton_posXpath = ruleListPage_searchLabel_searchButton_posXpath
+manipulationRuleListpage_tableTbody_posXpath = ruleListPage_tableTbody_posXpath
+# delete
+manipulationRuleListpage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
+manipulationRuleListpage_allSelect_posXpath = ruleListPage_allSelect_posXpath #
+manipulationRuleListpage_deleteTipButton_warningYes_posXpath = ruleListPage_delete_tip_button_warningYes_posXpath
+manipulationRuleListpage_deleteTipButton_warningNo_posXpath = ruleListPage_delete_tip_button_warningNo_posXpath
 # 名字输入定位
 manipulationRulePage_inputName_posXpath = securityRulePage_inputName_posXpath
 # 动作action定位
@@ -512,7 +532,7 @@ manipulationRulePage_selectInsert_posXpath = "//div[@class='manipulation-policy-
 manipulationRulePage_selectEditElement_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-a-ElementEditing1')]"
 manipulationRulePage_selectRunScript_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-run-script')]"
 # rule 页面中Add Condition按钮定位
-manipulationRulePage_addCondition_posXpath = "//*[@id='policy_condition-_ConditionModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_Edit_Home_App_anonymousComponent']"
+manipulationRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 manipulationRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 # rule 中添加condition侧滑中选择行定位
 manipulationRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
@@ -531,7 +551,7 @@ manipulationRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceLis
 manipulationRulePage_addCondition_user_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='User']/parent::*//div[normalize-space(text())='User']"
 manipulationRulePage_addCondition_imsi_posXpath = "//div[@class='SourceList list-box']/parent::*//div[normalize-space(text())='Device']"
 manipulationRulePage_addCondition_Protocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol']"
-manipulationRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URL']"
+manipulationRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
 manipulationRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Header']"
 manipulationRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Header']"
 manipulationRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Body']"
@@ -540,7 +560,7 @@ manipulationRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceL
 ## Sorce IP Address的添加、查询、选中、关闭操作
 manipulationRulePage_addSrcIP_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Source", secondType="IP Address")
 manipulationRulePage_searchSrcIP_posXpath = rulePage_object_list_search_input_posXpath
-manipulationRulePage_selectSrcIP_posXpath = rulePage_object_list_select_name_posXpath
+manipulationRulePage_selectSrcIP_posXpath = policyRulePage_selectServerFqdn_posXpath
 manipulationRulePage_closeSrcIP_posXpath = rulePage_object_list_close_button_posXpath
 ## Internal IP的添加、查询、选中、关闭操作
 manipulationRulePage_addInternalIP_posXpath = policyRulePage_addInternalIP_posXpath
@@ -601,10 +621,10 @@ manipulationRulePage_searchQname_posXpath = "//div[@class='rm-content']//input[@
 manipulationRulePage_selectQname_posXpath = policyRulePage_selectQname_posXpath
 manipulationRulePage_closeServerQname_posXpath = policyRulePage_closeQname_posXpath
 # url的添加、查询、选中、关闭操作
-manipulationRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
-manipulationRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
-manipulationRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
-manipulationRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
+manipulationRulePage_addUrl_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Protocol Field",secondType="URL")
+manipulationRulePage_searchUrl_posXpath = rulePage_object_list_search_input_posXpath
+manipulationRulePage_selectUrl_posXpath = policyRulePage_selectServerFqdn_posXpath
+manipulationRulePage_closeUrl_posXpath = rulePage_object_list_close_button_posXpath
 # request header的添加、查询、选中、关闭操作
 manipulationRulePage_addRequestHeader_posXpath = "//label[normalize-space(text())='Request Header']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 manipulationRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
@@ -626,14 +646,14 @@ manipulationRulePage_searchResponseBody_posXpath = policyRulePage_searchRequestH
 manipulationRulePage_selectResponseBody_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeResponseBody_posXpath = policyRulePage_closeRequestHeader_posXpath
 # action parameter deny
-manipulationRulePage_deny_addResponseCodeSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Code']/parent::*//i"   # resposne code 选择框
-manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_code}']"   # reposne code 下拉列表定位
-manipulationRulePage_deny_addResponseContentSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Content']/parent::*//i"   # resposne content 选择框
-manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_type}']"   # reposne content 下拉列表定位
-manipulationRulePage_deny_addResponseContentTextInput_posXpath = "//div[@id='myEditor1']"   # resposnse content text输入框  定位
-manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath = "//div[@class='box-sizing']//i"   # resposne content profile  选择框  定位
-manipulationRulePage_deny_searchResponseProfile_posXpath = "//div[@class='el-scrollbar']//input[@placeholder='Search']"   # resposne content search profile 对话框查询输入框
-manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@class='el-scrollbar']//div[contains(@class, 'margin-top')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_deny_addResponseCodeSelectBox_posXpath = "//div[@name='action_parameter']//div[@class='manipulation-policy-code']//button"   # resposne code 选择框
+manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath = "//ul[@role='listbox']//li[contains(@class, '{replace_code}')]"   # reposne code 下拉列表定位
+manipulationRulePage_deny_addResponseContentSelectBox_posXpath = "//div[@name='action_parameter']//div[contains(@class, 'flex-row')]//button[@role='combobox']"   # resposne content 选择框
+manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath = "//ul[@role='listbox']//li[contains(text(), '{replace_type}')]"   # reposne content 下拉列表定位
+manipulationRulePage_deny_addResponseContentTextInput_posXpath = "//div[@name='action_parameter']//div[@class='manipulation-policy-message']//input"   # resposnse content text输入框  定位
+manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath = "//div[@name='action_parameter']//div[@class='manipulation-policy-html_profile']//i"   # resposne content profile  选择框  定位
+manipulationRulePage_deny_searchResponseProfile_posXpath = "//div[@role='presentation']//div[@role='dialog']//input[contains(@class, 'MuiInput-input')]"   # resposne content search profile 对话框查询输入框
+manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@role='presentation']//div[@role='dialog']//ul[contains(@class, 'MuiList-root')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
 # action parameter redirect http
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
@@ -695,9 +715,9 @@ serviceChainingRuleListPage_searchLable_input_itemContent_posXpath = ruleListPag
 serviceChainingRuleListPage_searchLable_searchButton_posXpath = "//div[@class='flex-1 overflow-hidden']//i[@class='iconfont icon-sousuo text-[19px]']"
 serviceChainingRuleListPage_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"
 
-serviceChainingRulePage_inputName_posXpath = "//*[@class='service-chaining-policy-name']//input" 
-serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@class='service-chaining-policy-targeted_traffic']//button[1]" 
-serviceChainingRulePage_decryptedTrafficButton_posXpath = "//div[@class='service-chaining-policy-targeted_traffic']//button[2]" 
+serviceChainingRulePage_inputName_posXpath = "//*[@class='service-chaining-policy-name']//input"
+serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@class='service-chaining-policy-targeted_traffic']//button[1]"
+serviceChainingRulePage_decryptedTrafficButton_posXpath = "//div[@class='service-chaining-policy-targeted_traffic']//button[2]"
 serviceChainingRulePage_negateSrcIP_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_negateDstIP_posXpath = "//div[@zs-label='Destination']//p[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
 serviceChainingRulePage_negateUser_posXpath = "//div[@zs-label='Source']//p[normalize-space(text())='User']/ancestor::div[@zs-label='SourceItem']//span[@class='el-checkbox__inner']"
@@ -759,7 +779,7 @@ shapingRuleListPage_searchLable_posId = "select-label"
 shapingRuleListPage_searchLable_dropDown_item_posXpath = "//div[contains(@class,'el-scrollbar')]//span[normalize-space(text())='{replaceValue}']"   #下拉菜单定位
 shapingRuleListPage_searchLable_input_itemContent_posXpath = "//div[contains(@class,'ListItem')]//span[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class,'ListItem')]//input"   #输入item的值，replaceValue替换实际查询值
 shapingRuleListPage_searchLable_searchButton_posId = "searchQuery"
-shapingRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody" 
+shapingRuleListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
 shapingRuleListpage_allButton_posXpath = "//div[@class='checkAction']//span[@class='el-checkbox__label']"
 
 shapingRulePage_inputName_posXpath = "//*[@class='biFangName']//input" # name输入框Xpath
@@ -1188,17 +1208,17 @@ dosRulePage_closeInternalPort_posXpath = policyRulePage_closeInternalPort_posXpa
 #dos add dst port
 dosRulePage_addDstPort_posXpath = policyRulePage_addDstPort_posXpath
 dosRulePage_searchDstPort_posXpath = policyRulePage_searchDstPort_posXpath
-dosRulePage_selectDstPort_posXpath = policyRulePage_selectDstPort_posXpath
+dosRulePage_selectDstPort_posXpath = rulePage_object_list_select_name_posXpath
 dosRulePage_closeDstPort_posXpath = policyRulePage_closeDstPort_posXpath
 #dos add external port
 dosRulePage_addExternalPort_posXpath = policyRulePage_addExternalPort_posXpath
 dosRulePage_searchExternalPort_posXpath = policyRulePage_searchExternalPort_posXpath
-dosRulePage_selectExternalPort_posXpath = policyRulePage_selectExternalPort_posXpath
+dosRulePage_selectExternalPort_posXpath = rulePage_object_list_select_name_posXpath
 dosRulePage_closeExternalPort_posXpath = policyRulePage_closeExternalPort_posXpath
 #dos add external ip
 dosRulePage_addExternalIP_posXpath = policyRulePage_addExternalIP_posXpath
 dosRulePage_searchExternalIP_posXpath = policyRulePage_searchExternalIP_posXpath
-dosRulePage_selectExternalIP_posXpath = policyRulePage_selectExternalIP_posXpath
+dosRulePage_selectExternalIP_posXpath = rulePage_object_list_select_name_posXpath
 dosRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
 #dos add server fqdn
 dosRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
@@ -1225,7 +1245,7 @@ dosRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posX
 #dos_add server fqdn
 dosRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
 dosRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
-dosRulePage_selectServerFqdn_posXpath = policyRulePage_selectServerFqdn_posXpath
+dosRulePage_selectServerFqdn_posXpath = rulePage_object_list_select_name_posXpath
 dosRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 #dos add url
 dosRulePage_addUrl_posXpath = "//p[normalize-space(text())='URL']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"

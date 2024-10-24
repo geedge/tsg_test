@@ -160,7 +160,7 @@ class CreateManipulationPolicy:
                 # 删除rule
                 if create_rule_code == 200:
                     # 删除提前先发的security intercept策略
-                    delete_pre_policy(tmp_name_list, driver)
+                    #delete_pre_policy(tmp_name_list, driver)
                     search_rule = SearchRule(driver)
                     element_position_map = get_element_position(test_data["policy_type"])
                     search_rule_code, first_row_checkbox_element = search_rule.search(test_data["policy_type"], test_data["rule_name"], element_position_map)

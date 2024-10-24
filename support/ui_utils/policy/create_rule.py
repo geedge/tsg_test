@@ -246,7 +246,7 @@ class CreateRule:
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(server_fqdn_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time= 1)
+                        btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"].format(replaceValue=server_fqdn_data[t]["name"]), find_after_wait_time= 1)
                         self.driver.execute_script("arguments[0].click()", btn)
                         # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
@@ -647,7 +647,7 @@ class CreateRule:
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
                     # 页面滚动到最底部
-                    div_container = self.driver.find_element(By.XPATH, "//div[@class='VEditPanel']/div[@class='panel-container']")
+                    div_container = self.driver.find_element(By.XPATH, "//div[@id='root']//div[contains(@class, 'form-content-container')]")
                     self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_container)  # 移动到页面最底部
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
