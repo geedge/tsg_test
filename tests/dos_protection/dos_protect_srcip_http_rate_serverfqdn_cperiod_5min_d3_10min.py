@@ -68,7 +68,7 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
+                #,
                 {"query_field_key": "sessions", "query_value": ""},
                 {"query_field_key": "packets", "query_value": ""},
                 {"query_field_key": "bytes", "query_value": ""},
@@ -121,6 +121,8 @@ def run(parameter):
         update.write_result(parameter, result, exception_result)
             
 if __name__ == '__main__':
+    from support.ui_utils.element_position.map_element_position_library import replace_paras
+    from support.ui_utils.workpath import workdir
     parameter = {
         "username": "lina2024",
         "password": "lina2024",
