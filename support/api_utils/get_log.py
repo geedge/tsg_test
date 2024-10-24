@@ -291,7 +291,7 @@ class GetLog:
                             else:
                                 temp_log_result_list.append(False)
                         elif query_field_key in dos_verify_fields:
-                            self.first_dos_classification(log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id)
+                            self.get_dos_temp_log_result_full_process(log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id)
                         elif query_field_key in {"proxy_pinning_status", "proxy_intercept_status", "proxy_passthrough_reason"}:
                             actual_value = log[query_field_key]   # 日志查询到的值
                             except_value = query_value     # 断言的预期值
@@ -355,14 +355,14 @@ class GetLog:
         return log_result
 
 
-    def first_dos_classification(self,log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id):
+    def get_dos_temp_log_result_full_process(self,log,query_field_key,query_value,temp_log_result_list,test_data,token,api_host,start_time,end_time,vsys_id,time,output,policy_id):
         #1.Get the time difference to calculate the session_rate、bit_rate and packet_rate
         start_time_value = log["start_time"]
         end_time_value = log["end_time"]
         time_difference = end_time_value - start_time_value
 
         #2.For mitigation deny:get the session count after execute the mitigation behavior;For mitigation none:get full session counts
-        query_session_count,total_packets,total_bytes= self.get_session_count_in_session_records(token, api_host, start_time, end_time, vsys_id, test_data)
+        query_session_count,total_packets,total_bytes= self.get_session_value_in_session_records(token, api_host, start_time, end_time, vsys_id, test_data)
         if test_data["mitigation"]["behavior"] == "deny":
             exp_sessions_count = query_session_count
         elif test_data["mitigation"]["behavior"] == "none" and log["sessions"] < query_session_count:
@@ -377,7 +377,7 @@ class GetLog:
         #To verify the log query param
         self.validate_dos_values(log, query_field_key, query_value, temp_log_result_list, time_difference,exp_sessions_count,total_packets,total_bytes, test_data, time,policy_id)
 
-    def get_session_count_in_session_records(self, token,  api_host, start_time, end_time, v_id, test_data):
+    def get_session_value_in_session_records(self, token,  api_host, start_time, end_time, v_id, test_data):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         log_condition = {
             "page_no": 1,
