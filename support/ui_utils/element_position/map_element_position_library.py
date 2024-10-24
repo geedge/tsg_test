@@ -489,24 +489,24 @@ test_response_page_element_position = {
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
-        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_responsePages_posId
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_responsePages_posXpath
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_responsePages_createButton_posId,
-        "profilePage_inputName_posId": responsePage_input_Name_posId,
+        "profileListPage_createButton_posId": listPage_profile_responsePages_createButton_posXpath,
+        "profilePage_inputName_posId": responsePage_input_Name_posXpath,
         "profilePage_input_file_posXpath": responsePage_input_file_posXpath,
-        "profilePage_okButton_posCss": responsePage_button_oK_posCss,
-        "profilePage_okButton_warningYes_posCss": responsePage_button_warningSaveYes_posCss,
+        "profilePage_okButton_posCss": responsePage_button_oK_posXpath,
+        "profilePage_okButton_warningYes_posCss": responsePage_button_warningSaveYes_posXpath,
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_responsePages_selectLabel_posId,
+        "profileListPage_searchLabel_posId": listPage_profileSearch_responsePages_selectLabel_posXpath,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_responsePages_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_responsePages_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_responsePages_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_responsePages_delButton_posId,
+        "profileListPage_deleteButton_posId": listPage_profile_responsePages_delButton_posXpath,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_responsePages_button_yes_posXpath
     }
 }

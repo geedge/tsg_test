@@ -156,7 +156,7 @@ policyRulePage_addCondition_mailTo_posXpath = policyRulePage_chooseCondition_pos
 policyRulePage_addCondition_mailAccount_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Protocol Field', level2='Account') #"//div[@class='css-dob60y']//div[normalize-space(text())='Account']"
 policyRulePage_addCondition_mailAttachmentName_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Protocol Field', level2='Attachment Name') #"//div[@class='css-dob60y']//div[normalize-space(text())='Attachment Name']"
 policyRulePage_addCondition_mailAttachmentContent_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Protocol Field', level2='Attachment Content') #"//div[@class='css-dob60y']//div[normalize-space(text())='Attachment Content']"
-policyRulePage_addCondition_User_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Source', level2='Port') #"//div[@class='MuiDrawer-content css-10lcz44']//li[2]//div[normalize-space(text())='User']"
+policyRulePage_addCondition_User_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Source', level2='User') #"//div[@class='MuiDrawer-content css-10lcz44']//li[2]//div[normalize-space(text())='User']"
 
 policyRulePage_addBoolean_posXpath = "//label[text()='Protocol Field']/ancestor::div[@class='MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby']//div[@class='relative z-10'][{replaceValue}]//i[@class='iconfont icon-Create1 font-[700]']"
 policyRulePage_searchBoolean_posXpath = policyRulePage_searchSrcIP_posXpath
