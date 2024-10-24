@@ -525,7 +525,7 @@ manipulationRulePage_selectInsert_posXpath = "//div[@class='manipulation-policy-
 manipulationRulePage_selectEditElement_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-a-ElementEditing1')]"
 manipulationRulePage_selectRunScript_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-run-script')]"
 # rule 页面中Add Condition按钮定位
-manipulationRulePage_addCondition_posXpath = "//*[@id='policy_condition-_ConditionModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_Edit_Home_App_anonymousComponent']"
+manipulationRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 manipulationRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 # rule 中添加condition侧滑中选择行定位
 manipulationRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
@@ -544,7 +544,7 @@ manipulationRulePage_addCondition_externalIP_posXpath = "//div[@class='SourceLis
 manipulationRulePage_addCondition_user_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='User']/parent::*//div[normalize-space(text())='User']"
 manipulationRulePage_addCondition_imsi_posXpath = "//div[@class='SourceList list-box']/parent::*//div[normalize-space(text())='Device']"
 manipulationRulePage_addCondition_Protocol_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol']"
-manipulationRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URL']"
+manipulationRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
 manipulationRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Header']"
 manipulationRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Header']"
 manipulationRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Body']"
@@ -614,10 +614,10 @@ manipulationRulePage_searchQname_posXpath = "//div[@class='rm-content']//input[@
 manipulationRulePage_selectQname_posXpath = policyRulePage_selectQname_posXpath
 manipulationRulePage_closeServerQname_posXpath = policyRulePage_closeQname_posXpath
 # url的添加、查询、选中、关闭操作
-manipulationRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
-manipulationRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
-manipulationRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
-manipulationRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
+manipulationRulePage_addUrl_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Protocol Field",secondType="URL")
+manipulationRulePage_searchUrl_posXpath = rulePage_object_list_search_input_posXpath
+manipulationRulePage_selectUrl_posXpath = policyRulePage_selectServerFqdn_posXpath
+manipulationRulePage_closeUrl_posXpath = rulePage_object_list_close_button_posXpath
 # request header的添加、查询、选中、关闭操作
 manipulationRulePage_addRequestHeader_posXpath = "//p[normalize-space(text())='Request Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
 manipulationRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
@@ -639,14 +639,14 @@ manipulationRulePage_searchResponseBody_posXpath = policyRulePage_searchRequestH
 manipulationRulePage_selectResponseBody_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeResponseBody_posXpath = policyRulePage_closeRequestHeader_posXpath
 # action parameter deny
-manipulationRulePage_deny_addResponseCodeSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Code']/parent::*//i"   # resposne code 选择框
-manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_code}']"   # reposne code 下拉列表定位
-manipulationRulePage_deny_addResponseContentSelectBox_posXpath = "//div[@class='panel-content']//label[normalize-space(text())='Response Content']/parent::*//i"   # resposne content 选择框
-manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li//span[normalize-space(text())='{replace_type}']"   # reposne content 下拉列表定位
-manipulationRulePage_deny_addResponseContentTextInput_posXpath = "//div[@id='myEditor1']"   # resposnse content text输入框  定位
-manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath = "//div[@class='box-sizing']//i"   # resposne content profile  选择框  定位
-manipulationRulePage_deny_searchResponseProfile_posXpath = "//div[@class='el-scrollbar']//input[@placeholder='Search']"   # resposne content search profile 对话框查询输入框
-manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@class='el-scrollbar']//div[contains(@class, 'margin-top')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_deny_addResponseCodeSelectBox_posXpath = "//div[@name='action_parameter']//div[@class='manipulation-policy-code']//button"   # resposne code 选择框
+manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath = "//ul[@role='listbox']//li[contains(@class, '{replace_code}')]"   # reposne code 下拉列表定位
+manipulationRulePage_deny_addResponseContentSelectBox_posXpath = "//div[@name='action_parameter']//div[contains(@class, 'flex-row')]//button[@role='combobox']"   # resposne content 选择框
+manipulationRulePage_deny_addResponseContentSelectDropItem_posXpath = "//ul[@role='listbox']//li[contains(text(), '{replace_type}')]"   # reposne content 下拉列表定位
+manipulationRulePage_deny_addResponseContentTextInput_posXpath = "//div[@name='action_parameter']//div[@class='manipulation-policy-message']//input"   # resposnse content text输入框  定位
+manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath = "//div[@name='action_parameter']//div[@class='manipulation-policy-html_profile']//i"   # resposne content profile  选择框  定位
+manipulationRulePage_deny_searchResponseProfile_posXpath = "//div[@role='presentation']//div[@role='dialog']//input[contains(@class, 'MuiInput-input')]"   # resposne content search profile 对话框查询输入框
+manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@role='presentation']//div[@role='dialog']//ul[contains(@class, 'MuiList-root')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
 # action parameter redirect http
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位

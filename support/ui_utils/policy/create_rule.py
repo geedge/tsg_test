@@ -607,7 +607,7 @@ class CreateRule:
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
                     # 页面滚动到最底部
-                    div_container = self.driver.find_element(By.XPATH, "//div[@class='VEditPanel']/div[@class='panel-container']")
+                    div_container = self.driver.find_element(By.XPATH, "//div[@id='root']//div[contains(@class, 'form-content-container')]")
                     self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_container)  # 移动到页面最底部
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
