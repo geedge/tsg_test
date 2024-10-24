@@ -928,11 +928,17 @@ policy_service_chaining_rule_element_position = {
         "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
         "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
         # URL
-        "policyRulePage_addConditionUrl_posXpath": policyRulePage_addCondition_url_posXpath,
+        "policyRulePage_addConditionUrl_posXpath": serviceChainingRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
         "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
         "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
         "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
+        # 添加account
+        "policyRulePage_addConditionFtpAccount_posXpath": policyRulePage_addCondition_ftpAccount_posXpath,
+        "policyRulePage_addFtpAccount_posXpath": policyRulePage_addFtpAccount_posXpath,
+        "policyRulePage_searchFtpAccount_posXpath": policyRulePage_searchFtpAccount_posXpath,
+        "policyRulePage_selectFtpAccount_posXpath": policyRulePage_selectFtpAccount_posXpath,
+        "policyRulePage_closeFtpAccount_posXpath": policyRulePage_closeFtpAccount_posXpath,
         # SFF Profile
         "policyRulePage_addSFFProfile_posXpath": serviceChainingRulePage_addSFFProfile_posXpath,
         "policyRulePage_searchSFFProfile_posXpath":serviceChainingRulePage_searchSFFProfile_posXpath,
