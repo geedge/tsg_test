@@ -1454,26 +1454,28 @@ profile_response_page_element_position = {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_responsePages_Name,
         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
-        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_responsePages_posId
+        "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_responsePages_posXpath
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_responsePages_createButton_posId,
-        "profilePage_inputName_posId": responsePage_input_Name_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_responsePages_createButton_posXpath,
+        "profilePage_inputName_posXpath": responsePage_input_Name_posXpath,
         "profilePage_input_file_posXpath": responsePage_input_file_posXpath,
-        "profilePage_okButton_posCss": responsePage_button_oK_posCss,
-        "profilePage_okButton_warningYes_posCss": responsePage_button_warningSaveYes_posCss,
+        "profilePage_okButton_posCss": responsePage_button_oK_posXpath,
+        "profilePage_okButton_warningYes_posCss": responsePage_button_warningSaveYes_posXpath,
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_responsePages_selectLabel_posId,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_responsePages_selectLabel_posXpath,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_responsePages_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_responsePages_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_responsePages_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_responsePages_delButton_posId,
+        "profileListPage_deleteButton_posXpath": listPage_profile_responsePages_delButton_posXpath,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_responsePages_button_yes_posXpath
     }
 }
@@ -1548,7 +1550,7 @@ profile_ssl_decryption_keyring_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_sslDecryptionKeyrings_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_sslDecryptionKeyrings_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_sslDecryptionKeyrings_createButton_posId,
     },
     "search": {
         "profileListPage_searchLabel_posId": listPage_profileSearch_sslDecryptionKeyrings_selectLabel_posId,
@@ -1572,7 +1574,7 @@ profile_ssl_decryption_profile_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_sslDecryptionProfiles_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_sslDecryptionProfiles_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_sslDecryptionProfiles_createButton_posId,
     },
     "search": {
         "profileListPage_searchLabel_posId": listPage_profileSearch_sslDecryptionProfiles_selectLabel_posId,
@@ -1596,7 +1598,7 @@ profile_tcp_proxy_profile_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tcpProxyProfiles_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_tcpProxyProfiles_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_tcpProxyProfiles_createButton_posId,
     },
     "search": {
         "profileListPage_searchLabel_posId": listPage_profileSearch_tcpProxyProfiles_selectLabel_posId,
@@ -1620,7 +1622,7 @@ profile_hijack_file_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_hijackFiles_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_hijackFiles_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_hijackFiles_createButton_posId,
         "profilePage_inputName_posId": hijackFiles_input_Name_posId,
         "profilePage_okButton_posCss": hijackFiles_button_oK_posCss,
         "profilePage_okButton_warningYes_posCss": hijackFiles_button_warningSaveYes_posCss,
@@ -1647,7 +1649,7 @@ profile_insert_script_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_insertScripts_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_insertScripts_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_insertScripts_createButton_posId,
         "profilePage_inputName_posId": insertScripts_input_Name_posId,
         "profilePage_okButton_posCss": insertScripts_button_oK_posCss,
         "profilePage_okButton_warningYes_posCss": insertScripts_button_warningSaveYes_posCss,
@@ -1674,7 +1676,7 @@ profile_run_script_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tsgProxyScripts_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_tsgProxyScripts_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_tsgProxyScripts_createButton_posId,
         "profilePage_inputName_posXpath": tsgProxyScripts_input_Name_posXpath,
         "profilePage_okButton_posCss": tsgProxyScripts_button_oK_posCss,
         "profilePage_okButton_warningYes_posCss": tsgProxyScripts_button_warningSaveYes_posCss,
