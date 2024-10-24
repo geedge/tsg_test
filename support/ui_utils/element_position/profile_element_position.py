@@ -163,7 +163,7 @@ responsePage_button_cancel_posCss = "#responseAddCancel1-_interceptionadd_Home_A
 
 # Profiles traffic mirroring profiles===================Profiles traffic mirroring profiles====================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles=======================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles
 # listPage->traffic mirroring profiles list page  列表页
-listPage_profile_trafficMirroringProfiles_createButton_posXpath = "app_create-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # create按钮id
+listPage_profile_trafficMirroringProfiles_createButton_posXpath = '//i[@class="iconfont icon-Create"]'  # create按钮id
 listPage_profile_trafficMirroringProfiles_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # edit按钮id
 listPage_profile_trafficMirroringProfiles_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # del按钮id
 listPage_profile_trafficMirroringProfiles_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # link按钮id
@@ -186,13 +186,13 @@ listPage_linkTips_trafficMirroringProfiles_button_add_posXpath = "//*[@id='tempo
 listPage_linkTips_trafficMirroringProfiles_button_OK_posXpath = "//*[@id='copyOk-_copyComponents_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent']/span"    # OK 按钮 xpath
 # Create traffic mirroring profile page 和 Edit traffic mirroring profile page   新增和编辑页
 trafficMirroringProfiles_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-trafficMirroringProfiles_input_Name_posXpath = "trafficmirror_profileName"  # name输入框id
-trafficMirroringProfiles_button_vlanIdAdd_posXpath = "#addrTypeAdd i"  # vlan id 添加按钮css
-trafficMirroringProfiles_input_vlanIdsInput_posXpath = "//form//div[contains(@class, 'addel-form')]//input"  # 所有显示的vlan id的所有input定位，需要通过value二次处理，css
+trafficMirroringProfiles_input_Name_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]'  # name输入框id
+trafficMirroringProfiles_button_vlanIdAdd_posXpath = '//i[@class="iconfont icon-Create1 font-[700]"]'  # vlan id 添加按钮css
+trafficMirroringProfiles_input_vlanIdsInput_posXpath = '//input[@class="MuiInput-input css-1u0jcuo"]'  # 所有显示的vlan id的所有input定位，需要通过value二次处理，css
 trafficMirroringProfiles_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 trafficMirroringProfiles_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
-trafficMirroringProfiles_button_oK_posXpath = "#trafficMirrorProfile_ok span"  # OK按钮css
-trafficMirroringProfiles_button_cancel_posCss = "#trafficMirrorProfile_cancel span"  # Cancel按钮
+trafficMirroringProfiles_button_oK_posXpath = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'  # OK按钮css
+trafficMirroringProfiles_button_cancel_posCss = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[2]'  # Cancel按钮
 
 # Profiles ssl decryption keyrings===================Profiles ssl decryption keyrings====================Profiles ssl decryption keyrings=================Profiles ssl decryption keyrings=======================Profiles ssl decryption keyrings
 # listPage->ssl decryption keyrings list page  列表页
