@@ -418,23 +418,23 @@ test_http_url_object_element_position = {
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_url_posId
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_url_posXpath
     },
     "create": {
-        "objectListPage_createButton_posId": urlObjectListPage_createButton_posId,
-        "objectListPage_dropDown_createButton_posId": urlObjectListPage_dropDown_createButton_posId,
+        "objectListPage_createButton_posXpath": urlObjectListPage_createButton_posXpath,
+        "objectListPage_dropDown_createButton_posXpath": urlObjectListPage_dropDown_createButton_posXpath,
         "objectPage_inputName_posXpath": urlObjectPage_inputName_posXpath,
-        "objectPage_addItem_posXpath": urlobjectPage_addItem_posXpath,
-        # item简单定位
+        "objectPage_addItem_posXpath": urlObjectPage_addItem_posXpath,
+        # item简单定位objectPage_okButton_posXpath
         "objectPage_inputItem_posXpath": urlObjectPage_inputItem_posXpath,
         "objectPage_button_saveItem_posXpath": urlObjectPage_saveItem_posXpath,
-        "objectPage_okButton_posId": urlObjectPage_okButton_posId,
+        "objectPage_okButton_posXpath": urlObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": urlObjectPage_okButton_warningYes_posXpath,
         "ObjectPage_sameItem_addItem_posXpath":urlObjectPage_sameItem_addItem_posXpath,
         "ObjectPage_sameItem_inputItem_posXpath": urlObjectPage_sameItem_inputItem_posXpath,
     },
     "search": {
-        "objectListPage_searchLabel_posId": urlObjectPage_searchLabel_posId,
+        "objectListPage_searchLabel_posXpath": urlObjectPage_searchLabel_posXpath,
         "objectListPage_searchLabel_selectName_posXpath": urlObjectListPage_searchLabel_selectName_posXpath,
         "objectListPage_tableTbody_posXpath": urlObjectListPage_tableTbody_posXpath,
         "objectListPage_search_input_posXpath": urlObjectListPage_search_input_posXpath,
@@ -443,7 +443,7 @@ test_http_url_object_element_position = {
     },
     "delete": {
         "objectListPage_allSelect_posXpath": urlObjectListPage_allSelect_posXpath,
-        "objectListPage_deleteButton_posId": urlObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_posXpath": urlObjectListPage_deleteButton_posXpath,
         "objectListPage_deleteButton_warningYes_posXpath": urlObjectListPage_deleteButton_warningYes_posXpath
     }
 }
@@ -1574,9 +1574,9 @@ test_statistics_rule_element_position = {
         # action
         "policyRulePage_inputName_posXpath": statisticsRulePage_inputName_posXpath,
         # Add Condition按钮定位
-        #"policyRulePage_addCondition_posXpath": statisticsRulePage_addCondition_posXpath,
+        "policyRulePage_addCondition_posXpath": statisticsRulePage_addCondition_posXpath,
         # add condition侧滑的关闭定位
-        #"policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
+        "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
         # Source IP
         "policyRulePage_addConditionSrcIP_posXpath": statisticsRulePage_addCondition_srcIP_posXpath,
         "policyRulePage_addSrcIP_posXpath": statisticsRulePage_addSrcIP_posXpath,
@@ -1660,7 +1660,7 @@ test_statistics_rule_element_position = {
         "policyRulePage_selectQname_posXpath": manipulationRulePage_selectQname_posXpath,
         "policyRulePage_closeQname_posXpath": manipulationRulePage_closeServerQname_posXpath,
         # url
-        "policyRulePage_addConditionUrl_posXpath": statisticsRulePage_addCondition_url_posXpath,
+        "policyRulePage_addConditionUrl_posXpath": policyRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": statisticsRulePage_addUrl_posXpath,
         "policyRulePage_searchUrl_posXpath": statisticsRulePage_searchUrl_posXpath,
         "policyRulePage_selectUrl_posXpath": statisticsRulePage_selectUrl_posXpath,
