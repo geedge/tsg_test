@@ -53,7 +53,6 @@ policyRulePage_searchCondition_posXpath = '//*[@class="px-[12px] py-[4px] flex"]
 policyRulePage_selectCondition_posXpath= "//ul[contains(@class,'MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd')]//li//*[normalize-space(text())='{replaceValue}']"
 policyRulePage_closeCondition_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 
-policyRulePage_negateSrcIP_posXpath = "//*[@id='policy_not_negate-_PolicySwitch_ElFormItem_SourceItem_SourceModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']/span[1]"
 policyRulePage_negateSrcIP_posXpath = '//*[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][1]//span[@class="MuiCheckbox-action css-kit57i"]/input'
 
 policyRulePage_addDstIP_posXpath = "//label[normalize-space(text())='Destination']/..//label[normalize-space(text())='IP Address']/following-sibling::div/button"
@@ -131,23 +130,23 @@ policyRulePage_addCondition_serverFqdn_posXpath = "//ul[@class='MuiList-root Mui
 policyRulePage_addCondition_dstPort_posXpath = "(//div[contains(@class, 'MuiListSubheader-root') and contains(@class, 'css-1tpnloi')])[2]/following-sibling::div//div[contains(text(), 'Port')]"
 policyRulePage_addCondition_url_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Protocol Field', level2='URL') #"//div[@class='SourceList list-box']//div[normalize-space(text())='URL']"
 policyRulePage_addCondition_uri_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='URI']"
-policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
-policyRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Header']"
-policyRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Body']"
-policyRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Response Body']"
+policyRulePage_addCondition_requestHeader_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="Request Header"]'
+policyRulePage_addCondition_responseHeader_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="Response Header"]'
+policyRulePage_addCondition_requestBody_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="Request Body"]'
+policyRulePage_addCondition_responseBody_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="Response Body"]'
 policyRulePage_addCondition_close_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
-policyRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//li[3]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_internalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[3]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='IP Address']"
-policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[7]//div[normalize-space(text())='Port']"
-policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[8]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_srcPort_posXpath = "//div[@class='px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden']//li[3]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_internalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[5]//div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_externalIP_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[6]//div[normalize-space(text())='IP Address']"
+policyRulePage_addCondition_internalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[5]//div[normalize-space(text())='Port']"
+policyRulePage_addCondition_externalPort_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//li[6]//div[normalize-space(text())='Port']"
 policyRulePage_addCondition_IpProtocol_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='IP Protocol']"
 policyRulePage_addCondition_Boolean_posXpath = "//div[@class='MuiDrawer-content css-10lcz44']//div[normalize-space(text())='{replaceValue}']"
 #policyRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Request Header']"
 policyRulePage_addCondition_ftpAccount_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Account']"
 policyRulePage_addCondition_ftpContent_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Content']"
-policyRulePage_addCondition_cn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='CN']"
-policyRulePage_addCondition_san_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='SAN']"
+policyRulePage_addCondition_cn_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="CN"]'
+policyRulePage_addCondition_san_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="SAN"]'
 policyRulePage_addCondition_qname_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='QNAME']"
 policyRulePage_addCondition_mailSubject_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Subject']"
 policyRulePage_addCondition_mailContent_posXpath = "//div[@class='css-dob60y']//div[normalize-space(text())='Content']"
@@ -177,18 +176,18 @@ policyRulePage_addServerFqdn_posXpath = "//label[text()='Server FQDN']/parent::d
 policyRulePage_searchServerFqdn_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
 policyRulePage_selectServerFqdn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
 policyRulePage_closeServerFqdn_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
-policyRulePage_negateServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//label[@id='policy_not_negate-_PolicySwitch_ElFormItem_DestinationsItem_DestinationsModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']//span[@class='el-checkbox__input']"
+policyRulePage_negateServerFqdn_posXpath = '//*[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][2]//*[@class="relative z-10"][2]//span[@class="MuiCheckbox-action css-kit57i"]/input'
 
 # cn
-policyRulePage_addCn_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='CN']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchCn_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectCn_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeCn_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addCn_posXpath = "//label[normalize-space(text())='CN']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
+policyRulePage_searchCn_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
+policyRulePage_selectCn_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
+policyRulePage_closeCn_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
 # san
-policyRulePage_addSan_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='SAN']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
-policyRulePage_searchSan_posXpath = "//div[@class='FilterList list-box']//input[@id='object_ip_search']"
-policyRulePage_selectSan_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeSan_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addSan_posXpath = "//label[normalize-space(text())='SAN']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
+policyRulePage_searchSan_posXpath = "//div[@class='px-[12px] py-[4px] flex']//input"
+policyRulePage_selectSan_posXpath = "//ul[@class='MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3']//li[1]//div[@class='MuiBox-root css-8vsxvh']"
+policyRulePage_closeSan_posXpath = "//div[@class='absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]']//button[text()='Cancel']"
 # qname
 policyRulePage_addQname_posXpath = "//label[normalize-space(text())='QNAME']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 policyRulePage_searchQname_posXpath = policyRulePage_searchServerFqdn_posXpath
@@ -196,16 +195,16 @@ policyRulePage_selectQname_posXpath = "//ul[@class='MuiList-root MuiList-vertica
 policyRulePage_closeQname_posXpath = policyRulePage_closeServerFqdn_posXpath
 
 #url
-policyRulePage_addUrl_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
-policyRulePage_searchUrl_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectUrl_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeUrl_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addUrl_posXpath = '//*[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//*[@class="relative z-10"][{replaceValue}]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchUrl_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
+policyRulePage_selectUrl_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeUrl_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 
 #RequestHeader
-policyRulePage_addRequestHeader_posXpath = "//div[@class='FilterModuleSelect filter-module-select']//li[{replaceValue}]//div[contains(@class, 'addobject')]"
-policyRulePage_searchRequestHeader_posXpath = "//div[@class='CommonListDetail list-detail-not-tabs']//input[@id='object_ip_search']"
-policyRulePage_selectRequestHeader_posXpath = "//ul[@class='row-container tableList']//li[1]//div[@class='row-content-cell']"
-policyRulePage_closeRequestHeader_posXpath = "//div[@class='FilterList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
+policyRulePage_addRequestHeader_posXpath = '//*[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][3]//*[@class="relative z-10"][{replaceValue}]//i[@class="iconfont icon-Create1 font-[700]"]'
+policyRulePage_searchRequestHeader_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
+policyRulePage_selectRequestHeader_posXpath = '//li[@class="MuiListItem-root MuiListItem-colorNeutral MuiListItem-variantPlain css-1linw58"]'
+policyRulePage_closeRequestHeader_posXpath = '//*[@class="MuiDrawer-content css-10lcz44"]//button[normalize-space(text())="Cancel"]'
 
 #ftp account
 policyRulePage_addFtpAccount_posXpath = "//div[@zs-label='FilterItem']//p[normalize-space(text())='Account']/ancestor::div[@zs-label='FilterItem']//i[@class='iconfont icon-Create1 cursor']"
@@ -607,22 +606,22 @@ manipulationRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
 manipulationRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
 manipulationRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
 # request header的添加、查询、选中、关闭操作
-manipulationRulePage_addRequestHeader_posXpath = "//p[normalize-space(text())='Request Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+manipulationRulePage_addRequestHeader_posXpath = "//label[normalize-space(text())='Request Header']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 manipulationRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 manipulationRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
 # response header的添加、查询、选中、关闭操作
-manipulationRulePage_addResponseHeader_posXpath = "//p[normalize-space(text())='Response Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+manipulationRulePage_addResponseHeader_posXpath = "//label[normalize-space(text())='Response Header']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 manipulationRulePage_searchResponseHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 manipulationRulePage_selectResponseHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeResponseHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
 # request body 的添加、查询、选中、关闭操作
-manipulationRulePage_addRequestBody_posXpath = "//p[normalize-space(text())='Request Body']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+manipulationRulePage_addRequestBody_posXpath = "//label[normalize-space(text())='Request Body']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 manipulationRulePage_searchRequestBody_posXpath = policyRulePage_searchRequestHeader_posXpath
 manipulationRulePage_selectRequestBody_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeRequestBody_posXpath = policyRulePage_closeRequestHeader_posXpath
 # response body 的添加、查询、选中、关闭操作
-manipulationRulePage_addResponseBody_posXpath = "//p[normalize-space(text())='Response Body']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+manipulationRulePage_addResponseBody_posXpath = "//label[normalize-space(text())='Response Body']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 manipulationRulePage_searchResponseBody_posXpath = policyRulePage_searchRequestHeader_posXpath
 manipulationRulePage_selectResponseBody_posXpath = policyRulePage_selectRequestHeader_posXpath
 manipulationRulePage_closeResponseBody_posXpath = policyRulePage_closeRequestHeader_posXpath
@@ -872,7 +871,7 @@ monitorRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpa
 monitorRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
 #monitor add ....
 monitorRulePage_addCondition_imsi_posXpath = policyRulePage_addConditionImsi_posXpath
-monitorRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']  |  //div[@class='SourceList list-box']//div[normalize-space(text())='URI']"
+monitorRulePage_addCondition_url_posXpath = '//*[@class="px-[12px] pt-[2px] pb-[40px] h-[100%] overflow-hidden"]//div[normalize-space(text())="URL"]'
 monitorRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
 monitorRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
 monitorRulePage_addCondition_requestBody_posXpath = policyRulePage_addCondition_requestBody_posXpath
@@ -901,7 +900,7 @@ monitorRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
 monitorRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
 monitorRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
 #monitor add requset header
-monitorRulePage_addRequestHeader_posXpath =  "//p[normalize-space(text())='Request Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+monitorRulePage_addRequestHeader_posXpath =  "//label[normalize-space(text())='Request Header']/parent::div[@class='flex flex-row group']//i[@class='iconfont icon-Create1 font-[700]']"
 monitorRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 monitorRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 monitorRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath

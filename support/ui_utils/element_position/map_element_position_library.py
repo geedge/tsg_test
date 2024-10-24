@@ -434,11 +434,12 @@ test_flag_object_element_position = {
                 },
                 "search": {
                     "objectListPage_searchLabel_posXpath": accountObjectPage_searchLabel_posXpath,
-                    "objectListPage_searchLabel_selectName_posXpath": accountObjectListPage_searchLabel_selectName_posXpath,
-                    "objectListPage_tableTbody_posXpath": accountObjectPage_tableTbody_posXpath
+                    "objectListPage_searchLabel_selectName_posXpath": '//*[@class="base-Popper-root MuiAutocomplete-listbox css-18r31z0"]//li[1]',
+                    "objectListPage_tableTbody_posXpath": accountObjectListPage_tableTbody_posXpath,
+
                 },
                 "delete": {
-                    "objectListPage_allSelect_posXpath": accountObjectPage_allSelect_posXpath,
+                    "objectListPage_allSelect_posXpath": accountObjectListPage_allSelect_posXpath,
                     "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
                     "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
                 }

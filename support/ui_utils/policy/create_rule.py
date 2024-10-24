@@ -251,10 +251,16 @@ class CreateRule:
                         # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                         if server_fqdn_data[t]["negate"] == True:
-                            time.sleep(1)
-                            negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negateServerFqdn_posXpath"].format(replaceValue=temp))
-                            ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
-                            negate_element.click()
+                            time.sleep(1)  # 暂停1秒
+                            negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negateServerFqdn_posXpath"])
+                            # 使用JavaScript确保元素完全进入视图
+                            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", negate_element)
+                            # 使用JavaScript执行悬停
+                            self.driver.execute_script("var evt = new MouseEvent('mouseover', {'view': window, 'bubbles': true, 'cancelable': true}); arguments[0].dispatchEvent(evt);",negate_element)
+                            # 确保元素可点击后进行点击
+                            self.driver.execute_script("arguments[0].click();", negate_element)
+                            # ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                            # negate_element.click()
                     elif server_fqdn_data[t]["object_type"] == "category":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
 
@@ -283,15 +289,19 @@ class CreateRule:
                             tmp_qname.append(tmp_item)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
-                    elif tmp_item["object_type"] == "http_signature":
+                    # elif tmp_item["object_type"] == "http_signature":
+                    #     if tmp_item["item"][0]["item_type"] == "request_header":
+                    #         tmp_request_header.append(tmp_item)
+                    #     elif tmp_item["item"][0]["item_type"] == "response_header":
+                    #         tmp_response_header.append(tmp_item)
+                    #     else:
+                    #         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
+                    elif tmp_item["object_type"] == "keywords":
                         if tmp_item["item"][0]["item_type"] == "request_header":
                             tmp_request_header.append(tmp_item)
                         elif tmp_item["item"][0]["item_type"] == "response_header":
                             tmp_response_header.append(tmp_item)
-                        else:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
-                    elif tmp_item["object_type"] == "keywords":
-                        if tmp_item["item"][0]["item_type"] == "request_body":
+                        elif tmp_item["item"][0]["item_type"] == "request_body":
                             tmp_request_body.append(tmp_item)
                         elif tmp_item["item"][0]["item_type"] == "response_body":
                             tmp_response_body.append(tmp_item)
@@ -338,7 +348,7 @@ class CreateRule:
                 if len(tmp_mail_attachment_name) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_attachment_name)
                 if len(tmp_mail_attachment_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_attachment_content)
                 if len(tmp_mail_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_content)
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], tmp_protocol_field_data_split_by_type)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], tmp_protocol_field_data_split_by_type)
                 for protocol_field_data in tmp_protocol_field_data_split_by_type:
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], protocol_field_data)
                     for x in range(len(protocol_field_data)):
@@ -355,17 +365,21 @@ class CreateRule:
                                     self.add_protocol_field(protocol_field_data, "Qname", create_element_position, temp)
                                 else:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
-                        elif protocol_field_data[x]["object_type"] == "http_signature":
+                        # elif protocol_field_data[x]["object_type"] == "http_signature":
+                        #     item_dict = protocol_field_data[x]["item"][0]
+                        #     if item_dict["item_type"] == "request_header":
+                        #         self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
+                        #     elif item_dict["item_type"] == "response_header":
+                        #         self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
+                        #     else:
+                        #         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
+                        elif protocol_field_data[x]["object_type"] == "keywords":
                             item_dict = protocol_field_data[x]["item"][0]
                             if item_dict["item_type"] == "request_header":
                                 self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
                             elif item_dict["item_type"] == "response_header":
                                 self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
-                            else:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
-                        elif protocol_field_data[x]["object_type"] == "keywords":
-                            item_dict = protocol_field_data[x]["item"][0]
-                            if item_dict["item_type"] == "request_body":
+                            elif item_dict["item_type"] == "request_body":
                                 self.add_protocol_field(protocol_field_data, "RequestBody", create_element_position, temp)
                             elif item_dict["item_type"] == "response_body":
                                 self.add_protocol_field(protocol_field_data, "ResponseBody", create_element_position, temp)
@@ -518,7 +532,7 @@ class CreateRule:
                         # 点flag的+
                         temp_element_position = create_element_position["policyRulePage_addFlag_posXpath"]
                         self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 通过flag搜索并选中(与imsi共用)
+                        # 通过flag搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchFlag_posXpath"], find_after_wait_time=1).send_keys(flag_data[t]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchFlag_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectFlag_posXpath"], find_after_wait_time=0.5).click()
