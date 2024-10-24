@@ -28,8 +28,9 @@ class CreateStatisticsTemplate():
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_profile_page(page_jump_element_position)
             # 点击create
-            #self.driver.find_element(By.ID, create_element_position["templateListPage_createButton_posId"]).click()
-            elements = self.driver.find_elements(By.XPATH, create_element_position["listPage_profileHandleButton_posXpath"])
+            self.driver.find_element(By.XPATH, create_element_position["templateListPage_createButton_posXpath"]).click()
+            """
+            elements = self.driver.find_element(By.XPATH, create_element_position["listPage_profileHandleButton_posXpath"]).click()            
             if len(elements) > 0:
                 ele_index = 0
                 for element in elements:
@@ -37,7 +38,7 @@ class CreateStatisticsTemplate():
                         element.click()
                         break
                     ele_index = ele_index + 1
-
+            """
             # 输入name
             template_name = data["name"]
             #self.driver.find_element(By.ID, create_element_position["templatePage_inputName_posId"]).send_keys(template_name)

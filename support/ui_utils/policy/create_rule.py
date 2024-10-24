@@ -201,7 +201,6 @@ class CreateRule:
 
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
-                # 点application的+
                 if test_data["policy_type"] == "pxy_manipulation":
                     if  test_data["condition"]["application"][0]["name"].lower() == "doh":  # doh需要操作application
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addApplication_posXpath"]).click()
@@ -213,31 +212,18 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addApplication_posXpath"]).click()
                     application_data = test_data["condition"]["application"]
                     # 通过application name搜索并选中
-                    if len(application_data) == 1:
-                        override_flag = True
-                    is_first_iteration = True
                     for j in range(len(application_data)):
-                        # if application_data[j]["object_type"] == "application":
-                        #     if test_data["policy_type"] == "pxy_intercept":
-                        #         pass    # intercept 不用点击 application 或 group
-                        #     else:
-                        #         if is_first_iteration:
-                        #             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationLabel_posXpath"]).click()
-                        #         else:
-                        #             self.driver.find_element(By.ID,create_element_position["policyRulePage_little_button_addApplication_posId"]).click()
                         if application_data[j]["object_type"] == "application_group":
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationGroupLabel_posXpath"]).click()
                         if test_data["policy_type"] == "pxy_intercept":  # intercept 中 application不用搜索，直接选择
-                            app_name = application_data[j]["name"].strip()
-                            app_position = "//div[@class='paper-grid-middle']//div[@class='ToggleDraw']/div[1]//div[@class='rm-content-default']//span[normalize-space(text())='{app_name}']".format(app_name=app_name)
-                            self.driver.find_element(By.XPATH, app_position).click()
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"].format(replaceValue=application_data[j]["name"]), find_after_wait_time=0.5).click()
                         else:
+                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=0.5).clear()
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=1).send_keys(application_data[j]["name"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"].format(replaceValue = application_data[j]["name"]), find_after_wait_time=0.5).click()
-                            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
-                            is_first_iteration =False
-                
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeApplication_posXpath"]).click()
+
             # 添加server fqdn
             if "server_fqdn" in test_data["condition"] and len(test_data["condition"]["server_fqdn"]) != 0:
                 server_fqdn_data = test_data["condition"]["server_fqdn"]
@@ -250,9 +236,9 @@ class CreateRule:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionServerFqdn_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
                         # 点server fqdn的+，因为dst ip已经是第一层且t初始值是0，所以要+2
-                        temp = t + 2
-                        temp_element_position = create_element_position["policyRulePage_addServerFqdn_posXpath"].format(replaceValue=temp)
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # temp = t + 2
+                        # temp_element_position = create_element_position["policyRulePage_addServerFqdn_posXpath"].format(replaceValue=temp)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addServerFqdn_posXpath"]).click()
                         time.sleep(1)
                         # 通过server fqdn name搜索并选中
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(server_fqdn_data[t]["name"])
@@ -815,16 +801,24 @@ class CreateRule:
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_closeSFFProfile_posXpath"]).click()
                 elif test_data["policy_type"] == "monitor":
                     #步骤：开启vlan_button->选择select->输入name->搜索
+                    if test_data["is_mirror"] == "on":
+                        self.driver.find_element(By.XPATH, create_element_position[
+                            "policyRulePage_mirrorTrafficButton_posXpath"]).click()
+                    else:
+                        pass
                     self.driver.find_element(By.XPATH,create_element_position["policyRulePage_addVLANIDButton_posXpath"]).click()
                     for flag in range(len(test_data["profile"])):
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_firstSelectMirrorProfile_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchMirrorProfile_posXpath"], find_after_wait_time=1).send_keys(test_data["profile"][flag]["name"])
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchMirrorProfile_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        selectProfileXpath = create_element_position["policyRulePage_selectMirrorProfile_posXpath"].format(replaceValue=test_data["profile"][flag]["name"])
-                        self.driver.find_element(By.XPATH,selectProfileXpath, find_after_wait_time=0.5).click()
+                        self.driver.find_element(By.XPATH,'//ul[@class="MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3"]//li[1]//div[@class="MuiListItemButton-root MuiListItemButton-colorNeutral MuiListItemButton-variantPlain css-18mv95p"]').click()
+                        self.driver.find_element(By.XPATH,'//div[@class="absolute bottom-0 h-[40px] w-[100%] overflow-hidden text-[16px] truncate bg-[--color-background-secondary] flex  justify-center items-center pl-[12px] pr-[38px]"]/button').click()
+
+                        # selectProfileXpath = create_element_position["policyRulePage_selectMirrorProfile_posXpath"].format(replaceValue=test_data["profile"][flag]["name"])
+                        # self.driver.find_element(By.XPATH,selectProfileXpath, find_after_wait_time=0.5).click()
 
             # 配置DoS的Threshold和Mitigation
-            if test_data["policy_type"] == "dos_protection":
+            if test_data["policy_type"] == "dos_protection" and test_data["rule_action"] == "protect":
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_thresholdType_posXpath"]).click()
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_groupBy_dropDownBox_posXpath"]).click()
                 if test_data["threshold"]["type"] == "rate":
@@ -880,8 +874,9 @@ class CreateRule:
 
             # 点enable
             # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
-            btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
-            self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
+            # btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"])
+            # self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
+            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_enable_posXpath"]).click()
             # 确认创建
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_posXpath"]).click()
             #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
@@ -903,11 +898,13 @@ class CreateRule:
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_add{}_posXpath".format(ip_condition_type)]).click()
             # 通过ip name搜索并选中
             for i in range(len(ip_data)):
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).clear()
+                #self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).clear()
+                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)]).send_keys(Keys.CONTROL + "a")
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)], find_after_wait_time=1).send_keys(ip_data[i]["name"])
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_search{}_posXpath".format(ip_condition_type)], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                 temp_element_position = create_element_position["policyRulePage_select{}_posXpath".format(ip_condition_type)].format(replaceValue=ip_data[i]["name"])
                 self.driver.find_element(By.XPATH, temp_element_position, find_after_wait_time=0.5).click()
+                # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_select{}_posXpath".format(ip_condition_type)]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_close{}_posXpath".format(ip_condition_type)]).click()
             for j in range(len(ip_data)):
                 if ip_data[j]["negate"] == True:
@@ -921,7 +918,8 @@ class CreateRule:
     def add_port(self, port_data, port_condition_type, create_element_position):
         try:
             # 点add condition的+
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+            btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"])
+            self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             # 选中port
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(port_condition_type)]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
@@ -947,8 +945,9 @@ class CreateRule:
 
     def add_protocol_field(self, protocol_field_data, filed_type, create_element_position, num):
         try:
-            # 点add condition的+
-            self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+            # 强制点击add condition的+
+            btn = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"])
+            self.driver.execute_script("arguments[0].click()", btn)
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition{}_posXpath".format(filed_type)]).click()
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
             # 点protocol filed的+

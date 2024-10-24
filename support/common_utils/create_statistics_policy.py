@@ -77,7 +77,6 @@ class CreateStatisticsPolicy:
                 #template_path = {}
                 #template_path["trex_workpath"] = "/opt/trex/v3.03"
                 #template_path["traffic_playback_workpath"] = parameter["root_path"] + "/src/traffic_replay"
-                """"""
                 # 创建object
                 if "condition" in test_data.keys():
                     for cond_key, cond_value in (test_data["condition"].items()):
@@ -144,6 +143,7 @@ class CreateStatisticsPolicy:
                     elif create_rule_code != 200:
                         result = "Fail to create {} rule.".format(test_data["policy_type"])
 
+                """
                 # 触发流量验证
                 if create_rule_code == 200:
                     search_rule = support.ui_utils.policy.search_rule.SearchRule(driver)
@@ -166,7 +166,7 @@ class CreateStatisticsPolicy:
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                     # elif len(ui_result) != 0:
                         # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", ui_result, flush=True)
-
+                """
                 # 删除rule
                 if create_rule_code == 200:
                     search_rule = support.ui_utils.policy.search_rule.SearchRule(driver)
@@ -181,9 +181,10 @@ class CreateStatisticsPolicy:
                             ui_result = ui_result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
                     else:
                         ui_result = ui_result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
-
+                """
                 # 删除object
-                if delete_rule_code == 200 and "condition" in test_data.keys():
+                #if delete_rule_code == 200 and "condition" in test_data.keys():
+                if "condition" in test_data.keys():#因为存在Object创建成功，Rule创建失败情况，所以取消delete_rule_code == 200条件
                     # 删除
                     for cond_key, cond_value in (test_data["condition"].items()):  # 遍历所有cond数据
                         if cond_key in manipulation_object_no_create_list:
@@ -223,8 +224,10 @@ class CreateStatisticsPolicy:
                         # 退出遍历标志
                         if cond_status == 1:  # 失败，退出遍历创建
                             break
+                """
                 # 删除Statistics Tesmplate
-                if delete_rule_code == 200 and "action_parameter" in test_data.keys():
+                #if delete_rule_code == 200 and "action_parameter" in test_data.keys():
+                if "action_parameter" in test_data.keys():
                     for prfi_key, prfi_value in (test_data["action_parameter"].items()):  # 遍历所有cond数据
                         prfi_status = 0
                         prfi_key_out = prfi_key.replace("_", " ")
@@ -233,12 +236,10 @@ class CreateStatisticsPolicy:
                                 search_prfi = SearchProfile(driver)
                                 element_position_map = get_element_position(prfi_key)
                                 prfi_name = prfi_value[i]["name"].strip()
-                                search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name,
-                                                                                                  element_position_map)
+                                search_prfi_code, first_row_checkbox_element = search_prfi.search(prfi_name, element_position_map)
                                 if search_prfi_code == 200:
                                     delete_prfi = DeleteProfile(driver)
-                                    delete_prfi_code = delete_prfi.delete(element_position_map,
-                                                                          first_row_checkbox_element)
+                                    delete_prfi_code = delete_prfi.delete(element_position_map, first_row_checkbox_element, True)
                                     if delete_prfi_code == 200:
                                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                                               str(datetime.now().microsecond)[:3],

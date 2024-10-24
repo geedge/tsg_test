@@ -25,7 +25,7 @@ class TrafficGenerator:
     def generate_traffic(self, policy_configuration, traffic_generation):
         debug = "local"
         if debug == "local":
-            temp_data = json.dumps(traffic_generation)
+            traffic_generation_json_str = json.dumps(traffic_generation)
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
             parse.read(parse_dir, encoding="utf-8")
@@ -34,18 +34,19 @@ class TrafficGenerator:
             url = traffic_server + ":" + port + "/v1/traffic"
             headers = {"Content-Type": "application/json"}
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send traffic for effect verification.", flush=True)
-            response = requests.post(url, data=temp_data, headers=headers)
+            response = requests.post(url, data=traffic_generation_json_str, headers=headers)
             if response.status_code == 200:
+                # 如果response.text是json格式，则需要通过json.loads解析。如果不是json格式，则直接返回赋值
                 try:
-                    jsonData = json.loads(response.text)
-                except:    # json解析失败，直接返回json原文
-                    jsonData = {}
+                    json_data = json.loads(response.text)
+                except:
+                    parse_boolean = False
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "json loads failed:", flush=True)
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} {} \n{}".format(url, temp_data, response.text), flush=True)
-                    jsonData["result"] = response.text
-                if policy_configuration["type"] == "statistics" or (policy_configuration["type"] == "service_chaining" and policy_configuration["action_parameter"]["targeted_traffic"] == "raw")  or (policy_configuration["type"] == "monitor" and traffic_generation["tool"] == "trex") or policy_configuration["type"] == "dos_protection":
-                    jsonData = jsonData["result"]
-                result = jsonData
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} {} \n{}".format(url, traffic_generation_json_str, response.text), flush=True)
+                if parse_boolean == False:
+                    json_data = {}
+                    json_data = response.text
+                result = json_data
         else:
             if traffic_generation["tool"] == "http":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic.", flush=True)

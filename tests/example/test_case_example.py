@@ -7,6 +7,7 @@ from datetime import datetime
 from support.ui_utils.workpath import workdir
 from support.ui_utils.common.ui_client import UIClient
 from support.api_utils.api_client import APIClient
+# from support.api_utils.api_client_2410 import APIClient
 from support.analyse_result import Analyse
 from support.cmdb_collector import CMDBCollector
 # from support.packet_generator.verify import Verify
@@ -38,7 +39,7 @@ def run(parameter):
                             "attribute_name": "ATTR_SOURCE_IP",
                             "type": "ip",
                             "sub_type": "ip",
-                            "name": "secy_srcip",
+                            "name": "sec_srcip",
                             "items": [
                                 {
                                     "op": "add",
@@ -61,7 +62,7 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "method": "drop",
+                "sub_action": "drop",
                 "packet_capture": {
                     "enable": 0
                 },
@@ -69,7 +70,8 @@ def run(parameter):
                 "send_icmp_unreachable": 0,
                 "after_n_packets": 1
             },
-            "is_enabled": 1
+            "is_enabled": 1,
+            "log_event": True
         }
         
         traffic_generation = {
@@ -77,14 +79,14 @@ def run(parameter):
             "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
         }
         
-        verification = {
+        verification_result = {
             "expected_result": "reset",
             "metric_query": {"hits": 1},
             "log_query": [
                 {"query_field_key":"http_host", "query_value": "open.node.com"}
             ]
         }
-
+        
         # 创建
         cmdb_collector = CMDBCollector()
         if parameter["initiation_method"] == "ui":
@@ -111,18 +113,18 @@ def run(parameter):
         
         verification = Verify()
         # 验证流量生成器的返回值是否符合策略执行的预期
-        excepted_result, error = verification.verify_excepted_result(verification, traffic_result)
-        if excepted_result == False:
+        excepted_traffic_result, error = verification.verify_traffic_result(verification_result, traffic_result)
+        if excepted_traffic_result == False:
             return error
         
         # 验证tsg的日志和metric是否符合策略执行的预期
-        metric_log_result = verification.verify_metric_log(parameter, policy_configuration, traffic_generation, verification, configuration_manager, traffic_result)
-        if len(metric_log_result) != 3:
-            return metric_log_result
+        excepted_metric_log_result = verification.verify_metric_log(parameter, policy_configuration, traffic_generation, verification_result, configuration_manager, traffic_result)
+        if len(excepted_metric_log_result) != 3:
+            return excepted_metric_log_result
 
         # 分析结果
         analyse = Analyse()
-        result = analyse.analyse_result(policy_configuration["type"], metric_log_result)
+        result = analyse.analyse_result(policy_configuration["type"], excepted_metric_log_result)
         
         return result
     except Exception as e:
@@ -132,15 +134,17 @@ def run(parameter):
     finally:
         # 删除
         cmdb_collector.cleanup(parameter, api_client.token, configuration_manager)
+        
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
+        
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
-            
+        
 if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",

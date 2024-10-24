@@ -2,7 +2,6 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-import copy
 import json
 import requests
 from support.api_utils.log_in import LogIn
@@ -124,7 +123,7 @@ class APIClient:
                 rule_template_json["rule"]["application"] = self.generate_rule_condition_list(application_condition_temp_list, object_uuid, "attr_app")
             if len(policy_configuration["action_parameter"]) > 0:
                 if policy_configuration["type"] == "security" and policy_configuration["action"] == "deny":
-                    rule_template_json["rule"]["user_region"]["method"] = policy_configuration["action_parameter"]["method"]
+                    rule_template_json["rule"]["user_region"]["method"] = policy_configuration["action_parameter"]["sub_action"]
                     rule_template_json["rule"]["user_region"]["packet_capture"] = {}
                     rule_template_json["rule"]["user_region"]["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
                     rule_template_json["rule"]["user_region"]["after_n_packets"] = policy_configuration["action_parameter"]["after_n_packets"]
@@ -142,7 +141,7 @@ class APIClient:
                 rule_uuid_temp_dict = {}
                 rule_uuid_temp_dict["name"] = policy_configuration["name"]
                 rule_uuid_temp_dict["uuid"] = uuid
-                rule_uuid_temp_dict["attribute_name"] = "RULE"
+                rule_uuid_temp_dict["attribute_name"] = policy_configuration["type"].upper() + "_" + "RULE"
                 rule_uuid_temp_list = []
                 rule_uuid_temp_list.append(rule_uuid_temp_dict)
                 if policy_configuration["type"] == "security":
@@ -165,16 +164,13 @@ class APIClient:
                 attribute_name = and_condition[i]["or_conditions"][0]["attribute_name"]
                 objects_configuration = and_condition[i]["or_conditions"]
                 object_list = []
-                # object_type = objects_configuration[0]["type"]
-                # object_sub_type = objects_configuration[0]["sub_type"]
-                object_ids = []
+                object_uuids = []
                 for j in range(len(objects_configuration)):
                     object_uuid_temp = object_uuid[objects_configuration[0]["type"]]
                     for t in range(len(object_uuid_temp)):
                         if objects_configuration[j]["name"] == object_uuid_temp[t]["name"]:
-                            object_ids.append(object_uuid_temp[t]["uuid"])
-                # object_temp_dict = dict(object_type=object_type, object_sub_type=object_sub_type, object_ids=object_ids)
-                object_temp_dict = dict(object_ids=object_ids)
+                            object_uuids.append(object_uuid_temp[t]["uuid"])
+                object_temp_dict = dict(object_ids=object_uuids)
                 object_list.append(object_temp_dict)
                 temp_dict = dict(objects=object_list, attribute_name=attribute_name, is_negate=is_negate)
                 condition_list.append(temp_dict)
@@ -204,11 +200,11 @@ if __name__ == "__main__":
         "test_pc_ip": "192.168.64.86",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "debug_flag": "local",
+        "debug": "local",
         "initiation_method": "api",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 5,
         "root_path": workdir,
         "path": workdir + "/tests",
         "module_name": "security",
@@ -223,19 +219,19 @@ if __name__ == "__main__":
     #     "ip": [
     #         {
     #             "attribute_name": "ATTR_SOURCE_IP",
-    #             "name": "secy_srcip",
+    #             "name": "sec_srcip",
     #             "uuid": "111",
     #             "negate_option": False
     #         },
     #         {
     #             "attribute_name": "ATTR_SOURCE_IP",
-    #             "name": "secy_srcip_2",
+    #             "name": "sec_srcip_2",
     #             "uuid": "222",
     #             "negate_option": False
     #         },
     #         {
     #             "attribute_name": "ATTR_SOURCE_IP",
-    #             "name": "secy_srcip_3",
+    #             "name": "sec_srcip_3",
     #             "uuid": "333",
     #             "negate_option": False
     #         }
@@ -243,7 +239,7 @@ if __name__ == "__main__":
     #     "port": [
     #         {
     #             "attribute_name": "ATTR_SOURCE_PORT",
-    #             "name": "secy_port",
+    #             "name": "sec_port",
     #             "uuid": "444",
     #             "negate_option": False
     #         }
@@ -262,7 +258,7 @@ if __name__ == "__main__":
                         "attribute_name": "ATTR_SOURCE_IP",
                         "type": "ip",
                         "sub_type": "ip",
-                        "name": "secy_srcip",
+                        "name": "sec_srcip",
                         "items": [ # 一个object中包含多个item
                             {
                                 "op": "add",
@@ -280,7 +276,7 @@ if __name__ == "__main__":
                         "attribute_name": "ATTR_SOURCE_IP",
                         "type": "ip",
                         "sub_type": "ip",
-                        "name": "secy_srcip_2",
+                        "name": "sec_srcip_2",
                         "items": [
                             {
                                 "op": "add",
@@ -298,7 +294,7 @@ if __name__ == "__main__":
                         "attribute_name": "ATTR_SOURCE_IP",
                         "type": "ip",
                         "sub_type": "ip",
-                        "name": "secy_srcip_3",
+                        "name": "sec_srcip_3",
                         "items": [
                             {
                                 "op": "add",
@@ -316,7 +312,7 @@ if __name__ == "__main__":
                         "attribute_name": "ATTR_DESTINATION_IP",
                         "type": "ip",
                         "sub_type": "ip",
-                        "name": "secy_srcip_4",
+                        "name": "sec_srcip_4",
                         "items": [
                             {
                                 "op": "add",
@@ -339,7 +335,7 @@ if __name__ == "__main__":
             }
         ],
         "action_parameter": {
-            "method": "drop",
+            "sub_action": "drop",
             "packet_capture": {
                 "enable": 0
             },

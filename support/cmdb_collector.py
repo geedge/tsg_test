@@ -72,13 +72,13 @@ if __name__ == "__main__":
         "ip": [
             {
                 "attribute_name": "ATTR_SOURCE_IP",
-                "name": "secy_ip",
+                "name": "sec_ip",
                 "uuid": "111",
                 # "negate_option": False
             },
             {
                 "attribute_name": "ATTR_SOURCE_IP",
-                "name": "secy_ip_2",
+                "name": "sec_ip_2",
                 "uuid": "222",
                 # "negate_option": False
             }
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         "port": [
             {
                 "attribute_name": "ATTR_SOURCE_PORT",
-                "name": "secy_port",
+                "name": "sec_port",
                 "uuid": "333",
                 # "negate_option": False
             }
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     #     "security": [
     #         {
     #             "attribute_name": "RULE",
-    #             "name": "secy_rule",
+    #             "name": "sec_rule",
     #             "uuid": "111"
     #         }
     #     ]

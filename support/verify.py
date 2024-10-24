@@ -6,13 +6,14 @@ from support.packet_generator.capture_packet import *
 from support.packet_generator.traffic_generator import *
 # from support.packet_generator.api_verification import *
 from support.api_verification import *
-from support.packet_generator.ui_verification import *
+# from support.packet_generator.ui_verification import *
+from support.ui_verification import *
 from support.packet_generator.workpath import workdir
 from datetime import datetime
 from threading import Thread
 
 class Verify:
-    def verify_excepted_result(self, verification, traffic_result):
+    def verify_traffic_result(self, verification, traffic_result):
         try:
             debug = "local"
             if debug == "local":
@@ -29,7 +30,7 @@ class Verify:
                 return False, "The traffic returned result does not match the expected result."
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", str(e), flush=True)
-            return False, "Exception Error when verify excepted result: " + str(e)
+            return False, "Exception Error when verify excepted traffic result: " + str(e)
         
     def verify_metric_log(self, parameter, policy_configuration, traffic_generation, verification, configuration_manager, traffic_result):
         try:
@@ -46,11 +47,13 @@ class Verify:
                 rule_type = policy_configuration["type"]
                 if len(api_verification_result) > 0 and rule_type != "statistics":
                     verification_result = [False for _ in range(3)]
-                    ui_verification = UiVerification()
-                    ui_verification_result = ui_verification.ui_verification(my_driver, parameter, policy_configuration, configuration_manager, traffic_result, api_verification_result)
+                    ui_verification = UIVerification(policy_configuration, traffic_generation, verification, configuration_manager)
+                    ui_verification_result = ui_verification.ui_verification(my_driver, api_verification_result, traffic_result)
+                    if len(ui_verification_result) == 1:
+                        return ui_verification_result
                     # 对比api和ui返回的每个结果，如果都一样，则结果是true，如果二者有一个不同，就为false
                     if rule_type == "security" or rule_type == "service_chaining" or rule_type == "pxy_intercept" or rule_type == "pxy_manipulation" or rule_type == "monitor":
-                        if api_verification_result[0] == True and ui_verification_result[0] == True or (api_verification_result[1] == 'no_set' and ui_verification_result[1] == 'no_set'):
+                        if api_verification_result[0] == True and ui_verification_result[0] == True or (api_verification_result[0] == 'no_set' and ui_verification_result[0] == 'no_set'):
                             verification_result[0] = True
                         else:
                             verification_result[0] = False
@@ -68,7 +71,7 @@ class Verify:
                 return verification_result
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error when verify metric and log: ", str(e), flush=True)
-            return "Exception Error when verify metric and log : " + str(e)
+            return "Exception Error when verify metric and log: " + str(e)
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

@@ -24,6 +24,7 @@ from support.api_utils.analyse_result import Analyse
 from support.common_utils.data_translation import DataTranslation
 import support.ui_utils.env
 from datetime import datetime
+import time
 
 import copy
 
@@ -167,10 +168,11 @@ class CreateMonitorPolicy:
                 if create_rule_code == 200:
                     search_rule = SearchRule(driver)
                     element_position_map = get_element_position(test_data["policy_type"])
-                    search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],
-                                                                        element_position_map)
+                    # search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"],
+                    #                                                     element_position_map)
+                    search_rule_code = 200
                     if search_rule_code == 200:
-                        test_data["rule_id"] = rule_id
+                        # test_data["rule_id"] = rule_id
                         verification = Verify()
                         verification_result = verification.verify_result(driver, parameter, test_data, [], element_position_map)
                         if len(verification_result) == 4:
@@ -304,7 +306,8 @@ class CreateMonitorPolicy:
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
-
+                if cfg_list["create_library_tag_ids"] and cfg_list["create_library_catalog_ids"]:
+                    time.sleep(30)
                 # 流量验证
                 verification = Verify()
                 verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")

@@ -35,41 +35,30 @@ class GetMetricLog:
             attribute_name_list = self.statistic_attr_name()
             for i in range(self.rule_number):
                 if self.rule_type == 'security':
-                    schema_type = 'security_event'
-                elif self.rule_type == 'pxy_intercept':
-                    schema_type = 'session_record'
-                elif self.rule_type == 'pxy_manipulation':
-                    schema_type = 'proxy_event'
-                elif self.rule_type == 'monitor':
-                    schema_type = 'monitor_event'
-                elif self.rule_type == 'dos_protection':
-                    schema_type = 'dos_event'
-                fields = self.get_log_schema(token, schema_type, self.parameter["api_server"], self.parameter["vsys_id"])
-                log_condition_dict['columns'] = fields
-                
-                if self.rule_type == 'security':
-                    log_source = 'security_event'
+                    schema_type = log_source = 'security_event'
                     identifier_name = 'security-event-list'
                     log_query_rule_type = 'security_rule_list'
                 elif self.rule_type == 'pxy_intercept':
-                    log_source = 'session_record'
+                    schema_type = log_source = 'session_record'
                     identifier_name = 'session-record-list'
                     log_query_rule_type = 'proxy_rule_list'
                 elif self.rule_type == 'pxy_manipulation':
-                    log_source = 'proxy_event'
+                    schema_type = log_source = 'proxy_event'
                     identifier_name = 'proxy-event-manipulation-list'
                     log_query_rule_type = 'proxy_rule_list'
                 elif self.rule_type == 'monitor':
-                    log_source = 'monitor_event'
+                    schema_type = log_source = 'monitor_event'
                     identifier_name = 'monitor-event-list'
                     log_query_rule_type = 'monitor_rule_list'
                 elif self.rule_type == 'statistics':
-                    log_source = 'session_record'
+                    schema_type = log_source = 'session_record'
                     identifier_name = 'session-record-list'
                     log_query_rule_type = 'statistics_rule_list'
                 elif self.rule_type == "dos_protection":
-                    log_source = "dos_event"
+                    schema_type = log_source = "dos_event"
                     identifier_name = "dos-event-list"
+                fields = self.get_log_schema(token, schema_type, self.parameter["api_server"], self.parameter["vsys_id"])
+                log_condition_dict['columns'] = fields
                 log_condition_dict['source'] = log_source
                 log_condition_dict['identifier_name'] = identifier_name
                 
@@ -93,6 +82,9 @@ class GetMetricLog:
                             log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={self.parameter["test_pc_ip"]}", f"client_ip='{self.parameter["test_pc_ip"]}'")
                 
                 url = self.parameter["api_server"] + "/v1/log/query"
+                # ========24.10 begin========
+                # url = self.parameter["api_server"] + "/v1/logs/query"
+                # ========24.10 end==========
                 response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
                 assert response.status_code == 200
                 log_list = json.loads(response.text)
@@ -106,6 +98,11 @@ class GetMetricLog:
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = api_host + "/v1/log/schema/" + schema_type + "?vsys_id=" + str(vsys_id)
         response = requests.get(url, headers=headers, verify=False)
+        # ========24.10 begin========
+        # url = api_host + "/v1/logs/schema/" + schema_type
+        # vsys = {"vsys": vsys_id}
+        # response = requests.get(url, headers=headers, params=vsys, verify=False)
+        # ========24.10 end==========
         assert response.status_code == 200
         log_schema = json.loads(response.text)
         log_schema = log_schema['data']['fields']
@@ -116,6 +113,9 @@ class GetMetricLog:
         try:
             headers = {'Content-Type': 'application/json', 'Authorization': token}
             url = self.parameter["api_server"] + "/v1/log/query"
+            # ========24.10 begin========
+            # url = self.parameter["api_server"] + "/v1/logs/query"
+            # ========24.10 end==========
             for i in range(self.rule_number):
                 if self.rule_type == 'security':
                     dataset_identifier_name = "security-policy-rule-statistics"

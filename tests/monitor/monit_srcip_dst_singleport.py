@@ -24,7 +24,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_destination_one_port",
+            "rule_name": os.path.basename(__file__)[:-3],
             "rule_action": "monitor",
             "rule_type": "create",
             "condition": {

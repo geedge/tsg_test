@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.common_utils.create_policy import CreatePolicy
+from support.instance_utils.case_instance_generator import CaseInstanceGenerator
 from support.report_update import ReportUpdate
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
@@ -23,7 +23,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "monitor",
-            "rule_name": "monitor_rule_http_mirror_off",
+            "rule_name": os.path.basename(__file__)[:-3],
             "rule_action": "monitor",
             "rule_type": "create",
             "condition": {
@@ -43,21 +43,7 @@ def run(parameter):
                     }
                 ],
                 "source_port": [],
-                "destination_ip": [
-                    {
-                        "name": "monitor_dst_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "192.168.40.206",
-                            },
-                        ]
-                    }
-                ],
+                "destination_ip": [],
                 "destination_port": [],
                 "internal_ip": [],
                 "internal_port": [],
@@ -72,33 +58,52 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "https",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
                 "server_fqdn": [],
-                "protocol_filed":[],
+                "server_fqdn_library": [
+                    {
+                        "category": "geoip_city",
+                        "catalogs": [
+                            {
+                                "op": "add",
+                                # "ip_entries": "1.1.1.1",
+                                "fqdn_entries": "*mtv.com"
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag_key": "testkey",
+                                "tag_value": "testvalue",
+                                "op": "add"
+                            }
+                        ],
+                        "negate": False,
+                    }
+                ],
+                "protocol_filed": [],
                 #"sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },
-            "is_mirror":"off",
-            "expected_return": "helloMonitor",
+            "is_mirror": "off",
+            "expected_return": "mtv",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"client_ip", "query_value": parameter["test_pc_ip"]},
-                                {"query_field_key": "decoded_as", "query_value": "HTTP"}
-                            ],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.mtv.com"}],
             "traffic": {
-                "protocol": "http",
+                "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 10 -m 10 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"helloMonitor\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://192.168.40.206:180/go"
+                "command": "curl -N -kv https://www.mtv.com/"
             },
             "token": ""
         }
+
         # 测试用例实例化
-        create = CreatePolicy(test_data, parameter)
-        result = create.create_policy()
+        case_instance_generator = CaseInstanceGenerator(test_data, parameter)
+        result = case_instance_generator.create()
 
         return result
     except Exception as e:
@@ -108,8 +113,8 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(create, CreatePolicy):
-            create.clean_up()
+        if isinstance(case_instance_generator, CaseInstanceGenerator):
+            case_instance_generator.clean_up()
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
