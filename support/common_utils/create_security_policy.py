@@ -730,7 +730,7 @@ class CreateSecurityPolicy:
                         elif object_type == 'account':
                             create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_account_object_element_position)
                         elif object_type == 'http_signature':
-                            create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_http_signature_object_element_position)
+                            create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], object_http_signature_object_element_position)
                         else:
                             create_protocol_filed_code = 200
                         if create_protocol_filed_code == 200:
@@ -883,7 +883,7 @@ class CreateSecurityPolicy:
                     if "protocol_filed" in test_data["condition"] and len(test_data["condition"]["protocol_filed"]) != 0:
                         object_positions = {
                             'url': test_url_object_element_position,
-                            'http_signature': test_http_signature_object_element_position,
+                            'http_signature': object_http_signature_object_element_position,
                             'fqdn': test_fqdn_object_element_position,
                             'keywords': test_keywords_object_element_position,
                             'account': test_account_object_element_position
