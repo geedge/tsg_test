@@ -977,17 +977,17 @@ test_manipulation_rule_element_position = {
         "policyRulePage_okButton_warningYes_posXpath": manipulationRulePage_okButton_warningYes_posXpath,
     },
     "search": {
-        "policyRuleListPage_searchLabel_posXpath": securityRuleListPage_searchLable_posId,
-        "policyRuleListPage_searchLabel_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-        "policyRuleListPage_searchLabel_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLabel_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
-        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+        "policyRuleListPage_searchLabel_posXpath": manipulationRuleListpage_searchLabel_posXpath,
+        "policyRuleListPage_searchLabel_dropDown_item_posXpath": manipulationRuleListpage_searchLabel_dropDown_item_posXpath,
+        "policyRuleListPage_searchLabel_input_itemContent_posXpath": manipulationRuleListpage_searchLabel_input_itemContent_posXpath,
+        "policyRuleListPage_searchLabel_searchButton_posId": manipulationRuleListpage_searchLabel_searchButton_posXpath,
+        "policyRuleListPage_tableTbody_posXpath": manipulationRuleListpage_tableTbody_posXpath
     },
     "delete": {
-        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
-        "policyRuleListPage_deleteButton_posXpath": manipulationRuleListPage_deleteButton_posXpath,
-        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-        "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+        "policyRuleListPage_allSelect_posXpath": manipulationRuleListpage_allSelect_posXpath,
+        "policyRuleListPage_deleteButton_posXpath": manipulationRuleListpage_deleteButton_posXpath,
+        "policyRuleListPage_okButton_warningYes_posXpath": manipulationRuleListpage_deleteTipButton_warningYes_posXpath,
+        "policyRuleListPage_okButton_warningNo_posXpath": manipulationRuleListpage_deleteTipButton_warningNo_posXpath
     }
 }
 test_security_rule_element_position = {
@@ -1503,17 +1503,17 @@ test_intercept_rule_element_position = {
         "policyRulePage_intercept_searchTcpProfileDorpItem_posXpath": interceptRulePage_intercept_searchTcpProfileDorpItem_posXpath,
     },
     "search": {
-        "policyRuleListPage_searchLabel_posXpath": securityRuleListPage_searchLable_posId,
-        "policyRuleListPage_searchLabel_dropDown_item_posXpath": securityRuleListPage_searchLable_dropDown_item_posXpath,
-        "policyRuleListPage_searchLabel_input_itemContent_posXpath": securityRuleListPage_searchLable_input_itemContent_posXpath,
-        "policyRuleListPage_searchLabel_searchButton_posId": securityRuleListPage_searchLable_searchButton_posId,
-        "policyRuleListPage_tableTbody_posXpath": securityRuleListPage_tableTbody_posXpath
+        "policyRuleListPage_searchLabel_posXpath": interceptRuleListPage_searchLabel_posXpath,
+        "policyRuleListPage_searchLabel_dropDown_item_posXpath": interceptRuleListPage_searchLabel_dropDown_item_posXpath,
+        "policyRuleListPage_searchLabel_input_itemContent_posXpath": interceptRuleListPage_searchLabel_input_itemContent_posXpath,
+        "policyRuleListPage_searchLabel_searchButton_posId": interceptRuleListPage_searchLabel_searchButton_posXpath,
+        "policyRuleListPage_tableTbody_posXpath": interceptRuleListPage_tableTbody_posXpath
     },
     "delete": {
-        "policyRuleListPage_allSelect_posXpath": securityRulelistPage_allSelect_posXpath,
+        "policyRuleListPage_allSelect_posXpath": interceptRuleListPage_allSelect_posXpath,
         "policyRuleListPage_deleteButton_posXpath": interceptRuleListPage_deleteButton_posXpath,
-        "policyRuleListPage_okButton_warningYes_posXpath": securityRuleListpage_okButton_warningYes_posXpath,
-        "policyRuleListPage_okButton_warningNo_posXpath": securityRuleListpage_okButton_warningNo_posXpath
+        "policyRuleListPage_okButton_warningYes_posXpath": interceptRuleListPage_deleteTipButton_warningYes_posXpath,
+        "policyRuleListPage_okButton_warningNo_posXpath": interceptRuleListPage_deleteTipButton_warningNo_posXpath
     }
 }
 test_statistics_template_element_position = {
