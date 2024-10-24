@@ -33,8 +33,8 @@ ObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button de
 ObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
 ObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
 ObjectListPage_tableTbody_posXpath = "//div[contains(@class,'ly-table1')]//tbody"
-ObjectPage_statistics_select_posId = "statistics_select"
-ObjectPage_statistics_select_option_posXpath = "//div[@class='statistics-title'][normalize-space(text())='{}']/.."#"//div[@class='el-select-dropdown__wrap el-scrollbar__wrap']/ul/li/div[@class='statistics-title'][normalize-space(text())='Elaborate']/.."
+ObjectPage_statistics_select_posXpath = "//label[normalize-space(text())='Statistics']/parent::div//button"
+ObjectPage_statistics_select_option_posXpath = "//li//*[normalize-space(text())='{}']/parent::*"#//ul[contains(@class,'base-Popper-root MuiSelect-listbox Mui-expanded css-1ufo3gk')]
 groupObjectPage_inputName_posXpath="//*[@class='biFangName']//input"#input_name
 groupObjectPage_addSubordinate_posXpath="//div[@data-desc='subObject']//div[@class='addobject width300px addobject-long-list obj-content-null cursorPointer borderColor']"#add sub……+
 groupObjectPage_searchSubordinate_posXpath="//div[@class='CommonListDetail list-detail']//input[@id='object_ip_search']" #search_sub 输入框替换值name

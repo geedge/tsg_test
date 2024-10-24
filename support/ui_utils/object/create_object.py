@@ -160,7 +160,7 @@ class CreateObject:
                 statistics_option_temp = data["statistics_option"]
                 time.sleep(1)
                 if statistics_option_temp in {"None","Brief","Elaborate"}:
-                    self.driver.find_element(By.ID, create_element_position["objectPage_statistics_select_posId"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_statistics_select_posXpath"]).click()
                     element_dropdown_item = self.driver.find_element(By.XPATH, create_element_position["objectPage_statistics_select_option_posXpath"].format(statistics_option_temp))
                     # 移动元素到页面，在执行点击
                     self.driver.execute_script("arguments[0].scrollIntoView();", element_dropdown_item)
