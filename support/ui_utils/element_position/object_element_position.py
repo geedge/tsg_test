@@ -49,6 +49,13 @@ groupObjectPage_selectExclude_posXpath="//div[@class='reference-box el-popover__
 groupObjectPage_closeExclude_posXpath=groupObjectPage_closeSubordinate_posXpath  #close_sub  替换值type
 groupObjectPage_addExcludeObject_posId=groupObjectPage_addSubordinateObject_posId #再次add sub的按钮
 
+objectPage_inputName_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]' # name输入框Xpath
+objectPage_addItem_button_posXpath = "//div[@class='mt-[10px] flex justify-center']/button" #添加Item按钮#//div[@class='mt-[10px] flex justify-center']//i[contains(@class,'icon-Create1')]
+objectPage_addItemSubstring_button_posXpath = "//div[@class='form-list-row css-xpbhx9']//div[@class='MuiBox-root css-0']//i[@class='iconfont icon-Create1 font-[700]']" #添加Item 子串按钮
+objectPage_item_input_posXpath = "(//div[@class='form-list-row css-xpbhx9']//div[@class='MuiBox-root css-0']//input[@class='MuiInput-input css-1u0jcuo'])[last()]" #根据UI特性获取最后一个Item子串输入框
+objectPage_saveItem_posXpath = "//div[@class='MuiTableCell-root MuiTableCell-sizeMedium css-zhiahd']//i[@class='operate-icon iconfont icon-save']"
+objectPage_okButton_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[normalize-space(text())='OK']" #Object界面保存对象按钮
+
 #app group
 applicationGroupobjectListPage_createButton_posId="app_create-_OperateBtns_ElCol_ElRow_Application_appGroups_Home_App_anonymousComponent"#create_button
 applicationGroupObjectPage_okButton_posId = "OK-_AppGroupDetail_Home_App_anonymousComponent" # OK按钮
@@ -150,7 +157,7 @@ portObjectListPage_search_input_posXpath = objectListPage_search_input_posXpath
 portObjectListPage_search_dropDown_item_posXpath = objectListPage_search_dropDown_item_posXpath
 portObjectListPage_search_button_posXpath = objectListPage_search_button_posXpath
 portObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
-portobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath
+portObjectPage_addItem_posXpath = objectPage_addItem_button_posXpath
 portObjectPage_inputItem_posXpath = '//*[@class="port-object-interval"]//input'
 portObjectPage_button_saveItem_posXpath = ipObjectPage_button_saveItem_posXpath
 # portObjectPage_okButton_posId= "OK-_PortDetail_Home_App_anonymousComponent"
@@ -250,12 +257,6 @@ httpSignatureObjectPage_button_saveItem_posXpath = "//div/i[@class='operate-icon
 httpSignatureObjectPage_okButton_posId = "OK-_HttpSigDetail_Home_App_anonymousComponent"
 httpSignatureObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el-button--default el-button--small el-button--primary operation-confirm']//span"
 
-objectPage_inputName_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]' # name输入框Xpath
-objectPage_addItem_button_posXpath = "//div[@class='mt-[10px] flex justify-center']/button" #添加Item按钮#//div[@class='mt-[10px] flex justify-center']//i[contains(@class,'icon-Create1')]
-objectPage_addItemSubstring_button_posXpath = "//div[@class='form-list-row css-xpbhx9']//div[@class='MuiBox-root css-0']//i[@class='iconfont icon-Create1 font-[700]']" #添加Item 子串按钮
-objectPage_item_input_posXpath = "(//div[@class='form-list-row css-xpbhx9']//div[@class='MuiBox-root css-0']//input[@class='MuiInput-input css-1u0jcuo'])[last()]" #根据UI特性获取最后一个Item子串输入框
-objectPage_saveItem_posXpath = "//div[@class='MuiTableCell-root MuiTableCell-sizeMedium css-zhiahd']//i[@class='operate-icon iconfont icon-save']"
-objectPage_okButton_posXpath = "//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[normalize-space(text())='OK']" #Object界面保存对象按钮
 # url
 urlObjectListPage_createButton_posXpath = objectListPage_handleButton_posXpath.format(replaceName='Create')
 urlObjectListPage_deleteButton_posXpath = objectListPage_handleButton_posXpath.format(replaceName='Delete')#"appDel-_OperateBtns_ElRow_Objects_url_Home_App_anonymousComponent"

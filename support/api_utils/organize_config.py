@@ -169,11 +169,18 @@ class OrganizeConfig:
         run_env = parameter["env"]
         # statistics中将ip改为随机
         if "condition" in config.keys():
+            #是否产生Traffic随机IP标识
+            traffic_radom_ip_flag = False
+            #如果是Traffic流量则标识为True
+            if "trex" == config["traffic"]["type"]:
+                traffic_radom_ip_flag = True
             sub_id_flag = False
             if "sub_id" in config["rule_name"]:
                 sub_id_flag = True
             for obj in config["condition"]:
-                if "source_ip" == obj:# or "destination_ip" in obj:
+                if "source_ip" == obj and len(config["condition"]["source_ip"]) > 0:# or "destination_ip" in obj:
+                    # 是否产生Traffic随机IP标识,如果已经通过source_ip产生Traffic随机ip则不再另外产生随机ip标识设置为False
+                    traffic_radom_ip_flag = False
                     src_ip = config["condition"]["source_ip"][0]["item"][0]["item_value"]
                     traffic_replace_ip = 0
                     if "default" in src_ip:
@@ -247,6 +254,32 @@ class OrganizeConfig:
                     #    config["traffic"]["servers_end_ip"] = stop_ip
                     else:
                         pass
+            if traffic_radom_ip_flag:
+                src_ip = "10.64.77.11"
+                src_ip_list = src_ip.split(".")
+                if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
+                    if sub_id_flag == True:
+                        src_ip_list[2] = str(25)
+                    else:
+                        src_ip_list[2] = str(random.randint(1, 25))
+                elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
+                    if sub_id_flag == True:
+                        src_ip_list[2] = str(255)
+                    else:
+                        src_ip_list[2] = str(random.randint(224, 255))
+                if sub_id_flag == True:
+                    src_ip_list[3] = str(251)
+                else:
+                    src_ip_list[3] = str(random.randint(100, 249))
+                if run_env == "9140":
+                    src_ip_list[0] = "172"
+                    src_ip_list[1] = "56"
+                elif run_env == "tsgx":
+                    src_ip_list[0] = "10"
+                    src_ip_list[1] = "64"
+                new_src_ip = ".".join(src_ip_list)
+                config["traffic"]["clients_start_ip"] = new_src_ip
+                config["traffic"]["clients_end_ip"] = new_src_ip
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
 
