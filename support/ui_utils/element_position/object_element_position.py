@@ -166,8 +166,8 @@ fqdnObjectListPage_searchLabel_selectName_posXpath = "//span[normalize-space(tex
 fqdnObjectListPage_deleteButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"
 fqdnObjectListPage_deleteButton_warningYes_posXpath = "//div[@class='MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4']//button[text()='Yes']"
 fqdnObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
-fqdnObjectListPage_allSelect_posXpath = "//div[@class='page-box-containcheck']//label[contains(@class, 'allCheckbox')]/span/span"
-fqdnObjectListPage_tableTbody_posXpath = ipObjectListPage_tableTbody_posXpath
+fqdnObjectListPage_allSelect_posXpath = objectListPage_allSelect_posXpath
+fqdnObjectListPage_tableTbody_posXpath = objectListPage_tableTbody_posXpath
 fqdnObjectListPage_search_input_posXpath = objectListPage_search_input_posXpath
 fqdnObjectListPage_search_dropDown_item_posXpath = objectListPage_search_dropDown_item_posXpath
 fqdnObjectListPage_search_button_posXpath = objectListPage_search_button_posXpath
