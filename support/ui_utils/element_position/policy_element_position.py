@@ -1210,7 +1210,7 @@ dosRulePage_closeExternalIP_posXpath = policyRulePage_closeExternalIP_posXpath
 dosRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
 #dos add ....
 dosRulePage_addCondition_imsi_posXpath = policyRulePage_addConditionImsi_posXpath
-dosRulePage_addCondition_url_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='URL']  |  //div[@class='SourceList list-box']//div[normalize-space(text())='URI']"
+dosRulePage_addCondition_url_posXpath = policyRulePage_addCondition_url_posXpath
 dosRulePage_addCondition_uri_posXpath = policyRulePage_addCondition_uri_posXpath
 dosRulePage_addCondition_requestHeader_posXpath = policyRulePage_addCondition_requestHeader_posXpath
 dosRulePage_addCondition_requestBody_posXpath = policyRulePage_addCondition_requestBody_posXpath
@@ -1234,12 +1234,12 @@ dosRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
 dosRulePage_selectServerFqdn_posXpath = rulePage_object_list_select_name_posXpath
 dosRulePage_closeServerFqdn_posXpath = policyRulePage_closeServerFqdn_posXpath
 #dos add url
-dosRulePage_addUrl_posXpath = "//p[normalize-space(text())='URL']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+dosRulePage_addUrl_posXpath = policyRulePage_addUrl_posXpath
 dosRulePage_searchUrl_posXpath = policyRulePage_searchUrl_posXpath
 dosRulePage_selectUrl_posXpath = policyRulePage_selectUrl_posXpath
 dosRulePage_closeUrl_posXpath = policyRulePage_closeUrl_posXpath
 #dos add requset header
-dosRulePage_addRequestHeader_posXpath =  "//p[normalize-space(text())='Request Header']/ancestor::div[@class='FilterItem']//i[contains(@class, 'icon-Create1')]"
+dosRulePage_addRequestHeader_posXpath =  policyRulePage_addRequestHeader_posXpath
 dosRulePage_searchRequestHeader_posXpath = policyRulePage_searchRequestHeader_posXpath
 dosRulePage_selectRequestHeader_posXpath = policyRulePage_selectRequestHeader_posXpath
 dosRulePage_closeRequestHeader_posXpath = policyRulePage_closeRequestHeader_posXpath
