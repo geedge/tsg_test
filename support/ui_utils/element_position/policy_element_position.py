@@ -707,13 +707,13 @@ manipulationRulePage_okButton_warningYes_posXpath = rulePage_okButton_warningYes
 #service chaining
 mainPage_policySecondLevelMenu_servicechaining_posXpath = "//span[normalize-space(text()) = 'Service Chaining']"
 
-serviceChainingRuleListPage_createButton_posXpath = "//span[@class='action-create inline-flex mr-[8px] ']"
-serviceChainingRuleListPage_deleteButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Delete']"
-serviceChainingRuleListPage_searchLable_posXpath = "//div[@class='MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5']//input[@placeholder='Please enter search content']"
-serviceChainingRuleListPage_searchLable_dropDown_item_posXpath = "//span[normalize-space(text())='{replaceValue}']/../.."   #下拉菜单定位
+serviceChainingRuleListPage_createButton_posXpath = ruleListPage_createButton_posXpath
+serviceChainingRuleListPage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
+serviceChainingRuleListPage_searchLable_posXpath = ruleListPage_searchLabel_posXpath
+serviceChainingRuleListPage_searchLable_dropDown_item_posXpath = ruleListPage_searchLabel_dropDown_item_posXpath
 serviceChainingRuleListPage_searchLable_input_itemContent_posXpath = ruleListPage_searchLabel_input_itemContent_posXpath
-serviceChainingRuleListPage_searchLable_searchButton_posXpath = "//div[@class='flex-1 overflow-hidden']//i[@class='iconfont icon-sousuo text-[19px]']"
-serviceChainingRuleListPage_tableTbody_posXpath = "//div[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']"
+serviceChainingRuleListPage_searchLable_searchButton_posXpath = ruleListPage_searchLabel_searchButton_posXpath
+serviceChainingRuleListPage_tableTbody_posXpath = ruleListPage_tableTbody_posXpath
 
 serviceChainingRulePage_inputName_posXpath = "//*[@class='service-chaining-policy-name']//input"
 serviceChainingRulePage_rawTrafficButton_posXpath = "//div[@class='service-chaining-policy-targeted_traffic']//button[1]"
@@ -754,6 +754,7 @@ serviceChainingRulePage_selectApplicationGroupLabel_posXpath = policyRulePage_se
 
 serviceChainingRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 serviceChainingRulePage_addCondition_serverFqdn_posXpath = policyRulePage_addCondition_serverFqdn_posXpath
+serviceChainingRulePage_addCondition_url_posXpath = "//div[normalize-space(text())='URL']"
 serviceChainingRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 serviceChainingRulePage_addServerFqdn_posXpath = policyRulePage_addServerFqdn_posXpath
 serviceChainingRulePage_searchServerFqdn_posXpath = policyRulePage_searchServerFqdn_posXpath
