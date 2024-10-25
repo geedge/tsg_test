@@ -219,15 +219,11 @@ class ApiVerification:
                             metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, traffic_result, active_dest_ips_list, api_server, vsys_id)
                         elif test_data["targeted_traffic"] == "decrypted":
                             metric_result = log.get_sc_metric(token, start_time, end_time, sc_info,"", active_dest_ips_list, api_server, vsys_id)
-                        if metric_result == True:  # 返回结果不等于333，则退出循环查询
+                        if metric_result == True:      # metric不为空且符合预期结果 退出循环
                             break
-                        elif metric_result == False:  # 查询验证失败时，再查询验证两次
-                            if fail_count >= 2:
-                                break
-                            fail_count += 1
                         time.sleep(15)
-                        n += 1
-                if metric_result == 333:
+                        n += 1      # 若查询到的metric为空/metric结果不符合预期结果 再查询四次
+                if metric_result == None:
                     if sc_info["sf_method"] == "vxlan_g":
                         if sc_info["sf_dest_ip"] not in active_dest_ips_list:
                             metric_result = True
@@ -248,8 +244,6 @@ class ApiVerification:
                             metric_result = True
                         else:
                             metric_result = False
-                elif metric_result == 444:
-                    metric_result = False
             if metric_result == True:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining api is passed", flush=True)
             else:
