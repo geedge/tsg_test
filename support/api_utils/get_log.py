@@ -491,21 +491,25 @@ class GetLog:
         elif query_field_key in ["basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate"]:
             temp_log_result_list.append(True)
         elif query_field_key == "rule_id":
-            if policy_id == log[query_field_key]:
+            # 不改变用例，通过逻辑取到查询结果中的rule_uuid用于对比
+            if policy_id == log["rule_uuid"]:
                 temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = int(log[query_field_key])
+                test_data["log_query_param"][time]["query_value"] = log["rule_uuid"]
             else:
                 temp_log_result_list.append(False)
-        elif query_field_key == "conditions":
-            if f"DoS Protection [{policy_id}]" == log [query_field_key]:
-                temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
-            else:
-                temp_log_result_list.append(False)
+        # 与开发确认，24.10 版本中conditions指标取消，且无对应的替换字段
+        # elif query_field_key == "conditions":
+        #     if f"DoS Protection [{policy_id}]" == log [query_field_key]:
+        #         temp_log_result_list.append(True)
+        #         test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+        #     else:
+        #         temp_log_result_list.append(False)
+        
+        # 24.10 版本，source_ip_list替换为source_ip
         elif query_field_key == "source_ip_list" :
-            if test_data["traffic"]["clients_start_ip"] == log [query_field_key]:
+            if test_data["traffic"]["clients_start_ip"] == log ["source_ip"]:
                 temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+                test_data["log_query_param"][time]["query_value"] = log["source_ip"]
             else:
                 temp_log_result_list.append(False)
         elif query_field_key == "destination_ip":
