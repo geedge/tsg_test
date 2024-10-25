@@ -324,7 +324,7 @@ class CreateRule:
                             tmp_mail_account.append(tmp_item)
                         elif tmp_item["items"][0]["item_type"] == "mail_from":
                             tmp_mail_from.append(tmp_item)
-                        elif tmp_item["items"][0]["item_type"] == "mail_to":
+                        elif tmp_item["items"][0]["item_type"] == "to":
                             tmp_mail_to.append(tmp_item)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
@@ -403,7 +403,7 @@ class CreateRule:
                                     self.add_protocol_field(protocol_field_data, "MailAccount",create_element_position, temp)
                                 elif item_dict["item_type"] == "mail_from":
                                     self.add_protocol_field(protocol_field_data, "MailFrom", create_element_position,temp)
-                                elif item_dict["item_type"] == "mail_to":
+                                elif item_dict["item_type"] == "to":
                                     self.add_protocol_field(protocol_field_data, "MailTo", create_element_position,temp)
                                 else:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")

@@ -334,7 +334,7 @@ accountObjectListPage_search_input_posXpath = objectListPage_search_input_posXpa
 accountObjectListPage_search_dropDown_item_posXpath = objectListPage_search_dropDown_item_posXpath
 accountObjectListPage_search_button_posXpath = objectListPage_search_button_posXpath
 accountObjectListPage_tableTbody_posXpath = objectListPage_tableTbody_posXpath
-accountObjectListPage_deleteButton_posXpath = '//*[@class="action-delete inline-flex mr-[8px] "]'
+accountObjectListPage_deleteButton_posXpath = ipObjectListPage_deleteButton_posXpath
 
 
 
