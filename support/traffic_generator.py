@@ -37,6 +37,7 @@ class TrafficGenerator:
             response = requests.post(url, data=traffic_generation_json_str, headers=headers)
             if response.status_code == 200:
                 # 如果response.text是json格式，则需要通过json.loads解析。如果不是json格式，则直接返回赋值
+                parse_boolean = True
                 try:
                     json_data = json.loads(response.text)
                 except:

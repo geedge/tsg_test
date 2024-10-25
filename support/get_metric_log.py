@@ -4,6 +4,7 @@ import copy
 import requests
 import json
 from datetime import datetime
+from support.api_utils.util_statistics_template import UtilStatisticsTemplate
 
 class GetMetricLog:
     def __init__(self, parameter, policy_configuration, traffic_generation, configuration_manager):
@@ -192,7 +193,7 @@ class GetMetricLog:
                         attribute_name_list.append(or_conditions[j]["attribute_name"])
         return attribute_name_list
     
-    def get_sc_metric(self, token, start_time, end_time, sc_expected_metric, active_dest_ips_list):
+    def get_sc_metric(self, token, start_time, end_time):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = "{}/v1/log/query".format(self.parameter["api_server"])
         # ========24.10 begin========
@@ -252,6 +253,106 @@ class GetMetricLog:
                 result_list = r_dict["data"]["result"]
                 sc_value = copy.deepcopy(result_list[0])
                 return sc_value, ""
+
+    def get_livechart_statistics(self, token, start_time, end_time, statistics_info):
+        """
+        :param token:
+        :param start_time:
+        :param end_time:
+        :param statistics_info:
+        :param test_data:
+        :return:
+        """
+        # 请求接口查询statistics metric
+        headers = {'Content-Type': 'application/json', 'Authorization': token}
+        url = "{}/v1/log/query".format(self.parameter["api_server"])
+        # 24.08重组请求体dsl结构数据,文档见https://docs.geedge.net/display/TSG/DSL+Examples
+        post_data_ori_json = """
+        {
+            "dsl": {
+                "name": "customized-statistics",
+                "data_source": "statistics_rule",
+                "filter": "vsys_id in (1) and rule_id = 282009 and template_id = 3015 and chart_id = 3026 and version = 4",
+                "custom.statistics.dimensions": [
+                    {
+                        "metric_name": "client_country",
+                        "label": "Client Country"
+                    }
+                ],
+                "custom.statistics.metrics": [
+                    {
+                        "function": {
+                            "name": "UNIQUE_COUNT"
+                        },
+                        "metric_type": "unique_count",
+                        "metric_name": "unique_count_1",
+                        "label": "UNIQUE_COUNT(Server IP Object List)"
+                    }
+                ],
+                "intervals": [
+                    "2024-08-01 11:39:42/2024-08-01 11:44:42"
+                ],
+                "order_by": "UNIQUE_COUNT(Server IP Object List) DESC",
+                "limit": 20,
+                "execution_mode": "oneshot"
+            },
+            "vsys_id": 1
+        }
+        """
+        post_data_ori_dict = json.loads(post_data_ori_json)
+        post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
+        post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
+        post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
+        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_id = {} and template_id = {} and chart_id = {} and version = {}".format(self.parameter["vsys"], statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"])
+        post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
+        if statistics_info["chart_type"] == "bar":
+            variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
+            metrics_tmp = []
+            for metric in statistics_info["metrics"]:
+                if metric["function"]["name"] in ["RATE", "BITRATE"]:
+                    function_tmp = {
+                        "name": metric["function"]["name"],
+                        "variables": [
+                            variables_tmp
+                        ]
+                    }
+                    metric["function"] = copy.deepcopy(function_tmp)
+                metrics_tmp.append(metric)
+            post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
+        else:
+            post_data_ori_dict_dsl["custom.statistics.metrics"] = statistics_info["metrics"]
+        post_data_ori_dict_dsl["intervals"] = [f"{start_time}/{end_time}"]
+        if statistics_info["topk"] != "" and statistics_info["topk"] != None:
+            post_data_ori_dict_dsl["custom.statistics.subquery.topk"] = statistics_info["topk"]
+        if "order_by" in statistics_info.keys():
+            post_data_ori_dict_dsl["order_by"] = "'{}' DESC".format(statistics_info["order_by"])
+        else:
+            post_data_ori_dict_dsl.pop("order_by")  # 不存在，暂时删除key
+        if "limit" in statistics_info.keys():
+            post_data_ori_dict_dsl["limit"] = statistics_info["limit"]
+        else:
+            post_data_ori_dict_dsl.pop("limit")  # 不存在，暂时删除key
+        post_data_ori_dict["dsl"] = post_data_ori_dict_dsl
+        post_data_ori_dict["vsys_id"] = self.parameter["vsys"]
+        # 请求接口获取Metrics数据
+        response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
+        r_dict = response.json()
+        # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}, template_id:{}, chart_id:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
+        if r_dict["code"] != 200:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],  "Exception when getting Metrics data from the interface.")
+            return [False, "The statistics metric API query failed."]
+        else:  # 返回正常结果
+            if r_dict["data"]["result"] == []:  # 为空
+                # 对应有方向的session的单一Metrics方式需要另行处理
+                tmp_in_out_list = UtilStatisticsTemplate().tmp_in_out_list
+                # api返回值为空，不判断方向，直接返回重新查找
+                if len(statistics_info["metrics"]) == 1:
+                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_in_out_list:
+                        return [333, "this is a pass"]
+                return [False, "statistics metric no result was found."]
+            else:
+                return [r_dict["data"]["result"], ""]
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

@@ -154,7 +154,6 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "debug": "local",
         "initiation_method": "api",
-        "is_log": 1,
         "env": "tsgx",
         "vsys": 5,
         "root_path": workdir,
