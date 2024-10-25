@@ -100,14 +100,14 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_bytes:SUM:incoming bytes",
-                            "out_bytes:SUM:outgoing bytes",
+                            "in_bytes:RATE:incoming bytes",
+                            "out_bytes:BITRATE:outgoing bytes",
                             "in_bytes+out_bytes:SUM:all bytes"
                           ],
                           "dimensions": [
                             "sled_ip"
                           ],
-                          "order_by": "all bytes",
+                          "order_by": "incoming bytes",
                           "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"

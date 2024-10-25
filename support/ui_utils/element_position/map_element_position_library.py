@@ -928,11 +928,17 @@ policy_service_chaining_rule_element_position = {
         "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
         "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
         # URL
-        "policyRulePage_addConditionUrl_posXpath": policyRulePage_addCondition_url_posXpath,
+        "policyRulePage_addConditionUrl_posXpath": serviceChainingRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
         "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
         "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
         "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
+        # 添加account
+        "policyRulePage_addConditionFtpAccount_posXpath": policyRulePage_addCondition_ftpAccount_posXpath,
+        "policyRulePage_addFtpAccount_posXpath": policyRulePage_addFtpAccount_posXpath,
+        "policyRulePage_searchFtpAccount_posXpath": policyRulePage_searchFtpAccount_posXpath,
+        "policyRulePage_selectFtpAccount_posXpath": policyRulePage_selectFtpAccount_posXpath,
+        "policyRulePage_closeFtpAccount_posXpath": policyRulePage_closeFtpAccount_posXpath,
         # SFF Profile
         "policyRulePage_addSFFProfile_posXpath": serviceChainingRulePage_addSFFProfile_posXpath,
         "policyRulePage_searchSFFProfile_posXpath":serviceChainingRulePage_searchSFFProfile_posXpath,
@@ -1032,7 +1038,7 @@ object_ip_group_object_element_position = {
     },
     "delete": {
         "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
-        "objectListPage_deleteButton_posId": ipObjectListPage_deleteButton_posXpath,
+        "objectListPage_deleteButton_posXpath": ipObjectListPage_deleteButton_posXpath,
         "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
     }
 }
@@ -1049,7 +1055,7 @@ object_port_object_element_position = {
         "objectListPage_createButton_posXpath": portObjectListPage_createButton_posXpath,
         "objectListPage_dropDown_createButton_posXpath": portObjectListPage_dropDown_createButton_posXpath,
         "objectPage_inputName_posXpath": portObjectPage_inputName_posXpath,
-        # "objectPage_addItem_posId": portObjectPage_addItem_posId,
+        "objectPage_addItem_posXpath": portObjectPage_addItem_posXpath,
         "objectPage_inputItem_posXpath": portObjectPage_inputItem_posXpath,
         "objectPage_button_saveItem_posXpath": portObjectPage_button_saveItem_posXpath,
         "objectPage_okButton_posXpath": portObjectPage_okButton_posXpath,
@@ -1065,7 +1071,7 @@ object_port_object_element_position = {
     },
     "delete": {
         "objectListPage_allSelect_posXpath": portObjectListPage_allSelect_posXpath,
-        "objectListPage_deleteButton_posId": portObjectListPage_deleteButton_posXpath,
+        "objectListPage_deleteButton_posXpath": portObjectListPage_deleteButton_posXpath,
         "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
     }
 }
@@ -1454,26 +1460,28 @@ profile_response_page_element_position = {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_responsePages_Name,
         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
-        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_responsePages_posId
+        "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_responsePages_posXpath
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_responsePages_createButton_posId,
-        "profilePage_inputName_posId": responsePage_input_Name_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_responsePages_createButton_posXpath,
+        "profilePage_inputName_posXpath": responsePage_input_Name_posXpath,
         "profilePage_input_file_posXpath": responsePage_input_file_posXpath,
-        "profilePage_okButton_posCss": responsePage_button_oK_posCss,
-        "profilePage_okButton_warningYes_posCss": responsePage_button_warningSaveYes_posCss,
+        "profilePage_okButton_posCss": responsePage_button_oK_posXpath,
+        "profilePage_okButton_warningYes_posCss": responsePage_button_warningSaveYes_posXpath,
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_responsePages_selectLabel_posId,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_responsePages_selectLabel_posXpath,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_responsePages_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_responsePages_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_responsePages_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_responsePages_delButton_posId,
+        "profileListPage_deleteButton_posXpath": listPage_profile_responsePages_delButton_posXpath,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_responsePages_button_yes_posXpath
     }
 }
@@ -1548,7 +1556,7 @@ profile_ssl_decryption_keyring_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_sslDecryptionKeyrings_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_sslDecryptionKeyrings_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_sslDecryptionKeyrings_createButton_posId,
     },
     "search": {
         "profileListPage_searchLabel_posId": listPage_profileSearch_sslDecryptionKeyrings_selectLabel_posId,
@@ -1572,7 +1580,7 @@ profile_ssl_decryption_profile_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_sslDecryptionProfiles_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_sslDecryptionProfiles_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_sslDecryptionProfiles_createButton_posId,
     },
     "search": {
         "profileListPage_searchLabel_posId": listPage_profileSearch_sslDecryptionProfiles_selectLabel_posId,
@@ -1596,7 +1604,7 @@ profile_tcp_proxy_profile_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tcpProxyProfiles_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_tcpProxyProfiles_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_tcpProxyProfiles_createButton_posId,
     },
     "search": {
         "profileListPage_searchLabel_posId": listPage_profileSearch_tcpProxyProfiles_selectLabel_posId,
@@ -1615,25 +1623,27 @@ profile_hijack_file_element_position = {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_hijackFiles_posName,
         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_hijackFiles_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_hijackFiles_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_hijackFiles_createButton_posXpath,
         "profilePage_inputName_posId": hijackFiles_input_Name_posId,
         "profilePage_okButton_posCss": hijackFiles_button_oK_posCss,
         "profilePage_okButton_warningYes_posCss": hijackFiles_button_warningSaveYes_posCss,
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_hijackFiles_selectLabel_posId,
+        "profileListPage_searchLabel_posId": listPage_profileSearch_hijackFiles_selectLabel_posXpath,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_hijackFiles_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_hijackFiles_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_hijackFiles_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_hijackFiles_delButton_posId,
+        "profileListPage_deleteButton_posId": listPage_profile_hijackFiles_delButton_posXpath,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_hijackFiles_button_yes_posXpath
     }
 }
@@ -1647,7 +1657,7 @@ profile_insert_script_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_insertScripts_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_insertScripts_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_insertScripts_createButton_posId,
         "profilePage_inputName_posId": insertScripts_input_Name_posId,
         "profilePage_okButton_posCss": insertScripts_button_oK_posCss,
         "profilePage_okButton_warningYes_posCss": insertScripts_button_warningSaveYes_posCss,
@@ -1674,7 +1684,7 @@ profile_run_script_element_position = {
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tsgProxyScripts_posId
     },
     "create": {
-        "profileListPage_createButton_posId": listPage_profile_tsgProxyScripts_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_tsgProxyScripts_createButton_posId,
         "profilePage_inputName_posXpath": tsgProxyScripts_input_Name_posXpath,
         "profilePage_okButton_posCss": tsgProxyScripts_button_oK_posCss,
         "profilePage_okButton_warningYes_posCss": tsgProxyScripts_button_warningSaveYes_posCss,

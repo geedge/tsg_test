@@ -122,7 +122,7 @@ def run(parameter):
                             "server_ip"
                           ],
                           "order_by": "Syn Pkts",
-                          "row_limit": "10",
+                          "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"
                         }

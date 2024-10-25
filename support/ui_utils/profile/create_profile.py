@@ -30,7 +30,7 @@ class CreateProfile:
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_profile_page(page_jump_element_position)
             # 点击create
-            self.driver.find_element(By.ID, create_element_position["profileListPage_createButton_posId"]).click()
+            self.driver.find_element(By.XPATH, create_element_position["profileListPage_createButton_posXpath"]).click()
             if profile_data["profile_type"] == "response_page":  # response page创建
                 self._create_response_page(profile_data["profile_file"])
             elif profile_data["profile_type"] == "statistics_template":  # response page创建

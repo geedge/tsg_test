@@ -4,7 +4,6 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
-# import support.api_utils.get_log
 import support.get_metric_log
 import support.api_utils.policy_verify
 import support.ui_utils.env
@@ -129,9 +128,11 @@ class APIVerification:
                                 utc_tz = pytz.timezone('UTC')
                                 current_utc_time = datetime.now(utc_tz)
                                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                                metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, traffic_result, active_dst_ip_list, api_server, vsys_id)
-                                metic_dict, error = get_metric_log.get_sc_metric(self.token, start_time, end_time)
-                                
+                                metic_dict, code = get_metric_log.get_sc_metric(self.token, start_time, end_time)
+                                if code == 333 or code == 444:
+                                    metric_result = code
+                                else:
+                                    metric_result = self.verify_sc_metric(sc_info, active_dst_ip_list, metic_dict, traffic_result)
                                 if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                     break
                                 elif metric_result == False:  # 查询验证失败时，再查询验证两次
@@ -182,7 +183,11 @@ class APIVerification:
                                 utc_tz = pytz.timezone('UTC')
                                 current_utc_time = datetime.now(utc_tz)
                                 end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                                metric_result = log.get_sc_metric(token, start_time, end_time, sc_info,"", active_dst_ip_list, api_server, vsys_id)
+                                metic_dict, code = get_metric_log.get_sc_metric(self.token, start_time, end_time)
+                                if code == 333 or code == 444:
+                                    metric_result = code
+                                else:
+                                    metric_result = self.verify_sc_metric(sc_info, metic_dict, active_dst_ip_list)
                                 if metric_result == True:  # 返回结果不等于333，则退出循环查询
                                     break
                                 elif metric_result == False:  # 查询验证失败时，再查询验证两次
@@ -450,6 +455,90 @@ class APIVerification:
             metric_result = None
         return metric_result
 
+    def verify_sc_metric(self, sc_info, active_dst_ip_list, metic_dict, traffic_result):
+        metric_result = False
+        if sc_info["targeted_traffic"] == "raw":
+            byte_value = traffic_result["total_bytes"]
+            pkt_value = traffic_result["total_packets"]
+            if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dst_ip_list:
+                if len(sc_info["application"]) > 0 :
+                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl" or sc_info["application"][0] == "rdp" or sc_info["application"][0] == "OPENVPN":
+                        lost_pkt = 3
+                        lost_byte = 192  # tcp三次握手的三个包的字节数和
+                    elif sc_info["application"][0] == "ftp":
+                        lost_pkt = 4
+                        lost_byte = 266
+                    elif sc_info["application"][0] == "mail":
+                        lost_pkt = 15
+                        lost_byte = 1273
+                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic" or sc_info["application"][0] == "rtp" :
+                        lost_pkt = 0
+                        lost_byte = 0
+                    pkt_value -= lost_pkt
+                    byte_value -= lost_byte
+                traffic_result["total_bytes"] = byte_value + 50 * pkt_value
+                traffic_result["total_packets"] = pkt_value
+                if sc_info["type"] == 1:
+                    if metic_dict["sent_bytes"] == metic_dict["received_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == metic_dict["received_packets"] == pkt_value:
+                        metric_result = True
+                    else:
+                        metric_result = False
+                elif sc_info["type"] == 2:
+                    if metic_dict["sent_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == pkt_value and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
+                        metric_result = True
+                    else:
+                        metric_result = False
+                else:
+                    metric_result = False
+            elif sc_info["sf_method"] == "layer2_switch":
+                if len(sc_info["application"]) > 0 :
+                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl" or sc_info["application"][0] == "rdp" or sc_info["application"][0] == "OPENVPN":
+                        lost_pkt = 3
+                        lost_byte = 192  # tcp三次握手的三个包的字节数和
+                    elif sc_info["application"][0] == "ftp":
+                        lost_pkt = 4
+                        lost_byte = 266
+                    elif sc_info["application"][0] == "mail":
+                        lost_pkt = 15
+                        lost_byte = 1273
+                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic" or sc_info["application"][0] == "rtp":
+                        lost_pkt = 0
+                        lost_byte = 0
+                    pkt_value -= lost_pkt
+                    byte_value -= lost_byte
+                traffic_result["total_bytes"] = byte_value + 4 * pkt_value
+                traffic_result["total_packets"] = pkt_value
+                if sc_info["type"] == 2:
+                    if metic_dict["sent_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == pkt_value and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
+                        metric_result = True
+                    else:
+                        metric_result = False
+                else:
+                    metric_result = False
+        elif sc_info["targeted_traffic"] == "decrypted":
+            if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dst_ip_list:
+                if sc_info["type"] == 1:
+                    if metic_dict["sent_bytes"] == metic_dict["received_bytes"] and metic_dict["sent_packets"] == metic_dict["received_packets"]:
+                        metric_result = True
+                    else:
+                        metric_result = False
+                elif sc_info["type"] == 2:
+                    if metic_dict["sent_bytes"] != 0 and metic_dict["sent_packets"] != 0 and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
+                       metric_result = True
+                    else:
+                        metric_result = False
+                else:
+                    metric_result = False
+            elif sc_info["sf_method"] == "layer2_switch":
+                if sc_info["type"] == 2 and len(metic_dict) != 0:
+                    if metic_dict["sent_bytes"] != 0 and metic_dict["sent_packets"] != 0 and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
+                        metric_result = True
+                    else:
+                        metric_result = False
+                else:
+                    metric_result = False
+        return metric_result
+    
     def verify_dos_log(self, log_dict, traffic_result):
         print("need to modify func logic...")
 

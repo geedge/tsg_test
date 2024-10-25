@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
+import copy
 import requests
 import json
 from datetime import datetime
@@ -31,6 +32,18 @@ class GetMetricLog:
                 "filter": "",
                 "vsys_id": 1
             }
+            # ========24.10 begin========
+            # log_condition = {
+            #     "page_no": 1,
+            #     "page_size": 20,
+            #     "source": "security_event",
+            #     "columns": None,
+            #     "start_time": "",
+            #     "end_time": "",
+            #     "filter": "",
+            #     "vsys": 1
+            # }
+            # ========24.10 end==========
             log_condition_dict = json.loads(json.dumps(log_condition))
             attribute_name_list = self.statistic_attr_name()
             for i in range(self.rule_number):
@@ -97,13 +110,13 @@ class GetMetricLog:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log exception error: ", e, flush=True)
             return "", "Get log exception error: " + str(e)
 
-    def get_log_schema(self, token, schema_type, api_host, vsys_id):
+    def get_log_schema(self, token, schema_type, api_host, vsys):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/log/schema/" + schema_type + "?vsys_id=" + str(vsys_id)
+        url = api_host + "/v1/log/schema/" + schema_type + "?vsys_id=" + str(vsys)
         response = requests.get(url, headers=headers, verify=False)
         # ========24.10 begin========
         # url = api_host + "/v1/logs/schema/" + schema_type
-        # vsys = {"vsys": vsys_id}
+        # vsys = {"vsys": vsys}
         # response = requests.get(url, headers=headers, params=vsys, verify=False)
         # ========24.10 end==========
         assert response.status_code == 200
@@ -138,6 +151,18 @@ class GetMetricLog:
                     "output_mode": "json",
                     "interval": 1
                 }
+                # ========24.10 begin========
+                # hit_query_condition = {
+                #     "identifier_name": dataset_identifier_name, 
+                #     "rule_uuid": "", 
+                #     "start_time": "",
+                #     "end_time": "", 
+                #     "vsys": 1, 
+                #     "execution_mode": "oneshot", 
+                #     "output_mode": "json",
+                #     "interval": 1
+                # }
+                # ========24.10 end==========
                 hit_query_condition['rule_id'] = self.rule_uuid
                 # ========24.10 begin========
                 # hit_query_condition['rule_uuid'] = self.rule_uuid
@@ -187,6 +212,22 @@ class GetMetricLog:
             "output_mode": "json"
         }
         """
+        # ========24.10 begin========
+        # post_data_ori_json = """
+        # {
+        #     "execution_mode": "oneshot",
+        #     "identifier_name": "service-chaining-policy-rule-statistics",
+        #     "rule_uuid": "271039",
+        #     "start_time": "2023-11-21T03:23:24Z",
+        #     "end_time": "2023-11-30T07:39:49Z",
+        #     "vsys": 1,
+        #     "interval": 1,
+        #     "duration":1,
+        #     "limit": 10000,
+        #     "output_mode": "json"
+        # }
+        # """
+        # ========24.10 end==========
         # 重组请求体数据
         post_data_ori_dict = json.loads(post_data_ori_json)
         post_data_ori_dict["identifier_name"] = "service-chaining-policy-rule-statistics"
@@ -202,17 +243,15 @@ class GetMetricLog:
         r_dict = response.json()
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric query failed.", flush=True)
-            return 444
+            return "", 444
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric is empty.", flush=True)
-                return 333
+                return "", 333
             else:  # metric不为空时，验证返回结果
-                metric_result = False  # 默认
                 result_list = r_dict["data"]["result"]
                 sc_value = copy.deepcopy(result_list[0])
-                metric_result = self.assert_sc_metric(sc_info, sc_value, sc_expected_metric, active_dest_ips_list)
-        return metric_result
+                return sc_value, ""
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
