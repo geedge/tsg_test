@@ -165,7 +165,7 @@ responsePage_button_cancel_posXpath = "//div[contains(@class, 'response-page-pag
 
 # Profiles traffic mirroring profiles===================Profiles traffic mirroring profiles====================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles=======================Profiles traffic mirroring profiles=================Profiles traffic mirroring profiles
 # listPage->traffic mirroring profiles list page  列表页
-listPage_profile_trafficMirroringProfiles_createButton_posXpath = "app_create-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # create按钮id
+listPage_profile_trafficMirroringProfiles_createButton_posXpath = '//i[@class="iconfont icon-Create"]'  # create按钮id
 listPage_profile_trafficMirroringProfiles_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # edit按钮id
 listPage_profile_trafficMirroringProfiles_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # del按钮id
 listPage_profile_trafficMirroringProfiles_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent"  # link按钮id
@@ -175,7 +175,7 @@ listPage_profileColumn_trafficMirroringProfiles_button_ok_posId = "dropColOK-_El
 listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
 listPage_profileSearch_trafficMirroringProfiles_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_trafficMirroringProfiles_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
-listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
+listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath = mainPage_profileSearch_searchLabel_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_trafficMirroringProfiles_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
@@ -188,13 +188,13 @@ listPage_linkTips_trafficMirroringProfiles_button_add_posXpath = "//*[@id='tempo
 listPage_linkTips_trafficMirroringProfiles_button_OK_posXpath = "//*[@id='copyOk-_copyComponents_Profile_TrafficMirrorProfiles_Home_App_anonymousComponent']/span"    # OK 按钮 xpath
 # Create traffic mirroring profile page 和 Edit traffic mirroring profile page   新增和编辑页
 trafficMirroringProfiles_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-trafficMirroringProfiles_input_Name_posXpath = "trafficmirror_profileName"  # name输入框id
-trafficMirroringProfiles_button_vlanIdAdd_posXpath = "#addrTypeAdd i"  # vlan id 添加按钮css
-trafficMirroringProfiles_input_vlanIdsInput_posXpath = "//form//div[contains(@class, 'addel-form')]//input"  # 所有显示的vlan id的所有input定位，需要通过value二次处理，css
+trafficMirroringProfiles_input_Name_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]'  # name输入框id
+trafficMirroringProfiles_button_vlanIdAdd_posXpath = '//i[@class="iconfont icon-Create1 font-[700]"]'  # vlan id 添加按钮css
+trafficMirroringProfiles_input_vlanIdsInput_posXpath = '//input[@class="MuiInput-input css-1u0jcuo"]'  # 所有显示的vlan id的所有input定位，需要通过value二次处理，css
 trafficMirroringProfiles_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
 trafficMirroringProfiles_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
-trafficMirroringProfiles_button_oK_posXpath = "#trafficMirrorProfile_ok span"  # OK按钮css
-trafficMirroringProfiles_button_cancel_posCss = "#trafficMirrorProfile_cancel span"  # Cancel按钮
+trafficMirroringProfiles_button_oK_posXpath = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'  # OK按钮css
+trafficMirroringProfiles_button_cancel_posCss = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[2]'  # Cancel按钮
 
 # Profiles ssl decryption keyrings===================Profiles ssl decryption keyrings====================Profiles ssl decryption keyrings=================Profiles ssl decryption keyrings=======================Profiles ssl decryption keyrings
 # listPage->ssl decryption keyrings list page  列表页
@@ -874,7 +874,7 @@ statisticsTemplates_after_search_dropdown_posXpath = "//ul[@role='listbox'][cont
 #//ul[contains(@class,'base-Popper-root MuiAutocomplete-listbox')][contains(@style,'position: absolute;')]//li[normalize-space(text())='100']
 #//ul[@role='listbox'][contains(@style,'position: absolute;')]//li[normalize-space(text())='100']
 #"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'el-popper')]//span[normalize-space(text())='{replaceDropdownIterm}']"  # 所有的下拉列表中内容定位 。replaceDropdownIterm 二次处理
-statisticsTemplates_button_chartAdd_posXpath = "//div[@class='ChartList MuiBox-root css-0']"#"//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath
+statisticsTemplates_button_chartAdd_posXpath = "//div[@class='ChartList MuiBox-root css-0']/div"#"//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath
 statisticsTemplates_button_chartEdit_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//div[@class='operateIcon']//i[contains(@class, 'icon-Edit')]"  # 编辑图标按钮 xpath
 statisticsTemplates_metrics_dropdown_item_posXpath = "//ul[contains(@class, 'base-Popper-root MuiAutocomplate-listbox')]"#[contains(@style,'position: absolute;')]//li[normalize-space(text())='{replaceMetricsField}']"
     #"//div[@class='el-select-dropdown el-popper is-multiple'][contains(@style,'position: absolute;')]//li/span[normalize-space(text())='{}']" #24.08版本，Metrics item定位#[not(contains(@style,'display: none;'))]

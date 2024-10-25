@@ -69,7 +69,7 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "secy_fqdn",
+                        "name": "monitor_fqdn",
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,

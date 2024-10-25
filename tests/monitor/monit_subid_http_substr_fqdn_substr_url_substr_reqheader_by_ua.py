@@ -51,7 +51,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "subscriberid",
-                                "item_value": '$' + parameter["test_subcriber_id"],
+                                "item_value": '^' + parameter["test_subcriber_id"]+'$',
                             }
                         ]
                     }
@@ -99,7 +99,7 @@ def run(parameter):
                     },
                     {
                         "name": "monitor_http_sig",
-                        "object_type": "http_signature",
+                        "object_type": "keywords",
                         "item_operation": "add",
                         "select_type": False,
                         "negate": False,
@@ -117,7 +117,7 @@ def run(parameter):
                         ],
                     }
                 ],
-                "sub_action_override": True,
+                #"sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": []
             },

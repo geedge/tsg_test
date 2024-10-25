@@ -102,7 +102,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "secy_ftp_account",
+                        "name": "monitor_ftp_account",
                         "object_type": "account",
                         "select_type": False,
                         "item_operation": "add",

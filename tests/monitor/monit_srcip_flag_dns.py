@@ -55,7 +55,7 @@ def run(parameter):
                 "device": [],
                 "tunnel": [],
                 "tunnel_level": [],
-                      "flag": [{
+                "flag": [{
                     "name": "monitor_flag",
                     "object_type": "flag",
                     "select_type": False,
@@ -63,10 +63,19 @@ def run(parameter):
                     "item": [
                         {
                             "item_operation": "add",
+                            "item_type": "flag",
                             "item_value": {
                                     "flag": "8",
                                     "mask": "8"
                                 },
+                        },
+                        {
+                            "item_operation": "add",
+                            "item_type": "flag",
+                            "item_value": {
+                                "flag": "4",
+                                "mask": "4"
+                            },
                         }
                     ],
                 }],
@@ -85,7 +94,7 @@ def run(parameter):
             },
             "is_mirror":"off",
             "expected_return": "bport",
-            "counters": {"hits": 2},
+            "counters": {"hits": "many"},
             "log_query_param": [{"query_field_key": "client_ip", "query_value": parameter['test_pc_ip']}],
             "traffic": {
                 "protocol": "dns",
