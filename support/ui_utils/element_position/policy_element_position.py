@@ -117,6 +117,7 @@ policyRulePage_chooseImei_posXpath = '//*[@class="h-[32px] bg-default mb-[4px]"]
 # apn
 policyRulePage_chooseApn_posXpath = '//*[@class="h-[32px] bg-default mb-[4px]"]//button[4]'
 
+#Rule点击AddCondition打开Add Condition侧滑列表选择Condition类型定位
 policyRulePage_chooseCondition_posXpath = "//div[normalize-space(text())='{level1}']/parent::*//div[normalize-space(text())='{level2}']"
 policyRulePage_addCondition_posXpath = "//div[@class='flex flex-row']//button"#"//div[@class='MultipleSelect ConditionModuleSelect']//span[normalize-space(text())='Add Condition']"
 policyRulePage_addConditionImsi_posXpath = policyRulePage_chooseCondition_posXpath.format(level1='Source', level2='Device') #"//div[@class='MuiDrawer-content css-10lcz44']//li[2]//div[normalize-space(text())='Device']"
@@ -996,11 +997,12 @@ statisticsRulePage_addCondition_posXpath = policyRulePage_addCondition_posXpath
 statisticsRulePage_addCondition_close_posXpath = policyRulePage_addCondition_close_posXpath
 
 # rule 中添加condition侧滑中选择行定位
+"""
 statisticsRulePage_addCondition_srcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='IP Address']"
 statisticsRulePage_addCondition_srcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Geography']"
 statisticsRulePage_addCondition_srcPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Source']/parent::*//div[normalize-space(text())='Port']"
-statisticsRulePage_addCondition_dstcIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='IP Address']"
-statisticsRulePage_addCondition_dstcGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Geography']"
+statisticsRulePage_addCondition_dstIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='IP Address']"
+statisticsRulePage_addCondition_dstGeography_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Geography']"
 statisticsRulePage_addCondition_serverFqdn_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Server FQDN']"
 statisticsRulePage_addCondition_serverPort_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Destination']/parent::*//div[normalize-space(text())='Port']"
 statisticsRulePage_addCondition_internalIP_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Internal']/parent::*//div[normalize-space(text())='IP Address']"
@@ -1013,6 +1015,7 @@ statisticsRulePage_addCondition_requestHeader_posXpath = "//div[@class='SourceLi
 statisticsRulePage_addCondition_responseHeader_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Header']"
 statisticsRulePage_addCondition_requestBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Request Body']"
 statisticsRulePage_addCondition_responseBody_posXpath = "//div[@class='SourceList list-box']//div[normalize-space(text())='Protocol Field']/parent::*//div[normalize-space(text())='Response Body']"
+"""
 # rule 页面中不同condition的添加+符号定位操作
 ## Source IP Address的添加、查询、选中、关闭操作
 statisticsRulePage_addSrcIP_posXpath = rulePage_button_add2Level_condition_posXpath.format(firstType="Source", secondType="IP Address") #"//div[@zs-label='Source']//div[normalize-space(text())='IP Address']/ancestor::div[@zs-label='SourceItem']//i[contains(@class, 'icon-Create1')]"
