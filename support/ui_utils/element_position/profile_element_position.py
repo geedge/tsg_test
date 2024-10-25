@@ -874,7 +874,7 @@ statisticsTemplates_after_search_dropdown_posXpath = "//ul[@role='listbox'][cont
 #//ul[contains(@class,'base-Popper-root MuiAutocomplete-listbox')][contains(@style,'position: absolute;')]//li[normalize-space(text())='100']
 #//ul[@role='listbox'][contains(@style,'position: absolute;')]//li[normalize-space(text())='100']
 #"//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//label[normalize-space(text())='{repalceLabel}']/parent::*//div[contains(@class, 'el-popper')]//span[normalize-space(text())='{replaceDropdownIterm}']"  # 所有的下拉列表中内容定位 。replaceDropdownIterm 二次处理
-statisticsTemplates_button_chartAdd_posXpath = "//div[@class='ChartList MuiBox-root css-0']"#"//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath
+statisticsTemplates_button_chartAdd_posXpath = "//div[@class='ChartList MuiBox-root css-0']/div"#"//*[contains(@class, 'add_widget')]"  # 添加图标按钮 xpath
 statisticsTemplates_button_chartEdit_posXpath = "//form[contains(@class, 'ly-addform1')]/div[contains(@class, 'template-edit-chart')][{replaceChart}]//div[@class='operateIcon']//i[contains(@class, 'icon-Edit')]"  # 编辑图标按钮 xpath
 statisticsTemplates_metrics_dropdown_item_posXpath = "//ul[contains(@class, 'base-Popper-root MuiAutocomplate-listbox')]"#[contains(@style,'position: absolute;')]//li[normalize-space(text())='{replaceMetricsField}']"
     #"//div[@class='el-select-dropdown el-popper is-multiple'][contains(@style,'position: absolute;')]//li/span[normalize-space(text())='{}']" #24.08版本，Metrics item定位#[not(contains(@style,'display: none;'))]
