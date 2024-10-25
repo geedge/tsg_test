@@ -94,7 +94,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_value": "www.bbc.*",
+                                "item_value": "^www.bbc.",
                             }
                         ]
                     }],

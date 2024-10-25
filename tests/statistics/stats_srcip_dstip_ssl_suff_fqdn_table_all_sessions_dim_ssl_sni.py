@@ -94,7 +94,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_value": "*.bbc.com",
+                                "item_value": ".bbc.com$",
                             }
                         ]
                     }

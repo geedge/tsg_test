@@ -107,118 +107,63 @@ class APIVerification:
             elif self.rule_type == "statistics":
                 print("to be added...")
             elif self.rule_type == "service_chaining":
+                # sc自动化目前只实现了但application、单sf、单sff的用例
                 conf_path = os.path.join(workdir, "configuration_file.ini")
                 conf = configparser.ConfigParser()
                 conf.read(conf_path, encoding="utf-8")
                 active_dst_ip_list = conf.get("sc_active_dst_ip", "ip_list")
                 effective_device_tag_list = ["group-xxg-tsgx", "center-xxg-tsgx"]
-                if self.policy_configuration["action_parameter"]["targeted_traffic"] == "raw":
-                    time.sleep(30)
-                    utc_tz = pytz.timezone('UTC')
-                    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
-                    start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                    utc_tz = pytz.timezone('UTC')
-                    current_utc_time = datetime.now(utc_tz)
-                    end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                    if len(statistics_sc_info_list) > 0:
-                        for sc_info in statistics_sc_info_list:
-                            n = 0    #自增变量
-                            fail_count = 0   #失败重试变量
-                            while n <= 4:
-                                utc_tz = pytz.timezone('UTC')
-                                current_utc_time = datetime.now(utc_tz)
-                                end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                                metic_dict, code = get_metric_log.get_sc_metric(self.token, start_time, end_time)
-                                if code == 333 or code == 444:
-                                    metric_result = code
-                                else:
-                                    metric_result = self.verify_sc_metric(sc_info, active_dst_ip_list, metic_dict, traffic_result)
-                                if metric_result == True:  # 返回结果不等于333，则退出循环查询
-                                    break
-                                elif metric_result == False:  # 查询验证失败时，再查询验证两次
-                                    if fail_count >= 2:
-                                        break
-                                    fail_count += 1
-                                time.sleep(15)
-                                n += 1
-                        if metric_result == 333:
-                            if sc_info["sf_method"] == "vxlan_g":
-                                if sc_info["sf_dest_ip"] not in active_dst_ip_list:
-                                    metric_result = True
-                                elif sc_info["sf_dest_ip"] in active_dst_ip_list and sc_info["admin_status"] == 0:
-                                    metric_result = True
-                                elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
-                                    metric_result = True
-                                elif sc_info["is_negate"] == 1:
-                                    metric_result = True
-                                else:
-                                    metric_result = False
-                            elif sc_info["sf_method"] == "layer2_switch":
-                                if sc_info["admin_status"] == 0:
-                                    metric_result = True
-                                elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
-                                    metric_result = True
-                                elif sc_info["is_negate"] == 1:
-                                    metric_result = True
-                                else:
-                                    metric_result = False
-                        elif metric_result == 444:
-                            metric_result = False
-                elif self.policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted":
-                    utc_tz = pytz.timezone('UTC')
-                    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
-                    start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                    # 等待时间，等待策略生效
-                    time.sleep(10)
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
-                    # 获取结束时间
+                utc_tz = pytz.timezone('UTC')
+                current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
+                start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                utc_tz = pytz.timezone('UTC')
+                current_utc_time = datetime.now(utc_tz)
+                end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                n = 0
+                fail_count = 0
+                while n <= 4:
                     utc_tz = pytz.timezone('UTC')
                     current_utc_time = datetime.now(utc_tz)
                     end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                    if len(statistics_sc_info_list) > 0:  # 非空
-                        for sc_info in statistics_sc_info_list:
-                            n = 0  # 自增变量
-                            fail_count = 0  # 失败重试变量
-                            while n <= 4:
-                                utc_tz = pytz.timezone('UTC')
-                                current_utc_time = datetime.now(utc_tz)
-                                end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                                metic_dict, code = get_metric_log.get_sc_metric(self.token, start_time, end_time)
-                                if code == 333 or code == 444:
-                                    metric_result = code
-                                else:
-                                    metric_result = self.verify_sc_metric(sc_info, metic_dict, active_dst_ip_list)
-                                if metric_result == True:  # 返回结果不等于333，则退出循环查询
-                                    break
-                                elif metric_result == False:  # 查询验证失败时，再查询验证两次
-                                    if fail_count >= 2:
-                                        break
-                                    fail_count += 1
-                                time.sleep(15)
-                                n += 1
-                        if metric_result == 333:
-                            if sc_info["sf_method"] == "vxlan_g":
-                                if sc_info["sf_dest_ip"] not in active_dst_ip_list:
-                                    metric_result = True
-                                elif sc_info["sf_dest_ip"] in active_dst_ip_list and sc_info["admin_status"] == 0:
-                                    metric_result = True
-                                elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
-                                    metric_result = True
-                                elif sc_info["is_negate"] == 1:
-                                    metric_result = True
-                                else:
-                                    metric_result = False
-                            elif sc_info["sf_method"] == "layer2_switch":
-                                if sc_info["admin_status"] == 0:
-                                    metric_result = True
-                                elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
-                                    metric_result = True
-                                elif sc_info["is_negate"] == 1:
-                                    metric_result = True
-                                else:
-                                    metric_result = False
-                        elif metric_result == 444:
+                    metic_dict, code = get_metric_log.get_sc_metric(self.token, start_time, end_time)
+                    if code == 333 or code == 444:
+                        metric_result = code
+                    else:
+                        if self.policy_configuration["action_parameter"]["targeted_traffic"] == "raw":
+                            metric_result = self.verify_sc_metric(sc_info, active_dst_ip_list, metic_dict, traffic_result)
+                        elif self.policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted":
+                            metric_result = self.verify_sc_metric(sc_info, active_dst_ip_list, metic_dict, "")
+                    if metric_result == True:
+                        break
+                    elif metric_result == False:
+                        if fail_count >= 2:
+                            break
+                        fail_count += 1
+                    time.sleep(15)
+                    n += 1
+                if metric_result == 333:
+                    if sc_info["sf_method"] == "vxlan_g":
+                        if sc_info["sf_dest_ip"] not in active_dst_ip_list:
+                            metric_result = True
+                        elif sc_info["sf_dest_ip"] in active_dst_ip_list and sc_info["admin_status"] == 0:
+                            metric_result = True
+                        elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
+                            metric_result = True
+                        elif sc_info["is_negate"] == 1:
+                            metric_result = True
+                        else:
                             metric_result = False
+                    elif sc_info["sf_method"] == "layer2_switch":
+                        if sc_info["admin_status"] == 0:
+                            metric_result = True
+                        elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
+                            metric_result = True
+                        elif sc_info["is_negate"] == 1:
+                            metric_result = True
+                        else:
+                            metric_result = False
+                elif metric_result == 444:
+                    metric_result = False
                 if metric_result == True:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The metric result checked by calling service chaining api is passed", flush=True)
                 else:
@@ -455,82 +400,85 @@ class APIVerification:
             metric_result = None
         return metric_result
 
-    def verify_sc_metric(self, sc_info, active_dst_ip_list, metic_dict, traffic_result):
+    def verify_sc_metric(self, active_dst_ip_list, metic_dict, traffic_result):
         metric_result = False
-        if sc_info["targeted_traffic"] == "raw":
+        sff_configuration = self.policy_configuration["action_parameter"]["sff_profiles"]
+        sf_configuration = self.policy_configuration["action_parameter"]["sff_profiles"][0]["service_func_profiles"]
+        application = self.get_application_from_configration()
+        if self.policy_configuration["action_parameter"]["targeted_traffic"] == "raw":
             byte_value = traffic_result["total_bytes"]
             pkt_value = traffic_result["total_packets"]
-            if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dst_ip_list:
-                if len(sc_info["application"]) > 0 :
-                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl" or sc_info["application"][0] == "rdp" or sc_info["application"][0] == "OPENVPN":
+            if sf_configuration[0]["connectivity"]["method"] == "vxlan_g" and sf_configuration[0]["connectivity"]["sf_dest_ip"] in active_dst_ip_list:
+                if len(application) > 0 :
+                    if application[0] == "http" or application[0] == "ssl" or application[0] == "rdp" or application[0] == "OPENVPN":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
-                    elif sc_info["application"][0] == "ftp":
+                    elif application[0] == "ftp":
                         lost_pkt = 4
                         lost_byte = 266
-                    elif sc_info["application"][0] == "mail":
+                    elif application[0] == "mail":
                         lost_pkt = 15
                         lost_byte = 1273
-                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic" or sc_info["application"][0] == "rtp" :
+                    elif application[0] == "dns" or application[0] == "quic" or application[0] == "rtp" :
                         lost_pkt = 0
                         lost_byte = 0
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 traffic_result["total_bytes"] = byte_value + 50 * pkt_value
                 traffic_result["total_packets"] = pkt_value
-                if sc_info["type"] == 1:
+                if sff_configuration["type"] == 1:
                     if metic_dict["sent_bytes"] == metic_dict["received_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == metic_dict["received_packets"] == pkt_value:
                         metric_result = True
                     else:
                         metric_result = False
-                elif sc_info["type"] == 2:
+                elif sff_configuration["type"] == 2:
                     if metic_dict["sent_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == pkt_value and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
                         metric_result = True
                     else:
                         metric_result = False
                 else:
                     metric_result = False
-            elif sc_info["sf_method"] == "layer2_switch":
-                if len(sc_info["application"]) > 0 :
-                    if sc_info["application"][0] == "http" or sc_info["application"][0] == "ssl" or sc_info["application"][0] == "rdp" or sc_info["application"][0] == "OPENVPN":
+            elif sf_configuration[0]["connectivity"]["method"] == "layer2_switch":
+                if len(application) > 0 :
+                    if application[0] == "http" or application[0] == "ssl" or application[0] == "rdp" or application[0] == "OPENVPN":
                         lost_pkt = 3
                         lost_byte = 192  # tcp三次握手的三个包的字节数和
-                    elif sc_info["application"][0] == "ftp":
+                    elif application[0] == "ftp":
                         lost_pkt = 4
                         lost_byte = 266
-                    elif sc_info["application"][0] == "mail":
+                    elif application[0] == "mail":
                         lost_pkt = 15
                         lost_byte = 1273
-                    elif sc_info["application"][0] == "dns" or sc_info["application"][0] == "quic" or sc_info["application"][0] == "rtp":
+                    elif application[0] == "dns" or application[0] == "quic" or application[0] == "rtp":
                         lost_pkt = 0
                         lost_byte = 0
                     pkt_value -= lost_pkt
                     byte_value -= lost_byte
                 traffic_result["total_bytes"] = byte_value + 4 * pkt_value
                 traffic_result["total_packets"] = pkt_value
-                if sc_info["type"] == 2:
+                if sff_configuration["type"] == 2:
                     if metic_dict["sent_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == pkt_value and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
                         metric_result = True
                     else:
                         metric_result = False
                 else:
                     metric_result = False
-        elif sc_info["targeted_traffic"] == "decrypted":
-            if sc_info["sf_method"] == "vxlan_g" and sc_info["sf_dest_ip"] in active_dst_ip_list:
-                if sc_info["type"] == 1:
+        elif self.policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted":
+            if sf_configuration[0]["connectivity"]["method"] == "vxlan_g" and sf_configuration[0]["connectivity"]["sf_dest_ip"] in active_dst_ip_list:
+                if sff_configuration["type"] == 1:
                     if metic_dict["sent_bytes"] == metic_dict["received_bytes"] and metic_dict["sent_packets"] == metic_dict["received_packets"]:
                         metric_result = True
                     else:
                         metric_result = False
-                elif sc_info["type"] == 2:
+                elif sff_configuration["type"] == 2:
                     if metic_dict["sent_bytes"] != 0 and metic_dict["sent_packets"] != 0 and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
                        metric_result = True
                     else:
                         metric_result = False
                 else:
                     metric_result = False
-            elif sc_info["sf_method"] == "layer2_switch":
-                if sc_info["type"] == 2 and len(metic_dict) != 0:
+            elif sf_configuration[0]["connectivity"]["method"] == "layer2_switch":
+                if sff_configuration["type"] == 2 and len(metic_dict) != 0:
                     if metic_dict["sent_bytes"] != 0 and metic_dict["sent_packets"] != 0 and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
                         metric_result = True
                     else:
@@ -539,8 +487,76 @@ class APIVerification:
                     metric_result = False
         return metric_result
     
+    def get_application_from_configration(self):
+        action_parameter = self.policy_configuration["action_parameter"]
+        for i in range(len(action_parameter)):
+            or_conditions = action_parameter[i]["or_conditions"]
+            for j in range(len(or_conditions)):
+                if or_conditions[j]["attribute_name"] == "ATTR_APP_ID":
+                    application = or_conditions[j]["items"]
+                    return application
+                
     def verify_dos_log(self, log_dict, traffic_result):
         print("need to modify func logic...")
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
+    # sc rule json example
+    policy_configuration = {
+        "and_conditions": [
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_SOURCE_IP",
+                        "object_uuids": [
+                            "f5cf118e-99d4-4726-bd57-66ab1ad31a27"
+                        ]
+                    }
+                ]
+            },
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_APP_ID",
+                        "type": "application",
+                        "items": ["http"]
+                    }
+                ],
+            }
+        ],
+        "action": "service_chaining",
+        "type": "service_chaining",
+        "action_parameter": {
+            "targeted_traffic": "raw",
+            "sff_profiles": [
+				{
+					"name": "sff_zk",
+					"type": 1, # 1是steer，2是mirror
+					"load_balance_method": "hash-int-ip",
+					"load_balance_localization": "nearby",
+					"failure_action": "bypass",
+					"service_func_profiles": [
+						{
+							"name": "sf_zk",
+							"admin_status": 1,
+							"device_group": {
+								"value": "City A",
+								"tag": "device_group"
+							},
+							"connectivity": {
+								"method": "vxlan_g",
+								"dest_ip": "1.1.1.1"
+							},
+							"health_check": {
+								"method": "bfd",
+								"interval_ms": 200,
+								"retires": 5
+							}
+						}
+					]
+				}
+            ]
+        }
+    }

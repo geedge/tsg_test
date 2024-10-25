@@ -196,119 +196,65 @@ class ApiVerification:
             conf.read(conf_path, encoding="utf-8")
             active_dest_ips_list = conf.get("sc_active_dst_ip","ip_list")
             effective_device_tag = ["group-xxg-tsgx","center-xxg-tsgx"]
+            # 获取开始时间
+            utc_tz = pytz.timezone('UTC')
+            current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
+            start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             if test_data["targeted_traffic"] == "raw":
-                # 获取开始时间
-                time.sleep(30)
-                utc_tz = pytz.timezone('UTC')
-                current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
-                start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                utc_tz = pytz.timezone('UTC')
-                current_utc_time = datetime.now(utc_tz)
-                end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                cmd_return = expected_return = test_data["expected_return"]
-                # 断言判断
-                if len(statistics_sc_info_list) > 0:   # 非空
-                    for sc_info in statistics_sc_info_list:
-                        n = 0    #自增变量
-                        fail_count = 0   #失败重试变量
-                        while n <= 4:
-                            utc_tz = pytz.timezone('UTC')
-                            current_utc_time = datetime.now(utc_tz)
-                            end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                            metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, traffic_result, active_dest_ips_list, api_server, vsys_id)
-                            if metric_result == True:  # 返回结果不等于333，则退出循环查询
-                                break
-                            elif metric_result == False:  # 查询验证失败时，再查询验证两次
-                                if fail_count >= 2:
-                                    break
-                                fail_count += 1
-                            time.sleep(15)
-                            n += 1
-                    if metric_result == 333:
-                        if sc_info["sf_method"] == "vxlan_g":
-                            if sc_info["sf_dest_ip"] not in active_dest_ips_list:
-                                metric_result = True
-                            elif sc_info["sf_dest_ip"] in active_dest_ips_list and sc_info["admin_status"] == 0:
-                                metric_result = True
-                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
-                                metric_result = True
-                            elif sc_info["is_negate"] == 1:
-                                metric_result = True
-                            else:
-                                metric_result = False
-                        elif sc_info["sf_method"] == "layer2_switch":
-                            if sc_info["admin_status"] == 0:
-                                metric_result = True
-                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
-                                metric_result = True
-                            elif sc_info["is_negate"] == 1:
-                                metric_result = True
-                            else:
-                                metric_result = False
-                    elif metric_result == 444:
-                        metric_result = False
-                if metric_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining api is passed", flush=True)
-                else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3],"The verification of service chaining api is failed", flush=True)
-                cmd_result = metric_result
+                cmd_result = True       # raw时采用trex回放的方式触发流量，无cmd_result,默认为True
             elif test_data["targeted_traffic"] == "decrypted":
-                # 获取开始时间
-                utc_tz = pytz.timezone('UTC')
-                current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
-                start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                # 等待时间，等待策略生效
-                time.sleep(10)
-                output = traffic_result
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
-                cmd_return = output
+                cmd_return = traffic_result
                 expected_return = test_data["expected_return"]
-                # 获取结束时间
-                utc_tz = pytz.timezone('UTC')
-                current_utc_time = datetime.now(utc_tz)
-                end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
                 cmd_result = self.is_in(cmd_return, expected_return, debug_flag)
-                if len(statistics_sc_info_list) > 0:  # 非空
-                    for sc_info in statistics_sc_info_list:
-                        n = 0  # 自增变量
-                        fail_count = 0  # 失败重试变量
-                        while n <= 4:
-                            utc_tz = pytz.timezone('UTC')
-                            current_utc_time = datetime.now(utc_tz)
-                            end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            # 断言判断
+            if len(statistics_sc_info_list) > 0:   # 非空
+                for sc_info in statistics_sc_info_list:
+                    n = 0    #自增变量
+                    fail_count = 0   #失败重试变量
+                    while n <= 4:
+                        utc_tz = pytz.timezone('UTC')
+                        current_utc_time = datetime.now(utc_tz)
+                        end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                        if test_data["targeted_traffic"] == "raw":
+                            metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, traffic_result, active_dest_ips_list, api_server, vsys_id)
+                        elif test_data["targeted_traffic"] == "decrypted":
                             metric_result = log.get_sc_metric(token, start_time, end_time, sc_info,"", active_dest_ips_list, api_server, vsys_id)
-                            if metric_result == True:  # 返回结果不等于333，则退出循环查询
+                        if metric_result == True:  # 返回结果不等于333，则退出循环查询
+                            break
+                        elif metric_result == False:  # 查询验证失败时，再查询验证两次
+                            if fail_count >= 2:
                                 break
-                            elif metric_result == False:  # 查询验证失败时，再查询验证两次
-                                if fail_count >= 2:
-                                    break
-                                fail_count += 1
-                            time.sleep(15)
-                            n += 1
-                    if metric_result == 333:
-                        if sc_info["sf_method"] == "vxlan_g":
-                            if sc_info["sf_dest_ip"] not in active_dest_ips_list:
-                                metric_result = True
-                            elif sc_info["sf_dest_ip"] in active_dest_ips_list and sc_info["admin_status"] == 0:
-                                metric_result = True
-                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
-                                metric_result = True
-                            elif sc_info["is_negate"] == 1:
-                                metric_result = True
-                            else:
-                                metric_result = False
-                        elif sc_info["sf_method"] == "layer2_switch":
-                            if sc_info["admin_status"] == 0:
-                                metric_result = True
-                            elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
-                                metric_result = True
-                            elif sc_info["is_negate"] == 1:
-                                metric_result = True
-                            else:
-                                metric_result = False
-                    elif metric_result == 444:
-                        metric_result = False
-            return metric_result, cmd_result, metric_result, my_driver
+                            fail_count += 1
+                        time.sleep(15)
+                        n += 1
+                if metric_result == 333:
+                    if sc_info["sf_method"] == "vxlan_g":
+                        if sc_info["sf_dest_ip"] not in active_dest_ips_list:
+                            metric_result = True
+                        elif sc_info["sf_dest_ip"] in active_dest_ips_list and sc_info["admin_status"] == 0:
+                            metric_result = True
+                        elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                            metric_result = True
+                        elif sc_info["is_negate"] == 1:
+                            metric_result = True
+                        else:
+                            metric_result = False
+                    elif sc_info["sf_method"] == "layer2_switch":
+                        if sc_info["admin_status"] == 0:
+                            metric_result = True
+                        elif sc_info["device_tag"] not in effective_device_tag and sc_info["load_balance_localization"] == "nearby":
+                            metric_result = True
+                        elif sc_info["is_negate"] == 1:
+                            metric_result = True
+                        else:
+                            metric_result = False
+                elif metric_result == 444:
+                    metric_result = False
+            if metric_result == True:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The verification of service chaining api is passed", flush=True)
+            else:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3],"The verification of service chaining api is failed", flush=True)
+            return cmd_result, metric_result, metric_result, my_driver
         elif policy_type == "dos_protection":
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
             output = traffic_result

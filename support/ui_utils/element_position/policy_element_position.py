@@ -172,7 +172,7 @@ policyRulePage_closeServerFqdn_posXpath = "//div[@class='absolute bottom-0 h-[40
 policyRulePage_negateServerFqdn_posXpath = "//div[@class='MultipleSelect DestinationsModuleSelect']//li[{replaceValue}]//label[@id='policy_not_negate-_PolicySwitch_ElFormItem_DestinationsItem_DestinationsModuleSelect_ElFormItem_ElForm_VPanel_VEditPanel_SecurityAdd_Home_App_anonymousComponent']//span[@class='el-checkbox__input']"
 
 # cn
-policyRulePage_addCn_posXpath = "///label[normalize-space(text())='CN']/following-sibling::div/button"
+policyRulePage_addCn_posXpath = "//label[normalize-space(text())='CN']/following-sibling::div/button"
 policyRulePage_searchCn_posXpath = policyRulePage_searchCondition_posXpath
 policyRulePage_selectCn_posXpath = policyRulePage_selectCondition_posXpath
 policyRulePage_closeCn_posXpath = policyRulePage_closeCondition_posXpath
