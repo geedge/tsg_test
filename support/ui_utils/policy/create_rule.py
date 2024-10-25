@@ -2,8 +2,11 @@
 # import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
+from telnetlib import EC
 
 from selenium.webdriver import ActionChains
+from selenium.webdriver.support.wait import WebDriverWait
+from trio import sleep
 
 from support.ui_utils.policy.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
@@ -45,14 +48,14 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectMonitor_posXpath"]).click()
                 elif test_data["rule_action"] == "redirect":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectRedirect_posXpath"]).click()
-                elif test_data["rule_action"] == "replace":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectReplace_posXpath"]).click()
-                elif test_data["rule_action"] == "hijack":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectHijack_posXpath"]).click()
-                elif test_data["rule_action"] == "insert":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectInsert_posXpath"]).click()
-                elif test_data["rule_action"] == "edit_element":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEditElement_posXpath"]).click()
+                elif test_data["rule_action"] in ["replace", "hijack", "insert", "edit_element"]:
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectModify_posXpath"]).click()
+                # elif test_data["rule_action"] == "hijack":
+                #     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectHijack_posXpath"]).click()
+                # elif test_data["rule_action"] == "insert":
+                #     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectInsert_posXpath"]).click()
+                # elif test_data["rule_action"] == "edit_element":
+                #     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEditElement_posXpath"]).click()
                 else:   # run script
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectRunScript_posXpath"]).click()
             elif test_data["policy_type"]== "monitor" and  "is_mirror" in test_data :
@@ -248,10 +251,16 @@ class CreateRule:
                         # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
                         if server_fqdn_data[t]["negate"] == True:
-                            time.sleep(1)
-                            negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negateServerFqdn_posXpath"].format(replaceValue=temp))
-                            ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
-                            negate_element.click()
+                            time.sleep(1)  # 暂停1秒
+                            negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negateServerFqdn_posXpath"])
+                            # 使用JavaScript确保元素完全进入视图
+                            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", negate_element)
+                            # 使用JavaScript执行悬停
+                            self.driver.execute_script("var evt = new MouseEvent('mouseover', {'view': window, 'bubbles': true, 'cancelable': true}); arguments[0].dispatchEvent(evt);",negate_element)
+                            # 确保元素可点击后进行点击
+                            self.driver.execute_script("arguments[0].click();", negate_element)
+                            # ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                            # negate_element.click()
                     elif server_fqdn_data[t]["object_type"] == "category":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
 
@@ -280,15 +289,19 @@ class CreateRule:
                             tmp_qname.append(tmp_item)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
-                    elif tmp_item["object_type"] == "http_signature":
+                    # elif tmp_item["object_type"] == "http_signature":
+                    #     if tmp_item["item"][0]["item_type"] == "request_header":
+                    #         tmp_request_header.append(tmp_item)
+                    #     elif tmp_item["item"][0]["item_type"] == "response_header":
+                    #         tmp_response_header.append(tmp_item)
+                    #     else:
+                    #         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
+                    elif tmp_item["object_type"] == "keywords":
                         if tmp_item["item"][0]["item_type"] == "request_header":
                             tmp_request_header.append(tmp_item)
                         elif tmp_item["item"][0]["item_type"] == "response_header":
                             tmp_response_header.append(tmp_item)
-                        else:
-                            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
-                    elif tmp_item["object_type"] == "keywords":
-                        if tmp_item["item"][0]["item_type"] == "request_body":
+                        elif tmp_item["item"][0]["item_type"] == "request_body":
                             tmp_request_body.append(tmp_item)
                         elif tmp_item["item"][0]["item_type"] == "response_body":
                             tmp_response_body.append(tmp_item)
@@ -311,7 +324,7 @@ class CreateRule:
                             tmp_mail_account.append(tmp_item)
                         elif tmp_item["items"][0]["item_type"] == "mail_from":
                             tmp_mail_from.append(tmp_item)
-                        elif tmp_item["items"][0]["item_type"] == "mail_to":
+                        elif tmp_item["items"][0]["item_type"] == "to":
                             tmp_mail_to.append(tmp_item)
                         else:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "check..")
@@ -335,7 +348,7 @@ class CreateRule:
                 if len(tmp_mail_attachment_name) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_attachment_name)
                 if len(tmp_mail_attachment_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_attachment_content)
                 if len(tmp_mail_content) > 0: tmp_protocol_field_data_split_by_type.append(tmp_mail_content)
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], tmp_protocol_field_data_split_by_type)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], tmp_protocol_field_data_split_by_type)
                 for protocol_field_data in tmp_protocol_field_data_split_by_type:
                     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], protocol_field_data)
                     for x in range(len(protocol_field_data)):
@@ -352,17 +365,21 @@ class CreateRule:
                                     self.add_protocol_field(protocol_field_data, "Qname", create_element_position, temp)
                                 else:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
-                        elif protocol_field_data[x]["object_type"] == "http_signature":
+                        # elif protocol_field_data[x]["object_type"] == "http_signature":
+                        #     item_dict = protocol_field_data[x]["item"][0]
+                        #     if item_dict["item_type"] == "request_header":
+                        #         self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
+                        #     elif item_dict["item_type"] == "response_header":
+                        #         self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
+                        #     else:
+                        #         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
+                        elif protocol_field_data[x]["object_type"] == "keywords":
                             item_dict = protocol_field_data[x]["item"][0]
                             if item_dict["item_type"] == "request_header":
                                 self.add_protocol_field(protocol_field_data, "RequestHeader", create_element_position, temp)
                             elif item_dict["item_type"] == "response_header":
                                 self.add_protocol_field(protocol_field_data, "ResponseHeader", create_element_position, temp)
-                            else:
-                                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
-                        elif protocol_field_data[x]["object_type"] == "keywords":
-                            item_dict = protocol_field_data[x]["item"][0]
-                            if item_dict["item_type"] == "request_body":
+                            elif item_dict["item_type"] == "request_body":
                                 self.add_protocol_field(protocol_field_data, "RequestBody", create_element_position, temp)
                             elif item_dict["item_type"] == "response_body":
                                 self.add_protocol_field(protocol_field_data, "ResponseBody", create_element_position, temp)
@@ -386,7 +403,7 @@ class CreateRule:
                                     self.add_protocol_field(protocol_field_data, "MailAccount",create_element_position, temp)
                                 elif item_dict["item_type"] == "mail_from":
                                     self.add_protocol_field(protocol_field_data, "MailFrom", create_element_position,temp)
-                                elif item_dict["item_type"] == "mail_to":
+                                elif item_dict["item_type"] == "to":
                                     self.add_protocol_field(protocol_field_data, "MailTo", create_element_position,temp)
                                 else:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"todo {item_dict['item_type']}")
@@ -502,14 +519,37 @@ class CreateRule:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_searchProfile_posXpath"]).send_keys(sub_action_data[0]["content"])
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subAction_alert_responseContent_searchProfile_posXpath"]).send_keys(Keys.ENTER)
                             self.driver.find_element(By.ID, create_element_position["policyRulePage_subAction_alert_responseContent_selectProfile_posId"]).click()
-            
+            # 添加flag
+            if "flag" in test_data["condition"] and len(test_data["condition"]["flag"]) != 0:
+                flag_data = test_data["condition"]["flag"]
+                for t in range(len(flag_data)):
+                    if flag_data[t]['item'][0]["item_type"] == "flag":
+                        # 点add condition的+
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_posXpath"]).click()
+                        # 调用flag的定位
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addConditionFlag_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                        # 点flag的+
+                        temp_element_position = create_element_position["policyRulePage_addFlag_posXpath"]
+                        self.driver.find_element(By.XPATH, temp_element_position).click()
+                        # 通过flag搜索并选中
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchFlag_posXpath"], find_after_wait_time=1).send_keys(flag_data[t]["name"])
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchFlag_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectFlag_posXpath"], find_after_wait_time=0.5).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeFlag_posXpath"]).click()
+
             # 添加packet capture
             if "packet_capture" in test_data["condition"] and len(test_data["condition"]["packet_capture"]) != 0 and test_data["condition"]["packet_capture"][0]["enable"] == True:
                 packet_capture_data = test_data["condition"]["packet_capture"]
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_posXpath"]).click()
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).clear()
-                self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).send_keys(packet_capture_data[0]["capture_depth"])
-           
+                # 获取元素
+                input_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"])
+                # 使用JavaScript完全清除并设置新值
+                self.driver.execute_script("arguments[0].value = '';", input_element)
+                self.driver.execute_script("arguments[0].value = arguments[1];", input_element,packet_capture_data[0]["capture_depth"])
+                # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).clear()
+                # self.driver.find_element(By.XPATH, create_element_position["policyRulePage_packetCapture_depth_posXpath"]).send_keys(packet_capture_data[0]["capture_depth"])
+                #
             # 添加shaping的priority和fair factor
             if test_data["policy_type"] == "shaping":
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_priority_posId"]).clear()
@@ -607,7 +647,7 @@ class CreateRule:
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
                     # 页面滚动到最底部
-                    div_container = self.driver.find_element(By.XPATH, "//div[@id='root']//div[contains(@class, 'form-content-container')]")
+                    div_container = self.driver.find_element(By.XPATH, "//div[@id='root']//div[contains(@class, 'manipulation-policy-page')]")
                     self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_container)  # 移动到页面最底部
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
@@ -679,6 +719,7 @@ class CreateRule:
                     elif test_data["rule_action"] == "replace":
                         # 遍历，是否含有多个search in
                         replace_parameter_list = test_data["action_parameter"]["replace_parameter"]
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subActionButton_replaceText_posXpath"]).click()
                         for i in range(len(replace_parameter_list)):
                             # 从第二次遍历开始点击 + 加号
                             if i != 0:
@@ -691,17 +732,17 @@ class CreateRule:
                             regex_class_status = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"].format(replace_sort=i+1)).get_attribute("class")
                             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], regex_class_status)
                             if regex_status == "on":  # 开
-                                if "is-checked" in regex_class_status:  # 当前状态开，不用再点击
+                                if "Mui-checked" in regex_class_status:  # 当前状态开，不用再点击
                                     pass
                                 else:   # 当前状态关，需要再点击打开
                                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"].format(replace_sort=i+1)).click()
                             else:   # off  关
-                                if "is-checked" in regex_class_status:  # 当前状态开，需要点击关闭
+                                if "Mui-checked" in regex_class_status:  # 当前状态开，需要点击关闭
                                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"].format(replace_sort=i+1)).click()
                                 else:      # # 当前状态关，不用再点击
                                     pass
                             # 操作search in
-                            search_in_drop_position = create_element_position["policyRulePage_replace_addSearchInSelectDropItem_posXpath"].format(replace_type=search_in)
+                            search_in_drop_position = create_element_position["policyRulePage_replace_addSearchInSelectDropItem_posXpath"].format(replace_sort=i+1, replace_type=search_in)
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addSearchInSelectBox_posXpath"].format(replace_sort=i+1)).click()
                             self.driver.find_element(By.XPATH, search_in_drop_position, find_after_wait_time=0.5).click()
                             # 操作 find   replace with 输入框
@@ -734,6 +775,7 @@ class CreateRule:
                     elif test_data["rule_action"] == "edit_element":
                         # 遍历多个编辑内容
                         edit_element_parameter_list = test_data["action_parameter"]["edit_element_parameter"]
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subActionButton_editElement_posXpath"]).click()
                         for i in range(len(edit_element_parameter_list)):
                             # 从第二次遍历开始点击 + 加号
                             replace_sort = i + 1
@@ -794,7 +836,7 @@ class CreateRule:
                         btn = self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=1)
                         self.driver.execute_script("arguments[0].click()", btn)
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"]).send_keys(sff["name"])
-                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searcpolicyRulePage_searchMirrorProfile_posXpathhSFFProfile_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                         selectSFFXpath = create_element_position["policyRulePage_selectSFFProfile_posXpath"].format(replaceValue=sff["name"])
                         self.driver.find_element(By.XPATH,selectSFFXpath).click()
                         # self.driver.execute_script("arguments[0].click()", btn)
@@ -908,8 +950,14 @@ class CreateRule:
                 if ip_data[j]["negate"] == True:
                     time.sleep(1)  # 暂停1秒
                     negate_element = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_negate{}_posXpath".format(ip_condition_type)])
-                    ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
-                    negate_element.click()
+                    # 使用JavaScript确保元素完全进入视图
+                    self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});",negate_element)
+                    # 使用JavaScript执行悬停
+                    self.driver.execute_script("var evt = new MouseEvent('mouseover', {'view': window, 'bubbles': true, 'cancelable': true}); arguments[0].dispatchEvent(evt);",negate_element)
+                    # 确保元素可点击后进行点击
+                    self.driver.execute_script("arguments[0].click();", negate_element)
+                    # ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                    # negate_element.click()
         except Exception as e:
             raise
     

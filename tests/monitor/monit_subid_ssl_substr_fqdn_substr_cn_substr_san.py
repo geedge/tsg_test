@@ -33,7 +33,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "secy_srcip",
+                        "name": "monitor_srcip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,

@@ -12,7 +12,7 @@ class CaseTag:
         parse_dir = os.path.join("configuration_file.ini")
         parse.read(parse_dir, encoding="utf-8")
         
-        if policy_rule == "" or "security" in policy_rule or "secy" in policy_rule:
+        if policy_rule == "" or "security" in policy_rule or "sec" in policy_rule:
             security_ui_path = parse.get("root_path", "path") + "/tests/security"
             if Path(security_ui_path).exists():
                 security_case_name_list = os.listdir(security_ui_path)
@@ -65,7 +65,7 @@ class CaseTag:
                 temp_policy_rule = ",".join(temp[:-1]) + " and " + temp[-1]
             else:
                 temp_policy_rule = policy_rule
-            if temp_policy_rule == "secy":
+            if temp_policy_rule == "sec":
                 temp_policy_rule = "security"
             elif temp_policy_rule == "monit":
                 temp_policy_rule = "monitor"
@@ -95,7 +95,7 @@ class CaseTag:
                 temp_policy_rule = ",".join(temp[:-1]) + " and " + temp[-1]
             else:
                 temp_policy_rule = policy_rule
-            if temp_policy_rule == "secy":
+            if temp_policy_rule == "sec":
                 temp_policy_rule = "security"
             elif temp_policy_rule == "monit":
                 temp_policy_rule = "monitor"

@@ -12,6 +12,7 @@ from support.packet_generator.workpath import workdir
 import configparser
 import os
 
+
 #policy
 policy_security_rule_element_position = {
     "page_jump": {
@@ -88,6 +89,9 @@ policy_monitor_rule_element_position = {
                     "policyRulePage_okButton_posXpath":serviceChainingRulePage_okButton_posXpach,
                     "policyRulePage_okButton_yes_posId": monitorRulePage_okButton_posId,
                     "policyRulePage_okButton_warningYes_posXpath": monitorRulePage_okButton_warningYes_posXpath,
+                    # add negate
+                    "policyRulePage_negateSrcIP_posXpath":monitorRulePage_negateSrcIP_posXpath,
+                    "policyRulePage_negateServerFqdn_posXpath":monitorRulePage_negateServerFqdn_posXpath,
                     #add profile/mirror
                     "policyRulePage_mirrorTrafficButton_posXpath": monitorRulePage_mirrorTrafficButton_posXpath,
                     "policyRulePage_addVLANIDButton_posXpath": monitorRulePage_addVLANIDButton_posXpath,
@@ -120,14 +124,18 @@ policy_monitor_rule_element_position = {
                     "policyRulePage_addApplication_posXpath": monitorRulePage_addApplication_posXpath,
                     #add app_group
                     "policyRulePage_selectApplicationGroupLabel_posXpath": monitorRulePage_selectApplicationGroupLabel_posXpath,
-
+                    # add flag
+                    "policyRulePage_addConditionFlag_posXpath":policyRulePage_addCondition_flag_posXpath,
+                    "policyRulePage_addFlag_posXpath": monitorRulePage_addFlag_posXpath,
+                    "policyRulePage_searchFlag_posXpath": monitorRulePage_searchFlag_posXpath,
+                    "policyRulePage_selectFlag_posXpath": monitorRulePage_selectFlag_posXpath,
+                    "policyRulePage_closeFlag_posXpath": monitorRulePage_closeFlag_posXpath,
                     #add Src ip
                     "policyRulePage_addSrcIP_posXpath": monitorRulePage_addSrcIP_posXpath,
                     "policyRulePage_searchSrcIP_posXpath": monitorRulePage_searchSrcIP_posXpath,
                     "policyRulePage_selectSrcIP_posXpath": monitorRulePage_selectSrcIP_posXpath,
                     "policyRulePage_closeSrcIP_posXpath": monitorRulePage_closeSrcIP_posXpath,
-                    #add Src ip negate
-                    "policyRulePage_negateSrcIP_posXpath":monitorRulePage_negateSrcIP_posXpath,
+
                     #add  dst ip
                     "policyRulePage_addDstIP_posXpath": policyRulePage_addDstIP_posXpath,
                     "policyRulePage_searchDstIP_posXpath": policyRulePage_searchDstIP_posXpath,
@@ -291,7 +299,7 @@ policy_monitor_rule_element_position = {
                     "policyRuleListPage_searchLabel_posXpath": monitorRuleListPage_searchLabel_posXpath,
                     "policyRuleListPage_searchLabel_dropDown_item_posXpath": monitorRuleListPage_searchLabel_dropDown_item_posXpath,
                     "policyRuleListPage_searchLabel_input_itemContent_posXpath": monitorRuleListPage_searchLabel_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLabel_searchButton_posXpath": monitorRuleListPage_searchLabel_searchButton_posXpath,
+                    "policyRuleListPage_searchLabel_searchButton_posId": monitorRuleListPage_searchLabel_searchButton_posXpath,
                     "policyRuleListPage_tableTbody_posXpath": monitorRuleListPage_tableTbody_posXpath
                 },
                 "delete": {
@@ -367,7 +375,7 @@ policy_statistics_rule_element_position = {
         # add condition侧滑的关闭定位
         "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
         # Source IP
-        "policyRulePage_addConditionSrcIP_posXpath": statisticsRulePage_addCondition_srcIP_posXpath,
+        "policyRulePage_addConditionSrcIP_posXpath": policyRulePage_addSrcIP_posXpath,#statisticsRulePage_addCondition_srcIP_posXpath,
         "policyRulePage_addSrcIP_posXpath": statisticsRulePage_addSrcIP_posXpath,
         "policyRulePage_searchSrcIP_posXpath": statisticsRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": statisticsRulePage_selectSrcIP_posXpath,
@@ -379,7 +387,7 @@ policy_statistics_rule_element_position = {
         "policyRulePage_selectSrcPort_posXpath": statisticsRulePage_selectSourcePort_posXpath,
         "policyRulePage_closeSrcPort_posXpath": statisticsRulePage_closeSourcePort_posXpath,
         # Destination IP
-        "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
+        "policyRulePage_addConditionDstIP_posXpath": policyRulePage_addDstIP_posXpath,#statisticsRulePage_addCondition_dstcIP_posXpath,
         "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
         "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
@@ -627,7 +635,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_selectDeny_posXpath": manipulationRulePage_selectDeny_posXpath,
         "policyRulePage_selectMonitor_posXpath": manipulationRulePage_selectMonitor_posXpath,
         "policyRulePage_selectRedirect_posXpath": manipulationRulePage_selectRedirect_posXpath,
-        "policyRulePage_selectReplace_posXpath": manipulationRulePage_selectReplace_posXpath,
+        "policyRulePage_selectModify_posXpath": manipulationRulePage_selectModify_posXpath,
         "policyRulePage_selectHijack_posXpath": manipulationRulePage_selectHijack_posXpath,
         "policyRulePage_selectInsert_posXpath": manipulationRulePage_selectInsert_posXpath,
         "policyRulePage_selectEditElement_posXpath": manipulationRulePage_selectEditElement_posXpath,
@@ -643,7 +651,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
         # Destination IP
-        "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
+        "policyRulePage_addConditionDstIP_posXpath": policyRulePage_addDstIP_posXpath,#statisticsRulePage_addCondition_dstcIP_posXpath,
         "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
         "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
@@ -769,6 +777,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_redirectDoH_ttlInput_posXpath": manipulationRulePage_redirectDoH_ttlInput_posXpath,
         "policyRulePage_redirectDoH_add_posXpath": manipulationRulePage_redirectDoH_add_posXpath,
         # replace action parameter
+        "policyRulePage_subActionButton_replaceText_posXpath": manipulationRulePage_subActionButton_replaceText_posXpath,
         "policyRulePage_replace_addRegex_posXpath": manipulationRulePage_replace_addRegex_posXpath,
         "policyRulePage_replace_addSearchInSelectBox_posXpath": manipulationRulePage_replace_addSearchInSelectBox_posXpath,
         "policyRulePage_replace_addSearchInSelectDropItem_posXpath": manipulationRulePage_replace_addSearchInSelectDropItem_posXpath,
@@ -784,6 +793,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_insert_searchInsertProfile_posXpath": manipulationRulePage_insert_searchInsertProfile_posXpath,
         "policyRulePage_insert_searchInsertProfileDorpItem_posXpath": manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath,
         # edit element action parameter
+        "policyRulePage_subActionButton_editElement_posXpath": manipulationRulePage_subActionButton_editElement_posXpath,
         "policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath": manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath,
         "policyRulePage_editElement_addSearchScopeInsideElementRadio_posXpath": manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath,
         "policyRulePage_editElement_addContainedKeywordInput_posXpath": manipulationRulePage_editElement_addContainedKeywordInput_posXpath,
@@ -928,11 +938,35 @@ policy_service_chaining_rule_element_position = {
         "policyRulePage_closeBoolean_posXpath": policyRulePage_closeBoolean_posXpath,
         "policyRulePage_little_button_addBoolean_posXpath":policyRulePage_little_button_addBoolean_posXpath,
         # URL
-        "policyRulePage_addConditionUrl_posXpath": policyRulePage_addCondition_url_posXpath,
+        "policyRulePage_addConditionUrl_posXpath": serviceChainingRulePage_addCondition_url_posXpath,
         "policyRulePage_addUrl_posXpath": policyRulePage_addUrl_posXpath,
         "policyRulePage_searchUrl_posXpath": policyRulePage_searchUrl_posXpath,
         "policyRulePage_selectUrl_posXpath": policyRulePage_selectUrl_posXpath,
         "policyRulePage_closeUrl_posXpath": policyRulePage_closeUrl_posXpath,
+        # 添加account
+        "policyRulePage_addConditionFtpAccount_posXpath": policyRulePage_addCondition_ftpAccount_posXpath,
+        "policyRulePage_addFtpAccount_posXpath": policyRulePage_addFtpAccount_posXpath,
+        "policyRulePage_searchFtpAccount_posXpath": policyRulePage_searchFtpAccount_posXpath,
+        "policyRulePage_selectFtpAccount_posXpath": policyRulePage_selectFtpAccount_posXpath,
+        "policyRulePage_closeFtpAccount_posXpath": policyRulePage_closeFtpAccount_posXpath,
+         # 添加mail account
+        "policyRulePage_addConditionMailAccount_posXpath": policyRulePage_addCondition_mailAccount_posXpath,
+        "policyRulePage_addMailAccount_posXpath": policyRulePage_addMailAccount_posXpath,
+        "policyRulePage_searchMailAccount_posXpath": policyRulePage_searchMailAccount_posXpath,
+        "policyRulePage_selectMailAccount_posXpath": policyRulePage_selectMailAccount_posXpath,
+        "policyRulePage_closeMailAccount_posXpath": policyRulePage_closeMailAccount_posXpath,
+        #添加mail from
+        "policyRulePage_addConditionMailFrom_posXpath": policyRulePage_addCondition_mailFrom_posXpath,
+        "policyRulePage_addMailFrom_posXpath": policyRulePage_addMailFrom_posXpath,
+        "policyRulePage_searchMailFrom_posXpath": policyRulePage_searchMailFrom_posXpath,
+        "policyRulePage_selectMailFrom_posXpath": policyRulePage_selectMailFrom_posXpath,
+        "policyRulePage_closeMailFrom_posXpath": policyRulePage_closeMailFrom_posXpath,
+        #添加mail to
+        "policyRulePage_addConditionMailTo_posXpath": policyRulePage_addCondition_mailTo_posXpath,
+        "policyRulePage_addMailTo_posXpath":policyRulePage_addMailTo_posXpath,
+        "policyRulePage_searchMailTo_posXpath": policyRulePage_searchMailTo_posXpath,
+        "policyRulePage_selectMailTo_posXpath": policyRulePage_selectMailTo_posXpath,
+        "policyRulePage_closeMailTo_posXpath": policyRulePage_closeMailTo_posXpath,
         # SFF Profile
         "policyRulePage_addSFFProfile_posXpath": serviceChainingRulePage_addSFFProfile_posXpath,
         "policyRulePage_searchSFFProfile_posXpath":serviceChainingRulePage_searchSFFProfile_posXpath,
@@ -1239,7 +1273,7 @@ object_account_object_element_position = {
                 },
                 "delete": {
                     "objectListPage_allSelect_posXpath": accountObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_posXpath": accountObjectListPage_deleteButton_posXpath,
                     "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
@@ -1410,6 +1444,40 @@ object_application_group_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": ObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+object_flag_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
+                    "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_flag_posXpath
+                },
+                "create": {
+                    "objectListPage_createButton_posXpath": flagObjectListPage_createButton_posXpath,
+                    "objectListPage_dropDown_createButton_posXpath": flagObjectListPage_dropDown_createButton_posXpath,
+                    "objectPage_inputName_posXpath": flagObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posXpath": flagObjectPage_addItem_posXpath,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posXpath": accountObjectPage_okButton_posXpath,
+                    "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath,
+                    "ObjectPage_sameItem_addItem_posXpath": urlObjectPage_sameItem_addItem_posXpath,
+                    "ObjectPage_sameItem_inputItem_posXpath": urlObjectPage_sameItem_inputItem_posXpath,
+                },
+                "search": {
+                    "objectListPage_searchLabel_posXpath": accountObjectPage_searchLabel_posXpath,
+                    "objectListPage_searchLabel_selectName_posXpath": '//*[@class="base-Popper-root MuiAutocomplete-listbox css-18r31z0"]//li[1]',
+                    "objectListPage_tableTbody_posXpath": accountObjectListPage_tableTbody_posXpath,
+
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": accountObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posXpath": accountObjectListPage_deleteButton_posXpath,
+                    "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
 object_http_signature_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
@@ -1529,14 +1597,14 @@ profile_monitor_profile_element_position = {
         "templates_button_chartEdit_posXpath": listPage_profileHandleButton_posXpath.format(replaceName=listPage_profile_statisticsTemplates_editButton_name)
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+        "profileListPage_deleteButton_posXpath": listPage_profileHandleButton_posXpath.format(replaceName=listPage_profile_statisticsTemplates_delButton_name),
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posXpath
     }
 }
@@ -1995,6 +2063,8 @@ def get_element_position(key_name):
         element_position_map = object_http_url_object_element_position
     elif key_name == "account":
         element_position_map =object_account_object_element_position
+    elif key_name == "flag":
+        element_position_map =object_flag_object_element_position
     # profile
     elif key_name == "response_page":
         element_position_map = profile_response_page_element_position

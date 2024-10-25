@@ -620,11 +620,11 @@ class GetLog:
         r_dict = response.json()
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric query failed.", flush=True)
-            return 444
+            return False
         else:  # 返回正常结果
             if r_dict["data"]["list"] == []:  # 为空
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric is empty.", flush=True)
-                return 333
+                return None
             else:  # metric不为空时，验证返回结果
                 metric_result = False  # 默认
                 result_list = r_dict["data"]["list"]

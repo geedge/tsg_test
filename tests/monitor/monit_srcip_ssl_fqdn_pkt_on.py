@@ -73,14 +73,14 @@ def run(parameter):
                         "plus": False,
                         "items": [
                             {
-                                "item_value": "*mtv.com",
+                                "item_value": "^mtv.com",
                                 "item_operation": "add"
                             }
                         ]
                     }
                 ],
                 "protocol_filed": [],
-                "sub_action_override": True,
+                #"sub_action_override": True,
                 "sub_action": [],
                 "packet_capture": [{
                         "enable":True,

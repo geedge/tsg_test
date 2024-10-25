@@ -95,7 +95,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "san",
-                                "item_value": "twitter.com*"
+                                "item_value": "twitter.com$"
                             }
                         ],
                     }

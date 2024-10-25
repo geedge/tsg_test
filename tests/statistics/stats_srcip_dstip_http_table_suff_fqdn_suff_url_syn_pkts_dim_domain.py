@@ -95,7 +95,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_value": "*.yumi.com",
+                                "item_value": ".yumi.com$",
                             }
                         ]
                     }
@@ -111,7 +111,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "*yumi.com/"
+                                "item_value": "yumi.com/$"
                             }
                         ],
                     }

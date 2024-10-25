@@ -94,7 +94,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "cn",
-                                "item_value": "*itter.com"
+                                "item_value": "itter.com$"
                             }
                         ],
                     }
