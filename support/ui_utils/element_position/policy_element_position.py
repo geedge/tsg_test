@@ -527,7 +527,7 @@ manipulationRulePage_selectAllow_posXpath = "//div[@class='manipulation-policy-a
 manipulationRulePage_selectDeny_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Deny')]"
 manipulationRulePage_selectMonitor_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Monitor')]"
 manipulationRulePage_selectRedirect_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Redirect')]"
-manipulationRulePage_selectReplace_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Replace')]"
+manipulationRulePage_selectModify_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-a-ElementEditing1')]"
 manipulationRulePage_selectHijack_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Hijack')]"
 manipulationRulePage_selectInsert_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-Insert')]"
 manipulationRulePage_selectEditElement_posXpath = "//div[@class='manipulation-policy-action']//i[contains(@class, 'icon-a-ElementEditing1')]"
@@ -658,7 +658,7 @@ manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@role=
 # action parameter redirect http
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
-manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//input[@id='undefined1']"   # redirect url 输入框 定位
+manipulationRulePage_redirectHttp_addRedirectUrlInput_posXpath = "//div[@class='manipulation-policy-to']//input"   # redirect url 输入框 定位
 manipulationRulePage_redirectDoH_qtypeRadio_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[1]//input[@value='{replace_qtype}']/parent::*"
 manipulationRulePage_redirectDoH_atypeSelectBox_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[{replace_index}]//i[contains(@class, 'el-select__caret')]"    # repalace_index 多个时索引
 manipulationRulePage_redirectDoH_atypeSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//span[text()='{replace_atype}']"
@@ -666,12 +666,13 @@ manipulationRulePage_redirectDoH_valueInput_posXpath = "//label[text()='Setting 
 manipulationRulePage_redirectDoH_ttlInput_posXpath = "//label[text()='Setting Details']/parent::*/div//form/div[{replace_index}]//div[@zs-label='TTL']//input"
 manipulationRulePage_redirectDoH_add_posXpath = "//label[text()='Setting Details']/parent::*/div//form//i[contains(@class, 'icon-Create1')]"
 # action parameter replace
-manipulationRulePage_replace_addRegex_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='regexEnable']//div[contains(@class, 'el-switch')]"   # regex 开关定位， replace_sort替换为实际的个数
-manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='搜索区域']//i"   # search in 选择框 定位, replace_sort替换为实际的个数
-manipulationRulePage_replace_addSearchInSelectDropItem_posXpath = "//body/div[contains(@class, 'el-select-dropdown')]//li[normalize-space(text())='{replace_type}']"   # search in 下拉框item 定位
-manipulationRulePage_replace_addFindInput_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='Fined']//input"   # find 输入框 定位， replace_sort替换为实际的个数
-manipulationRulePage_replace_addReplaceWithInput_posXpath = "//ul[@class='replacelist']//li[{replace_sort}]//div[@zs-label='Replace']//input"   # replace with 输入框 定位， replace_sort替换为实际的个数
-manipulationRulePage_replace_add_posXpath = "//*[@id='replaceadd_btn']//i"   # replace add 加号添加 定位
+manipulationRulePage_subActionButton_replaceText_posXpath = "//div[@class='manipulation-policy-sub_action']//button[1]"
+manipulationRulePage_replace_addRegex_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-regex_enable']//input/parent::*"   # regex 开关定位， replace_sort替换为实际的个数
+manipulationRulePage_replace_addSearchInSelectBox_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-search_in']//button"   # search in 选择框 定位, replace_sort替换为实际的个数
+manipulationRulePage_replace_addSearchInSelectDropItem_posXpath = "//body/ul[{replace_sort}]/li[contains(text(), '{replace_type}')]"   # search in 下拉框item 定位
+manipulationRulePage_replace_addFindInput_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-find']//input"   # find 输入框 定位， replace_sort替换为实际的个数
+manipulationRulePage_replace_addReplaceWithInput_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-replace_with']//input"   # replace with 输入框 定位， replace_sort替换为实际的个数
+manipulationRulePage_replace_add_posXpath = "//div[@name='action_parameter']/div/div[3]//button"   # replace add 加号添加 定位
 # action parameter hijack
 manipulationRulePage_hijack_addHijackProfileSelectBox_posXpath = "//div[@zs-label='劫持文件']//i"   # hijack profile  选择框  定位
 manipulationRulePage_hijack_searchHijackProfile_posXpath = "//body/div/div[@class='el-scrollbar']//input[@placeholder='Search for']"   # hijack search profile 对话框查询输入框

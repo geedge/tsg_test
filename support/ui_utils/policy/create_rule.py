@@ -48,14 +48,14 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectMonitor_posXpath"]).click()
                 elif test_data["rule_action"] == "redirect":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectRedirect_posXpath"]).click()
-                elif test_data["rule_action"] == "replace":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectReplace_posXpath"]).click()
-                elif test_data["rule_action"] == "hijack":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectHijack_posXpath"]).click()
-                elif test_data["rule_action"] == "insert":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectInsert_posXpath"]).click()
-                elif test_data["rule_action"] == "edit_element":
-                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEditElement_posXpath"]).click()
+                elif test_data["rule_action"] in ["replace", "hijack", "insert", "edit_element"]:
+                    self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectModify_posXpath"]).click()
+                # elif test_data["rule_action"] == "hijack":
+                #     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectHijack_posXpath"]).click()
+                # elif test_data["rule_action"] == "insert":
+                #     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectInsert_posXpath"]).click()
+                # elif test_data["rule_action"] == "edit_element":
+                #     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectEditElement_posXpath"]).click()
                 else:   # run script
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectRunScript_posXpath"]).click()
             elif test_data["policy_type"]== "monitor" and  "is_mirror" in test_data :
@@ -647,8 +647,10 @@ class CreateRule:
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
                     # 页面滚动到最底部
-                    div_container = self.driver.find_element(By.XPATH, "//div[@id='root']//div[contains(@class, 'form-content-container')]")
+                    print(33333333366666666666)
+                    div_container = self.driver.find_element(By.XPATH, "//div[@id='root']//div[contains(@class, 'manipulation-policy-page')]")
                     self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_container)  # 移动到页面最底部
+                    print(333333333)
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
                         if "deny_response_block" in test_data["action_parameter"].keys():    # action为 close connection
@@ -719,6 +721,7 @@ class CreateRule:
                     elif test_data["rule_action"] == "replace":
                         # 遍历，是否含有多个search in
                         replace_parameter_list = test_data["action_parameter"]["replace_parameter"]
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subActionButton_replaceText_posXpath"]).click()
                         for i in range(len(replace_parameter_list)):
                             # 从第二次遍历开始点击 + 加号
                             if i != 0:
@@ -731,17 +734,17 @@ class CreateRule:
                             regex_class_status = self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"].format(replace_sort=i+1)).get_attribute("class")
                             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], regex_class_status)
                             if regex_status == "on":  # 开
-                                if "is-checked" in regex_class_status:  # 当前状态开，不用再点击
+                                if "Mui-checked" in regex_class_status:  # 当前状态开，不用再点击
                                     pass
                                 else:   # 当前状态关，需要再点击打开
                                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"].format(replace_sort=i+1)).click()
                             else:   # off  关
-                                if "is-checked" in regex_class_status:  # 当前状态开，需要点击关闭
+                                if "Mui-checked" in regex_class_status:  # 当前状态开，需要点击关闭
                                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addRegex_posXpath"].format(replace_sort=i+1)).click()
                                 else:      # # 当前状态关，不用再点击
                                     pass
                             # 操作search in
-                            search_in_drop_position = create_element_position["policyRulePage_replace_addSearchInSelectDropItem_posXpath"].format(replace_type=search_in)
+                            search_in_drop_position = create_element_position["policyRulePage_replace_addSearchInSelectDropItem_posXpath"].format(replace_sort=i+1, replace_type=search_in)
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_replace_addSearchInSelectBox_posXpath"].format(replace_sort=i+1)).click()
                             self.driver.find_element(By.XPATH, search_in_drop_position, find_after_wait_time=0.5).click()
                             # 操作 find   replace with 输入框

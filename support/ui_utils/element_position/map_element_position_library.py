@@ -635,7 +635,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_selectDeny_posXpath": manipulationRulePage_selectDeny_posXpath,
         "policyRulePage_selectMonitor_posXpath": manipulationRulePage_selectMonitor_posXpath,
         "policyRulePage_selectRedirect_posXpath": manipulationRulePage_selectRedirect_posXpath,
-        "policyRulePage_selectReplace_posXpath": manipulationRulePage_selectReplace_posXpath,
+        "policyRulePage_selectModify_posXpath": manipulationRulePage_selectModify_posXpath,
         "policyRulePage_selectHijack_posXpath": manipulationRulePage_selectHijack_posXpath,
         "policyRulePage_selectInsert_posXpath": manipulationRulePage_selectInsert_posXpath,
         "policyRulePage_selectEditElement_posXpath": manipulationRulePage_selectEditElement_posXpath,
@@ -777,6 +777,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_redirectDoH_ttlInput_posXpath": manipulationRulePage_redirectDoH_ttlInput_posXpath,
         "policyRulePage_redirectDoH_add_posXpath": manipulationRulePage_redirectDoH_add_posXpath,
         # replace action parameter
+        "policyRulePage_subActionButton_replaceText_posXpath": manipulationRulePage_subActionButton_replaceText_posXpath,
         "policyRulePage_replace_addRegex_posXpath": manipulationRulePage_replace_addRegex_posXpath,
         "policyRulePage_replace_addSearchInSelectBox_posXpath": manipulationRulePage_replace_addSearchInSelectBox_posXpath,
         "policyRulePage_replace_addSearchInSelectDropItem_posXpath": manipulationRulePage_replace_addSearchInSelectDropItem_posXpath,
