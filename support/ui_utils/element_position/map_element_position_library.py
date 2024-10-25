@@ -947,6 +947,24 @@ policy_service_chaining_rule_element_position = {
         "policyRulePage_searchFtpAccount_posXpath": policyRulePage_searchFtpAccount_posXpath,
         "policyRulePage_selectFtpAccount_posXpath": policyRulePage_selectFtpAccount_posXpath,
         "policyRulePage_closeFtpAccount_posXpath": policyRulePage_closeFtpAccount_posXpath,
+         # 添加mail account
+        "policyRulePage_addConditionMailAccount_posXpath": policyRulePage_addCondition_mailAccount_posXpath,
+        "policyRulePage_addMailAccount_posXpath": policyRulePage_addMailAccount_posXpath,
+        "policyRulePage_searchMailAccount_posXpath": policyRulePage_searchMailAccount_posXpath,
+        "policyRulePage_selectMailAccount_posXpath": policyRulePage_selectMailAccount_posXpath,
+        "policyRulePage_closeMailAccount_posXpath": policyRulePage_closeMailAccount_posXpath,
+        #添加mail from
+        "policyRulePage_addConditionMailFrom_posXpath": policyRulePage_addCondition_mailFrom_posXpath,
+        "policyRulePage_addMailFrom_posXpath": policyRulePage_addMailFrom_posXpath,
+        "policyRulePage_searchMailFrom_posXpath": policyRulePage_searchMailFrom_posXpath,
+        "policyRulePage_selectMailFrom_posXpath": policyRulePage_selectMailFrom_posXpath,
+        "policyRulePage_closeMailFrom_posXpath": policyRulePage_closeMailFrom_posXpath,
+        #添加mail to
+        "policyRulePage_addConditionMailTo_posXpath": policyRulePage_addCondition_mailTo_posXpath,
+        "policyRulePage_addMailTo_posXpath":policyRulePage_addMailTo_posXpath,
+        "policyRulePage_searchMailTo_posXpath": policyRulePage_searchMailTo_posXpath,
+        "policyRulePage_selectMailTo_posXpath": policyRulePage_selectMailTo_posXpath,
+        "policyRulePage_closeMailTo_posXpath": policyRulePage_closeMailTo_posXpath,
         # SFF Profile
         "policyRulePage_addSFFProfile_posXpath": serviceChainingRulePage_addSFFProfile_posXpath,
         "policyRulePage_searchSFFProfile_posXpath":serviceChainingRulePage_searchSFFProfile_posXpath,
