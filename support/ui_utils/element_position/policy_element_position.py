@@ -805,13 +805,13 @@ shapingRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-bu
 #monitor
 #monitor列表页按钮
 mainPage_policySecondLevelMenu_monitor_posXpath = "//span[normalize-space(text())='Monitor']"
-monitorRuleListPage_createButton_posXpath = '//i[@class="iconfont icon-Create"]'
-monitorRuleListPage_deleteButton_posXpath = '//i[@class="iconfont icon-Delete"]'
-monitorRuleListPage_searchLabel_posXpath = '//input[@class="MuiAutocomplete-input css-qdyksh"]'
-monitorRuleListPage_searchLabel_dropDown_item_posXpath = "//div[@class='dune-search-option-content']//span[contains(text(),'{replaceValue}')]/ancestor::div[1]"   #下拉菜单定位
-monitorRuleListPage_searchLabel_input_itemContent_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'   #输入item的值，replaceValue替换实际查询值
-monitorRuleListPage_searchLabel_searchButton_posXpath = '//div[@class="flex"]/button'
-monitorRuleListPage_tableTbody_posXpath = '//div[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'
+monitorRuleListPage_createButton_posXpath = ruleListPage_createButton_posXpath
+monitorRuleListPage_deleteButton_posXpath = ruleListPage_deleteButton_posXpath
+monitorRuleListPage_searchLabel_posXpath = ruleListPage_searchLabel_posXpath
+monitorRuleListPage_searchLabel_dropDown_item_posXpath = ruleListPage_searchLabel_dropDown_item_posXpath   #下拉菜单定位
+monitorRuleListPage_searchLabel_input_itemContent_posXpath = ruleListPage_searchLabel_input_itemContent_posXpath   #输入item的值，replaceValue替换实际查询值
+monitorRuleListPage_searchLabel_searchButton_posXpath = ruleListPage_searchLabel_searchButton_posXpath
+monitorRuleListPage_tableTbody_posXpath = ruleListPage_tableTbody_posXpath
 monitorRulelistPage_allSelect_posXpath = '//div[@class="flex flex-row flex-wrap justify-start items-center pl-[18px] mt-[20px]"]//input[@class="MuiCheckbox-input css-1jj0cvj"]'
 monitorRuleListpage_okButton_warningYes_posXpath= '//div[@class="MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[1]'
 monitorRuleListpage_okButton_warningNo_posXpath= '//div[@class="MuiDialogActions-root flex !justify-center items-center MuiDialogActions-spacing css-vplbg4"]/button[2]'
@@ -839,7 +839,7 @@ monitorRulePage_okButton_warningYes_posXpath = "//button[@class='el-button el-bu
 monitorRulePage_logOptions_all_posXpath = '//*[@id="monitor_log_options-_policy_monitor_write_Home_App_anonymousComponent"]//span[normalize-space(text())="All"]'
 ##monitor 添加profile的按钮
 monitorRulePage_addVLANIDButton_posXpath = '//div[@class="monitor-policy-vlanID"]'
-monitorRulePage_firstSelectMirrorProfile_posXpath='//div[@class="monitor-policy-mirror_profile"]//i'
+monitorRulePage_firstSelectMirrorProfile_posXpath='//*[@class="monitor-policy-mirroring_profile"]//i'
 monitorRulePage_searchMirrorProfile_posXpath = '//div[@class="px-[12px] py-[4px] flex"]//input'
 monitorRulePage_selectMirrorProfile_posXpath = "//div[contains(@class, 'MuiListItemButton-root MuiListItemButton-colorNeutral MuiListItemButton-variantPlain css-18mv95p') and div[contains(text(), '{replaceValue}')]]"
 monitorRulePage_addProfile_plusButton_posXpath= '//i[@class="iconfont icon-Create1"]'

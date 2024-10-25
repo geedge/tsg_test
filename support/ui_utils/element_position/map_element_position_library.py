@@ -405,7 +405,7 @@ test_account_object_element_position = {
                 },
                 "delete": {
                     "objectListPage_allSelect_posXpath": accountObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_posXpath": accountObjectListPage_deleteButton_posXpath,
                     "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
@@ -440,7 +440,7 @@ test_flag_object_element_position = {
                 },
                 "delete": {
                     "objectListPage_allSelect_posXpath": accountObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_posXpath": accountObjectListPage_deleteButton_posXpath,
                     "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
@@ -1107,7 +1107,7 @@ policy_monitor_rule_element_position = {
                     "policyRuleListPage_searchLabel_posXpath": monitorRuleListPage_searchLabel_posXpath,
                     "policyRuleListPage_searchLabel_dropDown_item_posXpath": monitorRuleListPage_searchLabel_dropDown_item_posXpath,
                     "policyRuleListPage_searchLabel_input_itemContent_posXpath": monitorRuleListPage_searchLabel_input_itemContent_posXpath,
-                    "policyRuleListPage_searchLabel_searchButton_posXpath": monitorRuleListPage_searchLabel_searchButton_posXpath,
+                    "policyRuleListPage_searchLabel_searchButton_posId": monitorRuleListPage_searchLabel_searchButton_posXpath,
                     "policyRuleListPage_tableTbody_posXpath": monitorRuleListPage_tableTbody_posXpath
                 },
                 "delete": {
@@ -2061,7 +2061,7 @@ object_account_object_element_position = {
                 },
                 "delete": {
                     "objectListPage_allSelect_posXpath": accountObjectListPage_allSelect_posXpath,
-                    "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                    "objectListPage_deleteButton_posXpath": accountObjectListPage_deleteButton_posXpath,
                     "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
                 }
             }
@@ -2351,14 +2351,14 @@ profile_monitor_profile_element_position = {
         "templates_button_chartEdit_posXpath": listPage_profileHandleButton_posXpath.format(replaceName=listPage_profile_statisticsTemplates_editButton_name)
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_trafficMirroringProfiles_selectLabel_posId,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_trafficMirroringProfiles_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_trafficMirroringProfiles_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_trafficMirroringProfiles_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_trafficMirroringProfiles_delButton_posId,
+        "profileListPage_deleteButton_posXpath": listPage_profileHandleButton_posXpath.format(replaceName=listPage_profile_statisticsTemplates_delButton_name),
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_trafficMirroringProfiles_button_yes_posXpath
     }
 }

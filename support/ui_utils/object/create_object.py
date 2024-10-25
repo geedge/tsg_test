@@ -128,42 +128,42 @@ class CreateObject:
             elif data["object_type"] == "tunnel":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             elif data["object_type"] == "flag":
-                # for i in range(len(data["item"])):  #
-                #     self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
-                #     if data["item"][i]["item_operation"] == "add":  # 直接 新增 模式
-                #         if data["item"][i]["item_value"]["flag"]=="2":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[2]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="4":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[3]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="8":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[4]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="16":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[5]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="32":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[6]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="64":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[7]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="128":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[8]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="256":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[9]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="512":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[10]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="1024":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[11]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="2048":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[12]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="4096":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[13]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="8092":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[14]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="16384":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[15]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="32768":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
-                #         elif data["item"][i]["item_value"]["flag"]=="65536":
-                #             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
-                #     self.driver.find_element(By.XPATH,create_element_position["objectPage_button_saveItem_posXpath"]).click()
+                for i in range(len(data["item"])):  #
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
+                    if data["item"][i]["item_operation"] == "add":  # 直接 新增 模式
+                        if data["item"][i]["item_value"]["flag"]=="2":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[2]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="4":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[3]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="8":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[4]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="16":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[5]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="32":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[6]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="64":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[7]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="128":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[8]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="256":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[9]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="512":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[10]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="1024":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[11]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="2048":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[12]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="4096":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[13]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="8092":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[14]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="16384":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[15]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="32768":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
+                        elif data["item"][i]["item_value"]["flag"]=="65536":
+                            self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
+                    self.driver.find_element(By.XPATH,create_element_position["objectPage_button_saveItem_posXpath"]).click()
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
             elif data["object_type"] == "interval":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
