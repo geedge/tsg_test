@@ -19,55 +19,11 @@ class CreatePolicyRule:
 
         source_list, dst_list, filter_list, flag_list = [], [], [], []
         for k, v in condition_ids_by_api_dict.items():
-            # if k == "src_list":
-            #     source_list = v
-            # elif k == "dst_list":
-            #     dst_list = v
-            # elif k == "int_list":
-            #     int_list = v
-            # elif k == "ext_list":
-            #     ext_list = v
-            # elif k == "filter_list":
-            #     filter_list = v
-            # elif k == "flag_list":
-            #     flag_list = v
             if k == "and_conditions":
                 and_conditions_list = v
         template = path_dict["rule_template"]
         with open(template, 'r', encoding='utf-8') as f:
             rule_template_dict = json.load(f)
-
-        # if len(source_list) > 0:
-        #     rule_template_dict['rule']['source'] = source_list
-        # else:
-        #     rule_template_dict['rule']['source'] = []
-
-        # if len(dst_list) > 0:
-        #     rule_template_dict['rule']['destination'] = dst_list
-        # else:
-        #     rule_template_dict['rule']['destination'] = []
-
-        # if len(int_list) > 0:
-        #     rule_template_dict['rule']['internal'] = int_list
-        # else:
-        #     rule_template_dict['rule']['internal'] = []
-
-        # if len(ext_list) > 0:
-        #     rule_template_dict['rule']['external'] = ext_list
-        # else:
-        #     rule_template_dict['rule']['external'] = []
-
-        # if len(filter_list) > 0:
-        #     filter_list = filter_list
-        #     rule_template_dict['rule']['filter'] = filter_list
-        # else:
-        #     rule_template_dict['rule']['filter'] = []
-
-        # if len(flag_list) > 0:
-        #     flag_list = flag_list[0]
-        #     rule_template_dict['rule']['flag'] = flag_list
-        # else:
-        #     rule_template_dict['rule']['flag'] = None
         
         if len(and_conditions_list) > 0:
             rule_template_dict['rule']['and_conditions'] = and_conditions_list
@@ -81,6 +37,9 @@ class CreatePolicyRule:
             action = condition["rule_action"]
         if action == "insert":
             action = "inject"
+        elif action in ["replace", "edit_element"]:
+            action = "modify"
+
         rule_template_dict['rule']['action'] = action
         rule_template_dict['rule']['vsys_id'] = vsys_id
         policy_type = condition["policy_type"]
@@ -387,7 +346,7 @@ class CreatePolicyRule:
                 user_region["sub_action"] = "redirect"
                 user_region["code"] = condition["code_" + str(create_number)]
                 user_region["to"] = condition["to_" + str(create_number)]
-            elif action == "replace":
+            elif action == "modify" and "replace_parameter" in condition['action_parameter']:
                 user_region_data = condition["user_region"]
                 rules = []
                 for i in range(len(user_region_data)):
@@ -398,8 +357,8 @@ class CreatePolicyRule:
                     rule_dict["replace_with"] = user_region_data[i]["replace_with"]
                     rules.append(copy.deepcopy(rule_dict))
                 user_region["rules"] = rules
-                user_region["sub_action"] = "replace"
-            elif action == "edit_element":
+                user_region["sub_action"] = "replace_text"
+            elif action == "modify" and "edit_element_parameter" in condition['action_parameter']:
                 user_region_data = condition["user_region"]
                 rules = []
                 for i in range(len(user_region_data)):
@@ -519,7 +478,7 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            # print(json.dumps(rule_template_dict))
+            print(json.dumps(rule_template_dict))
             # 44.3 运行用例临时添加，防止创建过快导致的用例失败
             time.sleep(1)
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
