@@ -1183,7 +1183,7 @@ policy_statistics_rule_element_position = {
         # add condition侧滑的关闭定位
         "policyRulePage_addCondition_close_posXpath": securityRulePage_addCondition_close_posXpath,
         # Source IP
-        "policyRulePage_addConditionSrcIP_posXpath": statisticsRulePage_addCondition_srcIP_posXpath,
+        "policyRulePage_addConditionSrcIP_posXpath": policyRulePage_addSrcIP_posXpath,#statisticsRulePage_addCondition_srcIP_posXpath,
         "policyRulePage_addSrcIP_posXpath": statisticsRulePage_addSrcIP_posXpath,
         "policyRulePage_searchSrcIP_posXpath": statisticsRulePage_searchSrcIP_posXpath,
         "policyRulePage_selectSrcIP_posXpath": statisticsRulePage_selectSrcIP_posXpath,
@@ -1195,7 +1195,7 @@ policy_statistics_rule_element_position = {
         "policyRulePage_selectSrcPort_posXpath": statisticsRulePage_selectSourcePort_posXpath,
         "policyRulePage_closeSrcPort_posXpath": statisticsRulePage_closeSourcePort_posXpath,
         # Destination IP
-        "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
+        "policyRulePage_addConditionDstIP_posXpath": policyRulePage_addDstIP_posXpath,#statisticsRulePage_addCondition_dstcIP_posXpath,
         "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
         "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
@@ -1459,7 +1459,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_selectSrcIP_posXpath": manipulationRulePage_selectSrcIP_posXpath,
         "policyRulePage_closeSrcIP_posXpath": manipulationRulePage_closeSrcIP_posXpath,
         # Destination IP
-        "policyRulePage_addConditionDstIP_posXpath": statisticsRulePage_addCondition_dstcIP_posXpath,
+        "policyRulePage_addConditionDstIP_posXpath": policyRulePage_addDstIP_posXpath,#statisticsRulePage_addCondition_dstcIP_posXpath,
         "policyRulePage_addDstIP_posXpath": statisticsRulePage_addDstIP_posXpath,
         "policyRulePage_searchDstIP_posXpath": statisticsRulePage_searchDstIP_posXpath,
         "policyRulePage_selectDstIP_posXpath": statisticsRulePage_selectDstIP_posXpath,
