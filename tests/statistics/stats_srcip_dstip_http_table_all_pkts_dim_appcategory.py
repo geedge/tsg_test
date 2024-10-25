@@ -109,7 +109,7 @@ def run(parameter):
                             "app_category"
                           ],
                           "order_by": "Packets",
-                          "row_limit": "10",
+                          "row_limit": "500",
                           "min_in_size": "0",
                           "min_out_size": "0"
                         },
@@ -125,7 +125,7 @@ def run(parameter):
                             "app_category"
                           ],
                           "order_by": "Packets",
-                          "row_limit": "10",
+                          "row_limit": "200",
                           "min_in_size": "0",
                           "min_out_size": "0"
                         }
