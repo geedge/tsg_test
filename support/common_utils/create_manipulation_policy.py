@@ -275,9 +275,11 @@ class CreateManipulationPolicy:
                     profile_type = test_data["profile_condition"][0]["profile_type"].strip()
                     if profile_type == "response_page":
                         template_path["profiles_deny_path"] = tmp_dir + "response_pages/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "proxy_hijack_file":
+                    elif profile_type == "proxy_replacement_file":
                         template_path["profiles_hijack_file_path"] = tmp_dir + "hijack_file/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "proxy_inject_script":
+                    elif profile_type == "proxy_js_file":
+                        template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
+                    elif profile_type == "proxy_css_file":
                         template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
                     elif profile_type == "http_manipulation_script":
                         template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][0]["content_name"]

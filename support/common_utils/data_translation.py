@@ -1586,7 +1586,7 @@ class DataTranslation:
                     }
                     for t in range(len(v)):
                         temp = {
-                            "profile_type": "proxy_hijack_file",
+                            "profile_type": "proxy_replacement_file",
                             "content_type": "text/html",
                             "name": "auto_test_obj",
                             "content_name": "Files-test-5.png",
@@ -1617,7 +1617,9 @@ class DataTranslation:
                         temp["name"] = v[t]["profile_file"]["name"]
                         if temp["format"] == "js":
                             temp["insert_on"] = insert_map[v[t]["profile_file"]["insert_position"]]
+                            temp["profile_type"] = "proxy_js_file"
                         else:
+                            temp["profile_type"] = "proxy_css_file"
                             temp["insert_on"] = None
                         temp["content_name"] = v[t]["profile_file"]["script"]
                         profile.append(copy.deepcopy(temp))

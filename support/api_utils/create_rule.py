@@ -35,10 +35,10 @@ class CreatePolicyRule:
             action = condition[temp_rule_action]
         else:
             action = condition["rule_action"]
-        if action == "insert":
-            action = "inject"
-        elif action in ["replace", "edit_element"]:
+        if action in ["replace", "edit_element", "hijack", "insert"]:
             action = "modify"
+        elif action == "run_script":
+            action = "execute"
 
         rule_template_dict['rule']['action'] = action
         rule_template_dict['rule']['vsys_id'] = vsys_id
@@ -333,15 +333,23 @@ class CreatePolicyRule:
                 user_region["message"] = "html_profile"
                 user_region["code"] = condition["code_" + str(create_number)]
                 user_region["profile"] = create_profile_ids[0]["uuid"]
-            elif action == "hijack":
-                user_region["sub_action"] = "hijack"
-                user_region["hijack_profile"] = create_profile_ids[0]["uuid"]
-            elif action == "inject":
-                user_region["sub_action"] = "inject"
-                user_region["inject_profile"] = create_profile_ids[0]["uuid"]
-            elif action == "run_script":
-                user_region["sub_action"] = "run_script"
-                user_region["run_script_profile"] = create_profile_ids[0]["uuid"]
+            elif action == "modify" and "hijack_file" in condition['action_parameter']:
+                user_region["sub_action"] = "replace_file"
+                user_region["replacement_file"] = create_profile_ids[0]["uuid"]
+            elif action == "modify" and "insert_script" in condition['action_parameter']:
+                if condition['action_parameter']["insert_script"][0]["profile_file"]["script_type"] == "js":
+                    user_region["sub_action"] = "inject_javascript"
+                    if condition['action_parameter']["insert_script"][0]["profile_file"]["insert_position"] == "Before Page Load":
+                        user_region["injection_section"] = "html_head"
+                    elif condition['action_parameter']["insert_script"][0]["profile_file"]["insert_position"] == "After Page Load":
+                        user_region["injection_section"] = "html_body"
+                    user_region["js_file"] = create_profile_ids[0]["uuid"]
+                elif condition['action_parameter']["insert_script"][0]["profile_file"]["script_type"] == "css":
+                    user_region["sub_action"] = "inject_css"
+                    user_region["css_file"] = create_profile_ids[0]["uuid"]
+            elif action == "execute":
+                user_region["sub_action"] = "lua_script"
+                user_region["lua_script"] = create_profile_ids[0]["uuid"]
             elif action == "redirect":
                 user_region["sub_action"] = "redirect"
                 user_region["code"] = condition["code_" + str(create_number)]
@@ -478,7 +486,6 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            print(json.dumps(rule_template_dict))
             # 44.3 运行用例临时添加，防止创建过快导致的用例失败
             time.sleep(1)
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)

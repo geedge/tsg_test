@@ -759,12 +759,12 @@ class CreateProfile:
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
-            elif profile_type == "proxy_hijack_file":
+            elif profile_type == "proxy_replacement_file":
                 files = {"file": ("Create-Hijack-Files-test-3.html", open(path_dict["profiles_hijack_file_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys"] = vsys_id
-                url = "{}/v1/profiles/proxy-hijack-files".format(api_host)
+                url = "{}/v1/profiles/proxy-replacement-files".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -773,17 +773,18 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["proxy_hijack_file"]["uuid"]
+                profile_id = response_dict["data"]["proxy_replacement_file"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
-            elif profile_type == "proxy_inject_script":
+            elif profile_type == "proxy_js_file":
                 file_name = os.path.basename(path_dict["profiles_insert_profile_path"])
                 files = {"file": (file_name, open(path_dict["profiles_insert_profile_path"], 'rb'), "text/plain")}
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys"] = vsys_id
-                url = "{}/v1/profiles/proxy-inject-scripts".format(api_host)
+                url = "{}/v1/profiles/proxy-js-files".format(api_host)
+                # url = "{}/v1/profiles/proxy-inject-scripts".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
@@ -792,7 +793,28 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["proxy_inject_script"]["uuid"]
+
+                profile_id = response_dict["data"]["proxy_js_file"]["uuid"]
+                create_profile_id_dict["profile_type"] = profile_type
+                create_profile_id_dict["uuid"] = profile_id
+                return create_profile_id_dict
+            elif profile_type == "proxy_css_file":
+                file_name = os.path.basename(path_dict["profiles_insert_profile_path"])
+                files = {"file": (file_name, open(path_dict["profiles_insert_profile_path"], 'rb'), "text/plain")}
+                del profile_data["profile_type"]
+                # 添加vsys id
+                profile_data["vsys"] = vsys_id
+                url = "{}/v1/profiles/proxy-css-files".format(api_host)
+                # url = "{}/v1/profiles/proxy-inject-scripts".format(api_host)
+                response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
+                assert response.status_code == 200
+                temp_profile_type = profile_type.replace("_", " ")
+                if response.status_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile successfully.".format(temp_profile_type), flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
+                response_dict = response.json()
+                profile_id = response_dict["data"]["proxy_css_file"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict
@@ -801,7 +823,7 @@ class CreateProfile:
                 del profile_data["profile_type"]
                 # 添加vsys id
                 profile_data["vsys"] = vsys_id
-                url = "{}/v1/profiles/http-manipulation-scripts".format(api_host)
+                url = "{}/v1/profiles/proxy-lua-scripts".format(api_host)
                 response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
                 #print(response.text)
                 assert response.status_code == 200
@@ -811,7 +833,7 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["http_manipulation_script"]["uuid"]
+                profile_id = response_dict["data"]["proxy_lua_script"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict

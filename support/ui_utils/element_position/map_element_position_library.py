@@ -1817,8 +1817,12 @@ def get_name_list(test_data):
                     tmp_name_dict["type"] = value[i]["profile_type"]
                     if value[i]["profile_type"] == "statistics_template":
                         tmp_name_dict["name"] = value[i]["name"]
+                    elif value[i]["profile_type"] == "insert_script":
+                        tmp_name_dict["script_type"] = value[i]["profile_file"]["script_type"]
+                        tmp_name_dict["name"] = value[i]["profile_file"]["name"]
                     else:
                         tmp_name_dict["name"] = value[i]["profile_file"]["name"]
+                     
                     name_list.append(copy.deepcopy(tmp_name_dict))
     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], name_list)
     #"""
