@@ -267,8 +267,8 @@ urlObjectPage_addItem_posXpath = objectPage_addItem_button_posXpath
 urlObjectPage_addItemSubstring_button_posXpath = objectPage_addItemSubstring_button_posXpath
 urlObjectPage_inputItem_posXpath = objectPage_item_input_posXpath #'//*[@class="MuiInput-input css-1u0jcuo"]'     # input 输入框，简单的第一个定位，后期优化
 urlObjectPage_saveItem_posXpath = objectPage_saveItem_posXpath #"//div[@class='item-box']//i[contains(@class, 'save-color')]"     # input item保存，简单的第一个定位，后期优化
-urlObjectPage_sameItem_inputItem_posXpath ='(//div[@class="item-box"]//input)[last()]'
-urlObjectPage_sameItem_addItem_posXpath ='//*[@class="mt-[10px] flex justify-center"]//i'
+urlObjectPage_sameItem_inputItem_posXpath ="(//div[@class='form-list-row css-xpbhx9']//div[@class='MuiBox-root css-0']//input[@class='MuiInput-input css-1u0jcuo'])[last()]"
+urlObjectPage_sameItem_addItem_posXpath ='//*[@class="pl-[40px] pt-[0!important]"]//i[@class="iconfont icon-Create1 font-[700]"]'
 urlObjectPage_okButton_posXpath = objectPage_okButton_posXpath
 urlObjectPage_okButton_warningYes_posXpath = httpSignatureObjectPage_okButton_warningYes_posXpath
 # 查询
