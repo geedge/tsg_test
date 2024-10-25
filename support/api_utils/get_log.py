@@ -538,7 +538,7 @@ class GetLog:
             hit_query_condition = {"identifier_name": dataset_identifier_name, "rule_uuid": "", "start_time": "",
                                    "end_time": "", "vsys": 1, "execution_mode": "oneshot", "output_mode": "json",
                                    "interval": 1}
-            hit_query_condition['rule_id'] = policy_id
+            hit_query_condition['rule_uuid'] = policy_id
             hit_query_condition['start_time'] = start_time
             hit_query_condition['end_time'] = end_time
             hit_query_condition['vsys'] = vsys_id
@@ -595,7 +595,6 @@ class GetLog:
         {
             "execution_mode": "oneshot",
             "identifier_name": "service-chaining-policy-rule-statistics",
-            "rule_id": "271039",
             "start_time": "2023-11-21T03:23:24Z",
             "end_time": "2023-11-30T07:39:49Z",
             "vsys": 1,

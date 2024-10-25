@@ -23,9 +23,9 @@ class OrganizeConfig:
             try:
                 # 从Statistics Rule定义信息中获取流量验证所需数据格式
                 for policy in policy_info:
-                    user_region = policy["user_region"]
+                    user_region = policy["action_parameter"]
                     if user_region != {}:
-                        template_id = user_region["template_id"]
+                        template_id = user_region["template_profile"]
                         code, template_info = self.get_template_info(token, template_id, "statistics_template",api_server, vsys_id)
                         if code != 200:
                             return 400, statistics_sc_info_list
@@ -397,7 +397,7 @@ class OrganizeConfig:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
                 return 400, []
             response = json.loads(response.text)
-            result = response['data']['rules']
+            result = response['data']['list']
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
             return 400, []
@@ -409,11 +409,11 @@ class OrganizeConfig:
             # 获取单个Template
             #url = (api_host + f"/v1/profiles/statistics_template/{template_id}?page_size=-1&vsys_id={vsys_id}")
             # 获取一批Template
-            url = (api_host + f"/v1/profiles/statistics_template?page_size=20&page_no=1&ids={template_id}&vsys_id={str(vsys_id)}")
+            url = (api_host + f"/v1/profiles/statistics-templates?page_size=20&page_no=1&uuid={template_id}&vsys={str(vsys_id)}")
             response = requests.get(url, headers=headers, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
-            result = response['data']['statistics_templates']
+            result = response['data']['list']
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
             return 400, result
