@@ -163,8 +163,8 @@ class CreateObject:
                 else:
                     type_op = "import"
                     obj_template_dict['object']['statistics_option'] = 'none'
-                    obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'statistics_option': 'elaborate'}
-                    obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys_id': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
+                    obj_template_dict["data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys': vsys_id, 'statistics_option': 'elaborate'}
+                    obj_template_dict["dry_data"] = {'type': obj_type, 'sub_type': obj_sub_type, 'vsys': vsys_id, 'is_dry_run': 1, 'statistics_option': 'elaborate'}
                     for item in add_item_list:
                         object_file = item["keyword_array"][0]
                         file_name = object_file.split("/")[-1]
@@ -373,7 +373,7 @@ class CreateObject:
                 else:
                     timeout_result = True
             elif type_op == "import":
-                import_url = api_host + "/v1/objects/import"
+                import_url = api_host + "/v1/objects/{}/import".format(api_path_obj_type)
                 if 'Content-Type' in headers:
                     del headers['Content-Type']
                 response = requests.post(import_url, data=obj_template_dict["dry_data"], headers=headers, files=obj_template_dict["file_dry"], verify=False)
@@ -383,7 +383,7 @@ class CreateObject:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Verify the imported {} object failed.".format(obj_template_dict['object']['type']), flush=True)
                 time1 = datetime.now()
-                url = api_host + "/v1/objects/import"
+                url = api_host + "/v1/objects/{}/import".format(api_path_obj_type)
                 import_data = obj_template_dict["data"]
                 if "sub_type" in import_data:
                     del import_data["sub_type"]

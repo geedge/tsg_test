@@ -37,8 +37,14 @@ class DeletePolicy:
             create_profile_ids = cfg_list["create_profile_ids"]
             create_policies_ids = cfg_list["create_policies_ids"]
             create_geo_name_ids = cfg_list["create_geo_name_ids"]
-            create_library_tag_ids = cfg_list["create_library_tag_ids"]
-            create_library_catalog_ids = cfg_list["create_library_catalog_ids"]
+            if "create_library_tag_ids" in cfg_list:
+                create_library_tag_ids = cfg_list["create_library_tag_ids"]
+            else:
+                create_library_tag_ids = []
+            if "create_library_catalog_ids" in cfg_list:
+                create_library_catalog_ids = cfg_list["create_library_catalog_ids"]
+            else:
+                create_library_catalog_ids = []
 
             delete_object_template = {}
             delete_rule_template = {"uuids": [], "type": "tsg_security", "vsys": 1}

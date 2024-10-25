@@ -599,26 +599,35 @@ class DataTranslation:
                     }
                     if "negate" in v[i]:
                         temp["is_negate"] = v[i]["negate"]
-                    for u in range(len(v[i]["items"])):
-                        # 添加多个item
+                    if "repeat_time" in v[i] and v[i]["repeat_time"] > 1:
+                        temp["repeat_time"] = v[i]["repeat_time"]
+                        import_path = v[i]["import_path"]
                         add_item_dict = {
-                            "op": "add",
-                            "expr_type": "and",
-                            "expression": "example.com"
-                        }
-                        add_item_dict["op"] = v[i]["items"][u]["item_operation"]
-                        add_item_dict["expr_type"] = "and"
-                        expression = v[i]["items"][u]["item_value"]
-                        if expression.startswith("*"):  # suffix   兼容*匹配模式
-                            tmp_expr = "{}$".format(expression[1:])
-                        elif expression.endswith("*"):  # prefix  后缀匹配
-                            tmp_expr = "^{}".format(expression[:-1])
-                        elif expression.startswith("$"):  # exactly
-                            tmp_expr = "^{}$".format(expression[1:])
-                        else:  # substring ^ $ 模式保持不变
-                            tmp_expr = expression
-                        add_item_dict["expression"] = tmp_expr
+                                "keyword_array": []
+                            }
+                        add_item_dict["keyword_array"].append(import_path)
                         temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                    if "items" in v[i]: 
+                        for u in range(len(v[i]["items"])):
+                            # 添加多个item
+                            add_item_dict = {
+                                "op": "add",
+                                "expr_type": "and",
+                                "expression": "example.com"
+                            }
+                            add_item_dict["op"] = v[i]["items"][u]["item_operation"]
+                            add_item_dict["expr_type"] = "and"
+                            expression = v[i]["items"][u]["item_value"]
+                            if expression.startswith("*"):  # suffix   兼容*匹配模式
+                                tmp_expr = "{}$".format(expression[1:])
+                            elif expression.endswith("*"):  # prefix  后缀匹配
+                                tmp_expr = "^{}".format(expression[:-1])
+                            elif expression.startswith("$"):  # exactly
+                                tmp_expr = "^{}$".format(expression[1:])
+                            else:  # substring ^ $ 模式保持不变
+                                tmp_expr = expression
+                            add_item_dict["expression"] = tmp_expr
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                     temp["is_negate"] = v[i]["negate"]
                     object.append(copy.deepcopy(temp))
             elif k == "apn":
@@ -725,31 +734,40 @@ class DataTranslation:
                                 }
                             ]
                         }
+                        if "repeat_time" in v[i] and v[i]["repeat_time"] > 1:
+                            temp["repeat_time"] = v[i]["repeat_time"]
+                            import_path = v[i]["import_path"]
+                            add_item_dict = {
+                                    "keyword_array": []
+                                }
+                            add_item_dict["keyword_array"].append(import_path)
+                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+
                         if "items" in v[i]:
                             if v[i]["items"][0]["item_type"] == "url" and data["condition"]["application"][0]["name"] == "ftp":
                                 temp["attribute_name"] = "ATTR_FTP_URI"
 
-
-                        for u in range(len(v[i]["items"])):
-                            # 添加多个item
-                            add_item_dict = {
-                                "op": "add",
-                                "expr_type": "and",
-                                "expression": "example.com"
-                            }
-                            add_item_dict["op"] = v[i]["items"][u]["item_operation"]
-                            expression = v[i]["items"][u]["item_value"]
-                            if expression.startswith("*"):  # suffix   兼容*匹配模式
-                                tmp_expr = "{}$".format(expression[1:])
-                            elif expression.endswith("*"):  # prefix  后缀匹配
-                                tmp_expr = "^{}".format(expression[:-1])
-                            elif expression.startswith("$"):  # exactly
-                                tmp_expr = "^{}$".format(expression[1:])
-                            else:  # substring ^ $ 模式保持不变
-                                tmp_expr = expression
-                            add_item_dict["expression"] = tmp_expr
-                            add_item_dict["op"] = v[i]["items"][u]["item_operation"]
-                            temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
+                        if "items" in v[i]:
+                            for u in range(len(v[i]["items"])):
+                                # 添加多个item
+                                add_item_dict = {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "expression": "example.com"
+                                }
+                                add_item_dict["op"] = v[i]["items"][u]["item_operation"]
+                                expression = v[i]["items"][u]["item_value"]
+                                if expression.startswith("*"):  # suffix   兼容*匹配模式
+                                    tmp_expr = "{}$".format(expression[1:])
+                                elif expression.endswith("*"):  # prefix  后缀匹配
+                                    tmp_expr = "^{}".format(expression[:-1])
+                                elif expression.startswith("$"):  # exactly
+                                    tmp_expr = "^{}$".format(expression[1:])
+                                else:  # substring ^ $ 模式保持不变
+                                    tmp_expr = expression
+                                add_item_dict["expression"] = tmp_expr
+                                add_item_dict["op"] = v[i]["items"][u]["item_operation"]
+                                temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
                     elif v[i]["object_type"] == "http_signature":
                         if v[i]["item"][0]["item_type"] == "request_header":
