@@ -16,7 +16,7 @@ class APIClient:
         self.token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         self.headers = {"Content-Type": "application/json", "Authorization": self.token}
         self.api_server = parameter["api_server"]
-        self.vsys = parameter["vsys_id"]
+        self.vsys = parameter["vsys"]
         self.root_path = parameter["root_path"]
         
     def create_object(self, policy_configuration):
@@ -115,7 +115,7 @@ class APIClient:
             with open(rule_template, 'r', encoding='utf-8') as f:
                 rule_template_json = json.load(f)
             rule_uuid_dict = {}
-            rule_template_json["vsys_id"] = self.vsys
+            rule_template_json["vsys"] = self.vsys
             rule_template_json["return_data"] = 1
             rule_template_json["rule"]["name"] = policy_configuration["name"]
             rule_template_json["rule"]["type"] = policy_configuration["type"]
@@ -232,7 +232,7 @@ if __name__ == "__main__":
         "initiation_method": "api",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 5,
+        "vsys": 5,
         "root_path": workdir,
         "path": workdir + "/tests",
         "module_name": "security",

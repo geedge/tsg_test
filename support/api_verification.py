@@ -37,7 +37,7 @@ class APIVerification:
             else:
                 my_driver = ""
             for _, value in self.configuration_manager["rule_uuid_list"].items():
-                self.rule_id = value[0]
+                self.rule_uuid = value[0]
             self.token = self.configuration_manager["token"]
             if "rule_number" in self.policy_configuration:
                 self.rule_number = self.policy_configuration["rule_number"]
@@ -73,7 +73,7 @@ class APIVerification:
                             log_dict, error = get_metric_log.get_log(self.token, start_time, end_time)
                             if len(error) != 0:
                                 return error, None, my_driver
-                            log_result = self.verify_log(log_dict, traffic_result)
+                            log_result = self.verify_log(log_dict)
                         if log_query_flag == False:
                             log_result = "no_set"
                         if metric_query_flag == True and metric_result == None:
@@ -87,28 +87,138 @@ class APIVerification:
                             break
                 
                 if metric_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result by calling api is {}.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is passed.', flush=True)
                 elif metric_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result by calling api is {}.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is failed.', flush=True)
                 elif metric_result == None:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result by calling api is none.', flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is none.', flush=True)
                 elif metric_result == "no_set":
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result by calling api is no_set.', flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is no_set.', flush=True)
                 
                 if log_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result by calling api is {}.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result checked by calling api is passed.', flush=True)
                 elif log_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result by calling api is {}.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result checked by calling api is failed.', flush=True)
                 elif log_result == None:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result by calling api is none.', flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result checked by calling api is none.', flush=True)
                 elif log_result == "no_set":
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result by calling api is no_set.', flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result checked by calling api is no_set.', flush=True)
                 
                 return log_result, metric_result, my_driver
             elif self.rule_type == "statistics":
                 print("to be added...")
             elif self.rule_type == "service_chaining":
-                print("to be added...")
+                conf_path = os.path.join(workdir, "configuration_file.ini")
+                conf = configparser.ConfigParser()
+                conf.read(conf_path, encoding="utf-8")
+                active_dst_ip_list = conf.get("sc_active_dst_ip", "ip_list")
+                effective_device_tag_list = ["group-xxg-tsgx", "center-xxg-tsgx"]
+                if self.policy_configuration["action_parameter"]["targeted_traffic"] == "raw":
+                    time.sleep(30)
+                    utc_tz = pytz.timezone('UTC')
+                    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=60)
+                    start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                    utc_tz = pytz.timezone('UTC')
+                    current_utc_time = datetime.now(utc_tz)
+                    end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                    if len(statistics_sc_info_list) > 0:
+                        for sc_info in statistics_sc_info_list:
+                            n = 0    #自增变量
+                            fail_count = 0   #失败重试变量
+                            while n <= 4:
+                                utc_tz = pytz.timezone('UTC')
+                                current_utc_time = datetime.now(utc_tz)
+                                end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                                metric_result = log.get_sc_metric(token, start_time, end_time, sc_info, traffic_result, active_dst_ip_list, api_server, vsys_id)
+                                metic_dict, error = get_metric_log.get_sc_metric(self.token, start_time, end_time)
+                                
+                                if metric_result == True:  # 返回结果不等于333，则退出循环查询
+                                    break
+                                elif metric_result == False:  # 查询验证失败时，再查询验证两次
+                                    if fail_count >= 2:
+                                        break
+                                    fail_count += 1
+                                time.sleep(15)
+                                n += 1
+                        if metric_result == 333:
+                            if sc_info["sf_method"] == "vxlan_g":
+                                if sc_info["sf_dest_ip"] not in active_dst_ip_list:
+                                    metric_result = True
+                                elif sc_info["sf_dest_ip"] in active_dst_ip_list and sc_info["admin_status"] == 0:
+                                    metric_result = True
+                                elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
+                                    metric_result = True
+                                elif sc_info["is_negate"] == 1:
+                                    metric_result = True
+                                else:
+                                    metric_result = False
+                            elif sc_info["sf_method"] == "layer2_switch":
+                                if sc_info["admin_status"] == 0:
+                                    metric_result = True
+                                elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
+                                    metric_result = True
+                                elif sc_info["is_negate"] == 1:
+                                    metric_result = True
+                                else:
+                                    metric_result = False
+                        elif metric_result == 444:
+                            metric_result = False
+                elif self.policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted":
+                    utc_tz = pytz.timezone('UTC')
+                    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=30)
+                    start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                    # 等待时间，等待策略生效
+                    time.sleep(10)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
+                    # 获取结束时间
+                    utc_tz = pytz.timezone('UTC')
+                    current_utc_time = datetime.now(utc_tz)
+                    end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                    if len(statistics_sc_info_list) > 0:  # 非空
+                        for sc_info in statistics_sc_info_list:
+                            n = 0  # 自增变量
+                            fail_count = 0  # 失败重试变量
+                            while n <= 4:
+                                utc_tz = pytz.timezone('UTC')
+                                current_utc_time = datetime.now(utc_tz)
+                                end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+                                metric_result = log.get_sc_metric(token, start_time, end_time, sc_info,"", active_dst_ip_list, api_server, vsys_id)
+                                if metric_result == True:  # 返回结果不等于333，则退出循环查询
+                                    break
+                                elif metric_result == False:  # 查询验证失败时，再查询验证两次
+                                    if fail_count >= 2:
+                                        break
+                                    fail_count += 1
+                                time.sleep(15)
+                                n += 1
+                        if metric_result == 333:
+                            if sc_info["sf_method"] == "vxlan_g":
+                                if sc_info["sf_dest_ip"] not in active_dst_ip_list:
+                                    metric_result = True
+                                elif sc_info["sf_dest_ip"] in active_dst_ip_list and sc_info["admin_status"] == 0:
+                                    metric_result = True
+                                elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
+                                    metric_result = True
+                                elif sc_info["is_negate"] == 1:
+                                    metric_result = True
+                                else:
+                                    metric_result = False
+                            elif sc_info["sf_method"] == "layer2_switch":
+                                if sc_info["admin_status"] == 0:
+                                    metric_result = True
+                                elif sc_info["device_tag"] not in effective_device_tag_list and sc_info["load_balance_localization"] == "nearby":
+                                    metric_result = True
+                                elif sc_info["is_negate"] == 1:
+                                    metric_result = True
+                                else:
+                                    metric_result = False
+                        elif metric_result == 444:
+                            metric_result = False
+                if metric_result == True:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The metric result checked by calling service chaining api is passed", flush=True)
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3],"The metric result checked by calling service chaining api is failed", flush=True)
+                return metric_result, metric_result, my_driver
             elif self.rule_type == "dos_protection":
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
@@ -133,7 +243,7 @@ class APIVerification:
                             log_dict, error = get_metric_log.get_log(self.token, start_time, end_time)
                             if len(error) != 0:
                                 return error, None, my_driver
-                            log_result = self.verify_log(log_dict, traffic_result)
+                            log_result = self.verify_dos_log(log_dict, traffic_result)
                         if log_query_flag == False:
                             log_result = "no_set"
                         if metric_query_flag == True and metric_result == None:
@@ -147,22 +257,22 @@ class APIVerification:
                             break
                 
                 if metric_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is {}.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is passed.', flush=True)
                 elif metric_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is {}.'.format(metric_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is failed.', flush=True)
                 elif metric_result == None:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is none.', flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is none.', flush=True)
                 elif metric_result == "no_set":
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "metric_result" by calling api is no_set.', flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is no_set.', flush=True)
                 
                 if log_result == True:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is {}.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result checked by calling api is passed.', flush=True)
                 elif log_result == False:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is {}.'.format(log_result), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result checked by calling api is failed.', flush=True)
                 elif log_result == None:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is none.', flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result checked by calling api is none.', flush=True)
                 elif log_result == "no_set":
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The value of parameter "log_result" by calling api is no_set.', flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The log result checked by calling api is no_set.', flush=True)
                 
                 return log_result, metric_result, my_driver
         except Exception as e:
@@ -203,14 +313,14 @@ class APIVerification:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do not need to verify log.", flush=True)
         return metric_query_flag, log_query_flag
 
-    def verify_log(self, log_dict, traffic_result):
+    def verify_log(self, log_dict):
         log_query = self.verification['log_query']
         temp_log_result_list = []
         if len(log_dict) > 0 and len(log_query) > 0:
             for log in log_dict:
                 for log_query_param in log_query:
-                    query_field_key = log_query_param['query_field_key']
-                    query_value = log_query_param['query_value']
+                    query_field_key = log_query_param["query_field_key"]
+                    query_value = log_query_param["query_value"]
                     exclude_fields = {
                         "packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts",
                         "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
@@ -220,6 +330,31 @@ class APIVerification:
                     }
                     if query_field_key in log and query_field_key not in exclude_fields and log[query_field_key] == query_value:
                         temp_log_result_list.append(True)
+                    elif query_field_key in {"packet_capture_file", "http_response_body", "http_request_body"}:
+                        if query_value == True:
+                            # 查询结果中packet_capture_file长度大于0，走下一步骤
+                            if len(log[query_field_key]) > 0:
+                                packet_capture_url = log[query_field_key]
+                                download_parameter = {"url": packet_capture_url, "exportObj": True}
+                                url = self.parameter["api_server"] + "/v1/util/download_file" + "?vsys_id=" + str(self.parameter["vsys"])
+                                headers = {"Content-Type": "application/json", "Authorization": self.configuration_manager["token"]}
+                                response = requests.get(url, headers=headers, params=download_parameter, verify=False)
+                                if response.status_code == 200:
+                                    temp_log_result_list.append(True)
+                                else:
+                                    temp_log_result_list.append(False)
+                            # 开关开启， packet_capture_file长度小于0，结果失败       
+                            else:
+                                temp_log_result_list.append(False)
+                        # 验证开关关闭状态
+                        elif query_value == False:
+                            # 查询结果中packet_capture_file不为空，进下一步骤
+                            if len(log[query_field_key]) > 0 :
+                                temp_log_result_list.append(False)
+                            else:
+                                temp_log_result_list.append(True)
+                    elif query_field_key in {"monitor_mirrored_pkts", "monitor_mirrored_bytes"}:
+                        print("??????")
                     elif query_field_key in {"client_port"}:
                         start, end = map(int, query_value.split('-'))
                         if start <= log[query_field_key] <= end:
@@ -235,6 +370,39 @@ class APIVerification:
                             temp_log_result_list.append(True)
                         else:
                             temp_log_result_list.append(False)
+                    elif query_field_key in {"proxy_pinning_status", "proxy_intercept_status", "proxy_passthrough_reason"}:
+                        actual_value = log[query_field_key]   # 日志查询到的值
+                        except_value = query_value     # 断言的预期值
+                        if query_field_key == "proxy_passthrough_reason":
+                            if except_value in {"EV Certificate", "Certificate Transparency", "Protocol Errors", "Mutual Authentication", "Certificate Not Installed", "Certificate Pinning"}:
+                                if actual_value in {""}:  # 证书动态放行会产生两条日志，其中一条大概率是拦截的日志，则跳过断言
+                                    continue
+                                elif actual_value == except_value:
+                                    temp_log_result_list.append(True)
+                                else:
+                                    temp_log_result_list.append(False)
+                            else:
+                                if actual_value == except_value:
+                                    temp_log_result_list.append(True)
+                                else:
+                                    temp_log_result_list.append(False)
+                        elif query_field_key == "proxy_intercept_status":  # proxy_intercept_status的值需要转换
+                            if except_value == "passthrough":      # proxy_intercept_status， 0=passthrough, 1=intercept
+                                except_value = 0
+                            else:
+                                except_value = 1
+                            if except_value == 0:
+                                if actual_value == 1:
+                                    continue
+                                elif actual_value == except_value:
+                                    temp_log_result_list.append(True)
+                                else:
+                                    temp_log_result_list.append(False)
+                            else:
+                                if actual_value == except_value:
+                                    temp_log_result_list.append(True)
+                                else:
+                                    temp_log_result_list.append(False)
                     else:
                         temp_log_result_list.append(False)
                 if self.rule_type == 'pxy_intercept' and len(temp_log_result_list) < len(log_query):
@@ -281,6 +449,9 @@ class APIVerification:
         else:
             metric_result = None
         return metric_result
+
+    def verify_dos_log(self, log_dict, traffic_result):
+        print("need to modify func logic...")
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

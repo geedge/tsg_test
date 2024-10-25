@@ -627,8 +627,7 @@ class UIVerification:
                     else:
                         log_result_list.append(False)
                 elif log_query_key in {"source_ip_list"}:  # 日志中非结构文件断言
-                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
-                        replaceValue=log_str)
+                    log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                     element_exist_flag = my_driver.is_exist_element(log_item_pos_xpath)
                     # 验证开关开启
                     if len(self.verification["log_query"][i]["query_value"]) != 0 :

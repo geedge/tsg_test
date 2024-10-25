@@ -16,7 +16,7 @@ class APIClient:
         self.token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         self.headers = {"Content-Type": "application/json", "Authorization": self.token}
         self.api_server = parameter["api_server"]
-        self.vsys_id = parameter["vsys_id"]
+        self.vsys = parameter["vsys"]
         self.root_path = parameter["root_path"]
         
     def create_object(self, policy_configuration):
@@ -34,7 +34,7 @@ class APIClient:
                         object_temp = condition_temp[i]["or_conditions"]
                         for j in range(len(object_temp)):
                             if object_temp[j]["type"] != "application":
-                                object_template_json["vsys_id"] = self.vsys_id
+                                object_template_json["vsys_id"] = self.vsys
                                 object_template_json["object"]["type"] = object_temp[j]["type"]
                                 object_template_json["object"]["name"] = object_temp[j]["name"]
                                 object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
@@ -103,8 +103,8 @@ class APIClient:
             rule_template_json["rule"]["name"] = policy_configuration["name"]
             rule_template_json["rule"]["type"] = policy_configuration["type"]
             rule_template_json["rule"]["action"] = policy_configuration["action"]
-            rule_template_json["rule"]["vsys_id"] = self.vsys_id
-            rule_template_json["vsys_id"] = self.vsys_id
+            rule_template_json["rule"]["vsys_id"] = self.vsys
+            rule_template_json["vsys_id"] = self.vsys
             # rule_template_json["rule"]["do_log"] = 2
             rule_template_json["rule"]["is_enabled"] = policy_configuration["is_enabled"]
             source_condition_temp_list, destination_condition_temp_list, application_condition_temp_list = [], [], []

@@ -156,7 +156,7 @@ if __name__ == '__main__':
         "initiation_method": "api",
         "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 5,
+        "vsys": 5,
         "root_path": workdir,
         "path": workdir + "/tests",
         "module_name": "security",

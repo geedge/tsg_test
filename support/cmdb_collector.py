@@ -28,7 +28,7 @@ class CMDBCollector:
         
         headers = {"Authorization": token}
         api_server = parameter["api_server"]
-        vsys_id = parameter["vsys_id"]
+        vsys = parameter["vsys"]
         
         if len(configuration_manager["rule_uuid_list"]) > 0:
             rule_uuid_list = configuration_manager["rule_uuid_list"]
@@ -39,7 +39,7 @@ class CMDBCollector:
                     for i in range(len(value)):
                         deleted_rule_dict['type'] = key
                         deleted_rule_dict['ids'] = value[i]
-                        deleted_rule_dict['vsys_id'] = vsys_id
+                        deleted_rule_dict['vsys_id'] = vsys
                         url = api_server + "/v1/policy/rule"
                         response = requests.delete(url, headers=headers, params=deleted_rule_dict, verify=False)
                         assert response.status_code == 200
@@ -59,7 +59,7 @@ class CMDBCollector:
                     for i in range(len(value)):
                         deleted_object_dict['type'] = key
                         deleted_object_dict['ids'] = value[i]
-                        deleted_object_dict["vsys_id"] = vsys_id
+                        deleted_object_dict["vsys_id"] = vsys
                         url = api_server + "/v1/policy/object"
                         response = requests.delete(url, headers=headers, params=deleted_object_dict, verify=False)
                         assert response.status_code == 200
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     uuid_list = test.collect(uuid)
     parameter = {
         "api_server": "http://192.168.44.72",
-        "vsys_id": 1,
+        "vsys": 1,
         "initiation_method": "api"
     }
     configuration_manager = {}
