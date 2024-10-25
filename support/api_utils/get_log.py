@@ -122,7 +122,7 @@ class GetLog:
                             "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
                             "attack_type", "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
                             "basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate",
-                            "rule_id","conditions"
+                            "rule_uuid","conditions"
                         }
                         dos_verify_fields = {
                             "attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate",
@@ -140,7 +140,7 @@ class GetLog:
                                 if len(log[query_field_key]) > 0:
                                     packet_capture_url = log[query_field_key]
                                     download_parameter = {'url': packet_capture_url, 'exportObj': True}
-                                    url = api_host + "/v1/util/download_file" + "?vsys_id=" + str(vsys_id)
+                                    url = api_host + "/v1/util/download-file" + "?vsys_id=" + str(vsys_id)
                                     response = requests.get(url, headers=headers, params=download_parameter, verify=False)
                                     if response.status_code == 200:
                                         temp_log_result_list.append(True)
