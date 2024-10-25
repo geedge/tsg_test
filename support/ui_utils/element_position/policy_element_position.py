@@ -682,14 +682,15 @@ manipulationRulePage_insert_addInsertProfileSelectBox_posXpath = "//div[@zs-labe
 manipulationRulePage_insert_searchInsertProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
 manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
 # action parameter edit element
-manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//span[normalize-space(text())='whole file']"   # replace_sort替换为实际的个数
-manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//span[normalize-space(text())='inside element']"
-manipulationRulePage_editElement_addStartIndicatorInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Start Indicator']/parent::*//input[@id='undefined1']"
-manipulationRulePage_editElement_addContainedKeywordInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Contained Keyword']/parent::*//input[@id='undefined1']"
-manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Distance from Anchor']/parent::*//input[@class='el-input__inner']"
-manipulationRulePage_editElement_addMarkRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Mark']"
-manipulationRulePage_editElement_addRemoveRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Remove']"
-manipulationRulePage_editElement_add_posXpath = "//div[@class='man-add-action']//li[contains(@class, 'replaceadd')]//i"
+manipulationRulePage_subActionButton_editElement_posXpath = "//div[@class='manipulation-policy-sub_action']//button[5]"
+manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-search_scope']//button[1]"   # replace_sort替换为实际的个数
+manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-search_scope']//button[2]"
+manipulationRulePage_editElement_addStartIndicatorInput_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-start_indicator']//input"
+manipulationRulePage_editElement_addContainedKeywordInput_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-contained_keyword']//input"
+manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-target_distance_from_matching']//input"
+manipulationRulePage_editElement_addMarkRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-element_treatment']//button[1]"
+manipulationRulePage_editElement_addRemoveRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-element_treatment']//button[2]"
+manipulationRulePage_editElement_add_posXpath = "//div[@name='action_parameter']/div/div[3]//button"
 # action parameter run script profile
 manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath = manipulationRulePage_insert_addInsertProfileSelectBox_posXpath   # run script  选择框  定位
 manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框

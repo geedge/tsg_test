@@ -647,10 +647,8 @@ class CreateRule:
                 elif test_data["policy_type"] == "pxy_manipulation":
                     profile_data = test_data["action_parameter"]
                     # 页面滚动到最底部
-                    print(33333333366666666666)
                     div_container = self.driver.find_element(By.XPATH, "//div[@id='root']//div[contains(@class, 'manipulation-policy-page')]")
                     self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", div_container)  # 移动到页面最底部
-                    print(333333333)
                     if test_data["rule_action"] == "deny":
                         # 选择 response code
                         if "deny_response_block" in test_data["action_parameter"].keys():    # action为 close connection
@@ -777,6 +775,7 @@ class CreateRule:
                     elif test_data["rule_action"] == "edit_element":
                         # 遍历多个编辑内容
                         edit_element_parameter_list = test_data["action_parameter"]["edit_element_parameter"]
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_subActionButton_editElement_posXpath"]).click()
                         for i in range(len(edit_element_parameter_list)):
                             # 从第二次遍历开始点击 + 加号
                             replace_sort = i + 1

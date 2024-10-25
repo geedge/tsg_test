@@ -793,6 +793,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_insert_searchInsertProfile_posXpath": manipulationRulePage_insert_searchInsertProfile_posXpath,
         "policyRulePage_insert_searchInsertProfileDorpItem_posXpath": manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath,
         # edit element action parameter
+        "policyRulePage_subActionButton_editElement_posXpath": manipulationRulePage_subActionButton_editElement_posXpath,
         "policyRulePage_editElement_addSearchScopeWholeFileRadio_posXpath": manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath,
         "policyRulePage_editElement_addSearchScopeInsideElementRadio_posXpath": manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath,
         "policyRulePage_editElement_addContainedKeywordInput_posXpath": manipulationRulePage_editElement_addContainedKeywordInput_posXpath,
@@ -1443,6 +1444,40 @@ object_application_group_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": ObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+object_flag_object_element_position = {
+                "page_jump": {
+                    "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+                    "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+                    "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                    # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+                    "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
+                    "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_flag_posXpath
+                },
+                "create": {
+                    "objectListPage_createButton_posXpath": flagObjectListPage_createButton_posXpath,
+                    "objectListPage_dropDown_createButton_posXpath": flagObjectListPage_dropDown_createButton_posXpath,
+                    "objectPage_inputName_posXpath": flagObjectPage_inputName_posXpath,
+                    "objectPage_addItem_posXpath": flagObjectPage_addItem_posXpath,
+                    # item简单定位
+                    "objectPage_inputItem_posXpath": accountObjectPage_inputItem_posXpath,
+                    "objectPage_button_saveItem_posXpath": accountObjectPage_button_saveItem_posXpath,
+                    "objectPage_okButton_posXpath": accountObjectPage_okButton_posXpath,
+                    "objectPage_okButton_warningYes_posXpath": accountObjectPage_okButton_warningYes_posXpath,
+                    "ObjectPage_sameItem_addItem_posXpath": urlObjectPage_sameItem_addItem_posXpath,
+                    "ObjectPage_sameItem_inputItem_posXpath": urlObjectPage_sameItem_inputItem_posXpath,
+                },
+                "search": {
+                    "objectListPage_searchLabel_posXpath": accountObjectPage_searchLabel_posXpath,
+                    "objectListPage_searchLabel_selectName_posXpath": '//*[@class="base-Popper-root MuiAutocomplete-listbox css-18r31z0"]//li[1]',
+                    "objectListPage_tableTbody_posXpath": accountObjectListPage_tableTbody_posXpath,
+
+                },
+                "delete": {
+                    "objectListPage_allSelect_posXpath": accountObjectListPage_allSelect_posXpath,
+                    "objectListPage_deleteButton_posXpath": accountObjectListPage_deleteButton_posXpath,
+                    "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
+                }
+            }
 object_http_signature_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
@@ -2018,7 +2053,7 @@ def get_element_position(key_name):
     elif key_name == "account":
         element_position_map =object_account_object_element_position
     elif key_name == "flag":
-        element_position_map =test_flag_object_element_position
+        element_position_map =object_flag_object_element_position
     # profile
     elif key_name == "response_page":
         element_position_map = profile_response_page_element_position
