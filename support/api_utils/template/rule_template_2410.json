@@ -1,0 +1,17 @@
+{
+    "return_data": 1,
+    "rule": {
+        "name": "automation_test_policy",
+        "type": "security",
+        "action": "allow",
+        "user_tags": "",
+        "log_option": "metadata",
+        "effective_range": {},
+        "action_parameter": {},
+        "is_enabled": 1,
+        "description": "test",
+        "vsys": 1,
+        "schedule_id": [
+        ]
+    }
+}

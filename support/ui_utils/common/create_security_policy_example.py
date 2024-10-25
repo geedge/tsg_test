@@ -76,7 +76,6 @@ class CreateSecurityPolicyExample:
                     result = "Fail to create {} rule.".format(policy_configuration["policy_type"])
             
             configured_policy["driver"] = driver
-            configured_policy["result"] = result
-            return configured_policy
+            return token, driver, result
         except Exception as e:
             return "Exception Error: " + str(e)

@@ -28,10 +28,10 @@ class UIClient:
         elif "type" in policy_configuration.keys() and policy_configuration["type"] == "service_chaining":
             result = self.create_service_chaining_rule(parameter, policy_configuration, driver)
         elif "type" in policy_configuration.keys() and policy_configuration["type"] == "example":
-            result = self.create_security_policy_example(parameter, policy_configuration, driver)
+            token, driver, rule_uuid, element_position, result = self.create_security_policy_example(parameter, policy_configuration, driver)
         else:
             pass
-        return result
+        return token, driver, rule_uuid, element_position, result
 
     def create_security_rule(self, parameter, policy_configuration, driver):
         security = CreateSecurityPolicy()
@@ -70,6 +70,6 @@ class UIClient:
 
     def create_security_policy_example(self, parameter, policy_configuration, driver):
         create = CreateSecurityPolicyExample()
-        result = create.create_rule(parameter, policy_configuration, driver)
-        return result
+        token, driver, rule_uuid, element_position, result = create.create_rule(parameter, policy_configuration, driver)
+        return token, driver, rule_uuid, element_position, result
         

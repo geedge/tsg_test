@@ -1,218 +1,354 @@
 # -*- coding: UTF-8 -*-
-import copy
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-import random
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import json
+import requests
 from support.api_utils.log_in import LogIn
-from support.api_utils.create_object import CreateObject
-from support.api_utils.create_rule import CreatePolicyRule
-from support.api_utils.create_profile import CreateProfile
-from support.api_utils.create_library import CreateLibrary
 from datetime import datetime
 from support.packet_generator.workpath import workdir
-import configparser
-import os
+from support.api_utils.get_application_id import get_group_id
 
 class APIClient:
     def __init__(self, parameter):
         log_in = LogIn()
         pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
         self.token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+        self.headers = {"Content-Type": "application/json", "Authorization": self.token}
+        self.api_server = parameter["api_server"]
+        self.vsys = parameter["vsys"]
+        self.root_path = parameter["root_path"]
         
-    def create_object(self, parameter, policy_configuration):
-        headers = {"Content-Type": "application/json", "Authorization": self.token}
-        api_server = parameter["api_server"]
-        vsys_id = parameter["vsys_id"]
-        
-        object_uuid = {
-            "ip": ["111"]
-        }
-        return object_uuid
-        
-    def create_rule(self, token, condition_ids_by_api_dict, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids):
-        print(1111111)
-    
-    def create_policy(self, parameter, test_data, template_path):
-        # 变量初始化
-        api_server = parameter["api_server"]
-        run_env = parameter["env"]
-        vsys_id = parameter["vsys_id"]
-        token = test_data["token"]
-        create_ip_ids, create_subid_ids, create_port_ids, create_imsi_ids, create_phone_number_ids, create_imei_ids, create_apn_ids, create_fqdn_ids, create_url_ids, create_flag_ids, create_keywords_ids, create_account_ids, create_http_signature_ids, create_http_signature_ids, create_profile_ids, create_policies_ids, create_geo_name_ids, library_tag_ids, library_catalog_ids = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
-        statistics_sc_info_list, policy_statistics_template_chart_info, policy_sc_sff_sf_info, temp_profile_list = [], [], [], []
-
-        # sc需要随机ip
-        if  (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw"):
-            test_data = self.generate_random_ip(test_data, run_env, vsys_id)
-        
-        # 指定循环次数
-        is_multi_priority = test_data["is_multi_priority"]
-        if is_multi_priority:
-            rule_num = test_data["rule_num"]
-        else:
-            rule_num = 1
-            
-        for i in range(rule_num):
-            # 第i次循环，创建第i组object、profile和rule
-            create_number = i + 1
-            
-            temp_obj_condition = "obj_condition_{}".format(create_number)
-            if temp_obj_condition in test_data.keys():
-                object_condition_value = test_data[temp_obj_condition]
-            else:
-                object_condition_value = test_data["obj_condition"]
-            
-            # 创建object
-            create_object = CreateObject()
-            object_template = template_path["object_template"]
-            #print("object_condition_value: {}".format(object_condition_value))
-            timeout_result, condition_ids_by_api_dict = create_object.create_object_from_template(token, parameter, object_condition_value, object_template, api_server, vsys_id)
-
-            if "library_condition" in test_data.keys():# 创建library
-                library_condition = test_data["library_condition"]
-                create_library = CreateLibrary()
-                library_condition_ids_dict, library_tag_ids, library_catalog_ids = create_library.create_library(token, library_condition, api_server, vsys_id)
-                condition_ids_by_api_dict = create_library.tags_ids_to_policy_condition_list(library_condition_ids_dict,condition_ids_by_api_dict)
-            for k, v_0 in condition_ids_by_api_dict.items():
-                v = copy.deepcopy(v_0)
-                if k == "ip_ids" and len(v) > 0:
-                    create_ip_ids.extend(v)
-                if k == "subid_ids" and len(v) > 0:
-                    create_subid_ids.extend(v)
-                if k == "port_ids" and len(v) > 0:
-                    create_port_ids.extend(v)
-                if k == "imsi_ids" and len(v) > 0:
-                    create_imsi_ids.extend(v)
-                if k == "phone_number_ids" and len(v) > 0:
-                    create_phone_number_ids.extend(v)
-                if k == "imei_ids" and len(v) > 0:
-                    create_imei_ids.extend(v)
-                if k == "apn_ids" and len(v) > 0:
-                    create_apn_ids.extend(v)
-                if k == "fqdn_ids" and len(v) > 0:
-                    create_fqdn_ids.extend(v)
-                if k == "url_ids" and len(v) > 0:
-                    create_url_ids.extend(v)
-                if k == "flag_ids" and len(v) > 0:
-                    create_flag_ids.extend(v)
-                if k == "keywords_ids" and len(v) > 0:
-                    create_keywords_ids.extend(v)
-                if k == "account_ids" and len(v) > 0:
-                    create_account_ids.extend(v)
-                if k == "http_signature_ids" and len(v) > 0:
-                    create_http_signature_ids.extend(v)
-                if k == "geo_name_ids" and len(v) > 0:
-                    create_geo_name_ids.extend(v)
-
-            # 创建profile
-            temp_profile_condition = "profile_condition_{}".format(create_number)
-            if temp_profile_condition in test_data.keys():
-                profile_condition_value = test_data[temp_profile_condition]
-            elif "profile_condition" not in test_data:
-                profile_condition_value = ""
-            else:
-                profile_condition_value = test_data["profile_condition"]
-            if len(profile_condition_value) > 0:
-                create_profile = CreateProfile()
-                for profile_data in profile_condition_value:
-                    create_profile_ids_dict = create_profile.create_profile_from_template(template_path, profile_data, token, api_server, vsys_id)
-                    #print("create_profile_ids_dict: {}".format(create_profile_ids_dict))
-                    create_profile_ids.append(create_profile_ids_dict)
-                    #print("create_profile_ids: {}".format(create_profile_ids))
-
-                    if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining":
-                        temp_profile_list.append(create_profile_ids_dict)
-            
-            # 创建rule
-            create_rule = CreatePolicyRule()
-            policy_id_list = create_rule.create_rule_from_template(token, condition_ids_by_api_dict, test_data, create_number, template_path, api_server, vsys_id, create_profile_ids=create_profile_ids)
-            # policy_id = list(policy_id_list[0].values())[0]
-            if len(create_profile_ids) > i:
-                if test_data["policy_type"] == "statistics":
-                    temp_info = {}
-                    temp_info["policy_id"] = list(policy_id_list[i].values())[i]
-                    test_data["rule_id"] = temp_info["policy_id"]
-                    temp_info["profile_info"] = temp_profile_list
-                    policy_statistics_template_chart_info.append(temp_info)
-                    if len(policy_statistics_template_chart_info) > 0:
-                        for chart in policy_statistics_template_chart_info[0]["profile_info"][0]["template_info"]:
-                            statistics_info = {}
-                            statistics_info["rule_id"] = policy_statistics_template_chart_info[0]["policy_id"]
-                            for k, v in chart.items():    # 将chart字典中的数据，copy到statistics_info
-                                statistics_info[k] = v
-                            statistics_sc_info_list.append(statistics_info)
-                elif test_data["policy_type"] == "service_chaining":
-                    sc_sff_sf_info = {}
-                    sc_sff_sf_info["policy_id"] = list(policy_id_list[i].values())[i]
-                    sc_sff_sf_info["sff_info"] = temp_profile_list
-                    policy_sc_sff_sf_info.append(sc_sff_sf_info)
-                    if len(policy_sc_sff_sf_info) > 0:
-                        for sff in policy_sc_sff_sf_info[0]["sff_info"]:
-                            sc_info = {}
-                            sc_info["rule_id"] = policy_sc_sff_sf_info[0]["policy_id"]
-                            sc_info["targeted_traffic"] = test_data["targeted_traffic"]
-                            temp_application = 'application_'+str(create_number)
-                            if temp_application in test_data.keys():
-                                sc_info["application"] = test_data[temp_application]
-                            else:
-                                sc_info["application"] = test_data['application']
-                            sc_info["sff_id"] = sff["id"]
-                            sc_info["type"] = sff["sff_info"]["type"]
-                            sc_info["sf_id"] = sff["sff_info"]["sf_info"][0]["id"]
-                            sc_info["device_tag"] = sff["sff_info"]["sf_info"][0]["device_tag"]
-                            sc_info["admin_status"] = sff["sff_info"]["sf_info"][0]["admin_status"]
-                            sc_info["load_balance_localization"] = sff["sff_info"]["load_balance_localization"]
-                            if sff["sff_info"]["sf_info"][0]["connectivity"]["method"] == "vxlan_g":
-                                sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
-                                sc_info["sf_dest_ip"] = sff["sff_info"]["sf_info"][0]["connectivity"]["dest_ip"]
-                                sc_info["health_check_method"] = sff["sff_info"]["sf_info"][0]["health_check"]["method"]
-                            else:
-                                sc_info["sf_method"] = sff["sff_info"]["sf_info"][0]["connectivity"]["method"]
-                                sc_info["health_check_method"] = "none"
-                            negate_list = []
-                        if "condition" in test_data.keys():
-                            for con_key , con_value in test_data["condition"].items():
-                                if con_key == "ip_protocol" or con_key == "sub_action_override":
-                                    continue
+    def create_object(self, policy_configuration):
+        try:
+            object_template = self.root_path + "/support/api_utils/template/object_template.json"
+            with open(object_template, 'r', encoding='utf-8') as f:
+                object_template_json = json.load(f)
+            object_uuid_dict = {}
+            for key in policy_configuration.keys():
+                if key == "and_conditions":
+                    condition_temp = policy_configuration[key]
+                    ip_uuid_temp_list = []
+                    port_uuid_temp_list = []
+                    for i in range(len(condition_temp)):
+                        object_temp = condition_temp[i]["or_conditions"]
+                        for j in range(len(object_temp)):
+                            if object_temp[j]["type"] != "application":
+                                object_template_json["vsys_id"] = self.vsys
+                                object_template_json["object"]["type"] = object_temp[j]["type"]
+                                object_template_json["object"]["name"] = object_temp[j]["name"]
+                                object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
+                                item_temp = object_temp[j]["items"]
+                                item_list = []
+                                if object_temp[j]["type"] == "ip":
+                                    for t in range(len(item_temp)):
+                                        item_dict = {}
+                                        if "ip" in item_temp[t]:
+                                            item_dict["ip"] = item_temp[t]["ip"]
+                                            item_dict = dict(ip=item_dict, op=item_temp[t]["op"])
+                                            item_list.append(item_dict)
+                                member = dict(items=item_list, type="item")
+                                object_template_json["object"]["member"] = member
+                                url = self.api_server + "/v1/policy/object"
+                                response = requests.post(url, headers=self.headers, json=object_template_json, verify=False)
+                                if response.status_code == 200:
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_template_json["object"]["type"]), flush=True)
+                                    response_dict = json.loads(response.text)
+                                    object_uuid, object_geo_uuid = self.get_uuid(response_dict, object_temp[j]["type"])
+                                    object_uuid_temp_dict = {}
+                                    object_uuid_temp_dict["name"] = object_temp[j]["name"]
+                                    object_uuid_temp_dict["uuid"] = object_uuid
+                                    object_uuid_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
+                                    # object_uuid_temp_dict["negate_option"] = condition_temp[i]["negate_option"]
+                                    if object_temp[j]["type"] == "ip":
+                                        ip_uuid_temp_list.append(object_uuid_temp_dict)
+                                    elif object_temp[j]["type"] == "port":
+                                        port_uuid_temp_list.append(object_uuid_temp_dict)
                                 else:
-                                    if len(con_value) > 0:
-                                        for i in range(len(con_value)):
-                                            if "negate" in con_value[i].keys() and con_value[i]["negate"] == True:
-                                                negate_list.append(1)
-                                            else:
-                                                negate_list.append(0)
-                            if 1 in negate_list:
-                                sc_info["is_negate"] = 1
-                            else:
-                                sc_info["is_negate"] = 0
-                        statistics_sc_info_list.append(sc_info)
-            if len(policy_id_list) > 0:
-                create_policies_ids.extend(policy_id_list)
+                                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object failed.".format(object_template_json["object"]["type"]), flush=True)
+                                    return "", "Create {} object failed.".format(object_template_json["object"]["type"])
+                    if len(ip_uuid_temp_list) > 0:
+                        object_uuid_dict["ip"] = ip_uuid_temp_list
+                    if len(port_uuid_temp_list) > 0:
+                        object_uuid_dict["port"] = port_uuid_temp_list
+            return object_uuid_dict, ""
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create object exception error: ", str(e), flush=True)
+            return "" ,"Create object exception error: " + str(e)
+    
+    def get_uuid(self, response_dict, type):
+        if type == "ip":
+            # uuid = response_dict["data"]["object"]["uuid"]
+            uuid = response_dict["data"]["object"]["id"]
+            return uuid, ""
+        elif type == "security":
+            # uuid = response_dict["data"]["rule"]["uuid"]
+            uuid = response_dict["data"]["rule"]["id"]
+            return uuid
+        elif type == "geolocation":
+            uuid = ""
+            geo_name_uuid = ""
+            print("to be added...")
+            return uuid, geo_name_uuid
+    
+    def create_profile(self, policy_configuration):
+        print("to be added...")
         
-        cfg_list = {}
-        cfg_list["create_ip_ids"] = create_ip_ids
-        cfg_list["create_subid_ids"] = create_subid_ids
-        cfg_list["create_port_ids"] = create_port_ids
-        cfg_list["create_imsi_ids"] = create_imsi_ids
-        cfg_list["create_phone_number_ids"] = create_phone_number_ids
-        cfg_list["create_imei_ids"] = create_imei_ids
-        cfg_list["create_apn_ids"] = create_apn_ids
-        cfg_list["create_fqdn_ids"] = create_fqdn_ids
-        cfg_list["create_url_ids"] = create_url_ids
-        cfg_list["create_flag_ids"] = create_flag_ids
-        cfg_list["create_keywords_ids"] = create_keywords_ids
-        cfg_list["create_account_ids"] = create_account_ids
-        cfg_list["create_http_signature_ids"] = create_http_signature_ids
-        cfg_list["create_geo_name_ids"] = create_geo_name_ids
-        cfg_list["create_profile_ids"] = create_profile_ids
-        cfg_list["create_policies_ids"] = create_policies_ids
-        cfg_list["statistics_sc_info_list"] = statistics_sc_info_list
-        cfg_list["create_library_tag_ids"] = library_tag_ids
-        cfg_list["create_library_catalog_ids"] = library_catalog_ids
-        cfg_list["timeout_result"] = timeout_result
-        
-        return cfg_list
+    def create_rule(self, policy_configuration, object_uuid):
+        try:
+            rule_template = self.root_path + "/support/api_utils/template/rule_template.json"
+            with open(rule_template, 'r', encoding='utf-8') as f:
+                rule_template_json = json.load(f)
+            rule_uuid_dict = {}
+            rule_template_json["rule"]["name"] = policy_configuration["name"]
+            rule_template_json["rule"]["type"] = policy_configuration["type"]
+            rule_template_json["rule"]["action"] = policy_configuration["action"]
+            rule_template_json["rule"]["vsys_id"] = self.vsys
+            rule_template_json["vsys_id"] = self.vsys
+            # rule_template_json["rule"]["do_log"] = 2
+            rule_template_json["rule"]["is_enabled"] = policy_configuration["is_enabled"]
+            source_condition_temp_list, destination_condition_temp_list, application_condition_temp_list = [], [], []
+            for i in range(len(policy_configuration["and_conditions"])):
+                if "attr_source" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
+                    source_condition_temp_list.append(policy_configuration["and_conditions"][i])
+                if "attr_destination" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
+                    destination_condition_temp_list.append(policy_configuration["and_conditions"][i])
+                if "attr_app" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
+                    application_condition_temp_list.append(policy_configuration["and_conditions"][i])
+            if len(source_condition_temp_list) > 0:
+                rule_template_json["rule"]["source"] = self.generate_rule_condition_list(source_condition_temp_list, object_uuid, "attr_source")
+            if len(destination_condition_temp_list) > 0:
+                rule_template_json["rule"]["destination"] = self.generate_rule_condition_list(destination_condition_temp_list, object_uuid, "attr_destination")
+            if len(application_condition_temp_list) > 0:
+                rule_template_json["rule"]["application"] = self.generate_rule_condition_list(application_condition_temp_list, object_uuid, "attr_app")
+            if len(policy_configuration["action_parameter"]) > 0:
+                if policy_configuration["type"] == "security" and policy_configuration["action"] == "deny":
+                    rule_template_json["rule"]["user_region"]["method"] = policy_configuration["action_parameter"]["sub_action"]
+                    rule_template_json["rule"]["user_region"]["packet_capture"] = {}
+                    rule_template_json["rule"]["user_region"]["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
+                    rule_template_json["rule"]["user_region"]["after_n_packets"] = policy_configuration["action_parameter"]["after_n_packets"]
+                    rule_template_json["rule"]["user_region"]["send_icmp_unreachable"] = policy_configuration["action_parameter"]["send_icmp_unreachable"]
+                    rule_template_json["rule"]["user_region"]["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
+            rule_template_json["rule"]["internal"] = []
+            rule_template_json["rule"]["external"] = []
+            rule_template_json["rule"]["flag"] = None
+            url = self.api_server + "/v1/policy/rule"
+            response = requests.post(url, headers=self.headers, json=rule_template_json, verify=False)
+            if response.status_code == 200:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(policy_configuration["type"]), flush=True)
+                response_dict = json.loads(response.text)
+                uuid = self.get_uuid(response_dict, policy_configuration["type"])
+                rule_uuid_temp_dict = {}
+                rule_uuid_temp_dict["name"] = policy_configuration["name"]
+                rule_uuid_temp_dict["uuid"] = uuid
+                rule_uuid_temp_dict["attribute_name"] = policy_configuration["type"].upper() + "_" + "RULE"
+                rule_uuid_temp_list = []
+                rule_uuid_temp_list.append(rule_uuid_temp_dict)
+                if policy_configuration["type"] == "security":
+                    rule_uuid_dict["security"] = rule_uuid_temp_list
+                elif policy_configuration["type"] == "monitor":
+                    rule_uuid_dict["monitor"] = rule_uuid_temp_list
+            else:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule failed.".format(policy_configuration["type"]), flush=True)
+                return "", "Create {} rule failed.".format(policy_configuration["type"])
+            return rule_uuid_dict, ""
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create rule exception error: ", str(e), flush=True)
+            return "", "Create rule exception error: " + str(e)
+    
+    def generate_rule_condition_list(self, and_condition, object_uuid, condition_type):
+        if condition_type in ["attr_source", "attr_destination"]:
+            condition_list = []
+            for i in range(len(and_condition)):
+                is_negate = and_condition[i]["negate_option"]
+                attribute_name = and_condition[i]["or_conditions"][0]["attribute_name"]
+                objects_configuration = and_condition[i]["or_conditions"]
+                object_list = []
+                object_uuids = []
+                for j in range(len(objects_configuration)):
+                    object_uuid_temp = object_uuid[objects_configuration[0]["type"]]
+                    for t in range(len(object_uuid_temp)):
+                        if objects_configuration[j]["name"] == object_uuid_temp[t]["name"]:
+                            object_uuids.append(object_uuid_temp[t]["uuid"])
+                object_temp_dict = dict(object_ids=object_uuids)
+                object_list.append(object_temp_dict)
+                temp_dict = dict(objects=object_list, attribute_name=attribute_name, is_negate=is_negate)
+                condition_list.append(temp_dict)
+            return condition_list
+        if condition_type == "attr_app":
+            is_negate = and_condition[0]["negate_option"]
+            application_name_list = []
+            application_id_list = []
+            application_configuration = and_condition[0]["or_conditions"]
+            for i in range(len(application_configuration)):
+                application_name = application_configuration[i]["items"]
+                application_id_temp_list = []
+                for j in range(len(application_name)):
+                    application_name_list.append(application_name[j])
+                    application_id = get_group_id(str(application_name_list), self.api_server)
+                    application_id_temp_list.append(application_id)
+                application_id_dict = dict(object_ids=application_id_temp_list[len(application_id_temp_list)-1])
+                application_id_list.append(application_id_dict)
+            application_dict = dict(objects=application_id_list, attribute_name='ATTR_APP_ID', is_negate=is_negate)
+            return application_dict
     
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
+    parameter = {
+        "username": "zhaokun",
+        "password": "zhaokun1",
+        "test_pc_ip": "192.168.64.86",
+        "test_subcriber_id": "test6776",
+        "api_server": "http://192.168.44.72",
+        "debug": "local",
+        "initiation_method": "api",
+        "is_log": 1,
+        "env": "tsgx",
+        "vsys_id": 5,
+        "root_path": workdir,
+        "path": workdir + "/tests",
+        "module_name": "security",
+        "test_case_name": os.path.basename(__file__)[:-3]
+    }
+    api_client = APIClient(parameter)
+    from support.cmdb_collector import CMDBCollector
+    cmdb_collector = CMDBCollector()
+    configuration_manager = {}
+    """
+    # object_uuid = {
+    #     "ip": [
+    #         {
+    #             "attribute_name": "ATTR_SOURCE_IP",
+    #             "name": "sec_srcip",
+    #             "uuid": "111",
+    #             "negate_option": False
+    #         },
+    #         {
+    #             "attribute_name": "ATTR_SOURCE_IP",
+    #             "name": "sec_srcip_2",
+    #             "uuid": "222",
+    #             "negate_option": False
+    #         },
+    #         {
+    #             "attribute_name": "ATTR_SOURCE_IP",
+    #             "name": "sec_srcip_3",
+    #             "uuid": "333",
+    #             "negate_option": False
+    #         }
+    #     ],
+    #     "port": [
+    #         {
+    #             "attribute_name": "ATTR_SOURCE_PORT",
+    #             "name": "sec_port",
+    #             "uuid": "444",
+    #             "negate_option": False
+    #         }
+    #     ]
+    # }
+    """
+    policy_configuration = {
+        "name": "automation_test_zk",
+        "type": "security",
+        "action": "deny",
+        "and_conditions": [ # 一个rule选了两个source、一个destination、一个application
+            {
+                "negate_option": 0,
+                "or_conditions": [ # 一个source ip address选了两个object
+                    {
+                        "attribute_name": "ATTR_SOURCE_IP",
+                        "type": "ip",
+                        "sub_type": "ip",
+                        "name": "sec_srcip",
+                        "items": [ # 一个object中包含多个item
+                            {
+                                "op": "add",
+                                "ip": "1.1.1.1",
+                                "interval": "0-65535"
+                            },
+                            {
+                                "op": "add",
+                                "ip": "2.1.1.1",
+                                "interval": "0-65535"
+                            }
+                        ]
+                    },
+                    {
+                        "attribute_name": "ATTR_SOURCE_IP",
+                        "type": "ip",
+                        "sub_type": "ip",
+                        "name": "sec_srcip_2",
+                        "items": [
+                            {
+                                "op": "add",
+                                "ip": "3.1.1.1",
+                                "interval": "0-65535"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_SOURCE_IP",
+                        "type": "ip",
+                        "sub_type": "ip",
+                        "name": "sec_srcip_3",
+                        "items": [
+                            {
+                                "op": "add",
+                                "ip": "4.1.1.1",
+                                "interval": "0-65535"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_DESTINATION_IP",
+                        "type": "ip",
+                        "sub_type": "ip",
+                        "name": "sec_srcip_4",
+                        "items": [
+                            {
+                                "op": "add",
+                                "ip": "5.1.1.1",
+                                "interval": "0-65535"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_APP_ID",
+                        "type": "application",
+                        "items": ["http", "ssl"]
+                    }
+                ],
+            }
+        ],
+        "action_parameter": {
+            "sub_action": "drop",
+            "packet_capture": {
+                "enable": 0
+            },
+            "send_tcp_reset": 1,
+            "send_icmp_unreachable": 0,
+            "after_n_packets": 1
+        },
+        "is_enabled": 1
+    }
+    object_uuid, _ = api_client.create_object(policy_configuration)
+    configuration_manager["object_uuid_list"] = cmdb_collector.collect(object_uuid)
+    rule_uuid, _ = api_client.create_rule(policy_configuration, object_uuid)
+    configuration_manager["rule_uuid_list"] = cmdb_collector.collect(rule_uuid)
+    temp = json.dumps(configuration_manager)
+    print(temp)
+    api_client.generate_rule_condition_list(policy_configuration, object_uuid, "source")
