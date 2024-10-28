@@ -101,15 +101,33 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_pkts:SUM:in pkts",
-                            "out_pkts:SUM:out pkts",
-                            "in_pkts+out_pkts:SUM:pkts"
+                              "sent_pkts:SUM:Packets Sent",
+                              "received_pkts:SUM:Packets Received",
+                              "sent_pkts+received_pkts:SUM:Packets"
                           ],
-                          "dimensions": ["device_group"],
-                          "order_by": "pkts",
+                          "dimensions": [
+                              "device_group"
+                          ],
+                          "order_by": "Packets",
                           "row_limit": "500",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "sent_pkts:RATE:Packets Sent",
+                                "received_pkts:RATE:Packets Received",
+                                "sent_pkts+received_pkts:RATE:Packets"
+                            ],
+                            "dimensions": [
+                                "device_group"
+                            ],
+                            "order_by": "Packets",
+                            "row_limit": "500",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
