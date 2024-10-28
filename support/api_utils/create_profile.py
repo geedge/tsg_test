@@ -611,7 +611,7 @@ class CreateProfile:
     def process_sf_post_data(self, sf_template_path, sf_post_data, vsys_id):
         with open(sf_template_path, "r") as f:
             sf_template_dict = json.load(f)
-        sf_template_dict["vsys_id"] = vsys_id
+        sf_template_dict["vsys"] = vsys_id
         sf_template_dict["service_function"]["vsys_id"] = vsys_id
         sf_template_dict["service_function"]["name"] = sf_post_data["name"]
         sf_template_dict["service_function"]["device_group"]["tag"] = sf_post_data["device_group"]["tag"]
@@ -654,7 +654,7 @@ class CreateProfile:
     def process_sff_post_data(self, sf_profile_id, sff_template_path, sff_post_data, vsys_id):
         with open(sff_template_path, "r") as f:
             sff_template_dict = json.load(f)
-        sff_template_dict["vsys_id"] = vsys_id
+        sff_template_dict["vsys"] = vsys_id
         sff_template_dict["service_function_forwarder"]["name"] = sff_post_data["name"]
         sff_template_dict["service_function_forwarder"]["type"] = sff_post_data["type"]
         sff_template_dict["service_function_forwarder"]["load_balance_method"] = sff_post_data["load_balance_method"]
