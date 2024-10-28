@@ -110,6 +110,20 @@ def run(parameter):
                           "row_limit": "1000",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "new_in_sessions:RATE:new in sessions",
+                                "new_out_sessions:RATE:new out sessions",
+                                "new_in_sessions+new_out_sessions:RATE:sessions"
+                            ],
+                            "dimensions": ["app"],
+                            "order_by": "sessions",
+                            "row_limit": "500",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]

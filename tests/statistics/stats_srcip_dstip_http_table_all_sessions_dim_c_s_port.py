@@ -109,9 +109,26 @@ def run(parameter):
                               "server_port"
                           ],
                           "order_by": "sessions",
-                          "row_limit": "10",
-                          "min_in_size": "1",
-                          "min_out_size": "1"
+                          "row_limit": "200",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "new_in_sessions:RATE:new in sessions",
+                                "new_out_sessions:RATE:new out sessions",
+                                "new_in_sessions+new_out_sessions:RATE:sessions"
+                            ],
+                            "dimensions": [
+                                "client_port",
+                                "server_port"
+                            ],
+                            "order_by": "sessions",
+                            "row_limit": "100",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]

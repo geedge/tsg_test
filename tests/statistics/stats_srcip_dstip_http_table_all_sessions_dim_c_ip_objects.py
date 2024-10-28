@@ -101,17 +101,33 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions:SUM:new in sessions",
-                            "new_out_sessions:SUM:new out sessions",
-                            "new_in_sessions+new_out_sessions:SUM:sessions"
+                            "closed_in_sessions:SUM:closed in sessions",
+                            "closed_out_sessions:SUM:closed out sessions",
+                            "closed_in_sessions+closed_out_sessions:SUM:sessions"
                           ],
                           "dimensions": [
                             "client_ip_object_list"
                           ],
                           "order_by": "sessions",
-                          "row_limit": "10",
+                          "row_limit": "20",
                           "min_in_size": "1",
                           "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "closed_in_sessions:RATE:closed in sessions",
+                                "closed_out_sessions:RATE:closed out sessions",
+                                "closed_in_sessions+closed_out_sessions:RATE:sessions"
+                            ],
+                            "dimensions": [
+                                "client_ip_object_list"
+                            ],
+                            "order_by": "sessions",
+                            "row_limit": "50",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
