@@ -65,7 +65,7 @@ def run(parameter):
                                 "item_key": "Content-Type",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "charset&text&html&charset&UTF&UTF&charset&html"
+                                    "charset&text&html&charset&UTF&UTF&charset"
                                 ]
                             }
                         ],

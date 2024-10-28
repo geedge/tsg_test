@@ -54,7 +54,7 @@ def run(parameter):
                     {
                     "add_item_list": [
                         {
-                        "ip_address": "default",
+                        "ip_address": parameter["test_pc_ip"],
                         "port_range": "0-65535"
                         }
                     ]

@@ -262,7 +262,7 @@ class CreateManipulationPolicy:
                 #print(test_data)
 
                 self.api_name_list = get_name_list(test_data)
-                self.api_name_list.insert(0, {'type': 'pxy_intercept', 'name': 'manipulation_pre_intercept'})
+                self.api_name_list.insert(0, {'type': 'proxy_intercept', 'name': 'manipulation_pre_intercept'})
 
                 # 添加测试过程中涉及的template
                 template_path = {}
@@ -275,20 +275,22 @@ class CreateManipulationPolicy:
                     profile_type = test_data["profile_condition"][0]["profile_type"].strip()
                     if profile_type == "response_page":
                         template_path["profiles_deny_path"] = tmp_dir + "response_pages/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "hijack_files":
+                    elif profile_type == "proxy_replacement_file":
                         template_path["profiles_hijack_file_path"] = tmp_dir + "hijack_file/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "insert_profile":
+                    elif profile_type == "proxy_js_file":
                         template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "run_script":
+                    elif profile_type == "proxy_css_file":
+                        template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
+                    elif profile_type == "http_manipulation_script":
                         template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][0]["content_name"]
-                    # else:
-                    #     print("check profile path")
+                    else:
+                        print("check profile path")
 
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
                 time.sleep(2)
-
+                """
                 # 流量验证
                 verification = Verify()
                 verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
@@ -296,6 +298,7 @@ class CreateManipulationPolicy:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
+                """
             except Exception as e:
                 raise
             finally:

@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -56,18 +56,18 @@ def run(parameter):
                     {
                         "profile_type": "ssl_decryption",
                         "profile_file": {
-                            "name": "manipulation_ssl_decryption_profile",
+                            "name": "intercept_ssl_decryption_profile",
                             "model": "create",
-                            "common_name": "on",
-                            "issuer": "off",
+                            "common_name": "off",
+                            "issuer": "on",
                             "self_signed": "off",
                             "expiry_date": "off",
                             "fail_action": "Fail-Close",
                             "ev_certificate": "off",
                             "certificate_transparency": "off",
-                            "mutual_authentication": "on",
-                            "protocol_errors": "on",
-                            "certificate_pinning": "on",
+                            "mutual_authentication": "off",
+                            "protocol_errors": "off",
+                            "certificate_pinning": "off",
                             "certificate_not_installed": "off",
                             "mirror_client_versions": "on",
                             "min_client_version": "TLSv1.0",
@@ -77,13 +77,13 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "Connection reset by peer in connection to wrong.host.badssl.com",
+            "expected_return": "Connection reset by peer in connection to untrusted-root.badssl.com",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "wrong.host.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
+            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "untrusted-root.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://wrong.host.badssl.com/",
+                "command": "curl -kv --connect-timeout 30 --max-time 60 https://untrusted-root.badssl.com/",
             },
             "token": ""
         }

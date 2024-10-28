@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -56,14 +56,14 @@ def run(parameter):
                     {
                         "profile_type": "ssl_decryption",
                         "profile_file": {
-                            "name": "manipulation_ssl_decryption_profile",
+                            "name": "intercept_ssl_decryption_profile",
                             "model": "create",
                             "common_name": "on",
                             "issuer": "on",
                             "self_signed": "on",
                             "expiry_date": "on",
                             "fail_action": "Pass-through",
-                            "ev_certificate": "off",
+                            "ev_certificate": "on",
                             "certificate_transparency": "off",
                             "mutual_authentication": "off",
                             "protocol_errors": "off",
@@ -77,17 +77,18 @@ def run(parameter):
                     }
                 ],
             },
-            "expected_return": "issuer: CN=TSG CA",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.icbc.com.cn"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
+            "expected_return": "issuer,www.icbc.com.cn",
+            "counters": {"hits": 2},
+            "log_query_param": [{"query_field_key": "proxy_intercept_status", "query_value": "passthrough"}, {"query_field_key": "proxy_passthrough_reason", "query_value": "EV Certificate"},],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.icbc.com.cn/",
+                "command": "curl -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.icbc.com.cn/ ; sleep 10 ; curl -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.icbc.com.cn/",
             },
             "token": ""
         }
 
+        # 测试用例实例化
         create = CreatePolicy(test_data, parameter)
         result = create.create_policy()
 

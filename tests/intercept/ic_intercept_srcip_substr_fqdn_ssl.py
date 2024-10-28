@@ -30,7 +30,7 @@ def run(parameter):
             "condition": {
                 "source_ip": [
                     {
-                        "name": "manipulation_source_ip",
+                        "name": "intercept_source_ip",
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
@@ -48,6 +48,21 @@ def run(parameter):
                         "name": "ssl",  #
                         "object_type": "application",
                         "negate": False
+                    }
+                ],
+                "server_fqdn": [
+                    {
+                        "name": "intercept_fqdn",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "fqdn",
+                                "item_value": "baidu.com",
+                            }
+                        ]
                     }
                 ],
             },

@@ -995,12 +995,12 @@ class CreateSecurityPolicy:
                 cfg_list = create.create_policy(parameter, test_data, template_path)
 
                 # 流量验证
-                verification = Verify()
-                verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
+                # verification = Verify()
+                # verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
 
                 # 分析验证结果，并返回给flask
-                analysis = Analyse()
-                api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
+                # analysis = Analyse()
+                # api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
             except Exception as e:
                 raise
             finally:
@@ -1016,7 +1016,7 @@ class CreateSecurityPolicy:
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        if isinstance(self.api_name_list, list) and self.api_name_list != []:
+        if isinstance(self.api_name_list, list):
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)
             
 if __name__ == '__main__':

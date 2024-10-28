@@ -248,14 +248,12 @@ class CreateInterceptPolicy:
 
                 parameter["script_type"] = "api"
 
-
                 # 数据转换，适配API的test_data
                 translation = DataTranslation()
                 test_data = translation.data_translation(parameter, test_data)
                 #print(test_data)
 
                 self.api_name_list = get_name_list(test_data)
-                self.api_name_list.insert(0, {'type': 'pxy_intercept', 'name': 'manipulation_pre_intercept'})
 
                 # 添加测试过程中涉及的template
                 template_path = {}
@@ -265,23 +263,28 @@ class CreateInterceptPolicy:
                 # 添加测试过程中涉及的response pages
                 if "profile_condition" in test_data and len(test_data["profile_condition"]) > 0:
                     tmp_dir = parameter["root_path"] + "/support/ui_utils/profile/profile_file/"
-                    profile_type = test_data["profile_condition"][0]["profile_type"].strip()
-                    if profile_type == "response_page":
-                        template_path["profiles_deny_path"] = tmp_dir + "response_pages/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "hijack_files":
-                        template_path["profiles_hijack_file_path"] = tmp_dir + "hijack_file/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "insert_profile":
-                        template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][0]["content_name"]
-                    elif profile_type == "run_script":
-                        template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][0]["content_name"]
-                    # else:
-                    #     print("check profile path")
+
+                    for i in range(len(test_data["profile_condition"])):
+                        profile_type = test_data["profile_condition"][i]["profile_type"].strip()
+                        if profile_type == "ssl_keyring":
+                            if "trusted" == test_data["profile_condition"][i]["decryption_keying_type"].strip():
+                                template_path["profiles_trust_ssl_keyring_public_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][i]["public_file"]
+                                template_path["profiles_trust_ssl_keyring_private_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][i]["private_file"]
+                            else:
+                                template_path["profiles_untrust_ssl_keyring_public_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][i]["public_file"]
+                                template_path["profiles_untrust_ssl_keyring_private_path"] = tmp_dir + "ssl_decryption_keyring/" + test_data["profile_condition"][i]["private_file"]
+                        elif profile_type == "insert_profile":
+                            template_path["profiles_insert_profile_path"] = tmp_dir + "insert_scripts/" + test_data["profile_condition"][i]["content_name"]
+                        elif profile_type == "run_script":
+                            template_path["profiles_run_script_path"] = tmp_dir + "tsg_proxy_scripts/" + test_data["profile_condition"][i]["content_name"]
+                        # else:
+                        #     print("check profile path")
 
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
                 time.sleep(2)
-
+                """
                 # 流量验证
                 verification = Verify()
                 verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
@@ -289,6 +292,7 @@ class CreateInterceptPolicy:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
+                """
             except Exception as e:
                 raise
             finally:

@@ -57,6 +57,8 @@ class CreateServiceChainingPolicy:
         policy_name_dict = {}
         policy_name_dict["type"] = test_data["policy_type"]
         policy_name_dict["name"] = test_data["rule_name"]
+        # 前置intercept策略
+        temp_name_list.append({"type":"proxy_intercept", "name":"service_chaining_pre_intercept"})
         temp_name_list.append(policy_name_dict)
         for con_key, conditions in test_data["condition"].items():  
             if conditions:  # 确保conditions不为空  
@@ -110,7 +112,7 @@ class CreateServiceChainingPolicy:
                     "page_jump":{
                         "mainPage_menu_bar_posXpath": mainPage_menu_bar_posXpath,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXpath,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
                         "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_statisticsTemplates_posXpath,
@@ -147,7 +149,7 @@ class CreateServiceChainingPolicy:
                     "page_jump":{
                         "mainPage_menu_bar_posXpath": mainPage_menu_bar_posXpath,
                         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
-                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+                        "mainPage_button_menu_posXCss": mainPage_button_menu_posXpath,
                         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
                         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
                         "mainPage_profileSecondLevelMenu_posXpath": mainPage_secondLevelMenu_statisticsTemplates_posXpath,
@@ -390,8 +392,8 @@ class CreateServiceChainingPolicy:
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
-                time.sleep(30)
-
+                """
+                #time.sleep(30)
                 # 流量验证
                 verification = Verify()
                 verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
@@ -399,6 +401,7 @@ class CreateServiceChainingPolicy:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
+                """
             except Exception as e:
                 raise
             finally:

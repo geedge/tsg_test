@@ -201,7 +201,22 @@ test_data = \
                 ],
                 "tunnel": [],
                 "tunnel_level": [],
-                "flag": [],
+                "flag": [
+                    {
+                        "name": "secy_flag",
+                        "object_type": "flag",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "flag",
+                                "flag": "64",
+                                "mask": "64",
+                            }
+                        ]
+                    }
+                ],
                 "application": [
                     {
                         "name": "http",  #

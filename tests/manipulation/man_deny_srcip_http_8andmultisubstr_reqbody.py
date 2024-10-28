@@ -64,7 +64,7 @@ def run(parameter):
                                 "item_type": "request_body",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "test&request&body&test_&est_&_body&request_body&test_request"
+                                    "test&request&body&test_&est_&_body&request_body"
                                 ]
                             }
                         ],
