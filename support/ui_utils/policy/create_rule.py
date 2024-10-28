@@ -836,7 +836,7 @@ class CreateRule:
                         btn = self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=1)
                         self.driver.execute_script("arguments[0].click()", btn)
                         self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"]).send_keys(sff["name"])
-                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searcpolicyRulePage_searchMirrorProfile_posXpathhSFFProfile_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                        self.driver.find_element(By.XPATH,create_element_position["policyRulePage_searchSFFProfile_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                         selectSFFXpath = create_element_position["policyRulePage_selectSFFProfile_posXpath"].format(replaceValue=sff["name"])
                         self.driver.find_element(By.XPATH,selectSFFXpath).click()
                         # self.driver.execute_script("arguments[0].click()", btn)

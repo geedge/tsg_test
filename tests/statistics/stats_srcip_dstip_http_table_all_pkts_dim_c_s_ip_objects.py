@@ -103,9 +103,26 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_pkts:SUM:in pkts",
-                            "out_pkts:SUM:out pkts",
-                            "in_pkts+out_pkts:SUM:pkts"
+                              "sent_pkts:SUM:Packets Sent",
+                              "received_pkts:SUM:Packets Received",
+                              "sent_pkts+received_pkts:SUM:Packets"
+                          ],
+                          "dimensions": [
+                            "client_ip_object_list",
+                            "server_ip_object_list"
+                          ],
+                          "order_by": "pkts",
+                          "row_limit": "10",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                              "sent_pkts:RATE:Packets Sent",
+                              "received_pkts:RATE:Packets Received",
+                              "sent_pkts+received_pkts:RATE:Packets"
                           ],
                           "dimensions": [
                             "client_ip_object_list",
