@@ -597,7 +597,7 @@ class CreateProfile:
             f_template_dict["statistics_template"]["name"] = post_statistics_data["name"]
 
         # 重组vsys id
-        f_template_dict["vsys_id"] = vsys_id
+        f_template_dict["vsys"] = vsys_id
         f_template_dict["statistics_template"]["vsys_id"] = vsys_id
 
         return f_template_dict
