@@ -151,7 +151,7 @@ class CreateObject:
             if 'is_negate' in condition.keys():
                 is_negate = condition['is_negate']
             else:
-                is_negate = 0
+                is_negate = False
 
             obj_list = condition["object_list"]
             for obj in obj_list:
@@ -480,7 +480,7 @@ class CreateObject:
         # }
         
         and_condition_dict = {
-            "negate_option": False,
+            "negate_option": is_negate,
             "or_conditions": [],
         }
         or_condition_dict = {}

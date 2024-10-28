@@ -598,7 +598,7 @@ class DataTranslation:
                         ]
                     }
                     if "negate" in v[i]:
-                        temp["is_negate"] = v[i]["negate"]
+                        temp["negate_option"] = v[i]["negate"]
                     if "repeat_time" in v[i] and v[i]["repeat_time"] > 1:
                         temp["repeat_time"] = v[i]["repeat_time"]
                         import_path = v[i]["import_path"]
@@ -691,7 +691,7 @@ class DataTranslation:
                         ]
                     }
                     if "negate" in v[i]:
-                        temp["is_negate"] = v[i]["negate"]
+                        temp["negate_option"] = v[i]["negate"]
                     for u in range(len(v[i]["items"])):
                         # 添加多个item
                         add_item_dict = {
@@ -1113,7 +1113,7 @@ class DataTranslation:
                                     tmp_expr = expression
                                 add_item_dict["expression"] = tmp_expr
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
-                            temp["is_negate"] = v[i]["negate"]
+                            temp["negate_option"] = v[i]["negate"]
                             object.append(copy.deepcopy(temp))
             elif k == "flag":
                 for i in range(len(v)):
