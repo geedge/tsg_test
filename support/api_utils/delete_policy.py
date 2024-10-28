@@ -375,48 +375,53 @@ class DeletePolicy:
         obj_url = api_server + "/v1/objects"
         profile_url = api_server + "/v1/profiles"
         dashboard_url = api_server + "/v1/dashboard"
-        template = {'type': 'security', 'name': '', 'with_sub_vsys': 0, 'vsys': vsys_id}
+        template = {'type': 'security', 'name': '', 'with_sub_vsys': 0, 'vsys': int(vsys_id)}
         # script_type = parameter["script_type"]
 
-        # if len(name_list) == 0:
+        if len(name_list) == 0:
 
-        #     # 定义要删除的规则类型
-        #     # 删除rule
-        #     rule_types = ['security-rules', 'monitor-rules', 'statistics-rules', 'proxy-intercept-rules', 'proxy-manipulation-rules',
-        #                   'service-chaining-rules', 'dos-protection-rules']
+            # 定义要删除的规则类型
+            # 删除rule
+            rule_types = ['security-rules']
 
-        #     for rule_type in rule_types:
-        #         template['name'] = 'automation_test_policy'
-        #         template['type'] = rule_type
-        #         rule_url_full = rule_url + '/' + rule_type
-        #         self.query_and_delete_by_name(rule_url_full, template, headers)
+            for rule_type in rule_types:
+                template['name'] = 'automation_test_policy'
+                template['type'] = rule_type
+                rule_url_full = rule_url + '/' + rule_type
+                self.query_and_delete_by_name(rule_url_full, template, headers)
 
-        #     api_rule_path_map = {
-        #         "security": "security-rules",
-        #         "proxy_intercept": "proxy-intercept-rules",
-        #         "proxy_manipulation": "proxy-manipulation-rules",
-        #         "traffic_shaping": "traffic-shaping-rules",
-        #         "service_chaining": "service-chaining-rules",
-        #         "statistics": "statistics-rules",
-        #         "monitor": "monitor-rules",
-        #         "dos_protection": "dos-protection-rules",
-        #     }
+            # api_rule_path_map = {
+            #     "security": "security-rules",
+            #     "proxy_intercept": "proxy-intercept-rules",
+            #     "proxy_manipulation": "proxy-manipulation-rules",
+            #     "traffic_shaping": "traffic-shaping-rules",
+            #     "service_chaining": "service-chaining-rules",
+            #     "statistics": "statistics-rules",
+            #     "monitor": "monitor-rules",
+            #     "dos_protection": "dos-protection-rules",
+            # }
         #     for key, value in api_rule_path_map.items():
         #         template['name'] = 'automation_test_policy'
         #         template['type'] = key
         #         rule_url_full = rule_url + '/' + value
         #         self.query_and_delete_by_name(rule_url_full, template, headers)
             # 删除object
-            # object_types = [
-            #     'ip-addresses', 'fqdns', 'subscriber-ids',
-            #     'keywords', 'urls', 'accounts', 'flags'
-            # ]
-
-            # for obj_type in object_types:
-            #     template['name'] = 'automation_test_object'
-            #     template['type'] = obj_type
-            #     rule_url_full = obj_url + '/' + obj_type
-            #     self.query_and_delete_by_name(rule_url_full, template, headers)
+            url_types = [
+                'ip-addresses', 'fqdns', 'subscriber-ids', 'flags'
+            ]
+            for url_type in url_types:
+                template['name'] = 'automation_test_object'
+                if url_type == "ip-addresses":
+                    obj_type = "ip"
+                elif url_type == "fqdns":
+                    obj_type = "fqdn"
+                elif url_type == "subscriber-ids":
+                    obj_type = "subscriberid"
+                elif url_type == "flags":
+                    obj_type = "flag"
+                template['type'] = obj_type
+                rule_url_full = obj_url + '/' + url_type
+                self.query_and_delete_by_name(rule_url_full, template, headers)
 
             # api_object_path_map = {
             #     "ip": "ip-addresses",

@@ -1016,7 +1016,7 @@ class CreateSecurityPolicy:
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        if isinstance(self.api_name_list, list) and self.api_name_list != []:
+        if isinstance(self.api_name_list, list):
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)
             
 if __name__ == '__main__':
