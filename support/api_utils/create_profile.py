@@ -725,8 +725,6 @@ class CreateProfile:
                 process_post_data = self.process_sff_post_data(sf_profile_id_list, profile_sff_template, profile_data,vsys_id)
                 url = "{}/v1/profiles/service-function-forwarders".format(api_host)
                 headers["Content-Type"] = "application/json"
-                # 44.3 运行用例临时添加，防止创建过快导致的用例失败
-                time.sleep(1)
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
                 temp_profile_type = profile_type.replace("_", " ")
