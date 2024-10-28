@@ -392,7 +392,7 @@ class CreateServiceChainingPolicy:
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
-                """
+
                 #time.sleep(30)
                 # 流量验证
                 verification = Verify()
@@ -401,7 +401,7 @@ class CreateServiceChainingPolicy:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
-                """
+                
             except Exception as e:
                 raise
             finally:

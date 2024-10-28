@@ -673,8 +673,8 @@ class CreateProfile:
         with open(dns_record_template_path, "r") as f:
             dns_record_template_dict = json.load(f)
         dns_record_template_dict["vsys_id"] = vsys_id
-        dns_record_template_dict["dns_record"]["type"] = dns_record_post_data["type"]
-        dns_record_template_dict["dns_record"]["values"][0]["value"] = dns_record_post_data["value"]
+        dns_record_template_dict["dns_resource_record"]["type"] = dns_record_post_data["type"]
+        dns_record_template_dict["dns_resource_record"]["values"][0]["value"] = dns_record_post_data["value"]
         return dns_record_template_dict
 
     # 调用创建profile的接口
@@ -839,10 +839,11 @@ class CreateProfile:
                 return create_profile_id_dict
             elif profile_type == "dns_record":
                 profile_dns_record_template = path_dict["profile_dns_record_template"]
+                # profile_data['type'] = "dns_resource_record"
                 process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
                 # 添加vsys id
                 profile_data["vsys"] = vsys_id
-                url = "{}/v1/profiles/dns-records".format(api_host)
+                url = "{}/v1/profiles/dns-resource-records".format(api_host)
                 #print(json.dumps(process_post_data))
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
                 assert response.status_code == 200
@@ -852,7 +853,7 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["dns_record"]["uuid"]
+                profile_id = response_dict["data"]["dns_resource_record"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["uuid"] = profile_id
                 return create_profile_id_dict

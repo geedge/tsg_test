@@ -306,7 +306,7 @@ class CreateMonitorPolicy:
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
-                """
+      
                 if cfg_list["create_library_tag_ids"] and cfg_list["create_library_catalog_ids"]:
                     time.sleep(30)
                 # 流量验证
@@ -316,7 +316,7 @@ class CreateMonitorPolicy:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
-                """
+     
             except Exception as e:
                 raise
             finally:

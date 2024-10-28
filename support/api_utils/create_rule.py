@@ -309,11 +309,11 @@ class CreatePolicyRule:
                     user_region["keyring_for_trusted"] = keyring_for_trusted
                     user_region["decryption_profile"] = decryption_profile
                     user_region["tcp_option_profile"] = tcp_option_profile
-                    user_region["traffic_mirror"] = {"enable": 0}
+                    user_region["traffic_mirroring"] = {"enable": 0}
                     if traffic_mirror != 0:
-                        user_region["traffic_mirror"]["enable"] = 1
-                        user_region["traffic_mirror"]["vlanID"] = 1
-                        user_region["traffic_mirror"]["mirror_profile"] = traffic_mirror
+                        user_region["traffic_mirroring"]["enable"] = 1
+                        user_region["traffic_mirroring"]["vlanID"] = 1
+                        user_region["traffic_mirroring"]["mirroring_profile"] = traffic_mirror
             rule_template_dict["rule"]["action_parameter"] = user_region
         # 创建manipulation策略
         elif condition["policy_type"] == "pxy_manipulation":
@@ -410,21 +410,21 @@ class CreatePolicyRule:
                         for profile in profile_condition_list:
                             if 'traffic_mirror' in profile:
                                 traffic_mirror_config = profile['traffic_mirror']
-                                user_region["traffic_mirror"] = {
+                                user_region["traffic_mirroring"] = {
                                     "enable": 1 if traffic_mirror_config.get('is_enabled', False) else 0,
                                     # "mirror_profile": traffic_mirror_config.get('name', create_profile_ids[0]["id"])
-                                    "mirror_profile": create_profile_ids[0]["id"]
+                                    "mirroring_profile": create_profile_ids[0]["id"]
                                 }
                                 break  # 找到后退出循环
                         else:
                             # 没有找到具体的 traffic_mirror 配置，使用默认配置
-                            user_region["traffic_mirror"] = {"enable": 1, "mirror_profile": create_profile_ids[0]["uuid"]}
+                            user_region["traffic_mirroring"] = {"enable": 1, "mirroring_profile": create_profile_ids[0]["uuid"]}
                     else:
                         # 没有 profile_condition，但镜像需要启用
-                        user_region["traffic_mirror"] = {"enable": 1}
+                        user_region["traffic_mirroring"] = {"enable": 1}
                 else:
                     # 镜像未启用
-                    user_region["traffic_mirror"] = {"enable": 0}
+                    user_region["traffic_mirroring"] = {"enable": 0}
 
             # rule_template_dict["rule"]["user_region"] = user_region
             rule_template_dict["rule"]["action_parameter"] = user_region
@@ -487,7 +487,8 @@ class CreatePolicyRule:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
             # 44.3 运行用例临时添加，防止创建过快导致的用例失败
-            time.sleep(1)
+            # time.sleep(1)
+            # print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             #print(return_json_data)

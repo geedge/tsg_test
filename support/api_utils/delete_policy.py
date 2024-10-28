@@ -279,7 +279,7 @@ class DeletePolicy:
                             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete run script failed.", flush=True)
                     elif create_profile_ids[del_porfile_index]["profile_type"] == "dns_record":  # 删除dns_record
                         profile_id = create_profile_ids[del_porfile_index]["uuid"]
-                        url = "{}/v1/profiles/dns-records".format(api_server)
+                        url = "{}/v1/profiles/dns-resource-records".format(api_server)
                         del_profile_sf = {"uuids": str(profile_id), "vsys": vsys_id}
                         response = requests.delete(url, headers=headers, json=del_profile_sf, verify=False)
                         assert response.status_code == 200
@@ -377,7 +377,7 @@ class DeletePolicy:
         dashboard_url = api_server + "/v1/dashboard"
         template = {'type': 'security', 'name': '', 'with_sub_vsys': 0, 'vsys': int(vsys_id)}
         # script_type = parameter["script_type"]
-
+        # 供优先级相关case使用
         if len(name_list) == 0:
 
             # 定义要删除的规则类型
@@ -390,21 +390,6 @@ class DeletePolicy:
                 rule_url_full = rule_url + '/' + rule_type
                 self.query_and_delete_by_name(rule_url_full, template, headers)
 
-            # api_rule_path_map = {
-            #     "security": "security-rules",
-            #     "proxy_intercept": "proxy-intercept-rules",
-            #     "proxy_manipulation": "proxy-manipulation-rules",
-            #     "traffic_shaping": "traffic-shaping-rules",
-            #     "service_chaining": "service-chaining-rules",
-            #     "statistics": "statistics-rules",
-            #     "monitor": "monitor-rules",
-            #     "dos_protection": "dos-protection-rules",
-            # }
-        #     for key, value in api_rule_path_map.items():
-        #         template['name'] = 'automation_test_policy'
-        #         template['type'] = key
-        #         rule_url_full = rule_url + '/' + value
-        #         self.query_and_delete_by_name(rule_url_full, template, headers)
             # 删除object
             url_types = [
                 'ip-addresses', 'fqdns', 'subscriber-ids', 'flags'
@@ -423,63 +408,6 @@ class DeletePolicy:
                 rule_url_full = obj_url + '/' + url_type
                 self.query_and_delete_by_name(rule_url_full, template, headers)
 
-            # api_object_path_map = {
-            #     "ip": "ip-addresses",
-            #     "fqdn": "fqdns",
-            #     "keywords": "keywords",
-            #     "subscriberid": "subscriber-ids",
-            #     "account": "accounts",
-            #     "flag": "flags",
-            # }
-            # for key, value in api_object_path_map.items():
-            #     template['name'] = 'automation_test_object'
-            #     template['type'] = key
-            #     obj_url_full = obj_url + '/' + value
-            #     self.query_and_delete_by_name(obj_url_full, template, headers)
-            # 删除profiles
-            # 删除Response Pages及其他配置
-            # template['name'] = 'automation_test_profile'
-            # profile_types = [
-            #     "response-pages", "dns-records", "proxy-hijack-files",
-            #     "proxy-inject-scripts", "http-manipulation-scripts"
-            # ]
-
-            # for profile_type in profile_types:
-            #     profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/{profile_type}"
-            #     if 'type' in template:
-            #         del template["type"]
-            #     self.query_and_delete_by_name(profile_url, template, headers)
-
-            # api_profile_path_map = {
-            #     "service_function_forwarder": "service-function-forwarders",
-            #     "service_function": "service-functions",
-            #     "statistics_template": "statistics-templates",
-            #     "response_page": "response-pages",
-            #     "hijack_file": "proxy-hijack-files",
-            #     "insert_script": "proxy-inject-scripts",
-            #     "traffic_mirror": "traffic-mirror-profiles",
-            #     "run_script": "http-manipulation-scripts",
-            #     "dns_record": "dns-records"
-            # }
-            # # 删除Service Function Forwarders和Service Functions
-            # template['name'] = 'test_sc_api'
-            # service_function_endpoints = [
-            #     "service-function-forwarders", "service-functions"
-            # ]
-
-            # for endpoint in service_function_endpoints:
-            #     profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/{endpoint}"
-            #     self.query_and_delete_by_name(profile_url, template, headers)
-
-            # # 删除Statistics Templates
-            # template['name'] = 'test_statistics_api'
-            # profile_url = f"{api_server}/v1/vsys{vsys_id}/profiles/statistics-templates"
-            # self.query_and_delete_by_name(profile_url, template, headers)
-
-            # 删除geolocation  24.08 版本临时注释掉
-            # geolocation_template = {'location_type': 'geoname_id', 'country': 'auto_geo_obj', 'vsys_id': vsys_id}
-            # geolocation_url = api_server + "/v1/policy/library/geolocation"
-            # self.delete_geolocation(geolocation_url, geolocation_template, headers, vsys_id)
         if len(name_list) > 0:
             for name_item in name_list:
                 if name_item["type"] in ["security", "service_chaining", "proxy_manipulation", "proxy_intercept", "monitor", "statistics", "dos_protection"]:
@@ -543,7 +471,7 @@ class DeletePolicy:
                         "proxy_js_file": "proxy-js-files",
                         "traffic_mirror": "traffic-mirroring-profiles",
                         "run_script": "proxy-lua-scripts",
-                        "dns_record": "dns-records",
+                        "dns_record": "dns-resource-records",
                         "ssl_keyring": "decryption-keyrings",
                         "ssl_decryption": "decryption-profiles",
                         "tcp_option": "proxy-tcp-option-profiles",
@@ -589,7 +517,7 @@ class DeletePolicy:
             elif 'response-pages' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'response_page'.replace("_", " ")
-            elif 'dns-records' in url:
+            elif 'dns-resource-records' in url:
                 data_list = return_json_data['data']['list']
                 delete_info = 'dns_records'.replace("_", " ")
             elif 'proxy-replacement-files' in url:

@@ -284,7 +284,7 @@ class CreateInterceptPolicy:
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
                 time.sleep(2)
-                """
+                
                 # 流量验证
                 verification = Verify()
                 verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")
@@ -292,7 +292,7 @@ class CreateInterceptPolicy:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
-                """
+            
             except Exception as e:
                 raise
             finally:
