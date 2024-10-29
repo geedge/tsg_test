@@ -90,6 +90,12 @@ class SearchRule:
                 # 选择UUID
                 self.driver.find_element(By.XPATH, ruleListPage_column_set_field_posXpath.format(replaceFiled="UUID")).click()
                 rule_id = self.driver.find_element(By.XPATH, "//div[contains(@class,'MuiDataGrid-row')][1]//div[@data-field='uuid']").text
+                #点击其他地方比如语言按钮让列选择小时,不然影响菜单切换
+                # 点击 语言快捷切换按钮
+                element_language_menu = self.driver.find_element(By.XPATH, language_button_posXpath)
+                # 移动元素到页面，再执行点击
+                self.driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
+                self.driver.execute_script("arguments[0].click();", element_language_menu)
                 return 200, rule_id
             elif type == "dos_protection":
                 rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
