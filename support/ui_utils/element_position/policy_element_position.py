@@ -15,7 +15,7 @@ mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
 
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
-language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']/.."#快捷切换语言按钮
+language_button_posXpath = "//div[@class='MuiBox-root css-1guk29']//div[1]/button" #快捷切换语言按钮
 policyRulePage_addSrcIP_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][1]//i[@class="iconfont icon-Create1 font-[700]"]'
 policyRulePage_searchSrcIP_posXpath = '//div[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectSrcIP_posXpath = '//ul[@class="MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3"]//li[1]//span[@class="truncate"]'
@@ -24,7 +24,7 @@ ruleListPage_createButton_posXpath = "//*[@class='action-create inline-flex mr-[
 ruleListPage_editButton_posXpath = "//*[@class='action-edit inline-flex mr-[8px] ']" #Rule列表上方Create按钮
 ruleListPage_deleteButton_posXpath ="//*[@class='action-delete inline-flex mr-[8px] ']" #Rule列表上方Create按钮
 ruleListPage_searchLabel_posXpath = "//div[contains(@class,'MuiAutocomplete-wrapper MuiAutocomplete-multiple')]//input[contains(@class,'MuiAutocomplete-input')]" #搜索输入框
-ruleListPage_searchLabel_dropDown_item_posXpath = "//span[normalize-space(text())='{replaceValue}']/../.." #下拉菜单定位
+ruleListPage_searchLabel_dropDown_item_posXpath = "//ul[@role='listbox']//li//div//span[normalize-space(text())='{replaceValue}']/.." #下拉菜单定位
 ruleListPage_searchLabel_input_itemContent_posXpath = "//input[contains(@class,'MuiAutocomplete-input')]"  #输入item的值，replaceValue替换实际查询值
 ruleListPage_searchLabel_searchButton_posXpath = "//*[@class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w']"
 ruleListPage_tableTbody_posXpath = "//*[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']" #Rule列表table
@@ -48,6 +48,9 @@ rulePage_okButton_warningNo_posXpath = ""
 rulePage_delete_tip_warning_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//div[contains(@class,'text-center color-[--color-text] mt-[12px] MuiBox-root')]" #删除告警页面提示信息
 rulePage_delete_tip_button_warningYes_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[@type='danger']" #删除告警页面，Yes确认删除按钮
 rulePage_delete_tip_button_warningNo_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[contains(@class,'MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary')]" ##删除告警页面，No取消删除按钮
+
+ruleListPage_column_set_button_posXpath = "//div[@class='MuiDataGrid-columnHeaderTitleContainerContent']//button" #点击列设置，让UUI显示
+ruleListPage_column_set_field_posXpath = "//div[@role='tooltip']//div//label//span[normalize-space(text())='{replaceFiled}']/parent::*" #对应列选择
 
 policyRulePage_searchCondition_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectCondition_posXpath= "//ul[contains(@class,'MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd')]//li//*[normalize-space(text())='{replaceValue}']"

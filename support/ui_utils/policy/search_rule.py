@@ -3,6 +3,8 @@
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
 import time
+
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policy.page_jump import PageJump
@@ -55,12 +57,15 @@ class SearchRule:
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)
             # 强制点击search查询框
-            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posId"])
+            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posXpath"])
             self.driver.execute_script("arguments[0].click()", btn)
-            dropdown_item_posXpath = search_element_position["policyRuleListPage_searchLabel_dropDown_item_posXpath"].format(replaceValue="Name")
-            self.driver.find_element(By.XPATH, dropdown_item_posXpath).click()
-            input_item_posXpath = search_element_position["policyRuleListPage_searchLabel_input_itemContent_posXpath"].format(replaceValue="Name")
-            self.driver.find_element(By.XPATH, input_item_posXpath).send_keys(name)
+            # 通过name 查询时
+            # 先输入Name，下拉列表显示Name contains rulename后选择对应选项
+            self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posXpath"]).send_keys(Keys.CONTROL + "a")
+            self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_posXpath"]).send_keys(name)
+            # 下拉列表显示Name contains rulename后选择对应选项
+            btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_dropDown_item_posXpath"].format(replaceValue="Name"))
+            self.driver.execute_script("arguments[0].click()", btn)  # 点击查询下拉菜单中item
             btn = self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_searchButton_posId"])
             self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             time.sleep(1)
@@ -80,7 +85,11 @@ class SearchRule:
                 rule_id = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
                 return 200, rule_id
             elif type == "statistics":
-                rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+                # 点击列设置打开列设置界面
+                self.driver.find_element(By.XPATH, ruleListPage_column_set_button_posXpath).click()
+                # 选择UUID
+                self.driver.find_element(By.XPATH, ruleListPage_column_set_field_posXpath.format(replaceFiled="UUID")).click()
+                rule_id = self.driver.find_element(By.XPATH, "//div[contains(@class,'MuiDataGrid-row')][1]//div[@data-field='uuid']").text
                 return 200, rule_id
             elif type == "dos_protection":
                 rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text

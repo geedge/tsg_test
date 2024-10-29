@@ -762,7 +762,7 @@ class GetLog:
             "dsl": {
                 "name": "customized-statistics",
                 "data_source": "statistics_rule",
-                "filter": "vsys_id in (1) and rule_id = 282009 and template_id = 3015 and chart_id = 3026 and version = 4",
+                "filter": "vsys_id in (1) and rule_uuid = '282009' and template_uuid = '3015' and chart_uuid = '3026' and version = 4",
                 "custom.statistics.dimensions": [
                     {
                         "metric_name": "client_country",
@@ -793,7 +793,7 @@ class GetLog:
         post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
         post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
         post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
-        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_uuid = {} and template_uuid = {} and chart_uuid = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
+        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_uuid = '{}' and template_uuid = '{}' and chart_uuid = '{}' and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
         if statistics_info["chart_type"] == "bar":
             variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
@@ -828,7 +828,7 @@ class GetLog:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}, template_id:{}, chart_id:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_uuid:{}, template_uuid:{}, chart_uuid:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],  "Exception when getting Metrics data from the interface.")
             return [False, "The statistics metric API query failed."]
@@ -951,7 +951,7 @@ class GetLog:
                                         break
                                 if break_flag == 1:
                                     break  # 退出累加循环
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: {}".format(statistics_value), flush=True)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: {}".format(statistics_value), flush=True)
                         # 时差，速率使用:
                         util = UtilStatisticsTemplate()
                         time_dif_seconds = util.time_dif_seconds(start_time, end_time)

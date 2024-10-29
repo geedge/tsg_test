@@ -35,7 +35,7 @@ class OrganizeConfig:
                                 statistics_info = {}
                                 statistics_info["rule_id"] = test_data["rule_id"]
                                 statistics_info["template_id"] = template_id
-                                statistics_info["chart_id"] = chart["id"]
+                                statistics_info["chart_id"] = chart["uuid"]
                                 statistics_info["chart_type"] = chart["display"]["type"]
                                 statistics_info["version"] = chart["version"]
                                 if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:

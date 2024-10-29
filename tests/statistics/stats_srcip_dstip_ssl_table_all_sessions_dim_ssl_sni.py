@@ -86,7 +86,7 @@ def run(parameter):
                 ],
                 "server_fqdn": [
                     {
-                        "name": "test_example",
+                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                         "object_type": "fqdn",
                         "select_type": False,
                         "negate": False,
