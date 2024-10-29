@@ -1693,19 +1693,19 @@ profile_hijack_file_element_position = {
     },
     "create": {
         "profileListPage_createButton_posXpath": listPage_profile_hijackFiles_createButton_posXpath,
-        "profilePage_inputName_posId": hijackFiles_input_Name_posId,
-        "profilePage_okButton_posCss": hijackFiles_button_oK_posCss,
-        "profilePage_okButton_warningYes_posCss": hijackFiles_button_warningSaveYes_posCss,
+        "profilePage_inputName_posXpath": hijackFiles_input_Name_posXpath,
+        "profilePage_okButton_posXpath": hijackFiles_button_oK_posXpath,
+        "profilePage_okButton_warningYes_posCss": hijackFiles_button_warningSaveYes_posXpath,
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_hijackFiles_selectLabel_posXpath,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_hijackFiles_selectLabel_posXpath,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_hijackFiles_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_hijackFiles_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_hijackFiles_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_hijackFiles_delButton_posXpath,
+        "profileListPage_deleteButton_posXpath": listPage_profile_hijackFiles_delButton_posXpath,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_hijackFiles_button_yes_posXpath
     }
 }

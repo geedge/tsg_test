@@ -39,7 +39,7 @@ mainPage_secondLevelMenu_cachedIntermediateCertificates_posId = "Proxy_Certifica
 mainPage_secondLevelMenu_sslFingerprint_posId = "Proxy_CertificateManagement/SSL_Fingerprint"  # 二级菜单SSL Fingerprint
 mainPage_secondLevelMenu_tcpProxyProfiles_posId = "Advanced/advanced"  # 二级菜单tcp proxy profiles
 mainPage_secondLevelMenu_hijackFiles_posId = "Proxy_Profiles/Profile_HijackFiles"  # 二级菜单hijack files
-mainPage_secondLevelMenu_hijackFiles_posName = "JS Files"  # 二级菜单hijack files
+mainPage_secondLevelMenu_hijackFiles_posName = "Replacement Files"  # 二级菜单hijack files
 mainPage_secondLevelMenu_insertScripts_posId = "Proxy_Profiles/Profile_Insert"  # 二级菜单insert scripts
 mainPage_secondLevelMenu_tsgProxyScripts_posId = "Proxy_Profiles/runScript"  # 二级菜单tsg proxy scripts
 mainPage_secondLevelMenu_vpnAccounts_posId = "Setting_Wannat/VPN_Account"  # 二级菜单vpn accounts
@@ -462,16 +462,16 @@ listPage_linkTips_hijackFiles_button_add_posXpath = "//*[@id='temporary_form-_Cl
 listPage_linkTips_hijackFiles_button_OK_posXpath = "//*[@id='copyOk-_copyComponents_Profile_HijackFiles_Home_App_anonymousComponent']/span"    # OK 按钮 xpath
 # Create hijack files page 和 Edit hijack files page   新增和编辑页
 hijackFiles_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-hijackFiles_input_Name_posId = "hijack_name"  # name输入框id
-hijackFiles_input_fileUpLoad_posXpath = "//*[@id='uploadFile']/parent::*//input"  # input 上传文件xpath
-hijackFiles_switch_downLoadName_posXpath = "//*[@id='contentNameChoose']/parent::*"  # download name状态开关  xpath，点击操作其子元素改变状态
-hijackFiles_input_downLoadName_posXpath = "//*[@id='hijack_contentName']"  # 下载文件名称输入框 xpath
-hijackFiles_button_fileType_posXpath = "//*[normalize-space(text())='File Type']/parent::*//input"  # 添加文件类型按钮 xpath
-hijackFiles_tablist_fileType_posXpath = "//*[@class='el-scrollbar']//span[normalize-space(text())='{replaceName}']"  # 右侧滑中type元素定位 xpath。需要二次处理，replaceName替换为类型名称
-hijackFiles_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
-hijackFiles_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
-hijackFiles_button_oK_posCss = "#hijackAddOk1 span"  # OK按钮css
-hijackFiles_button_cancel_posCss = "#hijackAddCancel1 span"  # Cancel按钮
+hijackFiles_input_Name_posXpath = "//div[@class='proxy-replacement-file-name']//input"  # name输入框xpath
+hijackFiles_input_fileUpLoad_posXpath = "//div[@class='proxy-replacement-file-file']//input"  # input 上传文件xpath
+hijackFiles_switch_downLoadName_posXpath = "//div[@class='proxy-replacement-file-content_name']//span[contains(@class, ' MuiSwitch-switchBase')]"  # download name状态开关  xpath，点击操作其子元素改变状态
+hijackFiles_input_downLoadName_posXpath = "//div[@class='proxy-replacement-file-content_name']//div[contains(@class, 'MuiInput-root')]//input"  # 下载文件名称输入框 xpath
+hijackFiles_button_fileType_posXpath = "//div[@class='proxy-replacement-file-content_type']//button"  # 添加文件类型按钮 xpath
+hijackFiles_tablist_fileType_posXpath = "//div[@role='listbox']//li[contains(text(), '{replaceName}')]"  # 右侧滑中type元素定位 xpath。需要二次处理，replaceName替换为类型名称
+hijackFiles_button_warningSaveYes_posXpath = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
+hijackFiles_button_warningSaveCancel_posXpath = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
+hijackFiles_button_oK_posXpath = "//div[contains(@class, 'proxy-replacement-file-page')]//div[contains(@class, 'form-action')]//button[1]"  # OK按钮css
+hijackFiles_button_cancel_posXpath = "//div[contains(@class, 'proxy-replacement-file-page')]//div[contains(@class, 'form-action')]//button[2]"  # Cancel按钮
 
 # Profiles insert scripts===================Profiles insert scripts====================Profiles insert scripts=================Profiles insert scripts=======================Profiles insert scripts
 # listPage->insert scripts list page  列表页
