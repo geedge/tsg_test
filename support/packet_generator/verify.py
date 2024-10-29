@@ -56,7 +56,7 @@ class Verify:
                     ui_verification = UiVerification()
                     ui_verification_result = ui_verification.ui_verification(my_driver, parameter, test_data, api_verification_result, test_rule_element_position, traffic_result, cfg_list)
                     # 对比api和ui返回的每个结果，如果都一样，则结果是true，如果二者有一个不同，就为false
-                    if policy_type == "security" or policy_type == "service_chaining" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor":
+                    if policy_type == "security" or policy_type == "service_chaining" or policy_type == "proxy_intercept" or policy_type == "proxy_manipulation" or policy_type == "monitor":
                         if api_verification_result[0] == True and ui_verification_result[0] == True:
                             verification_result[0] = True
                         else:

@@ -47,7 +47,7 @@ class APIVerification:
             self.rule_type = self.policy_configuration["type"]
             
             get_metric_log = GetMetricLog(self.parameter, self.policy_configuration, self.traffic_generation, self.configuration_manager)
-            if self.rule_type == "security" or self.rule_type == "pxy_intercept" or self.rule_type == "pxy_manipulation" or self.rule_type == "monitor" :
+            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" :
                 utc_tz = pytz.timezone('UTC')
                 current_utc_time = datetime.now(utc_tz) - timedelta(seconds=90)
                 start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -505,7 +505,7 @@ class APIVerification:
                                     temp_log_result_list.append(False)
                     else:
                         temp_log_result_list.append(False)
-                if self.rule_type == 'pxy_intercept' and len(temp_log_result_list) < len(log_query):
+                if self.rule_type == 'proxy_intercept' and len(temp_log_result_list) < len(log_query):
                     if True in temp_log_result_list:
                         log_result = True
                     else:

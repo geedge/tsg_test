@@ -72,7 +72,7 @@ class DataTranslation:
             if data["log_options"] == "all":  # 1
                 data["do_log_1"] = 1
         # manipulation api test_data 数据补齐
-        if policy_type == "pxy_manipulation":
+        if policy_type == "proxy_manipulation":
             if data["rule_action"] == "deny":
                 if "response_page" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["response_page"][0]["response_code"]
@@ -1324,7 +1324,7 @@ class DataTranslation:
                         temp["chart_list"][t]["metrics"][k]["function"] = temp_profile["charts"][t]["metrics"][k].split(":")[1]
                 """
                 profile.append(temp)
-        elif policy_type == "pxy_intercept":
+        elif policy_type == "proxy_intercept":
             temp_profile = data["action_parameter"]
             for k, v in temp_profile.items():
                 if len(v) == 0:
@@ -1573,7 +1573,7 @@ class DataTranslation:
                         for i in range(len(vlan_id)):
                             temp["traffic_mirroring_profile"]["vlan_array"].append(vlan_id[i])
                         profile.append(copy.deepcopy(temp))
-        elif policy_type == "pxy_manipulation":
+        elif policy_type == "proxy_manipulation":
             temp_profile = data["action_parameter"]
             for k, v in temp_profile.items():
                 if len(v) == 0:

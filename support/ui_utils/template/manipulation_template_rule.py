@@ -3,7 +3,7 @@ test_data = \
             {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "pxy_manipulation",
+            "policy_type": "proxy_manipulation",
             "rule_name": "manipulation_rule_with_allow_src_ip",
             "rule_action": "allow",
             "rule_type": "create",

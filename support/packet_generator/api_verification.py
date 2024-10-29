@@ -62,7 +62,7 @@ class ApiVerification:
             policy_id_list.append(list(create_policies_ids[i].values())[0])
         
         log = support.api_utils.get_log.GetLog()
-        if policy_type == "security" or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor" :
+        if policy_type == "security" or policy_type == "proxy_intercept" or policy_type == "proxy_manipulation" or policy_type == "monitor" :
             #如果是通过trex回放，需要替换src ip
             if test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex":
                 test_pc_ip = test_data["condition"]["source_ip"][0]["item"][0]["item_value"]

@@ -37,9 +37,9 @@ class CreateRule:
             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_inputName_posXpath"]).send_keys(rule_name)
             
             # 选择action
-            if test_data["policy_type"] == "security" or test_data["policy_type"] == "pxy_intercept" or test_data["policy_type"] == "dos_protection":
+            if test_data["policy_type"] == "security" or test_data["policy_type"] == "proxy_intercept" or test_data["policy_type"] == "dos_protection":
                 self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAction_posXpath"]).click()
-            elif test_data["policy_type"] == "pxy_manipulation":
+            elif test_data["policy_type"] == "proxy_manipulation":
                 if test_data["rule_action"] == "allow":
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectAllow_posXpath"]).click()
                 elif test_data["rule_action"] == "deny":
@@ -204,7 +204,7 @@ class CreateRule:
 
             # 添加application
             if "application" in test_data["condition"] and len(test_data["condition"]["application"]) != 0:
-                if test_data["policy_type"] == "pxy_manipulation":
+                if test_data["policy_type"] == "proxy_manipulation":
                     if  test_data["condition"]["application"][0]["name"].lower() == "doh":  # doh需要操作application
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addApplication_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchDoHApplication_posXpath"], find_before_wait_time=0.5).click()
@@ -218,7 +218,7 @@ class CreateRule:
                     for j in range(len(application_data)):
                         if application_data[j]["object_type"] == "application_group":
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplicationGroupLabel_posXpath"]).click()
-                        if test_data["policy_type"] == "pxy_intercept":  # intercept 中 application不用搜索，直接选择
+                        if test_data["policy_type"] == "proxy_intercept":  # intercept 中 application不用搜索，直接选择
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_selectApplication_posXpath"].format(replaceValue=application_data[j]["name"]), find_after_wait_time=0.5).click()
                         else:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=0.5).clear()
@@ -571,7 +571,7 @@ class CreateRule:
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_closeProfile_posXpath"]).click()
                         if test_data["multiProfile"] == True and y != len(profile_data) - 1:
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_addProfile_plus_posXpath"]).click()
-                elif test_data["policy_type"] == "pxy_intercept":
+                elif test_data["policy_type"] == "proxy_intercept":
                     profile_data = test_data["action_parameter"]
                     if "ssl_decryption_keyring" in profile_data.keys():
                         ssl_decryption_keyrings = profile_data["ssl_decryption_keyring"]
@@ -644,7 +644,7 @@ class CreateRule:
                             # 选择第一个
                             self.driver.find_element(By.XPATH, create_element_position["policyRulePage_intercept_searchTcpProfileDorpItem_posXpath"], find_after_wait_time=0.6).click()
 
-                elif test_data["policy_type"] == "pxy_manipulation":
+                elif test_data["policy_type"] == "proxy_manipulation":
                     profile_data = test_data["action_parameter"]
                     # 页面滚动到最底部
                     div_container = self.driver.find_element(By.XPATH, "//div[@id='root']//div[contains(@class, 'manipulation-policy-page')]")
@@ -902,7 +902,7 @@ class CreateRule:
                     self.driver.find_element(By.XPATH, create_element_position["policyRulePage_mitigationBehavior_posXpath"]).click()
 
             # other options 操作
-            if test_data["policy_type"] == "pxy_manipulation":
+            if test_data["policy_type"] == "proxy_manipulation":
                 # log option =》 log all
                 if "log_options" in test_data:
                     if test_data["log_options"] == "all":

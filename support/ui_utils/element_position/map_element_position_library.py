@@ -1855,10 +1855,6 @@ def get_name_list(test_data):
     tmp_name_dict = {}
     # 添加策略的
     tmp_name_dict["type"] = test_data["policy_type"]
-    if tmp_name_dict["type"] == "pxy_manipulation":
-        tmp_name_dict["type"] = "proxy_manipulation"
-    if tmp_name_dict["type"] == "pxy_intercept":
-        tmp_name_dict["type"] = "proxy_intercept"
     if "rule_name" in test_data:
         tmp_name_dict["name"] = test_data["rule_name"]
         name_list.append(copy.deepcopy(tmp_name_dict))
@@ -1949,7 +1945,7 @@ def create_pre_policy(data, driver):
     intercept_temp = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "pxy_intercept",
+            "policy_type": "proxy_intercept",
             "rule_name": "manipulation_pre_intercept",
             "rule_action": "intercept",
             "rule_type": "create",
@@ -2002,7 +1998,7 @@ def create_pre_policy(data, driver):
         intercept_temp["rule_name"] = "service_chaining_pre_intercept"
     intercept_temp["condition"]["source_ip"] = data["condition"]["source_ip"]
     security_rule_element_position = get_element_position("security")
-    intercept_rule_element_position = get_element_position("pxy_intercept")
+    intercept_rule_element_position = get_element_position("proxy_intercept")
     #create_rule.create(security_temp_deny_quic, security_rule_element_position)
     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create security rule successfully.", flush=True)
     result_info = create_rule.create(intercept_temp, intercept_rule_element_position)
@@ -2016,7 +2012,7 @@ def create_pre_policy(data, driver):
         #     "name": security_temp_deny_quic["rule_name"],
         # },
         {
-            "type": "pxy_intercept",
+            "type": "proxy_intercept",
             "name": intercept_temp["rule_name"],
         }
     ]
@@ -2031,7 +2027,7 @@ def delete_pre_policy(name_list, driver):
         search_rule_code, first_row_checkbox_element = search_rule.search(policy_type, policy_name, element_position)
         delete_rule = DeleteRule(driver)
         delete_rule_code = delete_rule.delete(element_position, first_row_checkbox_element, True)
-        if policy_type == "pxy_intercept":
+        if policy_type == "proxy_intercept":
             policy_type = "intercept"
         if delete_rule_code == 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} rule successfully.".format(policy_type))
@@ -2085,7 +2081,7 @@ def get_element_position(key_name):
     elif key_name == "run_script":
         element_position_map = profile_run_script_element_position
     # policy
-    elif key_name == "pxy_manipulation":
+    elif key_name == "proxy_manipulation":
         element_position_map = policy_manipulation_rule_element_position
     elif key_name == "security":
         element_position_map = policy_security_rule_element_position
@@ -2093,7 +2089,7 @@ def get_element_position(key_name):
         element_position_map = policy_monitor_rule_element_position
     elif key_name == "dos_protection":
         element_position_map = policy_dos_protection_rule_element_position
-    elif key_name == "pxy_intercept":
+    elif key_name == "proxy_intercept":
         element_position_map = policy_intercept_rule_element_position
     elif key_name == "statistics":
         element_position_map = policy_statistics_rule_element_position

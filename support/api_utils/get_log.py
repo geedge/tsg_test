@@ -39,9 +39,9 @@ class GetLog:
         for i in range(rule_num):
             if policy_type == 'security':
                 schema_type = 'security_event'
-            elif policy_type == 'pxy_intercept':
+            elif policy_type == 'proxy_intercept':
                 schema_type = 'session_record'
-            elif policy_type == 'pxy_manipulation':
+            elif policy_type == 'proxy_manipulation':
                 schema_type = 'proxy_event'
             elif policy_type == 'monitor':
                 schema_type = 'monitor_event'
@@ -53,11 +53,11 @@ class GetLog:
                 log_source = 'security_event'
                 identifier_name = 'security-event-list'
                 log_query_rule_type = 'security_rule_uuid_list'
-            elif policy_type == 'pxy_intercept':
+            elif policy_type == 'proxy_intercept':
                 log_source = 'session_record'
                 identifier_name = 'session-record-list'
                 log_query_rule_type = 'proxy_rule_list'
-            elif policy_type == 'pxy_manipulation':
+            elif policy_type == 'proxy_manipulation':
                 log_source = 'proxy_event'
                 identifier_name = 'proxy-event-manipulation-list'
                 log_query_rule_type = 'proxy_rule_uuid_list'
@@ -327,7 +327,7 @@ class GetLog:
                                         temp_log_result_list.append(False)
                         else:
                             temp_log_result_list.append(False)
-                    if policy_type == 'pxy_intercept' and len(temp_log_result_list) < len(log_query_params):
+                    if policy_type == 'proxy_intercept' and len(temp_log_result_list) < len(log_query_params):
                          # 动态passthrough
                         if True in temp_log_result_list:
                             log_result = True
@@ -532,7 +532,7 @@ class GetLog:
             policy_type = test_data["policy_type"]
             if policy_type == 'security':
                 dataset_identifier_name = "security-policy-rule-statistics"
-            elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
+            elif policy_type == 'proxy_intercept' or policy_type == 'proxy_manipulation':
                 dataset_identifier_name = "proxy-policy-rule-statistics"
             elif policy_type == 'monitor':
                 dataset_identifier_name = "monitor-policy-rule-statistics"

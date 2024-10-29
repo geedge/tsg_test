@@ -37,7 +37,7 @@ class UIVerification:
         if edit_rule_code != 200:
             return "Fail to edit rule when ui verification."
         
-        if rule_type == "security"  or rule_type == "pxy_intercept" or rule_type == "pxy_manipulation" or rule_type == "monitor" or rule_type == "statistics":
+        if rule_type == "security"  or rule_type == "proxy_intercept" or rule_type == "proxy_manipulation" or rule_type == "monitor" or rule_type == "statistics":
             # 从ui上判断metric_result
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get hit count from ui detail page.", flush=True)
             hit_count = -1

@@ -21,9 +21,9 @@ class UIClient:
             result = self.create_statistics_rule(parameter, policy_configuration, driver)
         elif "type" in policy_configuration.keys() and policy_configuration["type"] == "dos_protection":
             result = self.create_dos_protection_rule(parameter, policy_configuration, driver)
-        elif "type" in policy_configuration.keys() and policy_configuration["type"] == "pxy_intercept":
+        elif "type" in policy_configuration.keys() and policy_configuration["type"] == "proxy_intercept":
             result = self.create_intercept_rule(parameter, policy_configuration, driver)
-        elif "type" in policy_configuration.keys() and policy_configuration["type"] == "pxy_manipulation":
+        elif "type" in policy_configuration.keys() and policy_configuration["type"] == "proxy_manipulation":
             result = self.create_manipulation_rule(parameter, policy_configuration, driver)
         elif "type" in policy_configuration.keys() and policy_configuration["type"] == "service_chaining":
             result = self.create_service_chaining_rule(parameter, policy_configuration, driver)

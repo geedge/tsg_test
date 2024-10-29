@@ -1,5 +1,5 @@
 {
-    "type": "pxy_intercept",
+    "type": "proxy_intercept",
     "return_data": 1,
     "vsys_id": "6",
     "rule": {

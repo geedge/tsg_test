@@ -23,7 +23,7 @@ def run(parameter):
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "pxy_intercept",
+            "policy_type": "proxy_intercept",
             "rule_name": parameter["test_case_name"],
             "rule_action": "intercept",
             "rule_type": "create",

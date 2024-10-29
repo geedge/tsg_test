@@ -54,9 +54,7 @@ class DeletePolicy:
                     delete_rule_template['type'] = list(create_policies_ids[i].keys())[0]
                     api_path_map = {
                         "security": "security-rules",
-                        "pxy_intercept": "proxy-intercept-rules",
                         "proxy_intercept": "proxy-intercept-rules",
-                        "pxy_manipulation": "proxy-manipulation-rules",
                         "proxy_manipulation": "proxy-manipulation-rules",
                         "traffic_shaping": "traffic-shaping-rules",
                         "service_chaining": "service-chaining-rules",

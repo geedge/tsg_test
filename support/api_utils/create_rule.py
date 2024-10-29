@@ -264,7 +264,7 @@ class CreatePolicyRule:
             user_region["template_profile"] = create_profile_ids[0]["uuid"]
             rule_template_dict["rule"]["action_parameter"] = user_region
         # 添加intercept逻辑, 填写和Intercept相关的user_region
-        elif condition["policy_type"] == "pxy_intercept":
+        elif condition["policy_type"] == "proxy_intercept":
             user_region = {"protocol": "", "tcp_option_profile": 1}
             rule_template_dict["rule"]["type"] = condition["policy_type"] = "proxy_intercept"
             pre_intercept_path = path_dict["pre_intercept_template_path"]
@@ -316,10 +316,10 @@ class CreatePolicyRule:
                         user_region["traffic_mirroring"]["mirroring_profile"] = traffic_mirror
             rule_template_dict["rule"]["action_parameter"] = user_region
         # 创建manipulation策略
-        elif condition["policy_type"] == "pxy_manipulation":
+        elif condition["policy_type"] == "proxy_manipulation":
             # 创建manipulation策略前先下发一条deny_quic策略和一条intercept策略
             tmp_list = []  # 前置拦截策略，只添加src ip
-            pre_policy_id_list = self.create_associated_rule(headers, api_host, and_conditions_list, tmp_list, path_dict, vsys_id, "pxy_manipulation")
+            pre_policy_id_list = self.create_associated_rule(headers, api_host, and_conditions_list, tmp_list, path_dict, vsys_id, "proxy_manipulation")
             user_region = {}
             # rule_template_dict["rule"]["type"] = condition["policy_type"]
             rule_template_dict["rule"]["type"] = condition["policy_type"] = "proxy_manipulation"
@@ -455,7 +455,7 @@ class CreatePolicyRule:
             if and_conditions_list[i]["or_conditions"][0]["attribute_name"] in ["ATTR_SOURCE_IP", "ATTR_DESTINATION_IP", "ATTR_SERVER_FQDN"]:
                 pre_intercept_template_path['rule']['and_conditions'].append(and_conditions_list[i])
 
-        if associated_policy == "pxy_manipulation":
+        if associated_policy == "proxy_manipulation":
             tmp_name = "manipulation_pre_intercept"
         else:
             tmp_name = "service_chaining_pre_intercept"

@@ -251,7 +251,7 @@ class CreateInterceptPolicy:
                 #print(test_data)
 
                 self.api_name_list = get_name_list(test_data)
-                self.api_name_list.insert(0, {'type': 'pxy_intercept', 'name': 'manipulation_pre_intercept'})
+                self.api_name_list.insert(0, {'type': 'proxy_intercept', 'name': 'manipulation_pre_intercept'})
 
                 # 添加测试过程中涉及的template
                 template_path = {}

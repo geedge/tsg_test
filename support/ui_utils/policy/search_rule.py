@@ -73,10 +73,10 @@ class SearchRule:
             elif type == "monitor":
                 rule_id = self.driver.find_element(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span").text
                 return 200, rule_id
-            elif type == "pxy_intercept":
+            elif type == "proxy_intercept":
                 rule_id = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
                 return 200, rule_id
-            elif type == "pxy_manipulation":
+            elif type == "proxy_manipulation":
                 rule_id = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
                 return 200, rule_id
             elif type == "statistics":
