@@ -109,7 +109,7 @@ def run(parameter):
                               "decoded_as",
                               "device_group"
                           ],
-                          "order_by": "Packets",
+                          "order_by": "pkts",
                           "row_limit": "1000",
                           "min_in_size": "0",
                           "min_out_size": "0"
@@ -126,7 +126,7 @@ def run(parameter):
                                 "decoded_as",
                                 "device_group"
                             ],
-                            "order_by": "Packets",
+                            "order_by": "pkts",
                             "row_limit": "500",
                             "min_in_size": "0",
                             "min_out_size": "0"
