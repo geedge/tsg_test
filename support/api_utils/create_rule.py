@@ -92,16 +92,16 @@ class CreatePolicyRule:
             elif method == "block" and 'message_'+str(create_number) not in condition:
                 rule_template_dict['rule']['action_parameter']['code'] = condition['code_'+str(create_number)]
                 if str(condition['code_'+str(create_number)])[0] != "5":
-                    rule_template_dict['rule']['action_parameter']["profile"] = create_profile_ids[0]["uuid"]
-                    rule_template_dict['rule']['action_parameter']["message"] = "html_profile"
+                    rule_template_dict['rule']['action_parameter']["html_profile"] = create_profile_ids[0]["uuid"]
+                    # rule_template_dict['rule']['action_parameter']["message"] = "html_profile"
             elif method == "alert" and 'message_'+str(create_number) in condition:
                 rule_template_dict['rule']['action_parameter']['code'] = condition['code_' + str(create_number)]
                 rule_template_dict['rule']['action_parameter']["message"] = condition['message_' + str(create_number)]
             elif method == "alert" and 'message_'+str(create_number) not in condition:
                 rule_template_dict['rule']['action_parameter']['code'] = condition['code_' + str(create_number)]
                 if condition['code_' + str(create_number)] == 200:
-                    rule_template_dict['rule']['action_parameter']["profile"] = create_profile_ids[0]["uuid"]
-                    rule_template_dict['rule']['action_parameter']["message"] = "html_profile"
+                    rule_template_dict['rule']['action_parameter']["html_profile"] = create_profile_ids[0]["uuid"]
+                    # rule_template_dict['rule']['action_parameter']["message"] = "html_profile"
             elif method == "rate_limit":
                 rule_template_dict['rule']['action_parameter']['bps'] = condition['bps_' + str(create_number)]
             elif method == "tamper":
