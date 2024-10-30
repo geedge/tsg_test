@@ -413,12 +413,13 @@ class CreatePolicyRule:
                                 user_region["traffic_mirroring"] = {
                                     "enable": 1 if traffic_mirror_config.get('is_enabled', False) else 0,
                                     # "mirror_profile": traffic_mirror_config.get('name', create_profile_ids[0]["id"])
-                                    "mirroring_profile": create_profile_ids[0]["id"]
+                                    "vlanID": 1 if create_profile_ids[0]["uuid"] else 0,
+                                    "mirroring_profile": create_profile_ids[0]["uuid"]
                                 }
                                 break  # 找到后退出循环
                         else:
                             # 没有找到具体的 traffic_mirror 配置，使用默认配置
-                            user_region["traffic_mirroring"] = {"enable": 1, "mirroring_profile": create_profile_ids[0]["uuid"]}
+                            user_region["traffic_mirroring"] = {"enable": 1, "vlanID": 1, "mirroring_profile": create_profile_ids[0]["uuid"]}
                     else:
                         # 没有 profile_condition，但镜像需要启用
                         user_region["traffic_mirroring"] = {"enable": 1}

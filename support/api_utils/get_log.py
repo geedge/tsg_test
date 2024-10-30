@@ -85,8 +85,9 @@ class GetLog:
             elif "obj_condition" in test_data.keys():
                 temp_obj_condition = test_data["obj_condition"]
             if policy_type == "dos_protection":
-                attack_type = "Custom Network Attack"
-                log_condition_dict['filter'] = f"destination_ip='{test_data['traffic']['servers_start_ip']}'AND attack_type='{attack_type}'"
+                # 24.10 版本attack_type取消
+                # attack_type = "Custom Network Attack"
+                log_condition_dict['filter'] = f"destination_ip='{test_data['traffic']['servers_start_ip']}'"
             else:
                 if script_type == "api" and len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
                     log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},'{policy_id}')"
@@ -120,12 +121,12 @@ class GetLog:
                         exclude_fields = {
                             "packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts",
                             "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
-                            "attack_type", "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
+                            "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
                             "basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate",
                             "rule_uuid","conditions"
                         }
                         dos_verify_fields = {
-                            "attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate",
+                            "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate",
                             "basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets","basic_packet_rate", "basic_bytes", "basic_bit_rate",
                             "rule_id","conditions","source_ip_list","destination_ip"
                         }
@@ -436,13 +437,14 @@ class GetLog:
         exp_packets_count = exp_sessions_count * total_packets
         exp_bytes_count = exp_sessions_count * total_bytes
         #字段的验证:Bytes验证是否大于0、为负数;不再验证具体的值，不同用例回放数据包不同，Bytes无固定值
-        if query_field_key == "attack_type":
-            if query_value.replace("_", " ") == log[query_field_key].lower():
-                temp_log_result_list.append(True)
-            else:
-                temp_log_result_list.append(False)
+        # 24.10 版本此字段取消
+        # if query_field_key == "attack_type":
+        #     if query_value.replace("_", " ") == log[query_field_key].lower():
+        #         temp_log_result_list.append(True)
+        #     else:
+        #         temp_log_result_list.append(False)
 
-        elif query_field_key == "sessions":
+        if query_field_key == "sessions":
             if exp_sessions_count == log[query_field_key]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]  # time,第几次循环，则给log_query_param中的第几次-1的数赋值
