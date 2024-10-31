@@ -806,6 +806,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_runScript_addrunScriptProfileSelectBox_posXpath": manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath,
         "policyRulePage_runScript_searchrunScriptProfile_posXpath": manipulationRulePage_insert_searchrunScriptProfile_posXpath,
         "policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath": manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath,
+        "policyRulePage_runScript_closerunScriptProfile_posXpath": manipulationRulePage_runScript_closerunScriptProfile_posXpath,
         # other options
         "policyRulePage_logOptions_all_posXpath": manipulationRulePage_logOptions_all_posXpath,
         # effective devices
@@ -1772,25 +1773,27 @@ profile_run_script_element_position = {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_tsgProxyScripts_posName,
         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tsgProxyScripts_posId
     },
     "create": {
-        "profileListPage_createButton_posXpath": listPage_profile_tsgProxyScripts_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_tsgProxyScripts_createButton_posXpath,
         "profilePage_inputName_posXpath": tsgProxyScripts_input_Name_posXpath,
-        "profilePage_okButton_posCss": tsgProxyScripts_button_oK_posCss,
-        "profilePage_okButton_warningYes_posCss": tsgProxyScripts_button_warningSaveYes_posCss,
+        "profilePage_okButton_posCss": tsgProxyScripts_button_oK_posXpath,
+        "profilePage_okButton_warningYes_posXpath": tsgProxyScripts_button_warningSaveYes_posXpath,
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_insertScripts_selectLabel_posXpath,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_insertScripts_selectLabel_posXpath,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_insertScripts_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_insertScripts_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_insertScripts_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_tsgProxyScripts_delButton_posId,
+        "profileListPage_deleteButton_posXpath": listPage_profile_tsgProxyScripts_delButton_posXpath,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_tsgProxyScripts_button_yes_posXpath
     }
 }

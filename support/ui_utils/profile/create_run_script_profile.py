@@ -17,9 +17,9 @@ class CreateRunScriptProfile:
         #页面其它选项操作
         self._operate_page(data, operation_type="create")
         #点击OK
-        self.driver.find_element(By.CSS_SELECTOR, tsgProxyScripts_button_oK_posCss).click()
-        if self.driver.is_exist_element_by_value(By.CSS_SELECTOR,tsgProxyScripts_button_warningSaveYes_posCss):
-            self.driver.find_element(By.CSS_SELECTOR, tsgProxyScripts_button_warningSaveYes_posCss).click()
+        self.driver.find_element(By.XPATH, tsgProxyScripts_button_oK_posXpath).click()
+        if self.driver.is_exist_element_by_value(By.XPATH,tsgProxyScripts_button_warningSaveYes_posXpath):
+            self.driver.find_element(By.XPATH, tsgProxyScripts_button_warningSaveYes_posXpath).click()
 
     def _operate_page(self, data, operation_type="create"):
         """
@@ -66,3 +66,4 @@ class CreateRunScriptProfile:
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             raise
+        return data_value

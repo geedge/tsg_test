@@ -658,6 +658,7 @@ manipulationRulePage_deny_addResponseContentTextInput_posXpath = "//div[@name='a
 manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath = "//div[@name='action_parameter']//div[@class='manipulation-policy-html_profile']//i"   # resposne content profile  选择框  定位
 manipulationRulePage_deny_searchResponseProfile_posXpath = "//div[@role='presentation']//div[@role='dialog']//input[contains(@class, 'MuiInput-input')]"   # resposne content search profile 对话框查询输入框
 manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@role='presentation']//div[@role='dialog']//ul[contains(@class, 'MuiList-root')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_deny_closeResponseProfile_posXpath = "//div[@role='presentation']//div[@role='dialog']/div/div[3]//button"   # resposne content search profile 对话框查询下拉列表第一个元素
 # action parameter redirect http
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
@@ -682,8 +683,8 @@ manipulationRulePage_hijack_searchHijackProfile_posXpath = "//body/div/div[@clas
 manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath = "//body/div/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[1]"   # hijack search profile 对话框查询下拉列表第一个元素
 # action parameter insert
 manipulationRulePage_insert_addInsertProfileSelectBox_posXpath = "//div[@zs-label='劫持文件']//span[@class='el-input__suffix-inner']//i"   # insert script  选择框  定位
-manipulationRulePage_insert_searchInsertProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
-manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_insert_searchInsertProfile_posXpath = manipulationRulePage_deny_searchResponseProfile_posXpath   # insert script search profile 对话框查询输入框
+manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath = manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
 # action parameter edit element
 manipulationRulePage_subActionButton_editElement_posXpath = "//div[@class='manipulation-policy-sub_action']//button[5]"
 manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-search_scope']//button[1]"   # replace_sort替换为实际的个数
@@ -695,9 +696,10 @@ manipulationRulePage_editElement_addMarkRadio_posXpath = "//div[contains(@class,
 manipulationRulePage_editElement_addRemoveRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-element_treatment']//button[2]"
 manipulationRulePage_editElement_add_posXpath = "//div[@name='action_parameter']/div/div[3]//button"
 # action parameter run script profile
-manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath = manipulationRulePage_insert_addInsertProfileSelectBox_posXpath   # run script  选择框  定位
-manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
-manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath = "//div[@class='manipulation-policy-lua_script']//button"   # run script  选择框  定位
+manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePage_deny_searchResponseProfile_posXpath   # insert script search profile 对话框查询输入框
+manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath = manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_runScript_closerunScriptProfile_posXpath = manipulationRulePage_deny_closeResponseProfile_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
 # other options
 manipulationRulePage_logOptions_all_posXpath = '//*[@id="manipulation_logOption-_Edit_Home_App_anonymousComponent"]//span[normalize-space(text())="All"]'
 # effective devices
@@ -706,7 +708,7 @@ manipulationRulePage_selectEffectiveDevices_posXpath = "//div[@class='rm-top']//
 manipulationRulePage_closeEffectiveDevices_posXpath = "//div[@class='rm-top']//span[normalize-space(text())='Effective Devices']/ancestor::div[@class='right-menu-content']//div[@class='rigth-menu-button-info']/button/span"
 
 # 保存策略时，ok cancel warnging定位
-manipulationRulePage_enable_posXpath = "//div[@class='manipulation-policy-is_enabled']//span[contains(@class, 'MuiSwitch-switchBase')]"
+manipulationRulePage_enable_posXpath = "//div[@class='manipulation-policy-is_enabled']/span"
 manipulationRulePage_okButton_posXpath = rulePage_okButton_posXpath
 manipulationRulePage_okButton_warningYes_posXpath = rulePage_okButton_warningYes_posXpath
 
