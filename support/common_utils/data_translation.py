@@ -708,6 +708,9 @@ class DataTranslation:
                             tmp_expr = "^{}".format(expression[:-1])
                         elif expression.startswith("$"):  # exactly
                             tmp_expr = "^{}$".format(expression[1:])
+                        # items为24.10新格式时，不转换，直接使用对应的数据
+                        elif expression.startswith("^") or expression.endswith("$"):
+                            tmp_expr = expression
                         else:  # subid  子匹配转换为全匹配
                             tmp_expr = "^{}$".format(expression[1:])
                         add_item_dict["expression"] = tmp_expr
@@ -843,7 +846,7 @@ class DataTranslation:
                                     else:  # substring ^ $ 模式保持不变
                                         tmp_expr = expression
                             tmp_expr = tmp_expr + "&" + v[i]["item"][u]["item_key"]
-                            tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
+                            # tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
                             add_item_dict["expression"] = tmp_expr
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
@@ -1000,7 +1003,7 @@ class DataTranslation:
                                         tmp_expr = "^{}$".format(expression[1:])
                                     else:  # substring ^ $ 模式保持不变
                                         tmp_expr = expression
-                            tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
+                            # tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
                             add_item_dict["expression"] = tmp_expr
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
