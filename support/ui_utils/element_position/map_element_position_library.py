@@ -1485,10 +1485,10 @@ object_http_signature_object_element_position = {
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_httpSignature_posId
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_keywords_posXpath
     },
     "create": {
-        "objectListPage_createButton_posId": httpSignatureObjectListPage_createButton_posId,
+        "objectListPage_createButton_posXpath": httpSignatureObjectListPage_createButton_posId,
         "objectListPage_dropDown_createButton_posId": httpSignatureObjectListPage_dropDown_createButton_posId,
         "objectPage_inputName_posXpath": httpSignatureObjectPage_inputName_posXpath,
         "objectPage_addItem_posXpath": httpSignatureobjectPage_addItem_posXpath,
@@ -2081,7 +2081,7 @@ def get_element_position(key_name):
     # elif key_name == "mobile_identity":
     #     element_position_map = test_mobile_identity_object_element_position
     elif key_name == "http_signature":
-        element_position_map = object_http_signature_object_element_position
+        element_position_map = object_keywords_object_element_position #object_http_signature_object_element_position
     elif key_name == "keywords":
         element_position_map = object_keywords_object_element_position
     elif key_name == "server_fqdn" or key_name == "fqdn":
