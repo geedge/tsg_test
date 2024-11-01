@@ -840,7 +840,7 @@ class CreateProfile:
                 # profile_data['type'] = "dns_resource_record"
                 process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
                 # 添加vsys id
-                profile_data["vsys"] = vsys_id
+                process_post_data["vsys"] = vsys_id
                 url = "{}/v1/profiles/dns-resource-records".format(api_host)
                 #print(json.dumps(process_post_data))
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
