@@ -100,7 +100,7 @@ def run(parameter):
             "log_query_param": [
                 {"query_field_key":"client_ip", "query_value":parameter['test_pc_ip']},
                 {"query_field_key":"decoded_as", "query_value": "HTTP"},
-                {"query_field_key":"security_action", "query_value": "Deny"},
+                {"query_field_key":"security_action", "query_value":"deny"},
                 {"query_field_key":"server_port", "query_value": 180},
                 {"query_field_key":"ip_protocol", "query_value": "tcp"},
                 {"query_field_key":"http_host", "query_value": "open.node.com"},
