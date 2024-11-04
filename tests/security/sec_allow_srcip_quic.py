@@ -71,7 +71,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "No handshake operation",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Allow"},
+            "log_query_param": [{"query_field_key":"security_action", "query_value":"allow"},
                                 {"query_field_key": "decoded_as", "query_value": "QUIC"}
             ],
             "traffic": {

@@ -109,7 +109,7 @@ def run(parameter):
             ],
             "expected_return": "www.www.www",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"},
+            "log_query_param": [{"query_field_key":"security_action", "query_value":"deny"},
             {"query_field_key":"dns_qname","query_value":"www.example.com"}],
             "traffic": {
                 "protocol": "dns",

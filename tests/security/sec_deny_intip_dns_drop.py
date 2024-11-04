@@ -78,7 +78,7 @@ def run(parameter):
             "profile": [],
             "expected_return": "timed out",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key":"security_action", "query_value": "Deny"},
+            "log_query_param": [{"query_field_key":"security_action", "query_value":"deny"},
             {"query_field_key": "decoded_as", "query_value": "DNS"}],
             "traffic": {
                 "protocol": "dns",

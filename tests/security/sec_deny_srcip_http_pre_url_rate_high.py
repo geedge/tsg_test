@@ -94,7 +94,7 @@ def run(parameter):
             "log_query_param": [{"query_field_key":"http_host", "query_value": "open.node.com"},
                                 {"query_field_key":"http_url", "query_value": "open.node.com:180/"},
                                 {"query_field_key": "decoded_as", "query_value": "HTTP"},
-                                {"query_field_key":"security_action","query_value":"Deny"}],
+                                {"query_field_key":"security_action","query_value":"deny"}],
             "traffic": {
                 "protocol": "http",
                 "type": "wget",
