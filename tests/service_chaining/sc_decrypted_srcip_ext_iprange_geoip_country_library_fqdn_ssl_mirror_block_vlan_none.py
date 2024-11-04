@@ -77,7 +77,7 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  
+                        "name": "ssl",  
                         "object_type": "application",
                         "negate": False
                     }
@@ -125,7 +125,7 @@ def run(parameter):
             ],
             "log_query_param": [{"query_field_key": "sc_rsp_decrypted", "query_value": ""}],
             "traffic":{
-                "protocol": "http",
+                "protocol": "ssl",
                 "type": "curl",
                 "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.example.com"
                 },
