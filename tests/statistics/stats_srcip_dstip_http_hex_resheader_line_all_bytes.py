@@ -95,7 +95,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "request_header",
-                                #"item_key": "User-Agent",
+                                "item_key": "User-Agent",
                                 "item_value": "HEX",
                                 "value": [
                                     "557365722D4167656E743A206375726C2F382E302E31"#User-Agent: curl/8.0.1
