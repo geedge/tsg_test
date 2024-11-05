@@ -55,7 +55,7 @@ def run(parameter):
                         "catalogs":[
                             {
                                 "op":"add",
-                                "ip_entries": "{}-192.168.64.200".format(parameter["test_pc_ip"])
+                                "ip_entries": "93.184.215.14-93.184.215.15"
                             }
                         ],
                         "tags":[
@@ -92,7 +92,7 @@ def run(parameter):
                         "items": [
                             {
                                 "item_operation": "add",
-                                "item_value": "$www.facebook.com",
+                                "item_value": "$www.example.com",
                             }
                         ]
                     }
@@ -127,9 +127,9 @@ def run(parameter):
             "traffic":{
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.facebook.com"
+                "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.example.com"
                 },
-            "expected_return":"facebook",
+            "expected_return":"example",
             "token": ""
         }
 
