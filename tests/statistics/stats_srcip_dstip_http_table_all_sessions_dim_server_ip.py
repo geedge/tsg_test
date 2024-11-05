@@ -102,9 +102,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions:SUM:new in sessions",
-                            "new_out_sessions:SUM:new out sessions",
-                            "new_in_sessions+new_out_sessions:SUM:sessions"
+                            "new_for_this_rule:SUM:sessions"
                           ],
                           "dimensions": [
                               "server_ip"
@@ -118,9 +116,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions:RATE:new in sessions",
-                            "new_out_sessions:RATE:new out sessions",
-                            "new_in_sessions+new_out_sessions:RATE:sessions"
+                            "new_for_this_rule:RATE:sessions"
                           ],
                           "dimensions": [
                               "server_ip"

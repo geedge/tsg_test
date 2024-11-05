@@ -94,7 +94,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions+new_out_sessions:SUM:sessions"
+                            "new_for_this_rule:SUM:sessions"
                           ],
                           "dimensions": [
                             "server_fqdn"

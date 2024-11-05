@@ -22,7 +22,7 @@ class UtilStatisticsTemplate():
 
     tmp_break_list = ["Client IP Object List", "Server IP Object List", "Session ID",
         "client_ip_sketch", "server_ip_sketch", "fqdn_category", "client_ip_object_list", "server_ip_object_list", "websketch_categories"]  # 兼容UI API，所以三组值
-    tmp_in_out_list = ["new_out_sessions", "new_in_sessions", "closed_in_sessions", "closed_out_sessions"]
+    #tmp_in_out_list = ["new_out_sessions", "new_in_sessions", "closed_in_sessions", "closed_out_sessions"]
     def get_all_metrics_or_dimensions(self, type="metrics"):
         """
         type获取数据类型：
@@ -64,8 +64,8 @@ class UtilStatisticsTemplate():
             'in_pkt_length_distribution': 'Incoming Packet Length Distribution',
             'out_pkt_length_distribution': 'Outgoing Packet Length Distribution',
             'pkt_length_distribution': 'Packet Length Distribution',
-            'in_latency_ms': 'Incoming Latency(ms)',
-            'out_latency_ms': 'Outgoing Latency(ms)',
+            #'in_latency_ms': 'Incoming Latency(ms)',
+            #'out_latency_ms': 'Outgoing Latency(ms)',
             'dtls_handshake_latency_ms': 'DTLS Handshake Latency(ms)',
             'ssl_handshake_latency_ms': 'SSL Handshake Latency(ms)',
             'tcp_handshake_latency_ms': 'TCP Handshake Latency(ms)',
@@ -81,10 +81,12 @@ class UtilStatisticsTemplate():
             'out_pkts': 'Outgoing Packets',
             'new_c2s_flows': 'New Client-to-Server Flows',
             'new_s2c_flows': 'New Server-to-Client Flows',
-            'new_in_sessions': 'New Incoming Sessions',
-            'new_out_sessions': 'New Outgoing Sessions',
-            'closed_in_sessions': 'Closed Incoming Sessions',
-            'closed_out_sessions': 'Closed Outgoing Sessions',
+            'new_for_this_rule': 'New Sessions',
+            'closed_for_this_rule': 'Closed Sessions',
+            #'new_in_sessions': 'New Incoming Sessions',
+            #'new_out_sessions': 'New Outgoing Sessions',
+            #'closed_in_sessions': 'Closed Incoming Sessions',
+            #'closed_out_sessions': 'Closed Outgoing Sessions',
             'syn_pkts': 'SYN Packets',
             'c2s_ip_fragments': 'Client-to-Server IP Fragments',
             's2c_ip_fragments': 'Server-to-Client IP Fragments'

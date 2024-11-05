@@ -102,7 +102,7 @@ def run(parameter):
                                 "sent_bytes+received_bytes:SUM:SUM Bytes Sent Bytes Received",
                                 "sent_pkts+received_pkts:SUM:SUM Packets Sent Packets Received",
                                 "new_c2s_flows+new_s2c_flows:SUM:SUM New Double Flows",
-                                "new_in_sessions+new_out_sessions:SUM:SUM New Sessions"
+                                "new_for_this_rule:SUM:SUM New Sessions"
                             ],
                             "dimensions": [
                                 "server_fqdn",

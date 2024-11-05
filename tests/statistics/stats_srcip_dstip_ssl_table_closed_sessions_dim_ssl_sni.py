@@ -114,9 +114,7 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
                             "visualization_type": "Table",
                             "metrics": [
-                                "closed_in_sessions:SUM:closed in sessions",
-                                "closed_out_sessions:SUM:closed out sessions",
-                                "closed_in_sessions+closed_out_sessions:SUM:sessions"
+                                "closed_for_this_rule:SUM:sessions"
                             ],
                             "dimensions": [
                                 "ssl_sni"
@@ -130,14 +128,12 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_2", 1),
                             "visualization_type": "Table",
                             "metrics": [
-                                "closed_in_sessions:RATE:closed in sessions rate",
-                                "closed_out_sessions:RATE:closed out sessions rate",
-                                "closed_in_sessions+new_out_sessions:RATE:sessions rate"
+                                "closed_for_this_rule:RATE:closed sessions rate"
                             ],
                             "dimensions": [
                                 "ssl_sni"
                             ],
-                            "order_by": "closed out sessions rate",
+                            "order_by": "closed sessions rate",
                             "row_limit": "500",
                             "min_in_size": "0",
                             "min_out_size": "0"

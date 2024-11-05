@@ -94,8 +94,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions:UNIQUE_COUNT:New IN Sessions",
-                            "new_out_sessions:UNIQUE_COUNT:New Out sessions"
+                            "new_for_this_rule:UNIQUE_COUNT:New Sessions"
                           ],
                           "dimensions": [
                             "app"
