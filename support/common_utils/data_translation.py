@@ -79,6 +79,8 @@ class DataTranslation:
                 elif "deny_response_text" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["deny_response_text"][0]["response_code"]
                     data["message_1"] = data["action_parameter"]["deny_response_text"][0]["response_content"]  # 匹配原有api test_data数据
+                elif "deny_response_block" in data["action_parameter"]:
+                    data["message_1"] = data["action_parameter"]["deny_response_block"][0]["Manipulation_block"]  # 匹配原有api test_data数据
                 else:
                     data["code_1"] = 404
                     data["message_1"] = "text"  # 匹配原有api test_data数据

@@ -326,13 +326,17 @@ class CreatePolicyRule:
             # 填写不同动作的user_region
             if action == "deny" and 'message_' + str(create_number) in condition:
                 user_region["sub_action"] = "block"
-                user_region["code"] = condition["code_" + str(create_number)]
-                user_region["message"] = condition["message_" + str(create_number)]
+                if condition["message_" + str(create_number)] == "close_connection":
+                    pass
+                else:
+                    user_region["manipulation_block"] = "warning_page"
+                    user_region["code"] = condition["code_" + str(create_number)]
+                    user_region["message"] = condition["message_" + str(create_number)]
             elif action == "deny" and 'message_' + str(create_number) not in condition:
                 user_region["sub_action"] = "block"
-                user_region["message"] = "html_profile"
+                user_region["manipulation_block"] = "warning_page"
                 user_region["code"] = condition["code_" + str(create_number)]
-                user_region["profile"] = create_profile_ids[0]["uuid"]
+                user_region["html_profile"] = create_profile_ids[0]["uuid"]
             elif action == "modify" and "hijack_file" in condition['action_parameter']:
                 user_region["sub_action"] = "replace_file"
                 user_region["replacement_file"] = create_profile_ids[0]["uuid"]
@@ -487,9 +491,10 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
+            print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
-            #print(return_json_data)
+            print(return_json_data)
             if response.status_code == 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(return_json_data['data']['type']), flush=True)
             else:

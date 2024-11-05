@@ -86,7 +86,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "https://www.daixiaorui.com",
+            "expected_return": "This_is_test",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "http_cookie", "query_value": "test_name=tmp_tsg_cookie"}],
             "traffic": {
