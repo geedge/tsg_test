@@ -73,16 +73,16 @@ def run(parameter):
             },
             "expected_return": "test_request_body,CN=TSG",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "open.node.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"},
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "decoded_as", "query_value": "HTTP"},
                                 {"query_field_key": "decoded_as", "query_value": "HTTP"}, {"query_field_key": "client_ip", "query_value": parameter["test_pc_ip"]},
-                                {"query_field_key": "server_ip", "query_value": "open.node.com"}, {"query_field_key": "server_fqdn", "query_value": "open.node.com"},
-                                {"query_field_key": "ip_protocol", "query_value": "tcp"}, {"query_field_key": "http_url", "query_value": "open.node.com:1443/go"},
-                                {"query_field_key": "http_request_line", "query_value": "POST open.node.com:1443/go HTTP/1.1"},
+                                {"query_field_key": "server_ip", "query_value": "192.168.40.206"}, {"query_field_key": "server_fqdn", "query_value": "192.168.40.206"},
+                                {"query_field_key": "ip_protocol", "query_value": "tcp"}, {"query_field_key": "http_url", "query_value": "192.168.40.206:1443/go"},
+                                {"query_field_key": "http_request_line", "query_value": "POST 192.168.40.206:1443/go HTTP/1.1"},
                                 {"query_field_key": "http_response_line", "query_value": "HTTP/1.1 200 OK"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://open.node.com:1443/go"
+                "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443/go"
             },
             "token": ""
         }
