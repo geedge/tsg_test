@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "closed_for_this_rule:RATE:sessions"
+                            "closed_sessions_for_this_rule:RATE:sessions"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -111,7 +111,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "closed_for_this_rule:SUM:sessions"
+                                "closed_sessions_for_this_rule:SUM:sessions"
                             ],
                             "dimensions": [],
                             "order_by": "",

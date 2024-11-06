@@ -100,7 +100,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                              "closed_for_this_rule:SUM:Closed Sessions"
+                              "closed_sessions_for_this_rule:SUM:Closed Sessions"
                           ],
                           "dimensions": ["c2s_link_id"],
                           "order_by": "Closed Sessions",

@@ -99,8 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_for_this_rule:UNIQUE_COUNT:UNIQUE New Session",
-                            "closed_for_this_rule:UNIQUE_COUNT:UNIQUE Closed Session"
+                            "session_id:UNIQUE_COUNT:UNIQUE Session ID",
                           ],
                           "dimensions": [],
                           "order_by": "",

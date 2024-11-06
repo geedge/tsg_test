@@ -100,7 +100,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Bar",
                           "metrics": [
-                              "new_c2s_flows+new_s2c_flows:RATE:Flows RATE"
+                              "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:RATE:Flows RATE"
                           ],
                           "dimensions": [
                             "ssl_sni"

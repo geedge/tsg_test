@@ -113,7 +113,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_for_this_rule:RATE:sessions"
+                            "new_sessions_for_this_rule:RATE:sessions"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -125,7 +125,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "new_for_this_rule:SUM:New Sessions"
+                                "new_sessions_for_this_rule:SUM:New Sessions"
                             ],
                             "dimensions": ["device_group"],
                             "order_by": "",

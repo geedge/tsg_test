@@ -100,7 +100,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "new_for_this_rule:SUM:sessions"
+                            "new_sessions_for_this_rule:SUM:sessions"
                           ],
                           "dimensions": ["client_ip_object_list"],
                           "order_by": "sessions",

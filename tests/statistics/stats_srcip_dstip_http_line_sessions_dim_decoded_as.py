@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_for_this_rule:RATE:sessions"
+                            "new_sessions_for_this_rule:RATE:sessions"
                           ],
                           "dimensions": ["decoded_as"],
                           "order_by": "",
@@ -111,7 +111,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "new_for_this_rule:SUM:sessions"
+                                "new_sessions_for_this_rule:SUM:sessions"
                             ],
                             "dimensions": ["decoded_as"],
                             "order_by": "",

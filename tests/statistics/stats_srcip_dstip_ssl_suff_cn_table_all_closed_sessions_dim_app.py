@@ -112,7 +112,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "closed_for_this_rule:SUM:closed sessions"
+                            "closed_sessions_for_this_rule:SUM:closed sessions"
                           ],
                           "dimensions": [
                             "app"

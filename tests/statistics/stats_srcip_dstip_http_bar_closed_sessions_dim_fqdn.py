@@ -100,7 +100,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                              "closed_for_this_rule:SUM:Closed Sessions"
+                              "closed_sessions_for_this_rule:SUM:Closed Sessions"
                           ],
                           "dimensions": ["server_fqdn"],
                           "order_by": "Closed Sessions",

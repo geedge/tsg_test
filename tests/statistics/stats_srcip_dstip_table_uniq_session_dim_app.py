@@ -94,12 +94,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_for_this_rule:UNIQUE_COUNT:New Sessions"
+                            "session_id:UNIQUE_COUNT:UNIQUE Session ID"
                           ],
                           "dimensions": [
                             "app"
                           ],
-                          "order_by": "New Out sessions",
+                          "order_by": "UNIQUE Session ID",
                           "row_limit": "50",
                           "min_in_size": "1",
                           "min_out_size": "1"

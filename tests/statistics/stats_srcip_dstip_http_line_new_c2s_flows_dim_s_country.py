@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_c2s_flows:RATE:new c2s flows"
+                            "new_c2s_flows_for_this_rule:RATE:new c2s flows"
                           ],
                           "dimensions": [
                               "server_country"

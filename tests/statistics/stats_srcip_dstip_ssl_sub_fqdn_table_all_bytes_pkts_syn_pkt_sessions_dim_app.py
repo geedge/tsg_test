@@ -117,7 +117,7 @@ def run(parameter):
                             "sent_bytes+received_bytes:SUM:All Bytes",
                             "sent_pkts+received_pkts:SUM:All Packets",
                             "syn_pkts:SUM:All Syn Packets",
-                            "closed_for_this_rule:SUM:All Sessions"
+                            "closed_sessions_for_this_rule:SUM:All Sessions"
                           ],
                           "dimensions": [
                             "app"
