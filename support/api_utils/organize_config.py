@@ -175,7 +175,7 @@ class OrganizeConfig:
             if "trex" == config["traffic"]["type"]:
                 traffic_radom_ip_flag = True
             sub_id_flag = False
-            if "sub_id" in config["rule_name"]:
+            if "sub_id" in config["rule_name"] or "_imsi_" in config["rule_name"] or "_imei_" in config["rule_name"] or "_phone_number_" in config["rule_name"] or "_apn_" in config["rule_name"]:
                 sub_id_flag = True
             for obj in config["condition"]:
                 if "source_ip" == obj and len(config["condition"]["source_ip"]) > 0:# or "destination_ip" in obj:
