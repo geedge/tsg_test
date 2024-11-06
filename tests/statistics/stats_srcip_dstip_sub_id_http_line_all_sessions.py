@@ -129,7 +129,7 @@ def run(parameter):
                             ],
                             "dimensions": ["device_group"],
                             "order_by": "",
-                            "row_limit": "",
+                            "row_limit": "5",
                             "min_in_size": "1",
                             "min_out_size": "1"
                         }
