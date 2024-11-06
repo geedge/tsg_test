@@ -99,6 +99,7 @@ class GetLog:
             url = api_host + "/v1/logs/query"
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
+            #print(response.text)
             assert response.status_code == 200
             log_list = json.loads(response.text)
             log_list = log_list['data']['list']

@@ -903,7 +903,7 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["ssl_keyring"]["uuid"]
+                profile_id = response_dict["data"]["decryption_keyring"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["decryption_keying_type"] = decryption_keying_type
                 create_profile_id_dict["uuid"] = profile_id

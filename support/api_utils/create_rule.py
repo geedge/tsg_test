@@ -299,10 +299,10 @@ class CreatePolicyRule:
             else:
                 temp_application = "application"
 
-            if len(condition[temp_application]) == 0:
-                    user_region["protocol"] = ""
-            else:
-                user_region["protocol"] = condition[temp_application][0]
+            # if len(condition[temp_application]) == 0:
+            #         user_region["protocol"] = ""
+            # else:
+            #     user_region["protocol"] = condition[temp_application][0]
                 # 当且仅当application=ssl且action=intercept时, user_region包含解密profiles和解密kering
                 if "ssl" in condition[temp_application][0] and action == "intercept":
                     user_region["keyring_for_untrusted"] = keyring_for_untrusted
