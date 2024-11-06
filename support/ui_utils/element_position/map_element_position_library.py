@@ -2165,5 +2165,5 @@ def replace_paras(parameter):
     return parameter
 
 # 勿删 zcw make
-manipulation_object_no_create_list = ["application", "sub_action_override", "sub_action", "ip_protocol"]
+manipulation_object_no_create_list = ["application", "sub_action_override", "sub_action", "ip_protocol", "packet_capture"]
 manipulation_profile_no_create_list = ["deny_response_text", "deny_response_block", "redirect_url", "replace_parameter", "edit_element_parameter", "doh"]
