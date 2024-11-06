@@ -56,7 +56,7 @@ class GetLog:
             elif policy_type == 'proxy_intercept':
                 log_source = 'session_record'
                 identifier_name = 'session-record-list'
-                log_query_rule_type = 'proxy_rule_list'
+                log_query_rule_type = 'proxy_rule_uuid_list'
             elif policy_type == 'proxy_manipulation':
                 log_source = 'proxy_event'
                 identifier_name = 'proxy-event-manipulation-list'
