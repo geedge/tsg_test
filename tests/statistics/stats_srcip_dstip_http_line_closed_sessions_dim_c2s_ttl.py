@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "closed_for_this_rule:RATE:Closed Sessions"
+                            "closed_sessions_for_this_rule:RATE:Closed Sessions"
                           ],
                           "dimensions": ["c2s_ttl"],
                           "order_by": "",
@@ -111,7 +111,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "closed_for_this_rule:SUM:Closed Sessions"
+                                "closed_sessions_for_this_rule:SUM:Closed Sessions"
                             ],
                             "dimensions": ["c2s_ttl"],
                             "order_by": "",

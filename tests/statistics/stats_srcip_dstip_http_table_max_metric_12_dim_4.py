@@ -101,8 +101,8 @@ def run(parameter):
                             "metrics": [
                                 "sent_bytes+received_bytes:SUM:SUM Bytes Sent Bytes Received",
                                 "sent_pkts+received_pkts:SUM:SUM Packets Sent Packets Received",
-                                "new_c2s_flows+new_s2c_flows:SUM:SUM New Double Flows",
-                                "new_for_this_rule:SUM:SUM New Sessions",
+                                "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:SUM:SUM New Double Flows",
+                                "new_sessions_for_this_rule:SUM:SUM New Sessions",
                                 "client_ip:UNIQUE_COUNT:UNIQUECOUNT Client IP",
                                 "client_port:UNIQUE_COUNT:UNIQUECOUNT Client Port",
                                 "server_ip:UNIQUE_COUNT:UNIQUECOUNT Server IP",
@@ -232,8 +232,8 @@ if __name__ == '__main__':
     out_bytes	 
     in_pkts	 
     out_pkts 
-     new_c2s_flows	 
-     new_s2c_flows	 
+     new_c2s_flows_for_this_rule	 
+     new_s2c_flows_for_this_rule	 
      new_in_sessions	 
      new_out_sessions
      closed_in_sessions

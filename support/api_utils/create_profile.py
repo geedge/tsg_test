@@ -323,44 +323,32 @@ class CreateProfile:
                              {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "New Client-to-Server Flows": {
-                "source_columns": "new_c2s_flows",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "flows", "metric_type": "count"},
-                             {"function": "RATE", "unit": "fps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "flows", "metric_type": "distribution"}]
+                "source_columns": "new_c2s_flows_for_this_rule",
+                "function": [
+                    {"function": "SUM", "unit": "flows", "metric_type": "count"},
+                    {"function": "RATE", "unit": "fps", "metric_type": "count"}
+                ]
             },
             "New Server-to-Client Flows": {
-                "source_columns": "new_s2c_flows",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "flows", "metric_type": "count"},
-                             {"function": "RATE", "unit": "fps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "flows", "metric_type": "distribution"}]
+                "source_columns": "new_s2c_flows_for_this_rule",
+                "function": [
+                    {"function": "SUM", "unit": "flows", "metric_type": "count"},
+                    {"function": "RATE", "unit": "fps", "metric_type": "count"}
+                ]
             },
             "New Sessions": {
-                "source_columns": "new_for_this_rule",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
-                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
+                "source_columns": "new_sessions_for_this_rule",
+                "function": [
+                    {"function": "SUM", "unit": "sessions", "metric_type": "count"},
+                    {"function": "RATE", "unit": "sps", "metric_type": "count"}
+                ]
             },
             "Closed Sessions": {
-                "source_columns": "closed_for_this_rule",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
-                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
+                "source_columns": "closed_sessions_for_this_rule",
+                "function": [
+                    {"function": "SUM", "unit": "sessions", "metric_type": "count"},
+                    {"function": "RATE", "unit": "sps", "metric_type": "count"}
+                ]
             },
             """            
             "New Incoming Sessions": {

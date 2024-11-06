@@ -100,7 +100,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "closed_for_this_rule:SUM:sessions"
+                            "closed_sessions_for_this_rule:SUM:sessions"
                           ],
                           "dimensions": [
                               "client_ip",
@@ -117,7 +117,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Table",
                             "metrics": [
-                                "closed_for_this_rule:RATE:sessions"
+                                "closed_sessions_for_this_rule:RATE:sessions"
                             ],
                             "dimensions": [
                                 "client_ip",

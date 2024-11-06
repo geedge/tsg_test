@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_for_this_rule:RATE:sessions"
+                            "new_sessions_for_this_rule:RATE:sessions"
                           ],
                           "dimensions": ["s2c_link_id"],
                           "order_by": "sessions",
@@ -111,7 +111,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "new_for_this_rule:SUM:sessions"
+                                "new_sessions_for_this_rule:SUM:sessions"
                             ],
                             "dimensions": ["s2c_link_id"],
                             "order_by": "sessions",

@@ -1118,10 +1118,10 @@ class GetLog:
                     elif source_fields[0] == "syn_pkts" and total_syn_pkt2:
                         metric_result = True
                     # * Sessions处理逻辑
-                    elif source_fields[0] in {"new_for_this_rule", "closed_for_this_rule"} and stats_value == total_syn_pkt1:
+                    elif source_fields[0] in {"new_sessions_for_this_rule", "closed_sessions_for_this_rule"} and stats_value == total_syn_pkt1:
                         metric_result = True
-                    # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                    elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt1:
+                    # * Flows处理逻辑new_c2s_flows_for_this_rule、new_s2c_flows_for_this_rule
+                    elif source_fields[0] in {"new_c2s_flows_for_this_rule", "new_s2c_flows_for_this_rule"} and stats_value == total_syn_pkt1:
                         metric_result = True
                     #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
                     #    metric_result = True
@@ -1143,8 +1143,8 @@ class GetLog:
                         metric_result = True
                     elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
                         metric_result = True
-                    # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                    elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
+                    # * Flows处理逻辑new_c2s_flows_for_this_rule、new_s2c_flows_for_this_rule
+                    elif "new_c2s_flows_for_this_rule" in source_fields and "new_s2c_flows_for_this_rule" in source_fields and stats_value == total_syn_pkt2:
                         metric_result = True
                     # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
                     else:
@@ -1171,8 +1171,8 @@ class GetLog:
         # unique和syn数量：1 一致
         # 单向流时有方向的unique为1
         one_or_zero_unique = {
-            "new_c2s_flows",
-            "new_s2c_flows",
+            "new_c2s_flows_for_this_rule",
+            "new_s2c_flows_for_this_rule",
             "sent_bytes",
             "received_bytes",
             "in_bytes",
@@ -1213,10 +1213,10 @@ class GetLog:
             'tcp_handshake_latency_ms',
             'duration_ms',
             'tcp_rtt_ms',
-            'new_for_this_rule',
-            'closed_for_this_rule',
-            'new_c2s_flows',
-            'new_s2c_flows',
+            'new_sessions_for_this_rule',
+            'closed_sessions_for_this_rule',
+            'new_c2s_flows_for_this_rule',
+            'new_s2c_flows_for_this_rule',
             'c2s_ip_fragments',
             's2c_ip_fragments'
         }
@@ -1257,7 +1257,7 @@ class GetLog:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 2:
                     if source_fields[0] in all_metrics and source_fields[1] in all_metrics:
-                        if "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
+                        if "new_c2s_flows_for_this_rule" in source_fields and "new_s2c_flows_for_this_rule" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
                             metric_result = True
                         elif stats_value >= test_traffic_statistics["total_syn_pkt"]:
                             metric_result = True

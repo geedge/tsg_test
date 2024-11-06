@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "new_c2s_flows+new_s2c_flows:RATE:Flows RATE"
+                            "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:RATE:Flows RATE"
                           ],
                           "dimensions": ["server_fqdn"],
                           "order_by": "Flows RATE",

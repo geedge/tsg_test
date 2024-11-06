@@ -99,9 +99,8 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_c2s_flows:UNIQUE_COUNT:UNIQUE New Client-to-Server Flows",
-                            "new_s2c_flows:UNIQUE_COUNT:UNIQUE New Server-to-Client Flows"
-                            "new_c2s_flows+new_s2c_flows:UNIQUE_COUNT:UNIQUE Flows"
+                            "server_fqdn:UNIQUE_COUNT:Unique Server Fqdm",
+                            "app:UNIQUE_COUNT:Unique Application"
                           ],
                           "dimensions": [],
                           "order_by": "",
