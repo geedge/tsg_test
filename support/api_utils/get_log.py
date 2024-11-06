@@ -839,12 +839,14 @@ class GetLog:
             if r_dict["data"]["list"] == []:  # 为空
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is []")
                 # 对应有方向的session的单一Metrics方式需要另行处理
-                tmp_in_out_list = UtilStatisticsTemplate().tmp_in_out_list
+                # 24.10版本取消了Sessions和Latency的In、Out方向，所以按单方向处理的逻辑随之取消
+                #tmp_in_out_list = UtilStatisticsTemplate().tmp_in_out_list
                 # api返回值为空，不判断方向，直接返回重新查找
-                if len(statistics_info["metrics"]) == 1:
+                #if len(statistics_info["metrics"]) == 1:
                     #for item in statistics_info["metrics"]:
-                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_in_out_list:
-                        return [333, "this is a pass"]
+                    #if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_in_out_list:
+                        #return [333, "this is a pass"]
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:statistics metric no result was found.")
                 return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
                 result_list_from_api = r_dict["data"]["list"]
@@ -1094,6 +1096,8 @@ class GetLog:
             total_syn_pkt2 = test_traffic_statistics["total_syn_pkt"] * 2
             if total_syn_pkt2 > 0 and time_dif_seconds > 1:
                 total_syn_pkt2 = round(total_syn_pkt2 / time_dif_seconds, 2)
+            #if time_dif_seconds > 1:
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes_sent:{};total_syn_pkt1:{};".format(total_bytes_sent,total_syn_pkt1), flush=True)
 
             match len(source_fields):
                 case 1:
@@ -1113,8 +1117,8 @@ class GetLog:
                         metric_result = True
                     elif source_fields[0] == "syn_pkts" and total_syn_pkt2:
                         metric_result = True
-                    # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                    elif source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions", "closed_out_sessions"} and (stats_value == total_syn_pkt1 or stats_value == 0):
+                    # * Sessions处理逻辑
+                    elif source_fields[0] in {"new_for_this_rule", "closed_for_this_rule"} and stats_value == total_syn_pkt1:
                         metric_result = True
                     # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                     elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt1:
@@ -1138,9 +1142,6 @@ class GetLog:
                     elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == total_packets:
                         metric_result = True
                     elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
-                        metric_result = True
-                    # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                    elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt1:
                         metric_result = True
                     # * Flows处理逻辑new_c2s_flows、new_s2c_flows
                     elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
@@ -1167,20 +1168,19 @@ class GetLog:
         code, all_metrics = util.get_all_metrics_or_dimensions("unique_count_metrics")
         if code != 200:
             return False, "Failed to obtain the Field whose Metric Type is Unique_Count"
-        """        
-        'in_pkt_length_distribution': 'Incoming Packet Length',
-        'out_pkt_length_distribution': 'Outgoing Packet Length',
-        'pkt_length_distribution': 'Packet Length',        
-        """
-        # unique和syn数量：1一致
-        one_or_zero_unique = {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","syn_pkts"
-            'new_in_sessions',
-            'new_out_sessions',
-            'closed_in_sessions',
-            'closed_out_sessions',
-            'syn_pkts',
-            'in_latency_ms',
-            'out_latency_ms'
+        # unique和syn数量：1 一致
+        # 单向流时有方向的unique为1
+        one_or_zero_unique = {
+            "new_c2s_flows",
+            "new_s2c_flows",
+            "sent_bytes",
+            "received_bytes",
+            "in_bytes",
+            "out_bytes",
+            "sent_pkts",
+            "received_pkts",
+            "in_pkts",
+            "out_pkts"
         }
         #unique和syn数量：1一致
         one_unique = {
@@ -1208,13 +1208,13 @@ class GetLog:
             'sled_ip',
             'direction',
             'session_id',
-            'in_latency_ms',
-            'out_latency_ms',
             'dtls_handshake_latency_ms',
             'ssl_handshake_latency_ms',
             'tcp_handshake_latency_ms',
             'duration_ms',
             'tcp_rtt_ms',
+            'new_for_this_rule',
+            'closed_for_this_rule',
             'new_c2s_flows',
             'new_s2c_flows',
             'c2s_ip_fragments',
@@ -1244,7 +1244,7 @@ class GetLog:
             match len(source_fields):
                 case 1:
                     if source_fields[0] in all_metrics:
-                        # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                        # * Sessions处理逻辑
                         if source_fields[0] in one_or_zero_unique and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
                             metric_result = True
                         elif source_fields[0] in one_unique and (stats_value == test_traffic_statistics["total_syn_pkt"]):
@@ -1257,10 +1257,7 @@ class GetLog:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 2:
                     if source_fields[0] in all_metrics and source_fields[1] in all_metrics:
-                        if (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and (stats_value == test_traffic_statistics["total_syn_pkt"]):
-                            metric_result = True
-                        # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                        elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
+                        if "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
                             metric_result = True
                         elif stats_value >= test_traffic_statistics["total_syn_pkt"]:
                             metric_result = True

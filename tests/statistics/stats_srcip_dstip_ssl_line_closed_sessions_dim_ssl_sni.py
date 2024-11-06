@@ -100,7 +100,7 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                             "visualization_type": "Line",
                             "metrics": [
-                                "closed_in_sessions+closed_out_sessions:RATE:Closed Sessions"
+                                "closed_for_this_rule:RATE:Closed Sessions"
                             ],
                             "dimensions": [
                                 "ssl_sni"
@@ -114,7 +114,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
                           "visualization_type": "Line",
                           "metrics": [
-                              "closed_in_sessions+closed_out_sessions:SUM:Closed Sessions"
+                              "closed_for_this_rule:SUM:Closed Sessions"
                           ],
                           "dimensions": [
                             "ssl_sni"

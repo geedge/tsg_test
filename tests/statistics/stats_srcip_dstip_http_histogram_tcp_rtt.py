@@ -94,7 +94,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Histogram",
                           "metrics": [
-                            "in_latency_ms:HISTOGRAM:in latency ms sketch"
+                            "tcp_rtt_ms:HISTOGRAM:Round-trip Time"
                           ],
                           "dimensions": [],
                           "order_by": "",

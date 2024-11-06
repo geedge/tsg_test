@@ -125,10 +125,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(New Incoming Sessions)",
                             "visualization_type": "Bar",
                             "metrics": [
-                                "new_in_sessions:UNIQUE_COUNT:UNIQUE New Incoming Sessions"
+                                "new_for_this_rule:UNIQUE_COUNT:UNIQUE New Sessions"
                             ],
-                            "dimensions": ["new_in_sessions"],
-                            "order_by": "UNIQUE New Incoming Sessions",
+                            "dimensions": ["device_group"],
+                            "order_by": "UNIQUE New Sessions",
                             "row_limit": "20",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -137,10 +137,10 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(New Outgoing Sessions)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "new_out_sessions:UNIQUE_COUNT:UNIQUE New Outgoing Sessions"
+                                "new_for_this_rule:UNIQUE_COUNT:UNIQUE New Sessions"
                             ],
-                            "dimensions": ["new_out_sessions"],
-                            "order_by": "UNIQUE New Outgoing Sessions",
+                            "dimensions": ["device_group"],
+                            "order_by": "UNIQUE New Sessions",
                             "row_limit": "50",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -149,9 +149,9 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Closed Incoming Sessions)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "closed_in_sessions:UNIQUE_COUNT:UNIQUE Closed Incoming Sessions"
+                                "closed_for_this_rule:UNIQUE_COUNT:UNIQUE Closed Sessions"
                             ],
-                            "dimensions": ["closed_in_sessions"],
+                            "dimensions": ["device_group"],
                             "order_by": "UNIQUE Packets Sent",
                             "row_limit": "100",
                             "min_in_size": "0",
@@ -161,9 +161,9 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Closed Outgoing Sessions)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "closed_out_sessions:UNIQUE_COUNT:UNIQUE Closed Outgoing Sessions"
+                                "closed_for_this_rule:UNIQUE_COUNT:UNIQUE Closed Outgoing Sessions"
                             ],
-                            "dimensions": ["closed_out_sessions"],
+                            "dimensions": ["device_group"],
                             "order_by": "UNIQUE Closed Outgoing Sessions",
                             "row_limit": "100",
                             "min_in_size": "0",

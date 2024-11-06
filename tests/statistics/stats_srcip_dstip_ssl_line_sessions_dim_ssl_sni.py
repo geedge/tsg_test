@@ -100,7 +100,7 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                             "visualization_type": "Line",
                             "metrics": [
-                                "new_in_sessions+new_out_sessions:RATE:sessions"
+                                "new_for_this_rule:RATE:sessions"
                             ],
                             "dimensions": [
                                 "ssl_sni"
@@ -114,7 +114,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
                           "visualization_type": "Line",
                           "metrics": [
-                              "new_in_sessions+new_out_sessions:SUM:sessions"
+                              "new_for_this_rule:SUM:sessions"
                           ],
                           "dimensions": [
                             "ssl_sni"

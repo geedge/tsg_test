@@ -100,9 +100,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                                "new_in_sessions:SUM:cnew in sessions",
-                                "new_out_sessions:SUM:new out sessions",
-                                "new_in_sessions+new_out_sessions:SUM:sessions"
+                                "new_for_this_rule:SUM:sessions"
                           ],
                           "dimensions": [
                             "ssl_ja3_hash"
@@ -116,9 +114,7 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
                             "visualization_type": "Table",
                             "metrics": [
-                                "new_in_sessions:RATE:new in sessions rate",
-                                "new_out_sessions:RATE:new out sessions rate",
-                                "new_in_sessions+new_out_sessions:RATE:sessions rate"
+                                "new_for_this_rule:RATE:sessions rate"
                             ],
                             "dimensions": [
                                 "ssl_ja3_hash"

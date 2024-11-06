@@ -99,8 +99,6 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_latency_ms:P95_PERCENTILE:in latency ms sketch",
-                            "out_latency_ms:P95_PERCENTILE:out latency ms sketch",
                             "tcp_handshake_latency_ms:P95_PERCENTILE:latency ms sketch"
                           ],
                           "dimensions": [],

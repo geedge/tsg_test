@@ -57,7 +57,7 @@ class CreatePolicyRule:
             if 'packet_capture_' + str(create_number) in condition:
                 rule_template_dict["rule"]["action_parameter"]["packet_capture"] = {}
                 rule_template_dict["rule"]["action_parameter"]["packet_capture"]["enable"] = condition['packet_capture_' + str(create_number)]["enable"]
-                if rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] in condition['packet_capture_' + str(create_number)]:
+                if "capture_depth" in condition['packet_capture_' + str(create_number)]:
                     rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = condition['packet_capture_' + str(create_number)]["capture_depth"]
                 else:
                     rule_template_dict['rule']['action_parameter']['packet_capture']["capture_depth"] = 2000
@@ -491,7 +491,7 @@ class CreatePolicyRule:
             if "vsys_id" in rule_template_dict:
                 del rule_template_dict["vsys_id"]
             url = api_host + "/v1/policies/{}".format(api_path_rule_type)
-            #print(json.dumps(rule_template_dict))
+            print(json.dumps(rule_template_dict))
             response = requests.post(url, headers=headers, json=rule_template_dict, verify=False)
             return_json_data = json.loads(response.text)
             #print(return_json_data)

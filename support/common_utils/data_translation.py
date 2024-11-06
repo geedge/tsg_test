@@ -1118,7 +1118,7 @@ class DataTranslation:
                                     tmp_expr = expression
                                 add_item_dict["expression"] = tmp_expr
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
-                            temp["negate_option"] = v[i]["negate"]
+                            temp["is_negate"] = v[i]["negate"]
                             object.append(copy.deepcopy(temp))
             elif k == "flag":
                 for i in range(len(v)):

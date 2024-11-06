@@ -114,14 +114,12 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
                             "visualization_type": "Table",
                             "metrics": [
-                                "new_in_sessions:SUM:new in sessions",
-                                "new_out_sessions:SUM:new out sessions",
-                                "new_in_sessions+new_out_sessions:SUM:sessions"
+                                "new_for_this_rule:SUM:New Sessions"
                             ],
                             "dimensions": [
                                 "ssl_sni"
                             ],
-                            "order_by": "sessions",
+                            "order_by": "New Sessions",
                             "row_limit": "200",
                             "min_in_size": "0",
                             "min_out_size": "0"
@@ -130,14 +128,12 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_2", 1),
                             "visualization_type": "Table",
                             "metrics": [
-                                "new_in_sessions:RATE:new in sessions rate",
-                                "new_out_sessions:RATE:new out sessions rate",
-                                "new_in_sessions+new_out_sessions:RATE:sessions rate"
+                                "new_for_this_rule:RATE:New Sessions Rate"
                             ],
                             "dimensions": [
                                 "ssl_sni"
                             ],
-                            "order_by": "new out sessions rate",
+                            "order_by": "New Sessions Rate",
                             "row_limit": "500",
                             "min_in_size": "0",
                             "min_out_size": "0"
