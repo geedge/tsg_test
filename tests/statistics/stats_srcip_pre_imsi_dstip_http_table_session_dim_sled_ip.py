@@ -73,7 +73,7 @@ def run(parameter):
                 "sub_id": [],
                 "device": [
                     {
-                        "name": "sec_imsi",
+                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                         "object_type": "mobile_identity",
                         "select_type": False,
                         "negate": False,

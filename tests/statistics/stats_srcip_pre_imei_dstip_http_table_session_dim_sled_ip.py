@@ -81,7 +81,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "imei",
-                                "item_value": '^' + parameter['test_imei'][0:12] + '$',
+                                "item_value": '^' + parameter['test_imei'][0:12],
                             }
                         ]
                     }

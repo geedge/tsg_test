@@ -80,8 +80,8 @@ def run(parameter):
                         "item": [
                             {
                                 "item_operation": "add",
-                                "item_type": "imei",
-                                "item_value": parameter['test_phone_number'][1:9] + '&' +parameter['test_phone_number'][9],
+                                "item_type": "phone_number",
+                                "item_value": parameter['test_phone_number'][1:9] + '&' +parameter['test_phone_number'][9:],
                             }
                         ]
                     }
