@@ -846,7 +846,7 @@ class GetLog:
                     #for item in statistics_info["metrics"]:
                     #if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_in_out_list:
                         #return [333, "this is a pass"]
-                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:statistics metric no result was found.")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:statistics metric no result was found.")
                 return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
                 result_list_from_api = r_dict["data"]["list"]
@@ -956,7 +956,7 @@ class GetLog:
                                         break
                                 if break_flag == 1:
                                     break  # 退出累加循环
-                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: {}".format(statistics_value), flush=True)
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The actual query result data from TSG: {}".format(statistics_value), flush=True)
                         # 时差，速率使用:
                         util = UtilStatisticsTemplate()
                         time_dif_seconds = util.time_dif_seconds(start_time, end_time)

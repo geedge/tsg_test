@@ -50,7 +50,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.31",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
