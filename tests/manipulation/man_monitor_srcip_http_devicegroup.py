@@ -26,7 +26,7 @@ def run(parameter):
             "policy_type": "proxy_manipulation",
             "rule_name": parameter["test_case_name"],
             "rule_action": "monitor",
-            "effective_devices": ["City A"],
+            "effective_devices": ["group-xxg-tsgx"],
             "rule_type": "create",
             "condition": {
                 "source_ip": [
