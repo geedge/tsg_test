@@ -123,13 +123,11 @@ class GetLog:
                             "packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts",
                             "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
                             "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
-                            "basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate",
                             "rule_uuid","conditions"
                         }
                         dos_verify_fields = {
                             "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate",
-                            "basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets","basic_packet_rate", "basic_bytes", "basic_bit_rate",
-                            "rule_id","conditions","source_ip_list","destination_ip"
+                            "rule_uuid","source_ip","destination_ip"
                         }
                         # 优化后的条件判断
                         if query_field_key in log and query_field_key not in exclude_fields and log[query_field_key] == query_value:
@@ -467,7 +465,7 @@ class GetLog:
                 temp_log_result_list.append(False)
 
         elif query_field_key == "bit_rate":
-            bits_rate_value = int((log["bytes"] * 8) / time_difference)
+            bits_rate_value = (log["bytes"] * 8) / time_difference
 
             if bits_rate_value == log[query_field_key]:
                 temp_log_result_list.append(True)
@@ -478,7 +476,7 @@ class GetLog:
         elif query_field_key == "session_rate":
             session_rate = exp_sessions_count / time_difference
 
-            if int(session_rate) == log[query_field_key]:
+            if session_rate == log[query_field_key]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
@@ -486,14 +484,14 @@ class GetLog:
 
         elif query_field_key == "packet_rate":
             packet_rate = exp_packets_count / time_difference
-            if int(packet_rate) == log[query_field_key]:
+            if packet_rate == log[query_field_key]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
         elif query_field_key in ["basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate"]:
             temp_log_result_list.append(True)
-        elif query_field_key == "rule_id":
+        elif query_field_key == "rule_uuid":
             # 不改变用例，通过逻辑取到查询结果中的rule_uuid用于对比
             if policy_id == log["rule_uuid"]:
                 temp_log_result_list.append(True)
@@ -509,7 +507,7 @@ class GetLog:
         #         temp_log_result_list.append(False)
         
         # 24.10 版本，source_ip_list替换为source_ip
-        elif query_field_key == "source_ip_list" :
+        elif query_field_key == "source_ip" :
             if test_data["traffic"]["clients_start_ip"] == log ["source_ip"]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log["source_ip"]
