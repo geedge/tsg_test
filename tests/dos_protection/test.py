@@ -312,7 +312,7 @@ if __name__ == "__main__":
 #             'pcap_name': 'tls_long'
 #         },
 #         'token': 'd21627b9-cb69-4c83-b111-8c8a2149cf26&27&',
-#         'rule_id': '157553'
+#         'rule_uuid': '157553'
 #     }
 #     output = {'total_bytes': 19027648, 'total_bytes_received': 18671260, 'total_bytes_sent': 356388, 'total_packets': 18056, 'total_packets_received': 12368, 'total_packets_sent': 5688, 'total_syn_pkt': 4}  # 示例的输出
 
