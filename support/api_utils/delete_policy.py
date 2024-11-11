@@ -386,7 +386,7 @@ class DeletePolicy:
                 template['name'] = 'automation_test_policy'
                 template['type'] = rule_type
                 rule_url_full = rule_url + '/' + rule_type
-                self.query_and_delete_by_name(rule_url_full, template, headers)
+                self.query_and_delete_by_name(rule_url_full, template, headers, vsys_id)
 
             # 删除object
             url_types = [
@@ -404,7 +404,7 @@ class DeletePolicy:
                     obj_type = "flag"
                 template['type'] = obj_type
                 rule_url_full = obj_url + '/' + url_type
-                self.query_and_delete_by_name(rule_url_full, template, headers)
+                self.query_and_delete_by_name(rule_url_full, template, headers, vsys_id)
 
         if len(name_list) > 0:
             for name_item in name_list:
@@ -423,7 +423,7 @@ class DeletePolicy:
                     temp_url = "{}/{}".format(rule_url, api_path_rule_type)
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
-                    self.query_and_delete_by_name(temp_url, template, headers)
+                    self.query_and_delete_by_name(temp_url, template, headers, vsys_id)
                 elif name_item["type"] in ["ip", "port", "url", "fqdn", "mobile_identity", "keywords", "account", "subscriberid", "http_signature"]:
                     api_path_map = {
                         "ip": "ip-addresses",
@@ -452,7 +452,7 @@ class DeletePolicy:
                         template['type'] = "keyword"
                     if template['type'] == "keywords":
                         template['type'] = "keyword"
-                    self.query_and_delete_by_name(temp_url, template, headers)
+                    self.query_and_delete_by_name(temp_url, template, headers, vsys_id)
 
                 elif name_item["type"] in ["service_function_forwarder", "service_function", "statistics_template", "response_page", "hijack_file",
                                          "insert_script", "traffic_mirror", "run_script", "dns_record", "ssl_keyring", "ssl_decryption", "tcp_option"]:
@@ -484,13 +484,13 @@ class DeletePolicy:
                         api_path_profile_type = api_path_map[name_item["type"]]
                     template['name'] = name_item["name"]
                     temp_url = "{}/{}".format(profile_url, api_path_profile_type)
-                    self.query_and_delete_by_name(temp_url, template, headers)
+                    self.query_and_delete_by_name(temp_url, template, headers, vsys_id)
                 elif name_item["type"] in ["dashboard"]:
                     template['name'] = name_item["name"]
                     template['type'] = name_item["type"]
-                    self.query_and_delete_by_name(dashboard_url, template, headers)
+                    self.query_and_delete_by_name(dashboard_url, template, headers, vsys_id)
 
-    def query_and_delete_by_name(self, url, template, headers):
+    def query_and_delete_by_name(self, url, template, headers, vsys_id):
         try:
             response = requests.get(url, headers=headers, params=template, verify=False)
             if response.status_code != 200:
@@ -554,7 +554,7 @@ class DeletePolicy:
             if len(data_list) > 0:
                 delete_data = self.combine_delete_ids(template, data_list)
                 for i in range(len(delete_data)):
-                    tmp_delete = {"uuids":""}
+                    tmp_delete = {"uuids":"", "vsys": int(vsys_id)}
                     tmp_delete["uuids"] = delete_data[i]
                     response = requests.delete(url, headers=headers, json=tmp_delete, verify=False)
                 if len(delete_data) > 0:

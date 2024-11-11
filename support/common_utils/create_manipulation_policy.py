@@ -113,6 +113,8 @@ class CreateManipulationPolicy:
                             prfi_data = prfi_value
                             prfi = CreateProfile(driver)
                             for i in range(len(prfi_data)): # 遍历创建所有 profile
+                                if prfi_key == "insert_script":
+                                    prfi_key = prfi_key + prfi_data[i]["profile_file"]["script_type"]
                                 element_position_map = get_element_position(prfi_key)
                                 prfi_code = prfi.create(prfi_data[i], element_position_map)
                                 if prfi_code == 200:
@@ -221,6 +223,8 @@ class CreateManipulationPolicy:
                         prfi_key_out = prfi_key.replace("_", " ")
                         if len(prfi_value) != 0:  # 不为空
                             for i in range(len(prfi_value)):  # 遍历查询所有profile
+                                if prfi_key == "insert_script":
+                                    prfi_key = prfi_key + prfi_value[i]["profile_file"]["script_type"]
                                 search_prfi = SearchProfile(driver)
                                 element_position_map = get_element_position(prfi_key)
                                 prfi_name = prfi_value[i]["profile_file"]["name"].strip()

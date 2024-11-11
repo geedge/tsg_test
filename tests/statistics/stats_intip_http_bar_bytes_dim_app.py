@@ -48,7 +48,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.3",
+                                "item_value": "60.190.243.167",
                             },
                         ]
                     }
@@ -108,8 +108,8 @@ def run(parameter):
                 "type": "trex",
                 "clients_start_ip": "10.64.224.31",
                 "clients_end_ip": "10.64.224.31",
-                "servers_start_ip": "2.1.1.31",
-                "servers_end_ip": "2.1.1.31",
+                "servers_start_ip": "60.190.243.167",
+                "servers_end_ip": "60.190.243.167",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",

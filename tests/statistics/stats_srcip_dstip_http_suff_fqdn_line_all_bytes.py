@@ -13,8 +13,7 @@ from support.report_update import ReportUpdate
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -44,7 +43,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.3",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -56,12 +55,11 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
-                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.9",
+                                "item_value": "2.1.1.14",
                             },
                         ]
                     }],
@@ -77,8 +75,28 @@ def run(parameter):
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
-                "application": [],
-                "server_fqdn": [],
+                "application": [
+                    {
+                        "name": "http",  #
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
+                "server_fqdn": [
+                    {
+                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1).replace("_xly_url_sub_reqheader_multi_sub_resheader_sub_resbody", "", 1),
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_value": "yumi.com$",
+                            }
+                        ]
+                    }
+                ],
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [
@@ -91,35 +109,68 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
-                          "visualization_type": "Histogram",
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
                           "metrics": [
-                            "in_latency_ms:HISTOGRAM:in latency ms sketch"
+                            "sent_bytes:BITRATE:in bytes",
+                            "received_bytes:BITRATE:out bytes",
+                            "sent_bytes+received_bytes:BITRATE:bytes"
                           ],
                           "dimensions": [],
                           "order_by": "",
                           "row_limit": "",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "sent_bytes:RATE:in bytes",
+                            "received_bytes:RATE:out bytes",
+                            "sent_bytes+received_bytes:RATE:bytes"
+                          ],
+                          "dimensions": [],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "sent_bytes:SUM:in bytes",
+                                "received_bytes:SUM:out bytes",
+                                "sent_bytes+received_bytes:SUM:bytes"
+                            ],
+                            "dimensions": [],
+                            "order_by": "",
+                            "row_limit": "",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.youtube.com"}],
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.9",
-                "clients_end_ip": "10.64.224.9",
-                "servers_start_ip": "2.1.1.9",
-                "servers_end_ip": "2.1.1.9",
+                "clients_start_ip": "10.64.224.14",
+                "clients_end_ip": "10.64.224.14",
+                "servers_start_ip": "2.1.1.14",
+                "servers_end_ip": "2.1.1.14",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "youtube"
+                "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"time": "2024-07-24T01:36:19Z", "out_bytes": 745744, "in_bytes": 9120, "bytes": 754864}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -153,6 +204,7 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
+
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
@@ -174,7 +226,7 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
         "vsys_id": 1,  # 6
         "root_path": "D:/tsgcode/tsg_test",

@@ -39,6 +39,7 @@ def run(parameter):
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {
@@ -55,13 +56,13 @@ def run(parameter):
                         "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option": "Brief",
                         "negate": False,
-                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.9",
+                                "item_value": "2.1.1.3",
                             },
                         ]
                     }],
@@ -79,13 +80,29 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "ftp",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
-                "protocol_filed": [],
+                "server_fqdn": [
+                ],
+                "protocol_filed": [
+                    {
+                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
+                        "object_type": "account",
+                        "select_type": False,
+                        "item_operation": "add",
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ftp_account",
+                                "item_value": "^ftpuser$"
+                            }
+                        ],
+                    }
+                ],
                 "sub_action_override": True,
                 "sub_action": [
                 ],
@@ -98,34 +115,55 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
-                          "visualization_type": "Histogram",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "out_latency_ms:HISTOGRAM:out latency ms sketch"
+                            "new_sessions_for_this_rule:SUM:New Sessions",
+                            "closed_sessions_for_this_rule:SUM:Closed Sessions",
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
+                          "dimensions": [
+                            "decoded_as"
+                          ],
+                          "order_by": "New Sessionss",
+                          "row_limit": "100",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                            "new_sessions_for_this_rule:RATE:New Sessions",
+                            "closed_sessions_for_this_rule:RATE:Closed Sessions",
+                          ],
+                          "dimensions": [
+                            "decoded_as"
+                          ],
+                          "order_by": "Closed Sessions",
+                          "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"
                         }
                       ]
                 }]
             },
-            "expected_return": "reset",
+            "expected_return": "",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.youtube.com"}],
+            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.9",
-                "clients_end_ip": "10.64.224.9",
-                "servers_start_ip": "2.1.1.9",
-                "servers_end_ip": "2.1.1.9",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "youtube"
+                "pcap_name": "ftp_login_ftpuser"
             },
+            "statists_metric_results": [
+                {"client_ip": "10.64.4.192", "server_ip": "2.1.1.3", "in_bytes": 678, "out_bytes": 982, "bytes": 13280}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -159,6 +197,7 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
+
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
@@ -172,17 +211,19 @@ def run(parameter):
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
+    
+
 
 if __name__ == '__main__':
     parameter = {
 
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "AutomationTestAccount",
+        "password": "1qaz@WSX",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
         "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,  # 6
+        "vsys_id": 1,#5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",
@@ -191,7 +232,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-    }
+   }
     parameter = replace_paras(parameter)
     run(parameter)
     """

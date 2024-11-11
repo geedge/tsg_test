@@ -814,6 +814,7 @@ class CreateRule:
                         search_box.send_keys(Keys.RETURN)
                         # 选择第一个
                         self.driver.find_element(By.XPATH, create_element_position["policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, create_element_position["policyRulePage_runScript_closerunScriptProfile_posXpath"]).click()
                     else:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added manipulation action parameters..")
                 elif test_data["policy_type"] == "statistics":

@@ -68,7 +68,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "192.168.40.206",
+                                "item_value": "open.node.com",
                             }
                         ]
                     }
@@ -91,7 +91,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "url",
-                                "item_value": "192.168"
+                                "item_value": "open.node.com"
                             }
                         ],
                     }
@@ -113,11 +113,11 @@ def run(parameter):
             },
             "expected_return": "test_case_javascript",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "192.168.40.206"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
+            "log_query_param": [{"query_field_key": "http_host", "query_value": "open.node.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl --connect-timeout 30 -m 60  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://192.168.40.206:1443"
+                "command": "curl --connect-timeout 30 -m 60  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://open.node.com:1443"
             },
             "token": ""
         }

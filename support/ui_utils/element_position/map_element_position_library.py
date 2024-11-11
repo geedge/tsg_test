@@ -806,6 +806,7 @@ policy_manipulation_rule_element_position = {
         "policyRulePage_runScript_addrunScriptProfileSelectBox_posXpath": manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath,
         "policyRulePage_runScript_searchrunScriptProfile_posXpath": manipulationRulePage_insert_searchrunScriptProfile_posXpath,
         "policyRulePage_runScript_searchrunScriptProfileDorpItem_posXpath": manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath,
+        "policyRulePage_runScript_closerunScriptProfile_posXpath": manipulationRulePage_runScript_closerunScriptProfile_posXpath,
         # other options
         "policyRulePage_logOptions_all_posXpath": manipulationRulePage_logOptions_all_posXpath,
         # effective devices
@@ -1485,10 +1486,10 @@ object_http_signature_object_element_position = {
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_httpSignature_posId
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_keywords_posXpath
     },
     "create": {
-        "objectListPage_createButton_posId": httpSignatureObjectListPage_createButton_posId,
+        "objectListPage_createButton_posXpath": httpSignatureObjectListPage_createButton_posId,
         "objectListPage_dropDown_createButton_posId": httpSignatureObjectListPage_dropDown_createButton_posId,
         "objectPage_inputName_posXpath": httpSignatureObjectPage_inputName_posXpath,
         "objectPage_addItem_posXpath": httpSignatureobjectPage_addItem_posXpath,
@@ -1709,30 +1710,61 @@ profile_hijack_file_element_position = {
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_hijackFiles_button_yes_posXpath
     }
 }
-profile_insert_script_element_position = {
+profile_insert_script_css_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_insertScripts_posName,
         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_insertScripts_posId
     },
     "create": {
-        "profileListPage_createButton_posXpath": listPage_profile_insertScripts_createButton_posId,
-        "profilePage_inputName_posId": insertScripts_input_Name_posId,
-        "profilePage_okButton_posCss": insertScripts_button_oK_posCss,
-        "profilePage_okButton_warningYes_posCss": insertScripts_button_warningSaveYes_posCss,
+        "profileListPage_createButton_posXpath": listPage_profile_insertScripts_createButton_posXpath,
+        "profilePage_inputName_posXpath": insertScripts_input_Name_posXpath,
+        "profilePage_okButton_posXpath": insertScripts_button_oK_posXpath,
+        "profilePage_okButton_warningYes_posCss": insertScripts_button_warningSaveYes_posXpath,
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_insertScripts_selectLabel_posId,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_insertScripts_selectLabel_posXpath,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_insertScripts_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_insertScripts_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_insertScripts_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_insertScripts_delButton_posId,
+        "profileListPage_deleteButton_posXpath": listPage_profile_insertScripts_delButton_posXpath,
+        "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_insertScripts_button_yes_posXpath
+    }
+}
+profile_insert_script_js_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_insertScripts_js_posName,
+        "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
+        "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_insertScripts_posId
+    },
+    "create": {
+        "profileListPage_createButton_posXpath": listPage_profile_insertScripts_createButton_posXpath,
+        "profilePage_inputName_posXpath": insertScripts_input_Name_posXpath,
+        "profilePage_okButton_posXpath": insertScripts_button_oK_posXpath,
+        "profilePage_okButton_warningYes_posCss": insertScripts_button_warningSaveYes_posXpath,
+    },
+    "search": {
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_insertScripts_selectLabel_posXpath,
+        "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_insertScripts_dropDown_item_posXpath,
+        "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_insertScripts_input_itemContent_posXpath,
+        "profileListPage_tableTbody_posXpath": listPage_profilTable_insertScripts_tableTbody_posXpath
+    },
+    "delete": {
+        "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
+        "profileListPage_deleteButton_posXpath": listPage_profile_insertScripts_delButton_posXpath,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_insertScripts_button_yes_posXpath
     }
 }
@@ -1741,25 +1773,27 @@ profile_run_script_element_position = {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
         "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_leftMenu_posXpath": mainPage_leftMenu_posXpath,
+        "mainPage_profileFirstLevelMenu_Name": mainPage_firstLevelMenu_profiles_posName,
+        "mainPage_profileSecondLevelMenu_Name": mainPage_secondLevelMenu_tsgProxyScripts_posName,
         "mainPage_profileFirstLevelMenu_posXpath": mainPage_firstLevelMenu_profiles_posXpath,
         "mainPage_profileSecondLevelMenu_posId": mainPage_secondLevelMenu_tsgProxyScripts_posId
     },
     "create": {
-        "profileListPage_createButton_posXpath": listPage_profile_tsgProxyScripts_createButton_posId,
+        "profileListPage_createButton_posXpath": listPage_profile_tsgProxyScripts_createButton_posXpath,
         "profilePage_inputName_posXpath": tsgProxyScripts_input_Name_posXpath,
-        "profilePage_okButton_posCss": tsgProxyScripts_button_oK_posCss,
-        "profilePage_okButton_warningYes_posCss": tsgProxyScripts_button_warningSaveYes_posCss,
+        "profilePage_okButton_posCss": tsgProxyScripts_button_oK_posXpath,
+        "profilePage_okButton_warningYes_posXpath": tsgProxyScripts_button_warningSaveYes_posXpath,
     },
     "search": {
-        "profileListPage_searchLabel_posId": listPage_profileSearch_insertScripts_selectLabel_posId,
+        "profileListPage_searchLabel_posXpath": listPage_profileSearch_insertScripts_selectLabel_posXpath,
         "profileListPage_searchLabel_selectName_posXpath": listPage_profileSearch_insertScripts_dropDown_item_posXpath,
         "profileListPage_searchLabel_inputContent_posXpath": listPage_profileSearch_insertScripts_input_itemContent_posXpath,
         "profileListPage_tableTbody_posXpath": listPage_profilTable_insertScripts_tableTbody_posXpath
     },
     "delete": {
         "profileListPage_allSelect_posXpath": mainPage_profileBottomPage_button_allSelect_posXpath,
-        "profileListPage_deleteButton_posId": listPage_profile_tsgProxyScripts_delButton_posId,
+        "profileListPage_deleteButton_posXpath": listPage_profile_tsgProxyScripts_delButton_posXpath,
         "profileListPage_deleteButton_warningYes_posXpath": listPage_dialogTips_tsgProxyScripts_button_yes_posXpath
     }
 }
@@ -2050,7 +2084,7 @@ def get_element_position(key_name):
     # elif key_name == "mobile_identity":
     #     element_position_map = test_mobile_identity_object_element_position
     elif key_name == "http_signature":
-        element_position_map = object_http_signature_object_element_position
+        element_position_map = object_keywords_object_element_position #object_http_signature_object_element_position
     elif key_name == "keywords":
         element_position_map = object_keywords_object_element_position
     elif key_name == "server_fqdn" or key_name == "fqdn":
@@ -2074,8 +2108,11 @@ def get_element_position(key_name):
         element_position_map = profile_traffic_mirroring_profile_element_position
     elif key_name == "hijack_file":
         element_position_map = profile_hijack_file_element_position
-    elif key_name == "insert_script":
-        element_position_map = profile_insert_script_element_position
+    elif "insert_script" in key_name:
+        if "css" in key_name:
+            element_position_map = profile_insert_script_css_element_position
+        else:
+            element_position_map = profile_insert_script_js_element_position
     elif key_name =="statistics_template":
         element_position_map = profile_statistics_template_element_position
     elif key_name == "run_script":
@@ -2128,5 +2165,5 @@ def replace_paras(parameter):
     return parameter
 
 # 勿删 zcw make
-manipulation_object_no_create_list = ["application", "sub_action_override", "sub_action", "ip_protocol"]
+manipulation_object_no_create_list = ["application", "sub_action_override", "sub_action", "ip_protocol", "packet_capture"]
 manipulation_profile_no_create_list = ["deny_response_text", "deny_response_block", "redirect_url", "replace_parameter", "edit_element_parameter", "doh"]

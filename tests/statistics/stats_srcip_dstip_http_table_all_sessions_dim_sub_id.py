@@ -11,9 +11,11 @@ from datetime import datetime
 from support.common_utils.create_policy import CreatePolicy
 from support.report_update import ReportUpdate
 
+
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -59,7 +61,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.4",
+                                "item_value": "2.1.1.31",
                             },
                         ]
                     }],
@@ -97,17 +99,31 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "new_c2s_flows:UNIQUE_COUNT:UNIQUE New Client-to-Server Flows",
-                            "new_s2c_flows:UNIQUE_COUNT:UNIQUE New Server-to-Client Flows"
-                            "new_c2s_flows+new_s2c_flows:UNIQUE_COUNT:UNIQUE Flows"
+                            "new_sessions_for_this_rule:SUM:sessions"
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                          "dimensions": [
+                              "subscriber_id"
+                          ],
+                          "order_by": "sessions",
+                          "row_limit": "20",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                            "new_sessions_for_this_rule:RATE:sessions"
+                          ],
+                          "dimensions": [
+                              "subscriber_id"
+                          ],
+                          "order_by": "sessions",
+                          "row_limit": "50",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
                         }
                       ]
                 }]
@@ -118,10 +134,10 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.4",
-                "clients_end_ip": "10.64.224.4",
-                "servers_start_ip": "2.1.1.4",
-                "servers_end_ip": "2.1.1.4",
+                "clients_start_ip": "10.64.224.31",
+                "clients_end_ip": "10.64.224.31",
+                "servers_start_ip": "2.1.1.31",
+                "servers_end_ip": "2.1.1.31",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",

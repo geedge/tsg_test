@@ -41,7 +41,10 @@ mainPage_secondLevelMenu_tcpProxyProfiles_posId = "Advanced/advanced"  # 二级�
 mainPage_secondLevelMenu_hijackFiles_posId = "Proxy_Profiles/Profile_HijackFiles"  # 二级菜单hijack files
 mainPage_secondLevelMenu_hijackFiles_posName = "Replacement Files"  # 二级菜单hijack files
 mainPage_secondLevelMenu_insertScripts_posId = "Proxy_Profiles/Profile_Insert"  # 二级菜单insert scripts
+mainPage_secondLevelMenu_insertScripts_posName = "CSS Files"  # 二级菜单css files
+mainPage_secondLevelMenu_insertScripts_js_posName = "JS Files"  # 二级菜单css files
 mainPage_secondLevelMenu_tsgProxyScripts_posId = "Proxy_Profiles/runScript"  # 二级菜单tsg proxy scripts
+mainPage_secondLevelMenu_tsgProxyScripts_posName = "Lua Scripts"  # 二级菜单tsg proxy scripts
 mainPage_secondLevelMenu_vpnAccounts_posId = "Setting_Wannat/VPN_Account"  # 二级菜单vpn accounts
 mainPage_secondLevelMenu_wannatTestServers_posId = "Setting_Wannat/Testserver"  # 二级菜单wannat test servers
 mainPage_secondLevelMenu_dosDetectionProfiles_posId = "Proxy_Profiles/detectionProfiles"  # 二级菜单dos detection profiles
@@ -475,17 +478,17 @@ hijackFiles_button_cancel_posXpath = "//div[contains(@class, 'proxy-replacement-
 
 # Profiles insert scripts===================Profiles insert scripts====================Profiles insert scripts=================Profiles insert scripts=======================Profiles insert scripts
 # listPage->insert scripts list page  列表页
-listPage_profile_insertScripts_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_Insert_Home_App_anonymousComponent"  # create按钮id
-listPage_profile_insertScripts_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_Insert_Home_App_anonymousComponent"  # edit按钮id
-listPage_profile_insertScripts_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_Insert_Home_App_anonymousComponent"  # del按钮id
+listPage_profile_insertScripts_createButton_posXpath = "//button//i[contains(@class, 'icon-Create')]"  # create按钮id
+listPage_profile_insertScripts_editButton_posXpath = "//button//i[contains(@class, 'icon-Editinpage')]"  # edit按钮id
+listPage_profile_insertScripts_delButton_posXpath = "//button//i[contains(@class, 'icon-Delete')]"  # del按钮id
 listPage_profile_insertScripts_linkButton_posId = "btnCopy-_OperateBtns_ElRow_Profile_Insert_Home_App_anonymousComponent"  # link按钮id
 listPage_profileColumn_insertScripts_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_insertScripts_button_cancel_posId = "dropColcancel-_ElementSet_Profile_Insert_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_insertScripts_button_ok_posId = "dropColOK-_ElementSet_Profile_Insert_Home_App_anonymousComponent"  # ok按钮
-listPage_profileSearch_insertScripts_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
-listPage_profileSearch_insertScripts_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
+listPage_profileSearch_insertScripts_selectLabel_posXpath = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
+listPage_profileSearch_insertScripts_buttonSearch_posXpath = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_insertScripts_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
-listPage_profileSearch_insertScripts_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
+listPage_profileSearch_insertScripts_dropDown_item_posXpath = mainPage_profileSearch_searchLabel_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_insertScripts_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_insertScripts_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_insertScripts_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
@@ -498,8 +501,10 @@ listPage_linkTips_insertScripts_button_add_posXpath = "//*[@id='temporary_form-_
 listPage_linkTips_insertScripts_button_OK_posXpath = "//*[@id='copyOk-_copyComponents_Profile_Insert_Home_App_anonymousComponent']/span"    # OK 按钮 xpath
 # Create insert scripts page 和 Edit inserts script page   新增和编辑页
 insertScripts_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-insertScripts_input_Name_posId = "insert_profileName"  # name输入框id
-insertScripts_input_scriptUpLoad_posXpath = "//*[@id='insertAddUpload']//input"  # input 上传文件xpath
+insertScripts_input_Name_posXpath = "//div[@class='proxy-css-file-name']//input"  # name输入框id
+insertScripts_js_input_Name_posXpath = "//div[@class='proxy-js-file-name']//input"  # name输入框id
+insertScripts_input_scriptUpLoad_posXpath = "//div[@class='proxy-css-file-file']//input"  # input 上传文件xpath
+insertScripts_js_input_scriptUpLoad_posXpath = "//div[@class='proxy-js-file-file']//input"  # input 上传文件xpath
 insertScripts_input_scriptType_posXpath = "//*[@id='insert_select_format']"  # input 文件类型选择xpath
 insertScripts_dropdown_jsItem_posXpath = "//*[@id='insert_select_formatjs']"  # 下拉菜单 js选项 xpath
 insertScripts_dropdown_cssItem_posXpath = "//*[@id='insert_select_formatcss']"  # 下拉菜单 js选项 xpath
@@ -507,23 +512,25 @@ insertScripts_input_insertPosition_posXpath = "//*[@id='insert_select_insertOn']
 insertScripts_dropdown_beforePageLoadItem_posXpath = "//*[@x-placement='bottom-start']//li[1]"  # 下拉菜单 before page load xpath
 insertScripts_dropdown_afterPageLoadItem_posXpath = "//*[@x-placement='bottom-start']//li[2]"  # 下拉菜单 after page load xpath
 insertScripts_alert_topInfo_Xpath = profilePage_alert_topInfo_Xpath  # 页面顶部alert信息
-insertScripts_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
-insertScripts_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
-insertScripts_button_oK_posCss = "#insertAddOk1 span"  # OK按钮css
-insertScripts_button_cancel_posCss = "#insertAddCancel1 span"  # Cancel按钮
+insertScripts_button_warningSaveYes_posXpath = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
+insertScripts_button_warningSaveCancel_posXpath = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
+insertScripts_button_oK_posXpath = "//div[contains(@class, 'proxy-css-file-page')]//div[contains(@class, 'form-action')]//button[1]"  # OK按钮css
+insertScripts_js_button_oK_posXpath = "//div[contains(@class, 'proxy-js-file-page')]//div[contains(@class, 'form-action')]//button[1]"  # OK按钮css
+insertScripts_button_cancel_posXpath = "//div[contains(@class, 'proxy-css-file-page')]//div[contains(@class, 'form-action')]//button[1]"  # Cancel按钮
+insertScripts_js_button_cancel_posXpath = "//div[contains(@class, 'proxy-js-file-page')]//div[contains(@class, 'form-action')]//button[1]"  # Cancel按钮
 
 # Profiles tsg proxy scripts===================Profiles tsg proxy scripts====================Profiles tsg proxy scripts=================Profiles tsg proxy scripts=======================Profiles tsg proxy scripts
 # listPage->tsg proxy scripts list page  列表页
-listPage_profile_tsgProxyScripts_createButton_posId = "app_create-_OperateBtns_ElRow_Profile_RunScript_Home_App_anonymousComponent"  # create按钮id
-listPage_profile_tsgProxyScripts_editButton_posId = "appEdit-_OperateBtns_ElRow_Profile_RunScript_Home_App_anonymousComponent"  # edit按钮id
-listPage_profile_tsgProxyScripts_delButton_posId = "appDel-_OperateBtns_ElRow_Profile_RunScript_Home_App_anonymousComponent"  # del按钮id
+listPage_profile_tsgProxyScripts_createButton_posXpath = "//button//i[contains(@class, 'icon-Create')]"  # create按钮id
+listPage_profile_tsgProxyScripts_editButton_posXpath = "//button//i[contains(@class, 'icon-Editinpage')]"  # edit按钮id
+listPage_profile_tsgProxyScripts_delButton_posXpath = "//button//i[contains(@class, 'icon-Delete')]"  # del按钮id
 listPage_profileColumn_tsgProxyScripts_button_columnAll_posXpath = "//div[@class='ly-eventfixed']//span[text()='All']/parent::label"  # 列选择All按钮
 listPage_profileColumn_tsgProxyScripts_button_cancel_posId = "dropColcancel-_ElementSet_Profile_RunScript_Home_App_anonymousComponent"  # cancel按钮
 listPage_profileColumn_tsgProxyScripts_button_ok_posId = "dropColOK-_ElementSet_Profile_RunScript_Home_App_anonymousComponent"  # ok按钮
 listPage_profileSearch_tsgProxyScripts_selectLabel_posId = mainPage_profileSearch_selectLabel_posXpath  # 查询框id    定位形式一样
 listPage_profileSearch_tsgProxyScripts_buttonSearch_posId = mainPage_profileSearch_buttonSearch_posXpath  # 查询按钮id       定位形式一样
 listPage_profileSearch_tsgProxyScripts_buttonClear_posId = mainPage_profileSearch_buttonClear_posId  # 清空查询按钮id    定位形式一样
-listPage_profileSearch_tsgProxyScripts_dropDown_item_posXpath = listPage_profileSearch_dnsRecords_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
+listPage_profileSearch_tsgProxyScripts_dropDown_item_posXpath = mainPage_profileSearch_searchLabel_dropDown_item_posXpath  # 下拉菜单定位   定位形式一样
 listPage_profileSearch_tsgProxyScripts_input_itemContent_posXpath = listPage_profileSearch_dnsRecords_input_itemContent_posXpath  # 输入item的值，replaceName替换实际查询值    定位形式一样
 listPage_profilTable_tsgProxyScripts_tableTbody_posXpath = listPage_profilTable_dnsRecords_tableTbody_posXpath  # 列表tabel body  xpath   定位形式一样
 listPage_profilTable_tsgProxyScripts_tableHeader_posXpath = listPage_profilTable_dnsRecords_tableHeader_posXpath  # 列表table 表头xpath   定位形式一样
@@ -532,14 +539,14 @@ listPage_dialogTips_tsgProxyScripts_button_yes_posXpath = listPage_dialogTips_dn
 listPage_dialogTips_tsgProxyScripts_button_no_posXpath = listPage_dialogTips_dnsRecords_button_no_posXpath  # 删除提示的Tips的close按钮
 # Create tsg proxy scripts page 和 Edit tsg proxy scripts page   新增和编辑页
 tsgProxyScripts_headerTitle_posXpath = dnsRecordsProfilePage_headerTitle_posXpath   # 页面头部名称 xpath
-tsgProxyScripts_input_Name_posXpath = "//*[@class='biFangName']//input"  # name输入框xpath
-tsgProxyScripts_input_runScripts_posXpath = "//*[@id='uloadFile']/parent::*//input"  # input 上传文件xpath
-tsgProxyScripts_input_maximumExecutionTime_posXpath = "//*[@id='insert_select_format']"  # input Maximum Execution Time xpath
+tsgProxyScripts_input_Name_posXpath = "//div[@class='proxy-lua-script-name']//input"  # name输入框xpath
+tsgProxyScripts_input_runScripts_posXpath = "//div[@class='proxy-lua-script-file']//input"  # input 上传文件xpath
+tsgProxyScripts_input_maximumExecutionTime_posXpath = "//div[@class='proxy-lua-script-max_exec_time']//input"  # input Maximum Execution Time xpath
 tsgProxyScripts_alert_topInfo_Xpath = profilePage_alert_topInfo_Xpath  # 顶部提示信息alert框
-tsgProxyScripts_button_warningSaveYes_posCss = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
-tsgProxyScripts_button_warningSaveCancel_posCss = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
-tsgProxyScripts_button_oK_posCss = "#runScriptOk1 span"  # OK按钮css
-tsgProxyScripts_button_cancel_posCss = "#runScriptCancel1 span"  # Cancel按钮
+tsgProxyScripts_button_warningSaveYes_posXpath = dnsRecordsProfilePage_button_warningSaveYes_posCss  # 提示保存按钮警告框OK按钮
+tsgProxyScripts_button_warningSaveCancel_poXpath = dnsRecordsProfilePage_button_warningSaveCancel_posCss  # 提示保存警告框Cancel按钮
+tsgProxyScripts_button_oK_posXpath = "//div[contains(@class, 'proxy-lua-script-page')]//div[contains(@class, 'form-action')]//button[1]"  # OK按钮css
+tsgProxyScripts_button_cancel_posXpath = "//div[contains(@class, 'proxy-lua-script-page')]//div[contains(@class, 'form-action')]//button[1]"  # Cancel按钮
 
 # Profiles vpn accounts===================Profiles vpn accounts====================Profiles vpn accounts=================Profiles vpn accounts=======================Profiles vpn accounts
 # listPage->tsg vpn accounts list page  列表页

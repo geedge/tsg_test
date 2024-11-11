@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_s2c_flows:SUM:new s2c flows"
+                            "new_s2c_flows_for_this_rule:SUM:new s2c flows"
                           ],
                           "dimensions": [
                               "device_group"
@@ -113,7 +113,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_c2s_flows+new_s2c_flows:SUM:new flows"
+                            "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:SUM:new flows"
                           ],
                           "dimensions": [
                               "device_group"

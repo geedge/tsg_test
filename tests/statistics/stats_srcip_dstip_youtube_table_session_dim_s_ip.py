@@ -100,7 +100,7 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions+new_out_sessions:SUM:All Session"
+                            "new_sessions_for_this_rule:SUM:All Session"
                           ],
                           "dimensions": [
                             "server_ip"

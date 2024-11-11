@@ -13,8 +13,7 @@ from support.report_update import ReportUpdate
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -44,7 +43,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.3",
+                                "item_value": "10.64.224.31",
                             },
                         ]
                     }
@@ -56,12 +55,11 @@ def run(parameter):
                         "object_type": "ip",
                         "select_type": False,
                         "negate": False,
-                        "statistics_option":"Brief",
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.9",
+                                "item_value": "2.1.1.6",
                             },
                         ]
                     }],
@@ -73,18 +71,33 @@ def run(parameter):
                 "source_geography": [],
                 "destination_geography": [],
                 "sub_id": [],
-                "device": [],
+                "device": [
+                    {
+                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                        "object_type": "apn",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "apn",
+                                "item_value": parameter['test_apn'][2:] + '$',
+                            }
+                        ]
+                    }
+                ],
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
                 "application": [
                     {
-                        "name": "google",  #
+                        "name": "http",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
-                "server_fqdn": [],
+                "server_fqdn": [
+                ],
                 "protocol_filed": [],
                 "sub_action_override": True,
                 "sub_action": [
@@ -97,16 +110,28 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                          "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions+new_out_sessions:SUM:All Session"
+                            "new_sessions_for_this_rule:SUM:new sessions",
+                            "closed_sessions_for_this_rule:SUM:closed sessions"
                           ],
-                          "dimensions": [
-                            "client_ip"
-                          ],
-                          "order_by": "All Session",
-                          "row_limit": "50",
+                          "dimensions": ["sled_ip"],
+                          "order_by": "new sessions",
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                              "new_sessions_for_this_rule:RATE:new sessions",
+                              "closed_sessions_for_this_rule:RATE:closed sessions"
+                            ],
+                          "dimensions": ["sled_ip"],
+                          "order_by": "closed sessions",
+                          "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"
                         }
@@ -115,19 +140,22 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.google.com"}],
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.9",
-                "clients_end_ip": "10.64.224.9",
-                "servers_start_ip": "2.1.1.9",
-                "servers_end_ip": "2.1.1.9",
+                "clients_start_ip": "10.64.224.6",
+                "clients_end_ip": "10.64.224.6",
+                "servers_start_ip": "2.1.1.6",
+                "servers_end_ip": "2.1.1.6",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "google"
+                "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
+                {"app_category_id": "255","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -161,6 +189,7 @@ def run(parameter):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
         return result
+
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
@@ -175,9 +204,6 @@ def run(parameter):
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
 
-    
-
-
 if __name__ == '__main__':
     parameter = {
 
@@ -185,9 +211,9 @@ if __name__ == '__main__':
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 0,
+        "is_log": 1,
         "env": "tsgx",
-        "vsys_id": 1,#6
+        "vsys_id": 1,  # 6
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",

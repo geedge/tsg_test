@@ -6,12 +6,12 @@ mainPage_objectSearch_buttonSearch_posXpath = '//*[@class="MuiButtonBase-root Mu
 mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"    # 当前页面中vsys name
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
 mainPage_firstLevelMenu_Objects_posXpath = "//*[normalize-space(text())='Objects']" # 一级菜单Global Objects
-mainPage_secondLevelMenu_ipAddress_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="IP Addresses"]' # 二级菜单IP Addresses
+mainPage_secondLevelMenu_ipAddress_posXpath = "//div[contains(@href, '/objects/ip-addresses')]" #'//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="IP Addresses"]' # 二级菜单IP Addresses
 # mainPage_secondLevelMenu_port_posId = "Objects_port"
 mainPage_secondLevelMenu_port_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Ports"]' # 二级菜单Ports
-mainPage_secondLevelMenu_httpSignature_posId = "Objects_http_signature"
-mainPage_secondLevelMenu_keywords_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Keywords"]'
-mainPage_secondLevelMenu_url_posXpath = "//span[text()='URLs']"
+mainPage_secondLevelMenu_httpSignature_posId = "//div[contains(@href, '/objects/keywords')]"
+mainPage_secondLevelMenu_keywords_posXpath = "//div[contains(@href, '/objects/keywords')]"
+mainPage_secondLevelMenu_url_posXpath = "//div[contains(@href, '/objects/urls')]" #"//span[text()='URLs']"
 mainPage_secondLevelMenu_mobileIdentify_posXpath = "//div[@class='MuiListItemText-root css-1wojmrk']//span[text()='Mobile Identities']"
 mainPage_secondLevelMenu_fqdn_posXpath = "//div[@class='MuiCollapse-wrapper MuiCollapse-vertical css-hboir5']//span[text()='FQDNs']"  # 二级菜单 fqdn
 mainPage_secondLevelMenu_subid_posXpath = "//div[@class='MuiCollapse-wrapper MuiCollapse-vertical css-hboir5']//span[text()='Subscriber IDs']"  # 二级菜单sub id

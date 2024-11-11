@@ -79,6 +79,8 @@ class DataTranslation:
                 elif "deny_response_text" in data["action_parameter"]:
                     data["code_1"] = data["action_parameter"]["deny_response_text"][0]["response_code"]
                     data["message_1"] = data["action_parameter"]["deny_response_text"][0]["response_content"]  # 匹配原有api test_data数据
+                elif "deny_response_block" in data["action_parameter"]:
+                    data["message_1"] = data["action_parameter"]["deny_response_block"][0]["Manipulation_block"]  # 匹配原有api test_data数据
                 else:
                     data["code_1"] = 404
                     data["message_1"] = "text"  # 匹配原有api test_data数据
@@ -708,6 +710,9 @@ class DataTranslation:
                             tmp_expr = "^{}".format(expression[:-1])
                         elif expression.startswith("$"):  # exactly
                             tmp_expr = "^{}$".format(expression[1:])
+                        # items为24.10新格式时，不转换，直接使用对应的数据
+                        elif expression.startswith("^") or expression.endswith("$"):
+                            tmp_expr = expression
                         else:  # subid  子匹配转换为全匹配
                             tmp_expr = "^{}$".format(expression[1:])
                         add_item_dict["expression"] = tmp_expr
@@ -843,7 +848,7 @@ class DataTranslation:
                                     else:  # substring ^ $ 模式保持不变
                                         tmp_expr = expression
                             tmp_expr = tmp_expr + "&" + v[i]["item"][u]["item_key"]
-                            tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
+                            # tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
                             add_item_dict["expression"] = tmp_expr
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
@@ -1000,7 +1005,7 @@ class DataTranslation:
                                         tmp_expr = "^{}$".format(expression[1:])
                                     else:  # substring ^ $ 模式保持不变
                                         tmp_expr = expression
-                            tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
+                            # tmp_expr = tmp_expr.replace("(", "\\(").replace(")", "\\)").replace("$", "\\$").replace("&", "\\&")   # 转移特殊字符
                             add_item_dict["expression"] = tmp_expr
                             temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
                         object.append(copy.deepcopy(temp))
@@ -1026,7 +1031,7 @@ class DataTranslation:
                             temp["attribute_name"] = "ATTR_FTP_ACCOUNT"
                         if v[i]["items"][0]["item_type"] == "mail_from":
                             temp["attribute_name"] = "ATTR_MAIL_FROM"
-                        if v[i]["items"][0]["item_type"] == "mail_to":
+                        if v[i]["items"][0]["item_type"] == "to":
                             temp["attribute_name"] = "ATTR_MAIL_TO"
                         for u in range(len(v[i]["items"])):
                             # 添加多个item
@@ -1113,7 +1118,7 @@ class DataTranslation:
                                     tmp_expr = expression
                                 add_item_dict["expression"] = tmp_expr
                                 temp["object_list"][0]["add_item_list"].append(copy.deepcopy(add_item_dict))
-                            temp["negate_option"] = v[i]["negate"]
+                            temp["is_negate"] = v[i]["negate"]
                             object.append(copy.deepcopy(temp))
             elif k == "flag":
                 for i in range(len(v)):

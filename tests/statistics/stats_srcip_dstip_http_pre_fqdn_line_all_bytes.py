@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.4",
+                                "item_value": "2.1.1.14",
                             },
                         ]
                     }],
@@ -83,6 +83,19 @@ def run(parameter):
                     }
                 ],
                 "server_fqdn": [
+                    {
+                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1).replace("_xly_url_sub_reqheader_multi_sub_resheader_sub_resbody", "", 1),
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_value": "^www.yumi.",
+                            }
+                        ]
+                    }
                 ],
                 "protocol_filed": [],
                 "sub_action_override": True,
@@ -99,16 +112,43 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_latency_ms:UNIQUE_COUNT:Incoming Latency(ms)",
-                            "out_latency_ms:UNIQUE_COUNT:Outgoing Latency(ms)",
-                            "tcp_handshake_latency_ms:UNIQUE_COUNT:TCP Handshake Latency(ms)",
-                            "in_latency_ms+out_latency_ms:UNIQUE_COUNT:Latency(ms)"
+                            "sent_bytes:BITRATE:in bytes",
+                            "received_bytes:BITRATE:out bytes",
+                            "sent_bytes+received_bytes:BITRATE:bytes"
                           ],
                           "dimensions": [],
                           "order_by": "",
                           "row_limit": "",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Line",
+                          "metrics": [
+                            "sent_bytes:RATE:in bytes",
+                            "received_bytes:RATE:out bytes",
+                            "sent_bytes+received_bytes:RATE:bytes"
+                          ],
+                          "dimensions": [],
+                          "order_by": "",
+                          "row_limit": "",
+                          "min_in_size": "1",
+                          "min_out_size": "1"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Line",
+                            "metrics": [
+                                "sent_bytes:SUM:in bytes",
+                                "received_bytes:SUM:out bytes",
+                                "sent_bytes+received_bytes:SUM:bytes"
+                            ],
+                            "dimensions": [],
+                            "order_by": "",
+                            "row_limit": "",
+                            "min_in_size": "1",
+                            "min_out_size": "1"
                         }
                       ]
                 }]
@@ -119,15 +159,18 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.4",
-                "clients_end_ip": "10.64.224.4",
-                "servers_start_ip": "2.1.1.4",
-                "servers_end_ip": "2.1.1.4",
+                "clients_start_ip": "10.64.224.14",
+                "clients_end_ip": "10.64.224.14",
+                "servers_start_ip": "2.1.1.14",
+                "servers_end_ip": "2.1.1.14",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [
+                {"time": "2024-07-24T01:36:19Z", "out_bytes": 745744, "in_bytes": 9120, "bytes": 754864}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -194,7 +237,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6489",
         "script_type": "ui",
         "policy_type": "statistics"
-   }
+    }
     parameter = replace_paras(parameter)
     run(parameter)
     """
