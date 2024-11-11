@@ -280,6 +280,16 @@ class OrganizeConfig:
                 new_src_ip = ".".join(src_ip_list)
                 config["traffic"]["clients_start_ip"] = new_src_ip
                 config["traffic"]["clients_end_ip"] = new_src_ip
+            # 如果无Source、estination IP,而包含Internal、External IP
+            # 集成测试环境Trex的External IP为Source IP故逻辑如下：如果是其他测试环境需要根据具体环境调整逻辑
+            if "condition" in config.keys() and len(config["condition"]["external_ip"]) > 0:
+                if "-" in config["condition"]["external_ip"][0]["item"][0]["item_value"]:
+                    config["condition"]["external_ip"][0]["item"][0]["item_value"] = "{}-{}".format(config["traffic"]["clients_start_ip"], config["traffic"]["clients_end_ip"])
+                elif "/" in config["condition"]["external_ip"][0]["item"][0]["item_value"]:
+                    config["condition"]["external_ip"][0]["item"][0]["item_value"] = "{}/{}".format(config["traffic"]["clients_start_ip"], 32)
+                else:
+                    config["condition"]["external_ip"][0]["item"][0]["item_value"] = config["traffic"]["clients_start_ip"]
+
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
 
