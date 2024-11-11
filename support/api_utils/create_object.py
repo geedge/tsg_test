@@ -354,6 +354,7 @@ class CreateObject:
             if type_op == "create":
                 url = api_host + "/v1/objects/{}".format(api_path_obj_type)
                 time1 = datetime.now()
+                #print(json.dumps(obj_template_dict))
                 response = requests.post(url, headers=headers, json=obj_template_dict, verify=False)
                 #print(response.json())
                 assert response.status_code == 200
