@@ -32,13 +32,13 @@ def main():
             "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
             "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
-            "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posId,
-            "mainPage_policySecondLevelMenu_posId": mainPage_policySecondLevelMenu_dos_posId
+            "mainPage_policyFirstLevelMenu_posId": mainPage_policyFirstLevelMenu_posXpath,
+            "mainPage_policySecondLevelMenu_posXpath": mainPage_policySecondLevelMenu_dos_posXpath
         },
         "create": {
             "policyRuleListPage_createButton_posId": dosRuleListPage_createButton_posXpath,
             "policyRulePage_inputName_posXpath": dosRulePage_inputName_posXpath,
-            "policyRulePage_selectAction_posId": dosRulePage_selectShunt_posXpath,
+            "policyRulePage_selectAction_posId": dosRulePage_selectProtect_posXpath,
             "policyRulePage_addSrcIP_posXpath": dosRulePage_addSrcIP_posXpath,
             "policyRulePage_searchSrcIP_posXpath": dosRulePage_searchSrcIP_posXpath,
             "policyRulePage_selectSrcIP_posXpath": dosRulePage_selectSrcIP_posXpath,
@@ -59,14 +59,14 @@ def main():
             "policyRulePage_mitigationTimeouts_dropDownBox_posXpath": dosRulePage_mitigationTimeouts_dropDownBox_posXpath,
             "policyRulePage_mitigationTimeouts_select_posXpath": "",
             "policyRulePage_enable_posXpath": dosRulePage_enable_posXpath,
-            "policyRulePage_okButton_yes_posId": dosRulePage_ok_posId,
+            "policyRulePage_okButton_yes_posId": dosRulePage_ok_posXpath,
             "policyRulePage_okButton_warningYes_posXpath": dosRulePage_okButton_warningYes_posXpath
         },
         "search": {
             "policyRuleListPage_searchLable_posId": dosRuleListPage_searchLable_posXpath,
             "policyRuleListPage_searchLable_dropDown_item_posXpath": dosRuleListPage_searchLable_dropDown_item_posXpath,
             "policyRuleListPage_searchLable_input_itemContent_posXpath": dosRuleListPage_searchLable_input_itemContent_posXpath,
-            "policyRuleListPage_searchLable_searchButton_posId": dosRuleListPage_searchLable_searchButton_posId,
+            "policyRuleListPage_searchLable_searchButton_posId": dosRuleListPage_searchLable_searchButton_posXpath,
             "policyRuleListPage_tableTbody_posXpath": dosRuleListPage_tableTbody_posXpath
         },
         "delete": {
@@ -85,7 +85,7 @@ def main():
         "api_server": "http://192.168.44.72",
         "script_type": "api",
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys_id": 5,
         "is_log": 1,
         "debug_flag": "local",
         "root_path": "E:/tsg_test",
@@ -98,7 +98,7 @@ def main():
     rule_num = 1
     # 获取开始时间
     utc_tz = pytz.timezone('UTC')
-    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=8000)
+    current_utc_time = datetime.now(utc_tz) - timedelta(seconds=80000)
     start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
     #获取结束时间
     utc_tz = pytz.timezone('UTC')
@@ -106,75 +106,85 @@ def main():
     end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     test_data = {
-        "is_multi_priority": False,
-        "rule_num": 1,
-        "policy_type": "dos_protection",
-        "rule_name": "dos_protect_srcip_http_rate_srcip_d3",
-        "rule_action": "protect",
-        "rule_type": "create",
-        "do_log": 2,
-        "condition": {
-            "source_ip": [
-                {
-                    "name": "dos_srcip",
-                    "object_type": "ip",
-                    "select_type": False,
-                    "negate": False,
-                    "item": [
-                        {
-                            "item_operation": "add",
-                            "item_type": "ipv4",
-                            "item_value": '10.64.20.223',
-                        }
-                    ]
-                }
-            ],
-            "application": [
-                {
-                    "name": "http",
-                    "object_type": "application",
-                    "negate": False
-                }
-            ]
-        },
-        "threshold": {
-            "type": "rate",
-            "rate_threshold": {
-                "group_by": "source_ip",
-                "request_per_period": 2,
-                "counting_period": "1min"
+    "is_multi_priority": False,
+    "rule_num": 1,
+    "policy_type": "dos_protection",
+    "rule_name": "dos_protect_srcip_http_rate_serverfqdn_cperiod_1min_d3_1h",
+    "rule_action": "protect",
+    "rule_type": "create",
+    "do_log": 2,
+    "condition": {
+        "source_ip": [
+            {
+                "name": "dos_srcip",
+                "object_type": "ip",
+                "select_type": False,
+                "negate": False,
+                "item": [
+                    {
+                        "item_operation": "add",
+                        "item_type": "ipv4",
+                        "item_value": "10.64.230.96"
+                    }
+                ]
             }
-        },
-        "mitigation": {
-            "behavior": "none",
-        },
-        "expected_return": "",
-        "counters": {"hits": "many"},
-        "log_query_param": [
-            {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
-            {"query_field_key": "sessions", "query_value": ""},
-            {"query_field_key": "packets", "query_value": ""},
-            {"query_field_key": "bytes", "query_value": ""},
-            {"query_field_key": "bit_rate", "query_value": ""},
-            {"query_field_key": "packet_rate", "query_value": ""},
-            {"query_field_key": "session_rate", "query_value": ""},
         ],
-        "traffic": {
-            "protocol": "",
-            "type": "trex",
-            "clients_start_ip": "10.64.12.191",
-            "clients_end_ip": "10.64.12.191",
-            "servers_start_ip": "2.1.1.21",
-            "servers_end_ip": "2.1.1.21",
-            "m": 2,
-            "d": 5,
-            "yaml_name": "test",
-            "pcap_name": "http"
-        },
-        "token": "",
-        'rule_id': '158489'
-    }
-    output = {'total_bytes': 978822, 'total_bytes_received': 901953, 'total_bytes_sent': 76869, 'total_packets': 873, 'total_packets_received': 675, 'total_packets_sent': 198, 'total_syn_pkt': 9}
+        "application": [
+            {
+                "name": "http",
+                "object_type": "application",
+                "negate": False
+            }
+        ]
+    },
+    "threshold": {
+        "type": "rate",
+        "rate_threshold": {
+            "group_by": "server_fqdn",
+            "request_per_period": 1,
+            "counting_period": "1min"
+        }
+    },
+    "mitigation": {
+        "behavior": "deny",
+        "timeout": "1h"
+    },
+    "expected_return": "",
+    "counters": {
+        "hits": "many"
+    },
+    "log_query_param": [
+        {"query_field_key": "source_country", "query_value": "Private Network"},
+        {"query_field_key": "destination_country", "query_value": "US"},
+        #
+        {"query_field_key": "sessions", "query_value": ""},
+        {"query_field_key": "packets", "query_value": ""},
+        {"query_field_key": "bytes", "query_value": ""},
+        {"query_field_key": "bit_rate", "query_value": ""},
+        {"query_field_key": "packet_rate", "query_value": ""},
+        {"query_field_key": "session_rate", "query_value": ""},
+
+        {"query_field_key": "rule_uuid", "query_value": ""},
+        {"query_field_key": "source_ip", "query_value": ""},
+        {"query_field_key": "destination_ip", "query_value": ""},
+    ],
+    "traffic": {
+        "protocol": "",
+        "type": "trex",
+        "clients_start_ip": "10.64.230.96",
+        "clients_end_ip": "10.64.230.96",
+        "servers_start_ip": "6.116.89.203",
+        "servers_end_ip": "6.116.89.203",
+        "m": 2,
+        "d": 5,
+        "yaml_name": "test",
+        "pcap_name": "http"
+    },
+    "token": "cdd9d680-6f67-4360-8be7-3ff518970a92&11&",
+    "rule_uuid":'0193190f-2add-775a-a34f-8a1b7b0c2ba4'
+}
+
+    output = {'total_packets': 873, 'total_packets_sent': 198, 'total_packets_received': 675, 'total_bytes': 978822, 'total_bytes_sent': 76869, 'total_bytes_received': 901953, 'total_syn_pkt': 9}
     log_in = LogIn()
     pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
     token = log_in.login(parameter["username"], pwd, parameter["api_server"])
@@ -204,8 +214,9 @@ def main():
     api_server = parameter["api_server"]
     vsys_id = parameter["vsys_id"]
     script_type = parameter["script_type"]
-    create_policies_ids = [{'dos_protection': test_data['rule_id']}]
+    create_policies_ids = [{'dos_protection': test_data['rule_uuid']}]
 
+    #如进行Log验证，需在api中添加test_data打印语句，;在get_log中打印temp_log_result
     # 调用 GetLog 的 get_log_by_condition 函数
     log = support.api_utils.get_log.GetLog()
 

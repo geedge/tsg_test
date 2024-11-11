@@ -129,7 +129,7 @@ if __name__ == '__main__':
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 1,
-        "is_log": 0,
+        "is_log": 1,
         "debug_flag": "local",
         "root_path": "E:/tsg_test",
         "path": "E:/tsg_test/tests/ui",
