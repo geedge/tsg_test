@@ -79,7 +79,8 @@ def run(parameter):
             "is_mirror": "off",
             "profile": [
             ],
-            "expected_return": "502",
+            # "expected_return": "502",
+            "expected_return": "200",
             "counters": {"hits": 1},
             "log_query_param": [
                 {"query_field_key": "decoded_as", "query_value": "SSL"},

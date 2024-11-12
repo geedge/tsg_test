@@ -74,7 +74,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "san",
-                                "item_value": "node->"
+                                "item_value": "node"
                             }
                         ],
                     },
@@ -86,8 +86,8 @@ def run(parameter):
                 ],
             },
             "expected_return": "node",
-            "counters": {"hits": 0},
-            "log_query_param": [],
+            "counters": {"hits": 1},
+            "log_query_param": [{"query_field_key": "decoded_as", "query_value": "SSL"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",

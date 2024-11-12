@@ -63,8 +63,8 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "to",
-                                # "item_value": "zhangchengwei&163fx@163.com"
-                                "item_value": "zhangchengwei@163.com"
+                                "item_value": "zhangchengwei&163fx@163.com"
+                                #"item_value": "zhangchengwei@163.com"
                             }
                         ],
                     }

@@ -81,7 +81,7 @@ def run(parameter):
                                 "item_key": "Content-Type",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "$text/html",
+                                    "text/html",
                                 ]
                             }
                         ],

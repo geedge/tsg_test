@@ -73,7 +73,7 @@ def run(parameter):
                         "plus": False,
                         "items": [
                             {
-                                "item_value": "^mtv.com",
+                                "item_value": "mtv.com",
                                 "item_operation": "add"
                             }
                         ]

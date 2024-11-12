@@ -211,7 +211,8 @@ class GetLog:
                                         if "items" in protocol_filed and protocol_filed["items"]:
                                             item_type = protocol_filed["items"][0].get("item_type", "")
                                             # if item_type in ["mail_from", "mail_to"]:
-                                            if item_type in ["mail_from", "to"]:
+                                            if item_type in ["mail_from"]:
+                                            # if item_type in ["mail_from", "to"]:
                                                 mirror_bytes_value = actual_bytes_value - 19578
                                                 mirror_pkts_value = actual_pkts_value - 158
                                             else:  # 如果有 "items"，但不符合特定类型时的默认行为
@@ -221,7 +222,8 @@ class GetLog:
                                         # 如果有 "item" 列表，并且列表不为空
                                         elif "item" in protocol_filed and protocol_filed["item"]:
                                             item_type = protocol_filed["item"][0].get("item_type", "")
-                                            if item_type in ["mail_attachment_content","mail_attachment_name"]:
+                                            if item_type in ["attachment_content","attachment_name"]:
+                                            # if item_type in ["mail_attachment_content","mail_attachment_name"]:
                                                 mirror_bytes_value = actual_bytes_value - 34554
                                                 mirror_pkts_value = actual_pkts_value - 170
                                             elif item_type == "mail_subject":
