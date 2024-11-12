@@ -51,25 +51,11 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "port",
-                                "item_value": "80",
-                            },
-                            {
-                                "item_operation": "add",
-                                "item_type": "port",
-                                "item_value": "443",
-                            },
-                            {
-                                "item_operation": "add",
-                                "item_type": "port",
-                                "item_value": "180",
-                            },
-                            {
-                                "item_operation": "add",
-                                "item_type": "port",
-                                "item_value": "1443",
+                                "item_value": "1-65535",
                             },
                         ]
                     }
+
                 ],
                 "source_geography": [],
                 "destination_geography": [],
@@ -123,8 +109,8 @@ def run(parameter):
                 "type": "trex",
                 "clients_start_ip": "10.64.224.31",
                 "clients_end_ip": "10.64.224.31",
-                "servers_start_ip": "2.1.1.31",
-                "servers_end_ip": "2.1.1.31",
+                "servers_start_ip": "60.190.243.167",
+                "servers_end_ip": "60.190.243.167",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",

@@ -13,7 +13,8 @@ from support.report_update import ReportUpdate
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
         exception_result = ""
         result = {}
@@ -38,12 +39,13 @@ def run(parameter):
                         "name": parameter["test_case_name"].replace("_dstip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "10.64.224.31",
+                                "item_value": "10.64.224.3",
                             },
                         ]
                     }
@@ -54,12 +56,13 @@ def run(parameter):
                         "name": parameter["test_case_name"].replace("_srcip", "", 1),
                         "object_type": "ip",
                         "select_type": False,
+                        "statistics_option": "Brief",
                         "negate": False,
                         "item": [
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.4",
+                                "item_value": "2.1.1.3",
                             },
                         ]
                     }],
@@ -77,14 +80,29 @@ def run(parameter):
                 "flag": [],
                 "application": [
                     {
-                        "name": "http",  #
+                        "name": "ftp",  #
                         "object_type": "application",
                         "negate": False
                     }
                 ],
                 "server_fqdn": [
                 ],
-                "protocol_filed": [],
+                "protocol_filed": [
+                    {
+                        "name": parameter["test_case_name"].replace("_srcip", "", 1),
+                        "object_type": "account",
+                        "select_type": False,
+                        "item_operation": "add",
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ftp_account",
+                                "item_value": "^ftpuser$"
+                            }
+                        ],
+                    }
+                ],
                 "sub_action_override": True,
                 "sub_action": [
                 ],
@@ -96,38 +114,56 @@ def run(parameter):
                     "profile_type": "statistics_template",
                     "charts": [
                         {
-                          "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                          "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions:UNIQUE_COUNT:UNIQUE New Incoming Session",
-                            "new_out_sessions:UNIQUE_COUNT:UNIQUE New Outgoing Session",
-                            "closed_in_sessions:UNIQUE_COUNT:UNIQUE Closed Incoming Session",
-                            "closed_out_sessions:UNIQUE_COUNT:UNIQUE Closed Outgoing Session"
+                            "new_sessions_for_this_rule:SUM:New Sessions",
+                            "closed_sessions_for_this_rule:SUM:Closed Sessions",
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
+                          "dimensions": [
+                            "decoded_as"
+                          ],
+                          "order_by": "New Sessionss",
+                          "row_limit": "100",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                          "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                            "new_sessions_for_this_rule:RATE:New Sessions",
+                            "closed_sessions_for_this_rule:RATE:Closed Sessions",
+                          ],
+                          "dimensions": [
+                            "decoded_as"
+                          ],
+                          "order_by": "Closed Sessions",
+                          "row_limit": "100",
                           "min_in_size": "0",
                           "min_out_size": "0"
                         }
                       ]
                 }]
             },
-            "expected_return": "reset",
+            "expected_return": "",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
+            "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.4",
-                "clients_end_ip": "10.64.224.4",
-                "servers_start_ip": "2.1.1.4",
-                "servers_end_ip": "2.1.1.4",
+                "clients_start_ip": "10.64.224.3",
+                "clients_end_ip": "10.64.224.3",
+                "servers_start_ip": "2.1.1.3",
+                "servers_end_ip": "2.1.1.3",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "http_87pkts"
+                "pcap_name": "ftp_login_ftpuser"
             },
+            "statists_metric_results": [
+                {"client_ip": "10.64.4.192", "server_ip": "2.1.1.3", "in_bytes": 678, "out_bytes": 982, "bytes": 13280}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
@@ -175,17 +211,19 @@ def run(parameter):
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
+    
+
 
 if __name__ == '__main__':
     parameter = {
 
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "AutomationTestAccount",
+        "password": "1qaz@WSX",
         "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "is_log": 1,
+        "is_log": 0,
         "env": "tsgx",
-        "vsys_id": 1,  # 6
+        "vsys_id": 1,#5
         "root_path": "D:/tsgcode/tsg_test",
         "path": "tsgcode/tsg_test/testcase/ui",
         "module_name": "statistics",

@@ -2,7 +2,7 @@
 import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import traceback
 from datetime import datetime
 from support.common_utils.create_policy import CreatePolicy
@@ -28,7 +28,21 @@ def run(parameter):
             "targeted_traffic": "raw",
             "rule_type": "create",
             "condition": {
-                "source_ip": [],
+                "source_ip": [
+                    {
+                        "name": "service_chaining_source_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": "10.64.122.22"
+                            }
+                        ]
+                    }
+               ],
                 "source_port": [],
                 "destination_ip": [
                     {

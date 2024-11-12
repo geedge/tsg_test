@@ -114,23 +114,11 @@ def run(parameter):
                             "chart_name": "UNIQUECOUNT(Incoming Latency)",
                             "visualization_type": "Table",
                             "metrics": [
-                                "in_latency_ms:UNIQUE_COUNT:UNIQUE Incoming Latency"
+                                "tcp_handshake_latency_ms:UNIQUE_COUNT:UNIQUE TCP Latency"
                             ],
-                            "dimensions": ["in_latency_ms"],
-                            "order_by": "UNIQUE Incoming Latency",
+                            "dimensions": ["device_group"],
+                            "order_by": "UNIQUE TCP Latency",
                             "row_limit": "50",
-                            "min_in_size": "0",
-                            "min_out_size": "0"
-                        },
-                        {
-                            "chart_name": "UNIQUECOUNT(Outgoing Latency)",
-                            "visualization_type": "Table",
-                            "metrics": [
-                                "out_latency_ms:UNIQUE_COUNT:UNIQUE Outgoing Latency"
-                            ],
-                            "dimensions": ["out_latency_ms"],
-                            "order_by": "Outgoing Latency",
-                            "row_limit": "100",
                             "min_in_size": "0",
                             "min_out_size": "0"
                         },

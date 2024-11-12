@@ -101,9 +101,9 @@ def run(parameter):
                           "chart_name": "stats_http_table_all_flows_dim_c2s_s2c_ttl",
                           "visualization_type": "table",
                           "metrics": [
-                            "new_c2s_flows:SUM:new c2s flows",
-                            "new_s2c_flows:SUM:new s2c flows",
-                            "new_c2s_flows+new_s2c_flows:SUM:all flows"
+                            "new_c2s_flows_for_this_rule:SUM:new c2s flows",
+                            "new_s2c_flows_for_this_rule:SUM:new s2c flows",
+                            "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:SUM:all flows"
                           ],
                           "dimensions": [
                               "c2s_ttl",

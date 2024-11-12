@@ -393,7 +393,7 @@ class CreateServiceChainingPolicy:
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
 
-                #time.sleep(30)
+                time.sleep(30)
                 # 流量验证
                 verification = Verify()
                 verification_result = verification.verify_result("", parameter, test_data, cfg_list, "")

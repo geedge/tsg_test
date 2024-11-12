@@ -130,6 +130,9 @@ class CreateLibrary:
                     "uuid": None,
                     "fqdn":""
                 }
+                # 处理fqdn适配24.10版本新格式
+                if "$" in fqdn:
+                    fqdn = fqdn.replace("$","")
                 fqdn_template["op"] = catalog_data["op"]
                 fqdn_template["fqdn"] = fqdn
                 catalog_template["catalog"]["fqdn_entries"].append(fqdn_template)

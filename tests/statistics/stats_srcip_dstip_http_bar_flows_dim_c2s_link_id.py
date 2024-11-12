@@ -100,7 +100,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Bar",
                           "metrics": [
-                            "new_c2s_flows+new_s2c_flows:SUM:Flows"
+                            "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:SUM:Flows"
                           ],
                           "dimensions": [
                             "c2s_link_id"

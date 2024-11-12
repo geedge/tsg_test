@@ -160,28 +160,6 @@ class CreateProfile:
                              {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
-            "Incoming Latency(ms)": {
-                "source_columns": "in_latency_ms",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "short", "metric_type": "count"},
-                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
-            },
-            "Outgoing Latency(ms)": {
-                "source_columns": "out_latency_ms",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "short", "metric_type": "count"},
-                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "PERCENTILES_HDR", "unit": "ms", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "ms", "metric_type": "distribution"}]
-            },
             "DTLS Handshake Latency(ms)": {
                 "source_columns": "dtls_handshake_latency_ms",
                 "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
@@ -321,64 +299,32 @@ class CreateProfile:
                              {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
             },
             "New Client-to-Server Flows": {
-                "source_columns": "new_c2s_flows",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "flows", "metric_type": "count"},
-                             {"function": "RATE", "unit": "fps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "flows", "metric_type": "distribution"}]
+                "source_columns": "new_c2s_flows_for_this_rule",
+                "function": [
+                    {"function": "SUM", "unit": "flows", "metric_type": "count"},
+                    {"function": "RATE", "unit": "fps", "metric_type": "count"}
+                ]
             },
             "New Server-to-Client Flows": {
-                "source_columns": "new_s2c_flows",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "flows", "metric_type": "count"},
-                             {"function": "RATE", "unit": "fps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "flows", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "flows", "metric_type": "distribution"}]
+                "source_columns": "new_s2c_flows_for_this_rule",
+                "function": [
+                    {"function": "SUM", "unit": "flows", "metric_type": "count"},
+                    {"function": "RATE", "unit": "fps", "metric_type": "count"}
+                ]
             },
-            "New Incoming Sessions": {
-                "source_columns": "new_in_sessions",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
-                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
+            "New Sessions": {
+                "source_columns": "new_sessions_for_this_rule",
+                "function": [
+                    {"function": "SUM", "unit": "sessions", "metric_type": "count"},
+                    {"function": "RATE", "unit": "sps", "metric_type": "count"}
+                ]
             },
-            "New Outgoing Sessions": {
-                "source_columns": "new_out_sessions",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
-                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
-            },
-            "Closed Incoming Sessions": {
-                "source_columns": "closed_in_sessions",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
-                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
-            },
-            "Closed Outgoing Sessions": {
-                "source_columns": "closed_out_sessions",
-                "function": [{"function": "UNIQUE_COUNT", "unit": "short", "metric_type": "unique_count"},
-                             {"function": "SUM", "unit": "sessions", "metric_type": "count"},
-                             {"function": "RATE", "unit": "sps", "metric_type": "count"},
-                             {"function": "MEDIAN", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P95_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "sessions", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "sessions", "metric_type": "distribution"}]
+            "Closed Sessions": {
+                "source_columns": "closed_sessions_for_this_rule",
+                "function": [
+                    {"function": "SUM", "unit": "sessions", "metric_type": "count"},
+                    {"function": "RATE", "unit": "sps", "metric_type": "count"}
+                ]
             },
             "SYN Packets": {
                 "source_columns": "syn_pkts",
@@ -560,7 +506,7 @@ class CreateProfile:
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = post_order_by.strip()
             # 重组 limit、 drilldown_limit
             if "line" == chart_type:
-                if len(post_statistics_data["chart_list"][chart_idex]["dimensions"]) > 1:  # 如果是Line+Dimensions图表，需要添加重组TOP参数，而无Limit参数
+                if len(post_statistics_data["chart_list"][chart_idex]["dimensions"]) > 1 and post_statistics_data["chart_list"][chart_idex]["series_limit"] != "":  # 如果是Line+Dimensions图表，需要添加重组TOP参数，而无Limit参数
                     f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["series_limit"] = int(post_statistics_data["chart_list"][chart_idex]["series_limit"])
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = 65536
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = ""
@@ -840,7 +786,7 @@ class CreateProfile:
                 # profile_data['type'] = "dns_resource_record"
                 process_post_data = self.process_dns_record_post_data(profile_dns_record_template, profile_data, vsys_id)
                 # 添加vsys id
-                profile_data["vsys"] = vsys_id
+                process_post_data["vsys"] = vsys_id
                 url = "{}/v1/profiles/dns-resource-records".format(api_host)
                 #print(json.dumps(process_post_data))
                 response = requests.post(url, headers=headers, json=process_post_data, verify=False)
@@ -903,7 +849,7 @@ class CreateProfile:
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} profile failed.".format(temp_profile_type), flush=True)
                 response_dict = response.json()
-                profile_id = response_dict["data"]["ssl_keyring"]["uuid"]
+                profile_id = response_dict["data"]["decryption_keyring"]["uuid"]
                 create_profile_id_dict["profile_type"] = profile_type
                 create_profile_id_dict["decryption_keying_type"] = decryption_keying_type
                 create_profile_id_dict["uuid"] = profile_id

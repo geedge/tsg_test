@@ -100,7 +100,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "closed_in_sessions+closed_out_sessions:RATE:Closed Sessions"
+                            "closed_sessions_for_this_rule:RATE:Closed Sessions"
                           ],
                           "dimensions": ["server_ip_object_list"],
                           "order_by": "",
@@ -112,7 +112,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "closed_in_sessions+closed_out_sessions:SUM:Closed Sessions"
+                                "closed_sessions_for_this_rule:SUM:Closed Sessions"
                             ],
                             "dimensions": ["server_ip_object_list"],
                             "order_by": "",

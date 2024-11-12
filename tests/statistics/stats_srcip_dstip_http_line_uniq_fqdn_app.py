@@ -99,10 +99,8 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "in_latency_ms:UNIQUE_COUNT:Incoming Latency(ms)",
-                            "out_latency_ms:UNIQUE_COUNT:Outgoing Latency(ms)",
-                            "tcp_handshake_latency_ms:UNIQUE_COUNT:TCP Handshake Latency(ms)",
-                            "in_latency_ms+out_latency_ms:UNIQUE_COUNT:Latency(ms)"
+                            "server_fqdn:UNIQUE_COUNT:Unique Server Fqdm",
+                            "app:UNIQUE_COUNT:Unique Application"
                           ],
                           "dimensions": [],
                           "order_by": "",

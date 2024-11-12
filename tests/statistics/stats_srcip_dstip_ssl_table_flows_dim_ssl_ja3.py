@@ -100,9 +100,9 @@ def run(parameter):
                           "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_c2s_flows:SUM:new c2s flows",
-                            "new_s2c_flows:SUM:new s2c flows",
-                            "new_c2s_flows+new_s2c_flows:SUM:all flows"
+                            "new_c2s_flows_for_this_rule:SUM:new c2s flows",
+                            "new_s2c_flows_for_this_rule:SUM:new s2c flows",
+                            "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:SUM:all flows"
                           ],
                           "dimensions": [
                             "ssl_ja3_hash"
@@ -116,9 +116,9 @@ def run(parameter):
                             "chart_name": parameter["test_case_name"].replace("_srcip_dstip", "_1", 1),
                             "visualization_type": "Table",
                             "metrics": [
-                            "new_c2s_flows:RATE:new c2s flows",
-                            "new_s2c_flows:RATE:new s2c flows",
-                            "new_c2s_flows+new_s2c_flows:RATE:all flows"
+                            "new_c2s_flows_for_this_rule:RATE:new c2s flows",
+                            "new_s2c_flows_for_this_rule:RATE:new s2c flows",
+                            "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:RATE:all flows"
                             ],
                             "dimensions": [
                                 "ssl_ja3_hash"

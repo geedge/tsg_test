@@ -233,7 +233,7 @@ class CreatePolicy:
                             if "library" in obj.keys():
                                 obj["library"][0]["catalogs"][0]["ip_entries"] = new_src_ip
                             else:
-                                obj["object_list"][0]["add_item_list"][0]["ip_address"] = new_src_ip
+                                obj["object_list"][0]["add_item_list"][0]["ip"] = new_src_ip
                         elif "-" in src_ip and "/" not in src_ip:
                             two_ip_list = src_ip.split("-")
                             ip_list_1 = two_ip_list[0].split(".")

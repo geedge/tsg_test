@@ -59,7 +59,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": "2.1.1.4",
+                                "item_value": "2.1.1.6",
                             },
                         ]
                     }],
@@ -71,7 +71,21 @@ def run(parameter):
                 "source_geography": [],
                 "destination_geography": [],
                 "sub_id": [],
-                "device": [],
+                "device": [
+                    {
+                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                        "object_type": "mobile_identity",
+                        "select_type": False,
+                        "negate": False,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "imsi",
+                                "item_value": '^' + parameter['test_imsi'][0:12],
+                            }
+                        ]
+                    }
+                ],
                 "tunnel": [],
                 "tunnel_level": [],
                 "flag": [],
@@ -97,15 +111,27 @@ def run(parameter):
                     "charts": [
                         {
                           "chart_name": "default name",
-                          "visualization_type": "Line",
+                          "visualization_type": "Table",
                           "metrics": [
-                            "new_c2s_flows:UNIQUE_COUNT:UNIQUE New Client-to-Server Flows",
-                            "new_s2c_flows:UNIQUE_COUNT:UNIQUE New Server-to-Client Flows"
-                            "new_c2s_flows+new_s2c_flows:UNIQUE_COUNT:UNIQUE Flows"
+                            "new_sessions_for_this_rule:SUM:new sessions",
+                            "closed_sessions_for_this_rule:SUM:closed sessions"
                           ],
-                          "dimensions": [],
-                          "order_by": "",
-                          "row_limit": "",
+                          "dimensions": ["sled_ip"],
+                          "order_by": "new sessions",
+                          "row_limit": "20",
+                          "min_in_size": "0",
+                          "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                          "visualization_type": "Table",
+                          "metrics": [
+                              "new_sessions_for_this_rule:RATE:new sessions",
+                              "closed_sessions_for_this_rule:RATE:closed sessions"
+                            ],
+                          "dimensions": ["sled_ip"],
+                          "order_by": "closed sessions",
+                          "row_limit": "20",
                           "min_in_size": "0",
                           "min_out_size": "0"
                         }
@@ -118,15 +144,18 @@ def run(parameter):
             "traffic": {
                 "protocol": "",
                 "type": "trex",
-                "clients_start_ip": "10.64.224.4",
-                "clients_end_ip": "10.64.224.4",
-                "servers_start_ip": "2.1.1.4",
-                "servers_end_ip": "2.1.1.4",
+                "clients_start_ip": "10.64.224.6",
+                "clients_end_ip": "10.64.224.6",
+                "servers_start_ip": "2.1.1.6",
+                "servers_end_ip": "2.1.1.6",
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
                 "pcap_name": "http_87pkts"
             },
+            "statists_metric_results": [#如果Bytes Aggregate为:BITRATE则Bytes*8
+                {"app_category_id": "255","in_bytes": 1140, "out_bytes": 93218, "bytes": 94358}
+            ],
             # "traffic": {
             #     "type": "trex",
             #     "clients_start_ip": "192.168.64.86",
