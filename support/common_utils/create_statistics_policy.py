@@ -52,10 +52,6 @@ class CreateStatisticsPolicy:
         # Statistics Rule使用随机IP
         organize_config = OrganizeConfig()
         test_data = organize_config.generate_random_ip(test_data, parameter)
-        if "intip" in test_data["rule_name"]:
-            test_data["condition"]["internal_ip"][0]["item"][0]["item_value"] = test_data["traffic"]["clients_start_ip"]
-        elif "extip" in test_data["rule_name"]:
-            test_data["condition"]["external_ip"][0]["item"][0]["item_value"] = test_data["traffic"]["servers_start_ip"]
         if "library_condition" not in test_data:
             test_data["library_condition"] = []
 

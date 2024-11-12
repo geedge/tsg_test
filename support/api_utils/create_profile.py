@@ -506,7 +506,7 @@ class CreateProfile:
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = post_order_by.strip()
             # 重组 limit、 drilldown_limit
             if "line" == chart_type:
-                if len(post_statistics_data["chart_list"][chart_idex]["dimensions"]) > 1:  # 如果是Line+Dimensions图表，需要添加重组TOP参数，而无Limit参数
+                if len(post_statistics_data["chart_list"][chart_idex]["dimensions"]) > 1 and post_statistics_data["chart_list"][chart_idex]["series_limit"] != "":  # 如果是Line+Dimensions图表，需要添加重组TOP参数，而无Limit参数
                     f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["series_limit"] = int(post_statistics_data["chart_list"][chart_idex]["series_limit"])
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["limit"] = 65536
                 f_template_dict["statistics_template"]["dataview"]["charts"][chart_idex]["query"]["order_by"] = ""
