@@ -113,7 +113,7 @@ def run(parameter):
             },
             "expected_return": "reset",
             "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.youtube.com"}],
+            "log_query_param": [{"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}],
             "traffic": {
                 "protocol": "",
                 "type": "trex",
@@ -124,7 +124,7 @@ def run(parameter):
                 "m": 1,
                 "d": 1,
                 "yaml_name": "test",
-                "pcap_name": "youtube"
+                "pcap_name": "http_87pkts"
             },
             # "traffic": {
             #     "type": "trex",

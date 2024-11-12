@@ -81,7 +81,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "phone_number",
-                                "item_value": '^' + parameter['test_phone_number'][0:10] + '$',
+                                "item_value": '^' + parameter['test_phone_number'][0:10],
                             }
                         ]
                     }
@@ -124,16 +124,16 @@ def run(parameter):
                         },
                         {
                             "chart_name": "default name",
-                          "visualization_type": "Table",
-                          "metrics": [
+                            "visualization_type": "Table",
+                            "metrics": [
                               "new_sessions_for_this_rule:RATE:new sessions",
                               "closed_sessions_for_this_rule:RATE:closed sessions"
                             ],
-                          "dimensions": ["sled_ip"],
-                          "order_by": "closed sessions",
-                          "row_limit": "20",
-                          "min_in_size": "0",
-                          "min_out_size": "0"
+                            "dimensions": ["sled_ip"],
+                            "order_by": "closed sessions",
+                            "row_limit": "20",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
