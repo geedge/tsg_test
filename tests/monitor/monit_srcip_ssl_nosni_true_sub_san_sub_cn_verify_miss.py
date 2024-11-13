@@ -79,7 +79,7 @@ def run(parameter):
                         ],
                     },
                     {
-                        "name": "True",  #
+                        "name": "False",  #
                         "object_type": "boolean",
                         "boolean_type": "NO SNI"
                     }

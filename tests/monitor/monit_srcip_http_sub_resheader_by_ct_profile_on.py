@@ -43,6 +43,7 @@ def run(parameter):
                         ]
                     }
                 ],
+                "external_ip": [],
                 "protocol_filed": [
                     {
                         "name": "monitor_http_request_header",

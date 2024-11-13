@@ -306,6 +306,7 @@ class CreateMonitorPolicy:
                 # 创建Object、Profile、Rule
                 create = CreatePolicy()
                 cfg_list = create.create_policy(parameter, test_data, template_path)
+                time.sleep(30)
       
                 if cfg_list["create_library_tag_ids"] and cfg_list["create_library_catalog_ids"]:
                     time.sleep(30)

@@ -43,6 +43,7 @@ def run(parameter):
                         ]
                     }
                 ],
+                "external_ip": [],
                 "protocol_filed": [
                     {
                         "name": "monit_fqdn_san",

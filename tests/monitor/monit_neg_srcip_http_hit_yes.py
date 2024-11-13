@@ -39,8 +39,23 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter['test_pc_ip'],
+                                "item_value": "192.168.64.100",
                             },
+                        ]
+                    }
+                ],
+                "server_fqdn": [
+                    {
+                        "name": "monitor_test_node",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_value": "open.node.com",
+                                "item_operation": "add"
+                            }
                         ]
                     }
                 ],
@@ -90,7 +105,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "guoqiuya",
         "password": "Guoqiuya123@@",
-        "test_pc_ip": "192.168.64.100",
+        "test_pc_ip": "192.168.64.111",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
