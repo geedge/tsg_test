@@ -101,7 +101,7 @@ def run(parameter):
                                 "item_type": "attachment_content",
                                 "item_value": "HEX",
                                 "value": [
-                                    "E4B8ADE59BBDE4BABA264368696E615E3132332474657374667470646F776E6C6F6164"
+                                    "264368696e615e3132332474657374667470646f776e6c6f6164"
                                 ]
                             }
                         ],
