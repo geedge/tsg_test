@@ -145,20 +145,21 @@ class CreateProfile:
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
+                             {"function": "HISTOGRAM", "unit": "Bytes", "metric_type": "distribution"}]
             },
             "Outgoing Packet Length Distribution": {
                 "source_columns": "out_pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
-                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"}, ]
+                             {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
+                             {"function": "HISTOGRAM", "unit": "Bytes", "metric_type": "distribution"}]
             },
             "Packet Length Distribution": {
                 "source_columns": "pkt_length_distribution",
                 "function": [{"function": "MEDIAN", "unit": "short", "metric_type": "distribution"},
                              {"function": "P95_PERCENTILE", "unit": "short", "metric_type": "distribution"},
                              {"function": "P99_PERCENTILE", "unit": "short", "metric_type": "distribution"},
-                             {"function": "HISTOGRAM", "unit": "packets", "metric_type": "distribution"}]
+                             {"function": "HISTOGRAM", "unit": "Bytes", "metric_type": "distribution"}]
             },
             "DTLS Handshake Latency(ms)": {
                 "source_columns": "dtls_handshake_latency_ms",
