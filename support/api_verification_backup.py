@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
-import support.get_metric_log
+import support.get_metric_log_backup
 import support.api_utils.policy_verify
 import support.ui_utils.env
 import subprocess
@@ -19,7 +19,7 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 # from support.api_utils.organize_config import *
 from support.organize_config import *
-from support.get_metric_log import GetMetricLog
+from support.get_metric_log_backup import GetMetricLog
 from support.api_utils.util_statistics_template import UtilStatisticsTemplate
 
 class APIVerification:

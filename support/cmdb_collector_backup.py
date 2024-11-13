@@ -45,10 +45,7 @@ class CMDBCollector:
             if len(rule_uuid_list) > 0:
                 for key, value in rule_uuid_list.items():
                     if key == "security":
-                        deleted_rule_dict = {"type": key, "ids": [], "vsys_id": 1}
-                        # ========24.10 begin========
-                        # deleted_rule_dict = {"type": key, "uuids": [], "vsys": 1}
-                        # ========24.10 end==========
+                        deleted_rule_dict = {"type": key, "uuids": [], "vsys": 1}
                     for i in range(len(value)):
                         deleted_rule_dict["ids"] = value[i]
                         deleted_rule_dict["vsys_id"] = vsys

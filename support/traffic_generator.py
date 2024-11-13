@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-import time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import json
 import requests
@@ -22,7 +21,7 @@ from support.packet_generator.workpath import workdir
 from datetime import datetime
 
 class TrafficGenerator:
-    def generate_traffic(self, policy_configuration, traffic_generation):
+    def run(self, policy_configuration, traffic_generation):
         debug = "local"
         if debug == "local":
             traffic_generation_json_str = json.dumps(traffic_generation)
@@ -126,6 +125,25 @@ class TrafficGenerator:
                 tr = trex_replay.TrafficReplay(path_dict)
                 result = tr.trex_playback(yaml_name, pcap_name, active_flows, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
         return result
+    
+    def result(self, verification, traffic_result):
+        try:
+            debug = "local"
+            if debug == "local":
+                traffic_result_temp = traffic_result["result"]
+            else:
+                traffic_result_temp = traffic_result
+            expected_result_temp = verification["excepted_traffic_result"].split(',')
+            result = all(word in traffic_result_temp for word in expected_result_temp)
+            if result == True:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return traffic result match the expected result.', flush=True)
+                return True, ""
+            elif result == False:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return result does not match the expected result.', flush=True)
+                return False, "The traffic returned result does not match the expected result."
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", str(e), flush=True)
+            return False, "Exception Error when verify excepted traffic result: " + str(e)
     
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

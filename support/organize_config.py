@@ -10,15 +10,13 @@ from datetime import datetime
 import traceback
 
 class OrganizeConfig:
-    def __init__(self, parameter, policy_configuration, configuration_manager):
-        self.parameter = parameter
-        self.api_server = self.parameter["api_server"]
-        self.vsys = self.parameter["vsys"]
+    def __init__(self, parameter, policy_configuration, token, rule_uuids_tuple):
+        self.api_server = parameter["api_server"]
+        self.vsys = parameter["vsys"]
         self.policy_configuration = policy_configuration
-        self.configuration_manager = configuration_manager
-        self.token = self.configuration_manager["token"]
-        for _, value in self.configuration_manager["rule_uuid_list"].items():
-            self.rule_uuid = value[0]
+        self.token = token
+        rule_uuids_list = list(rule_uuids_tuple)
+        self.rule_uuid = rule_uuids_list["uuid"]
     
     def organize_statistics_rule_cfg(self):
         # 变量初始化

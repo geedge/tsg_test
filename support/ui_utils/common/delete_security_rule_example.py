@@ -9,7 +9,7 @@ from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class DeleteSecurityPolicyExample:
+class DeleteSecurityRuleExample:
     def delete_policy(self, parameter, policy_configuration, configured_policy):
         result = ""
         driver = configured_policy["driver"]

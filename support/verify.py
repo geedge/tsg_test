@@ -5,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from support.packet_generator.capture_packet import *
 from support.packet_generator.traffic_generator import *
 # from support.packet_generator.api_verification import *
-from support.api_verification import *
+from support.api_verification_backup import *
 # from support.packet_generator.ui_verification import *
 from support.ui_verification import *
 from support.packet_generator.workpath import workdir
@@ -13,31 +13,12 @@ from datetime import datetime
 from threading import Thread
 
 class Verify:
-    def verify_traffic_result(self, verification, traffic_result):
-        try:
-            debug = "local"
-            if debug == "local":
-                traffic_result_temp = traffic_result["result"]
-            else:
-                traffic_result_temp = traffic_result
-            expected_result_temp = verification["expected_result"].split(',')
-            result = all(word in traffic_result_temp for word in expected_result_temp)
-            if result == True:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return traffic result match the expected result.', flush=True)
-                return True, ""
-            elif result == False:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return result does not match the expected result.', flush=True)
-                return False, "The traffic returned result does not match the expected result."
-        except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", str(e), flush=True)
-            return False, "Exception Error when verify excepted traffic result: " + str(e)
-        
     def verify_metric_log(self, parameter, policy_configuration, traffic_generation, verification, configuration_manager, traffic_result):
         try:
             initiation_method = parameter["initiation_method"]
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to send traffic.", flush=True)
-            if initiation_method == "api":
-                time.sleep(3)
+            # if initiation_method == "api":
+            #     time.sleep(3)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule.", flush=True)
             if initiation_method == "ui":
                 api_verification = APIVerification(parameter, policy_configuration, traffic_generation, verification, configuration_manager)

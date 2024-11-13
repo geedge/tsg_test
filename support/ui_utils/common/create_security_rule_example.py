@@ -8,8 +8,8 @@ from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class CreateSecurityPolicyExample:
-    def create_rule(self, parameter, policy_configuration):
+class CreateSecurityRuleExample:
+    def create_rules(self, parameter, policy_configuration):
         try:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
             

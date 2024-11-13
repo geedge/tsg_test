@@ -1,17 +1,17 @@
 # -*- coding: UTF-8 -*-
-import time
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import time
+import pytz
 from datetime import datetime
 from support.ui_utils.workpath import workdir
 from support.ui_utils.common.ui_client import UIClient
 from support.api_utils.api_client import APIClient
-# from support.api_utils.api_client_2410 import APIClient
-from support.analyse_result import Analyse
-from support.cmdb_collector import CMDBCollector
+# from support.analyse_result_backup import Analyse
+# from support.cmdb_collector_backup import CMDBCollector
 # from support.packet_generator.verify import Verify
-from support.verify import Verify
+# from support.verify import Verify
 # from support.packet_generator.traffic_generator import *
 from support.traffic_generator import *
 from support.report_update import ReportUpdate
@@ -80,60 +80,81 @@ def run(parameter):
         }
         
         verification_result = {
-            "expected_result": "reset",
-            "metric_query": {"hits": 1},
-            "log_query": [
-                {"query_field_key":"http_host", "query_value": "open.node.com"}
+            "excepted_traffic_result": "reset",
+            "expected_metric": {"hits": 1},
+            "expected_log": [
+                {"query_field_key":"http_host", "query_value": "open.node.com"},
+                {"query_field_key":"destination_ip", "query_value": "1.1.1.1"}
             ]
         }
         
         # 创建
-        cmdb_collector = CMDBCollector()
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient()
-            configuration_manager, error = ui_client.create_rule(parameter, policy_configuration)
+            driver, error = ui_client.create_rules(parameter, policy_configuration)
             if len(error) > 0:
                 return error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
-            configuration_manager["token"] = api_client.token
-            object_uuid, object_error = api_client.create_object(policy_configuration)
-            if len(object_error) > 0:
-                return object_error
-            configuration_manager["object_uuid_list"] = cmdb_collector.collect(object_uuid)
-            rule_uuid, rule_error = api_client.create_rule(policy_configuration, object_uuid)
-            if len(rule_error) > 0:
-                return rule_error
-            configuration_manager["rule_uuid_list"] = cmdb_collector.collect(rule_uuid)
+            # {uuid, type}, i.e., {"12341-232-a21", "ip"}
+            objects_tuple, api_error = api_client.create_objects(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple)
+            if len(api_error) > 0:
+                return api_error
 
-        # 触发流量
+        # 等待下发配置生效
         time.sleep(3)
-        generator = TrafficGenerator()
-        traffic_result = generator.generate_traffic(policy_configuration, traffic_generation)
         
-        verification = Verify()
+        # 类实例化
+        generator = TrafficGenerator()
+        
+        # 获取当前时间
+        utc_tz = pytz.timezone('UTC')
+        current_utc_time = datetime.now(utc_tz)
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        
+        # 触发流量
+        traffic_result = generator.run(policy_configuration, traffic_generation)
+        
         # 验证流量生成器的返回值是否符合策略执行的预期
-        excepted_traffic_result, error = verification.verify_traffic_result(verification_result, traffic_result)
+        excepted_traffic_result, error = generator.result(verification_result, traffic_result)
         if excepted_traffic_result == False:
             return error
         
-        # 验证tsg的日志和metric是否符合策略执行的预期
-        excepted_metric_log_result = verification.verify_metric_log(parameter, policy_configuration, traffic_generation, verification_result, configuration_manager, traffic_result)
-        if len(excepted_metric_log_result) != 3:
-            return excepted_metric_log_result
-
-        # 分析结果
-        analyse = Analyse()
-        result = analyse.analyse_result(policy_configuration["type"], excepted_metric_log_result)
+        # 验证tsg的metric是否符合策略执行的预期
+        test_summary = {}
+        metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
+        if metric_result == True:
+            test_summary["metric"] = "Pass."
+        elif metric_result == False:
+            test_summary["metric"] = "The failure reason: the returned metric does not match the expected result."
+        elif metric_result == None:
+            test_summary["metric"] = "The failure reason: the returned metric is empty."
+        else:
+            test_summary["metric"] = metric_result
         
-        return result
+        # 验证tsg的日志是否符合策略执行的预期
+        log_result = api_client.query_rule_log(verification_result, rules_tuple, start_time, traffic_result)
+        if log_result == True:
+            test_summary["log"] = "Pass."
+        elif log_result == False:
+            test_summary["log"] = "The failure reason: the returned log does not match the expected result."
+        elif log_result == None:
+            test_summary["log"] = "The failure reason: the returned log is empty."
+        
+        return test_summary
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", str(e), flush=True)
         return "Exception Error: " + str(e)
     finally:
         # 删除
-        cmdb_collector.cleanup(parameter, api_client.token, configuration_manager)
+        if not rules_tuple:
+            api_client.delete_rules(rules_tuple)
+        if not objects_tuple:
+            api_client.delete_objects(objects_tuple)
         
         # 统计脚本用时
         end_time = time.time()
