@@ -80,7 +80,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "subscriberid",
-                                "item_value": '$' + parameter["test_subcriber_id"],
+                                "item_value": '^' + parameter["test_subcriber_id"] + '$',
                             }
                         ]
                     }
@@ -113,9 +113,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "closed_in_sessions:SUM:Closed Incoming Sessions",
-                            "closed_out_sessions:SUM:Closed Outgoing Sessions",
-                            "closed_in_sessions+closed_out_sessions:SUM:sessions"
+                            "closed_sessions_for_this_rule:SUM:sessions"
                           ],
                           "dimensions": [],
                           "order_by": "",
@@ -127,9 +125,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "closed_in_sessions:RATE:Closed Incoming Sessions",
-                                "closed_out_sessions:RATE:Closed Outgoing Sessions",
-                                "closed_in_sessions+closed_out_sessions:RATE:sessions"
+                                "closed_sessions_for_this_rule:RATE:sessions"
                             ],
                             "dimensions": [],
                             "order_by": "",

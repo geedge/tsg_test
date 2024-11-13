@@ -15,7 +15,7 @@ mainPage_currentPage_vsysName_posXpath = "//span[@class='root-title']"
 mainPage_vsysTree_vsysName_posXpath = "//div[contains(@class, 'menu-level2')]//article//div[@class='menu-title']/parent::*"    # vsys tree中vsys name定位
 
 mainPage_version_posXpath = "//*[@class='header-user-con']/span[1]" #TSG Version按钮
-language_button_posXpath = "//input[@id='anonymousComponent_Home_App_anonymousComponent_language']/.."#快捷切换语言按钮
+language_button_posXpath = "//div[@class='MuiBox-root css-1guk29']//div[1]/button" #快捷切换语言按钮
 policyRulePage_addSrcIP_posXpath = '//div[@class="MuiFormControl-root MuiFormControl-vertical MuiFormControl-sizeMd css-t5weby"][1]//i[@class="iconfont icon-Create1 font-[700]"]'
 policyRulePage_searchSrcIP_posXpath = '//div[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectSrcIP_posXpath = '//ul[@class="MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd css-1cklc3"]//li[1]//span[@class="truncate"]'
@@ -24,7 +24,7 @@ ruleListPage_createButton_posXpath = "//*[@class='action-create inline-flex mr-[
 ruleListPage_editButton_posXpath = "//*[@class='action-edit inline-flex mr-[8px] ']" #Rule列表上方Create按钮
 ruleListPage_deleteButton_posXpath ="//*[@class='action-delete inline-flex mr-[8px] ']" #Rule列表上方Create按钮
 ruleListPage_searchLabel_posXpath = "//div[contains(@class,'MuiAutocomplete-wrapper MuiAutocomplete-multiple')]//input[contains(@class,'MuiAutocomplete-input')]" #搜索输入框
-ruleListPage_searchLabel_dropDown_item_posXpath = "//span[normalize-space(text())='{replaceValue}']/../.." #下拉菜单定位
+ruleListPage_searchLabel_dropDown_item_posXpath = "//ul[@role='listbox']//li//div//span[normalize-space(text())='{replaceValue}']/.." #下拉菜单定位
 ruleListPage_searchLabel_input_itemContent_posXpath = "//input[contains(@class,'MuiAutocomplete-input')]"  #输入item的值，replaceValue替换实际查询值
 ruleListPage_searchLabel_searchButton_posXpath = "//*[@class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1afa66w']"
 ruleListPage_tableTbody_posXpath = "//*[@class='MuiDataGrid-virtualScrollerRenderZone css-1inm7gi']" #Rule列表table
@@ -48,6 +48,9 @@ rulePage_okButton_warningNo_posXpath = ""
 rulePage_delete_tip_warning_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//div[contains(@class,'text-center color-[--color-text] mt-[12px] MuiBox-root')]" #删除告警页面提示信息
 rulePage_delete_tip_button_warningYes_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[@type='danger']" #删除告警页面，Yes确认删除按钮
 rulePage_delete_tip_button_warningNo_posXpath = "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthSm')]//button[contains(@class,'MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary')]" ##删除告警页面，No取消删除按钮
+
+ruleListPage_column_set_button_posXpath = "//div[@class='MuiDataGrid-columnHeaderTitleContainerContent']//button" #点击列设置，让UUI显示
+ruleListPage_column_set_field_posXpath = "//div[@role='tooltip']//div//label//span[normalize-space(text())='{replaceFiled}']/parent::*" #对应列选择
 
 policyRulePage_searchCondition_posXpath = '//*[@class="px-[12px] py-[4px] flex"]//input'
 policyRulePage_selectCondition_posXpath= "//ul[contains(@class,'MuiList-root MuiList-vertical MuiList-variantPlain MuiList-colorNeutral MuiList-sizeMd')]//li//*[normalize-space(text())='{replaceValue}']"
@@ -655,6 +658,7 @@ manipulationRulePage_deny_addResponseContentTextInput_posXpath = "//div[@name='a
 manipulationRulePage_deny_addResponseContentProfileSelectBox_posXpath = "//div[@name='action_parameter']//div[@class='manipulation-policy-html_profile']//i"   # resposne content profile  选择框  定位
 manipulationRulePage_deny_searchResponseProfile_posXpath = "//div[@role='presentation']//div[@role='dialog']//input[contains(@class, 'MuiInput-input')]"   # resposne content search profile 对话框查询输入框
 manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath = "//div[@role='presentation']//div[@role='dialog']//ul[contains(@class, 'MuiList-root')]/li[1]"   # resposne content search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_deny_closeResponseProfile_posXpath = "//div[@role='presentation']//div[@role='dialog']/div/div[3]//button"   # resposne content search profile 对话框查询下拉列表第一个元素
 # action parameter redirect http
 manipulationRulePage_redirectHttp_addResponseCodeSelectBox_posXpath = manipulationRulePage_deny_addResponseCodeSelectBox_posXpath   # resposne code 选择框
 manipulationRulePage_redirectHttp_addResponseCodeSelectDropItem_posXpath = manipulationRulePage_deny_addResponseCodeSelectDropItem_posXpath   # reposne code 下拉列表定位
@@ -679,21 +683,23 @@ manipulationRulePage_hijack_searchHijackProfile_posXpath = "//body/div/div[@clas
 manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath = "//body/div/div[@class='el-scrollbar']//div[contains(@class, 'select-search-option')]/li[1]"   # hijack search profile 对话框查询下拉列表第一个元素
 # action parameter insert
 manipulationRulePage_insert_addInsertProfileSelectBox_posXpath = "//div[@zs-label='劫持文件']//span[@class='el-input__suffix-inner']//i"   # insert script  选择框  定位
-manipulationRulePage_insert_searchInsertProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
-manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_insert_searchInsertProfile_posXpath = manipulationRulePage_deny_searchResponseProfile_posXpath   # insert script search profile 对话框查询输入框
+manipulationRulePage_insert_searchInsertProfileDorpItem_posXpath = manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
 # action parameter edit element
-manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//span[normalize-space(text())='whole file']"   # replace_sort替换为实际的个数
-manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//span[normalize-space(text())='inside element']"
-manipulationRulePage_editElement_addStartIndicatorInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Start Indicator']/parent::*//input[@id='undefined1']"
-manipulationRulePage_editElement_addContainedKeywordInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Contained Keyword']/parent::*//input[@id='undefined1']"
-manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Distance from Anchor']/parent::*//input[@class='el-input__inner']"
-manipulationRulePage_editElement_addMarkRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Mark']"
-manipulationRulePage_editElement_addRemoveRadio_posXpath = "//div[@class='man-add-action']//li[{replace_sort}]//label[normalize-space(text())='Treatment']/parent::*//span[normalize-space(text())='Remove']"
-manipulationRulePage_editElement_add_posXpath = "//div[@class='man-add-action']//li[contains(@class, 'replaceadd')]//i"
+manipulationRulePage_subActionButton_editElement_posXpath = "//div[@class='manipulation-policy-sub_action']//button[5]"
+manipulationRulePage_editElement_addSearchScopeWholeFileRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-search_scope']//button[1]"   # replace_sort替换为实际的个数
+manipulationRulePage_editElement_addSearchScopeInsideElementRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-search_scope']//button[2]"
+manipulationRulePage_editElement_addStartIndicatorInput_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-start_indicator']//input"
+manipulationRulePage_editElement_addContainedKeywordInput_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-contained_keyword']//input"
+manipulationRulePage_editElement_addSDistanceFromAnchorInput_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-target_distance_from_matching']//input"
+manipulationRulePage_editElement_addMarkRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-element_treatment']//button[1]"
+manipulationRulePage_editElement_addRemoveRadio_posXpath = "//div[contains(@class, 'MuiFormControl-vertical')]//div[contains(@class, 'flex-row')][{replace_sort}]//div[@class='manipulation-policy-element_treatment']//button[2]"
+manipulationRulePage_editElement_add_posXpath = "//div[@name='action_parameter']/div/div[3]//button"
 # action parameter run script profile
-manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath = manipulationRulePage_insert_addInsertProfileSelectBox_posXpath   # run script  选择框  定位
-manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePage_hijack_searchHijackProfile_posXpath   # insert script search profile 对话框查询输入框
-manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath = manipulationRulePage_hijack_searchHijackProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_insert_addrunScriptProfileSelectBox_posXpath = "//div[@class='manipulation-policy-lua_script']//button"   # run script  选择框  定位
+manipulationRulePage_insert_searchrunScriptProfile_posXpath = manipulationRulePage_deny_searchResponseProfile_posXpath   # insert script search profile 对话框查询输入框
+manipulationRulePage_insert_searchrunScriptProfileDorpItem_posXpath = manipulationRulePage_deny_searchResponseProfileDorpItem_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
+manipulationRulePage_runScript_closerunScriptProfile_posXpath = manipulationRulePage_deny_closeResponseProfile_posXpath   # insert script search profile 对话框查询下拉列表第一个元素
 # other options
 manipulationRulePage_logOptions_all_posXpath = '//*[@id="manipulation_logOption-_Edit_Home_App_anonymousComponent"]//span[normalize-space(text())="All"]'
 # effective devices
@@ -702,7 +708,7 @@ manipulationRulePage_selectEffectiveDevices_posXpath = "//div[@class='rm-top']//
 manipulationRulePage_closeEffectiveDevices_posXpath = "//div[@class='rm-top']//span[normalize-space(text())='Effective Devices']/ancestor::div[@class='right-menu-content']//div[@class='rigth-menu-button-info']/button/span"
 
 # 保存策略时，ok cancel warnging定位
-manipulationRulePage_enable_posXpath = "//div[@class='manipulation-policy-is_enabled']//span[contains(@class, 'MuiSwitch-switchBase')]"
+manipulationRulePage_enable_posXpath = "//div[@class='manipulation-policy-is_enabled']/span"
 manipulationRulePage_okButton_posXpath = rulePage_okButton_posXpath
 manipulationRulePage_okButton_warningYes_posXpath = rulePage_okButton_warningYes_posXpath
 

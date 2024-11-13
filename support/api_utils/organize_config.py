@@ -23,9 +23,9 @@ class OrganizeConfig:
             try:
                 # 从Statistics Rule定义信息中获取流量验证所需数据格式
                 for policy in policy_info:
-                    user_region = policy["user_region"]
+                    user_region = policy["action_parameter"]
                     if user_region != {}:
-                        template_id = user_region["template_id"]
+                        template_id = user_region["template_profile"]
                         code, template_info = self.get_template_info(token, template_id, "statistics_template",api_server, vsys_id)
                         if code != 200:
                             return 400, statistics_sc_info_list
@@ -35,7 +35,7 @@ class OrganizeConfig:
                                 statistics_info = {}
                                 statistics_info["rule_id"] = test_data["rule_id"]
                                 statistics_info["template_id"] = template_id
-                                statistics_info["chart_id"] = chart["id"]
+                                statistics_info["chart_id"] = chart["uuid"]
                                 statistics_info["chart_type"] = chart["display"]["type"]
                                 statistics_info["version"] = chart["version"]
                                 if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
@@ -175,7 +175,7 @@ class OrganizeConfig:
             if "trex" == config["traffic"]["type"]:
                 traffic_radom_ip_flag = True
             sub_id_flag = False
-            if "sub_id" in config["rule_name"]:
+            if "sub_id" in config["rule_name"] or "_imsi_" in config["rule_name"] or "_imei_" in config["rule_name"] or "_phone_number_" in config["rule_name"] or "_apn_" in config["rule_name"]:
                 sub_id_flag = True
             for obj in config["condition"]:
                 if "source_ip" == obj and len(config["condition"]["source_ip"]) > 0:# or "destination_ip" in obj:
@@ -280,6 +280,16 @@ class OrganizeConfig:
                 new_src_ip = ".".join(src_ip_list)
                 config["traffic"]["clients_start_ip"] = new_src_ip
                 config["traffic"]["clients_end_ip"] = new_src_ip
+            # 如果无Source、estination IP,而包含Internal、External IP
+            # 集成测试环境Trex的External IP为Source IP故逻辑如下：如果是其他测试环境需要根据具体环境调整逻辑
+            if "condition" in config.keys() and len(config["condition"]["external_ip"]) > 0:
+                if "-" in config["condition"]["external_ip"][0]["item"][0]["item_value"]:
+                    config["condition"]["external_ip"][0]["item"][0]["item_value"] = "{}-{}".format(config["traffic"]["clients_start_ip"], config["traffic"]["clients_end_ip"])
+                elif "/" in config["condition"]["external_ip"][0]["item"][0]["item_value"]:
+                    config["condition"]["external_ip"][0]["item"][0]["item_value"] = "{}/{}".format(config["traffic"]["clients_start_ip"], 32)
+                else:
+                    config["condition"]["external_ip"][0]["item"][0]["item_value"] = config["traffic"]["clients_start_ip"]
+
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
         return config
 
@@ -388,14 +398,16 @@ class OrganizeConfig:
     def get_policy_info(self, token, rule_id, rule_type, api_host, vsys_id):
         try:
             # 请求接口查询metric
+            if rule_type == "statistics":
+                rule_type = "statistics-rules"
             headers = {'Content-Type': 'application/json', 'Authorization': token}
-            url = (api_host + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_id}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={vsys_id}")
+            url = (api_host + f"/v1/policies/{rule_type}?vsys={vsys_id}&page_size=20&page_no=1&uuid={rule_id}&is_enabled=")
             response = requests.get(url, headers=headers, verify=False)
             if response.status_code != 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
                 return 400, []
             response = json.loads(response.text)
-            result = response['data']['rules']
+            result = response['data']['list']
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
             return 400, []
@@ -405,13 +417,13 @@ class OrganizeConfig:
             # 请求接口查询metric
             headers = {'Content-Type': 'application/json', 'Authorization': token}
             # 获取单个Template
-            #url = (api_host + f"/v1/policy/profile/statistics_template/{template_id}?page_size=-1&vsys_id={vsys_id}")
+            #url = (api_host + f"/v1/profiles/statistics_template/{template_id}?page_size=-1&vsys_id={vsys_id}")
             # 获取一批Template
-            url = (api_host + f"/v1/policy/profile/statistics_template?page_size=20&page_no=1&ids={template_id}&vsys_id={str(vsys_id)}")
+            url = (api_host + f"/v1/profiles/statistics-templates?page_size=20&page_no=1&uuid={template_id}&vsys={str(vsys_id)}")
             response = requests.get(url, headers=headers, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
-            result = response['data']['statistics_templates']
+            result = response['data']['list']
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
             return 400, result

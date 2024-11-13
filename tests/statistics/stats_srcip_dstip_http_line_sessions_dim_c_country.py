@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "new_in_sessions+new_out_sessions:RATE:sessions"
+                            "new_sessions_for_this_rule:RATE:sessions"
                           ],
                           "dimensions": ["client_country"],
                           "order_by": "",
@@ -111,7 +111,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "new_in_sessions+new_out_sessions:SUM:sessions"
+                                "new_sessions_for_this_rule:SUM:sessions"
                             ],
                             "dimensions": ["client_country"],
                             "order_by": "",

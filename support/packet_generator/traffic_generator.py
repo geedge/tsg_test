@@ -166,18 +166,18 @@ class TrafficGenerator:
         elif script_type == "api":
             for ip_item in test_data["obj_condition_1"]:
                 if "ATTR_SOURCE_IP" in ip_item.values():
-                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                        test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                        test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip"]:
+                        test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"].split("-")[0]
+                        test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"].split("-")[-1]
                     else:
-                        test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                        test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"]
                         test_data["traffic"]["clients_end_ip"] = test_data["traffic"]["clients_start_ip"]
                 if "ATTR_DESTINATION_IP" in ip_item.values():
-                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip_address"]:
-                        test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[0]
-                        test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"].split("-")[-1]
+                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip"]:
+                        test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"].split("-")[0]
+                        test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"].split("-")[-1]
                     else:
-                        test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip_address"]
+                        test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"]
                         test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
             if "library_condition" in test_data.keys():
                 for ip_item in test_data["library_condition"]:

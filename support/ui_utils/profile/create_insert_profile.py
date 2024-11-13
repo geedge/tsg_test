@@ -11,13 +11,20 @@ class CreateInsertProfile:
 
     def create_hijack_file(self, data):
         profile_name = data["name"]
-        self.driver.find_element(By.ID, insertScripts_input_Name_posId).send_keys(profile_name)
+        if "css" in data["script_type"]:
+            temp_insertScripts_input_Name_posXpath = insertScripts_input_Name_posXpath
+            temp_insertScripts_button_oK_posXpath = insertScripts_button_oK_posXpath
+        else:
+            temp_insertScripts_input_Name_posXpath = insertScripts_js_input_Name_posXpath
+            temp_insertScripts_button_oK_posXpath = insertScripts_js_button_oK_posXpath
+        self.driver.find_element(By.XPATH, temp_insertScripts_input_Name_posXpath).clear()
+        self.driver.find_element(By.XPATH, temp_insertScripts_input_Name_posXpath).send_keys(profile_name)
         #页面其它选项操作
         result_code = self._operate_page(data, operation_type="create")
         #点击OK
-        self.driver.find_element(By.CSS_SELECTOR, insertScripts_button_oK_posCss).click()
-        if self.driver.find_element(By.CSS_SELECTOR, insertScripts_button_warningSaveYes_posCss).is_displayed():
-            self.driver.find_element(By.CSS_SELECTOR, insertScripts_button_warningSaveYes_posCss).click()
+        self.driver.find_element(By.XPATH, temp_insertScripts_button_oK_posXpath).click()
+        if self.driver.is_exist_element_by_value(By.XPATH, insertScripts_button_warningSaveYes_posXpath):
+            self.driver.find_element(By.XPATH, insertScripts_button_warningSaveYes_posXpath).click()
 
     def _operate_page(self, data, operation_type="create"):
         """
@@ -33,7 +40,7 @@ class CreateInsertProfile:
         no_modify = "不修改"
         #script type脚本类型操作 --先操作文件类型
 
-        self._operate_scriptType(data, data_index=data_index)
+        #self._operate_scriptType(data, data_index=data_index)
         #File文件上传操作
         file = self._get_value_from_data(data, key="script", data_index=data_index)   #解析file文件名称
         if file != no_modify:      #判断修改时不修改时跳过操作。
@@ -42,7 +49,11 @@ class CreateInsertProfile:
                 profile_path = os.path.dirname(os.path.abspath(__file__))  # ...support\ui_utils\profile
                 file_abs = os.path.join(profile_path, "profile_file", "insert_scripts", create_file)
                 #上传文件
-                self.driver.find_element(By.XPATH, insertScripts_input_scriptUpLoad_posXpath).send_keys(file_abs)
+                if "css" in data["script_type"]:
+                    temp_insertScripts_input_scriptUpLoad_posXpath = insertScripts_input_scriptUpLoad_posXpath
+                else:
+                    temp_insertScripts_input_scriptUpLoad_posXpath = insertScripts_js_input_scriptUpLoad_posXpath
+                self.driver.find_element(By.XPATH, temp_insertScripts_input_scriptUpLoad_posXpath).send_keys(file_abs)
 
     def _operate_scriptType(self, data, data_index=0, no_modify="不修改"):
         """

@@ -26,7 +26,7 @@ class UiVerification:
         edit_rule = EditRule(my_driver)
         edit_rule_code, _ = edit_rule.edit(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
         if edit_rule_code == 200:
-            if policy_type == "security"  or policy_type == "pxy_intercept" or policy_type == "pxy_manipulation" or policy_type == "monitor" or policy_type == "statistics":
+            if policy_type == "security"  or policy_type == "proxy_intercept" or policy_type == "proxy_manipulation" or policy_type == "monitor" or policy_type == "statistics":
                 # 判断api的metric_result为true，只是为了作为命中和生成log的基本判断，无其他特殊意义
                 if api_verification_result[2] == True:
                     # 从ui上判断metric_result

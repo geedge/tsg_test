@@ -80,7 +80,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "subscriberid",
-                                "item_value": '$' + parameter["test_subcriber_id"],
+                                "item_value": '^' + parameter["test_subcriber_id"] + '$',
                             }
                         ]
                     }

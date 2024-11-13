@@ -116,8 +116,8 @@ def run(parameter):
                           "metrics": [
                             "in_bytes+out_bytes:SUM:All Bytes",
                             "in_pkts+out_pkts:SUM:All Packets",
-                            "new_c2s_flows+new_s2c_flows:SUM:All Flows",
-                            "new_in_sessions+new_out_sessions:SUM:All Sessions"
+                            "new_c2s_flows_for_this_rule+new_s2c_flows_for_this_rule:SUM:All Flows",
+                            "new_sessions_for_this_rule:SUM:All Sessions"
                           ],
                           "dimensions": [
                             "app"

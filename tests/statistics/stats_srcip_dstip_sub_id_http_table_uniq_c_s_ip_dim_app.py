@@ -73,7 +73,21 @@ def run(parameter):
                 "external_port": [],
                 "source_geography": [],
                 "destination_geography": [],
-                "sub_id": [],
+                "sub_id": [
+                    {
+                        "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                        "object_type": "subscriberid",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "subscriberid",
+                                "item_value": '^' + parameter["test_subcriber_id"] + '$',
+                            }
+                        ]
+                    }
+                ],
                 "device": [],
                 "tunnel": [],
                 "tunnel_level": [],

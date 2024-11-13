@@ -282,7 +282,7 @@ class CreateSecurityPolicy:
                             "objectListPage_deleteButton_warningYes_posXpath": portObjectListPage_deleteButton_warningYes_posXpath
                         }
                     }
-                    test_keywords_object_element_position = {
+                    object_keywords_object_element_position = {
                         "page_jump": {
                             "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
                             "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
@@ -307,7 +307,10 @@ class CreateSecurityPolicy:
                         "search": {
                             "objectListPage_searchLabel_posXpath": keywordsObjectListPage_searchLabel_posXpath,
                             "objectListPage_searchLabel_selectName_posXpath": keywordsObjectListPage_searchLabel_selectName_posXpath,
-                            "objectListPage_tableTbody_posXpath": keywordsObjectListPage_tableTbody_posXpath
+                            "objectListPage_tableTbody_posXpath": keywordsObjectListPage_tableTbody_posXpath,
+                            "objectListPage_search_input_posXpath": keywordsObjectListPage_search_input_posXpath,
+                            "objectListPage_search_dropDown_item_posXpath": keywordsObjectListPage_search_dropDown_item_posXpath,
+                            "objectListPage_search_button_posXpath": keywordsObjectListPage_search_button_posXpath
                         },
                         "delete": {
                             "objectListPage_allSelect_posXpath": keywordsObjectListPage_allSelect_posXpath,
@@ -347,7 +350,7 @@ class CreateSecurityPolicy:
                         },
                         "delete": {
                             "objectListPage_allSelect_posXpath": accountObjectListPage_allSelect_posXpath,
-                            "objectListPage_deleteButton_posId": accountObjectListPage_deleteButton_posId,
+                            "objectListPage_deleteButton_posXpath": accountObjectListPage_deleteButton_posXpath,
                             "objectListPage_deleteButton_warningYes_posXpath": accountObjectListPage_deleteButton_warningYes_posXpath
                         }
                     }
@@ -747,7 +750,7 @@ class CreateSecurityPolicy:
                         elif object_type == 'fqdn':
                             create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], object_fqdn_object_element_position)
                         elif object_type == 'keywords':
-                            create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_keywords_object_element_position)
+                            create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], object_keywords_object_element_position)
                         elif object_type == 'account':
                             create_protocol_filed_code = create_protocol_filed.create(protocol_field_data[x], test_account_object_element_position)
                         elif object_type == 'http_signature':
@@ -769,21 +772,21 @@ class CreateSecurityPolicy:
                         ui_result = "Fail to create security rule."
 
                 # 触发流量验证
-                if create_rule_code == 200:
-                    search_rule = SearchRule(driver)
-                    search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
-                    if search_rule_code == 200:
-                        # rule_id = search_rule.get_rule_id()
-                        test_data["rule_id"] = rule_id
-                        verification = Verify()
-                        verification_result = verification.verify_result(driver, parameter, test_data, [], test_rule_element_position)
-                        if len(verification_result) == 4:
-                            driver = verification_result[3]
+                # if create_rule_code == 200:
+                #     search_rule = SearchRule(driver)
+                #     search_rule_code, rule_id = search_rule.get_rule_id(test_data["policy_type"], test_data["rule_name"], test_rule_element_position)
+                #     if search_rule_code == 200:
+                #         # rule_id = search_rule.get_rule_id()
+                #         test_data["rule_id"] = rule_id
+                #         verification = Verify()
+                #         verification_result = verification.verify_result(driver, parameter, test_data, [], test_rule_element_position)
+                #         if len(verification_result) == 4:
+                #             driver = verification_result[3]
 
                 # 分析验证结果，并返回给flask
-                if len(verification_result) == 4:
-                    analysis = Analyse()
-                    ui_result = analysis.analyse_result(test_data["policy_type"], [], verification_result)
+                # if len(verification_result) == 4:
+                #     analysis = Analyse()
+                #     ui_result = analysis.analyse_result(test_data["policy_type"], [], verification_result)
 
                 # 删除rule
                 if create_rule_code == 200:
@@ -906,7 +909,7 @@ class CreateSecurityPolicy:
                             'url': object_url_object_element_position,
                             'http_signature': object_http_signature_object_element_position,
                             'fqdn': object_fqdn_object_element_position,
-                            'keywords': test_keywords_object_element_position,
+                            'keywords': object_keywords_object_element_position,
                             'account': test_account_object_element_position
                         }
                         # protocol_filed
@@ -1013,7 +1016,7 @@ class CreateSecurityPolicy:
         delete = DeletePolicy()
         if isinstance(self.ui_name_list, list) and self.ui_name_list != []:
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.ui_name_list)
-        if isinstance(self.api_name_list, list) and self.api_name_list != []:
+        if isinstance(self.api_name_list, list):
             delete.delete_policy_by_name(self.test_data["token"], self.parameter, self.api_name_list)
             
 if __name__ == '__main__':

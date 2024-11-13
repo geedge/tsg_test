@@ -86,7 +86,7 @@ class CreateStatisticsPolicy:
                         #cond_key_out = cond_key.replace("_", " ")
                         if len(cond_value) != 0:  # 不为空
                             cond_data = cond_value
-                            create_ip = support.ui_utils.object.create_object.CreateObject(driver)
+                            create_object = support.ui_utils.object.create_object.CreateObject(driver)
                             for i in range(len(cond_data)):  # 遍历创建所有condition
                                 if "item" in cond_data[i].keys() and cond_data[i]["item"] == []:  # UDP协议为UDP时，Client IP和Server IP不能确定，故会把Client IP和Server IP在系统添加1次，在Rule添加2次添加到Source IP和Destination，
                                     continue  # 遍历创建所有condition
@@ -100,7 +100,7 @@ class CreateStatisticsPolicy:
                                         element_position_map = get_element_position(tmp_key)
                                 else:
                                     element_position_map = get_element_position(cond_key)
-                                cond_code = create_ip.create(cond_data[i], element_position_map)
+                                cond_code = create_object.create(cond_data[i], element_position_map)
                                 if cond_code == 200:
                                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {}{} object successfully.".format(cond_key, tem_key), flush=True)
                                 else:
@@ -143,7 +143,7 @@ class CreateStatisticsPolicy:
                     elif create_rule_code != 200:
                         result = "Fail to create {} rule.".format(test_data["policy_type"])
 
-                """
+
                 # 触发流量验证
                 if create_rule_code == 200:
                     search_rule = support.ui_utils.policy.search_rule.SearchRule(driver)
@@ -162,11 +162,11 @@ class CreateStatisticsPolicy:
                 if len(verification_result) == 4:
                     analysis = Analyse()
                     ui_result = analysis.analyse_result(test_data["policy_type"], [], verification_result)
-                    # if len(ui_result) == 0:
-                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
-                    # elif len(ui_result) != 0:
-                        # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", ui_result, flush=True)
-                """
+                    if len(ui_result) == 0:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
+                    elif len(ui_result) != 0:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", ui_result, flush=True)
+
                 # 删除rule
                 if create_rule_code == 200:
                     search_rule = support.ui_utils.policy.search_rule.SearchRule(driver)
@@ -181,7 +181,7 @@ class CreateStatisticsPolicy:
                             ui_result = ui_result + " In addition, fail to delete {} rule.".format(test_data["policy_type"])
                     else:
                         ui_result = ui_result + " In addition, fail to search {} rule.".format(test_data["policy_type"])
-                """
+                """"""
                 # 删除object
                 #if delete_rule_code == 200 and "condition" in test_data.keys():
                 if "condition" in test_data.keys():#因为存在Object创建成功，Rule创建失败情况，所以取消delete_rule_code == 200条件
@@ -206,7 +206,9 @@ class CreateStatisticsPolicy:
                                         element_position_map = get_element_position(tmp_key)
                                 else:
                                     element_position_map = get_element_position(cond_key)
+                                #search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"], element_position_map,"",None)
                                 search_cond_code, first_row_checkbox_element = search_cond.search(cond_data[i]["name"], element_position_map)
+                                #search_cond_code, first_row_checkbox_element = 200, None
                                 if search_cond_code == 200:
                                     delete_cond = support.ui_utils.object.delete_object.DeleteObject(driver)
                                     delete_cond_code = delete_cond.delete(element_position_map, first_row_checkbox_element, True)
@@ -224,7 +226,7 @@ class CreateStatisticsPolicy:
                         # 退出遍历标志
                         if cond_status == 1:  # 失败，退出遍历创建
                             break
-                """
+
                 # 删除Statistics Tesmplate
                 #if delete_rule_code == 200 and "action_parameter" in test_data.keys():
                 if "action_parameter" in test_data.keys():
@@ -301,6 +303,7 @@ class CreateStatisticsPolicy:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
+                
             except Exception as e:
                 raise
             finally:

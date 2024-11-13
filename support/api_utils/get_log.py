@@ -12,8 +12,9 @@ class GetLog:
     def get_log_schema(self, token, log_type, api_host, vsys_id):
         # 修改完成后删除注释:将下方的security_event替换成变量
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/log/schema/" + log_type + "?vsys_id=" + str(vsys_id)
-        response = requests.get(url, headers=headers, verify=False)
+        url = api_host + "/v1/logs/schema/" + log_type
+        vsys = {"vsys": vsys_id}
+        response = requests.get(url, headers=headers, params=vsys, verify=False)
         assert response.status_code == 200
         log_schema = json.loads(response.text)
         log_schema = log_schema['data']['fields']
@@ -30,7 +31,7 @@ class GetLog:
             "start_time": "",
             "end_time": "",
             "filter": "",
-            "vsys_id": 1
+            "vsys": 1
         }
         log_condition_dict = json.loads(json.dumps(log_condition))
         policy_type = test_data["policy_type"]
@@ -38,9 +39,9 @@ class GetLog:
         for i in range(rule_num):
             if policy_type == 'security':
                 schema_type = 'security_event'
-            elif policy_type == 'pxy_intercept':
+            elif policy_type == 'proxy_intercept':
                 schema_type = 'session_record'
-            elif policy_type == 'pxy_manipulation':
+            elif policy_type == 'proxy_manipulation':
                 schema_type = 'proxy_event'
             elif policy_type == 'monitor':
                 schema_type = 'monitor_event'
@@ -51,30 +52,30 @@ class GetLog:
             if policy_type == 'security':
                 log_source = 'security_event'
                 identifier_name = 'security-event-list'
-                log_query_rule_type = 'security_rule_list'
-            elif policy_type == 'pxy_intercept':
+                log_query_rule_type = 'security_rule_uuid_list'
+            elif policy_type == 'proxy_intercept':
                 log_source = 'session_record'
                 identifier_name = 'session-record-list'
-                log_query_rule_type = 'proxy_rule_list'
-            elif policy_type == 'pxy_manipulation':
+                log_query_rule_type = 'proxy_rule_uuid_list'
+            elif policy_type == 'proxy_manipulation':
                 log_source = 'proxy_event'
                 identifier_name = 'proxy-event-manipulation-list'
-                log_query_rule_type = 'proxy_rule_list'
+                log_query_rule_type = 'proxy_rule_uuid_list'
             elif policy_type == 'monitor':
                 log_source = 'monitor_event'
                 identifier_name = 'monitor-event-list'
-                log_query_rule_type = 'monitor_rule_list'
+                log_query_rule_type = 'monitor_rule_uuid_list'
             elif policy_type == 'statistics':
                 log_source = 'session_record'
                 identifier_name = 'session-record-list'
-                log_query_rule_type = 'statistics_rule_list'
+                log_query_rule_type = 'statistics_rule_uuid_list'
             elif policy_type == "dos_protection":
                 log_source = "dos_event"
                 identifier_name = "dos-event-list"
             log_condition_dict['columns'] = fields
             log_condition_dict['start_time'] = start_time
             log_condition_dict['end_time'] = end_time
-            log_condition_dict['vsys_id'] = vsys_id
+            log_condition_dict['vsys'] = vsys_id
             log_condition_dict['source'] = log_source
             log_condition_dict['identifier_name'] = identifier_name
             log_condition_dict['execution_mode'] = 'oneshot'
@@ -84,23 +85,24 @@ class GetLog:
             elif "obj_condition" in test_data.keys():
                 temp_obj_condition = test_data["obj_condition"]
             if policy_type == "dos_protection":
-                attack_type = "Custom Network Attack"
-                log_condition_dict['filter'] = f"destination_ip='{test_data['traffic']['servers_start_ip']}'AND attack_type='{attack_type}'"
+                # 24.10 版本attack_type取消
+                # attack_type = "Custom Network Attack"
+                log_condition_dict['filter'] = f"destination_ip='{test_data['traffic']['servers_start_ip']}'"
             else:
                 if script_type == "api" and len(temp_obj_condition) > 0 and temp_obj_condition[0]["attribute_name"] == "ATTR_SUBSCRIBER_ID":
-                    log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},{policy_id})"
+                    log_filter = f"subscriber_id='{test_sub_id}' AND has({log_query_rule_type},'{policy_id}')"
                     log_condition_dict['filter'] = log_filter
                 else:
-                    log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, {policy_id})"
+                    log_filter = f"client_ip={test_pc_ip} AND has({log_query_rule_type}, '{policy_id}')"
                     log_condition_dict['filter'] = log_filter
                     log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={test_pc_ip}", f"client_ip='{test_pc_ip}'")
-            url = api_host + "/v1/log/query"
+            url = api_host + "/v1/logs/query"
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query log by condition.", flush=True)
             response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
+            #print(response.text)
             assert response.status_code == 200
             log_list = json.loads(response.text)
-            #print(log_list)
-            log_list = log_list['data']['result']
+            log_list = log_list['data']['list']
             log_index = i + 1
             temp_log_query_param = 'log_query_param_' + str(log_index)
             if temp_log_query_param in test_data.keys():
@@ -120,14 +122,12 @@ class GetLog:
                         exclude_fields = {
                             "packet_capture_file", "http_response_body", "http_request_body", "monitor_mirrored_pkts",
                             "monitor_mirrored_bytes", "client_port", "ssl_ech_flag", "ssl_esni_flag",
-                            "attack_type", "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
-                            "basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate",
-                            "rule_id","conditions"
+                            "sessions", "session_rate", "packets", "packet_rate","bytes", "bit_rate",
+                            "rule_uuid","conditions"
                         }
                         dos_verify_fields = {
-                            "attack_type", "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate",
-                            "basic_attack_type", "basic_sessions", "basic_session_rate", "basic_packets","basic_packet_rate", "basic_bytes", "basic_bit_rate",
-                            "rule_id","conditions","source_ip_list","destination_ip"
+                            "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate",
+                            "rule_uuid","source_ip","destination_ip"
                         }
                         # 优化后的条件判断
                         if query_field_key in log and query_field_key not in exclude_fields and log[query_field_key] == query_value:
@@ -140,7 +140,7 @@ class GetLog:
                                 if len(log[query_field_key]) > 0:
                                     packet_capture_url = log[query_field_key]
                                     download_parameter = {'url': packet_capture_url, 'exportObj': True}
-                                    url = api_host + "/v1/util/download_file" + "?vsys_id=" + str(vsys_id)
+                                    url = api_host + "/v1/util/download-file" + "?vsys_id=" + str(vsys_id)
                                     response = requests.get(url, headers=headers, params=download_parameter, verify=False)
                                     if response.status_code == 200:
                                         temp_log_result_list.append(True)
@@ -327,7 +327,7 @@ class GetLog:
                                         temp_log_result_list.append(False)
                         else:
                             temp_log_result_list.append(False)
-                    if policy_type == 'pxy_intercept' and len(temp_log_result_list) < len(log_query_params):
+                    if policy_type == 'proxy_intercept' and len(temp_log_result_list) < len(log_query_params):
                          # 动态passthrough
                         if True in temp_log_result_list:
                             log_result = True
@@ -387,7 +387,7 @@ class GetLog:
             "start_time": "",
             "end_time": "",
             "filter": "",
-            "vsys_id": 1
+            "vsys": 1
         }
         schema_type = "session_record"
         log_condition_dict = json.loads(json.dumps(log_condition))
@@ -395,10 +395,11 @@ class GetLog:
         log_condition_dict['columns'] = fields
         log_condition_dict['start_time'] = start_time
         log_condition_dict['end_time'] = end_time
-        log_condition_dict['vsys_id'] = v_id
+        log_condition_dict['vsys'] = v_id
         log_condition_dict['source'] = "session_record"
         log_condition_dict['identifier_name'] = "session-record-list"
         log_condition_dict['execution_mode'] = 'oneshot'
+        #log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts=1"
         if test_data["mitigation"]['behavior']== "none":
             log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'"
         elif test_data["mitigation"]['behavior'] == "deny":
@@ -406,11 +407,11 @@ class GetLog:
                 log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts in (0)"
             else:
                 log_condition_dict['filter'] = f"server_ip='{test_data['traffic']['servers_start_ip']}'AND received_pkts in (0,1)"
-        url = api_host + "/v1/log/query"
+        url = api_host + "/v1/logs/query".format(v_id)
         response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
         assert response.status_code == 200
         log_list = json.loads(response.text)
-        log_list = log_list['data']['result']
+        log_list = log_list['data']['list']
         log_entry= log_list[0]
         # 获取 received_pkts 和 sent_pkts
         received_pkts = log_entry['received_pkts']
@@ -435,13 +436,14 @@ class GetLog:
         exp_packets_count = exp_sessions_count * total_packets
         exp_bytes_count = exp_sessions_count * total_bytes
         #字段的验证:Bytes验证是否大于0、为负数;不再验证具体的值，不同用例回放数据包不同，Bytes无固定值
-        if query_field_key == "attack_type":
-            if query_value.replace("_", " ") == log[query_field_key].lower():
-                temp_log_result_list.append(True)
-            else:
-                temp_log_result_list.append(False)
+        # 24.10 版本此字段取消
+        # if query_field_key == "attack_type":
+        #     if query_value.replace("_", " ") == log[query_field_key].lower():
+        #         temp_log_result_list.append(True)
+        #     else:
+        #         temp_log_result_list.append(False)
 
-        elif query_field_key == "sessions":
+        if query_field_key == "sessions":
             if exp_sessions_count == log[query_field_key]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]  # time,第几次循环，则给log_query_param中的第几次-1的数赋值
@@ -463,7 +465,7 @@ class GetLog:
                 temp_log_result_list.append(False)
 
         elif query_field_key == "bit_rate":
-            bits_rate_value = int((log["bytes"] * 8) / time_difference)
+            bits_rate_value = (log["bytes"] * 8) / time_difference
 
             if bits_rate_value == log[query_field_key]:
                 temp_log_result_list.append(True)
@@ -474,7 +476,7 @@ class GetLog:
         elif query_field_key == "session_rate":
             session_rate = exp_sessions_count / time_difference
 
-            if int(session_rate) == log[query_field_key]:
+            if session_rate == log[query_field_key]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
@@ -482,29 +484,33 @@ class GetLog:
 
         elif query_field_key == "packet_rate":
             packet_rate = exp_packets_count / time_difference
-            if int(packet_rate) == log[query_field_key]:
+            if packet_rate == log[query_field_key]:
                 temp_log_result_list.append(True)
                 test_data["log_query_param"][time]["query_value"] = log[query_field_key]
             else:
                 temp_log_result_list.append(False)
         elif query_field_key in ["basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate"]:
             temp_log_result_list.append(True)
-        elif query_field_key == "rule_id":
-            if policy_id == log[query_field_key]:
+        elif query_field_key == "rule_uuid":
+            # 不改变用例，通过逻辑取到查询结果中的rule_uuid用于对比
+            if policy_id == log["rule_uuid"]:
                 temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = int(log[query_field_key])
+                test_data["log_query_param"][time]["query_value"] = log["rule_uuid"]
             else:
                 temp_log_result_list.append(False)
-        elif query_field_key == "conditions":
-            if f"DoS Protection [{policy_id}]" == log [query_field_key]:
+        # 与开发确认，24.10 版本中conditions指标取消，且无对应的替换字段
+        # elif query_field_key == "conditions":
+        #     if f"DoS Protection [{policy_id}]" == log [query_field_key]:
+        #         temp_log_result_list.append(True)
+        #         test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+        #     else:
+        #         temp_log_result_list.append(False)
+        
+        # 24.10 版本，source_ip_list替换为source_ip
+        elif query_field_key == "source_ip" :
+            if test_data["traffic"]["clients_start_ip"] == log ["source_ip"]:
                 temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
-            else:
-                temp_log_result_list.append(False)
-        elif query_field_key == "source_ip_list" :
-            if test_data["traffic"]["clients_start_ip"] == log [query_field_key]:
-                temp_log_result_list.append(True)
-                test_data["log_query_param"][time]["query_value"] = log[query_field_key]
+                test_data["log_query_param"][time]["query_value"] = log["source_ip"]
             else:
                 temp_log_result_list.append(False)
         elif query_field_key == "destination_ip":
@@ -521,44 +527,43 @@ class GetLog:
     def get_metric(self, token, rule_num, start_time, end_time, create_policies_ids, test_data, api_host, vsys_id, script_type):
         # 请求接口查询metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = api_host + "/v1/log/query"
+        url = api_host + "/v1/logs/query"
         metric_result = False
         for i in range(rule_num):
             policy_type = test_data["policy_type"]
             if policy_type == 'security':
                 dataset_identifier_name = "security-policy-rule-statistics"
-            elif policy_type == 'pxy_intercept' or policy_type == 'pxy_manipulation':
+            elif policy_type == 'proxy_intercept' or policy_type == 'proxy_manipulation':
                 dataset_identifier_name = "proxy-policy-rule-statistics"
             elif policy_type == 'monitor':
                 dataset_identifier_name = "monitor-policy-rule-statistics"
             elif policy_type == 'dos_protection':
                 dataset_identifier_name = "dos-protection-rule-statistics"
             policy_id = list(create_policies_ids[i].values())[0]
-            hit_query_condition = {"identifier_name": dataset_identifier_name, "rule_id": "", "start_time": "",
-                                   "end_time": "", "vsys_id": 1, "execution_mode": "oneshot", "output_mode": "json",
+            hit_query_condition = {"identifier_name": dataset_identifier_name, "rule_uuid": "", "start_time": "",
+                                   "end_time": "", "vsys": 1, "execution_mode": "oneshot", "output_mode": "json",
                                    "interval": 1}
-            hit_query_condition['rule_id'] = policy_id
+            hit_query_condition['rule_uuid'] = policy_id
             hit_query_condition['start_time'] = start_time
             hit_query_condition['end_time'] = end_time
-            hit_query_condition['vsys_id'] = vsys_id
+            hit_query_condition['vsys'] = vsys_id
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to query metric by condition.", flush=True)
             response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
-            #print(response)
             index = i + 1
             temp_counters = 'counters_' + str(index)
             if temp_counters in test_data.keys():
                 counter = test_data[temp_counters]
             else:
                 counter = test_data['counters']
-            result_len = len(response['data']['result'])
+            result_len = len(response['data']['list'])
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Compare metric with test data.", flush=True)
             # 需要hits == 0时，则验证，验证通过metric置为true
             if 'hits' in counter and counter['hits'] == 0 and result_len == 0:
                 metric_result = True
             elif 'hits' in counter and result_len > 0:
-                metric = response['data']['result'][0]
+                metric = response['data']['list'][0]
                 if counter['hits'] == 1:
                     for key, value in counter.items():
                         # 接口返回的统计是否与预期的一致
@@ -589,16 +594,15 @@ class GetLog:
     def get_sc_metric(self, token, start_time, end_time, sc_info, sc_expected_metric, active_dest_ips_list, host_api, vsys_id):
         # 请求接口查询sc metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/log/query".format(host_api)
+        url = "{}/v1/logs/query".format(host_api)
         # 重组请求体数据
         post_data_ori_json = """
         {
             "execution_mode": "oneshot",
             "identifier_name": "service-chaining-policy-rule-statistics",
-            "rule_id": "271039",
             "start_time": "2023-11-21T03:23:24Z",
             "end_time": "2023-11-30T07:39:49Z",
-            "vsys_id": 1,
+            "vsys": 1,
             "interval": 1,
             "duration":1,
             "limit": 10000,
@@ -610,20 +614,21 @@ class GetLog:
         post_data_ori_dict["identifier_name"] = "service-chaining-policy-rule-statistics"
         post_data_ori_dict["start_time"] = start_time
         post_data_ori_dict["end_time"] = end_time
-        post_data_ori_dict["rule_id"] = int(sc_info["rule_id"])
-        post_data_ori_dict["vsys_id"] = vsys_id
+        # post_data_ori_dict["rule_id"] = int(sc_info["rule_id"])
+        post_data_ori_dict["rule_uuid"] = sc_info["rule_id"]
+        post_data_ori_dict["vsys"] = vsys_id
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric query failed.", flush=True)
             return False
         else:  # 返回正常结果
-            if r_dict["data"]["result"] == []:  # 为空
+            if r_dict["data"]["list"] == []:  # 为空
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric is empty.", flush=True)
                 return None
             else:  # metric不为空时，验证返回结果
                 metric_result = False  # 默认
-                result_list = r_dict["data"]["result"]
+                result_list = r_dict["data"]["list"]
                 sc_value = copy.deepcopy(result_list[0])
                 metric_result = self.assert_sc_metric(sc_info, sc_value, sc_expected_metric, active_dest_ips_list)
         return metric_result
@@ -751,14 +756,14 @@ class GetLog:
         """
         # 请求接口查询statistics metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/log/query".format(host_api)
+        url = "{}/v1/logs/query".format(host_api)
         # 24.08重组请求体dsl结构数据,文档见https://docs.geedge.net/display/TSG/DSL+Examples
         post_data_ori_json = """
         {
             "dsl": {
                 "name": "customized-statistics",
                 "data_source": "statistics_rule",
-                "filter": "vsys_id in (1) and rule_id = 282009 and template_id = 3015 and chart_id = 3026 and version = 4",
+                "filter": "vsys_id in (1) and rule_uuid = '282009' and template_uuid = '3015' and chart_uuid = '3026' and version = 4",
                 "custom.statistics.dimensions": [
                     {
                         "metric_name": "client_country",
@@ -789,7 +794,7 @@ class GetLog:
         post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
         post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
         post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
-        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_id = {} and template_id = {} and chart_id = {} and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
+        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_uuid = '{}' and template_uuid = '{}' and chart_uuid = '{}' and version = {}".format(vsys_id,statistics_info["rule_id"],statistics_info["template_id"],statistics_info["chart_id"],statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
         if statistics_info["chart_type"] == "bar":
             variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
@@ -819,28 +824,30 @@ class GetLog:
         else:
             post_data_ori_dict_dsl.pop("limit")  # 不存在，暂时删除key
         post_data_ori_dict["dsl"] = post_data_ori_dict_dsl
-        post_data_ori_dict["vsys_id"] = vsys_id
+        post_data_ori_dict["vsys"] = vsys_id
         # 请求接口获取Metrics数据
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}, template_id:{}, chart_id:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_uuid:{}, template_uuid:{}, chart_uuid:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],  "Exception when getting Metrics data from the interface.")
             return [False, "The statistics metric API query failed."]
         else:  # 返回正常结果
-            if r_dict["data"]["result"] == []:  # 为空
+            if r_dict["data"]["list"] == []:  # 为空
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is []")
                 # 对应有方向的session的单一Metrics方式需要另行处理
-                tmp_in_out_list = UtilStatisticsTemplate().tmp_in_out_list
+                # 24.10版本取消了Sessions和Latency的In、Out方向，所以按单方向处理的逻辑随之取消
+                #tmp_in_out_list = UtilStatisticsTemplate().tmp_in_out_list
                 # api返回值为空，不判断方向，直接返回重新查找
-                if len(statistics_info["metrics"]) == 1:
+                #if len(statistics_info["metrics"]) == 1:
                     #for item in statistics_info["metrics"]:
-                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_in_out_list:
-                        return [333, "this is a pass"]
+                    #if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_in_out_list:
+                        #return [333, "this is a pass"]
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:statistics metric no result was found.")
                 return [False, "statistics metric no result was found."]
             else:  # 提取结果，并断言
-                result_list_from_api = r_dict["data"]["result"]
+                result_list_from_api = r_dict["data"]["list"]
                 #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is {}".format(result_list_from_api))
                 #print(result_list_from_api)
                 result_list = []
@@ -1087,6 +1094,8 @@ class GetLog:
             total_syn_pkt2 = test_traffic_statistics["total_syn_pkt"] * 2
             if total_syn_pkt2 > 0 and time_dif_seconds > 1:
                 total_syn_pkt2 = round(total_syn_pkt2 / time_dif_seconds, 2)
+            #if time_dif_seconds > 1:
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes_sent:{};total_syn_pkt1:{};".format(total_bytes_sent,total_syn_pkt1), flush=True)
 
             match len(source_fields):
                 case 1:
@@ -1106,11 +1115,11 @@ class GetLog:
                         metric_result = True
                     elif source_fields[0] == "syn_pkts" and total_syn_pkt2:
                         metric_result = True
-                    # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                    elif source_fields[0] in {"new_in_sessions", "new_out_sessions", "closed_in_sessions", "closed_out_sessions"} and (stats_value == total_syn_pkt1 or stats_value == 0):
+                    # * Sessions处理逻辑
+                    elif source_fields[0] in {"new_sessions_for_this_rule", "closed_sessions_for_this_rule"} and stats_value == total_syn_pkt1:
                         metric_result = True
-                    # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                    elif source_fields[0] in {"new_c2s_flows", "new_s2c_flows"} and stats_value == total_syn_pkt1:
+                    # * Flows处理逻辑new_c2s_flows_for_this_rule、new_s2c_flows_for_this_rule
+                    elif source_fields[0] in {"new_c2s_flows_for_this_rule", "new_s2c_flows_for_this_rule"} and stats_value == total_syn_pkt1:
                         metric_result = True
                     #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
                     #    metric_result = True
@@ -1132,11 +1141,8 @@ class GetLog:
                         metric_result = True
                     elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
                         metric_result = True
-                    # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
-                    elif (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and stats_value == total_syn_pkt1:
-                        metric_result = True
-                    # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                    elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == total_syn_pkt2:
+                    # * Flows处理逻辑new_c2s_flows_for_this_rule、new_s2c_flows_for_this_rule
+                    elif "new_c2s_flows_for_this_rule" in source_fields and "new_s2c_flows_for_this_rule" in source_fields and stats_value == total_syn_pkt2:
                         metric_result = True
                     # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
                     else:
@@ -1160,20 +1166,19 @@ class GetLog:
         code, all_metrics = util.get_all_metrics_or_dimensions("unique_count_metrics")
         if code != 200:
             return False, "Failed to obtain the Field whose Metric Type is Unique_Count"
-        """        
-        'in_pkt_length_distribution': 'Incoming Packet Length',
-        'out_pkt_length_distribution': 'Outgoing Packet Length',
-        'pkt_length_distribution': 'Packet Length',        
-        """
-        # unique和syn数量：1一致
-        one_or_zero_unique = {"new_in_sessions", "new_out_sessions", "closed_in_sessions","closed_out_sessions","syn_pkts"
-            'new_in_sessions',
-            'new_out_sessions',
-            'closed_in_sessions',
-            'closed_out_sessions',
-            'syn_pkts',
-            'in_latency_ms',
-            'out_latency_ms'
+        # unique和syn数量：1 一致
+        # 单向流时有方向的unique为1
+        one_or_zero_unique = {
+            "new_c2s_flows_for_this_rule",
+            "new_s2c_flows_for_this_rule",
+            "sent_bytes",
+            "received_bytes",
+            "in_bytes",
+            "out_bytes",
+            "sent_pkts",
+            "received_pkts",
+            "in_pkts",
+            "out_pkts"
         }
         #unique和syn数量：1一致
         one_unique = {
@@ -1201,15 +1206,15 @@ class GetLog:
             'sled_ip',
             'direction',
             'session_id',
-            'in_latency_ms',
-            'out_latency_ms',
             'dtls_handshake_latency_ms',
             'ssl_handshake_latency_ms',
             'tcp_handshake_latency_ms',
             'duration_ms',
             'tcp_rtt_ms',
-            'new_c2s_flows',
-            'new_s2c_flows',
+            'new_sessions_for_this_rule',
+            'closed_sessions_for_this_rule',
+            'new_c2s_flows_for_this_rule',
+            'new_s2c_flows_for_this_rule',
             'c2s_ip_fragments',
             's2c_ip_fragments'
         }
@@ -1237,7 +1242,7 @@ class GetLog:
             match len(source_fields):
                 case 1:
                     if source_fields[0] in all_metrics:
-                        # * Sessions处理逻辑new_in_sessions、new_out_sessions、closed_in_sessions、closed_out_sessions
+                        # * Sessions处理逻辑
                         if source_fields[0] in one_or_zero_unique and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
                             metric_result = True
                         elif source_fields[0] in one_unique and (stats_value == test_traffic_statistics["total_syn_pkt"]):
@@ -1250,10 +1255,7 @@ class GetLog:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 2:
                     if source_fields[0] in all_metrics and source_fields[1] in all_metrics:
-                        if (("new_in_sessions" in source_fields and "new_out_sessions" in source_fields) or ("closed_in_sessions" in source_fields and "closed_out_sessions" in source_fields)) and (stats_value == test_traffic_statistics["total_syn_pkt"]):
-                            metric_result = True
-                        # * Flows处理逻辑new_c2s_flows、new_s2c_flows
-                        elif "new_c2s_flows" in source_fields and "new_s2c_flows" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
+                        if "new_c2s_flows_for_this_rule" in source_fields and "new_s2c_flows_for_this_rule" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
                             metric_result = True
                         elif stats_value >= test_traffic_statistics["total_syn_pkt"]:
                             metric_result = True

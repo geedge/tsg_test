@@ -23,7 +23,7 @@ def run(parameter):
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "pxy_manipulation",
+            "policy_type": "proxy_manipulation",
             "rule_name": parameter["test_case_name"],
             "rule_action": "run_script",
             "rule_type": "create",
@@ -79,7 +79,7 @@ def run(parameter):
                                 "item_key": "Content-Type",
                                 "item_value": "TEXT",
                                 "value": [
-                                    "text&html&text&html&text&html&text&html"
+                                    "text&html&text&html&text&html&text"
                                 ]
                             }
                         ],

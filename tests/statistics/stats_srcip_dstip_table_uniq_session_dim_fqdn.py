@@ -94,13 +94,12 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions:UNIQUE_COUNT:IN Sessions",
-                            "new_out_sessions:UNIQUE_COUNT:Out Sessions"
+                            "session_id:UNIQUE_COUNT:UNIQUE Session ID"
                           ],
                           "dimensions": [
                             "server_fqdn"
                           ],
-                          "order_by": "IN Sessions",
+                          "order_by": "UNIQUE Session ID",
                           "row_limit": "50",
                           "min_in_size": "1",
                           "min_out_size": "1"

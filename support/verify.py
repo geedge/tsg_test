@@ -33,7 +33,7 @@ class Verify:
                     if len(ui_verification_result) == 1:
                         return ui_verification_result
                     # 对比api和ui返回的每个结果，如果都一样，则结果是true，如果二者有一个不同，就为false
-                    if rule_type == "security" or rule_type == "service_chaining" or rule_type == "pxy_intercept" or rule_type == "pxy_manipulation" or rule_type == "monitor":
+                    if rule_type == "security" or rule_type == "service_chaining" or rule_type == "proxy_intercept" or rule_type == "proxy_manipulation" or rule_type == "monitor":
                         if api_verification_result[0] == True and ui_verification_result[0] == True or (api_verification_result[0] == 'no_set' and ui_verification_result[0] == 'no_set'):
                             verification_result[0] = True
                         else:

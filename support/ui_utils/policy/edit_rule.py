@@ -42,10 +42,10 @@ class EditRule:
             elif type == "monitor":
                 rule_id = self.driver.find_element(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span").text
                 edit_button_position ="appEdit-_OperateBtns_ElRow_policy_monitor_Home_App_anonymousComponent"
-            elif type == "pxy_intercept":
+            elif type == "proxy_intercept":
                 rule_id = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
                 edit_button_position = "appEdit-_OperateBtns_ElRow_policy_Intercept_Home_App_anonymousComponent"
-            elif type == "pxy_manipulation":
+            elif type == "proxy_manipulation":
                 rule_id = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
                 edit_button_position = "appEdit-_OperateBtns_ElRow_policy_Manipulation_Home_App_anonymousComponent"
             elif type == "statistics":

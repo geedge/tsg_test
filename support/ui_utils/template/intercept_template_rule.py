@@ -3,7 +3,7 @@ test_data = \
             {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "pxy_intercept",
+            "policy_type": "proxy_intercept",
             "rule_name": "intercept_rule_with_src_ip",
             "rule_action": "allow",
             "rule_type": "create",

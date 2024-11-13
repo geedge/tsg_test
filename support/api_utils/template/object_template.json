@@ -1,15 +1,14 @@
 {
     "op": "add",
     "return_data": 1,
-    "vsys_id": 1,
+    "is_dry_run": 0,
     "object": {
         "type": "ip",
         "sub_type": "ip",
-        "is_valid": 1,
         "statistics_option": "elaborate",
         "name": "automation_test_object",
         "description": "test",
-        "member": "object",
+        "member_type": "item",
         "iconColor": "#31739C"
     },
     "data": {},

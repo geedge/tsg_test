@@ -3,7 +3,7 @@ test_data = \
             {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "pxy_manipulation",
+            "policy_type": "proxy_manipulation",
             "rule_name": "manipulation_rule_with_allow_src_ip",
             "rule_action": "allow",
             "rule_type": "create",
@@ -201,7 +201,22 @@ test_data = \
                 ],
                 "tunnel": [],
                 "tunnel_level": [],
-                "flag": [],
+                "flag": [
+                    {
+                        "name": "secy_flag",
+                        "object_type": "flag",
+                        "select_type": False,
+                        "negate": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "flag",
+                                "flag": "64",
+                                "mask": "64",
+                            }
+                        ]
+                    }
+                ],
                 "application": [
                     {
                         "name": "http",  #

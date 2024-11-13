@@ -99,8 +99,6 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "in_latency_ms:UNIQUE_COUNT:Incoming Latency(ms)",
-                            "out_latency_ms:UNIQUE_COUNT:Outgoing Latency(ms)",
                             "tcp_handshake_latency_ms:UNIQUE_COUNT:TCP Latency"
                           ],
                           "dimensions": ["app"],

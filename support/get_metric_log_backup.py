@@ -52,11 +52,11 @@ class GetMetricLog:
                     schema_type = log_source = 'security_event'
                     identifier_name = 'security-event-list'
                     log_query_rule_type = 'security_rule_list'
-                elif self.rule_type == 'pxy_intercept':
+                elif self.rule_type == 'proxy_intercept':
                     schema_type = log_source = 'session_record'
                     identifier_name = 'session-record-list'
                     log_query_rule_type = 'proxy_rule_list'
-                elif self.rule_type == 'pxy_manipulation':
+                elif self.rule_type == 'proxy_manipulation':
                     schema_type = log_source = 'proxy_event'
                     identifier_name = 'proxy-event-manipulation-list'
                     log_query_rule_type = 'proxy_rule_list'
@@ -136,7 +136,7 @@ class GetMetricLog:
             for i in range(self.rule_number):
                 if self.rule_type == 'security':
                     dataset_identifier_name = "security-policy-rule-statistics"
-                elif self.rule_type == 'pxy_intercept' or self.rule_type == 'pxy_manipulation':
+                elif self.rule_type == 'proxy_intercept' or self.rule_type == 'proxy_manipulation':
                     dataset_identifier_name = "proxy-policy-rule-statistics"
                 elif self.rule_type == 'monitor':
                     dataset_identifier_name = "monitor-policy-rule-statistics"

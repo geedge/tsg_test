@@ -1,6 +1,8 @@
+import copy
 import os.path
 import sys
 import ipaddress
+import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import requests
 from datetime import datetime
@@ -28,6 +30,7 @@ class CreateLibrary:
                         tag_data = tags_data[j]
                         tag_template = self.process_tag_data(tag_data,vsys_id)
                         tag_template["tag"]["category"] = library_data[i]["category"]
+                        tag_template["vsys"] = vsys_id
                         tag_id = self.create_tag(headers, tag_template, api_host)
                     self.tag_ids.append(tag_id)
                     catalogs_data = library_data[i]["catalogs"]
@@ -35,7 +38,8 @@ class CreateLibrary:
                         catalog_data = catalogs_data[k]
                         catalog_template = self.process_catalog_data(catalog_data,vsys_id)
                         catalog_template["catalog"]["category"] = library_data[i]["category"]
-                        catalog_id = self.create_catalog(headers, catalog_template, api_host) 
+                        catalog_template["vsys"] = vsys_id
+                        catalog_id = self.create_catalog(headers, catalog_template, api_host)
                         self.catalog_ids.append(catalog_id)
                 library_tag_id_dict = self.tag_ids_to_policy_obj_list(attribute_name,is_negate)
             library_tag_ids_dict.append(library_tag_id_dict)    
@@ -45,10 +49,10 @@ class CreateLibrary:
 
     def create_tag(self, headers, tag_data, api_host):
         try:
-            url = "{}/v1/policy/library/tag".format(api_host)
-            response = requests.post(headers=headers, url=url, json=tag_data)
+            url = "{}/v1/library/tags".format(api_host)
+            response = requests.post(headers=headers, url=url, json=tag_data, verify=False)
             response_data = response.json()
-            tag_id = response_data["data"]["tag_id"]
+            tag_id = response_data["data"]["uuid"]
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create library tag successfully.", flush=True)
             return tag_id
         except AssertionError as e:
@@ -76,10 +80,10 @@ class CreateLibrary:
 
     def create_catalog(self, headers, catalog_data, api_host):
         try:
-            url = "{}/v1/policy/library/catalog".format(api_host)
-            response = requests.post(headers=headers, url=url, json=catalog_data)
+            url = "{}/v1/library/catalogs".format(api_host)
+            response = requests.post(headers=headers, url=url, json=catalog_data, verify=False)
             catalog_data = response.json()
-            catalog_id = catalog_data["data"]["catalog_id"]
+            catalog_id = catalog_data["data"]["uuid"]
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create library catalog successfully.", flush=True)
             return catalog_id
         except AssertionError as e:
@@ -103,17 +107,18 @@ class CreateLibrary:
             for ip in ips:
                 ip_template = {
                     "op":"",
-                    "entry_id":None,
+                    # "entry_id":None,
+                    "uuid": None,
                     "add_type":4,
-                    "port":"0-65535"
+                    # "port":"0-65535"
                 }
                 ip_template["op"] = catalog_data["op"]
                 if "-" in ip:
-                    ip_template["ip_range"] = ip
+                    ip_template["ip"] = ip
                 elif "/" in ip:
-                    ip_template["ip_cidr"] = ip
+                    ip_template["ip"] = ip
                 else:
-                    ip_template["ip_address"] = ip
+                    ip_template["ip"] = ip
                 ip_type = self.identify_ip_type(ip)
                 ip_template["add_type"] = ip_type
                 catalog_template["catalog"]["ip_entries"].append(ip_template)
@@ -122,17 +127,21 @@ class CreateLibrary:
             for fqdn in fqdns:
                 fqdn_template = {
                     "op":"",
+                    "uuid": None,
                     "fqdn":""
                 }
+                # 处理fqdn适配24.10版本新格式
+                if "$" in fqdn:
+                    fqdn = fqdn.replace("$","")
                 fqdn_template["op"] = catalog_data["op"]
                 fqdn_template["fqdn"] = fqdn
                 catalog_template["catalog"]["fqdn_entries"].append(fqdn_template)
         tag_count = len(self.tag_ids)
         if tag_count == 1:
-                catalog_template["catalog"]["tag_ids"] = str(self.tag_ids[0])
+                catalog_template["catalog"]["tag_uuids"] = str(self.tag_ids[0])
         elif tag_count > 1:
             separator = ","  
-            catalog_template["catalog"]["tag_ids"] = separator.join(self.tag_ids)
+            catalog_template["catalog"]["tag_uuids"] = separator.join(self.tag_ids)
         return catalog_template
     
     def identify_ip_type(self, ip_data):
@@ -148,28 +157,30 @@ class CreateLibrary:
         return ip_type
 
 
-    
+
     def tag_ids_to_policy_obj_list(self, attribute_name, is_negate): # 处理tag_id
         temp_list = []
         for tag in self.tag_ids:
-            tag = int(tag)
+            # tag = int(tag)
             tag_id_list = []
             tag_id_list.append(tag)
-            tag_dict = dict(tag_ids=tag_id_list)
+            tag_dict = dict(tag_uuids=tag_id_list)
             temp_list.append(tag_dict)
-            temp_dict = dict(library_tags=temp_list, attribute_name=attribute_name, is_negate=is_negate)
+            temp_dict = dict(library_tags=temp_list, attribute_name=attribute_name, negate_option=is_negate)
         return temp_dict
     
     def tags_ids_to_policy_condition_list(self, library_condition_ids_dict, condition_ids_by_api_dict):
         for library_condition in library_condition_ids_dict:
-            if library_condition["attribute_name"] == "ATTR_SOURCE_IP":
-                condition_ids_by_api_dict["src_list"].append(library_condition)
-            elif library_condition["attribute_name"] == "ATTR_DESTINATION_IP" or library_condition["attribute_name"] == "ATTR_SERVER_FQDN":
-                condition_ids_by_api_dict["dst_list"].append(library_condition)
-            elif library_condition["attribute_name"] == "ATTR_INTERNAL_IP":
-                condition_ids_by_api_dict["int_list"].append(library_condition)
-            elif library_condition["attribute_name"] == "ATTR_EXTERNAL_IP":
-                condition_ids_by_api_dict["ext_list"].append(library_condition)
+            and_condition_dict = {
+                "negate_option": False,
+                "or_conditions": [],
+            }
+            or_condition_dict = {}
+            or_condition_dict["attribute_name"] = library_condition["attribute_name"]
+            or_condition_dict["object_uuids"] = library_condition["library_tags"][0]["tag_uuids"]
+            copy_dict = copy.deepcopy(or_condition_dict)
+            and_condition_dict["or_conditions"].append(copy_dict)
+            condition_ids_by_api_dict["and_conditions"].append(and_condition_dict)
         return condition_ids_by_api_dict
 
 if __name__ == '__main__':

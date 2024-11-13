@@ -30,9 +30,10 @@ class CreateObject:
             object_name = data["name"]
             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputName_posXpath"]).send_keys(object_name)
             # 添加item
+            """
             if data["object_type"] == "http_signature":
                 for i in range(len(data["item"])):
-                    self.driver.find_element(By.ID, create_element_position["objectPage_addItem_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_item_key_dropDown_posXpath"]).click()
                     temp_element_position = create_element_position["objectPage_item_key_dropDown_select_posXpath"].format(replaceValue=data["item"][i]["item_key"])
                     self.driver.find_element(By.XPATH, temp_element_position).click()
@@ -70,7 +71,8 @@ class CreateObject:
                             self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j+1, replaceValueInput=3), find_after_wait_time=0.5).send_keys(depth)
 
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
-            elif data["object_type"] == "keywords":
+            el"""
+            if data["object_type"] in ["keywords","http_signature"]:
                 for i in range(len(data["item"])):
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
                     temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=data["item"][i]["item_value"])

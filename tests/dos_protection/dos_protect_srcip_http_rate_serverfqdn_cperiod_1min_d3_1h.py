@@ -1,3 +1,4 @@
+
 # -*- coding: UTF-8 -*-
 import time
 import os
@@ -68,7 +69,9 @@ def run(parameter):
             "expected_return": "",
             "counters": {"hits": "many"},
             "log_query_param": [
-                #,
+                {"query_field_key": "source_country", "query_value": "Private Network"},
+                {"query_field_key": "destination_country", "query_value": "US"},
+                #
                 {"query_field_key": "sessions", "query_value": ""},
                 {"query_field_key": "packets", "query_value": ""},
                 {"query_field_key": "bytes", "query_value": ""},
@@ -76,12 +79,9 @@ def run(parameter):
                 {"query_field_key": "packet_rate", "query_value": ""},
                 {"query_field_key": "session_rate", "query_value": ""},
 
-                {"query_field_key": "rule_id", "query_value": ""},
-                {"query_field_key": "conditions", "query_value": ""},
-                {"query_field_key": "source_ip_list", "query_value": ""},
-                {"query_field_key": "source_country_list", "query_value": "Private Network"},
+                {"query_field_key": "rule_uuid", "query_value": ""},
+                {"query_field_key": "source_ip", "query_value": ""},
                 {"query_field_key": "destination_ip", "query_value": ""},
-                {"query_field_key": "destination_country", "query_value": "US"},
             ],
             "traffic": {
                 "protocol": "",
@@ -109,9 +109,9 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(create, CreatePolicy):
-            create.clean_up()
-        # 统计脚本用时
+        # if isinstance(create, CreatePolicy):
+        #     create.clean_up()
+        # # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
@@ -130,7 +130,7 @@ if __name__ == '__main__':
         "script_type": "api",
         "env": "tsgx",
         "vsys_id": 1,
-        "is_log": 0,
+        "is_log": 1,
         "debug_flag": "local",
         "root_path": "E:/tsg_test",
         "path": "E:/tsg_test/tests/ui",

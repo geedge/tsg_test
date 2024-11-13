@@ -80,7 +80,7 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "subscriberid",
-                                "item_value": '$' + parameter["test_subcriber_id"],
+                                "item_value": '^' + parameter["test_subcriber_id"] + '$',
                             }
                         ]
                     }
@@ -130,20 +130,6 @@ def run(parameter):
                                 "sent_pkts:RATE:in pkts",
                                 "received_pkts:RATE:out pkts",
                                 "sent_pkts+received_pkts:RATE:pkts"
-                            ],
-                            "dimensions": [],
-                            "order_by": "",
-                            "row_limit": "",
-                            "min_in_size": "1",
-                            "min_out_size": "1"
-                        },
-                        {
-                            "chart_name": "default name",
-                            "visualization_type": "Line",
-                            "metrics": [
-                                "sent_pkts:BITRATE:in pkts",
-                                "received_pkts:BITRATE:out pkts",
-                                "sent_pkts+received_pkts:BITRATE:pkts"
                             ],
                             "dimensions": [],
                             "order_by": "",

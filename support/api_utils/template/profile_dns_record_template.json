@@ -2,7 +2,7 @@
     "op_action":"add",
     "return_data":1,
     "id":"",
-    "dns_record":{
+    "dns_resource_record":{
         "id":"",
         "name":"automation_test_profile",
         "type":"A",

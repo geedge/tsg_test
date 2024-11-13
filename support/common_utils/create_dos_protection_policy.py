@@ -273,6 +273,7 @@ class CreateDosProtectionPolicy:
                 # 分析验证结果，并返回给flask
                 analysis = Analyse()
                 api_result = analysis.analyse_result(test_data["policy_type"], cfg_list, verification_result)
+
             except Exception as e:
                 raise
             finally:

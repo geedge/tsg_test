@@ -1,20 +1,19 @@
 {
-    "type": "pxy_intercept",
+    "type": "proxy_intercept",
     "return_data": 1,
-    "vsys_id": 1,
+    "vsys_id": "6",
     "rule": {
         "name": "automation_test_policy",
-        "type": "pxy_intercept",
+        "type": "proxy_intercept",
         "action": "intercept",
-        "user_tag_ids": "",
-        "do_log": 1,
+        "user_tags": "",
+        "log_option": "metadata",
         "effective_range": {},
-        "user_region": {
-            "protocol": "SSL",
-            "keyring_for_untrusted": 0,
-            "keyring_for_trusted": 1,
-            "decryption_profile": 1,
-            "tcp_option_profile": 1,
+        "action_parameter": {
+            "keyring_for_untrusted": "00000000-0000-0000-0000-000000000000",
+            "keyring_for_trusted": "00000000-0000-0000-0000-000000000001",
+            "decryption_profile": "00000000-0000-0000-0000-000000000001",
+            "tcp_option_profile": "00000000-0000-0000-0000-000000000001",
             "traffic_mirror": {
                 "enable": 0
             }
@@ -22,20 +21,20 @@
         "sources": [],
         "destinations": [],
         "filters": "",
-        "application": {
-            "is_negate": 0,
-            "objects": [
+        "and_conditions": [
+        {
+            "negate_option": false,
+            "or_conditions": [
                 {
-                    "object_type": "application",
-                    "object_ids": [
-                        109,
-                        163
+                    "attribute_name": "ATTR_APP_ID",
+                    "object_uuids": [
+                        "80791b3a-e700-2cb8-8c24-6876d9faa8f8",
+                        "f9d5c16a-7f42-203f-8c19-5432354a3271"
                     ]
                 }
-            ],
-            "attribute_name": "ATTR_APP_ID",
-            "show": true
-        },
+            ]      
+        }
+        ],
         "is_enabled": 1,
         "description": "test",
         "vsys_id": 6,

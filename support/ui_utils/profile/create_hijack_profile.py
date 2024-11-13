@@ -12,15 +12,15 @@ class CreateHijackProfile:
     def create_hijack_file(self, data):
         try:
             profile_name = data["name"]
-            self.driver.find_element(By.ID, hijackFiles_input_Name_posId).clear()
-            self.driver.find_element(By.ID, hijackFiles_input_Name_posId).send_keys(profile_name)
-            self.driver.find_element(By.XPATH, "//label[text()='Name']").click()
+            self.driver.find_element(By.XPATH, hijackFiles_input_Name_posXpath).clear()
+            self.driver.find_element(By.XPATH, hijackFiles_input_Name_posXpath).send_keys(profile_name)
+            #self.driver.find_element(By.XPATH, "//label[text()='Name']").click()
             #页面其它选项操作
             self._operate_page(data, operation_type="create")
             #点击OK
-            self.driver.find_element(By.CSS_SELECTOR, hijackFiles_button_oK_posCss).click()
-            if self.driver.is_exist_element_by_value(By.CSS_SELECTOR,hijackFiles_button_warningSaveYes_posCss):
-                self.driver.find_element(By.CSS_SELECTOR, hijackFiles_button_warningSaveYes_posCss).click()
+            self.driver.find_element(By.XPATH, hijackFiles_button_oK_posXpath).click()
+            if self.driver.is_exist_element_by_value(By.XPATH, hijackFiles_button_warningSaveYes_posXpath):
+                self.driver.find_element(By.XPATH, hijackFiles_button_warningSaveYes_posXpath).click()
         except Exception as e:
             raise
 

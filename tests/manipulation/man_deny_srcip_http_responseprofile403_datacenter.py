@@ -23,7 +23,7 @@ def run(parameter):
         test_data = {
             "is_multi_priority": False,
             "rule_num": 1,
-            "policy_type": "pxy_manipulation",
+            "policy_type": "proxy_manipulation",
             "rule_name": parameter["test_case_name"],
             "rule_action": "deny",
             "effective_devices": ["center-xxg-tsgx"],
@@ -66,7 +66,7 @@ def run(parameter):
                     }
                 ]
             },
-            "expected_return": "https://www.daixiaorui.com",
+            "expected_return": "This_is_test",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {

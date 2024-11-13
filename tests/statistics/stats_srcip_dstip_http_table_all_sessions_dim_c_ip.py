@@ -101,15 +101,25 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Table",
                           "metrics": [
-                            "new_in_sessions:SUM:new in sessions",
-                            "new_out_sessions:SUM:new out sessions",
-                            "new_in_sessions+new_out_sessions:SUM:sessions"
+                            "new_sessions_for_this_rule:SUM:sessions"
                           ],
                           "dimensions": ["app"],
                           "order_by": "sessions",
                           "row_limit": "1000",
                           "min_in_size": "0",
                           "min_out_size": "0"
+                        },
+                        {
+                            "chart_name": "default name",
+                            "visualization_type": "Table",
+                            "metrics": [
+                                "new_sessions_for_this_rule:RATE:sessions"
+                            ],
+                            "dimensions": ["app"],
+                            "order_by": "sessions",
+                            "row_limit": "500",
+                            "min_in_size": "0",
+                            "min_out_size": "0"
                         }
                       ]
                 }]
