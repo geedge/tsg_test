@@ -18,7 +18,7 @@ class CreateRunScriptProfile:
         self._operate_page(data, operation_type="create")
         #点击OK
         self.driver.find_element(By.XPATH, tsgProxyScripts_button_oK_posXpath).click()
-        if self.driver.is_exist_element_by_value(By.XPATH,tsgProxyScripts_button_warningSaveYes_posXpath):
+        if self.driver.is_element_exist_by_value(By.XPATH,tsgProxyScripts_button_warningSaveYes_posXpath):
             self.driver.find_element(By.XPATH, tsgProxyScripts_button_warningSaveYes_posXpath).click()
 
     def _operate_page(self, data, operation_type="create"):

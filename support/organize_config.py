@@ -21,17 +21,17 @@ class OrganizeConfig:
     def organize_statistics_rule_cfg(self):
         # 变量初始化
         statistics_sc_info_list = []
-        code, policy_info = self.get_policy_info(self.token, self.rule_uuid, self.policy_configuration["type"])
+        code, policy_info = self.get_policy_info(self.rule_uuid, self.policy_configuration["type"])
         if code != 200:
             return 400, statistics_sc_info_list
         if self.policy_configuration["type"] == "statistics":
             try:
                 # 从Statistics Rule定义信息中获取流量验证所需数据格式
                 for policy in policy_info:
-                    user_region = policy["user_region"]
+                    user_region = policy["action_parameter"]
                     if user_region != {}:
-                        template_id = user_region["template_id"]
-                        code, template_info = self.get_template_info(self.token, template_id, "statistics_template")
+                        template_id = user_region["template_profile"]
+                        code, template_info = self.get_template_info(template_id, "statistics_template")
                         if code != 200:
                             return 400, statistics_sc_info_list
                         # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
@@ -40,7 +40,7 @@ class OrganizeConfig:
                                 statistics_info = {}
                                 statistics_info["rule_id"] = self.rule_uuid
                                 statistics_info["template_id"] = template_id
-                                statistics_info["chart_id"] = chart["id"]
+                                statistics_info["chart_id"] = chart["uuid"]
                                 statistics_info["chart_type"] = chart["display"]["type"]
                                 statistics_info["version"] = chart["version"]
                                 if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
@@ -171,24 +171,25 @@ class OrganizeConfig:
         statistics_info["metrics_dimension"] = chart_dict
         return statistics_info
     
-    def generate_random_ip(self, config, parameter):
-        vsys_id = parameter["vsys_id"]
+    # ？？
+    def generate_random_ip(self, parameter, policy_configuration, traffic_generation):
+        vsys_id = parameter["vsys"]
         run_env = parameter["env"]
-        # statistics中将ip改为随机
-        if "condition" in config.keys():
-            #是否产生Traffic随机IP标识
-            traffic_radom_ip_flag = False
-            #如果是Traffic流量则标识为True
-            if "trex" == config["traffic"]["type"]:
-                traffic_radom_ip_flag = True
-            sub_id_flag = False
-            if "sub_id" in config["rule_name"]:
-                sub_id_flag = True
-            for obj in config["condition"]:
-                if "source_ip" == obj and len(config["condition"]["source_ip"]) > 0:# or "destination_ip" in obj:
-                    # 是否产生Traffic随机IP标识,如果已经通过source_ip产生Traffic随机ip则不再另外产生随机ip标识设置为False
+        # Statistics中将IP改为随机
+        # 是否产生Traffic随机IP标识
+        traffic_radom_ip_flag = False
+        # 如果是Trex流量则标识为True
+        if "trex" == traffic_generation["tool"]:
+            traffic_radom_ip_flag = True
+        sub_id_flag = False
+        if "sub_id" in policy_configuration["name"] or "_imsi_" in policy_configuration["name"] or "_imei_" in policy_configuration["name"] or "_phone_number_" in policy_configuration["name"] or "_apn_" in policy_configuration["name"]:
+            sub_id_flag = True
+        for i in range(len(policy_configuration["and_conditions"])):
+            or_conditions = policy_configuration["and_conditions"][i]["or_conditions"]
+            for j in range(len(or_conditions)):
+                if or_conditions[j]["attribute_name"] == "ATTR_SOURCE_IP":
                     traffic_radom_ip_flag = False
-                    src_ip = config["condition"]["source_ip"][0]["item"][0]["item_value"]
+                    src_ip = or_conditions[j]["items"][0]["ip"]
                     traffic_replace_ip = 0
                     if "default" in src_ip:
                         src_ip = "10.64.77.11"
@@ -217,8 +218,8 @@ class OrganizeConfig:
                             src_ip_list[1] = "64"
                         new_src_ip = ".".join(src_ip_list)
                         start_ip = new_src_ip
-                        stop_ip = new_src_ip
-                        config["condition"][obj][0]["item"][0]["item_value"] = new_src_ip
+                        end_ip = new_src_ip
+                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = new_src_ip
                     elif "-" in src_ip and "/" not in src_ip:
                         two_ip_list = src_ip.split("-")
                         ip_list_1 = two_ip_list[0].split(".")
@@ -247,61 +248,66 @@ class OrganizeConfig:
                         new_two_ip_list.append(new_ip_1)
                         new_two_ip_list.append(new_ip_2)
                         start_ip = new_ip_1
-                        stop_ip = new_ip_2
+                        end_ip = new_ip_2
                         new_two_ip = "-".join(new_two_ip_list)
-                        config["condition"][obj][0]["item"][0]["item_value"] = new_two_ip
+                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = new_two_ip
                     else:
-                        start_ip = stop_ip = "1.1.1.1"
+                        start_ip = end_ip = "1.1.1.1"
                     # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
-                    if obj == "source_ip":# and traffic_replace_ip == 1:
-                        config["traffic"]["clients_start_ip"] = start_ip
-                        config["traffic"]["clients_end_ip"] = stop_ip
-                    #elif obj == "destination_ip":# and traffic_replace_ip == 1:
-                    #    config["traffic"]["servers_start_ip"] = start_ip
-                    #    config["traffic"]["servers_end_ip"] = stop_ip
-                    else:
-                        pass
-            if traffic_radom_ip_flag:
-                src_ip = "10.64.77.11"
-                src_ip_list = src_ip.split(".")
-                if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
-                    if sub_id_flag == True:
-                        src_ip_list[2] = str(25)
-                    else:
-                        src_ip_list[2] = str(random.randint(1, 25))
-                elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
-                    if sub_id_flag == True:
-                        src_ip_list[2] = str(255)
-                    else:
-                        src_ip_list[2] = str(random.randint(224, 255))
+                    traffic_generation["clients_start_ip"] = start_ip
+                    traffic_generation["clients_end_ip"] = end_ip
+        if traffic_radom_ip_flag:
+            src_ip = "10.64.77.11"
+            src_ip_list = src_ip.split(".")
+            if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
                 if sub_id_flag == True:
-                    src_ip_list[3] = str(251)
+                    src_ip_list[2] = str(25)
                 else:
-                    src_ip_list[3] = str(random.randint(100, 249))
-                if run_env == "9140":
-                    src_ip_list[0] = "172"
-                    src_ip_list[1] = "56"
-                elif run_env == "tsgx":
-                    src_ip_list[0] = "10"
-                    src_ip_list[1] = "64"
-                new_src_ip = ".".join(src_ip_list)
-                config["traffic"]["clients_start_ip"] = new_src_ip
-                config["traffic"]["clients_end_ip"] = new_src_ip
+                    src_ip_list[2] = str(random.randint(1, 25))
+            elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
+                if sub_id_flag == True:
+                    src_ip_list[2] = str(255)
+                else:
+                    src_ip_list[2] = str(random.randint(224, 255))
+            if sub_id_flag == True:
+                src_ip_list[3] = str(251)
+            else:
+                src_ip_list[3] = str(random.randint(100, 249))
+            if run_env == "9140":
+                src_ip_list[0] = "172"
+                src_ip_list[1] = "56"
+            elif run_env == "tsgx":
+                src_ip_list[0] = "10"
+                src_ip_list[1] = "64"
+            new_src_ip = ".".join(src_ip_list)
+            traffic_generation["clients_start_ip"] = new_src_ip
+            traffic_generation["clients_end_ip"] = new_src_ip
+        # 如果无Source、estination IP,而包含Internal、External IP
+        # 集成测试环境Trex的External IP为Source IP故逻辑如下：如果是其他测试环境需要根据具体环境调整逻辑
+        for i in range(len(policy_configuration["and_conditions"])):
+            or_conditions = policy_configuration["and_conditions"][i]["or_conditions"]
+            for j in range(len(or_conditions)):
+                if or_conditions[j]["attribute_name"] == "ATTR_EXTERNAL_IP":
+                    if "-" in policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"]:
+                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = "{}-{}".format(traffic_generation["clients_start_ip"], traffic_generation["clients_end_ip"])
+                    elif "/" in policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"]:
+                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = "{}/{}".format(traffic_generation["clients_start_ip"], 32)
+                    else:
+                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = traffic_generation["clients_start_ip"]
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
-        return config
+        return policy_configuration, traffic_generation
 
-    def generate_random_dos_src_ip(self, config, parameter):
-        vsys_id = parameter["vsys_id"]
+    # ？？
+    def generate_random_dos_src_ip(self, parameter, policy_configuration, traffic_generation):
+        vsys_id = parameter["vsys"]
         run_env = parameter["env"]
-        # statistics中将ip改为随机
-        if "condition" in config.keys():
-            for obj in config["condition"]:
-                if "source_ip" == obj:  # or "destination_ip" in obj:
-                    src_ip = config["condition"]["source_ip"][0]["item"][0]["item_value"]
-                    traffic_replace_ip = 0
+        for i in range(len(policy_configuration["and_conditions"])):
+            or_conditions = policy_configuration["and_conditions"][i]["or_conditions"]
+            for j in range(len(or_conditions)):
+                if or_conditions[j]["attribute_name"] == "ATTR_SOURCE_IP":
+                    src_ip = or_conditions[j]["items"][0]["ip"]
                     if "default" in src_ip:
                         src_ip = "10.64.77.11"
-                        traffic_replace_ip = 1
                     if "-" not in src_ip and "/" not in src_ip:
                         src_ip_list = src_ip.split(".")
                         if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
@@ -317,8 +323,8 @@ class OrganizeConfig:
                             src_ip_list[1] = "64"
                         new_src_ip = ".".join(src_ip_list)
                         start_ip = new_src_ip
-                        stop_ip = new_src_ip
-                        config["condition"][obj][0]["item"][0]["item_value"] = new_src_ip
+                        end_ip = new_src_ip
+                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = new_src_ip
                     elif "-" in src_ip and "/" not in src_ip:
                         two_ip_list = src_ip.split("-")
                         ip_list_1 = two_ip_list[0].split(".")
@@ -347,78 +353,68 @@ class OrganizeConfig:
                         new_two_ip_list.append(new_ip_1)
                         new_two_ip_list.append(new_ip_2)
                         start_ip = new_ip_1
-                        stop_ip = new_ip_2
+                        end_ip = new_ip_2
                         new_two_ip = "-".join(new_two_ip_list)
-                        config["condition"][obj][0]["item"][0]["item_value"] = new_two_ip
+                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = new_two_ip
                     else:
-                        start_ip = stop_ip = "1.1.1.1"
-                    # 更改替换traffic{}中ip地址，暂时替换为clients_start_ip = clients_end_ip， servers_start_ip = servers_end_ip
-                    if obj == "source_ip":  # and traffic_replace_ip == 1:
-                        config["traffic"]["clients_start_ip"] = start_ip
-                        config["traffic"]["clients_end_ip"] = stop_ip
-                    # elif obj == "destination_ip":# and traffic_replace_ip == 1:
-                    #    config["traffic"]["servers_start_ip"] = start_ip
-                    #    config["traffic"]["servers_end_ip"] = stop_ip
-                    else:
-                        pass
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Setrandom ip for statistics rule.", flush=True)
-        return config
+                        start_ip = end_ip = "1.1.1.1"
+                    traffic_generation["clients_start_ip"] = start_ip
+                    traffic_generation["clients_end_ip"] = end_ip
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Set random ip for dos rule.", flush=True)
+        return policy_configuration, traffic_generation
 
-    def generate_only_dstip_for_trex_replay(self, data):
-        # 遍历 traffic 字典,默认遍历的是key
-        for obj in data["traffic"]:
-            # 处理 server_start_ip 和 server_end_ip 的情况
-            if obj == "servers_start_ip":
-                dst_ip = data["traffic"][obj]
-                # 只对没有 "-" 或 "/" 的 IP 进行处理
-                if "-" not in dst_ip and "/" not in dst_ip:
-                    # 将 IP 分割为四部分
-                    src_ip_list = dst_ip.split(".")
-
-                    # 随机生成新 IP 的部分
-                    src_ip_list[0] = "6"  # 第一部分固定为 "6"
-                    src_ip_list[1] = str(random.randint(0, 255))  # 第二部分随机生成 0-255
-                    src_ip_list[2] = str(random.randint(1, 223))  # 第三部分随机生成 1-223，避免保留地址
-                    src_ip_list[3] = str(random.randint(0, 255))  # 第四部分随机生成 0-255
-
-                    # 重新组合为新的 IP 地址
-                    new_src_ip = ".".join(src_ip_list)
-                    # 将新生成的 IP 替换到 traffic 中
-                    data["traffic"][obj] = new_src_ip
-                    data["traffic"]["servers_end_ip"] = new_src_ip
+    # ？？
+    def generate_unique_dos_dst_ip(self, traffic_generation):
+        # 处理 server_start_ip 和 server_end_ip 的情况
+        dst_ip = traffic_generation["servers_start_ip"]
+        # 只对没有 "-" 或 "/" 的 IP 进行处理
+        if "-" not in dst_ip and "/" not in dst_ip:
+            # 将 IP 分割为四部分
+            src_ip_list = dst_ip.split(".")
+            # 随机生成新 IP 的部分
+            src_ip_list[0] = "6"  # 第一部分固定为 "6"
+            src_ip_list[1] = str(random.randint(0, 255))  # 第二部分随机生成 0-255
+            src_ip_list[2] = str(random.randint(1, 223))  # 第三部分随机生成 1-223，避免保留地址
+            src_ip_list[3] = str(random.randint(0, 255))  # 第四部分随机生成 0-255
+            # 重新组合为新的 IP 地址
+            new_src_ip = ".".join(src_ip_list)
+            # 将新生成的 IP 替换到 traffic 中
+            traffic_generation["servers_start_ip"] = new_src_ip
+            traffic_generation["servers_end_ip"] = new_src_ip
         # 输出日志，记录生成的唯一 IP
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Set unique dstip for dos rule.", flush=True)
-        return data
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Set unique dst ip for dos rule.", flush=True)
+        return traffic_generation
 
-    def get_policy_info(self, token, rule_uuid, rule_type):
+    def get_policy_info(self, rule_uuid, rule_type):
         try:
             # 请求接口查询metric
-            headers = {'Content-Type': 'application/json', 'Authorization': token}
-            url = (self.api_server + f"/v1/policy/rule?page_size=20&page_no=1&ids={rule_uuid}&type={rule_type}&is_enabled=&with_sub_vsys=1&page_location=0&location_id=&location_key=&vsys_id={self.vsys}")
+            if rule_type == "statistics":
+                new_rule_type = "statistics-rules"
+            headers = {'Content-Type': 'application/json', 'Authorization': self.token}
+            url = (self.api_server + f"/v1/policies/{new_rule_type}?vsys={new_rule_type}&page_size=20&page_no=1&uuid={rule_uuid}&is_enabled=")
             response = requests.get(url, headers=headers, verify=False)
             if response.status_code != 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
                 return 400, []
             response = json.loads(response.text)
-            result = response['data']['rules']
+            result = response['data']['list']
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
             return 400, []
         return 200, result
     
-    def get_template_info(self, token, template_id, template_type):
+    def get_template_info(self, template_id, template_type):
         try:
             # 请求接口查询metric
-            headers = {'Content-Type': 'application/json', 'Authorization': token}
+            headers = {'Content-Type': 'application/json', 'Authorization': self.token}
             # 获取单个Template
             #url = (api_host + f"/v1/policy/profile/statistics_template/{template_id}?page_size=-1&vsys_id={vsys_id}")
             # 获取一批Template
-            url = (self.api_server + f"/v1/policy/profile/statistics_template?page_size=20&page_no=1&ids={template_id}&vsys_id={str(self.vsys)}")
+            url = (self.api_server + f"/v1/profiles/statistics-templates?page_size=20&page_no=1&uuid={template_id}&vsys={str(self.vsys)}")
             response = requests.get(url, headers=headers, verify=False)
             assert response.status_code == 200
             response = json.loads(response.text)
-            result = response['data']['statistics_templates']
+            result = response['data']['list']
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
             return 400, result

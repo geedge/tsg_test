@@ -48,7 +48,7 @@ class CreateDosProtectionPolicy:
         if test_data["traffic"]["type"] == "trex":
             organize_config = OrganizeConfig()
             test_data = organize_config.generate_random_dos_src_ip(test_data,parameter)
-            test_data = organize_config.generate_only_dstip_for_trex_replay(test_data)
+            test_data = organize_config.generate_unique_dos_dst_ip(test_data)
 
         # 无需创建的condition
         dos_protection_no_create_list = ["application", "ip_protocol", "sub_action_override"]

@@ -8,22 +8,12 @@ from support.ui_utils.object.create_object import CreateObject
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class CreateSecurityRuleExample:
-    def create_rules(self, parameter, policy_configuration):
+class CreateSecurityRulesExample:
+    def create_rules(self, policy_configuration, driver):
         try:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run ui test case", flush=True)
             
             result = ""
-            configured_policy = {}
-            
-            log_in = LogIn()
-            pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-            token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-            configured_policy["token"] = token
-            
-            support.ui_utils.env.initiate_selenium_request()
-            driver = support.ui_utils.env.my_driver()
-            support.ui_utils.env.setup()
 
             if "condition" in policy_configuration.keys():
                 for cond_key, cond_value in (policy_configuration["condition"].items()):
@@ -74,8 +64,24 @@ class CreateSecurityRuleExample:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(policy_configuration["policy_type"], flush=True))
                 elif create_rule_code != 200:
                     result = "Fail to create {} rule.".format(policy_configuration["policy_type"])
-            
-            configured_policy["driver"] = driver
-            return token, driver, result
+                    return "", "", result
+                
+                search_rule = SearchRule(driver)
+                element_position_map = get_element_position(policy_configuration["policy_type"])
+                search_rule_code, rule_uuid = search_rule.get_rule_id(policy_configuration["policy_type"], policy_configuration["name"], element_position_map)
+                if search_rule_code != 200:
+                    result = "Fail to search {} rule uuid.".format(policy_configuration["policy_type"])
+                    return "", "", result
+                rule_uuids_list = []
+                rule_uuids_temp_dict = {}
+                rule_uuids_temp_dict["type"] = policy_configuration["type"]
+                rule_uuids_temp_dict["uuid"] = rule_uuid
+                rule_uuids_temp_dict["name"] = policy_configuration["name"]
+                rule_uuids_temp_dict["attribute_name"] = policy_configuration["type"].upper() + "_" + "RULE"
+                rule_uuids_list.append(rule_uuids_temp_dict)
+                rule_uuids_tuple = tuple(rule_uuids_list)
+                
+            return rule_uuids_tuple, result
         except Exception as e:
-            return "Exception Error: " + str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating rule by ui, the exception error: ", str(e), flush=True)
+            return "", "When creating rule by ui, the exception error: " + str(e)

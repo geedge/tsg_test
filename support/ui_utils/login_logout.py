@@ -25,8 +25,8 @@ class LogInOut:
         self.driver.get(self.tsglogin_url)
         # 需要判断，遇到https不安全时，点击高级-继续登录才可以访问https-tsg
         if "https" in self.tsglogin_url:
-            is_exist = self.driver.is_exist_element("//*[@id='details-button']", timeout=1.5)
-            if is_exist == True:
+            is_existence = self.driver.is_element_exist("//*[@id='details-button']", timeout=1.5)
+            if is_existence == True:
                 if "高级" in self.driver.find_element(By.XPATH, "//*[@id='details-button']").text.strip():
                     self.driver.find_element(By.XPATH, "//*[@id='details-button']").click()
                     self.driver.find_element(By.XPATH, "//*[@id='proceed-link']").click()
@@ -100,12 +100,12 @@ class LogInOut:
         :return:
         """
         close_button_elem_Xpath ='(//i[@class="iconfont icon-Delete_X"])[last()]'  # 全局右上提示窗关闭按钮（最新的一个）
-        self.driver.is_exist_element(close_button_elem_Xpath, timeout=0.5)
+        self.driver.is_element_exist(close_button_elem_Xpath, timeout=0.5)
         loop_count = 2
         while loop_count > 0:
             try:
-                self.driver.is_exist_element(close_button_elem_Xpath, timeout=0.5)
-                if self.driver.is_exist:
+                self.driver.is_element_exist(close_button_elem_Xpath, timeout=0.5)
+                if self.driver.is_existence:
                     self.driver.find_element(By.XPATH, close_button_elem_Xpath).click()
                 loop_count -= 1
             except:
@@ -133,11 +133,11 @@ class LogInOut:
         signout_btn = self.driver.find_element(By.XPATH, "//*[@id='SignOut']")    # 点击退出登录
         self.driver.execute_script("arguments[0].click()", signout_btn)
 
-    def login_error(self, elment_position=loginPage_error_posXpath, elment_text="", is_exist=True):
+    def login_error(self, elment_position=loginPage_error_posXpath, elment_text="", is_existence=True):
         """
         判断错误信息：
         :param elment_position: 错误信息定位
-        :param is_exist: 错误内容是否存在
+        :param is_existence: 错误内容是否存在
         :return:
          driver是webdriver对象
          10是最长等待时间
@@ -147,12 +147,12 @@ class LogInOut:
         """
         try:
            error_text = self.driver.find_element(By.XPATH, loginPage_error_posXpath).text.strip()
-           if is_exist == True and error_text == elment_text:
+           if is_existence == True and error_text == elment_text:
                return True
            else:
                return False
         except:
-            if is_exist == False:
+            if is_existence == False:
                 return True
             else:
                 return False
@@ -161,7 +161,7 @@ class LogInOut:
         """
         判断错误信息：
         :param elment_position: 错误信息定位
-        :param is_exist: 错误内容是否存在
+        :param is_existence: 错误内容是否存在
         :return:
          driver是webdriver对象
          10是最长等待时间

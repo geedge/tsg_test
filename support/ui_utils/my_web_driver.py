@@ -90,22 +90,22 @@ class MyWebDriver(webdriver.Remote):
             raise ValueError(find_element_error)
         return self.element
 
-    def is_exist_element(self, Element, timeout=3):
+    def is_element_exist(self, Element, timeout=3):
         # xpath定位元素是否存在
         try:
             WebDriverWait(super(), timeout).until(EC.presence_of_element_located((By.XPATH, Element)))
-            self.is_exist = True                # 找到==》True
+            self.is_existence = True                # 找到==》True
         except:
-            self.is_exist = False               # 找不到===》Flase
-        return self.is_exist
+            self.is_existence = False               # 找不到===》Flase
+        return self.is_existence
 
-    def is_exist_element_by_value(self, by=By.ID, value: Optional[str] = None, timeout=3):
+    def is_element_exist_by_value(self, by=By.ID, value: Optional[str] = None, timeout=3):
         try:
             WebDriverWait(super(), timeout).until(EC.presence_of_element_located((by, value)))
-            is_exist = True                # 找到==》True
+            is_existence = True                # 找到==》True
         except:
-            is_exist = False               # 找不到===》Flase
-        return is_exist
+            is_existence = False               # 找不到===》Flase
+        return is_existence
 
 if __name__ == '__main__':
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

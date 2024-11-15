@@ -369,7 +369,7 @@ class OrganizeConfig:
               "Setrandom ip for statistics rule.", flush=True)
         return config
 
-    def generate_only_dstip_for_trex_replay(self,data):
+    def generate_unique_dos_dst_ip(self,data):
         # 遍历 traffic 字典,默认遍历的是key
         for obj in data["traffic"]:
             # 处理 server_start_ip 和 server_end_ip 的情况

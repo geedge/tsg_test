@@ -23,7 +23,7 @@ class CreateResponsePage:
 
         self.driver.find_element(By.XPATH, responsePage_input_file_posXpath).send_keys(file_abs)
         self.driver.find_element(By.XPATH, responsePage_button_oK_posXpath).click()
-        if self.driver.is_exist_element_by_value(By.XPATH, responsePage_button_warningSaveYes_posXpath):
+        if self.driver.is_element_exist_by_value(By.XPATH, responsePage_button_warningSaveYes_posXpath):
             self.driver.find_element(By.XPATH, responsePage_button_warningSaveYes_posXpath).click()
         time.sleep(3)
         return profile_name

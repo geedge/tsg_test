@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 # coding=utf-8
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from scapy.all import *
 from scapy.layers.inet import IP
-import os
 import subprocess
-import sys
 import time
 import re
 import yaml

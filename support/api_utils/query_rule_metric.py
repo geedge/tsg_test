@@ -4,9 +4,7 @@ import json
 import time
 import pytz
 import requests
-import support.ui_utils.env
 from datetime import datetime
-from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.organize_config import *
 from support.api_utils.util_statistics_template import UtilStatisticsTemplate
@@ -21,28 +19,11 @@ class QueryRuleMetric:
     
     def query_rule_metric(self, verification_result, rule_uuids_tuple, start_time):
         try:
-            initiation_method = self.parameter["initiation_method"]
-            if initiation_method == "ui":
-                support.ui_utils.env.teardown()
-                support.ui_utils.env.initiate_selenium_request()
-                my_driver = support.ui_utils.env.my_driver()
-                support.ui_utils.env.setup()
-            else:
-                my_driver = ""
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "dos_protection":
-                temp_list = [30, 60, 90]
-            else:
-                temp_list = [25, 55, 85]
             if self.rule_type == "security" or self.rule_type == "pxy_intercept" or self.rule_type == "pxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "dos_protection":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 metric_result = None
-                for i in range(int(90)):
-                    if i in temp_list and initiation_method == "ui":
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Do the browser keepalive.", flush=True)
-                        element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
-                        my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
-                        my_driver.execute_script("arguments[0].click();", element_language_menu)
+                for _ in range(int(90)):
                     utc_tz = pytz.timezone('UTC')
                     current_utc_time = datetime.now(utc_tz)
                     end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -50,7 +31,7 @@ class QueryRuleMetric:
                     if metric_result == None:
                         metric_dict, error = self.get_metric(rule_uuids_tuple, start_time, end_time)
                         if len(error) != 0:
-                            return error, my_driver
+                            return error
                         metric_result = self.verify_metric(metric_dict, verification_result)
                     if metric_result != None:
                         break
@@ -62,51 +43,41 @@ class QueryRuleMetric:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is none.', flush=True)
                 elif metric_result == "no_set":
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The metric result checked by calling api is no_set.', flush=True)
-                return metric_result, my_driver
+                return metric_result
             elif self.rule_type == "statistics":
                 max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔query_metric_interval 秒
                 query_metric_interval = 10    # 每次查询statistic metric的 间隔时间 单位秒
-                if initiation_method == "ui":
-                    max_fail_count = 20    # 每次查询statistic metric的 间隔时间 单位秒
                 organize_config = OrganizeConfig(self.parameter, self.policy_configuration, self.token, rule_uuids_tuple)
                 code, statistics_template_chart_list = organize_config.organize_statistics_rule_cfg()
                 if code != 200:
-                    return "Exception when getting Statistics Template information from the interface", my_driver
+                    return "Exception when getting Statistics Template information from the interface"
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 if len(statistics_template_chart_list) > 0:
                     for statistics_info in statistics_template_chart_list:
                         fail_count = 0
                         while True:
-                            if initiation_method == "ui":
-                                element_language_menu = my_driver.find_element(By.XPATH, language_button_posXpath)
-                                my_driver.execute_script("arguments[0].scrollIntoView();", element_language_menu)
-                                my_driver.execute_script("arguments[0].click();", element_language_menu)
                             utc_tz = pytz.timezone('UTC')
                             current_utc_time = datetime.now(utc_tz)
                             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                            metric_result_list = self.get_livechart_statistics(start_time, end_time, statistics_info)
-                            if len(metric_result_list[1]) > 0:
-                                metric_result = metric_result_list[0]
-                            else:
-                                metric_result = self.verify_statistics_metric(start_time, end_time, self.traffic_result, statistics_info, metric_result_list[0])
-                            if metric_result == True:  # 返回结果不等于333，则退出循环查询
+                            bool_result, metric_str = self.get_livechart_statistics(start_time, end_time, statistics_info)
+                            if bool_result == False:
+                                return metric_str
+                            flag, metric_result = self.verify_statistics_metric(start_time, end_time, self.traffic_result, statistics_info, metric_str)
+                            if flag == True:  # 返回结果不等于333，则退出循环查询
                                 break
-                            elif metric_result == 333 and metric_result_list[1] == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
-                                metric_result = True    # 无法断言方向，强制通过
-                                metric_result_list[1] = ""
+                            elif flag == 333 and metric_result == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
+                                flag = True    # 无法断言方向，强制通过
+                                metric_result = ""
                                 break
                             else:   # 查询验证失败，再验证
-                                metric_result = False
+                                flag = False
                                 fail_count += 1
                                 if fail_count >= max_fail_count:
                                     break
                                 time.sleep(query_metric_interval)
-                if metric_result == True:
-                    return metric_result, my_driver
-                else:
-                    return metric_result_list[1], my_driver
+                return metric_result
             elif self.rule_type == "service_chaining":
-                # sc自动化目前只实现了但application、单sf、单sff的用例
+                # sc自动化目前只实现了但application、单sf、单sff的用例？？
                 conf_path = os.path.join(workdir, "configuration_file.ini")
                 conf = configparser.ConfigParser()
                 conf.read(conf_path, encoding="utf-8")
@@ -160,7 +131,7 @@ class QueryRuleMetric:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The metric result checked by calling service chaining api is passed", flush=True)
                 else:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),str(datetime.now().microsecond)[:3],"The metric result checked by calling service chaining api is failed", flush=True)
-                return metric_result, my_driver
+                return metric_result
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When querying rule metric, the exception error: ", str(e), flush=True)
             return "When querying rule metric, the exception error: " + str(e)
@@ -324,18 +295,12 @@ class QueryRuleMetric:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_id:{}, template_id:{}, chart_id:{}, version:{}".format(start_time, end_time, statistics_info["rule_id"], statistics_info["template_id"], statistics_info["chart_id"], statistics_info["version"]))
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],  "Exception when getting Metrics data from the interface.")
-            return [False, "The statistics metric API query failed."]
+            return False, "The statistics metric API query failed."
         else:  # 返回正常结果
             if r_dict["data"]["result"] == []:  # 为空
-                # 对应有方向的session的单一Metrics方式需要另行处理
-                tmp_in_out_list = UtilStatisticsTemplate().tmp_in_out_list
-                # api返回值为空，不判断方向，直接返回重新查找
-                if len(statistics_info["metrics"]) == 1:
-                    if len(statistics_info["metrics"][0]["source_fields"]) == 1 and statistics_info["metrics"][0]["source_fields"][0] in tmp_in_out_list:
-                        return [333, "this is a pass"]
-                return [False, "statistics metric no result was found."]
+                return False, "statistics metric no result was found."
             else:
-                return [r_dict["data"]["result"], ""]
+                return True, r_dict["data"]["result"]
     
     def verify_statistics_metric(self, start_time, end_time, traffic_result, statistics_info, metric_result_dict):
         result_list = []
@@ -451,7 +416,340 @@ class QueryRuleMetric:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Histogram cannot automatically compare statistical results.", flush=True)
             #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Debug:The statistics metric API query result is {}".format(metric_result_dict), flush=True)
             metric_results = [True, ""]
-        return metric_results
+        return metric_results[0], metric_results[1]
+    
+    def verify_livechart_statistics(self, statistics_info, statistics_value, statistics_metircs_except, time_dif_seconds):
+        chart_type = statistics_info["chart_type"]
+        metric_result = False
+        failure_reason_info = ""
+        failure_info_1 = ""
+        failure_info_2 = ""
+        failure_info_3 = ""
+        metrics_info = {}
+        try:
+            metrics_labels = [item["label"] for item in statistics_info["metrics"]]
+            for i in range(len(statistics_info["metrics"])):
+                metrics_info[statistics_info["metrics"][i]["label"]] = statistics_info["metrics"][i]
+            #for metrics in statistics_info["metrics"]:
+            #    metrics_info[metrics["label"]] = metrics
+            # 重组需要断言使用的key列表
+            assert_key_list = []
+            for k, v in statistics_value.items():
+                if k in metrics_labels:
+                    """          
+                    match chart_type:
+                        case "line":
+                            metric_result,failure_info_2 = self.metric_value_verification(assert_key, statistics_metircs_except)
+                        case "histogram":
+                            metric_result = True
+                        case _:
+                            metric_result,failure_info_2 = self.metric_value_verification(assert_key,statistics_metircs_except)
+                    """
+                    if chart_type == "line":
+                        failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                        time_dif_seconds = 0 #line图5分钟内数据按每秒时间粒度，按时间前面已经累加，此处不再平均
+                        metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
+                    elif chart_type == "histogram":
+                        metric_result = True
+                    elif chart_type == "table" or chart_type == "bar":
+                        failure_info_1 = f"Total expected results for traffic replay:{statistics_metircs_except}"
+                        if chart_type == "bar":
+                            time_dif_seconds = 0  # Bar图搜索时间范围内总量，前面添加了dsl的metrics-function-variables参数，此处不再平均
+                        metric_result, failure_info_2 = self.metric_value_verification(k, metrics_info[k], v, statistics_metircs_except,time_dif_seconds)
+                    else:
+                        failure_info_1 = f"Chart Type Error:{chart_type}"
+                else:
+                    continue
+                if metric_result == False:
+                    actual_result = f"Total actual results: {statistics_value}"
+                    failure_reason_info = "{}{}{}.{}".format(failure_info_1, failure_info_2, failure_info_3, actual_result)
+                    break
+            return metric_result, failure_reason_info
+        except Exception as e:
+            exception_result = str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Chart Visualization Type verification anomaly.exception:{}".format(exception_result), flush=True)
+            return metric_result, failure_info_2
+    
+    def metric_value_verification(self, assert_key, metric_info, stats_value, test_traffic_statistics, time_dif_seconds):
+        #metric_info:[{'function': {'name': 'UNIQUE_COUNT'}, 'label': 'UNIQUECOUNT(Client IP)', 'metric_name': 'unique_count_1', 'metric_type': 'unique_count', 'source_fields': ['client_ip']}]
+        function_name = metric_info["function"]["name"]
+        source_fields_tmp = metric_info["source_fields"]
+        metric_result = False
+        try:
+            match function_name:
+                case "SUM":
+                    time_dif_seconds = 0
+                    metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,1, test_traffic_statistics, time_dif_seconds)
+                case "RATE":
+                    metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,1, test_traffic_statistics, time_dif_seconds)
+                case "BITRATE":
+                    metric_result, failure_info_2 = self.metric_count_value_verification(source_fields_tmp, stats_value,8, test_traffic_statistics, time_dif_seconds)
+                case "UNIQUE_COUNT":
+                    time_dif_seconds = 0
+                    metric_result, failure_info_2 = self.metric_unique_count_value_verification(source_fields_tmp, stats_value, test_traffic_statistics)
+                case "HISTOGRAM":
+                    time_dif_seconds = 0
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value)
+                case "MEDIAN" | "P95_PERCENTILE" | "P99_PERCENTILE":
+                    time_dif_seconds = 0
+                    metric_result, failure_info_2 = self.metric_histogram_value_verification(source_fields_tmp, stats_value)
+                case _:
+                    failure_info_2 = f"Invalid function name: {function_name}"
+            return metric_result, failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Statistical metric data verification anomaly.exception:{}".format(exception_result), flush=True)
+            return metric_result, failure_info_2
+    
+    def metric_count_value_verification(self, source_fields, stats_value, rate_coefficient, test_traffic_statistics, time_dif_seconds = 1):
+        failure_info_2 = ""
+        metric_result = False
+        try:#经与OLAP沟通：目前计算方式为先除以时间再乘以8，本身已经是bps 降低的这点精度可以忽略（只有字节数据很低的时候精度会降低，实际数据都比较大不会影响）如果将*8 放在表达式里面，有表达式定义会有点问题，故修改自动化计算bps方式和OLAP保持一致
+            total_bytes_sent = test_traffic_statistics["total_bytes_sent"]
+            if total_bytes_sent > 0 and time_dif_seconds > 1:
+                total_bytes_sent = round(total_bytes_sent / time_dif_seconds, 2) * rate_coefficient
+            else:
+                total_bytes_sent = test_traffic_statistics["total_bytes_sent"] * rate_coefficient
+
+            total_bytes_received = test_traffic_statistics["total_bytes_received"]
+            if total_bytes_received > 0 and time_dif_seconds > 1:
+                total_bytes_received = round(total_bytes_received / time_dif_seconds, 2) * rate_coefficient
+            else:
+                total_bytes_received = test_traffic_statistics["total_bytes_received"] * rate_coefficient
+
+            total_bytes = test_traffic_statistics["total_bytes"]
+            if total_bytes > 0 and time_dif_seconds > 1:
+                total_bytes = round(total_bytes / time_dif_seconds, 2) * rate_coefficient
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes rate_coefficient Rate:{}".format(total_bytes), flush=True)
+            else:
+                total_bytes = test_traffic_statistics["total_bytes"] * rate_coefficient
+
+            total_packets_sent = test_traffic_statistics["total_packets_sent"]
+            if total_packets_sent > 0 and time_dif_seconds > 1:
+                total_packets_sent = round(total_packets_sent / time_dif_seconds, 2)
+
+            total_packets_received = test_traffic_statistics["total_packets_received"]
+            if total_packets_received > 0 and time_dif_seconds > 1:
+                total_packets_received = round(total_packets_received / time_dif_seconds, 2)
+
+            total_packets = test_traffic_statistics["total_packets"]
+            if total_packets > 0 and time_dif_seconds > 1:
+                total_packets = round(total_packets / time_dif_seconds, 2)
+
+            total_syn_pkt1 = test_traffic_statistics["total_syn_pkt"]
+            if total_syn_pkt1 > 0 and time_dif_seconds > 1:
+                total_syn_pkt1 = round(total_syn_pkt1 / time_dif_seconds, 2)
+
+            total_syn_pkt2 = test_traffic_statistics["total_syn_pkt"] * 2
+            if total_syn_pkt2 > 0 and time_dif_seconds > 1:
+                total_syn_pkt2 = round(total_syn_pkt2 / time_dif_seconds, 2)
+            #if time_dif_seconds > 1:
+                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"total_bytes_sent:{};total_syn_pkt1:{};".format(total_bytes_sent,total_syn_pkt1), flush=True)
+
+            match len(source_fields):
+                case 1:
+                    # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
+                    if source_fields[0] in {"in_bytes", "out_bytes"} and (stats_value == total_bytes_sent or stats_value == total_bytes_received):
+                        metric_result = True
+                    elif source_fields[0] == "sent_bytes" and stats_value == total_bytes_sent:
+                        metric_result = True
+                    elif source_fields[0] == "received_bytes" and stats_value == total_bytes_received:
+                        metric_result = True
+                    # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
+                    elif source_fields[0] in {"in_pkts", "out_pkts"} and (stats_value == total_packets_sent or stats_value == total_packets_received):
+                        metric_result = True
+                    elif source_fields[0] == "sent_pkts" and stats_value == total_packets_sent:
+                        metric_result = True
+                    elif source_fields[0] == "received_pkts" and stats_value == total_packets_received:
+                        metric_result = True
+                    elif source_fields[0] == "syn_pkts" and total_syn_pkt2:
+                        metric_result = True
+                    # * Sessions处理逻辑
+                    elif source_fields[0] in {"new_sessions_for_this_rule", "closed_sessions_for_this_rule"} and stats_value == total_syn_pkt1:
+                        metric_result = True
+                    # * Flows处理逻辑new_c2s_flows_for_this_rule、new_s2c_flows_for_this_rule
+                    elif source_fields[0] in {"new_c2s_flows_for_this_rule", "new_s2c_flows_for_this_rule"} and stats_value == total_syn_pkt1:
+                        metric_result = True
+                    #elif source_fields[0] == "received_pkts" and stats_value == test_traffic_statistics["total_packets_received"]:
+                    #    metric_result = True
+                    #elif source_fields[0] == "syn_pkts" and stats_value == test_traffic_statistics["total_syn_pkt"] * 2:
+                    #    metric_result = True
+                    # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
+                    elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == total_packets_sent or stats_value == total_packets_received or stats_value == 0):
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 2:
+                    # * Bytes处理逻辑sent_bytes、received_bytes、in_bytes、out_bytes、syn_bytes
+                    if "in_bytes" in source_fields and "out_bytes" in source_fields and stats_value == total_bytes:
+                        metric_result = True
+                    elif "sent_bytes" in source_fields and "received_bytes" in source_fields and stats_value == total_bytes:
+                        metric_result = True
+                    # * Packets处理逻辑sent_pkts、received_bytes、in_pkts、out_pkts、syn_pkts
+                    elif "in_pkts" in source_fields and "out_pkts" in source_fields and stats_value == total_packets:
+                        metric_result = True
+                    elif "sent_pkts" in source_fields and "received_pkts" in source_fields and stats_value == total_packets:
+                        metric_result = True
+                    # * Flows处理逻辑new_c2s_flows_for_this_rule、new_s2c_flows_for_this_rule
+                    elif "new_c2s_flows_for_this_rule" in source_fields and "new_s2c_flows_for_this_rule" in source_fields and stats_value == total_syn_pkt2:
+                        metric_result = True
+                    # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 3: #如有需定义3个的业务场景需补充相关逻辑
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+                case 4: #如有需定义4个的业务场景需补充相关逻辑
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+                case _:
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            return metric_result,failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
+            return metric_result, failure_info_2
+
+    def metric_unique_count_value_verification(self, source_fields, stats_value,  test_traffic_statistics):
+        failure_info_2 = ""
+        metric_result = False
+        util = UtilStatisticsTemplate()
+        code, all_metrics = util.get_all_metrics_or_dimensions("unique_count_metrics")
+        if code != 200:
+            return False, "Failed to obtain the Field whose Metric Type is Unique_Count"
+        # unique和syn数量：1 一致
+        # 单向流时有方向的unique为1
+        one_or_zero_unique = {
+            "new_c2s_flows_for_this_rule",
+            "new_s2c_flows_for_this_rule",
+            "sent_bytes",
+            "received_bytes",
+            "in_bytes",
+            "out_bytes",
+            "sent_pkts",
+            "received_pkts",
+            "in_pkts",
+            "out_pkts"
+        }
+        #unique和syn数量：1一致
+        one_unique = {
+            'client_ip_object_list',
+            'server_ip_object_list',
+            'client_ip',
+            'client_country',
+            'server_ip',
+            'server_country',
+            'client_asn',
+            'server_asn',
+            'server_fqdn',
+            'server_domain',
+            'app',
+            'device_group',
+            'c2s_link_id',
+            's2c_link_id',
+            'client_port',
+            'server_port',
+            'http_host',
+            'ssl_ja3_hash',
+            'ssl_sni',
+            'subscriber_id',
+            'decoded_as',
+            'sled_ip',
+            'direction',
+            'session_id',
+            'dtls_handshake_latency_ms',
+            'ssl_handshake_latency_ms',
+            'tcp_handshake_latency_ms',
+            'duration_ms',
+            'tcp_rtt_ms',
+            'new_sessions_for_this_rule',
+            'closed_sessions_for_this_rule',
+            'new_c2s_flows_for_this_rule',
+            'new_s2c_flows_for_this_rule',
+            'c2s_ip_fragments',
+            's2c_ip_fragments'
+        }
+        # unique数量大于1，具体数量不定
+        uncertain_quantity_unique = {
+            'app_category',
+            'c2s_ttl',
+            's2c_ttl',
+            'flags',
+            'in_pkt_length_distribution',
+            'out_pkt_length_distribution',
+            'pkt_length_distribution',
+            'sent_bytes',
+            'sent_pkts',
+            'received_pkts',
+            'received_bytes',
+            'in_bytes',
+            'out_bytes',
+            'in_pkts',
+            'out_pkts',
+            'c2s_ip_fragments',
+            's2c_ip_fragments'
+        }
+        try:
+            match len(source_fields):
+                case 1:
+                    if source_fields[0] in all_metrics:
+                        # * Sessions处理逻辑
+                        if source_fields[0] in one_or_zero_unique and (stats_value == test_traffic_statistics["total_syn_pkt"] or stats_value == 0):
+                            metric_result = True
+                        elif source_fields[0] in one_unique and (stats_value == test_traffic_statistics["total_syn_pkt"]):
+                            metric_result = True
+                        elif source_fields[0] in uncertain_quantity_unique and (stats_value >= test_traffic_statistics["total_syn_pkt"]):
+                            metric_result = True
+                        elif stats_value >= 1:
+                            metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 2:
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics:
+                        if "new_c2s_flows_for_this_rule" in source_fields and "new_s2c_flows_for_this_rule" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
+                            metric_result = True
+                        elif stats_value >= test_traffic_statistics["total_syn_pkt"]:
+                            metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 3:#如有需定义3个的业务场景需补充相关逻辑
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and stats_value >= test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case 4:#如有需定义4个的业务场景需补充相关逻辑
+                    if source_fields[0] in all_metrics and source_fields[1] in all_metrics  and source_fields[2] in all_metrics and source_fields[3] in all_metrics and stats_value >= test_traffic_statistics["total_syn_pkt"]:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case _:
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            return metric_result, failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Unique Count statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
+            return metric_result, failure_info_2
+
+    def metric_histogram_value_verification(self, source_fields, stats_value):
+        # 待重构
+        failure_info_2 = ""
+        util = UtilStatisticsTemplate()
+        code, all_metrics = util.get_all_metrics_or_dimensions("distribution_metrics")
+        metric_result = False
+        if code != 200:
+            return False, "Failed to obtain the Field whose Metric Type is Distribution"
+        try:
+            match len(source_fields):
+                case 1:
+                    if source_fields[0] in all_metrics and stats_value >= 0:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
+                case _:
+                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+            return metric_result, failure_info_2
+        except Exception as e:
+            exception_result = str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Histogram statistical data verification anomaly.exception:{}".format(exception_result), flush=True)
+            return metric_result, failure_info_2
     
     def get_sc_metric(self, token, rule_uuids_tuple, start_time, end_time):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
@@ -494,6 +792,7 @@ class QueryRuleMetric:
     
     def verify_sc_metric(self, sff_configuration, sf_configuration, active_dst_ip_list, metic_dict, traffic_result):
         metric_result = False
+        # 只考虑了一个Application的场景？？
         application = self.get_application_from_configration()
         if self.policy_configuration["action_parameter"]["targeted_traffic"] == "raw":
             byte_value = traffic_result["total_bytes"]

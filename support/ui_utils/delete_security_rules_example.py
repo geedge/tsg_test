@@ -3,16 +3,16 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import support.ui_utils.env
+from support.api_utils.log_in import LogIn
 from support.api_utils.delete_policy import DeletePolicy
 from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
-class DeleteSecurityRuleExample:
-    def delete_policy(self, parameter, policy_configuration, configured_policy):
+class DeleteSecurityRulesExample:
+    def delete_rules(self, parameter, policy_configuration, driver):
         result = ""
-        driver = configured_policy["driver"]
         
         # 删除rule
         search_rule = SearchRule(driver)
@@ -70,8 +70,13 @@ class DeleteSecurityRuleExample:
         # 环境清理
         support.ui_utils.env.teardown()
         
+        # 强制删除
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
         name_list = []
         delete = DeletePolicy()
-        delete.delete_policy_by_name(configured_policy["token"], parameter, name_list)
+        delete.delete_policy_by_name(token, parameter, name_list)
+        
         return result
     

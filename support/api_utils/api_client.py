@@ -43,9 +43,9 @@ class APIClient:
         metric_result = query.query_rule_metric(verification_result, rule_uuids_tuple, start_time)
         return metric_result
     
-    def query_rule_log(self, verification_result, rule_uuids_tuple, start_time, traffic_result):
+    def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time, traffic_result):
         query = QueryRuleLog(self.parameter, self.policy_configuration, self.token, traffic_result)
-        log_result = query.query_rule_log(verification_result, rule_uuids_tuple, start_time)
+        log_result = query.query_rule_log(traffic_generation, verification_result, rule_uuids_tuple, start_time)
         return log_result
     
     def delete_objects(self, object_uuids_tuple):
@@ -62,14 +62,6 @@ class APIClient:
         
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
-    list_of_dicts = [  
-        {'a': 1, 'b': 2},  
-        {'c': 3, 'd': 4},  
-        {'e': 5, 'f': 6}  
-    ]
-    print(list_of_dicts)
-    temp = tuple(list_of_dicts)
-    print(temp)
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",

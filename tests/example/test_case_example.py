@@ -6,13 +6,8 @@ import time
 import pytz
 from datetime import datetime
 from support.ui_utils.workpath import workdir
-from support.ui_utils.common.ui_client import UIClient
+from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
-# from support.analyse_result_backup import Analyse
-# from support.cmdb_collector_backup import CMDBCollector
-# from support.packet_generator.verify import Verify
-# from support.verify import Verify
-# from support.packet_generator.traffic_generator import *
 from support.traffic_generator import *
 from support.report_update import ReportUpdate
 
@@ -22,7 +17,7 @@ def run(parameter):
         
         # 参数初始化
         result, exception_result = "", ""
-        configuration_manager = {}
+        test_summary = {}
         
         # 脚本启动时间
         start_time = time.time()
@@ -91,9 +86,9 @@ def run(parameter):
         # 创建
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient()
-            driver, error = ui_client.create_rules(parameter, policy_configuration)
-            if len(error) > 0:
-                return error
+            rules_tuple, ui_error = ui_client.create_rules(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
@@ -123,38 +118,49 @@ def run(parameter):
         if excepted_traffic_result == False:
             return error
         
-        # 验证tsg的metric是否符合策略执行的预期
-        test_summary = {}
-        metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
-        if metric_result == True:
-            test_summary["metric"] = "Pass."
-        elif metric_result == False:
-            test_summary["metric"] = "The failure reason: the returned metric does not match the expected result."
-        elif metric_result == None:
-            test_summary["metric"] = "The failure reason: the returned metric is empty."
-        else:
-            test_summary["metric"] = metric_result
-        
         # 验证tsg的日志是否符合策略执行的预期
-        log_result = api_client.query_rule_log(verification_result, rules_tuple, start_time, traffic_result)
+        if parameter["initiation_method"] == "ui":
+            log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
         if log_result == True:
             test_summary["log"] = "Pass."
         elif log_result == False:
             test_summary["log"] = "The failure reason: the returned log does not match the expected result."
         elif log_result == None:
             test_summary["log"] = "The failure reason: the returned log is empty."
+        elif len(log_result) > 0:
+            test_summary["log"] = log_result
+            
+        # 验证tsg的metric是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
+        if metric_result == True:
+            test_summary["metric"] = "Pass."
+        elif metric_result == False:
+            test_summary["metric"] = "The failure reason: the returned metric does not match the expected result."
+        elif metric_result == None:
+            test_summary["metric"] = "The failure reason: the returned metric is empty."
+        elif len(metric_result) > 0:
+            test_summary["metric"] = metric_result
         
         return test_summary
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", str(e), flush=True)
-        return "Exception Error: " + str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
+        return "When running test case, the exception error: " + str(e)
     finally:
         # 删除
-        if not rules_tuple:
-            api_client.delete_rules(rules_tuple)
-        if not objects_tuple:
-            api_client.delete_objects(objects_tuple)
+        if parameter["initiation_method"] == "ui":
+            if not rules_tuple:
+                ui_client.delete_rules(parameter, policy_configuration)
+        elif parameter["initiation_method"] == "api":
+            if not rules_tuple:
+                api_client.delete_rules(rules_tuple)
+            if not objects_tuple:
+                api_client.delete_objects(objects_tuple)
         
         # 统计脚本用时
         end_time = time.time()
@@ -167,6 +173,130 @@ def run(parameter):
         update.write_result(parameter, result, exception_result)
         
 if __name__ == '__main__':
+    # sc rule json example
+    policy_configuration = {
+        "and_conditions": [
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_SOURCE_IP",
+                        "object_uuids": [
+                            "f5cf118e-99d4-4726-bd57-66ab1ad31a27"
+                        ]
+                    }
+                ]
+            },
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_APP_ID",
+                        "type": "application",
+                        "items": ["http"]
+                    }
+                ],
+            }
+        ],
+        "action": "service_chaining",
+        "type": "service_chaining",
+        "action_parameter": {
+            "targeted_traffic": "raw",
+            "sff_profiles": [
+				{
+					"name": "sff_zk",
+					"type": 1, # 1是steer，2是mirror
+					"load_balance_method": "hash-int-ip",
+					"load_balance_localization": "nearby",
+					"failure_action": "bypass",
+					"service_func_profiles": [
+						{
+							"name": "sf_zk",
+							"admin_status": 1,
+							"device_group": {
+								"value": "City A",
+								"tag": "device_group"
+							},
+							"connectivity": {
+								"method": "vxlan_g",
+								"dest_ip": "1.1.1.1"
+							},
+							"health_check": {
+								"method": "bfd",
+								"interval_ms": 200,
+								"retires": 5
+							}
+						}
+					]
+				}
+            ]
+        }
+    }
+    # monitor rule json example
+    policy_configuration = {
+        "and_conditions": [
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_SOURCE_IP",
+                        "object_uuids": [
+                            "f5cf118e-99d4-4726-bd57-66ab1ad31a27"
+                        ]
+                    }
+                ]
+            },
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_APP_ID",
+                        "object_uuids": [
+                            "80791b3a-e700-2cb8-8c24-6876d9faa8f8"
+                        ]
+                    }
+                ]
+            },
+            {
+                "negate_option": 0,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_HTTP_URL",
+                        "type": "url",
+                        "member_type": "item",
+                        "items": [
+                            {
+                                "op": "add",
+                                "expr_type": "and",
+                                "expression": "yumi.com"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "action_parameter": {
+            "traffic_mirroring": {
+                "enable": 1,
+                "vlanID": 1,
+                "mirroring_profile": {
+					"name": "mirror_zk",
+					"vlan_array": [
+						"5"
+					]
+				}
+            },
+            "packet_capture": {
+                "enable": 1,
+                "capture_depth": 2000
+            }
+        },
+        "name": "monitor_zk",
+        "log_option": "none",
+        "action": "monitor",
+        "type": "monitor",
+        "is_enabled": 0
+    }
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",

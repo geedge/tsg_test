@@ -47,7 +47,7 @@ class UiVerification:
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Get log value from log page.", flush=True)
                         my_driver.find_element(By.XPATH, "//td[normalize-space(text())='Hit Count (72 hours)']/parent::tr//span[@class='hit-count']").click()
                         is_save_element = "//button[contains(@class, 'el-button el-button--default el-button--small el-button--primary operation-confirm-Leave')]"
-                        element_exist_flag = my_driver.is_exist_element(is_save_element)
+                        element_exist_flag = my_driver.is_element_exist(is_save_element)
                         if element_exist_flag == True:
                             my_driver.find_element(By.XPATH, is_save_element).click()
                         time.sleep(3)
@@ -97,7 +97,7 @@ class UiVerification:
                                     elif log_query_key in ["ssl_cn", "ssl_san", "ssl_sni", "ftp_account", "security_action", "ftp_url", "ftp_link_type", "mail_account", "mail_from","mail_attachment_name","imsi", "phone_number", "server_fqdn", "ip_protocol", "mail_to", "mail_to_cmd", "mail_from_cmd", "mail_subject", "dns_qname"]:
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
                                         # 当不存在此定位时,value为空,日志查询与预期不符,置为false
-                                        log_item_pos_exist = my_driver.is_exist_element(log_item_pos_xpath)
+                                        log_item_pos_exist = my_driver.is_element_exist(log_item_pos_xpath)
                                         if log_item_pos_exist == True:
                                             temp_value = my_driver.find_element(By.XPATH, log_item_pos_xpath).text
                                             if temp_value == test_data["log_query_param"][t]["query_value"]:
@@ -109,7 +109,7 @@ class UiVerification:
                                         temp_log_result_list.append(temp_log_result)
                                     elif log_query_key  in {"packet_capture_file","http_response_body,http_request_body"}:   #日志中非结构文件断言
                                         log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(replaceValue=log_str)
-                                        element_exist_flag = my_driver.is_exist_element(log_item_pos_xpath)
+                                        element_exist_flag = my_driver.is_element_exist(log_item_pos_xpath)
                                         # 验证开关开启
                                         if test_data["log_query_param"][t]["query_value"] == True:
                                             # 有下载按钮，点击下载按钮，验证是否报错
@@ -126,7 +126,7 @@ class UiVerification:
                                                 time.sleep(1)
                                                 # 只有下载失败的时候界面才有此定位
                                                 error_text_posXpath = "//div[contains(@class, 'el-message el-message--error')]"
-                                                error_text_is_exist = my_driver.is_exist_element(error_text_posXpath)
+                                                error_text_is_exist = my_driver.is_element_exist(error_text_posXpath)
                                                 # 有错误提示，下载失败
                                                 if error_text_is_exist == True:
                                                     temp_log_result = False
@@ -623,7 +623,7 @@ class UiVerification:
                 elif log_query_key in {"source_ip_list"}:  # 日志中非结构文件断言
                     log_item_pos_xpath = "//div[normalize-space(text())='{replaceValue}']/ancestor::div[contains(@class, 'FieldItem')]//div[contains(@class, 'field-value')]//span".format(
                         replaceValue=log_str)
-                    element_exist_flag = my_driver.is_exist_element(log_item_pos_xpath)
+                    element_exist_flag = my_driver.is_element_exist(log_item_pos_xpath)
                     # 验证开关开启
                     if len(test_data["log_query_param"][i]["query_value"]) != 0 :
                         # 有下载按钮，点击下载按钮，验证是否报错
@@ -640,7 +640,7 @@ class UiVerification:
                             time.sleep(1)
                             # 只有下载失败的时候界面才有此定位
                             error_text_posXpath = "//div[contains(@class, 'el-message el-message--error')]"
-                            error_text_is_exist = my_driver.is_exist_element(error_text_posXpath)
+                            error_text_is_exist = my_driver.is_element_exist(error_text_posXpath)
                             # 有错误提示，下载失败
                             if error_text_is_exist == True:
                                 temp_log_result = False
