@@ -101,11 +101,11 @@ def run(parameter):
                                 "item_type": "content",
                                 "item_value": "HEX",
                                 "value": [
-                                    "68656c6c6f",
-                                    "7468616e6b7321",
-                                    "51774f5365b968485df27ecf6210578bff0c",
-                                    "5e768ddf968f4efb52a14e008d774e0b8fbeff0c",
-                                    "8bf7914d54086267884c3002"
+                                    "E585B7E4BD93E696B9E6A188E5B7B2E7BB8FE68890E59E8BEFBC8C",#
+                                    "E5B9B6E8B79FE99A8FE4BBBBE58AA1E4B880E8B5B7E4B88BE8BEBEEFBC8C",
+                                    "E8AFB7E9858DE59088E689A7E8A18CE38082",
+                                    "7468616E6B73EFBC81",
+                                    "68656C6C6FEFBC9A"
                                 ]
                             }
                         ],
