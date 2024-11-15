@@ -2,6 +2,7 @@
     "op": "add",
     "return_data": 1,
     "is_dry_run": 0,
+    "vsys": 1,
     "object": {
         "type": "ip",
         "sub_type": "ip",
@@ -10,7 +11,5 @@
         "description": "test",
         "member_type": "item",
         "iconColor": "#31739C"
-    },
-    "data": {},
-    "file": {}
+    }
 }

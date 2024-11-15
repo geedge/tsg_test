@@ -41,6 +41,7 @@ def run(parameter):
                         ]
                     }
                 ],
+                "external_ip": [],
                 "application": [
                     {
                         "name": "ssl",  #

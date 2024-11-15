@@ -85,7 +85,7 @@ def run(parameter):
             },
             "is_mirror": "off",
             "expected_return": "auto",
-            "counters": {"hits": 2},
+            "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "ftp_account", "query_value": "ftpuser"}],
             "traffic": {
                 "protocol": "ftp",

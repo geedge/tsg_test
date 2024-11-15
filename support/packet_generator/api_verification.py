@@ -17,7 +17,7 @@ from support.packet_generator.workpath import workdir
 from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
-from support.api_utils.organize_config import *
+from support.organize_config import *
 
 class ApiVerification:
     def api_verification(self, driver, parameter, test_data, traffic_result, cfg_list):

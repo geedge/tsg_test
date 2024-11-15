@@ -39,8 +39,23 @@ def run(parameter):
                             {
                                 "item_operation": "add",
                                 "item_type": "ipv4",
-                                "item_value": parameter['test_pc_ip'],
+                                "item_value": '192.168.64.100',
                             },
+                        ]
+                    }
+                ],
+                "server_fqdn": [
+                    {
+                        "name": "monitor_test_mtv",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_value": "mtv.com",
+                                "item_operation": "add"
+                            }
                         ]
                     }
                 ],
@@ -53,13 +68,13 @@ def run(parameter):
                 ]
             },
             "is_mirror":"off",
-            "expected_return": "youtube",
+            "expected_return": "mtv",
             "counters": {"hits": "many"},
-            "log_query_param": [{"query_field_key":"server_fqdn","query_value":"www.youtube.com"}],
+            "log_query_param": [{"query_field_key":"server_fqdn","query_value":"www.mtv.com"}],
             "traffic": {
                 "protocol": "ssl",
                 "type": "curl",
-                "command": "curl -kv https://www.youtube.com"
+                "command": "curl -kv https://www.mtv.com/"
             },
             "token": ""
         }
@@ -90,7 +105,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "guoqiuya",
         "password": "Guoqiuya123@@",
-        "test_pc_ip": "192.168.64.100",
+        "test_pc_ip": "192.168.64.111",
         "test_subcriber_id": "test490",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",

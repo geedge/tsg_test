@@ -6,11 +6,13 @@ from datetime import datetime
 from support.api_utils.log_in import LogIn
 # from support.packet_generator.workpath import workdir
 from support.api_utils.create_objects import CreateObjects
+from support.api_utils.create_libraries import CreateLibraries
 from support.api_utils.create_profiles import CreateProfiles
 from support.api_utils.create_rules import CreateRules
 from support.api_utils.query_rule_metric import QueryRuleMetric
 from support.api_utils.query_rule_log import QueryRuleLog
 from support.api_utils.delete_objects import DeleteObjects
+from support.api_utils.delete_libraries import DeleteLibraries
 from support.api_utils.delete_profiles import DeleteProfiles
 from support.api_utils.delete_rules import DeleteRules
 
@@ -27,14 +29,19 @@ class APIClient:
         object_uuids_tuple, error = objects.create_objects(policy_configuration)
         return object_uuids_tuple, error
     
+    def create_libraries(self, policy_configuration):
+        libraries = CreateLibraries(self.parameter, self.headers)
+        library_uuids_tuple, error = libraries.create_libraries(policy_configuration)
+        return library_uuids_tuple, error 
+    
     def create_profiles(self, policy_configuration):
         profiles = CreateProfiles(self.parameter, self.headers)
         profile_uuids_tuple, error = profiles.create_profiles(policy_configuration)
         return profile_uuids_tuple, error
         
-    def create_rules(self, policy_configuration, object_uuids_tuple):
+    def create_rules(self, policy_configuration, object_uuids_tuple, library_uuids_tuple, profile_uuids_tuple):
         self.policy_configuration = policy_configuration
-        rules = CreateRules(self.parameter, self.headers, object_uuids_tuple)
+        rules = CreateRules(self.parameter, self.headers, object_uuids_tuple, library_uuids_tuple, profile_uuids_tuple)
         rule_uuids_tuple, error = rules.create_rules(policy_configuration)
         return rule_uuids_tuple, error
     
@@ -51,6 +58,10 @@ class APIClient:
     def delete_objects(self, object_uuids_tuple):
         objects = DeleteObjects(self.parameter, self.headers)
         objects.delete_objects(object_uuids_tuple)
+        
+    def delete_libraries(self, library_uuids_tuple):
+        libraries = DeleteLibraries(self.parameter, self.headers)
+        libraries.delete_libraries(library_uuids_tuple)
         
     def delete_profiles(self, profile_uuids_tuple):
         profiles = DeleteProfiles(self.parameter, self.headers)

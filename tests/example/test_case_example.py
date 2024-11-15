@@ -8,7 +8,7 @@ from datetime import datetime
 from support.ui_utils.workpath import workdir
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
-from support.traffic_generator import *
+from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -95,7 +95,7 @@ def run(parameter):
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple)
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
             if len(api_error) > 0:
                 return api_error
 
@@ -297,13 +297,64 @@ if __name__ == '__main__':
         "type": "monitor",
         "is_enabled": 0
     }
+    # rule referencing library json example
+    policy_configuration = {
+        "and_conditions": [
+            {
+                "negate_option": False,
+                "or_conditions": [
+                    {
+                        "attribute_name": "ATTR_SOURCE_IP",
+						"type": "library",
+                        "catalog": {
+							"category": "internet_service",
+							"ip_entries": [
+								{
+									"op": "add",
+									"ip": "1.1.1.1"
+								}
+							],
+							"fqdn_entries": [
+								{
+									"op": "add",
+									"fqdn": "google.com"
+								}
+							],
+							"tag": {
+								"category": "internet_service",
+								"parent_uuid": 0, # 有parent则是对应的uuid，如"503a8672-2466-5cb4-a275-00407b8f8e21"
+								"description": "",
+								"tag_key": "is_zk",
+								"tag_value": "is_zk",
+								"icon_base64_code": "",
+								"icon_position": ""
+							}
+						}
+                    }
+                ]
+            }
+        ],
+        "action": "deny",
+        "type": "security",
+        "action_parameter": {
+            "sub_action": "drop",
+            "send_tcp_reset": 1,
+            "send_icmp_unreachable": 0,
+            "after_n_packets": 0,
+            "packet_capture": {
+                "enable": 0
+            }
+        },
+        "name": "test_zk",
+        "log_option": "metadata",
+        "is_enabled": 0
+    }
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
         "test_pc_ip": "192.168.64.87",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "debug": "local",
         "initiation_method": "api",
         "env": "tsgx",
         "vsys": 5,

@@ -5,10 +5,14 @@ from datetime import datetime
 from support.api_utils.get_application_id import get_group_id
 
 class CreateRules:
-    def __init__(self, parameter, headers, object_uuids_tuple):
+    def __init__(self, parameter, headers, object_uuids_tuple, library_uuids_tuple, profile_uuids_tuple):
         self.parameter = parameter
         self.headers = headers
         self.object_uuids_tuple = object_uuids_tuple
+        if len(library_uuids_tuple) > 0:
+            self.library_uuids_tuple = library_uuids_tuple
+        if len(profile_uuids_tuple) > 0:
+            self.profile_uuids_tuple = profile_uuids_tuple
     
     def create_rules(self, policy_configuration):
         api_server = self.parameter["api_server"]
@@ -17,7 +21,7 @@ class CreateRules:
         try:
             self.policy_configuration = policy_configuration
             object_uuids_list = list(self.object_uuids_tuple)
-            rule_template = root_path + "/support/api_utils/template/rule_template_2410.json"
+            rule_template = root_path + "/support/api_utils/template/rule_template.json"
             with open(rule_template, 'r', encoding='utf-8') as f:
                 rule_template_json = json.load(f)
             rule_uuids_list = []

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-import time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import json
 import requests
@@ -22,15 +21,10 @@ from support.packet_generator.workpath import workdir
 from datetime import datetime
 
 class TrafficGenerator:
-    def generate_traffic(self, parameter, test_data):
-        script_type = parameter["script_type"]
-        debug_flag = ""
-        if "debug_flag" in parameter.keys():
-            debug_flag = parameter["debug_flag"]
-        if debug_flag == "local":
-            if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or test_data["policy_type"] == "dos_protection" or (test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex"):
-                test_data = self.replace_trex_ip(test_data, script_type)
-            temp_data = json.dumps(test_data["traffic"])
+    def run(self, policy_configuration, traffic_generation):
+        debug = "local"
+        if debug == "local":
+            traffic_generation_json_str = json.dumps(traffic_generation)
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
             parse.read(parse_dir, encoding="utf-8")
@@ -39,88 +33,81 @@ class TrafficGenerator:
             url = traffic_server + ":" + port + "/v1/traffic"
             headers = {"Content-Type": "application/json"}
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send traffic for effect verification.", flush=True)
-            response = requests.post(url, data=temp_data, headers=headers)
+            response = requests.post(url, data=traffic_generation_json_str, headers=headers)
             if response.status_code == 200:
+                # 如果response.text是json格式，则需要通过json.loads解析。如果不是json格式，则直接返回赋值
+                parse_boolean = True
                 try:
-                    jsonData = json.loads(response.text)
-                except:    # json解析失败，直接返回json原文
-                    jsonData = {}
+                    json_data = json.loads(response.text)
+                except:
+                    parse_boolean = False
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "json loads failed:", flush=True)
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} {} \n{}".format(url, temp_data, response.text), flush=True)
-                    jsonData["result"] = response.text
-                if test_data["policy_type"] == "statistics" or (test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw")  or (test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex") or test_data["policy_type"] == "dos_protection":
-                    jsonData = jsonData["result"]
-                result = jsonData
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} {} \n{}".format(url, traffic_generation_json_str, response.text), flush=True)
+                if parse_boolean == False:
+                    json_data = {}
+                    json_data = response.text
+                result = json_data
         else:
-            if test_data["policy_type"] == "statistics" or test_data["policy_type"] == "service_chaining" and test_data["targeted_traffic"] == "raw" or  (test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex") or test_data["policy_type"] == "dos_protection":
-                test_data = self.replace_trex_ip(test_data, script_type)
-            temp_data = test_data["traffic"]
-            if test_data["traffic"]["protocol"] == "http":
+            if traffic_generation["tool"] == "http":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic.", flush=True)
                 player = HttpPlayer()
-                result = player.send_http_traffic(temp_data, script_type, debug_flag)
-            elif test_data["traffic"]["protocol"] == "https" or test_data["traffic"]["protocol"] == "ssl":
+                result = player.send_http_traffic(traffic_generation)
+            elif traffic_generation["tool"] == "https" or traffic_generation["tool"] == "ssl":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ssl traffic.", flush=True)
                 player = SSLPlayer()
-                result = player.send_ssl_traffic(temp_data, script_type, debug_flag)
-            elif test_data["traffic"]["protocol"] == "ftp":
+                result = player.send_ssl_traffic(traffic_generation)
+            elif traffic_generation["tool"] == "ftp":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate ftp traffic.", flush=True)
                 player = FtpPlayer()
-                result = player.send_ftp_traffic(temp_data, script_type, debug_flag)
-            elif test_data["traffic"]["protocol"] == "dns":
+                result = player.send_ftp_traffic(traffic_generation)
+            elif traffic_generation["tool"] == "dns":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate dns traffic.", flush=True)
                 player = DnsPlayer()
-                result = player.send_dns_query(temp_data, script_type, debug_flag)
-            elif test_data["traffic"]["protocol"] == "mail":
+                result = player.send_dns_query(traffic_generation)
+            elif traffic_generation["tool"] == "mail":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mail traffic.", flush=True)
                 player = MailPlayer()
-                result = player.send_mail_traffic(temp_data, script_type, debug_flag)
-            elif test_data["traffic"]["protocol"] == "doh":
+                result = player.send_mail_traffic(traffic_generation)
+            elif traffic_generation["tool"] == "doh":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate doh traffic.", flush=True)
                 player = DohPlayer()
-                result = player.send_doh_query(temp_data, script_type, debug_flag)
-            elif test_data["traffic"]["protocol"] == "dtls":
+                result = player.send_doh_query(traffic_generation)
+            elif traffic_generation["tool"] == "dtls":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate dtls traffic by client.", flush=True)
                 # player = DtlsPlayer()
-                # result = player.send_dtls_traffic(temp_data, script_type, debug_flag)
-            elif test_data["traffic"]["protocol"] == "quic":
+                # result = player.send_dtls_traffic(traffic_generation)
+            elif traffic_generation["tool"] == "quic":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate quic traffic by client.", flush=True)
-                result = quic_player.asyncio.run(quic_player.send_quic_traffic(temp_data, script_type, debug_flag))
-            elif test_data["traffic"]["protocol"] == "mpls":
+                result = quic_player.asyncio.run(quic_player.send_quic_traffic(traffic_generation))
+            elif traffic_generation["tool"] == "mpls_one_label":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate mpls traffic by tcpreplay.", flush=True)
-                if test_data["traffic"]["type"] == "one_label":
-                    player = MplsOneLabelPlayer()
-                    result = player.send_mpls_one_label_traffic(temp_data, script_type, debug_flag)
-                elif test_data["traffic"]["type"] == "two_label":
-                    print("to be added")
-            elif test_data["traffic"]["protocol"] == "gre":
+                player = MplsOneLabelPlayer()
+                result = player.send_mpls_one_label_traffic(traffic_generation)
+            elif traffic_generation["tool"] == "gre_over_gre":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate gre traffic by tcpreplay.", flush=True)
-                if test_data["traffic"]["type"] == "gre_over_gre":
-                    player = GreOverGrePlayer()
-                    result = player.send_gre_over_gre_traffic(temp_data, script_type, debug_flag)
-                elif test_data["traffic"]["type"] == "gre":
-                    print("to be added")    
-            elif test_data["traffic"]["protocol"] == "unordered_tcp":
+                player = GreOverGrePlayer()
+                result = player.send_gre_over_gre_traffic(traffic_generation)
+            elif traffic_generation["tool"] == "unordered_tcp":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate unordered tcp by tcpreplay.", flush=True)
                 player = UnorderedTcpPlayer()
-                result = player.send_unordered_tcp_traffic(temp_data, script_type, debug_flag)
-            elif test_data["traffic"]["protocol"] == "vxlan":
+                result = player.send_unordered_tcp_traffic(traffic_generation)
+            elif traffic_generation["tool"] == "vxlan":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate vxlan traffic by tcpreplay.", flush=True)
                 print("to be added")
-            elif test_data["traffic"]["protocol"] == "":
+            elif traffic_generation["tool"] == "trex":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use trex to replay traffic.", flush=True)
-                pcap_name = temp_data.get("pcap_name") + ".pcap"
-                yaml_name = temp_data.get("yaml_name") + ".yaml"
-                m = temp_data.get("m",0)
-                d = temp_data.get("d",0)
-                if test_data.get("policy_type") == "dos_protection" and test_data.get("threshold") and test_data["threshold"].get("type") == "concurrency":
-                    active_flows = temp_data.get("active_flows")
+                pcap_name = traffic_generation.get("pcap_name") + ".pcap"
+                yaml_name = traffic_generation.get("yaml_name") + ".yaml"
+                m = traffic_generation.get("m",0)
+                d = traffic_generation.get("d",0)
+                if policy_configuration.get("type") == "dos_protection" and policy_configuration["action_parameter"]["type"] == "concurrency":
+                    active_flows = policy_configuration.get("active_flows")
                 else:
                     active_flows = 0
-                clients_start_ip = temp_data.get("clients_start_ip")
-                clients_end_ip = temp_data.get("clients_end_ip")
-                servers_start_ip = temp_data.get("servers_start_ip")
-                servers_end_ip = temp_data.get("servers_end_ip")
+                clients_start_ip = traffic_generation.get("clients_start_ip")
+                clients_end_ip = traffic_generation.get("clients_end_ip")
+                servers_start_ip = traffic_generation.get("servers_start_ip")
+                servers_end_ip = traffic_generation.get("servers_end_ip")
                 path_dict = {
                     "trex_workpath": "/opt/trex/v3.05",
                     "traffic_playback_workpath": "/opt/tsg_test/support/traffic_replay"
@@ -139,160 +126,24 @@ class TrafficGenerator:
                 result = tr.trex_playback(yaml_name, pcap_name, active_flows, m, d, clients_start_ip, clients_end_ip, servers_start_ip, servers_end_ip)
         return result
     
-    def replace_trex_ip(self, test_data, script_type):
-        if script_type == "ui":
-            if "source_ip" in test_data["condition"].keys():
-                source_ip = test_data["condition"]["source_ip"]
-                for ip_item in source_ip:
-                    if ip_item["item"] == []:#UDP IP源目的方向不确定时把IP放到双方向时使用
-                        continue
-                    if "-" in ip_item["item"][0]["item_value"]:
-                        test_data["traffic"]["clients_start_ip"] = ip_item["item"][0]["item_value"].split("-")[0]
-                        test_data["traffic"]["clients_end_ip"] = ip_item["item"][0]["item_value"].split("-")[-1]
-                    else:
-                        test_data["traffic"]["clients_start_ip"] = ip_item["item"][0]["item_value"]
-                        test_data["traffic"]["clients_end_ip"] = test_data["traffic"]["clients_start_ip"]
-            if "destination_ip" in test_data["condition"].keys():
-                destination_ip = test_data["condition"]["destination_ip"]
-                for ip_item in destination_ip:
-                    if ip_item["item"] == []:#UDP IP源目的方向不确定时把IP放到双方向时使用
-                        continue
-                    if "-" in ip_item["item"][0]["item_value"]:
-                        test_data["traffic"]["servers_start_ip"] = ip_item["item"][0]["item_value"].split("-")[0]
-                        test_data["traffic"]["servers_end_ip"] = ip_item["item"][0]["item_value"].split("-")[-1]
-                    else:
-                        test_data["traffic"]["servers_start_ip"] = ip_item["item"][0]["item_value"]
-                        test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
-        elif script_type == "api":
-            for ip_item in test_data["obj_condition_1"]:
-                if "ATTR_SOURCE_IP" in ip_item.values():
-                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip"]:
-                        test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"].split("-")[0]
-                        test_data["traffic"]["clients_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"].split("-")[-1]
-                    else:
-                        test_data["traffic"]["clients_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"]
-                        test_data["traffic"]["clients_end_ip"] = test_data["traffic"]["clients_start_ip"]
-                if "ATTR_DESTINATION_IP" in ip_item.values():
-                    if "-" in ip_item["object_list"][0]["add_item_list"][0]["ip"]:
-                        test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"].split("-")[0]
-                        test_data["traffic"]["servers_end_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"].split("-")[-1]
-                    else:
-                        test_data["traffic"]["servers_start_ip"] = ip_item["object_list"][0]["add_item_list"][0]["ip"]
-                        test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
-            if "library_condition" in test_data.keys():
-                for ip_item in test_data["library_condition"]:
-                        if "ATTR_SOURCE_IP" in ip_item.values():
-                            if "-" in ip_item["library"][0]["catalogs"][0]["ip_entries"]:
-                                test_data["traffic"]["clients_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[0]
-                                test_data["traffic"]["clients_end_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[-1]
-                            else:
-                                test_data["traffic"]["clients_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"]
-                                test_data["traffic"]["clients_end_ip"] = test_data["traffic"]["clients_start_ip"]
-                        if "ATTR_DESTINATION_IP" in ip_item.values():
-                            if "-" in ip_item["library"][0]["catalogs"][0]["ip_entries"]:
-                                test_data["traffic"]["servers_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[0]
-                                test_data["traffic"]["servers_end_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"].split("-")[-1]
-                            else:
-                                test_data["traffic"]["servers_start_ip"] = ip_item["library"][0]["catalogs"][0]["ip_entries"]
-                                test_data["traffic"]["servers_end_ip"] = test_data["traffic"]["servers_start_ip"]
-        return test_data
+    def result(self, verification, traffic_result):
+        try:
+            debug = "local"
+            if debug == "local":
+                traffic_result_temp = traffic_result["result"]
+            else:
+                traffic_result_temp = traffic_result
+            expected_result_temp = verification["excepted_traffic_result"].split(',')
+            result = all(word in traffic_result_temp for word in expected_result_temp)
+            if result == True:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return traffic result match the expected result.', flush=True)
+                return True, ""
+            elif result == False:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return result does not match the expected result.', flush=True)
+                return False, "The traffic returned result does not match the expected result."
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception Error: ", str(e), flush=True)
+            return False, "Exception Error when verify excepted traffic result: " + str(e)
     
 if __name__ == "__main__":
-    # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test"
-
-    parameter = {
-        "username": "lina2024",
-        "password": "lina2024",
-        "test_pc_ip": "192.168.64.96",
-        "test_subcriber_id": "test6776",
-        "api_server": "http://192.168.44.72",
-        "script_type": "ui",
-        "env": "tsgx",
-        "vsys_id": 1,
-        "is_log": 1,
-        "debug_flag": "local",
-        "root_path": "D:/Document/Project-TSG/Code/git/tsg_test",
-        "path": "D:/Document/Project-TSG/Code/git/tsg_test/tests/ui",
-        "module_name": "dos_protection",
-        "test_case_name":"dos_trex_replay_test"
-    }
-
-    test_data = {
-        "is_multi_priority": False,
-        "rule_num": 1,
-        "policy_type": "dos_protection",
-        "rule_name": "dos_protect_srcip_http_concurrency_srcip_d3",
-        "rule_action": "protect",
-        "rule_type": "create",
-        "do_log": 2,
-        "condition": {
-            "source_ip": [
-                {
-                    "name": "dos_srcip",
-                    "object_type": "ip",
-                    "select_type": False,
-                    "negate": False,
-                    "item": [
-                        {
-                            "item_operation": "add",
-                            "item_type": "ipv4",
-                            "item_value": "10.64.9.1",
-                        }
-                    ]
-                }
-            ],
-            "application": [
-                {
-                    "name": "http",
-                    "object_type": "application",
-                    "negate": False
-                }
-            ]
-        },
-        "threshold": {
-            "type": "concurrency",
-            "concurrency_threshold": {
-                "group_by": "source_ip",
-                "concurrent_sessions": 1
-            }
-        },
-        "mitigation": {
-            "behavior": "deny",
-            "timeout": "5min"
-        },
-        "expected_return": "",
-        "counters": {"hits": "many"},
-        "log_query_param": [
-            # {"query_field_key": "basic_attack_type", "query_value": "tcp_syn_flood"},
-            # {"query_field_key": "basic_sessions", "query_value": ""},
-            # {"query_field_key": "basic_session_rate", "query_value": ""},
-            # {"query_field_key": "basic_packets", "query_value": ""},
-            # {"query_field_key": "basic_packet_rate", "query_value": ""},
-            # {"query_field_key": "basic_bytes", "query_value": ""},
-            # {"query_field_key": "basic_bit_rate", "query_value": ""},
-            {"query_field_key": "attack_type", "query_value": "custom_network_attack"},
-            {"query_field_key": "sessions", "query_value": ""},
-            {"query_field_key": "packets", "query_value": ""},
-            {"query_field_key": "bytes", "query_value": ""},
-            {"query_field_key": "bit_rate", "query_value": ""},
-            {"query_field_key": "packet_rate", "query_value": ""},
-            {"query_field_key": "session_rate", "query_value": ""},
-        ],
-         "traffic": {
-                "protocol": "",
-                "type": "trex",
-                "clients_start_ip": "1.1.1.1",
-                "clients_end_ip": "1.1.1.1",
-                "servers_start_ip": "2.1.1.9",
-                "servers_end_ip": "2.1.1.9",
-                "active_flows":2,
-                "m": 1,
-                "d": 5,
-                "yaml_name": "test",
-                "pcap_name": "http"
-
-            },
-        "token": ""
-    }
-    sender = TrafficGenerator()
-    result = sender.generate_traffic(parameter, test_data)
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")

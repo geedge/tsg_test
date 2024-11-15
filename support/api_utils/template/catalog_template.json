@@ -1,0 +1,22 @@
+{
+    "vsys": 1,
+    "op": "create",
+    "catalog": {
+        "category": "",
+        "ip_entries": [
+            {
+                "op": "add",
+                "ip": ""
+            }
+        ],
+        "fqdn_entries": [
+            {
+                "op": "add",
+                "fqdn": ""
+            }
+        ],
+        "tag_uuids": [
+            ""
+        ]
+    }
+}

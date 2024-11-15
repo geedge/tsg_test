@@ -13,7 +13,7 @@ class CreateObjects:
         vsys = self.parameter["vsys"]
         root_path = self.parameter["root_path"]
         try:
-            object_template = root_path + "/support/api_utils/template/object_template_2410.json"
+            object_template = root_path + "/support/api_utils/template/object_template.json"
             with open(object_template, 'r', encoding='utf-8') as f:
                 object_template_json = json.load(f)
             for key in policy_configuration.keys():
@@ -23,7 +23,7 @@ class CreateObjects:
                     for i in range(len(condition_temp)):
                         object_temp = condition_temp[i]["or_conditions"]
                         for j in range(len(object_temp)):
-                            if object_temp[j]["type"] != "application":
+                            if object_temp[j]["type"] != "application" or object_temp[j]["type"] != "library":
                                 object_template_json["vsys"] = vsys
                                 object_template_json["object"]["name"] = object_temp[j]["name"]
                                 object_template_json["object"]["type"] = object_temp[j]["type"]

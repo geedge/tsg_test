@@ -10,7 +10,7 @@
         "action_parameter": {},
         "is_enabled": 1,
         "description": "test",
-        "vsys_id": 1,
+        "vsys": 1,
         "schedule_id": [
         ]
     }
