@@ -306,30 +306,38 @@ if __name__ == '__main__':
                     {
                         "attribute_name": "ATTR_SOURCE_IP",
 						"type": "library",
-                        "catalog": {
-							"category": "internet_service",
-							"ip_entries": [
-								{
-									"op": "add",
-									"ip": "1.1.1.1"
-								}
-							],
-							"fqdn_entries": [
-								{
-									"op": "add",
-									"fqdn": "google.com"
-								}
-							],
-							"tag": {
-								"category": "internet_service",
-								"parent_uuid": 0, # 有parent则是对应的uuid，如"503a8672-2466-5cb4-a275-00407b8f8e21"
-								"description": "",
-								"tag_key": "is_zk",
-								"tag_value": "is_zk",
-								"icon_base64_code": "",
-								"icon_position": ""
-							}
-						}
+                        "catalog": [
+                            {
+                                "category": "internet_service",
+                                "ip_entries": [
+                                    {
+                                        "op": "add",
+                                        "ip": "1.1.1.1"
+                                    },
+                                    {
+                                        "op": "add",
+                                        "ip": "1.2.1.1/24"
+                                    }
+                                ],
+                                "fqdn_entries": [
+                                    {
+                                        "op": "add",
+                                        "fqdn": "google.com"
+                                    }
+                                ],
+                                "tag": [
+                                    {
+                                        "category": "internet_service",
+                                        "parent_uuid": 0, # 有parent则是对应的uuid，如"503a8672-2466-5cb4-a275-00407b8f8e21"
+                                        "description": "",
+                                        "tag_key": "is_zk",
+                                        "tag_value": "is_zk",
+                                        "icon_base64_code": "",
+                                        "icon_position": ""
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
