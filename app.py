@@ -54,7 +54,7 @@ def receive_parameter():
                 "test_phone_number": "",
                 "test_imei": "",
                 "test_apn": "",
-                "script_type": "",
+                "initiation_method": "",
                 "root_path": "",
                 "path": "",
                 "module_name": "",
@@ -63,7 +63,7 @@ def receive_parameter():
                 "app_name": "",
                 "app_full_name": "",
                 "env": "",
-                "vsys_id": 0,
+                "vsys": 0,
                 "is_log": 0
             }
             
@@ -85,15 +85,15 @@ def receive_parameter():
             parameter["env"] = parse.get("device", "type")
             parameter["is_log"] = parse.get("is_log", "value")
             if tag == "api" or tag == "ui" or len(tag) == 0:
-                parameter["vsys_id"] = parse.get("vsys", "for_traffic_verification")
+                parameter["vsys"] = parse.get("vsys", "for_traffic_verification")
             elif tag == "general_ui":
-                parameter["vsys_id"] = parse.get("vsys", "for_ui")
+                parameter["vsys"] = parse.get("vsys", "for_ui")
                 # parameter["sub_module_name"] = sub_module_name
             if tag == "app":
                 parameter["path"] = f"{project_path}/tests/app"
                 parameter["app_name"] = req_json.get("app_name")
                 parameter["app_full_name"] = req_json.get("app_full_name")
-            parameter["script_type"] = tag
+            parameter["initiation_method"] = tag
             parameter["module_name"] = module_name
             
             temp_folder_path = parameter["path"] + "/" + module_name
@@ -121,22 +121,18 @@ def receive_parameter():
                     module = importlib.import_module(new_path)
                     result = module.run(parameter)
                     # module.run()返回的结果是failure reason，如果是空，则表示测试通过。
-                    if isinstance(result, str) and len(result) == 0 or isinstance(result, dict) and len(result["ui_result"]) == 0 and len(result["api_result"]) == 0:
+                    if isinstance(result, str) and len(result) == 0 or isinstance(result, dict) and len(result["log"]) == "Pass" and len(result["metric"]) == "Pass":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                         response_result["code"] = 200
-                        if tag == "ui" or tag == "":
-                            response_result["ui_automation_result"] = "pass"
-                        if tag == "api" or tag == "":
-                            response_result["api_automation_result"] = "pass"
+                        response_result["log_result"] = "pass"
+                        response_result["metric_result"] = "pass"
                         response_result["data"] = None
                         response_result["success"] = True
-                    elif isinstance(result, dict) and (len(result["ui_result"]) != 0 or len(result["api_result"]) != 0):
+                    elif isinstance(result, dict) and (len(result["log"]) != 0 or len(result["metric"]) != 0):
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
                         response_result["code"] = 416
-                        if tag == "ui" or tag == "":
-                            response_result["ui_automation_result"] = result["ui_result"]
-                        if tag == "api" or tag == "":
-                            response_result["api_automation_result"] = result["api_result"]
+                        response_result["log_result"] = result["log"]
+                        response_result["metric_result"] = result["metric"]
                         response_result["data"] = None
                         response_result["success"] = False
                     elif isinstance(result, str) and len(result) != 0:
@@ -158,9 +154,9 @@ def receive_parameter():
             protocol = req_json.get("app")
             action = req_json.get("action")
             sub_action = req_json.get("sub_action")
-            script_type = req_json.get("script_type")
+            initiation_method = req_json.get("initiation_method")
             case_tag = CaseTag()
-            result_list = case_tag.case_statistic_info(policy_rule, protocol, action, sub_action, script_type)
+            result_list = case_tag.case_statistic_info(policy_rule, protocol, action, sub_action, initiation_method)
             response_result = {}
             if len(result_list) != 0:
                 response_result["code"] = 200
