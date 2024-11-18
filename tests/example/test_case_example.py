@@ -66,7 +66,7 @@ def run(parameter):
                 "after_n_packets": 1
             },
             "is_enabled": 1,
-            "log_event": True
+            "log_option": "metadata",
         }
         
         traffic_generation = {
