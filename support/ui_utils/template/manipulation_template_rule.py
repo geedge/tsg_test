@@ -1,4 +1,225 @@
 # 测试数据
+parameter={}  #临时使用
+policy_configuration = {
+    "name": parameter["test_case_name"],
+    "type": "proxy_manipulation",
+    "action": "allow",
+    "and_conditions": [
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "name": "manipulation_source_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "ip": parameter["test_pc_ip"],
+                            "interval": "0-65535"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_DESTINATION_IP",
+                    "name": "manipulation_destination_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "ip": "192.168.40.206",
+                            "interval": "0-65535"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_EXTERNAL_IP",
+                    "name": "manipulation_external_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "ip": "192.168.40.206",
+                            "interval": "0-65535"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_DESTINATION_PORT",
+                    "name": "manipulation_destination_port",
+                    "type": "port",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "interval": "443"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_EXTERNAL_PORT",
+                    "name": "manipulation_external_port",
+                    "type": "port",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "interval": "443"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SERVER_FQDN",
+                    "name": "manipulation_fqdn",
+                    "type": "fqdn",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "interval": "baidu.com"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_URL",
+                    "name": "manipulation_url",
+                    "type": "url",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "interval": "www.baidu.com"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_REQ_HDR",
+                    "name": "manipulation_http_reqheader",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "interval": "Wget&Windows&Chrome&Safari&Win64&AppleWebKit&KHTML&Wget"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_RES_HDR",
+                    "name": "manipulation_http_resheader",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "interval": "text&/html&char&set&UTF-8&charset&UTF-8&text"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": 0,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_APP_ID",
+                    "type": "application",
+                    "items": ["http"]
+                }
+            ]
+        }
+    ],
+    "effective_range": {
+        "tag_sets": [
+            [
+                {
+                    "tag": "data_center",
+                    "value": [
+                        "center-xxg-tsgx"
+                    ]
+                }
+            ]
+        ]
+    },
+    "is_enabled": 1,
+    "log_option": "metadata",
+}
+
+traffic_generation = {
+    "tool": "ssl",  # or trex/http
+    "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://open.node.com:1443/go"
+}
+
+verification_result = {
+    "excepted_traffic_result": "test_resbody",
+    "expected_metric": {"hits": 1},
+    "expected_log": [
+        {"query_field_key": "http_host", "query_value": "open.node.com"},
+        {"query_field_key": "decoded_as", "query_value": "HTTP"}
+    ]
+}
+
+
+
 test_data = \
             {
             "is_multi_priority": False,

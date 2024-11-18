@@ -36,5 +36,5 @@ def get_group_id(app, api_host):
         group_id_list.append(group_id)
     return group_id_list
 
-    if __name__ == '__main__':
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
+if __name__ == '__main__':
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
