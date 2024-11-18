@@ -86,7 +86,9 @@ def run(parameter):
         # 创建
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient()
-            objects_tuple, api_error = ui_client.create_objects(policy_configuration)
+            objects_tuple, ui_error = ui_client.create_objects(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
             rules_tuple, ui_error = ui_client.create_rules(policy_configuration, objects_tuple)
             if len(ui_error) > 0:
                 return ui_error
