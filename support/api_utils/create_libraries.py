@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 import json
+import pymysql
 import requests
 from datetime import datetime
 
@@ -50,7 +51,7 @@ class CreateLibraries:
                                             tag_template_json["vsys"] = self.vsys
                                             tag_template_json["tag"]["category"] = tag_temp[k]["category"]
                                             if tag_temp["parent_uuid"] != 0:
-                                                print("to be added...")
+                                                tag_template_json["tag"]["parent_uuid"] = self.query_tag_uuid(tag_temp[k]["parent_uuid"])
                                             tag_template_json["tag"]["tag_key"] = tag_temp[k]["tag_key"]
                                             tag_template_json["tag"]["tag_value"] = tag_temp[k]["tag_value"]
                                             url = "{}/v1/library/tags".format(self.api_server)
@@ -73,6 +74,20 @@ class CreateLibraries:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating tag, the exception error: ", str(e), flush=True)
             return "" ,"When creating tag, the exception error: " + str(e)
         
+    def query_tag_uuid(self, tag_value):
+        try:
+            db = pymysql.connect(host=self.api_server, user='test', password='test', database='tsg-bifang')
+            sql = "select uuid from library_tag where tag_value= 'tag_value'"
+            sql = sql.replace("tag_value", tag_value)
+            mycursor = db.cursor()
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+            parent_tag_uuid = myresult[0][0]
+            return parent_tag_uuid
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When querying tag, the exception error: ", str(e), flush=True)
+            return "" ,"When querying tag, the exception error: " + str(e)
+    
     def create_catalogs(self, policy_configuration, tag_uuids_tuple):
         try:
             catalog_template = self.root_path + "/support/api_utils/template/catalog_template.json"
