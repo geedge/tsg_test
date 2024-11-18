@@ -10,7 +10,10 @@ from contextlib import redirect_stdout
 from support.packet_generator.workpath import workdir
 from support.ui_utils.element_position.map_element_position_library import *
 import re
-time.sleep(1)
+import ast
+from pprint import pprint
+from pprint import PrettyPrinter
+
 
 
 def local_run():
@@ -354,23 +357,203 @@ if __name__ == '__main__':
         result_text = tmp_resource_text.replace("        replace_text", match_text)
 
         # 覆盖源文件内容 谨慎执行
-        with open(file_0, "w", encoding="utf-8") as f2:
-            f2.write(result_text)
+        # with open(file_0, "w", encoding="utf-8") as f2:
+        #     f2.write(result_text)
         # 覆盖源文件内容 谨慎执行
 
         print("{}，替换完成".format(file_0))
         #break
     print("替换完成")
 
+def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目录名', name = "name"):
+    file_names = []
+    # 获取目录下所有文件的名称
+    faile_path = os.path.join(case_directory_path, name)
+    print(faile_path)
+    resource_text = ""
+    parameter = {"test_pc_ip":'2.2.2.2',
+                 "test_case_name":"test_name"}
+    tmp_resource_text = copy.deepcopy(resource_text)
+    with open(faile_path, "r", encoding="utf-8") as f:
+        text = f.read()
+
+    #print(text)
+    # 正则表达式匹配从# 测试数据到log_in = LogIn()之间的内容
+    pattern = re.compile(r'测试数据(.*?)# 测试用例实例化', re.DOTALL)
+    matches = re.findall(pattern, text)
+    match_text = matches[0]
+    match_text = match_text.rstrip()
+    match_text = match_text.lstrip()
+    match_text = match_text.lstrip("test_data =")
+    match_text = match_text.lstrip()
+    match_text = match_text.replace('parameter["test_case_name"]', '"tmp_name"')
+    match_text = match_text.replace('parameter["test_pc_ip"]', '"temp_pc_ip"')
+    # print(match_text)
+    # print(type(match_text))
+
+    match_dict = ast.literal_eval(match_text)
+    print(match_dict)
+
+    object_ip = {
+        "negate_option": False,
+        "or_conditions": [
+            {
+                "attribute_name": "ATTR_SOURCE_IP",
+                "name": "manipulation_source_ip",
+                "type": "ip",
+                "sub_type": "ip",
+                "statistics_option": "none",
+                "member_type": "item",
+                "items": [
+                    {
+                        "op": "add",
+                        "ip": parameter["test_pc_ip"],
+                        "interval": "0-65535"
+                    }
+                ]
+            }
+        ]
+    }
+
+    object_fqdn = {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_SERVER_FQDN",
+                            "name": "manipulation_fqdn",
+                            "type": "fqdn",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "interval": "baidu.com"
+                                }
+                            ]
+                        }
+                    ]
+                }
+
+    object_url =                 {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_HTTP_URL",
+                            "name": "manipulation_url",
+                            "type": "url",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "interval": "baidu"
+                                }
+                            ]
+                        }
+                    ]
+                }
+
+    object_keyword =                 {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_HTTP_REQ_HDR",
+                            "name": "manipulation_http_reqheader",
+                            "type": "keyword",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "interval": "Chrome"
+                                }
+                            ]
+                        }
+                    ]
+                }
+
+    object_app =                 {
+                    "negate_option": 0,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_APP_ID",
+                            "type": "application",
+                            "items": ["http"]
+                        }
+                    ]
+                }
+
+    policy_configuration = {
+        "name": parameter["test_case_name"],
+        "type": "proxy_manipulation",
+        "action": "allow",
+        "and_conditions": [
+        ],
+        "is_enabled": 1,
+        "log_option": "metadata",
+    }
+
+    print()
+    for k,v in match_dict["condition"].items():
+        #print(k, "====", v)
+        if k == "source_ip":
+            manipulation_source_ip = copy.deepcopy(object_ip)
+            manipulation_source_ip["or_conditions"][0]["attribute_name"] = "ATTR_SOURCE_IP"
+            manipulation_source_ip["or_conditions"][0]["name"] = "manipulation_source_ip"
+            manipulation_source_ip["or_conditions"][0]["items"][0]["ip"] = v[0]["item"][0]["item_value"]
+            if len(v[0]["item"]) > 1:
+                print("......................含有两个item.......................手动添加")
+            policy_configuration["and_conditions"].append(manipulation_source_ip)
+        elif k == "application":
+            application = copy.deepcopy(object_app)
+            policy_configuration["and_conditions"].append(application)
+        elif k == "protocol_filed":
+            for i in range(len(v[0]["item"])):
+                item_type = v[0]["item"][i]["item_type"]
+                if item_type == "request_header":
+                    item_key = v[0]["item"][i]["item_key"]
+                    http_header = copy.deepcopy(object_keyword)
+                    if item_key in ["User-Agent"]:
+                        http_header["or_conditions"][0]["attribute_name"] = "ATTR_HTTP_REQ_HDR"
+                        http_header["or_conditions"][0]["name"] = "manipulation_http_reqheader"
+                        http_header["or_conditions"][0]["items"][0]["interval"] = v[0]["item"][i]["value"][0]
+                        policy_configuration["and_conditions"].append(http_header)
+                    else:
+                        raise
+                else:
+                    raise
+        else:
+            print("######没有对应的转换值#######：{}======={}".format(k,v))
+            raise
+
+
+
+    if match_dict["rule_action"] in ["allow"]:
+        policy_configuration["action"] = "allow"
+
+    print(str(policy_configuration).replace("'", "\""))
+
+
+
+
+
+
+
+    # 输出匹配的内容
+    #print(match_text)
+    result_text = tmp_resource_text.replace("        replace_text", match_text)
 if __name__ == '__main__':
     # 定义目录和目标文件  需要调整的变量
     ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (20).json'
-    case_directory_path = 'C:/zcw/tsg_test/tests/ui/manipulation'
+    case_directory_path = 'C:/zcw/tsg_test/tests/manipulation'
     file_startwith = "man_"
     file_endswith = ".py"
 
     # 本地运行所有用例
-    local_run()
+    #local_run()
 
     # 对比MS工具
     #diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
@@ -380,3 +563,6 @@ if __name__ == '__main__':
 
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+
+    name = "man_allow_srcip_http_substr_reqheader_by_ua.py"
+    replace_test_data_from_py_2(case_directory_path=case_directory_path, name=name)
