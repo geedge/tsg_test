@@ -114,8 +114,7 @@ class CreateLibraries:
                                         catalog_template_json["catalog"]["tag_uuids"] = tag_uuids_list[0]["uuid"]
                                     elif len(tag_uuids_list) > 1:
                                         for z in range(len(tag_uuids_list)):
-                                            separator = ","  
-                                            catalog_template_json["catalog"]["tag_uuids"] = separator.join(tag_uuids_list[z]["uuid"])
+                                            catalog_template_json["catalog"]["tag_uuids"].append(tag_uuids_list[z]["uuid"])
                                     url = "{}/v1/library/catalogs".format(self.api_server)
                                     response = requests.post(headers=self.headers, url=url, json=catalog_template_json, verify=False)
                                     if response.status_code == 200:

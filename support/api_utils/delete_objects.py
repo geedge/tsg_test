@@ -29,11 +29,11 @@ class DeleteObjects:
                 "ip_protocol": "ip-protocols",
                 "tunnel_level": "tunnel-levels"
             }
-            objects_uuids_list = list(object_uuids_tuple)
-            for i in range(len(objects_uuids_list)):
-                type = objects_uuids_list[i]["type"]
+            object_uuids_list = list(object_uuids_tuple)
+            for i in range(len(object_uuids_list)):
+                type = object_uuids_list[i]["type"]
                 deleted_object_dict = {"type": type, "uuids": [], "vsys": 1}
-                deleted_object_dict["uuids"] = objects_uuids_list[i]
+                deleted_object_dict["uuids"] = object_uuids_list[i]
                 deleted_object_dict["vsys"] = vsys
                 url = api_server + "/v1/objects/{}".format(object_type_dict[type])
                 response = requests.delete(url, headers=self.headers, params=deleted_object_dict, verify=False)
