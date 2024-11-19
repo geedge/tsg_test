@@ -423,6 +423,20 @@ if __name__ == '__main__':
             }
         }
     }
+    dns_record_action = {
+        "action_parameter": {
+            "sub_action": "redirect",
+            "resolution": [{"qtype": "A", "answer": [
+                {"atype": "A", "record_profile": {"name": "test", "type": "A", "description": "test",
+                                                  "values": [{"value": "192.168.1.2"}, {"value": "192.168.1.1"}]},
+                 "selected_num": 1,
+                 "ttl": {"min": 300, "max": 300}}]}, {"qtype": "AAAA", "answer": [
+                {"atype": "AAAA", "record_profile": {"name": "test", "type": "AAAA", "description": "test",
+                                                     "values": [{"value": "11::8847"}, {"value": "11::8848"}]},
+                 "selected_num": 1,
+                 "ttl": {"min": 300, "max": 300}}]}],
+            "packet_capture": {"enable": 0}, "send_icmp_unreachable": 0, "send_tcp_reset": 0}
+    }
     """
     # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
