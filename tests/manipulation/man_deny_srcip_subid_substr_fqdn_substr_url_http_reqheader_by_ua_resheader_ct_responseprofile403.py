@@ -144,7 +144,7 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_profile_page",
                             "model": "create",
-                            "file": "testa.html"
+                            "file": "response_testa.html"
                         },
                     }
                 ]

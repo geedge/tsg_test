@@ -68,7 +68,7 @@ a = {
             "profile": {
                 "format": "html",
                 "name": "secy_respage",
-                "content_name": "/testa.html",
+                "content_name": "/response_testa.html",
             },
             "message": "html_profile"
         },

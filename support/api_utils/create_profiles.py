@@ -12,9 +12,9 @@ class CreateProfiles:
         api_server = self.parameter["api_server"]
         vsys = self.parameter["vsys"]
         root_path = self.parameter["root_path"]
+        profile_type = ""
+        profile_uuids_list = []
         try:
-            profile_type = ""
-            profile_uuids_list = []
             if "template_profile" in policy_configuration["action_parameter"].keys():
                 #http://192.168.44.72/v1/profiles/statistics-templates
                 profile_type = "statistics-templates"
@@ -43,8 +43,12 @@ class CreateProfiles:
                 profile_type = "traffic-shaping-profiles"
             elif "html_profile" in policy_configuration["action_parameter"].keys():
                 profile_type = "response-pages"
-                response_uuids, sf_temp = self.create_file_upload_profile(None, profile_type, policy_configuration["action_parameter"]["html_profile"])
-
+                #"html_profile": {
+                #    "name": "test",
+                #    "format": "html",
+                #    "content_name": "Response-Pages_1.html"
+                #}
+                response_uuids, sf_temp = self.create_file_upload_profile(policy_configuration["action_parameter"]["html_profile"], profile_type, policy_configuration["action_parameter"]["html_profile"]["content_name"])
                 profile_uuids_list.append(response_uuids)
             elif "record_profile"  in policy_configuration["action_parameter"].keys():
                 print("to do ...")
@@ -65,8 +69,11 @@ class CreateProfiles:
                 profile_type = "response-pages"
                 print("to do ...")
             elif "replacement_file" in policy_configuration["action_parameter"].keys():
-                profile_type = "response-pages"
-                print("to do ...")
+                profile_type = "replacement_file"
+                response_uuids, sf_temp = self.create_file_upload_profile(
+                    policy_configuration["action_parameter"]["proxy_replacement_file"], profile_type,
+                    policy_configuration["action_parameter"]["html_profile"]["content_name"])
+                profile_uuids_list.append(response_uuids)
             elif "js_file" in policy_configuration["action_parameter"].keys() :
                 profile_type = "response-pages"
                 print("to do ...")
@@ -125,12 +132,13 @@ class CreateProfiles:
         headers = {"Authorization": self.headers["Authorization"]}
         match profile_type:
             case "response-pages":
-                post_common_data = {"vsys": vsys, "return_data": 1, "response_page": post_data}
+                post_data["vsys"] = post_common_data["vsys"]
+                post_data["return_data"] = post_common_data["return_data"]
             case _:
                 return "", "When creating {} profile, the exception error: ".format(profile_type)
         try:
             files = {"file": (file_name,open(root_path + "/support/api_utils/preset_profile/"+file_name, 'rb'), "text/plain")}
-            url = "{}/v1/profiles/{}".format(file_name, profile_type)
+            url = "{}/v1/profiles/{}".format(api_server, profile_type)
             #response = requests.post(url=url, data=profile_data, headers=headers, files=files, verify=False)
             response = requests.post(url=url, data=post_data, headers=headers, files=files, verify=False)
             if response.status_code == 200:
@@ -159,6 +167,8 @@ class CreateProfiles:
                 uuid = response_dict["data"]["response_page"]["uuid"]
             case "traffic-mirroring-profiles":
                 uuid = response_dict["data"]["traffic_mirroring_profile"]["uuid"]
+            case "replacement_file":
+                uuid = response_dict["data"]["proxy_replacement_file"]["uuid"]
             case _:
                 uuid = ""
         return uuid, ""

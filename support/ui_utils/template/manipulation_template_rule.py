@@ -589,7 +589,7 @@ test_data = \
                         "profile_file": {
                             "name": "test_tsg_ui_profile_page",
                             "model": "create",
-                            "file": "testa.html->"
+                            "file": "response_testa.html->"
                         },
                     },
                 ],
@@ -620,7 +620,7 @@ test_data = \
                         "profile_file": {
                             "name": "test_tsg_ui_profile_page",
                             "model": "create",
-                            "file": "test_png_1.png->",
+                            "file": "hijack_png_1.png->",
                             "download_name": "Mirror Server Response->",
                             "file_type": "png->"
                         }
@@ -632,7 +632,7 @@ test_data = \
                         "profile_file": {
                             "name": "test_tsg_ui_profile_page",
                             "model": "create",
-                            "script": "test_js_1.js->",
+                            "script": "insert_js_1.js->",
                             "script_type": "js->",
                             "insert_position": "Before Page Load->"
                         }

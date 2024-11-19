@@ -108,8 +108,8 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_hijack_profile",
                             "model": "create",
-                            "file": "test_html_1.html",
-                            "download_name": "test_html_1.html",
+                            "file": "hijack_html_1.html",
+                            "download_name": "hijack_html_1.html",
                             "file_type": "html"
                         }
                     }

@@ -74,14 +74,14 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_hijack_profile",
                             "model": "create",
-                            "file": "test_apk_1.apk",
-                            "download_name": "test_apk_1.apk",
+                            "file": "hijack_apk_1.apk",
+                            "download_name": "hijack_apk_1.apk",
                             "file_type": "apk"
                         }
                     }
                 ]
             },
-            "expected_return": "test_apk_1.apk",
+            "expected_return": "hijack_apk_1.apk",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {

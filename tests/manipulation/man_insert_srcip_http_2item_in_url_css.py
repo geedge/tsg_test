@@ -79,7 +79,7 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_insert_profile",
                             "model": "create",
-                            "script": "test_css_1.css",
+                            "script": "insert_css_1.css",
                             "script_type":  "css",
                             "insert_position": ""
                             }
