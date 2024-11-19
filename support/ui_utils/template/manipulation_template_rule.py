@@ -114,7 +114,7 @@ policy_configuration = {
                         {
                             "op": "add",
                             "expr_type": "and",
-                            "interval": "baidu.com"
+                            "expression": "baidu.com"
                         }
                     ]
                 }
@@ -133,7 +133,7 @@ policy_configuration = {
                         {
                             "op": "add",
                             "expr_type": "and",
-                            "interval": "www.baidu.com"
+                            "expression": "www.baidu.com"
                         }
                     ]
                 }
@@ -152,7 +152,7 @@ policy_configuration = {
                         {
                             "op": "add",
                             "expr_type": "and",
-                            "interval": "Wget&Windows&Chrome&Safari&Win64&AppleWebKit&KHTML&Wget"
+                            "expression": "Wget&Windows&Chrome&Safari&Win64&AppleWebKit&KHTML&Wget"
                         }
                     ]
                 }
@@ -171,14 +171,14 @@ policy_configuration = {
                         {
                             "op": "add",
                             "expr_type": "and",
-                            "interval": "text&/html&char&set&UTF-8&charset&UTF-8&text"
+                            "expression": "text&/html&char&set&UTF-8&charset&UTF-8&text"
                         }
                     ]
                 }
             ]
         },
         {
-            "negate_option": 0,
+            "negate_option": False,
             "or_conditions": [
                 {
                     "attribute_name": "ATTR_APP_ID",

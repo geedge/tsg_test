@@ -62,7 +62,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "Wget&Windows&Chrome&Safari&Win64&AppleWebKit&KHTML&Wget"
+                                    "expression": "Wget&Windows&Chrome&Safari&Win64&AppleWebKit&KHTML&Wget"
                                 }
                             ]
                         }

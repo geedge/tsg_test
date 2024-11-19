@@ -25,132 +25,69 @@ def run(parameter):
         start_time = time.time()
 
         policy_configuration = {
-            "name": parameter["test_case_name"],
+            "name": "test_name",
             "type": "proxy_manipulation",
             "action": "allow",
             "and_conditions": [
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_SOURCE_IP",
-                            "name": "manipulation_source_ip",
-                            "type": "ip",
-                            "sub_type": "ip",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "ip": parameter["test_pc_ip"],
-                                    "interval": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                },
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "name": "manipulation_source_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "ip": "99.99.99.99",
+                        "interval": "0-65535"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_SERVER_FQDN",
-                            "name": "manipulation_fqdn",
-                            "type": "fqdn",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "expr_type": "and",
-                                    "interval": "baidu.com"
-                                }
-                            ]
-                        }
-                    ]
-                },
+                    "attribute_name": "ATTR_APP_ID",
+                    "type": "application",
+                    "items": ["http"]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_HTTP_URL",
-                            "name": "manipulation_url",
-                            "type": "url",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "expr_type": "and",
-                                    "interval": "baidu"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_HTTP_REQ_HDR",
-                            "name": "manipulation_http_reqheader",
-                            "type": "keyword",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "expr_type": "and",
-                                    "interval": "Chrome"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_HTTP_RES_HDR",
-                            "name": "manipulation_http_resheader",
-                            "type": "keyword",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "expr_type": "and",
-                                    "interval": "text/html"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "negate_option": 0,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_APP_ID",
-                            "type": "application",
-                            "items": ["http"]
-                        }
-                    ]
-                }
-            ],
+                    "attribute_name": "ATTR_HTTP_RES_HDR",
+                    "name": "manipulation_http_resheader",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "charset=UTF-8$"
+                    }]
+                }]
+            }],
             "is_enabled": 1,
-            "log_option": "metadata",
+            "log_option": "metadata"
         }
 
         traffic_generation = {
             "tool": "ssl",  # or trex/http
-            "command": "curl --compressed -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.baidu.com"
+            "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://open.node.com:1443/go"
         }
 
         verification_result = {
-            "excepted_traffic_result": "关于百度,CN=TSG",
+            "excepted_traffic_result": "test_resbody,CN=TSG",
             "expected_metric": {"hits": 1},
             "expected_log": [
-                {"query_field_key": "http_host", "query_value": "www.baidu.com"},
-                {"query_field_key": "decoded_as", "query_value": "HTTP"}
+                {"query_field_key": "http_host", "query_value": "open.node.com"},
+                {"query_field_key": "http_response_content_type", "query_value": "text/html;charset=UTF-8"}
             ]
         }
 

@@ -62,7 +62,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "text&/html&char&set&UTF-8&charset&UTF-8&text"
+                                    "expression": "text&/html&char&set&UTF-8&charset&UTF-8&text"
                                 }
                             ]
                         }

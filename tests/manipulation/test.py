@@ -387,7 +387,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
     match_text = match_text.lstrip("test_data =")
     match_text = match_text.lstrip()
     match_text = match_text.replace('parameter["test_case_name"]', '"tmp_name"')
-    match_text = match_text.replace('parameter["test_pc_ip"]', '"temp_pc_ip"')
+    match_text = match_text.replace('parameter["test_pc_ip"]', '"99.99.99.99"')
     # print(match_text)
     # print(type(match_text))
 
@@ -428,7 +428,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "baidu.com"
+                                    "expression": "baidu.com"
                                 }
                             ]
                         }
@@ -448,7 +448,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "baidu"
+                                    "expression": "baidu"
                                 }
                             ]
                         }
@@ -468,7 +468,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "Chrome"
+                                    "expression": "Chrome"
                                 }
                             ]
                         }
@@ -496,6 +496,18 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
         "log_option": "metadata",
     }
 
+    traffic_generation = {
+        "tool": "ssl",  # or trex/http
+        "command": "curl --compressed -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.baidu.com"
+    }
+
+    verification_result = {
+        "excepted_traffic_result": "关于百度,CN=TSG",
+        "expected_metric": {"hits": 1},
+        "expected_log": [
+        ]
+    }
+
     print()
     for k,v in match_dict["condition"].items():
         #print(k, "====", v)
@@ -511,30 +523,96 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
             application = copy.deepcopy(object_app)
             policy_configuration["and_conditions"].append(application)
         elif k == "protocol_filed":
-            for i in range(len(v[0]["item"])):
-                item_type = v[0]["item"][i]["item_type"]
-                if item_type == "request_header":
-                    item_key = v[0]["item"][i]["item_key"]
+            if "item" in v[0]:
+                item = "item"
+            else:
+                item = "items"
+            for i in range(len(v[0][item])):
+                item_type = v[0][item][i]["item_type"]
+                if item_type in ["request_header", "response_header"]:
+                    item_key = v[0][item][i]["item_key"]
+                    item_value = v[0][item][i]["item_value"]
                     http_header = copy.deepcopy(object_keyword)
-                    if item_key in ["User-Agent"]:
-                        http_header["or_conditions"][0]["attribute_name"] = "ATTR_HTTP_REQ_HDR"
-                        http_header["or_conditions"][0]["name"] = "manipulation_http_reqheader"
-                        http_header["or_conditions"][0]["items"][0]["interval"] = v[0]["item"][i]["value"][0]
+                    if item_key in ["User-Agent", "Content-Type", "Set-Cookie"]:
+                        if item_type == "request_header":
+                            http_header["or_conditions"][0]["attribute_name"] = "ATTR_HTTP_REQ_HDR"
+                            http_header["or_conditions"][0]["name"] = "manipulation_http_reqheader"
+                        elif item_type == "response_header":
+                            http_header["or_conditions"][0]["attribute_name"] = "ATTR_HTTP_RES_HDR"
+                            http_header["or_conditions"][0]["name"] = "manipulation_http_resheader"
+                        else:
+                            raise
+                        if item_value == "HEX":
+                            http_header["or_conditions"][0]["items"][0]["expression"] = "|{}|".format(v[0][item][i]["value"][0])
+                        elif item_value == "REGEX":
+                            http_header["or_conditions"][0]["items"][0]["expr_type"] = "regex"
+                            http_header["or_conditions"][0]["items"][0]["expression"] = v[0][item][i]["value"][0]
+                        elif "range" in v[0]["item"][i] and len(v[0]["item"][i]["range"])>0:
+                            offset = v[0][item][i]["range"][0]["offset"]
+                            depth = v[0][item][i]["range"][0]["depth"]
+                            tmp_0 =v[0][item][i]["value"][0]
+                            tmp_item = "(offset={},depth={}){}".format(offset, depth, tmp_0)
+                            http_header["or_conditions"][0]["items"][0]["expression"] = tmp_item
+                        else:
+                            http_header["or_conditions"][0]["items"][0]["expression"] = v[0][item][i]["value"][0]
+                        # 替换匹配符
+                        tmp_exp = http_header["or_conditions"][0]["items"][0]["expression"]
+                        if tmp_exp.startswith("*"):   #  *ssdsds
+                            tmp_exp_1 = "{}$".format(tmp_exp[1:])
+                        elif tmp_exp.endswith("*"):   #  ssdsds*
+                            tmp_exp_1 = "^{}".format(tmp_exp[:-1])
+                        elif tmp_exp.startswith("$"):
+                            tmp_exp_1 = "^{}$".format(tmp_exp[1:])
+                        else:
+                            tmp_exp_1 = tmp_exp
+                        http_header["or_conditions"][0]["items"][0]["expression"] = tmp_exp_1
                         policy_configuration["and_conditions"].append(http_header)
                     else:
                         raise
+                elif item_type in ["url"]:
+                    url = copy.deepcopy(object_url)
+                    url["or_conditions"][0]["items"][0]["expression"] = v[0][item][i]["item_value"]
+                    # 替换匹配符
+                    tmp_exp = url["or_conditions"][0]["items"][0]["expression"]
+                    if tmp_exp.startswith("*"):  # *ssdsds
+                        tmp_exp_1 = "{}$".format(tmp_exp[1:])
+                    elif tmp_exp.endswith("*"):  # ssdsds*
+                        tmp_exp_1 = "^{}".format(tmp_exp[:-1])
+                    elif tmp_exp.startswith("$"):
+                        tmp_exp_1 = "^{}$".format(tmp_exp[1:])
+                    else:
+                        tmp_exp_1 = tmp_exp
+                    url["or_conditions"][0]["items"][0]["expression"] = tmp_exp_1
+                    policy_configuration["and_conditions"].append(url)
                 else:
                     raise
         else:
             print("######没有对应的转换值#######：{}======={}".format(k,v))
             raise
 
+    # 提取traffic_generation
+    traffic_generation["tool"] = match_dict["traffic"]["protocol"]
+    traffic_generation["command"] = match_dict["traffic"]["command"]
 
+    # 提取 verification_result
+    verification_result["excepted_traffic_result"] = match_dict["expected_return"]
+    verification_result["expected_metric"]["hits"] = match_dict["counters"]["hits"]
+    verification_result["expected_log"] = match_dict["log_query_param"]
 
     if match_dict["rule_action"] in ["allow"]:
         policy_configuration["action"] = "allow"
 
+    print()
     print(str(policy_configuration).replace("'", "\""))
+
+    print()
+    repr(print(str(traffic_generation).replace("'", "\"")))
+
+    print()
+    print(str(verification_result).replace("'", "\""))
+    print()
+    for i in range(len(verification_result["expected_log"])):
+        print(str(verification_result["expected_log"][i]).replace("'", "\"") + ",")
 
 
 
@@ -563,6 +641,6 @@ if __name__ == '__main__':
 
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
-
-    name = "man_allow_srcip_http_substr_reqheader_by_ua.py"
+    name = "man_allow_srcip_http_suff_resheader_by_ct.py"
+    #name = "{}.py".format(name1)
     replace_test_data_from_py_2(case_directory_path=case_directory_path, name=name)
