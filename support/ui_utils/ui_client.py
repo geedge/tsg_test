@@ -7,6 +7,8 @@ from support.ui_utils.create_security_rules_example import CreateSecurityRulesEx
 from support.ui_utils.query_rule_metric import QueryRuleMetric
 from support.ui_utils.query_rule_log import QueryRuleLog
 from support.ui_utils.delete_security_rules_example import DeleteSecurityRulesExample
+from support.ui_utils.create_objects_example import CreateObjectsExample
+
 
 class UIClient:
     def __init__(self):
@@ -21,7 +23,7 @@ class UIClient:
             rule_uuids_tuple, element_position, result = rules.create_rules(policy_configuration, self.driver)
             self.element_position = element_position
         return rule_uuids_tuple, result
-    
+
     def query_rule_metric(self, verification_result, traffic_result):
         query = QueryRuleMetric(self.policy_configuration, verification_result, self.driver, self.element_position, traffic_result)
         metric_result = query.query_rule_metric()
@@ -36,3 +38,10 @@ class UIClient:
         if "type" in policy_configuration.keys() and policy_configuration["type"] == "security":
             rules = DeleteSecurityRulesExample()
             rules.delete_rules(parameter, policy_configuration, self.driver)
+
+    def create_objects(self,policy_configuration):
+        self.policy_configuration = policy_configuration
+        objects = CreateObjectsExample()
+        objects_uuids_tuple, element_position, result = objects.create_objects(policy_configuration, self.driver)
+        self.element_position = element_position
+        return objects_uuids_tuple, result

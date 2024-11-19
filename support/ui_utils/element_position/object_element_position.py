@@ -19,6 +19,7 @@ mainPage_secondLevelMenu_apn_posXpath = "//div[@class='MuiCollapse-wrapper MuiCo
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
 mainPage_secondLevelMenu_account_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Accounts"]'
 mainPage_secondLevelMenu_flag_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Flags"]'
+mainPage_ObjectSearch_Column_settings_posXpath = "//i[@class='iconfont icon-SetNormal text-[14px] text-[var(--color-text-disabled)]']"
 
 # Object 列表公共部分定位
 objectListPage_search_input_posXpath = "//div[contains(@class,'MuiAutocomplete-wrapper MuiAutocomplete-multiple')]//input[contains(@class,'MuiAutocomplete-input')]" #Object 列表搜索input框定位：
@@ -29,6 +30,14 @@ objectListPage_allSelect_posXpath = "//div[@class='flex flex-row flex-wrap justi
 objectListPage_full_text_search_dropDown_item_posXpath = "//ul[@role='listbox']//li[1]" # Object全文检索串
 objectListPage_handleButton_posXpath = "//i[@class='iconfont icon-{replaceName}']/parent::*/parent::*" # Object 列表Create、Edit、Delete、Link等操作按钮根据名称定位
 objectListPage_dropDown_createButton_posXpath = "//li[@class='MuiMenuItem-root MuiMenuItem-colorNeutral MuiMenuItem-variantPlain {}-item css-1rt9hnn']"
+objectListPage_search_select_Id_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[text()='UUID']" # 查询ID
+objectListPage_search_select_Name_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[text()='Name']"  # 查询Name
+objectListPage_search_select_Details_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[text()='Detail']"  # 查询Details
+objectListPage_search_select_subType_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[text()='Sub Type']"  # 查询SubType
+objectListPage_search_select_Description_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[text()='Description']"  # 查询Description
+objectListPage_search_select_CreateBy_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[text()='Create By']"  # 查询CreateBy
+objectListPage_search_select_IP_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//span[text()='IP']" #IP搜索
+listPage_objectSearch_ip_address_select_Search_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-18r31z0']//li[1]" #全局搜索
 #Object Group公共定位
 ObjectListPage_searchLabel_posId = "select-label"  # 查询框id
 ObjectListPage_deleteButton_warningYes_posXpath = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"

@@ -2071,7 +2071,7 @@ def delete_pre_policy(name_list, driver):
 
 def get_element_position(key_name):
     # object
-    if key_name == "source_ip" or key_name == "internal_ip" or  key_name == "destination_ip" or key_name == "external_ip":
+    if key_name == "source_ip" or key_name == "internal_ip" or  key_name == "destination_ip" or key_name == "external_ip" or key_name == "ip":
         element_position_map = object_ip_object_element_position
     elif key_name == "source_port" or key_name == "destination_port" or key_name == "external_port" or key_name == "internal_port":
         element_position_map = object_port_object_element_position
