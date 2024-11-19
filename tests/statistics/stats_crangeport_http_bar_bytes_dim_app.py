@@ -314,9 +314,112 @@ if __name__ == '__main__':
             "code": 403,
             "html_profile": {
                 "name": "test",
-                "file": "Response-Pages_1.html",
                 "format": "html",
-                "content_name": "response_testa.html"
+                "file_path": "Response-Pages_1.html"
+            }
+        }
+    }
+    replace_rule_action = {
+        "action_parameter": {
+            "sub_action": "replace_file",
+            "replacement_file": {
+                "name": "test",
+                "content_name": "hijack_png_1.png",
+                "content_type": "application / vnd.android.package - archive"
+            }
+        }
+    }
+    insert_css_rule_action = {
+        "action_parameter": {
+            "sub_action": "inject_css",
+            "css_file": {
+                "name": "automanipulation_insert_profile",
+                "file_path": "insert_css_1.css"
+            }
+        }
+    }
+    insert_js_rule_action = {
+        "action_parameter": {
+            "sub_action": "inject_javascript",
+            "injection_section": "html_body",
+            "js_file": {
+                "name": "manipulation_insert_profile",
+                "file_path": "insert_js_1.js"
+            }
+        }
+    }
+    lua_rule_action = {
+        "action_parameter": {
+            "lua_script": {
+                "name": "test",
+                "file_path": "run_script_replace_reqbody.lua",
+                "max_exec_time": 100
+            }
+        }
+    }
+    intercept_rule_action = {
+        "action_parameter": {
+            "keyring_for_trusted": {
+                "name": "autotestTrust",
+                "public_file": "tango-ca-v3-trust-ca.cer",
+                "private_file": "tango-ca-v3-trust-ca.key",
+                "reissue_expiry_hour": 24,
+                "keyring_type": "root",
+                "public_key_algo": "rsa2048",
+                "include_root": 1
+            },
+            "keyring_for_untrusted": {
+                "name": "autotestUNTrust",
+                "public_file": "tango-ca-v3-untrust-ca.cer",
+                "private_file": "tango-ca-v3-untrust-ca.key",
+                "reissue_expiry_hour": 24,
+                "keyring_type": "root",
+                "public_key_algo": "rsa1024",
+                "include_root": 0
+            },
+            "tcp_option_profile": {"name": "autotest", "tcp_passthrough": 1, "bypass_duplicated_packet": 0,
+                                   "client_side_conn_param": {"tcp_maxseg": {"enable": 1, "maxseg": 1460}, "nodelay": 0,
+                                                              "ttl": 70, "keep_alive": {"enable": 1, "tcp_keepcnt": 222,
+                                                                                        "tcp_keepidle": 7200,
+                                                                                        "tcp_keepintvl": 75},
+                                                              "user_timeout": {"enable": 1, "timeout_ms": 5000}},
+                                   "server_side_conn_param": {"tcp_maxseg": {"enable": 1, "maxseg": 1460}, "nodelay": 0,
+                                                              "ttl": 75, "keep_alive": {"enable": 1, "tcp_keepcnt": 200,
+                                                                                        "tcp_keepidle": 7000,
+                                                                                        "tcp_keepintvl": 69},
+                                                              "user_timeout": {"enable": 1, "timeout_ms": 5000}}},
+            "decryption_profile": {
+                "name": "autotest",
+                "decryption": {
+                    "certificate_checks": {
+                        "approach": {
+                            "cn": 1, "issuer": 1, "self-signed": 1, "expiration": 1
+                        },
+                        "fail_action": "fail-close"
+                    },
+                    "dynamic_bypass": {
+                        "ev_cert": 0,
+                        "cert_transparency": 0,
+                        "mutual_authentication": 1,
+                        "protocol_errors": 1,
+                        "cert_pinning": 1,
+                        "trusted_root_cert_is_not_installed_on_client": 0
+                    },
+                    "protocol_version": {
+                        "mirror_client": 1,
+                        "allow_http2": 1,
+                        "min": "tls12",
+                        "max": "tls13"
+                    }
+                }
+            },
+            "traffic_mirroring": {
+                "enable": 1,
+                "vlanID": 1,
+                "mirroring_profile": {
+                    "name": "autotest",
+                    "vlan_array": ["65", "66"]
+                }
             }
         }
     }

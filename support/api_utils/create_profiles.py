@@ -52,7 +52,7 @@ class CreateProfiles:
                 #    "format": "html",
                 #    "content_name": "Response-Pages_1.html"
                 #}
-                html_uuids, html_temp = self.create_file_upload_profile(policy_configuration["action_parameter"]["html_profile"], profile_type, policy_configuration["action_parameter"]["html_profile"]["content_name"])
+                html_uuids, html_temp = self.create_file_upload_profile(policy_configuration["action_parameter"]["html_profile"], profile_type, policy_configuration["action_parameter"]["html_profile"]["file_path"])
                 profile_uuids_list.append(html_uuids)
                 policy_configuration["action_parameter"]["html_profile"] = html_uuids
             elif "record_profile" in policy_configuration["action_parameter"].keys():
@@ -75,21 +75,21 @@ class CreateProfiles:
                 profile_type = "proxy-js-files"
                 js_uuids, js_temp = self.create_file_upload_profile(
                     policy_configuration["action_parameter"]["js_file"], profile_type,
-                    policy_configuration["action_parameter"]["js_file"]["script"])
+                    policy_configuration["action_parameter"]["js_file"]["file_path"])
                 profile_uuids_list.append(js_uuids)
                 policy_configuration["action_parameter"]["js_file"] = js_uuids
             elif "css_file" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-css-files"
                 css_uuids, css_temp = self.create_file_upload_profile(
                     policy_configuration["action_parameter"]["css_file"], profile_type,
-                    policy_configuration["action_parameter"]["css_file"]["script"])
+                    policy_configuration["action_parameter"]["css_file"]["file_path"])
                 profile_uuids_list.append(css_uuids)
                 policy_configuration["action_parameter"]["css_file"] = css_uuids
             elif "lua_script" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-lua-scripts"
                 lua_uuids, lua_temp = self.create_file_upload_profile(
                     policy_configuration["action_parameter"]["lua_script"], profile_type,
-                    policy_configuration["action_parameter"]["lua_script"]["file"])
+                    policy_configuration["action_parameter"]["lua_script"]["file_path"])
                 profile_uuids_list.append(lua_uuids)
                 policy_configuration["action_parameter"]["lua_script"] = lua_uuids
             if "tcp_option_profile" in policy_configuration["action_parameter"].keys():
