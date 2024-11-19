@@ -55,10 +55,14 @@ class CreateProfiles:
                 html_uuids, html_temp = self.create_file_upload_profile(policy_configuration["action_parameter"]["html_profile"], profile_type, policy_configuration["action_parameter"]["html_profile"]["file_path"])
                 profile_uuids_list.append(html_uuids)
                 policy_configuration["action_parameter"]["html_profile"] = html_uuids
-            elif "record_profile" in policy_configuration["action_parameter"].keys():
-                print("to do ...")
-                profile_type = "response-pages"
-                #policy_configuration["action_parameter"]["html_profile"] = response_uuids
+            elif "resolution" in policy_configuration["action_parameter"].keys():
+                profile_type = "dns-resource-records"
+                for resolution in policy_configuration["action_parameter"]["resolution"]:
+                    for record_profile in resolution["answer"]:
+                        record_uuids, record_temp = self.create_text_profile(
+                            record_profile["record_profile"], profile_type)
+                        record_profile["record_profile"] = record_uuids
+                        profile_uuids_list.append(record_uuids)
             elif "traffic_mirroring" in policy_configuration["action_parameter"].keys():
                 profile_type = "traffic-mirroring-profiles"
                 mirroring_uuids, mirroring_temp = self.create_text_profile(policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"], profile_type)
@@ -145,6 +149,8 @@ class CreateProfiles:
                 post_common_data = {"vsys": vsys, "return_data": 1, "proxy_tcp_option_profile": post_data}
             case "decryption-profiles":
                 post_common_data = {"vsys": vsys, "return_data": 1, "decryption_profile": post_data}
+            case "dns-resource-records":
+                post_common_data = {"vsys": vsys, "return_data": 1, "dns_resource_record": post_data}
             case _:
                 return "", "When creating {} profile, the exception error: ".format(profile_type)
         try:
@@ -234,6 +240,8 @@ class CreateProfiles:
                 uuid = response_dict["data"]["decryption_keyring"]["uuid"]
             case "proxy-tcp-option-profiles":
                 uuid = response_dict["data"]["proxy_tcp_option_profile"]["uuid"]
+            case "dns-resource-records":
+                uuid = response_dict["data"]["dns_resource_record"]["uuid"]
             case _:
                 uuid = ""
         return uuid, ""
