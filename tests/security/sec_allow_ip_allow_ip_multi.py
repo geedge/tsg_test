@@ -146,7 +146,7 @@ def run(parameter):
             "action": "allow",
             "and_conditions": [
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SOURCE_IP",
@@ -165,7 +165,7 @@ def run(parameter):
                 }
             ],
             "is_enabled": 1,
-            "log_event": True
+            "log_option": "metadata",
         },
         {
             "name": os.path.splitext(os.path.basename(__file__))[0],
@@ -173,7 +173,7 @@ def run(parameter):
             "action": "allow",
             "and_conditions": [
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SOURCE_IP",
@@ -192,7 +192,7 @@ def run(parameter):
                 }
             ],
             "is_enabled": 1,
-            "log_event": True
+            "log_option": "metadata",
         }
         ]
         
@@ -309,7 +309,7 @@ if __name__ == '__main__':
     policy_configuration = {
         "and_conditions": [
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_SOURCE_IP",
@@ -320,7 +320,7 @@ if __name__ == '__main__':
                 ]
             },
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_APP_ID",
@@ -368,7 +368,7 @@ if __name__ == '__main__':
     policy_configuration = {
         "and_conditions": [
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_SOURCE_IP",
@@ -379,7 +379,7 @@ if __name__ == '__main__':
                 ]
             },
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_APP_ID",
@@ -390,7 +390,7 @@ if __name__ == '__main__':
                 ]
             },
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_HTTP_URL",

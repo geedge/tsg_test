@@ -476,7 +476,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/ç›®å½
                 }
 
     object_app =                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_APP_ID",

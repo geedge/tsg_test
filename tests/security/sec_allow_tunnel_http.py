@@ -28,7 +28,7 @@ def run(parameter):
             "action": "allow",
             "and_conditions": [
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_TUNNEL",
@@ -81,7 +81,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_IP_PROTOCOL",

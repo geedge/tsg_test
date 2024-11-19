@@ -28,7 +28,7 @@ def run(parameter):
             "action": "allow",
             "and_conditions": [
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_GTP_IMSI",
@@ -46,7 +46,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_APP_ID",
@@ -169,7 +169,7 @@ if __name__ == '__main__':
     policy_configuration = {
         "and_conditions": [
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_SOURCE_IP",
@@ -180,7 +180,7 @@ if __name__ == '__main__':
                 ]
             },
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_APP_ID",
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     policy_configuration = {
         "and_conditions": [
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_SOURCE_IP",
@@ -239,7 +239,7 @@ if __name__ == '__main__':
                 ]
             },
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_APP_ID",
@@ -250,7 +250,7 @@ if __name__ == '__main__':
                 ]
             },
             {
-                "negate_option": 0,
+                "negate_option": False,
                 "or_conditions": [
                     {
                         "attribute_name": "ATTR_HTTP_URL",
