@@ -45,7 +45,7 @@ def run(parameter):
                 }
             ],
             "is_enabled": 1,
-            "log_event": True
+            "log_option": "metadata",
         }
         
         traffic_generation = {
