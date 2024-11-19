@@ -104,7 +104,7 @@ def run(parameter):
                         "profile_file": {
                             "name": "sec_respage",
                             "model": "create",
-                            "file": "testa.html"
+                            "file": "response_testa.html"
                         },
                     }
                 ]

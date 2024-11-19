@@ -60,7 +60,7 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_profile_page",
                             "model": "create",
-                            "file": "test_htm.htm"
+                            "file": "response_htm.htm"
                         },
                     }
                 ]

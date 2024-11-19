@@ -104,7 +104,7 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_insert_profile",
                             "model": "create",
-                            "script": "test_js_1.js",
+                            "script": "insert_js_1.js",
                             "script_type":  "js",
                             "insert_position": "Before Page Load"
                             }

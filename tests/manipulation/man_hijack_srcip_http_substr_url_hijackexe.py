@@ -74,14 +74,14 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_hijack_profile",
                             "model": "create",
-                            "file": "test_exe_1.exe",
-                            "download_name": "test_exe_1.exe",
+                            "file": "hijack_exe_1.exe",
+                            "download_name": "hijack_exe_1.exe",
                             "file_type": "exe"
                         }
                     }
                 ]
             },
-            "expected_return": "test_exe_1.exe",
+            "expected_return": "hijack_exe_1.exe",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {

@@ -74,14 +74,14 @@ def run(parameter):
                         "profile_file": {
                             "name": "manipulation_hijack_profile",
                             "model": "create",
-                            "file": "test_png_1.png",
-                            "download_name": "test_png_1.png",
+                            "file": "hijack_png_1.png",
+                            "download_name": "hijack_png_1.png",
                             "file_type": "png"
                         }
                     }
                 ]
             },
-            "expected_return": "test_png_1.png",
+            "expected_return": "hijack_png_1.png",
             "counters": {"hits": 1},
             "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
             "traffic": {

@@ -312,7 +312,12 @@ if __name__ == '__main__':
             "sub_action": "block",
             "manipulation_block": "warning_page",
             "code": 403,
-            "html_profile": {"name": "test", "file": "Response-Pages_1.html"}
+            "html_profile": {
+                "name": "test",
+                "file": "Response-Pages_1.html",
+                "format": "html",
+                "content_name": "response_testa.html"
+            }
         }
     }
     """
