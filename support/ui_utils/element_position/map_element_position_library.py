@@ -999,7 +999,7 @@ object_ip_object_element_position = {
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_ipAddress_posXpath
+        "mainPage_policySecondLevelMenu_posXpath": ipObject_navigationBar_logo_posXpath
     },
     "create": {
         "objectListPage_createButton_posXpath": ipObjectListPage_createButton_posXpath,
@@ -1035,7 +1035,7 @@ object_ip_group_object_element_position = {
         "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
         # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
         "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
-        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_ipAddress_posXpath
+        "mainPage_policySecondLevelMenu_posXpath": ipObject_navigationBar_logo_posXpath
     },
     "create": {
         "objectListPage_createButton_posId": ipObjectListPage_createButton_posXpath,
@@ -1055,6 +1055,46 @@ object_ip_group_object_element_position = {
         "groupObjectPage_closeExcludeIP_posXpath": ipGroupObjectPage_closeExcludeIP_posXpath,
         "groupObjectPage_addExcludeObject_posId": ipGroupObjectPage_addExcludeObject_posId,
         "objectPage_okButton_posId": ipObjectPage_okButton_posXpath,
+        "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": ipObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath,
+        "objectListPage_search_input_posXpath": ipObjectListPage_search_input_posXpath,
+        "objectListPage_search_dropDown_item_posXpath": ipObjectListPage_search_dropDown_item_posXpath,
+        "objectListPage_search_button_posXpath": ipObjectListPage_search_button_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posXpath": ipObjectListPage_deleteButton_posXpath,
+        "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
+    }
+}
+object_ip_learning_object_element_position = {
+    "page_jump":{
+        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
+        "mainPage_policySecondLevelMenu_posXpath": ipObject_navigationBar_logo_posXpath
+    },
+    "create": {
+        "objectPage_ipLearningType_posXpath": ipObjectPage_ipLearningType_posXpath,
+        "objectListPage_createButton_posXpath": ipObjectListPage_createButton_posXpath,
+        "objectListPage_dropDown_createButton_posXpath": ipObjectListPage_dropDown_createButton_posXpath,
+        "objectPage_inputName_posXpath": ipObjectPage_inputName_posXpath,
+        "objectPage_addItem_posXpath": objectPage_addItem_button_posXpath,
+        "objectPage_inputItem_posXpath": ipLearningObjectPage_inputItem_posXpath,
+        "objectPage_learnFromProtocols_up_select_posXpath":ipLearningObjectPage_button_IP_learn_from_protocols_posXpath,
+        "objectPage_learnFromProtocols_http_posXpath":ipLearningObjectPage_button_IP_learn_from_protocols_Select_HTTP_posXpath,
+        "objectPage_learnFromProtocols_ssl_posXpath":ipLearningObjectPage_button_IP_learn_from_protocols_Select_SSL_posXpath,
+        "objectPage_agingTimes_posXpath":ipLearningObjectPage_button_Input_Aging_Times_posXpath,
+        "objectPage_voteClients_posXpath":ipLearningObjectPage_button_Input_Vote_Clients_Number_posXpath,
+        "objectPage_learnedIPLimits_posXpath":ipLearningObjectPage_button_Input_Learned_IP_Limits_posXpath,
+        "objectPage_button_saveItem_posXpath": ipLearningObjectPage_button_saveItem_posXpath,
+        "objectPage_okButton_posXpath": ipObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": ipObjectPage_okButton_warningYes_posXpath
     },
     "search": {
@@ -1359,7 +1399,9 @@ object_mobile_identity_object_element_position = {
         "objectPage_inputItem_posXpath": imsiObjectPage_inputItem_posXpath,
         "objectPage_button_saveItem_posXpath": imsiObjectPage_button_saveItem_posXpath,
         "objectPage_okButton_posXpath": imsiObjectPage_okButton_posXpath,
-        "objectPage_okButton_warningYes_posXpath": imsiObjectPage_okButton_warningYes_posXpath
+        "objectPage_okButton_warningYes_posXpath": imsiObjectPage_okButton_warningYes_posXpath,
+        "ObjectPage_sameItem_addItem_posXpath": phoneNumberobjectPage_sameItem_addItem_posXpath,
+        "ObjectPage_sameItem_inputItem_posXpath":phoneNumberObjectPage_sameItem_inputItem_posXpath
 
     },
     "search": {
@@ -2073,19 +2115,21 @@ def get_element_position(key_name):
     # object
     if key_name == "source_ip" or key_name == "internal_ip" or  key_name == "destination_ip" or key_name == "external_ip" or key_name == "ip":
         element_position_map = object_ip_object_element_position
-    elif key_name == "source_port" or key_name == "destination_port" or key_name == "external_port" or key_name == "internal_port":
+    elif key_name == "ip_learning":
+        element_position_map = object_ip_learning_object_element_position
+    elif key_name == "source_port" or key_name == "destination_port" or key_name == "external_port" or key_name == "internal_port" or key_name == "port":
         element_position_map = object_port_object_element_position
-    elif key_name == "sub_id":
+    elif key_name == "sub_id" or key_name == "subscriberid":
         element_position_map = object_subscriberid_object_element_position
     elif key_name == "apn":
         element_position_map = object_apn_object_element_position
-    elif key_name == "device":
+    elif key_name == "device" or key_name == "imsi" or key_name == "phone_number" or key_name == "imei":
         element_position_map = object_mobile_identity_object_element_position
     # elif key_name == "mobile_identity":
     #     element_position_map = test_mobile_identity_object_element_position
     elif key_name == "http_signature":
         element_position_map = object_keywords_object_element_position #object_http_signature_object_element_position
-    elif key_name == "keywords":
+    elif key_name == "keyword":
         element_position_map = object_keywords_object_element_position
     elif key_name == "server_fqdn" or key_name == "fqdn":
         element_position_map = object_fqdn_object_element_position

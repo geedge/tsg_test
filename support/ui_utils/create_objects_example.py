@@ -15,6 +15,8 @@ class CreateObjectsExample:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run ui test case", flush=True)
 
             result = ""
+            object_uuids_list = []
+            object_uuids_temp_dict = {}
 
             # if "condition" in policy_configuration.keys():
             #     for cond_key, cond_value in (policy_configuration["condition"].items()):
@@ -49,32 +51,36 @@ class CreateObjectsExample:
             # if cond_code == 200:
             create_objects = CreateObject(driver)
             #获取当前所需的element
-            element_position_map = get_element_position(policy_configuration["type"])
+            if "sub_type" in policy_configuration.keys():
+                key_name = policy_configuration["sub_type"]
+            else: key_name = policy_configuration["type"]
+            element_position_map = get_element_position(key_name)
             #执行创建操作
-            create_object_code = create_objects.create(policy_configuration, element_position_map)
-            if create_object_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create {} rule successfully.".format(policy_configuration["policy_type"], flush=True))
-            elif create_object_code != 200:
-                result = "Fail to create {} rule.".format(policy_configuration["policy_type"])
-                return "", "", result
-
-            search_objects = SearchObjects(driver)
-            # element_position_map = get_element_position(policy_configuration["policy_type"])
-            search_rule_code, object_uuid = search_objects.search(policy_configuration,element_position_map)
-            if search_rule_code != 200:
-                result = "Fail to search {} rule uuid.".format(policy_configuration["policy_type"])
-                return "", "", result
-            object_uuids_list = []
-            object_uuids_temp_dict = {}
+            create_object_code,object_uuid,description = create_objects.create(policy_configuration, element_position_map)
             object_uuids_temp_dict["type"] = policy_configuration["type"]
             object_uuids_temp_dict["uuid"] = object_uuid
             object_uuids_temp_dict["name"] = policy_configuration["name"]
-            object_uuids_temp_dict["description"] = policy_configuration["type"]
+            object_uuids_temp_dict["description"] = description
+            if create_object_code == 200:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create {} object successfully.".format(policy_configuration["type"], flush=True))
+            elif create_object_code != 200:
+                result = "Fail to create {} rule.".format(policy_configuration["type"])
+                return "", "", result
+
+            search_objects = SearchObjects(driver)
+            # element_position_map = get_element_position(policy_configuration["type"])
+            search_object_code= search_objects.search(object_uuids_temp_dict,policy_configuration,element_position_map)
+            if search_object_code == 200:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search {} object successfully.".format(policy_configuration["type"], flush=True))
+            elif search_object_code == 200:
+                result = "Fail to search {} rule uuid.".format(policy_configuration["type"])
+                return "", "", result
+
+
             object_uuids_list.append(object_uuids_temp_dict)
             rule_uuids_tuple = tuple(object_uuids_list)
 
-            return rule_uuids_tuple, result
+            return rule_uuids_tuple,element_position_map,result
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-                  "When creating rule by ui, the exception error: ", str(e), flush=True)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"When creating rule by ui, the exception error: ", str(e), flush=True)
             return "", "When creating rule by ui, the exception error: " + str(e)
