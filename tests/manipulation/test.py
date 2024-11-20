@@ -388,6 +388,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
     match_text = match_text.lstrip()
     match_text = match_text.replace('parameter["test_case_name"]', '"tmp_name"')
     match_text = match_text.replace('parameter["test_pc_ip"]', '"99.99.99.99"')
+    match_text = match_text.replace('"$" + parameter["test_subcriber_id"]', '"$test_tmp_subid"')
     # print(match_text)
     # print(type(match_text))
 
@@ -414,7 +415,24 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
             }
         ]
     }
-
+    object_port = {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_INTERNAL_PORT",
+                    "name": "manipulation_internal_port",
+                    "type": "port",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "interval": "443"
+                        }
+                    ]
+                }
+            ]
+        }
     object_fqdn = {
                     "negate_option": False,
                     "or_conditions": [
@@ -434,7 +452,25 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
                         }
                     ]
                 }
-
+    object_subid = {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SUBSCRIBER_ID",
+                    "name": "manipulation_subid",
+                    "type": "subscriberid",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "baidu.com"
+                        }
+                    ]
+                }
+            ]
+        }
     object_url =                 {
                     "negate_option": False,
                     "or_conditions": [
@@ -486,6 +522,27 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
                     ]
                 }
 
+    profile_response = {
+            "sub_action": "block"
+        }
+
+    profile_element =   {
+            "sub_action": "edit_element",
+            "rules": [
+                # {
+                #     "anchor_element": {
+                #         "contained_keyword": "tessa1",
+                #         "search_scope": "whole_file",
+                #         #"start_indicator": "testsss"
+                #     },
+                #     "target_element": {
+                #         "element_treatment": "mark",    # mark  remove
+                #         "target_distance_from_matching": 2
+                #     }
+                # }
+            ]
+        }
+
     policy_configuration = {
         "name": parameter["test_case_name"],
         "type": "proxy_manipulation",
@@ -511,84 +568,214 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
     print()
     for k,v in match_dict["condition"].items():
         #print(k, "====", v)
-        if k == "source_ip":
+        map_attr = {
+            "source_ip": "ATTR_SOURCE_IP",
+            "destination_ip": "ATTR_DESTINATION_IP",
+            "internal_ip": "ATTR_INTERNAL_IP",
+            "external_ip": "ATTR_EXTERNAL_IP",
+            "source_port": "ATTR_SOURCE_PORT",
+            "destination_port": "ATTR_DESTINATION_PORT",
+            "external_port": "ATTR_EXTERNAL_PORT",
+            "internal_port": "ATTR_INTERNAL_PORT",
+            "sub_id": "ATTR_SUBSCRIBER_ID",
+            "server_fqdn": "ATTR_SERVER_FQDN",
+            "url": "ATTR_HTTP_URL",
+            "request_header": "ATTR_HTTP_REQ_HDR",
+            "response_header": "ATTR_HTTP_RES_HDR",
+            "request_body": "ATTR_HTTP_REQ_BODY",
+            "response_body": "ATTR_HTTP_RES_BODY",
+        }
+        map_name = {
+            "source_ip": "manipulation_source_ip",
+            "destination_ip": "manipulation_destination_ip",
+            "internal_ip": "manipulation_internal_ip",
+            "external_ip": "manipulation_external_ip",
+            "source_port": "manipulation_src_port",
+            "destination_port": "manipulation_destination_port",
+            "external_port": "manipulation_external_port",
+            "internal_port": "manipulation_internal_port",
+            "sub_id": "manipulation_subid",
+            "server_fqdn": "manipulation_fqdn",
+            "url": "manipulation_url",
+            "request_header": "manipulation_http_reqheader",
+            "response_header": "manipulation_http_resheader",
+            "request_body": "manipulation_keywords_request_body",
+            "response_body": "manipulation_keywords_response_body",
+        }
+        if k in ["source_ip", "internal_ip", "destination_ip", "external_ip"]:
             manipulation_source_ip = copy.deepcopy(object_ip)
-            manipulation_source_ip["or_conditions"][0]["attribute_name"] = "ATTR_SOURCE_IP"
-            manipulation_source_ip["or_conditions"][0]["name"] = "manipulation_source_ip"
+            manipulation_source_ip["or_conditions"][0]["attribute_name"] = map_attr[k]
+            manipulation_source_ip["or_conditions"][0]["name"] = map_name[k]
             manipulation_source_ip["or_conditions"][0]["items"][0]["ip"] = v[0]["item"][0]["item_value"]
             if len(v[0]["item"]) > 1:
                 print("......................含有两个item.......................手动添加")
             policy_configuration["and_conditions"].append(manipulation_source_ip)
+        elif k in ["internal_port", "source_port", "destination_port", "external_port"]:
+            manipulation_object_port = copy.deepcopy(object_port)
+            manipulation_object_port["or_conditions"][0]["attribute_name"] = map_attr[k]
+            manipulation_object_port["or_conditions"][0]["name"] = map_name[k]
+            manipulation_object_port["or_conditions"][0]["items"][0]["interval"] = v[0]["item"][0]["item_value"]
+            if len(v[0]["item"]) > 1:
+                print("......................含有两个item.......................手动添加")
+            policy_configuration["and_conditions"].append(manipulation_object_port)
+        elif k in ["server_fqdn"]:
+            manipulation_object_fqdn = copy.deepcopy(object_fqdn)
+            manipulation_object_fqdn["or_conditions"][0]["attribute_name"] = map_attr[k]
+            manipulation_object_fqdn["or_conditions"][0]["name"] = map_name[k]
+            manipulation_object_fqdn["or_conditions"][0]["items"][0]["expression"] = v[0]["items"][0]["item_value"]
+            if len(v[0]["items"]) > 1:
+                print("......................含有两个item.......................手动添加")
+            # 替换匹配符
+            tmp_exp = manipulation_object_fqdn["or_conditions"][0]["items"][0]["expression"]
+            if tmp_exp.startswith("*"):  # *ssdsds
+                tmp_exp_1 = "{}$".format(tmp_exp[1:])
+            elif tmp_exp.endswith("*"):  # ssdsds*
+                tmp_exp_1 = "^{}".format(tmp_exp[:-1])
+            elif tmp_exp.startswith("$"):
+                tmp_exp_1 = "^{}$".format(tmp_exp[1:])
+            else:
+                tmp_exp_1 = tmp_exp
+            manipulation_object_fqdn["or_conditions"][0]["items"][0]["expression"] = tmp_exp_1
+            policy_configuration["and_conditions"].append(manipulation_object_fqdn)
+        elif k in ["sub_id"]:
+            manipulation_object_subid = copy.deepcopy(object_subid)
+            manipulation_object_subid["or_conditions"][0]["attribute_name"] = map_attr[k]
+            manipulation_object_subid["or_conditions"][0]["name"] = map_name[k]
+            manipulation_object_subid["or_conditions"][0]["items"][0]["expression"] = v[0]["items"][0]["item_value"]
+            if len(v[0]["items"]) > 1:
+                print("......................含有两个item.......................手动添加")
+            # 替换匹配符
+            tmp_exp = manipulation_object_subid["or_conditions"][0]["items"][0]["expression"]
+            if tmp_exp.startswith("*"):  # *ssdsds
+                tmp_exp_1 = "{}$".format(tmp_exp[1:])
+            elif tmp_exp.endswith("*"):  # ssdsds*
+                tmp_exp_1 = "^{}".format(tmp_exp[:-1])
+            elif tmp_exp.startswith("$"):
+                tmp_exp_1 = "^{}$".format(tmp_exp[1:])
+            else:
+                tmp_exp_1 = "^{}$".format(tmp_exp)
+            manipulation_object_subid["or_conditions"][0]["items"][0]["expression"] = tmp_exp_1
+            policy_configuration["and_conditions"].append(manipulation_object_subid)
         elif k == "application":
             application = copy.deepcopy(object_app)
             policy_configuration["and_conditions"].append(application)
         elif k == "protocol_filed":
-            if "item" in v[0]:
-                item = "item"
-            else:
-                item = "items"
-            for i in range(len(v[0][item])):
-                item_type = v[0][item][i]["item_type"]
-                if item_type in ["request_header", "response_header"]:
-                    item_key = v[0][item][i]["item_key"]
-                    item_value = v[0][item][i]["item_value"]
-                    http_header = copy.deepcopy(object_keyword)
-                    if item_key in ["User-Agent", "Content-Type", "Set-Cookie"]:
-                        if item_type == "request_header":
-                            http_header["or_conditions"][0]["attribute_name"] = "ATTR_HTTP_REQ_HDR"
-                            http_header["or_conditions"][0]["name"] = "manipulation_http_reqheader"
-                        elif item_type == "response_header":
-                            http_header["or_conditions"][0]["attribute_name"] = "ATTR_HTTP_RES_HDR"
-                            http_header["or_conditions"][0]["name"] = "manipulation_http_resheader"
+            for j in range(len(v)):
+                if "item" in v[j]:
+                    item = "item"
+                else:
+                    item = "items"
+                for i in range(len(v[j][item])):
+                    item_type = v[j][item][i]["item_type"]
+                    if item_type in ["request_header", "response_header", "request_body", "response_body"]:
+                        if "item_key" in v[j][item][i]:
+                            item_key = v[j][item][i]["item_key"]
+                        else:
+                            item_key = v[j][item][i]["item_type"]
+                        item_value = v[j][item][i]["item_value"]
+                        http_header = copy.deepcopy(object_keyword)
+                        if item_key in ["User-Agent", "Content-Type", "Set-Cookie", "Cookie", "response_body", "request_body"]:
+                            http_header["or_conditions"][0]["attribute_name"] = map_attr[item_type]
+                            http_header["or_conditions"][0]["name"] = map_name[item_type]
+                            if item_value == "HEX":
+                                http_header["or_conditions"][0]["items"][0]["expression"] = "|{}|".format(v[j][item][i]["value"][0])
+                            elif item_value == "REGEX":
+                                http_header["or_conditions"][0]["items"][0]["expr_type"] = "regex"
+                                http_header["or_conditions"][0]["items"][0]["expression"] = v[j][item][i]["value"][0]
+                            elif "range" in v[j]["item"][i] and len(v[0]["item"][i]["range"])>0:
+                                offset = v[j][item][i]["range"][0]["offset"]
+                                depth = v[j][item][i]["range"][0]["depth"]
+                                tmp_0 =v[j][item][i]["value"][0]
+                                tmp_item = "(offset={},depth={}){}".format(offset, depth, tmp_0)
+                                http_header["or_conditions"][0]["items"][0]["expression"] = tmp_item
+                            else:
+                                http_header["or_conditions"][0]["items"][0]["expression"] = v[j][item][i]["value"][0]
+                            # 替换匹配符
+                            tmp_exp = http_header["or_conditions"][0]["items"][0]["expression"]
+                            if tmp_exp.startswith("*"):   #  *ssdsds
+                                tmp_exp_1 = "{}$".format(tmp_exp[1:])
+                            elif tmp_exp.endswith("*"):   #  ssdsds*
+                                tmp_exp_1 = "^{}".format(tmp_exp[:-1])
+                            elif tmp_exp.startswith("$"):
+                                tmp_exp_1 = "^{}$".format(tmp_exp[1:])
+                            else:
+                                tmp_exp_1 = tmp_exp
+                            http_header["or_conditions"][0]["items"][0]["expression"] = tmp_exp_1
+                            policy_configuration["and_conditions"].append(http_header)
                         else:
                             raise
-                        if item_value == "HEX":
-                            http_header["or_conditions"][0]["items"][0]["expression"] = "|{}|".format(v[0][item][i]["value"][0])
-                        elif item_value == "REGEX":
-                            http_header["or_conditions"][0]["items"][0]["expr_type"] = "regex"
-                            http_header["or_conditions"][0]["items"][0]["expression"] = v[0][item][i]["value"][0]
-                        elif "range" in v[0]["item"][i] and len(v[0]["item"][i]["range"])>0:
-                            offset = v[0][item][i]["range"][0]["offset"]
-                            depth = v[0][item][i]["range"][0]["depth"]
-                            tmp_0 =v[0][item][i]["value"][0]
-                            tmp_item = "(offset={},depth={}){}".format(offset, depth, tmp_0)
-                            http_header["or_conditions"][0]["items"][0]["expression"] = tmp_item
-                        else:
-                            http_header["or_conditions"][0]["items"][0]["expression"] = v[0][item][i]["value"][0]
+                    elif item_type in ["url"]:
+                        url = copy.deepcopy(object_url)
+                        url["or_conditions"][0]["attribute_name"] = map_attr[item_type]
+                        url["or_conditions"][0]["name"] = map_name[item_type]
+                        url["or_conditions"][0]["items"][0]["expression"] = v[j][item][i]["item_value"]
                         # 替换匹配符
-                        tmp_exp = http_header["or_conditions"][0]["items"][0]["expression"]
-                        if tmp_exp.startswith("*"):   #  *ssdsds
+                        tmp_exp = url["or_conditions"][0]["items"][0]["expression"]
+                        if tmp_exp.startswith("*"):  # *ssdsds
                             tmp_exp_1 = "{}$".format(tmp_exp[1:])
-                        elif tmp_exp.endswith("*"):   #  ssdsds*
+                        elif tmp_exp.endswith("*"):  # ssdsds*
                             tmp_exp_1 = "^{}".format(tmp_exp[:-1])
                         elif tmp_exp.startswith("$"):
                             tmp_exp_1 = "^{}$".format(tmp_exp[1:])
                         else:
                             tmp_exp_1 = tmp_exp
-                        http_header["or_conditions"][0]["items"][0]["expression"] = tmp_exp_1
-                        policy_configuration["and_conditions"].append(http_header)
+                        url["or_conditions"][0]["items"][0]["expression"] = tmp_exp_1
+                        policy_configuration["and_conditions"].append(url)
                     else:
                         raise
-                elif item_type in ["url"]:
-                    url = copy.deepcopy(object_url)
-                    url["or_conditions"][0]["items"][0]["expression"] = v[0][item][i]["item_value"]
-                    # 替换匹配符
-                    tmp_exp = url["or_conditions"][0]["items"][0]["expression"]
-                    if tmp_exp.startswith("*"):  # *ssdsds
-                        tmp_exp_1 = "{}$".format(tmp_exp[1:])
-                    elif tmp_exp.endswith("*"):  # ssdsds*
-                        tmp_exp_1 = "^{}".format(tmp_exp[:-1])
-                    elif tmp_exp.startswith("$"):
-                        tmp_exp_1 = "^{}$".format(tmp_exp[1:])
-                    else:
-                        tmp_exp_1 = tmp_exp
-                    url["or_conditions"][0]["items"][0]["expression"] = tmp_exp_1
-                    policy_configuration["and_conditions"].append(url)
-                else:
-                    raise
         else:
             print("######没有对应的转换值#######：{}======={}".format(k,v))
             raise
+
+    if "action_parameter" in match_dict and len(match_dict["action_parameter"]) > 0:
+        for k,v in match_dict["action_parameter"].items():
+            if k in ["deny_response_text", "response_page", "deny_response_block"]:
+                response = copy.deepcopy(profile_response)
+                if k == "deny_response_text":
+                    response_code = v[0]["response_code"]
+                    response_content = v[0]["response_content"]
+                    response["manipulation_block"] = "warning_page"
+                    response["code"] = response_code
+                    response["message"] = response_content
+                elif k == "response_page":
+                    response_code = v[0]["response_code"]
+                    profile_file = {
+                        "name": "test",
+                        "format": "html",
+                        "file_path": "Response-Pages_1.html"
+                    }
+                    profile_file["name"] = v[0]["profile_file"]["name"]
+                    profile_file["format"] = "html"
+                    profile_file["file_path"] = v[0]["profile_file"]["file"]
+                    response["manipulation_block"] = "warning_page"
+                    response["code"] = response_code
+                    response["html_profile"] = profile_file
+                elif k == "deny_response_block":
+                    pass
+                else:
+                    raise
+                policy_configuration["action_parameter"] = response
+            elif k in ["edit_element_parameter"]:
+                edit_element = copy.deepcopy(profile_element)
+                for i in range(len(v)):
+                    search_scope = v[i]["search_scope"]
+                    contained_keyword = v[i]["contained_keyword"]
+                    element_treatment = v[i]["treatment"]
+                    target_distance_from_matching = int(v[i]["distance_from_anchor"])
+                    start_indicator = v[i]["start_indicator"]
+                    tmp_dict = {
+                        "anchor_element": {},
+                        "target_element": {}
+                    }
+                    tmp_dict["anchor_element"]["contained_keyword"] = contained_keyword
+                    tmp_dict["anchor_element"]["search_scope"] = search_scope
+                    if start_indicator != "test_keywork":
+                        tmp_dict["anchor_element"]["start_indicator"] = start_indicator
+                    tmp_dict["target_element"]["element_treatment"] = element_treatment
+                    tmp_dict["target_element"]["target_distance_from_matching"] = target_distance_from_matching
+                    edit_element["rules"].append(copy.deepcopy(tmp_dict))
+                policy_configuration["action_parameter"] = edit_element
+
 
     # 提取traffic_generation
     traffic_generation["tool"] = match_dict["traffic"]["protocol"]
@@ -601,23 +788,28 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
 
     if match_dict["rule_action"] in ["allow"]:
         policy_configuration["action"] = "allow"
+    elif match_dict["rule_action"] in ["deny"]:
+        policy_configuration["action"] = "deny"
+    elif match_dict["rule_action"] in ["edit_element"]:
+        policy_configuration["action"] = "modify"
+    elif match_dict["rule_action"] in ["monitor"]:
+        policy_configuration["action"] = "monitor"
+    elif match_dict["rule_action"] in ["redirect"]:
+        policy_configuration["action"] = "redirect"
 
     print()
     print(str(policy_configuration).replace("'", "\""))
 
     print()
     repr(print(str(traffic_generation).replace("'", "\"")))
-
-    print()
-    print(str(verification_result).replace("'", "\""))
+    # print()
+    # print(str(verification_result).replace("'", "\""))
     print()
     for i in range(len(verification_result["expected_log"])):
-        print(str(verification_result["expected_log"][i]).replace("'", "\"") + ",")
-
-
-
-
-
+        if i + 1 < len(verification_result["expected_log"]):
+            print(str(verification_result["expected_log"][i]).replace("'", "\"") + ",")
+        else:
+            print(str(verification_result["expected_log"][i]).replace("'", "\""))
 
 
     # 输出匹配的内容
@@ -641,6 +833,6 @@ if __name__ == '__main__':
 
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
-    name = "man_allow_srcip_http_suff_resheader_by_ct.py"
+    name = "man_edit_element_srcip_xly_fqdn_http_substr_url_whole_file_mark.py"
     #name = "{}.py".format(name1)
     replace_test_data_from_py_2(case_directory_path=case_directory_path, name=name)

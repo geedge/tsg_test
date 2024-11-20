@@ -69,6 +69,44 @@ policy_configuration = {
             "negate_option": False,
             "or_conditions": [
                 {
+                    "attribute_name": "ATTR_INTERNAL_IP",
+                    "name": "manipulation_internal_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "ip": "192.168.40.206",
+                            "interval": "0-65535"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_INTERNAL_PORT",
+                    "name": "manipulation_internal_port",
+                    "type": "port",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "interval": "443"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
                     "attribute_name": "ATTR_DESTINATION_PORT",
                     "name": "manipulation_destination_port",
                     "type": "port",
@@ -96,6 +134,25 @@ policy_configuration = {
                         {
                             "op": "add",
                             "interval": "443"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SUBSCRIBER_ID",
+                    "name": "manipulation_subid",
+                    "type": "subscriberid",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "baidu.com"
                         }
                     ]
                 }
@@ -181,6 +238,44 @@ policy_configuration = {
             "negate_option": False,
             "or_conditions": [
                 {
+                    "attribute_name": "ATTR_HTTP_REQ_BODY",
+                    "name": "manipulation_keywords_request_body",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "text"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_RES_BODY",
+                    "name": "manipulation_keywords_response_body",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "text"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
                     "attribute_name": "ATTR_APP_ID",
                     "type": "application",
                     "items": ["http"]
@@ -188,6 +283,53 @@ policy_configuration = {
             ]
         }
     ],
+    "action_parameter": {
+        {
+            "manipulation_block": "warning_page",
+            "sub_action": "block",
+            "code": 403,
+            "message": "testsaaa"
+        },
+        {
+            "manipulation_block": "warning_page",
+            "sub_action": "block",
+            "code": 403,
+            "html_profile": {
+                "name": "test",
+                "format": "html",
+                "file_path": "Response-Pages_1.html"
+            }
+        },
+        {
+            "sub_action": "block"
+        },
+        {
+            "sub_action": "edit_element",
+            "rules": [
+                {
+                    "anchor_element": {
+                        "contained_keyword": "tessa1",
+                        "search_scope": "whole_file"
+                    },
+                    "target_element": {
+                        "element_treatment": "mark",
+                        "target_distance_from_matching": 2
+                    }
+                },
+                {
+                    "anchor_element": {
+                        "contained_keyword": "testsa2",
+                        "search_scope": "inside_element",
+                        "start_indicator": "testsss"
+                    },
+                    "target_element": {
+                        "element_treatment": "remove",
+                        "target_distance_from_matching": 3
+                    }
+                }
+            ]
+        },
+    },
     "effective_range": {
         "tag_sets": [
             [
@@ -195,6 +337,38 @@ policy_configuration = {
                     "tag": "data_center",
                     "value": [
                         "center-xxg-tsgx"
+                    ]
+                }
+            ]
+        ]
+    },
+    "effective_range2": {
+        "tag_sets": [
+            [
+                {
+                    "tag": "device_group",
+                    "value": [
+                        "group-xxg-tsgx"
+                    ]
+                }
+            ]
+        ]
+    },
+    "effective_range3": {
+        "tag_sets": [
+            [
+                {
+                    "tag": "data_center",
+                    "value": [
+                        "center-xxg-tsgx"
+                    ]
+                }
+            ],
+            [
+                {
+                    "tag": "device_group",
+                    "value": [
+                        "group-xxg-tsgx"
                     ]
                 }
             ]

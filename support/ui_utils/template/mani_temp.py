@@ -27,7 +27,7 @@ def run(parameter):
         policy_configuration = {
             "name": "test_name",
             "type": "proxy_manipulation",
-            "action": "allow",
+            "action": "modify",
             "and_conditions": [
             {
                 "negate_option": False,
@@ -60,34 +60,68 @@ def run(parameter):
                 "negate_option": False,
                 "or_conditions": [
                 {
-                    "attribute_name": "ATTR_HTTP_RES_HDR",
-                    "name": "manipulation_http_resheader",
-                    "type": "keyword",
+                    "attribute_name": "ATTR_SERVER_FQDN",
+                    "name": "manipulation_fqdn",
+                    "type": "fqdn",
                     "statistics_option": "none",
                     "member_type": "item",
                     "items": [
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "charset=UTF-8$"
+                        "expression": "^www.python.org$"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_URL",
+                    "name": "manipulation_url",
+                    "type": "url",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "python"
                     }]
                 }]
             }],
             "is_enabled": 1,
-            "log_option": "metadata"
+            "log_option": "metadata",
+            "action_parameter":
+            {
+                "sub_action": "edit_element",
+                "rules": [
+                {
+                    "anchor_element":
+                    {
+                        "contained_keyword": "Python",
+                        "search_scope": "whole_file"
+                    },
+                    "target_element":
+                    {
+                        "element_treatment": "mark",
+                        "target_distance_from_matching": 1
+                    }
+                }]
+            }
         }
 
         traffic_generation = {
             "tool": "ssl",  # or trex/http
-            "command": "curl --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\" -X POST -d \"{\\\"requestbody\\\":\\\"test_request_body\\\",\\\"setcook\\\":\\\"test_setcook\\\",\\\"contenttype\\\": \\\"test_cont\\\",\\\"responsebody\\\": \\\"test_resbody\\\"}\" -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://open.node.com:1443/go"
+            "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
         }
 
         verification_result = {
-            "excepted_traffic_result": "test_resbody,CN=TSG",
+            "excepted_traffic_result": "need_filter",
             "expected_metric": {"hits": 1},
             "expected_log": [
-                {"query_field_key": "http_host", "query_value": "open.node.com"},
-                {"query_field_key": "http_response_content_type", "query_value": "text/html;charset=UTF-8"}
+                {"query_field_key": "http_host", "query_value": "www.python.org"},
+                {"query_field_key": "http_url", "query_value": "www.python.org/blogs/"}
             ]
         }
 
