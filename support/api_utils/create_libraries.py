@@ -20,12 +20,11 @@ class CreateLibraries:
             catalog_uuids_tuple, error = self.create_catalogs(policy_configuration, tag_uuids_tuple)
             if error:
                 return "", error
-            # library_uuids_list = []
-            # library_uuids_list.append(tag_uuids_tuple)
-            # library_uuids_list.append(catalog_uuids_tuple)
-            # library_uuids_tuple = tuple(library_uuids_list)
-            # return library_uuids_tuple, ""
-            return catalog_uuids_tuple, ""
+            library_uuids_list = []
+            library_uuids_list.append(tag_uuids_tuple)
+            library_uuids_list.append(catalog_uuids_tuple)
+            library_uuids_tuple = tuple(library_uuids_list)
+            return library_uuids_tuple, ""
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating library, the exception error: ", str(e), flush=True)
             return "" ,"When creating library, the exception error: " + str(e)

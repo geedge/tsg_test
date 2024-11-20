@@ -61,7 +61,8 @@ class APIClient:
         
     def delete_libraries(self, library_uuids_tuple):
         libraries = DeleteLibraries(self.parameter, self.headers)
-        libraries.delete_libraries(library_uuids_tuple)
+        libraries.delete_catalogs(library_uuids_tuple)
+        libraries.delete_tags(library_uuids_tuple)
         
     def delete_profiles(self, profile_uuids_tuple):
         profiles = DeleteProfiles(self.parameter, self.headers)

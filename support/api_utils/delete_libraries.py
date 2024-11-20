@@ -13,9 +13,9 @@ class DeleteLibraries:
         self.api_server = self.parameter["api_server"]
         self.vsys = self.parameter["vsys"]
     
-    def delete_catalogs(self, catalog_uuids_tuple):
+    def delete_catalogs(self, library_uuids_tuple):
         try:
-            catalog_uuids_list = list(catalog_uuids_tuple)
+            catalog_uuids_list = self.extract_uuids(library_uuids_tuple, "catalog")
             deleted_catalog_dict = {"uuids": "", "vsys":1}
             deleted_catalog_dict["vsys"] = self.vsys
             if len(catalog_uuids_list) == 1:
@@ -33,9 +33,9 @@ class DeleteLibraries:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting catalog, the exception error: ", str(e), flush=True)
             return "" ,"When deleting catalog, the exception error: " + str(e)
         
-    def delete_tags(self, tag_uuids_tuple):
+    def delete_tags(self, library_uuids_tuple):
         try:
-            tag_uuids_list = list(tag_uuids_tuple)
+            tag_uuids_list = self.extract_uuids(library_uuids_tuple, "tag")
             delete_tag_dict = {"uuids": "", "vsys":1}
             delete_tag_dict["vsys"] = self.vsys
             if len(tag_uuids_list) == 1:
@@ -52,6 +52,13 @@ class DeleteLibraries:
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting tag, the exception error: ", str(e), flush=True)
             return "" ,"When deleting tag, the exception error: " + str(e)
+
+    def extract_uuids(self, library_uuids_list, type):
+        temp_uuids_list = []
+        for library_uuids in library_uuids_list:
+            if library_uuids["type"] == type:
+                temp_uuids_list.append(library_uuids)
+        return temp_uuids_list
 
 if __name__ == "__main__":
     library_uuids_list = [

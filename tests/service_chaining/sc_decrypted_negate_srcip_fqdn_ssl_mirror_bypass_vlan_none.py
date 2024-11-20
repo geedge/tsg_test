@@ -1,261 +1,200 @@
 # -*- coding: UTF-8 -*-
+import time
 import os
 import sys
-
-from support.ui_utils.element_position.map_element_position_library import replace_paras
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-import time
-import pytz
+import traceback
 from datetime import datetime
-from support.ui_utils.workpath import workdir
-from support.ui_utils.ui_client import UIClient
-from support.api_utils.api_client import APIClient
-from support.packet_generator.traffic_generator import *
+from support.common_utils.create_policy import CreatePolicy
 from support.report_update import ReportUpdate
-
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Begin to run test case: " + parameter["test_case_name"], flush=True)
-
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
         # 参数初始化
-        result, exception_result = "", ""
-        test_summary = {}
-
+        exception_result = ""
+        result = {}
+        
         # 脚本启动时间
         start_time = time.time()
 
-        policy_configuration = {
-        "and_conditions": [
-            {
-                "negate_option": False,
-                "or_conditions": [
+        # 测试数据
+        test_data = {
+            "is_multi_priority": False,
+            "rule_num": 1,
+            "policy_type": "service_chaining",
+            "rule_name": "sc_decrypted_negate_srcip_fqdn_ssl_mirror_bypass_vlan_none",
+            "rule_action": "service_chaining",
+            "targeted_traffic": "decrypted",
+            "rule_type": "create",
+            "condition": {
+                "source_ip": [
                     {
-                        "attribute_name": "ATTR_SOURCE_IP",
-                        "object_uuids": [
-                            "01933e4c-addc-7af0-91b4-91d40ab96e96"
+                        "name": "service_chaining_source_ip",
+                        "object_type": "ip",
+                        "select_type": False,
+                        "negate": True,
+                        "item": [
+                            {
+                                "item_operation": "add",
+                                "item_type": "ipv4",
+                                "item_value": parameter["test_pc_ip"]
+                            }
+                        ]
+                    }
+                ],
+                "source_port": [],
+                "destination_port": [],
+                "internal_ip": [],
+                "internal_port": [],
+                "external_ip": [],
+                "external_port": [],
+                "geography": [],
+                "sub_id": [],
+                "device": [],
+                "tunnel": [],
+                "tunnel_level": [],
+                "flag": [],
+                "application": [
+                    {
+                        "name": "ssl",  
+                        "object_type": "application",
+                        "negate": False
+                    }
+                ],
+                "server_fqdn": [
+                    {
+                        "name": "service_chaining_fqdn",
+                        "object_type": "fqdn",
+                        "select_type": False,
+                        "negate": False,
+                        "plus": False,
+                        "items": [
+                            {
+                                "item_operation": "add",
+                                "item_value": "$www.facebook.com",
+                            }
+                        ]
+                    }
+                ],
+                "protocol_filed": [],
+                "sub_action_override": False,
+                "sub_action": [],
+                "packet_capture": [],
+            },
+            "multiProfile": True,
+            "action_parameter": {
+                "targeted_traffic": "raw",
+                "sff_profiles": [
+                    {
+                        "name": "autotest",
+                        "type": 2,
+                        "load_balance_method": "hash-int-ip",
+                        "load_balance_localization": "nearby",
+                        "failure_action": "bypass",
+                        "service_func_profiles": [
+                            {
+                                "name": "vlan_none",
+                                "admin_status": 1,
+                                "device_group": {
+                                    "value": "group-xxg-tsgx",
+                                    "tag": "data_center"
+                                },
+                                "connectivity": {
+                                    "method": "layer2_switch",
+                                    "int_vlan_tag": "random",
+                                    "ext_vlan_tag": "random",
+                                    "dest_ip": "110"
+                                },
+                                "health_check": {
+                                    "method": "none",
+                                    "interval_ms": 200,
+                                    "retires": 5
+                                }
+                            }
                         ]
                     }
                 ]
-            }
-        ],
-        "action": "service_chaining",
-        "type": "service_chaining",
-        "action_parameter": {
-            "sub_action": "replace_file",
-            "replacement_file": {
-                "vsys": 1,
-                "return_data": 1,
-                "name": "test",
-                "content_name": "Files-test-5.png",
-                "content_type": "application / vnd.android.package - archive"
-            }
-        },
-        "name": "test-ref-1",
-        "is_enabled": 1,
-        "log_option": "metadata"
+            },
+            """
+            "profile": [
+                {
+                    "name": "mirror_bypass_vlan_none",
+                    "profile_type": "create",
+                    "type": "mirroring",
+                    "load_balance_method": "hash_int-ip",
+                    "load_balance_localization": "nearby",
+                    "failure_action": "Bypass",
+                    "service_functions": [
+                        {
+                            "name": "vlan_none",
+                            "profile_type": "create",
+                            "device_group": "Device_Group:group-xxg-tsgx",
+                            "connectivity": "Layer_2_Switch:random:random",
+                            "health_check": "none",
+                            "enable": "on"
+                        }
+                    ]
+                }
+            ],
+            """
+            "log_query_param": [{"query_field_key": "sc_rsp_decrypted", "query_value": ""}],
+            "traffic":{
+                "protocol": "ssl",
+                "type": "curl",
+                "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.facebook.com"
+                },
+            "expected_return":"facebook",
+            "token": ""
         }
 
-        traffic_generation = {
-            "tool": "http",  # or trex/http
-            "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
-        }
-
-        verification_result = {
-            "excepted_traffic_result": "reset",
-            "expected_metric": {"hits": 1},
-            "expected_log": [
-                {"query_field_key": "http_host", "query_value": "open.node.com"},
-                {"query_field_key": "destination_ip", "query_value": "1.1.1.1"}
-            ]
-        }
-
-        # 创建
-        if parameter["initiation_method"] == "ui":
-            ui_client = UIClient()
-            objects_tuple, api_error = ui_client.create_objects(policy_configuration)
-            rules_tuple, ui_error = ui_client.create_rules(policy_configuration, objects_tuple)
-            if len(ui_error) > 0:
-                return ui_error
-        elif parameter["initiation_method"] == "api":
-            api_client = APIClient(parameter)
-            # {uuid, type}, i.e., {"12341-232-a21", "ip"}
-            """
-            objects_tuple, api_error = api_client.create_objects(policy_configuration)
-            if len(api_error) > 0:
-                return api_error
-            """
-            # 处理Profiles
-            profile_tuple, api_error = api_client.create_profiles(policy_configuration)
-            if len(api_error) > 0:
-                return api_error
-            """
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
-            if len(api_error) > 0:
-                return api_error
-            """
-        # 等待下发配置生效
-        time.sleep(3)
-
-        # 类实例化
-        generator = TrafficGenerator()
-
-        # 获取当前时间
-        utc_tz = pytz.timezone('UTC')
-        current_utc_time = datetime.now(utc_tz)
-        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-        # 触发流量
-        traffic_result = generator.run(policy_configuration, traffic_generation)
-
-        # 验证流量生成器的返回值是否符合策略执行的预期
-        excepted_traffic_result, error = generator.result(verification_result, traffic_result)
-        if excepted_traffic_result == False:
-            return error
-
-        # 验证tsg的日志是否符合策略执行的预期
-        if parameter["initiation_method"] == "ui":
-            log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
-        elif parameter["initiation_method"] == "api":
-            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time,
-                                                   traffic_result)
-        if log_result == True:
-            test_summary["log"] = "Pass."
-        elif log_result == False:
-            test_summary["log"] = "The failure reason: the returned log does not match the expected result."
-        elif log_result == None:
-            test_summary["log"] = "The failure reason: the returned log is empty."
-        elif len(log_result) > 0:
-            test_summary["log"] = log_result
-
-        # 验证tsg的metric是否符合策略执行的预期
-        if parameter["initiation_method"] == "ui":
-            metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
-        elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
-        if metric_result == True:
-            test_summary["metric"] = "Pass."
-        elif metric_result == False:
-            test_summary["metric"] = "The failure reason: the returned metric does not match the expected result."
-        elif metric_result == None:
-            test_summary["metric"] = "The failure reason: the returned metric is empty."
-        elif len(metric_result) > 0:
-            test_summary["metric"] = metric_result
-
-        return test_summary
-    except Exception as e:
-        exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "When running test case, the exception error: ", str(e), flush=True)
-        return "When running test case, the exception error: " + str(e)
-    finally:
-        # 删除
-        if parameter["initiation_method"] == "ui":
-            if not rules_tuple:
-                ui_client.delete_rules(parameter, policy_configuration)
-        elif parameter["initiation_method"] == "api":
-            if not rules_tuple:
-                api_client.delete_rules(rules_tuple)
-            if not objects_tuple:
-                api_client.delete_objects(objects_tuple)
-
-        # 统计脚本用时
+        # 测试用例实例化
+        create = CreatePolicy(test_data, parameter)
+        result = create.create_policy()
+        
+        # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
-
+        return result
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
+              flush=True)
+        traceback.print_exc()
+        return "Error: " + str(e)
+    finally:
+        # 清理环境
+        if isinstance(create, CreatePolicy):
+            create.clean_up()
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
-
-
+    
 if __name__ == '__main__':
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.87",
+        "username": "lytest",
+        "password": "123456ly",
+        "test_pc_ip": "192.168.64.91",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "initiation_method": "api",
+        "script_type": "ui",
         "env": "tsgx",
-        "vsys": 5,
-        "root_path": workdir,
-        "path": workdir + "/tests",
-        "module_name": "security",
-        "test_case_name": os.path.basename(__file__)[:-3]
+        "vsys_id": 1,
+        "is_log": 1,
+        "root_path": "C:/automation_project/tsg_test",
+        "path": "C:/automation_project/tsg_test/tests/ui",
+        "module_name": "service_chaining",
+        "test_case_name": "sc_decrypted_negate_srcip_fqdn_ssl_mirror_bypass_vlan_none"
     }
-    sc_action = {"action_parameter": {
-            "targeted_traffic": "raw",
-            "sff_profiles": [
-                {
-                    "name": "autotest",
-                    "type": 2,
-                    "load_balance_method": "hash-int-ip",
-                    "load_balance_localization": "nearby",
-                    "failure_action": "bypass",
-                    "service_func_profiles": [
-                        {
-                            "name": "autotest",
-                            "admin_status": 1,
-                            "device_group": {
-                                "value": "center-xxg-9140",
-                                "tag": "data_center"
-                            },
-                            "connectivity": {
-                                "method": "layer2_switch",
-                                "int_vlan_tag": "4090",
-                                "ext_vlan_tag": "4091",
-                                "dest_ip": "110"
-                            },
-                            "health_check": {
-                                "method": "none",
-                                "interval_ms": 200,
-                                "retires": 5
-                            }
-                        }
-                    ]
-                }
-            ]
-        }}
-    Monitor_action = {"action_parameter": {
-            "traffic_mirroring": {
-                "enable": 1,
-                "vlanID": 1,
-                "mirroring_profile": {"name":"autotest","vlan_array":["65","66"]}
-            },
-            "packet_capture": {
-                "enable": 0
-            }
-        }
-    }
-    html_profile_action = {
-        "action_parameter":{
-            "sub_action":"block",
-            "manipulation_block":"warning_page",
-            "code":403,
-            "html_profile": {
-                "name": "test",
-                "format": "html",
-                "content_name": "Response-Pages_1.html"
-            }
-        }
-    }
-    replace_rule_action = {
-        "action_parameter": {
-            "sub_action": "replace_file",
-            "replacement_file": {
-                "vsys": 1,
-                "return_data": 1,
-                "name": "test",
-                "content_name": "Files-test-5.png",
-                "content_type": "application / vnd.android.package - archive"
-            }
-        }
-    }
-    parameter = replace_paras(parameter)
     run(parameter)
+    """
+    # 在测试文件的当前路径执行如下命令执行测试用例：
+    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
+
+    # 执行如下命令生成测试报告（自动打开浏览器）：
+    allure serve allure
+    """
