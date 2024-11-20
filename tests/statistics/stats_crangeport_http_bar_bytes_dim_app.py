@@ -437,6 +437,19 @@ if __name__ == '__main__':
                  "ttl": {"min": 300, "max": 300}}]}],
             "packet_capture": {"enable": 0}, "send_icmp_unreachable": 0, "send_tcp_reset": 0}
     }
+    shaping_action = {
+        "action_parameter": {
+            "fair_factor": 1,
+            "priority": 5,
+            "profile_chain": [{"name": "test", "type": "generic", "type_argument": "none",
+                               "limits": [{"direction": "incoming", "bandwidth": 50000},
+                                          {"direction": "outgoing", "bandwidth": 100000}],
+                               "aqm_options": {"algorithm": "blue"}}],
+            "dscp_marking": {
+                "enabled": 0
+            }
+        }
+    }
     """
     # 在测试文件的当前路径执行如下命令执行测试用例:
     pytest –cache-clear  -v  pytest_json.py --alluredir ./allure

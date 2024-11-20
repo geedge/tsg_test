@@ -2,6 +2,7 @@
 import json
 import requests
 import time
+import random
 from datetime import datetime
 
 class CreateProfiles:
@@ -42,9 +43,6 @@ class CreateProfiles:
                     sff_uuids, sf_temp = self.create_text_profile(sff_profile, profile_type)
                     profile_uuids_list.append(sff_uuids)
                 policy_configuration["action_parameter"]["sff_profiles"] = profile_uuids_list
-            elif "profile_chain" in policy_configuration["action_parameter"].keys():
-                profile_type = "traffic-shaping-profiles"
-                #policy_configuration["action_parameter"][""] =
             elif "html_profile" in policy_configuration["action_parameter"].keys():
                 profile_type = "response-pages"
                 #"html_profile": {
@@ -96,6 +94,14 @@ class CreateProfiles:
                     policy_configuration["action_parameter"]["lua_script"]["file_path"])
                 profile_uuids_list.append(lua_uuids)
                 policy_configuration["action_parameter"]["lua_script"] = lua_uuids
+            elif "profile_chain" in policy_configuration["action_parameter"].keys():
+                profile_type = "traffic-shaping-profiles"
+                for traffic_shaping_profile in policy_configuration["action_parameter"]["profile_chain"]:
+                    traffic_shaping_uuids, traffic_shaping_temp = self.create_text_profile(
+                        traffic_shaping_profile, profile_type)
+                    profile_uuids_list.append(traffic_shaping_uuids)
+                policy_configuration["action_parameter"]["profile_chain"] = profile_uuids_list
+
             if "tcp_option_profile" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-tcp-option-profiles"
                 tcp_option_uuids, tcp_option_temp = self.create_text_profile(
@@ -129,7 +135,7 @@ class CreateProfiles:
             return profile_uuids_tuple, ""
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating profile, the exception error: ", str(e), flush=True)
-            return "" ,"When creating profile, the exception error: " + str(e)
+            return "" ,"Exception when classifying profile types, the exception error: " + str(e)
 
     def create_text_profile(self, post_data, profile_type):
         api_server = self.parameter["api_server"]
@@ -151,8 +157,10 @@ class CreateProfiles:
                 post_common_data = {"vsys": vsys, "return_data": 1, "decryption_profile": post_data}
             case "dns-resource-records":
                 post_common_data = {"vsys": vsys, "return_data": 1, "dns_resource_record": post_data}
+            case "traffic-shaping-profiles":
+                post_common_data = {"vsys": vsys, "return_data": 1, "traffic_shaping_profile": post_data}
             case _:
-                return "", "When creating {} profile, the exception error: ".format(profile_type)
+                return "", "New profile type:{}, please add corresponding logic".format(profile_type)
         try:
             profile_uuids_list = []
             url = "{}/v1/profiles/{}".format(api_server, profile_type)
@@ -242,6 +250,40 @@ class CreateProfiles:
                 uuid = response_dict["data"]["proxy_tcp_option_profile"]["uuid"]
             case "dns-resource-records":
                 uuid = response_dict["data"]["dns_resource_record"]["uuid"]
+            case "trusted-certificate-authorities":
+                uuid = response_dict["data"]["uuid"]
+            case "traffic-shaping-profiles":
+                uuid = response_dict["data"]["traffic_shaping_profile"]["uuid"]
             case _:
-                uuid = ""
+                return "", "New profile type:{}, please add corresponding logic".format(type)
         return uuid, ""
+
+    def search_profile_by_name(self, profile_name, profile_type):
+        if profile_name == None or  profile_name =="" or profile_type == None or profile_type == "":
+            return "","Required parameters are empty!"
+        api_server = self.parameter["api_server"]
+        vsys = self.parameter["vsys"]
+        url = "{}/v1/profiles/{}".format(api_server, profile_type)
+        params_dict = {
+            "vsys": vsys,
+            "name": profile_name,
+            "page_no": 1,
+            "page_size": 30
+        }
+        try:
+            response = requests.get(url, params=params_dict, headers=self.headers, verify=False)
+            if response.status_code == 200:
+                response_dict = json.loads(response.text)
+                profile_list = response_dict["data"]["list"]
+            else:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                      "Search {} profile failed.".format(profile_type), flush=True)
+                return "", "Search {} profile failed.".format(profile_type)
+            return profile_list, ""
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                  "When Searching {} profile, the exception error: ".format(profile_type), str(e), flush=True)
+            return "", "When Searching {} profile, the exception error: ".format(profile_type) + str(e)
+    def random_vlan_id(self):
+        random_num = random.randint(1, 4094)
+        return random_num
