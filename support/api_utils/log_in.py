@@ -4,7 +4,7 @@ from datetime import datetime
 
 class LogIn:
     def encryptPwd(self, password, api_server):
-        url = api_server + "/v1/user/encryptpwd"
+        url = api_server + "/v1/users/encryptpwd"
         pwJson = {"password": ""}
         pwJson["password"] = password
         response = requests.get(url, params=pwJson, verify=False)
@@ -13,7 +13,7 @@ class LogIn:
         return pwd
 
     def login(self, user, pwd, api_server):
-        url = api_server + "/v1/user/login"
+        url = api_server + "/v1/users/login"
         loginJson = {"username": "", "password": "", "auth_mode": 1, "ldap_id": "", "vsys_id": 0}
         loginJson["username"] = user
         loginJson["password"] = pwd
