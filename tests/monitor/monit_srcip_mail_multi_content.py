@@ -89,27 +89,23 @@ def run(parameter):
         }
 
         traffic_generation = {
-            "protocol": "mail",
-            "type": "curl",  # client/curl
-            "mail_type": "smtp",  # gmail or smtp or smtp_ssl
-            "mail_server": "192.168.40.206",  # gmail: smtp.gmail.com
-            "mail_port": 25,  # gmail：465（用于SSL）、587（用于启动TLS）。smtp默认：25
-            "mail_timeout": 20,
-            "sender": "hbn@163.com",
-            "password": "111111",
-            "receiver": "autotest@163.com",
-            "subject": "Bestman",
-            "body": "123",
-            # "attach": "/app/support/packet_generator/mail_file/subjectEnglish.txt"
-            "attach": "/opt/traffic_replay/mail_file/subjectEnglish.txt"
+            "tool": "trex",  # or trex/http
+            "clients_start_ip": "10.64.224.3",
+            "clients_end_ip": "10.64.224.3",
+            "servers_start_ip": "2.1.1.3",
+            "servers_end_ip": "2.1.1.3",
+            "m": 1,
+            "d": 1,
+            "yaml_name": "test",
+            "pcap_name": "mail_imap"
         }
 
         verification_result = {
-            "excepted_traffic_result":  "Email sent successfully",
+            "excepted_traffic_result": "trex",
             "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "decoded_as", "query_value": "MAIL"},
-                {"query_field_key": "mail_account", "query_value": "hbn@163.com"}
+                {"query_field_key": "mail_attachment_name", "query_value": "test1214.txt"}
             ]
         }
 

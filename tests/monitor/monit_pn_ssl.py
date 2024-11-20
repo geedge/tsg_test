@@ -32,6 +32,7 @@ def run(parameter):
                         {
                             "attribute_name": "ATTR_GTP_PHONE_NUMBER",
                             "type": "mobile_identity",
+                            "sub_type": "phone_number",
                             "member_type": "item",
                             "name": "monitor_phone_number",
                             "items": [
