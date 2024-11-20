@@ -32,6 +32,7 @@ def run(parameter):
                         {
                             "attribute_name": "ATTR_GTP_IMEI",
                             "type": "mobile_identity",
+                            "sub_type": "imei",
                             "member_type": "item",
                             "name":"monitor_imei",
                             "items": [

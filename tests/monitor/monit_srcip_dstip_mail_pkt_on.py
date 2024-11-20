@@ -91,6 +91,7 @@ def run(parameter):
 
         traffic_generation = {
             "tool": "mail",  # or trex/http
+            "type": "curl",
             "mail_type": "smtp",  # gmail or smtp or smtp_ssl
             "mail_server": "192.168.40.206",  # gmail: smtp.gmail.com
             "mail_port": 25,  # gmail：465（用于SSL）、587（用于启动TLS）。smtp默认：25
