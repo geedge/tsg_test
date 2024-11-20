@@ -30,11 +30,12 @@ class CreateProfiles:
                 sff_profile_list = []
                 for sff_profile in policy_configuration["action_parameter"]["sff_profiles"]:
                     sf_profile_list = []
-                    if "vsys" in sff_profile.keys():
-                        sff_profile["vsys"] = vsys
                     for sf_profile in sff_profile["service_func_profiles"]:
-                        if "vsys" in sf_profile.keys():
-                            sf_profile["vsys"] = vsys
+                        if "connectivity" in sf_profile.keys():
+                            if "int_vlan_tag" in sf_profile["connectivity"].keys() and "random" == sf_profile["connectivity"]["int_vlan_tag"]:
+                                   sf_profile["connectivity"]["int_vlan_tag"] = self.random_vlan_id
+                            if "ext_vlan_tag" in sf_profile["connectivity"].keys() and "random" == sf_profile["connectivity"]["ext_vlan_tag"]:
+                                   sf_profile["connectivity"]["ext_vlan_tag"] = self.random_vlan_id
                         profile_type = "service-functions"
                         sf_uuids, sf_temp = self.create_text_profile(sf_profile, profile_type)
                         sf_profile_list.append(sf_uuids)
@@ -63,6 +64,9 @@ class CreateProfiles:
                         profile_uuids_list.append(record_uuids)
             elif "traffic_mirroring" in policy_configuration["action_parameter"].keys():
                 profile_type = "traffic-mirroring-profiles"
+                for vlan_tmp in policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]["vlan_array"]:
+                    if "random" == vlan_tmp:
+                        vlan_tmp = self.mirroring_random_vlan_id()
                 mirroring_uuids, mirroring_temp = self.create_text_profile(policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"], profile_type)
                 profile_uuids_list.append(mirroring_uuids)
                 policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"] = mirroring_uuids
@@ -286,4 +290,7 @@ class CreateProfiles:
             return "", "When Searching {} profile, the exception error: ".format(profile_type) + str(e)
     def random_vlan_id(self):
         random_num = random.randint(1, 4094)
+        return random_num
+    def mirroring_random_vlan_id(self):
+        random_num = random.randint(1, 66)
         return random_num
