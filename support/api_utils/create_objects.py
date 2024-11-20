@@ -72,16 +72,25 @@ class CreateObjects:
                                 object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
                                 object_uuids_list.append(object_uuids_temp_dict)
                             elif object_temp[j]["type"] == "application" and "sub_type" in object_temp[j]:
+                                object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
+                                object_template_json["object"]["type"] = object_temp[j]["type"]
+                                if "name" in object_template_json["object"]:
+                                    del object_template_json["object"]["name"]
                                 application = {}
                                 app_surrogates = object_temp[j]["application"]["app_surrogates"]
                                 application["app_surrogates"] = []
                                 application["app_properties"] = object_temp[j]["application"]["app_properties"]
+                                application["app_name"] = object_temp[j]["application"]["app_name"]
+                                application["app_longname"] = object_temp[j]["application"]["app_longname"]
                                 for m in range(len(app_surrogates)):
                                     application["app_surrogates"].append({})
                                     application["app_surrogates"][m]["group_by"] = app_surrogates[m]["group_by"]
+                                    application["app_surrogates"][m]["ordered_match"] = app_surrogates[m]["ordered_match"]
                                     application["app_surrogates"][m]["signature_sequence"] = []
+                                    application["app_surrogates"][m]["signature_sequence"].append({})
                                     signature_sequence = app_surrogates[m]["signature_sequence"]
-                                    for n in range(len(app_surrogates)):
+                                    # 在signature_sequence中配置signature_uuid
+                                    for n in range(len(signature_sequence)):
                                         signature = {}
                                         signature["and_conditions"] = []
                                         signature["name"] = signature_sequence[n]["signature"]["name"]
@@ -118,10 +127,19 @@ class CreateObjects:
                                                         # 创建signature
                                                         signature_dict = dict(vsys = vsys, signature = signature, return_data = 1)
                                                         object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, signature_object_temp, n, "signature", signature_dict)
-                                    # 提取signature，组织application数据
-                                    # for t in len(object_uuids_list):
-                                    #     print("aaa")
-           
+                                        # 提取signature，组织application数据
+                                        for t in range(len(object_uuids_list)):
+                                            if object_uuids_list[t]["type"] == "signature":
+                                                signature_uuid = object_uuids_list[t]["uuid"]
+                                                application["app_surrogates"][m]["signature_sequence"][m]["signature_uuid"] = signature_uuid
+                                                application["app_surrogates"][m]["signature_sequence"][m]["exclude"] = signature_sequence[m]["exclude"]
+                                object_template_json["object"]["application"] = application
+                                if "name" in object_template_json["object"]:
+                                    del object_template_json["object"]["name"]
+                                if "items" in object_template_json["object"]:
+                                    del object_template_json["object"]["items"]
+                                # 请求接口创建application
+                                object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, object_temp, j, "application", "")
             object_uuids_tuple = tuple(object_uuids_list)
             return object_uuids_tuple, ""
         except Exception as e:
@@ -206,6 +224,12 @@ class CreateObjects:
                         item_dict = {}
                         item_dict = dict(op=item_temp[t]["op"], interval=item_temp[t]["interval"])
                         item_list.append(item_dict)
+                elif object_type == "flag":
+                    for t in range(len(item_temp)):
+                        item_dict = {}
+                        flag, mask = self.compute_flags(item_temp[t]["flag"])
+                        item_dict = dict(op=item_temp[t]["op"], flag = str(flag), mask = str(mask))
+                        item_list.append(item_dict)
                 object_template_json["object"]["items"] = item_list
                 object_template_json["object"]["type"] = object_temp[j]["type"]
                 object_template_json["object"]["name"] = object_temp[j]["name"]
@@ -216,6 +240,9 @@ class CreateObjects:
                     del object_template_json["object"]["items"]
                 object_template_json["object"]["tunnel"] = {}
                 object_template_json["object"]["tunnel"] = item_uuids_list
+            elif object_type == "application":
+                object_template_json["object"]["type"] = object_temp[j]["type"]
+                object_template_json["object"]["member_type"] = "application"
             if object_type != "signature":
                 url = api_server + "/v1/objects/{}".format(object_type_dict[object_temp[j]["type"]])
                 response = requests.post(url, headers=self.headers, json=object_template_json, verify=False)
@@ -245,3 +272,61 @@ class CreateObjects:
             exception_result = str(e)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
             return "When running test case, the exception error: " + str(e)
+    def compute_flags(self, config):  
+        # 解析 JSON 字符串到字典  
+        # config = json.loads(config_json)  
+        
+        # 初始化 flag 和 mask  
+        flag = 0  
+        mask = 0  
+
+        # 根据输入字典里的值设置 flag 和 mask，第0位不对应任何flag，从第1位开始
+        if 'Bulky' in config:  
+            flag |= (1 << 1) if config['Bulky'] else 0  #   
+            mask |= (1 << 1)   
+        if 'CBR Streaming' in config:  
+            flag |= (1 << 2) if config['cbr_streaming'] else 0  
+            mask |= (1 << 2)  
+        if 'Client is Local' in config:  
+            flag |= (1 << 3) if config['Client is Local'] else 0  
+            mask |= (1 << 3)
+        if 'Server is Local' in config:  
+            flag |= (1 << 4) if config['Server is Local'] else 0  
+            mask |= (1 << 4) 
+        if 'Download' in config:  
+            flag |= (1 << 5) if config['Download'] else 0  
+            mask |= (1 << 5) 
+        if 'Interactive' in config:  
+            flag |= (1 << 6) if config['Interactive'] else 0  
+            mask |= (1 << 6) 
+        if 'Inbound' in config:  
+            flag |= (1 << 7) if config['Inbound'] else 0  
+            mask |= (1 << 7) 
+        if 'Outbound' in config:  
+            flag |= (1 << 8) if config['Outbound'] else 0  
+            mask |= (1 << 8) 
+        if 'Pseudo Unidirectional' in config:  
+            flag |= (1 << 9) if config['Pseudo Unidirectional'] else 0  
+            mask |= (1 << 9) 
+        if 'Streaming' in config:  
+            flag |= (1 << 10) if config['Streaming'] else 0  
+            mask |= (1 << 10) 
+        if 'Unidirectional' in config:  
+            flag |= (1 << 11) if config['Unidirectional'] else 0  
+            mask |= (1 << 11) 
+        if 'Random looking' in config:  
+            flag |= (1 << 12) if config['Random looking'] else 0  
+            mask |= (1 << 12) 
+        if 'C2S' in config:  
+            flag |= (1 << 13) if config['C2S'] else 0  
+            mask |= (1 << 13) 
+        if 'S2C' in config:  
+            flag |= (1 << 14) if config['S2C'] else 0  
+            mask |= (1 << 14) 
+        if 'Bidirectional' in config:  
+            flag |= (1 << 15) if config['Bidirectional'] else 0  
+            mask |= (1 << 15) 
+        if 'Tunneling' in config:  
+            flag |= (1 << 16) if config['Tunneling'] else 0  
+            mask |= (1 << 16)    
+        return flag, mask  
