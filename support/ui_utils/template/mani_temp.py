@@ -27,7 +27,7 @@ def run(parameter):
         policy_configuration = {
             "name": "test_name",
             "type": "proxy_manipulation",
-            "action": "modify",
+            "action": "redirect",
             "and_conditions": [
             {
                 "negate_option": False,
@@ -60,23 +60,6 @@ def run(parameter):
                 "negate_option": False,
                 "or_conditions": [
                 {
-                    "attribute_name": "ATTR_SERVER_FQDN",
-                    "name": "manipulation_fqdn",
-                    "type": "fqdn",
-                    "statistics_option": "none",
-                    "member_type": "item",
-                    "items": [
-                    {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "^www.python.org$"
-                    }]
-                }]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                {
                     "attribute_name": "ATTR_HTTP_URL",
                     "name": "manipulation_url",
                     "type": "url",
@@ -86,7 +69,24 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "python"
+                        "expression": "baidu"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_REQ_HDR",
+                    "name": "manipulation_http_reqheader",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "Safari/537.36$"
                     }]
                 }]
             }],
@@ -94,34 +94,22 @@ def run(parameter):
             "log_option": "metadata",
             "action_parameter":
             {
-                "sub_action": "edit_element",
-                "rules": [
-                {
-                    "anchor_element":
-                    {
-                        "contained_keyword": "Python",
-                        "search_scope": "whole_file"
-                    },
-                    "target_element":
-                    {
-                        "element_treatment": "mark",
-                        "target_distance_from_matching": 1
-                    }
-                }]
+                "code": 302,
+                "to": "https://www.jd.com"
             }
         }
 
         traffic_generation = {
             "tool": "ssl",  # or trex/http
-            "command": "curl -kv --compressed  --connect-timeout 30 --max-time 60 https://www.python.org/blogs/"
+            "command": "curl --connect-timeout 30 -m 60  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\"  https://www.baidu.com"
         }
 
         verification_result = {
-            "excepted_traffic_result": "need_filter",
+            "excepted_traffic_result": "https://www.jd.com",
             "expected_metric": {"hits": 1},
             "expected_log": [
-                {"query_field_key": "http_host", "query_value": "www.python.org"},
-                {"query_field_key": "http_url", "query_value": "www.python.org/blogs/"}
+                {"query_field_key": "http_host", "query_value": "www.baidu.com"},
+                {"query_field_key": "http_user_agent", "query_value": "Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36"}
             ]
         }
 

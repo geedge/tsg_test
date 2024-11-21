@@ -70,19 +70,7 @@ def run(parameter):
                         "op": "add",
                         "expr_type": "and",
                         "expression": "python"
-                    }]
-                }]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                {
-                    "attribute_name": "ATTR_HTTP_URL",
-                    "name": "manipulation_url",
-                    "type": "url",
-                    "statistics_option": "none",
-                    "member_type": "item",
-                    "items": [
+                    },
                     {
                         "op": "add",
                         "expr_type": "and",

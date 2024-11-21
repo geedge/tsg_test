@@ -89,6 +89,85 @@ policy_configuration = {
             "negate_option": False,
             "or_conditions": [
                 {
+                    "attribute_name": "ATTR_GTP_APN",
+                    "name": "manipulation_apn",
+                    "type": "apn",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "eas.com$"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_GTP_PHONE_NUMBER",
+                    "name": "manipulation_phone_number",
+                    "type": "mobile_identity",
+                    "sub_type": "phone_number",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "^12312312321"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_GTP_IMSI",
+                    "name": "manipulation_imsi",
+                    "type": "mobile_identity",
+                    "sub_type": "imsi",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "^12312312321$"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
+                    "attribute_name": "ATTR_GTP_IMEI",
+                    "name": "manipulation_imei",
+                    "type": "mobile_identity",
+                    "sub_type": "imei",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "^12312312321"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "negate_option": False,
+            "or_conditions": [
+                {
                     "attribute_name": "ATTR_INTERNAL_PORT",
                     "name": "manipulation_internal_port",
                     "type": "port",
@@ -329,6 +408,54 @@ policy_configuration = {
                 }
             ]
         },
+        {
+            "sub_action": "replace_file",
+            "replacement_file": {
+                "name": "test",
+                "file_path": "hijack_png_1.png",
+                "content_name": "hijack_png_1.png",
+                "content_type": "application / vnd.android.package - archive"
+            }
+        },
+        {
+            "sub_action": "inject_css",
+            "css_file": {
+                "name": "automanipulation_insert_profile",
+                "file_path": "insert_css_1.css"
+            }
+        },
+        {
+            "sub_action": "inject_javascript",
+            "injection_section": "html_body",   #html_head
+            "js_file": {
+                "name": "manipulation_insert_profile",
+                "file_path": "insert_js_1.js"
+            }
+        },
+        {
+            "sub_action": "replace_text",
+            "rules": [
+                {
+                    "regex_enable": 0,
+                    "search_in": "http_req_uri",
+                    "find": "sdsd",
+                    "replace_with": "ggss"
+                },
+                {
+                    "regex_enable": 1,
+                    "search_in": "http_resp_body",
+                    "find": "dfsdfg",
+                    "replace_with": "dsdfsds"
+                }
+            ]
+        },
+        {
+            "lua_script": {
+                "name": "test",
+                "file_path": "run_script_replace_reqbody.lua",
+                "max_exec_time": 100
+            }
+        }
     },
     "effective_range": {
         "tag_sets": [

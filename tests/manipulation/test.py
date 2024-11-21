@@ -526,7 +526,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
             "sub_action": "block"
         }
 
-    profile_element =   {
+    profile_element = {
             "sub_action": "edit_element",
             "rules": [
                 # {
@@ -541,6 +541,54 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
                 #     }
                 # }
             ]
+        }
+
+    profile_replace_file = {
+            "sub_action": "replace_file",
+            "replacement_file": {
+                "name": "test",
+                "file_path": "hijack_png_1.png",
+                "content_name": "hijack_png_1.png",
+                "content_type": "application / vnd.android.package-archive"
+            }
+        }
+    profile_insert_css = {
+        "sub_action": "inject_css",
+        "css_file": {
+            "name": "automanipulation_insert_profile",
+            "file_path": "insert_css_1.css"
+        }
+    }
+    profile_insert_js = {
+        "sub_action": "inject_javascript",
+        "injection_section": "html_body",  # html_head
+        "js_file": {
+            "name": "manipulation_insert_profile",
+            "file_path": "insert_js_1.js"
+        }
+    }
+    profile_redirect = {
+        "code": 302,
+        "to": "http://sss.ss.dd.sss"
+    }
+
+    profile_replace_text = {
+            "sub_action": "replace_text",
+            "rules": [
+                # {
+                #     "regex_enable": 0,
+                #     "search_in": "http_req_uri",
+                #     "find": "sdsd",
+                #     "replace_with": "ggss"
+                # }
+            ]
+        }
+    profile_lua = {
+            "lua_script": {
+                "name": "test",
+                "file_path": "run_script_replace_reqbody.lua",
+                "max_exec_time": 100
+            }
         }
 
     policy_configuration = {
@@ -775,7 +823,96 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
                     tmp_dict["target_element"]["target_distance_from_matching"] = target_distance_from_matching
                     edit_element["rules"].append(copy.deepcopy(tmp_dict))
                 policy_configuration["action_parameter"] = edit_element
+            elif k in ["hijack_file"]:
+                replace_file = copy.deepcopy(profile_replace_file)
+                p_name = v[0]["profile_file"]["name"]
+                file_path = v[0]["profile_file"]["file"]
+                content_name = v[0]["profile_file"]["download_name"]
+                map_type = {
+                    "gif" : "image/gif",
+                    "jpeg" : "image/jpeg",
+                    "png" : "image/png",
+                    "svg" : "image/svg+xml",
+                    "exe" : "application/x-msdos-program",
+                    "apk" : "application/vnd.android.package-archive",
+                    "html" : "text/html"
+                }
+                tmp_type = v[0]["profile_file"]["file_type"]
+                content_type = map_type[tmp_type]
+                replace_file["replacement_file"]["name"] = p_name
+                replace_file["replacement_file"]["file_path"] = file_path
+                replace_file["replacement_file"]["content_name"] = content_name
+                replace_file["replacement_file"]["content_type"] = content_type
+                policy_configuration["action_parameter"] = replace_file
+            elif k in ["insert_script"]:
+                p_name =  v[0]["profile_file"]["name"]
+                file_path =  v[0]["profile_file"]["script"]
+                script_type = v[0]["profile_file"]["script_type"]
+                if script_type == "css":
+                    insert_profile = copy.deepcopy(profile_insert_css)
+                    insert_profile["css_file"]["name"] = p_name
+                    insert_profile["css_file"]["file_path"] = file_path
+                elif script_type == "js":
+                    map_sec = {
+                        "Before Page Load": "html_head",
+                        "After Page Load": "html_body"
+                    }
+                    insert_position = v[0]["profile_file"]["insert_position"]
+                    insert_profile = copy.deepcopy(profile_insert_js)
+                    insert_profile["js_file"]["name"] = p_name
+                    insert_profile["js_file"]["file_path"] = file_path
+                    insert_profile["injection_section"]= map_sec[insert_position]
+                policy_configuration["action_parameter"] = insert_profile
+            elif k in ["redirect_url"]:
+                code = v[0]["response_code"]
+                to = v[0]["redirect_url"]
+                redirect_action = copy.deepcopy(profile_redirect)
+                redirect_action["code"] = code
+                redirect_action["to"] = to
+                policy_configuration["action_parameter"] = redirect_action
+            elif k in ["replace_parameter"]:
+                replace_text = copy.deepcopy(profile_replace_text)
+                map_reg = {
+                    "off": 0,
+                    "on": 1
+                }
+                map_search = {
+                    "HTTP Request-URI": "http_req_uri",
+                    "HTTP Request Header": "http_req_header",
+                    "HTTP Response Header": "http_resp_header",
+                    "HTTP Request Body": "http_req_body",
+                    "HTTP Response Body": "http_resp_body",
+                }
+                for i in range(len(v)):
+                    find = v[i]["find"]
+                    replace_with = v[i]["replace_with"]
+                    tmp_reg = v[i]["regex"]
+                    if tmp_reg == "on":
+                        print("+++++++++++++++++正则校验+++++++++++++")
+                    tmp_search = v[i]["search_in"]
+                    tmp_dict = {}
+                    tmp_dict["regex_enable"] = map_reg[tmp_reg]
+                    tmp_dict["search_in"] = map_search[tmp_search]
+                    tmp_dict["find"] = find
+                    tmp_dict["replace_with"] = replace_with
+                    replace_text["rules"].append(copy.deepcopy(tmp_dict))
+                policy_configuration["action_parameter"] = replace_text
+            elif k in ["run_script"]:
+                p_name =  v[0]["profile_file"]["name"]
+                file_path =  v[0]["profile_file"]["script"]
+                max_exec_time = v[0]["profile_file"]["max_exec_time"]
 
+                p_lua = copy.deepcopy(profile_lua)
+                p_lua["lua_script"]["name"] = p_name
+                p_lua["lua_script"]["file_path"] = file_path
+                p_lua["lua_script"]["max_exec_time"] = int(max_exec_time)
+                policy_configuration["action_parameter"] = p_lua
+
+    # profile_lua = {
+    #         "lua_script": {
+    #             "name": "test",
+    #             "file_path": "run_script_replace_reqbody.lua",
+    #             "max_exec_time": 10
 
     # 提取traffic_generation
     traffic_generation["tool"] = match_dict["traffic"]["protocol"]
@@ -790,7 +927,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
         policy_configuration["action"] = "allow"
     elif match_dict["rule_action"] in ["deny"]:
         policy_configuration["action"] = "deny"
-    elif match_dict["rule_action"] in ["edit_element"]:
+    elif match_dict["rule_action"] in ["edit_element", "hijack", "insert", "replace"]:
         policy_configuration["action"] = "modify"
     elif match_dict["rule_action"] in ["monitor"]:
         policy_configuration["action"] = "monitor"
@@ -833,6 +970,38 @@ if __name__ == '__main__':
 
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
-    name = "man_edit_element_srcip_xly_fqdn_http_substr_url_whole_file_mark.py"
+    name = "man_run_script_srcip_http_pre_url.py"
     #name = "{}.py".format(name1)
     replace_test_data_from_py_2(case_directory_path=case_directory_path, name=name)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
