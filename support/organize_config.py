@@ -295,95 +295,24 @@ class OrganizeConfig:
                     else:
                         policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = traffic_generation["clients_start_ip"]
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Setrandom ip for statistics rule.", flush=True)
-        return policy_configuration, traffic_generation
-
-    # ？？
-    def generate_random_dos_src_ip(self, parameter, policy_configuration, traffic_generation):
-        vsys_id = parameter["vsys"]
-        run_env = parameter["env"]
-        for i in range(len(policy_configuration["and_conditions"])):
-            or_conditions = policy_configuration["and_conditions"][i]["or_conditions"]
-            for j in range(len(or_conditions)):
-                if or_conditions[j]["attribute_name"] == "ATTR_SOURCE_IP":
-                    src_ip = or_conditions[j]["items"][0]["ip"]
-                    if "default" in src_ip:
-                        src_ip = "10.64.77.11"
-                    if "-" not in src_ip and "/" not in src_ip:
-                        src_ip_list = src_ip.split(".")
-                        if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(1, 25))
-                        elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
-                            src_ip_list[2] = str(random.randint(224, 255))
-                        src_ip_list[3] = str(random.randint(56, 99))
-                        if run_env == "9140":
-                            src_ip_list[0] = "172"
-                            src_ip_list[1] = "56"
-                        elif run_env == "tsgx":
-                            src_ip_list[0] = "10"
-                            src_ip_list[1] = "64"
-                        new_src_ip = ".".join(src_ip_list)
-                        start_ip = new_src_ip
-                        end_ip = new_src_ip
-                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = new_src_ip
-                    elif "-" in src_ip and "/" not in src_ip:
-                        two_ip_list = src_ip.split("-")
-                        ip_list_1 = two_ip_list[0].split(".")
-                        ip_list_2 = two_ip_list[1].split(".")
-                        if str(vsys_id) == "1":  # 根据vsys id，确认IP范围
-                            ip_list_1[2] = str(random.randint(1, 25))
-                        elif str(vsys_id) == "5":  # 根据vsys id，确认IP范围
-                            ip_list_1[2] = str(random.randint(224, 255))
-                        else:
-                            ip_list_1[3] = str(random.randint(56,99))
-                        ip_list_2[2] = ip_list_1[2]
-                        ip_list_2[3] = str(int(ip_list_1[3]) + 1)
-                        new_ip_1 = ".".join(ip_list_1)
-                        new_ip_2 = ".".join(ip_list_2)
-                        if run_env == "9140":
-                            ip_list_1[0] = "172"
-                            ip_list_1[1] = "56"
-                            ip_list_2[0] = "172"
-                            ip_list_2[1] = "56"
-                        elif run_env == "tsgx":
-                            ip_list_1[0] = "10"
-                            ip_list_1[1] = "64"
-                            ip_list_2[0] = "10"
-                            ip_list_2[1] = "64"
-                        new_two_ip_list = []
-                        new_two_ip_list.append(new_ip_1)
-                        new_two_ip_list.append(new_ip_2)
-                        start_ip = new_ip_1
-                        end_ip = new_ip_2
-                        new_two_ip = "-".join(new_two_ip_list)
-                        policy_configuration["and_conditions"][i]["or_conditions"][j]["items"][0]["ip"] = new_two_ip
-                    else:
-                        start_ip = end_ip = "1.1.1.1"
-                    traffic_generation["clients_start_ip"] = start_ip
-                    traffic_generation["clients_end_ip"] = end_ip
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Set random ip for dos rule.", flush=True)
-        return policy_configuration, traffic_generation
-
-    # ？？
-    def generate_unique_dos_dst_ip(self, traffic_generation):
-        # 处理 server_start_ip 和 server_end_ip 的情况
-        dst_ip = traffic_generation["servers_start_ip"]
-        # 只对没有 "-" 或 "/" 的 IP 进行处理
-        if "-" not in dst_ip and "/" not in dst_ip:
+        #仅针对dos protection,生成dos的唯一ip
+        if policy_configuration["type"] == "dos_protection" and policy_configuration["action"] == "protect":
+            dst_ip = traffic_generation["servers_start_ip"]
             # 将 IP 分割为四部分
-            src_ip_list = dst_ip.split(".")
+            dst_ip_list = dst_ip.split(".")
             # 随机生成新 IP 的部分
-            src_ip_list[0] = "6"  # 第一部分固定为 "6"
-            src_ip_list[1] = str(random.randint(0, 255))  # 第二部分随机生成 0-255
-            src_ip_list[2] = str(random.randint(1, 223))  # 第三部分随机生成 1-223，避免保留地址
-            src_ip_list[3] = str(random.randint(0, 255))  # 第四部分随机生成 0-255
+            dst_ip_list[0] = "6"  # 第一部分固定为 "6"
+            dst_ip_list[1] = str(random.randint(0, 255))  # 第二部分随机生成 0-255
+            dst_ip_list[2] = str(random.randint(1, 223))  # 第三部分随机生成 1-223，避免保留地址
+            dst_ip_list[3] = str(random.randint(0, 255))  # 第四部分随机生成 0-255
             # 重新组合为新的 IP 地址
-            new_src_ip = ".".join(src_ip_list)
+            new_dst_ip = ".".join(dst_ip_list)
             # 将新生成的 IP 替换到 traffic 中
-            traffic_generation["servers_start_ip"] = new_src_ip
-            traffic_generation["servers_end_ip"] = new_src_ip
-        # 输出日志，记录生成的唯一 IP
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Set unique dst ip for dos rule.", flush=True)
-        return traffic_generation
+            traffic_generation["servers_start_ip"] = new_dst_ip
+            traffic_generation["servers_end_ip"] = new_dst_ip
+            # 输出日志，记录生成的唯一 IP
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Set unique dst ip for dos rule.", flush=True)
+        return policy_configuration, traffic_generation
 
     def get_policy_info(self, rule_uuid, rule_type):
         try:
