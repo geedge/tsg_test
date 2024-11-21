@@ -11,7 +11,8 @@ class DeleteProfiles:
         api_server = self.parameter["api_server"]
         vsys = self.parameter["vsys"]
         try:
-            profile_uuids_list = list(profile_uuids_tuple)
+            reversed_tuple = tuple(reversed(profile_uuids_tuple))
+            profile_uuids_list = list(reversed_tuple)
             for i in range(len(profile_uuids_list)):
                 type = profile_uuids_list[i]["type"]
                 deleted_object_dict = {"uuids": [profile_uuids_list[i]["uuid"]], "vsys": vsys}
