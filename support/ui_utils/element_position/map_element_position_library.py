@@ -1451,6 +1451,54 @@ object_apn_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": apnObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+
+object_application_object_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_appliaction_posXpath
+    },
+    "create": {
+        "objectListPage_createButton_posXpath": applicationobject_createButton_posXpath,
+        "objectPage_inputName_posXpath": application_inputname_xpath,
+        "objectPage_inputLongName_posXpath":application_input_longname_xpath,
+        "objectPage_select_category_dropwmn_posXpath":application_select_category_dropwmn_posXpath,
+        "objectPage_category_xpath":application_category_xpath,
+        "objectPage_select_subcategory_dropwmn_posXpath":application_select_subcategory_dropwmn_posXpath,
+        "objectPage_sub_category_xpath":application_sub_category_xpath,
+        "objectPage_select_content_dropwmn_posXpath":application_select_content_dropwmn_posXpath,
+        "objectPage_content_xpath": application_content_xpath,
+        "objectPage_select_risk_dropwmn_posXpath":application_select_risk_dropwmn_posXpath,
+        "objectPage_risi_xpath": application_risk_xpath,
+        "objectPage_characteristics_xpath": application_characteristics_xpath,
+        "objectPage_addItem_posXpath": applicatin_add_signature_button_posXpath,
+        "objectPage_create_signature_posXpath":application_signature_create_button_posXpath,
+        "signature_inputName_posXpath": app_signature_input_name_posXpath,
+        "signature_add_artibutem_posXpath": app_signature_add_button_posXpath,
+        "signature_condition_select_up_posXpath": app_signature_condition_select_up_posXpath,
+        "signature_new_condition__posXpath": app_signature_new_condition__posXpath,
+        "signature_new_not_condition__posXpath":app_signature_new_not_condition__posXpath,
+        "signature_add_artibute_button_posXpath":app_signature_add_artibute_button_posXpath,
+        "signature_artibute_protocols":app_signature_artibute_protocols__posXpath,
+        "objectPage_okButton_posXpath": application_ok_button_posXpath,
+        "attribute_add_object_posXpath":app_signature_attribute_add_object_posXpath,
+
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": ObjectListPage_searchLabel_posId,
+        "objectListPage_tableTbody_posXpath": ObjectListPage_tableTbody_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": ObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posId": applicationGroupObjectListPage_deleteButton_posId,
+        "objectListPage_deleteButton_warningYes_posXpath": ObjectListPage_deleteButton_warningYes_posXpath
+    }
+
+}
+
 object_application_group_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
@@ -1558,6 +1606,63 @@ object_http_signature_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": httpSignatureObjectListPage_deleteButton_warningYes_posXpath
     }
 }
+object_tunnel_object_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_tunnel_posXpath
+    },
+    "create": {
+        "objectListPage_createButton_posXpath": tunnelObjectListPage_createButton_posXpath,
+        "objectListPage_type_gre_posXpath":tunnelObjectListPage_type_gre_posXpath,
+        "objectListPage_type_ip_posXpath":tunnelObjectListPage_type_ip_posXpath,
+        "objectPage_inputName_posXpath": tunnelObjectListPage_inputName_posXpath,
+        "objectPage_endition_a_addItem_posXpath": tunnelObjectListPage_endition_a_add_item_button,
+        "objectPage_endition_b_addItem_posXpath": tunnelObjectListPage_endition_b_add_item_button,
+        "objectPage_edit_tunnel_type_posXpath": tunnelObjectListPage_edit_Type_posXpath,
+        "objectPage_okButton_posXpath": tunnelObjectPage_okButton_posXpath,
+        "objectPage_side_slic_create_button_posXpath":tunnelObjectPage_create_ip_button_posXpath,
+        "ObjectPage_side_slic_Cancel_posXpath":tunnelObjectPage_side_slic_Cancel_posXpath
+    },
+}
+
+object_interval_object_element_position = {
+    "page_jump": {
+        "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
+        "mainPage_currentPage_vsysName_posXpath": mainPage_currentPage_vsysName_posXpath,
+        "mainPage_button_menu_posXCss": mainPage_button_menu_posXCss,
+        # "mainPage_vsysTree_vsysName_posXpath": mainPage_vsysTree_vsysName_posXpath,
+        "mainPage_policyFirstLevelMenu_posXpath": mainPage_firstLevelMenu_Objects_posXpath,
+        "mainPage_policySecondLevelMenu_posXpath": mainPage_secondLevelMenu_interval_posXpath
+    },
+    "create": {
+        "objectListPage_createButton_posXpath": intObjectListPage_createButton_posXpath,
+        "objectPage_inputName_posXpath": intObjectPage_inputName_posXpath,
+        "objectPage_addItem_posXpath": intObjectPage_addItem_posXpath,
+        "objectPage_inputItem_lowBoundary_posXpath": intObjectDetailPage_itemValueInput_lowBoundary_poXpath,
+        "objectPage_inputItem_upBoundary_posXpath":intObjectDetailPage_itemValueInput_upBoundary_poXpath,
+        "objectPage_button_saveItem_posXpath": intObjectDetailPage_itemSaveButton_poXpath,
+        "objectPage_okButton_posXpath": intObjectPage_okButton_posXpath,
+        "objectPage_okButton_warningYes_posXpath": intObjectPage_okButton_warningYes_posXpath
+    },
+    "search": {
+        "objectListPage_searchLabel_posId": ipObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath,
+        "objectListPage_search_input_posXpath": ipObjectListPage_search_input_posXpath,
+        "objectListPage_search_dropDown_item_posXpath": ipObjectListPage_search_dropDown_item_posXpath,
+        "objectListPage_search_button_posXpath": ipObjectListPage_search_button_posXpath
+    },
+    "delete": {
+        "objectListPage_allSelect_posXpath": ipObjectListPage_allSelect_posXpath,
+        "objectListPage_deleteButton_posXpath": ipObjectListPage_deleteButton_posXpath,
+        "objectListPage_deleteButton_warningYes_posXpath": ipObjectListPage_deleteButton_warningYes_posXpath
+    }
+}
+
 
 # profile
 profile_response_page_element_position = {
@@ -2139,6 +2244,12 @@ def get_element_position(key_name):
         element_position_map =object_account_object_element_position
     elif key_name == "flag":
         element_position_map =object_flag_object_element_position
+    elif key_name == "interval":
+        element_position_map = object_interval_object_element_position
+    elif key_name == "application":
+        element_position_map = object_application_object_element_position
+    elif key_name == "tunnel":
+        element_position_map = object_tunnel_object_element_position
     # profile
     elif key_name == "response_page":
         element_position_map = profile_response_page_element_position

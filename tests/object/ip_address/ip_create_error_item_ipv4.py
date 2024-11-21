@@ -1,6 +1,6 @@
 import time
 from support.api_utils.log_in import *
-from support.common_utils.create_policy import CreatePolicy
+from support.general_ui_utils.object.create_objects import CreateObjects
 from support.report_update import ReportUpdate
 
 
@@ -38,8 +38,8 @@ def run(parameter):
         }
 
         # 测试用例实例化
-        create = CreatePolicy(test_data, parameter)
-        result = create.create_policy()
+        create = CreateObjects(test_data)
+        result = create.create(test_data)
 
     except Exception as e:
         exception_result = str(e)
@@ -47,7 +47,7 @@ def run(parameter):
         return "Error: " + str(e)
     finally:
         # 清理环境并删除配置
-        if isinstance(create, CreatePolicy):
+        if isinstance(create, CreateObjects):
             create.clean_up()
         # 统计脚本用时
         end_time = time.time()
