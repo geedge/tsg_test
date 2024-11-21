@@ -17,8 +17,11 @@ mainPage_secondLevelMenu_fqdn_posXpath = "//div[@class='MuiCollapse-wrapper MuiC
 mainPage_secondLevelMenu_subid_posXpath = "//div[@class='MuiCollapse-wrapper MuiCollapse-vertical css-hboir5']//span[text()='Subscriber IDs']"  # 二级菜单sub id
 mainPage_secondLevelMenu_apn_posXpath = "//div[@class='MuiCollapse-wrapper MuiCollapse-vertical css-hboir5']//span[text()='APNs']"  # 二级菜单apn
 mainPage_secondLevelMenu_appliactionGroup_posId = "Application_appGroups"  # 二级菜单App Group
+mainPage_secondLevelMenu_appliaction_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Applications"]'
 mainPage_secondLevelMenu_account_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Accounts"]'
 mainPage_secondLevelMenu_flag_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Flags"]'
+mainPage_secondLevelMenu_interval_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Intervals"]'
+mainPage_secondLevelMenu_tunnel_posXpath = '//*[@class="MuiListItemText-root css-1wojmrk"]//span[normalize-space(text())="Tunnels"]'
 mainPage_ObjectSearch_Column_settings_posXpath = "//i[@class='iconfont icon-SetNormal text-[14px] text-[var(--color-text-disabled)]']"
 
 # Object 列表公共部分定位
@@ -87,10 +90,10 @@ ipObjectListPage_search_input_posXpath = objectListPage_search_input_posXpath
 ipObjectListPage_search_dropDown_item_posXpath = objectListPage_search_dropDown_item_posXpath
 ipObjectListPage_search_button_posXpath = objectListPage_search_button_posXpath
 ipObjectListPage_tableTbody_posXpath = objectListPage_tableTbody_posXpath #'//*[@class="MuiDataGrid-virtualScrollerRenderZone css-1inm7gi"]'
-ipObjectPage_inputName_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]' # name输入框Xpath
+ipObjectPage_inputName_posXpath = "//div[@class='ip-object-name']//input" # name输入框Xpath
 ipObjectPage_ipType_posXpath = "//*[normalize-space(text())='IP']"
 ipObjectPage_geographyType_posId = "Geographygeo_location"
-ipObjectPage_addItem_posXpath = '//*[@class="iconfont icon-Create1 font-[700]"]'  # 添加item_id
+ipObjectPage_addItem_posXpath = "//div[@class='ip-object-name']//parent::*//parent::*//i[@class='iconfont icon-Create1 font-[700]']"  # 添加item_id
 ipObjectPage_inputItem_posXpath = '//*[@class="MuiAutocomplete-input css-1lv7pyi"]'
 ipObjectPage_button_saveItem_posXpath = '//i[@class="operate-icon iconfont icon-save"]'  # 保存item按钮
 ipObjectPage_searchLable_dropDown_item_posXpath = '//span[normalize-space(text())="Name"]/../..'
@@ -348,6 +351,21 @@ flagObjectPage_inputItem_posXpath = urlObjectPage_inputItem_posXpath
 flagObjectPage_button_saveItem_posXpath = '//*[@class="flex flex-row items-center"]//i[@class="operate-icon iconfont icon-save"]'
 flagObjectPage_okButton_posXpath = '//*[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'
 flagObjectPage_okButton_warningYes_posXpath = keywordsObjectPage_okButton_warningYes_posXpath
+
+
+# interval
+intObjectListPage_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"
+intObjectListPage_dropDown_createButton_posXpath = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[1]"
+intObjectPage_inputName_posXpath = "//*[@class='interval-object-name']//input"
+intObjectPage_addItem_posXpath = "//i[@class='iconfont icon-Create1 font-[700]']"
+intObjectDetailPage_itemsText_posXpath = '//div[@class="leading-[24px]"]'  # Items 列表下所有Item的文本元素
+intObjectDetailPage_itemValueInput_lowBoundary_poXpath = '(//input[@class="MuiInput-input css-1u0jcuo"])[1]'  # item 下low_boundary value输入框Xpath
+intObjectDetailPage_itemValueInput_upBoundary_poXpath = '(//input[@class="MuiInput-input css-1u0jcuo"])[2]'  # item 下 up_boundary value输入框Xpath
+intObjectDetailPage_itemSaveButton_poXpath = "//i[@class='operate-icon iconfont icon-save']"
+intObjectPage_okButton_posXpath = '//*[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[1]'
+intObjectPage_okButton_warningYes_posXpath = keywordsObjectPage_okButton_warningYes_posXpath
+intObjectDetailPage_description_posXpath = "//div[@class='interval-object-description']//textarea[1]"  # 对象详情页面下Description input Xpath
+
 # 查询
 accountObjectPage_searchLabel_posXpath = httpSignatureObjectListPage_searchLabel_posXpath
 accountObjectListPage_searchLabel_selectName_posXpath = '//*[@class="base-Popper-root MuiAutocomplete-listbox css-18r31z0"]//li[2]'
@@ -358,6 +376,40 @@ accountObjectListPage_search_button_posXpath = objectListPage_search_button_posX
 accountObjectListPage_tableTbody_posXpath = objectListPage_tableTbody_posXpath
 accountObjectListPage_deleteButton_posXpath = ipObjectListPage_deleteButton_posXpath
 
+#application
+applicationobject_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"
+application_inputname_xpath='//input[@placeholder="Please enter the content"]'#name输入框
+application_input_longname_xpath='//input[@placeholder="Long Name"]'#long name输入框
+application_description_input_xpath = '//textarea[@placeholder="Please enter the content"]'  # description输入框
+application_select_category_dropwmn_posXpath = '//div[@class="application-object-category"]'
+application_select_subcategory_dropwmn_posXpath = '//div[@class="application-object-subcategory"]'
+application_select_content_dropwmn_posXpath = '//div[@class="application-object-content"]'
+application_select_risk_dropwmn_posXpath = '//div[@class="application-object-risk"]'
+application_category_xpath='//ul[@class="base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1"]/li[text()="{replaceValue}"]'  #0-4
+application_sub_category_xpath='//ul[@class="base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1"]/li[text()="{replaceValue}"]' #0-3
+application_content_xpath='//ul[@class="base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1"]/li[text()="{replaceValue}"]' #0-3
+application_risk_xpath='//ul[@class="base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1"]/li[text()="{replaceValue}"]' #0-3
+application_characteristics_xpath='//div[@class="application-object-characteristics"]//input[@name="{replaceValue}"]' #1-9
+applicatin_add_signature_button_posXpath= "//div[@class='application-object-signature_sequence']"
+application_signature_create_button_posXpath= "(//i[@class='iconfont icon-Create1'])"
+app_signature_input_name_posXpath= "//div[@class='app-signature-object-name']//input"
+app_signature_add_button_posXpath= "//div[@class='app-signature-object-and_conditions']//i[@class='iconfont icon-Create1 font-[700]']"
+app_signature_condition_select_up_posXpath= "//div[@class='app-signature-object-negate_option']"
+app_signature_new_condition__posXpath = "//div[@class='app-signature-object-negate_option']//li[text()='New Condition']"
+app_signature_new_not_condition__posXpath = "//div[@class='app-signature-object-negate_option']//li[text()='New Not Condition']"
+app_signature_add_artibute_button_posXpath = "//div[@class='app-signature-object-attribute']"
+app_signature_artibute_protocols__posXpath = "//div[@aria-label='{replaceValue}']"
+app_signature_attribute_add_object_posXpath = "//div[@class='app-signature-object-object_uuids']"
+application_ok_button_posXpath = "(//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='OK'])"
 
-
-
+#tunnel
+tunnelObjectListPage_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"
+tunnelObjectListPage_inputName_posXpath ="//*[@class='tunnel-object-name']//input"
+tunnelObjectListPage_endition_a_add_item_button="//div[@class='tunnel-object-endpointA']//i[@class='iconfont icon-Create1 font-[700]']"
+tunnelObjectListPage_endition_b_add_item_button="//div[@class='tunnel-object-endpointB']//i[@class='iconfont icon-Create1 font-[700]']"
+tunnelObjectListPage_edit_Type_posXpath="//div[@class='tunnel-object-type']//button[@class='MuiSelect-button css-1qmzz5g']"
+tunnelObjectListPage_type_gre_posXpath="//ul[@class='base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1']//*[normalize-space(text())='GRE']"
+tunnelObjectListPage_type_ip_posXpath="//ul[@class='base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1']//*[normalize-space(text())='IPv4/IPv6']"
+tunnelObjectPage_okButton_posXpath="(//div[@class='form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full']//button[text()='OK'])"
+tunnelObjectPage_side_slic_Cancel_posXpath="//div[@class='relative w-[100%] h-[100%] flex overflow-hidden']//button[text()='Cancel']"
+tunnelObjectPage_create_ip_button_posXpath="//i[@class='iconfont icon-Create1']"

@@ -1,14 +1,13 @@
 # -*- coding: UTF-8 -*-
+import copy
 import os
 import sys
-
-from support.ui_utils.element_position.map_element_position_library import replace_paras
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
 import pytz
-from datetime import datetime
-from support.ui_utils.workpath import workdir
+
+from support.organize_config import OrganizeConfig
+from support.ui_utils.element_position.map_element_position_library import replace_paras
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
@@ -36,8 +35,8 @@ def run(parameter):
                     "or_conditions": [
                         {
                             "name": parameter["test_case_name"].replace("_dstip", "", 1),
-                            "attribute_name": "ATTR_SOURCE_PORT",
-                            "type": "port",
+                            "attribute_name": "ATTR_SOURCE_IP",
+                            "type": "ip",
                             "member_type": "item",
                             "items": [
                                 {
@@ -148,7 +147,7 @@ def run(parameter):
             "pcap_name": "dtls"
         }
         verification_result = {
-            "excepted_traffic_result": "",
+            "excepted_traffic_result": {"total_bytes": 71098, "total_bytes_received": 66295, "total_bytes_sent": 4803, "total_packets": 100, "total_packets_received": 63, "total_packets_sent": 37, "total_syn_pkt": 1},
             "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "dtls_sni", "query_value": "www.youtube.com"},
@@ -163,10 +162,23 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
+            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            source_change_destination = copy.deepcopy(policy_configuration["and_conditions"][0]["or_conditions"][0])
+            source_change_destination["attribute_name"] = "ATTR_DESTINATION_IP"
+            policy_configuration["and_conditions"][1]["or_conditions"].append(source_change_destination)
+            destination_change_source = copy.deepcopy(policy_configuration["and_conditions"][1]["or_conditions"][0])
+            destination_change_source["attribute_name"] = "ATTR_SOURCE_IP"
+            policy_configuration["and_conditions"][0]["or_conditions"].append(destination_change_source)
             # 处理Profiles
             profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
@@ -235,19 +247,30 @@ def run(parameter):
             if not rules_tuple:
                 ui_client.delete_rules(parameter, policy_configuration)
         elif parameter["initiation_method"] == "api":
+
             if not rules_tuple:
+                print("No Rules to be delete!")
+            else:
                 api_client.delete_rules(rules_tuple)
-
             if not objects_tuple:
+                print("No Objects to be delete!")
+            else:
                 api_client.delete_objects(objects_tuple)
-
+            if not libraries_tuple:
+                print("No Objects to be delete!")
+            else:
+                api_client.delete_libraries(libraries_tuple)
             if not profiles_tuple:
-                api_client.delete_objects(profiles_tuple)
+                print("No Profiles to be delete!")
+            else:
+                api_client.delete_profiles(profiles_tuple)
         # 统计脚本用时
         end_time = time.time()
-        duration = end_time - start_time
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+              "Duration of running the test case: ", "{:.3f}".format(duration / 1000), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
 

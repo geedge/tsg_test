@@ -23,8 +23,10 @@ def run(parameter):
             "items":[
                 {
                     "op": "add",
-                    "flag": "2",
-                    "mask": "2"
+                    "flag": {
+                        "Client is Local": True,
+                        "Server is Local": True
+                    }
                 }
             ],
             "search": {

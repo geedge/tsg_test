@@ -101,7 +101,7 @@ class CreateProfiles:
                 profile_type = "proxy-replacement-files"
                 replacement_uuids, replacement_temp = self.create_file_upload_profile(
                     policy_configuration["action_parameter"]["replacement_file"], profile_type,
-                    policy_configuration["action_parameter"]["replacement_file"]["content_name"])
+                    policy_configuration["action_parameter"]["replacement_file"]["file_path"])
                 profile_uuids_temp_dict = {}
                 profile_uuids_temp_dict["type"] = profile_type
                 profile_uuids_temp_dict["uuid"] = replacement_uuids

@@ -1,15 +1,12 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
-
-import support.organize_config
-from support.ui_utils.element_position.map_element_position_library import replace_paras
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
 import pytz
-from datetime import datetime
-from support.ui_utils.workpath import workdir
+
+from support.organize_config import OrganizeConfig
+from support.ui_utils.element_position.map_element_position_library import replace_paras
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
@@ -60,12 +57,72 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "sub_action": "replace_file",
-                "replacement_file": {
-                    "name": "test",
-                    "file_path": "hijack_png_1.png",
-                    "content_name": "hijack.png",
-                    "content_type": "application / vnd.android.package - archive"
+                "template_profile": {
+                    "name": parameter["test_case_name"].replace("_srcip_dstip", "", 1),
+                    "uuid": "",
+                    "dataview": {
+                        "charts": [
+                            {
+                                "id": "",
+                                "display": {
+                                    "page_x": None,
+                                    "page_y": None,
+                                    "height": "",
+                                    "width": "",
+                                    "type": "bar",
+                                    "table_type": ""
+                                },
+                                "uuid": "",
+                                "name": "SUM(Bytes Sent, Bytes Received) Distributed by Application",
+                                "threshold": {
+                                    "in_bytes": 0,
+                                    "out_bytes": 0
+                                },
+                                "query": {
+                                    "dimensions": [
+                                        {
+                                            "source_fields": [
+                                                "app"
+                                            ],
+                                            "function": {
+                                                "name": "",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "label": "Application",
+                                            "is_drill_down": 0
+                                        }
+                                    ],
+                                    "limit": "100",
+                                    "metrics": [
+                                        {
+                                            "source_fields": [
+                                                "sent_bytes",
+                                                "received_bytes"
+                                            ],
+                                            "function": {
+                                                "name": "SUM",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_1",
+                                            "label": "SUM(Bytes Sent, Bytes Received)",
+                                            "unit": "bytes"
+                                        }
+                                    ],
+                                    "order_by": "SUM(Bytes Sent, Bytes Received)",
+                                    "source": "statistics_rule",
+                                    "series_limit": ""
+                                }
+                            }
+                        ]
+                    },
+                    "vsys": 1
                 }
             },
             "is_enabled": 1,
@@ -92,7 +149,6 @@ def run(parameter):
                 {"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}
             ]
         }
-        #support.organize_config.OrganizeConfig.generate_random_ip(parameter,policy_configuration,traffic_generation)
         # 创建
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient()
@@ -101,6 +157,10 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token)
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
@@ -186,9 +246,9 @@ def run(parameter):
                 api_client.delete_objects(objects_tuple)
         # 统计脚本用时
         end_time = time.time()
-        duration = end_time - start_time
+        duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+              "Duration of running the test case: ", "{:.3f}".format(duration/1000), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
 
